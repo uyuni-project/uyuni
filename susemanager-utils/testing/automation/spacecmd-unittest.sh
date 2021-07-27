@@ -5,6 +5,6 @@ HERE=`dirname $0`
 GITROOT=`readlink -f $HERE/../../../`
 
 cd $GITROOT/spacecmd
-make -f Makefile.python docker_pytest
+make DOCKER_REGISTRY="${REGISTRY}" DOCKER_IMAGE="${PGSQL_CONTAINER}" -f Makefile.python docker_pytest
 
 exit $?
