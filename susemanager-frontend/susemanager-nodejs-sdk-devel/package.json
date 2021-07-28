@@ -80,6 +80,7 @@
     "@hot-loader/react-dom": "^17.0.1",
     "@novnc/novnc": "^1.0.0",
     "@spice-project/spice-html5": "^0.2.1",
+    "d3": "4.5.0",
     "gettext-parser": "^4.0.4",
     "html-react-parser": "^0.10.0",
     "immer": "^8.0.1",

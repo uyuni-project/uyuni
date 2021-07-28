@@ -47,7 +47,6 @@ declare global {
   var ace: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
-  var d3: d3;
 
   // Defined in spacewalk-essentials.js
   var handleSst: Function;

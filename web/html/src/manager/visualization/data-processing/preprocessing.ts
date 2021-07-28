@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 /*
 Preprocessors for the data retrieved from server
 
