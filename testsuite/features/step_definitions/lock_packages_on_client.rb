@@ -1,11 +1,12 @@
 # Copyright (c) 2010-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-Then(/^"(.*?)" is locked on this client$/) do |pkg|
+Then(/^"(.*?)" is locked on "(.*?)"$/) do |pkg, system|
+  node = get_target(system)
   zypp_lock_file = '/etc/zypp/locks'
   raise "File already exist: #{zypp_lock_file}" unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
-  $client.run(command, timeout: 600)
+  node.run(command, timeout: 600)
 end
 
 Then(/^package "(.*?)" is reported as locked$/) do |pkg|
@@ -15,12 +16,13 @@ Then(/^package "(.*?)" is reported as locked$/) do |pkg|
   raise "Package #{pkg} not found as locked" unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
-Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
+Then(/^"(.*?)" is unlocked on "(.*?)"$/) do |pkg, system|
+  node = get_target(system)
   zypp_lock_file = '/etc/zypp/locks'
   raise "File #{zypp_lock_file} not found" unless file_exists?($client, zypp_lock_file)
 
   command = "zypper locks  --solvables | grep #{pkg}"
-  $client.run(command, check_errors: false, timeout: 600)
+  node.run(command, check_errors: false, timeout: 600)
 end
 
 Then(/^package "(.*?)" is reported as unlocked$/) do |pkg|
