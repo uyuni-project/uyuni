@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-21 09:41+0000\n"
+"POT-Creation-Date: 2021-07-28 10:41+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -5414,102 +5414,102 @@ msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:133
+#: ../html/src/manager/visualization/data-tree.ts:134
 msgid "  security advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:139
+#: ../html/src/manager/visualization/data-tree.ts:140
 msgid "  bug fix advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:149
+#: ../html/src/manager/visualization/data-tree.ts:150
 msgid "  product enhancement advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:195
+#: ../html/src/manager/visualization/data-tree.ts:196
 msgid "Add/remove system from SSM"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:253
+#: ../html/src/manager/visualization/data-tree.ts:254
 msgid "Add children to SSM"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:62
+#: ../html/src/manager/visualization/hierarchy.tsx:63
 msgid "Filtering"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:71
+#: ../html/src/manager/visualization/hierarchy.tsx:72
 msgid "Partitioning"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:94
+#: ../html/src/manager/visualization/hierarchy.tsx:95
 msgid "Show systems with:"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:123
+#: ../html/src/manager/visualization/hierarchy.tsx:124
 msgid "security advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:128
+#: ../html/src/manager/visualization/hierarchy.tsx:129
 msgid "bug fix advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:131
+#: ../html/src/manager/visualization/hierarchy.tsx:132
 msgid "product enhancement advisories"
 msgstr ""
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.tsx:142
 msgid "Filter by system name"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.tsx:142
 msgid "e.g., client.nue.sles"
 msgstr ""
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.tsx:148
 msgid "Filter by system base channel"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.tsx:148
 msgid "e.g., SLE12"
 msgstr ""
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "Filter by system installed products"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "e.g., SLES"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:198
+#: ../html/src/manager/visualization/hierarchy.tsx:199
 msgid "Partition systems based on whether there are patches for them:"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:240
+#: ../html/src/manager/visualization/hierarchy.tsx:241
 msgid "There was an error fetching data from the server."
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:283
+#: ../html/src/manager/visualization/hierarchy.tsx:284
 msgid " filters"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:42
+#: ../html/src/manager/visualization/ui/components.ts:44
 msgid "Partition systems by given check-in time:"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:149
+#: ../html/src/manager/visualization/ui/components.ts:151
 msgid "Add a grouping level"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:193
+#: ../html/src/manager/visualization/ui/components.ts:195
 msgid "Select a system group"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:245
+#: ../html/src/manager/visualization/ui/components.ts:247
 msgid "Split into groups"
 msgstr ""
 
