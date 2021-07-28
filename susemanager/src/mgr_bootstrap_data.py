@@ -603,6 +603,7 @@ PKGLISTUBUNTU1804 = [
     "python-apt-common",
     "python3-distro",
     "python3-gnupg",
+    "gnupg",
 ]
 
 PKGLISTUBUNTU2004 = [
@@ -621,6 +622,7 @@ PKGLISTUBUNTU2004 = [
     "python3-zmq",
     "salt-common",
     "salt-minion",
+    "gnupg",
 ]
 
 PKGLISTDEBIAN9 = [
@@ -673,6 +675,7 @@ PKGLISTDEBIAN9 = [
     "salt-common",
     "salt-minion",
     "dmidecode",
+    "gnupg",
 ]
 
 PKGLISTDEBIAN10 = [
@@ -728,7 +731,8 @@ PKGLISTDEBIAN10 = [
     "python3-zmq",
     "python-apt-common",
     "salt-common",
-    "salt-minion"
+    "salt-minion",
+    "gnupg",
 ]
 
 PKGLISTASTRALINUXOREL = [
@@ -778,7 +782,8 @@ PKGLISTASTRALINUXOREL = [
     "python2.7",
     "python2.7-minimal",
     "salt-common",
-    "salt-minion"
+    "salt-minion",
+    "gnupg",
 ]
 
 DATA = {
