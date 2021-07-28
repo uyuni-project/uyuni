@@ -99,7 +99,7 @@ class CVEAudit extends React.Component<Props, State> {
 
     this.setState({ selectedItems: items }, () => {
       DWRItemSelector.select("system_list", list, isAdd, res => {
-        // TODO: If you touch this code, please get rid of this `eval()` call
+        // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
