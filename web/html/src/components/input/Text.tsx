@@ -1,67 +1,49 @@
 import * as React from "react";
-import { InputBase, InputBaseProps } from "./InputBase";
-import { FormContext } from "./Form";
+import { Field, FieldProps, FieldAttributes } from "formik";
 
-type Props = InputBaseProps & {
-  /** <input> type */
-  type?: string;
-
-  /** Maximum number of characters of the input field */
-  maxLength?: number;
-
-  /** Value placeholder to display when no value is entered */
-  placeholder?: string;
-
+type Props = FieldAttributes<unknown> & {
   /** CSS class for the <input> element */
   inputClass?: string;
-
-  /** name of the field to map in the form model */
-  name: string;
 };
 
-export const Text = (props: Props) => {
-  const { type, maxLength, placeholder, inputClass, ...propsToPass } = props;
-  const formContext = React.useContext(FormContext);
+export const Text = <Value extends string>(props: Props) => {
+  const { inputClass, ...propsToPass } = props;
   return (
-    <InputBase {...propsToPass}>
-      {({ setValue, onBlur }) => {
-        const onChange = (event: any) => {
-          setValue(event.target.name, event.target.value);
-        };
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
-        return (
+    <Field {...propsToPass}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }: FieldProps<Value>) => (
+        <div>
           <input
-            className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
-            type={type || "text"}
-            name={props.name}
-            id={props.name}
-            value={fieldValue}
-            onChange={onChange}
-            disabled={props.disabled}
-            onBlur={onBlur}
-            placeholder={placeholder}
-            maxLength={maxLength}
-            title={props.title}
+            id={field.name}
+            className={`form-control${props.inputClass ? ` ${props.inputClass}` : ""}`}
+            {...field}
           />
-        );
-      }}
-    </InputBase>
+          {meta.touched && meta.error && <div className="error">{meta.error}</div>}
+        </div>
+      )}
+    </Field>
   );
 };
 
-Text.defaultProps = {
+const defaultProps: Partial<Props> = {
   type: "text",
   maxLength: undefined,
   placeholder: undefined,
   inputClass: undefined,
   defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
+  // TODO: Fix these
+  // label: undefined,
+  // hint: undefined,
+  // labelClass: undefined,
+  // divClass: undefined,
   className: undefined,
   required: false,
   disabled: false,
-  invalidHint: undefined,
+  // invalidHint: undefined,
   onChange: undefined,
 };
+
+Text.defaultProps = defaultProps;

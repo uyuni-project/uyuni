@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { cloneReactElement } from "components/utils";
 
 type FormikProps = React.ComponentProps<typeof Formik>;
 type ModelType = {
@@ -19,6 +20,21 @@ type Props = {
 
   /** Children elements of the form. Usually includes fields and a submit button */
   children: React.ReactNode;
+
+  /** TODO: This is only used in stories, deprecate it */
+  onSubmitInvalid?: Function;
+
+  /** CSS class of the form */
+  className?: string;
+
+  /** TODO: Merge with below? CSS class of the div right within the form */
+  divClass?: string;
+
+  /** CSS class name for the form direction style */
+  formDirection?: string;
+
+  /** TODO: Check if used: Accessible title of the form */
+  title?: string;
 };
 
 export default class FormikForm extends React.PureComponent<Props> {
@@ -30,14 +46,25 @@ export default class FormikForm extends React.PureComponent<Props> {
 
   render() {
     return (
-      <Formik initialValues={this.props.model ?? {}} onSubmit={this.onSubmit}>
-        {(formikProps) => {
-          <Form>
-            {/* TODO: Pass props to children too? See https://formik.org/docs/api/formik#formik-render-methods-and-props */}
-            {this.props.children}
-          </Form>;
-        }}
-      </Formik>
+      <React.Fragment>
+        <p>Foo</p>
+        <Formik
+          initialValues={this.props.model ?? {}}
+          onSubmit={this.onSubmit}
+          className={this.props.className}
+          title={this.props.title}
+        >
+          {formikProps => (
+            <Form>
+              <div
+                className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}
+              >
+                {React.Children.toArray(this.props.children).map(child => cloneReactElement(child, { ...formikProps }))}
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </React.Fragment>
     );
   }
 }

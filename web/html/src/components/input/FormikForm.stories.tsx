@@ -1,39 +1,39 @@
 import * as React from 'react';
-import { Form } from './Form';
+import FormikForm from './FormikForm';
 import { Text } from './Text';
 import { SubmitButton } from 'components/buttons';
 
 export default {
-  component: Form,
-  title: 'Forms/Form'
+  component: FormikForm,
+  title: 'Forms/FormikForm'
 };
 
 let model = {
   firstname: 'John',
 };
 
+//Form props:
+//divClass="col-md-12"
+//formDirection="form-horizontal"
 export const Example = () => (
-  <Form
+  <FormikForm
     model={model}
-    onChange={newModel => {model['firstname'] = newModel['firstname']}}
-    onSubmit={() => alert(`Hello ${model['firstname']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
-    divClass="col-md-12"
-    formDirection="form-horizontal"
+    onSubmit={(foo) => console.log(foo)}
   >
     <Text
       name="firstname"
       label={t('First Name')}
       required
-      invalidHint={t('Minimum 2 characters')}
+      // invalidHint={t('Minimum 2 characters')}
       labelClass="col-md-3"
+      disabled
       divClass="col-md-6"
-      validators={[(value => (value.length > 2))]}
+      // validators={[(value => (value.length > 2))]}
     />
     <SubmitButton
       id="submit-btn"
       className="btn-success"
       text={t("Submit")}
     />
-  </Form>
+  </FormikForm>
 )
