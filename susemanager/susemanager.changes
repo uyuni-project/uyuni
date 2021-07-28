@@ -1,3 +1,5 @@
+- Add the gnupg package for ubuntu which is then needed by apt-key (bsc#1187998)
+
 -------------------------------------------------------------------
 Thu Oct 28 12:09:28 CEST 2021 - jgonzalez@suse.com
 
