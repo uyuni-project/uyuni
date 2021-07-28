@@ -8,6 +8,7 @@ import { Column } from "components/table/Column";
 import SpaRenderer from "core/spa/spa-renderer";
 import { IconTag } from "components/icontag";
 import errors from "manager/errors";
+import { SearchField } from "components/table/SearchField"
 
 // See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
@@ -33,6 +34,14 @@ function VirtualSystems(props: Props) {
       })
   }, [])
 
+
+  const searchData = (datum, criteria) => {
+    if (criteria) {
+      return datum.name.toLowerCase().includes(criteria.toLowerCase());
+    }
+    return true;
+  };
+
   return (
     <>
       <h1>
@@ -48,6 +57,7 @@ function VirtualSystems(props: Props) {
         identifier={items => items.uuid}
         initialSortColumnKey="vHost"
         initialItemsPerPage={window.userPrefPageSize}
+        searchField={<SearchField filter={searchData} placeholder={t("Filter by System name: ")} />}
         emptyText={t("No Virtual Systems.")}
       >
         <Column
