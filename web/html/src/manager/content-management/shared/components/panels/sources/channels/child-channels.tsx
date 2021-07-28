@@ -45,7 +45,7 @@ const ChildChannels = (props: PropsType) => {
                 <Highlight enabled={(props.search || "").length > 0} text={c.name} highlight={props.search}></Highlight>
               </label>
               &nbsp;
-              {toolTip ? ( // eslint-disable-next-line
+              {toolTip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 <a href="#">
                   <i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i>
                 </a>

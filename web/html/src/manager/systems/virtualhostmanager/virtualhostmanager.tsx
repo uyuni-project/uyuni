@@ -9,7 +9,7 @@ import { VirtualHostManagerEdit } from "./virtualhostmanager-edit";
 import { Utils as MessagesUtils } from "components/messages";
 import SpaRenderer from "core/spa/spa-renderer";
 
-const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
+const hashUrlRegex = /^#\/([^/]*)(?:\/(.+))?$/;
 
 const msgModuleTypes = {
   file: t("File-based"),
