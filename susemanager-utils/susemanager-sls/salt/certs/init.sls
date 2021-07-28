@@ -5,7 +5,7 @@
 {% if grains['osfullname'] == 'openSUSE Tumbleweed' %}
 {% set sls = includesls('Tumbleweed', '') -%}
 {% elif grains['osfullname'] == 'openSUSE MicroOS' %}
-{% set sls = includesls('MicroOS', '') -%}
+{% set sls = includesls('openSUSE_MicroOS', '') -%}
 {% else -%}
 {% set sls = includesls(grains['osfullname'], grains['osrelease']) -%}
 {% endif -%}
