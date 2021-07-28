@@ -8513,8 +8513,8 @@ Follow this url to see the full list of inactive systems:
         <target>{0} チャンネルマネージャーが正常に更新されました。</target>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting" xml:space="preserve">
-        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
-        <target state="translated">このシステムに対して処理中のキックスタートセッションが存在しています。アクティベーションキーを変更してしまうと、キックスタートセッションの完了後のシステム再登録に失敗する可能性が高くなります。また、このキーを手作業で使用しようとすると、予期しない副作用を発生させる可能性もあります。</target>
+        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
+        <target state="needs-adaptation">このシステムに対して処理中のキックスタートセッションが存在しています。アクティベーションキーを変更してしまうと、キックスタートセッションの完了後のシステム再登録に失敗する可能性が高くなります。また、このキーを手作業で使用しようとすると、予期しない副作用を発生させる可能性もあります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -9907,10 +9907,9 @@ Please check:
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
-for more detailed errors.  If you don't resolve the errors the autoinstallable
-tree will not be usable for autoinstalling.
-        </source>
-        <target state="translated">
+for more detailed errors. If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.</source>
+        <target state="needs-adaptation">
 下記は、 @@PRODUCT_NAME@@ と Cobbler との間で @@PRODUCT_NAME@@ が提供する
 自動インストール可能なディストリビューションを同期する際に発生したエラーの一覧です。
 自動インストールを行なうことができるようにするには、これらのエラーを解決しなければなりません:
@@ -10105,9 +10104,9 @@ Note that only one set of ISO images is necessary to install any particular rele
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1" xml:space="preserve">
         <source>
-Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
 </source>
-        <target state="translated">
+        <target state="needs-adaptation">
 下記にはチャンネル {0} で利用できる全てのチャンネルコンテンツ ISO があります。下記のうち、いずれかのチャンネルコンテンツ ISO が存在しない場合は、 @@PRODUCT_NAME@@ の資格証明書を @@PRODUCT_NAME@@ にアップロードしていて、かつ目的のチャンネルを正しく識別しているかどうかをご確認ください。
 </target>
         <context-group name="ctx">

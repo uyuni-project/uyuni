@@ -8516,8 +8516,8 @@ Follow this url to see the full list of inactive systems:
         <target>{0} 채널 관리자가 성공적으로 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="sdc.activation.kickstarting" xml:space="preserve">
-        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
-        <target>이 시스템에서 진행 중인 킥스타트 세션이 있습니다. 이 활성화 키를 수정하면 킥스타트 세션 완료 시 시스템이 다시 등록하지 못할 수 있습니다. 이 키를 수동으로 사용하면 의도치 않는 부작용이 발생할 수 있습니다.</target>
+        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
+        <target state="needs-adaptation">이 시스템에서 진행 중인 킥스타트 세션이 있습니다. 이 활성화 키를 수정하면 킥스타트 세션 완료 시 시스템이 다시 등록하지 못할 수 있습니다. 이 키를 수동으로 사용하면 의도치 않는 부작용이 발생할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -9910,10 +9910,9 @@ Please check:
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
-for more detailed errors.  If you don't resolve the errors the autoinstallable
-tree will not be usable for autoinstalling.
-        </source>
-        <target>
+for more detailed errors. If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.</source>
+        <target state="needs-adaptation">
 @@PRODUCT_NAME@@이(가) @@PRODUCT_NAME@@에서 Cobbler로
 자동 설치 가능 배포를 동기화하는 동안 발생한 오류 목록은 다음과 같습니다.
 자동 설치 시스템에서 배포를 사용하려면 오류를 수정해야 함:
@@ -10108,9 +10107,9 @@ Note that only one set of ISO images is necessary to install any particular rele
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1" xml:space="preserve">
         <source>
-Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
 </source>
-        <target>
+        <target state="needs-adaptation">
 {0} 채널과 함께 사용할 수 있는 모든 채널 컨텐트 ISO는 아래와 같습니다. 아래에서 채널 컨텐트 ISO가 누락된 것 같은 경우, @@PRODUCT_NAME@@ 권한 부여 인증서를 @@PRODUCT_NAME@@에 업로드하였으며 대상 채널이 올바르게 식별되는지 확인하십시오.
 </target>
         <context-group name="ctx">
