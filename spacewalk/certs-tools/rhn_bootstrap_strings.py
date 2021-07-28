@@ -765,13 +765,11 @@ if [ ! -z "$ORG_GPG_KEY" ] ; then
     for GPG_KEY in $(echo "$ORG_GPG_KEY" | tr "," " "); do
         rm -f ${GPG_KEY}
         $FETCH ${HTTPS_PUB_DIRECTORY}/${GPG_KEY}
-        # get the major version of up2date
-        # this will also work for RHEL 5 and systems where no up2date is installed
-        res=$(LC_ALL=C rpm -q --queryformat '%{version}' up2date | sed -e 's/\..*//g')
-        if [ "x$res" == "x2" ] ; then
-            gpg $(up2date --gpg-flags) --import $GPG_KEY
+        if [ "$INSTALLER" == "apt" ]; then
+           apt-get --yes install --no-install-recommends gnupg
+           apt-key add $GPG_KEY
         else
-            rpm --import $GPG_KEY
+           rpm --import $GPG_KEY
         fi
         rm -f ${GPG_KEY}
     done
