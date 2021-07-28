@@ -1,3 +1,5 @@
+- add GPG keys using apt-key on debian machines (bsc#1187998)
+
 -------------------------------------------------------------------
 Mon Aug 09 10:58:52 CEST 2021 - jgonzalez@suse.com
 
