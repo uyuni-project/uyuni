@@ -1,3 +1,4 @@
+- Add the gnupg package for ubuntu which is then needed by apt-key (bsc#1187998)
 - Add SLE 15 SAP Product ID to SLE15 bootstrap repositories, as
   it is required to get python3-M2Crypto (bsc#1189422)
 
