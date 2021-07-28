@@ -7487,6 +7487,13 @@
         <forward name="default" path="/WEB-INF/pages/channel/subscribedsystems.jsp" />
       </action>
 
+     <action path="/channels/AppStreams"
+        type="com.redhat.rhn.frontend.action.channel.AppStreamsAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default" path="/WEB-INF/pages/channel/appstreams.jsp" />
+      </action>
+
      <action path="/channels/TargetSystems"
         type="com.redhat.rhn.frontend.action.channel.TargetSystemsAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">

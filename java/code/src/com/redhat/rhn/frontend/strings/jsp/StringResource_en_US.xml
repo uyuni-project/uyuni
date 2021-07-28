@@ -5637,6 +5637,13 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
+        <source>No Modules</source>
+	<context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+	</context-group>
+      </trans-unit>
       <trans-unit id="systemlist.jsp.unentitled" xml:space="preserve">
         <source>System without System Type</source>
         <context-group name="ctx">
@@ -5760,6 +5767,18 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="appstream.jsp.streamname" xml:space="preserve">
+        <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="appstream.jsp.modulename" xml:space="preserve">
+        <source>Module Name</source>
+         <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+    </trans-unit>
       <trans-unit id="outofdatelist.jsp.header" xml:space="preserve">
         <source>Out of Date Systems</source>
         <context-group name="ctx">
@@ -14866,6 +14885,12 @@ a file or files, or copy the latest version into a set of local overrides or int
         <source>Total Systems</source>
       </trans-unit>
       <!-- channelsystems.jsp -->
+      <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channelsystems.jsp.header2" xml:space="preserve">
         <source>Subscribed Systems</source>
         <context-group name="ctx">
@@ -22587,6 +22612,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.systemssubsribed" xml:space="preserve">
         <source>Systems Subscribed</source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
+        <source>AppStreams</source>
       </trans-unit>
       <trans-unit id="channel.jsp.parentchannel" xml:space="preserve">
         <source>Parent Channel</source>

@@ -333,6 +333,12 @@
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="configchannel.nav.systems.appstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/channel/AppStreams.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="configchannel.nav.systems.target" xml:space="preserve">
         <source>Target Systems</source>
         <context-group name="ctx">
@@ -939,6 +945,12 @@
       </trans-unit>
       <trans-unit id="Subscribed Systems" xml:space="preserve">
         <source>Subscribed Systems</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
+          </context-group>
+      </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>

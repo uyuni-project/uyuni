@@ -197,6 +197,16 @@
                         </a>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">
+                        <bean:message key="channel.jsp.appstreams"/>
+                    </label>
+                    <div class="col-lg-6">
+                        <a class="btn btn-info" href="/rhn/channels/AppStreams.do?cid=${channel.id}">
+                            ${systems_subscribed} <rhn:icon type="nav-right" />
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="panel panel-default">
