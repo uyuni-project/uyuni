@@ -23,34 +23,28 @@ jobs:
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "lkotek,ktsamis,Bischoff,calancha"
-    - name: "Send Review Request to QA Squad"
-      if: steps.review_step.outputs.review == 'true' && github.actor == 'lkotek'
-      uses: kunihiko-t/review-request-action@v0.1.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "srbarrios,ktsamis,Bischoff,calancha"
+        reviewers: "ktsamis,Bischoff,calancha"
     - name: "Send Review Request to QA Squad"
       if: steps.review_step.outputs.review == 'true' && github.actor == 'Bischoff'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "lkotek,ktsamis,srbarrios,calancha"
+        reviewers: "ktsamis,srbarrios,calancha"
     - name: "Send Review Request to QA Squad"
       if: steps.review_step.outputs.review == 'true' && github.actor == 'ktsamis'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "lkotek,srbarrios,Bischoff,calancha"
+        reviewers: "srbarrios,Bischoff,calancha"
     - name: "Send Review Request to QA Squad"
       if: steps.review_step.outputs.review == 'true' && github.actor == 'calancha'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "lkotek,srbarrios,Bischoff,ktsamis"
+        reviewers: "srbarrios,Bischoff,ktsamis"
     - name: "Send Review Request to QA Squad"
-      if: steps.review_step.outputs.review == 'true' && github.actor != 'ktsamis' && github.actor != 'Bischoff' && github.actor != 'lkotek' && github.actor != 'srbarrios' && github.actor != 'calancha'
+      if: steps.review_step.outputs.review == 'true' && github.actor != 'ktsamis' && github.actor != 'Bischoff' && github.actor != 'srbarrios' && github.actor != 'calancha'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "lkotek,srbarrios,Bischoff,ktsamis,calancha"
+        reviewers: "srbarrios,Bischoff,ktsamis,calancha"
