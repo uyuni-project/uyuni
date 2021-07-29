@@ -110,7 +110,7 @@ public class SCCSystemRegistrationManager {
                 cacheItem.setRegistrationErrorTime(null);
                 cacheItem.setCredentials(itemCredentials);
             }
-            catch (SCCClientException e) {
+            catch (Exception e) {
                 LOG.error("Error registering system " + cacheItem.getId(), e);
                 cacheItem.setRegistrationErrorTime(new Date());
             }
