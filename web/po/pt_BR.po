@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 07:38+0000\n"
+"POT-Creation-Date: 2021-07-29 12:44+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -536,8 +536,8 @@ msgstr ""
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:306
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -1757,7 +1757,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:488
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:279
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:302
 msgid "Type"
 msgstr ""
 
@@ -2044,7 +2044,7 @@ msgid "Live patching based on a SUSE product"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
 msgstr ""
 
@@ -2705,7 +2705,7 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:221
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:108
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
 msgid "Update"
@@ -4696,15 +4696,15 @@ msgstr ""
 msgid "Virtual CPU Count"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:220
 msgid "Auto-installation Profile"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:213
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:236
 msgid "Kernel options"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:275
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr ""
 

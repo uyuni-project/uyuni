@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 07:38+0000\n"
+"POT-Creation-Date: 2021-07-29 12:44+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -533,8 +533,8 @@ msgstr "すべてを選択"
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:306
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -1808,7 +1808,7 @@ msgstr "クラスタ"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:488
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:279
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:302
 msgid "Type"
 msgstr "タイプ"
 
@@ -2099,7 +2099,7 @@ msgid "Live patching based on a SUSE product"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
 msgstr ""
 
@@ -2790,7 +2790,7 @@ msgstr "追加の独自 info 鍵の作成"
 #: ../html/src/manager/images/image-store-edit.tsx:221
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:108
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
 msgid "Update"
@@ -4845,15 +4845,15 @@ msgstr "正の整数を指定する必要があります"
 msgid "Virtual CPU Count"
 msgstr "仮想 CPU 数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:220
 msgid "Auto-installation Profile"
 msgstr "自動インストールプロファイル"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:213
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:236
 msgid "Kernel options"
 msgstr "カーネルオプション"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:275
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr "グラフィック"
 
