@@ -75,9 +75,9 @@ date
 for p in ${PACKAGES};do
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${CMD}; RET=\${?}; exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
     else
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${CMD}; RET=\${?}; exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
