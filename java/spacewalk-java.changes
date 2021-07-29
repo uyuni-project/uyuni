@@ -1,3 +1,4 @@
+- XMLRPC: Add call for listing application monitoring endpoints
 - Do not log XMLRPC fault exceptions as errors (bsc#1188853)
 - Allow getting all archived actions via XMLRPC without display limit (bsc#1181223)
 - Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
