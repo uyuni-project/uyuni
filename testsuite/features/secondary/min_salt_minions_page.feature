@@ -64,7 +64,7 @@ Feature: Management of minion keys
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup"
+    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
     Then "sle_minion" should not be registered
 
