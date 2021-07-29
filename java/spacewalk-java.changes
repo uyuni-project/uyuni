@@ -1,3 +1,4 @@
+- XMLRPC: Add call for listing application monitoring endpoints
 - AppStreams tab for modular channels
 - Link to CLM filter creation from system details page
 - Allow getting all archived actions via XMLRPC without display limit (bsc#1181223)
