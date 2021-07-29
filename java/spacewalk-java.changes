@@ -1,3 +1,4 @@
+- XMLRPC: Add call for listing application monitoring endpoints
 - Bring back Beta product tag
 - fix NPE when no redhat info could be fetched
 
