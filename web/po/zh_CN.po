@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 10:41+0000\n"
+"POT-Creation-Date: 2021-07-29 07:38+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -522,7 +522,7 @@ msgstr "全选"
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:286
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:306
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
@@ -732,7 +732,7 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "设置 SUSE Manager 服务器监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:123
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:124
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:52
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:217
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:239
@@ -893,7 +893,7 @@ msgstr "产品说明"
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:182
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
 msgstr "体系结构"
 
@@ -1133,7 +1133,7 @@ msgstr "审计映像"
 #: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:128
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:221
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
@@ -1751,7 +1751,7 @@ msgstr "群集"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:488
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:279
 msgid "Type"
 msgstr "类型"
 
@@ -2038,6 +2038,7 @@ msgid "Live patching based on a SUSE product"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Template"
 msgstr ""
 
@@ -4665,46 +4666,46 @@ msgstr "已选择 {0}"
 msgid "Action Status"
 msgstr "操作状态"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:245
 msgid "Can not contain the following characters: /\\"
 msgstr "不能包含以下字符：/\\"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:139
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:140
 msgid "Hypervisor"
 msgstr "超级管理程序"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:150
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:151
 msgid "Virtual Machine Type"
 msgstr "虚拟机类型"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:162
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:163
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:55
 msgid "Maximum Memory (MiB)"
 msgstr "最大内存 (MiB)"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:165
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:174
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:57
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:66
 msgid "A positive integer is required"
 msgstr "必须指定正整数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:171
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:172
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:64
 msgid "Virtual CPU Count"
 msgstr "虚拟 CPU 计数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:196
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "Auto-installation Profile"
 msgstr "自动安装配置文件"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:212
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:213
 msgid "Kernel options"
 msgstr "内核选项"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:255
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:275
 msgid "Graphics"
 msgstr "显卡"
 
@@ -4863,6 +4864,10 @@ msgstr "网络"
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:581
 msgid "Clear Fields"
 msgstr "清除字段"
+
+#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
+msgid "Single virtual machine using almost all the host resources"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 10:41+0000\n"
+"POT-Creation-Date: 2021-07-29 07:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -514,7 +514,7 @@ msgstr ""
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:286
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:306
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
@@ -724,7 +724,7 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:123
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:124
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:52
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:217
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:239
@@ -880,7 +880,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:182
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
 msgstr ""
 
@@ -1120,7 +1120,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:128
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:221
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
@@ -1734,7 +1734,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:488
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:279
 msgid "Type"
 msgstr ""
 
@@ -2020,6 +2020,7 @@ msgid "Live patching based on a SUSE product"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Template"
 msgstr ""
 
@@ -4626,46 +4627,46 @@ msgstr ""
 msgid "Action Status"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:245
 msgid "Can not contain the following characters: /\\"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:139
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:140
 msgid "Hypervisor"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:150
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:151
 msgid "Virtual Machine Type"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:162
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:163
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:55
 msgid "Maximum Memory (MiB)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:165
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:174
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:57
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:66
 msgid "A positive integer is required"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:171
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:172
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:64
 msgid "Virtual CPU Count"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:196
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "Auto-installation Profile"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:212
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:213
 msgid "Kernel options"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:255
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:275
 msgid "Graphics"
 msgstr ""
 
@@ -4823,6 +4824,10 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:456
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:581
 msgid "Clear Fields"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
+msgid "Single virtual machine using almost all the host resources"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
