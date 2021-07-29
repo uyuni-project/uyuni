@@ -226,7 +226,7 @@ Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, hos
 end
 
 When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
+  list_output, _code = $server.run("mgr-sync list products", false)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -234,14 +234,14 @@ When(/^I enable product "([^"]*)"$/) do |prd|
     linenum += 1
     next unless line.include? prd
     executed = true
-    $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product", ignore_err: true)[:stdout]
+    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product", false)
     break
   end
   raise $command_output.to_s unless executed
 end
 
 When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
+  list_output, _code = $server.run("mgr-sync list products", false)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -249,22 +249,22 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
     linenum += 1
     next unless line.include? prd
     executed = true
-    $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product --no-recommends", ignore_err: true)[:stdout]
+    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product --no-recommends", false)
     break
   end
   raise $command_output.to_s unless executed
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
+  $command_output, _code = $server.run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", false)
 end
 
 When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
-  $command_output = sshcmd("mgr-sync #{arg1}")[:stdout]
+  $command_output, _code = $server.run("mgr-sync #{arg1}")
 end
 
 When(/^I remove the mgr\-sync cache file$/) do
-  $command_output = sshcmd('rm -f ~/.mgr-sync')[:stdout]
+  $command_output, _code = $server.run('rm -f ~/.mgr-sync')
 end
 
 When(/^I refresh SCC$/) do
@@ -273,7 +273,7 @@ When(/^I refresh SCC$/) do
 end
 
 When(/^I execute mgr\-sync refresh$/) do
-  $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
+  $command_output, _code = $server.run('mgr-sync refresh', false)
 end
 
 # This function waits for all the reposyncs to complete.
@@ -363,7 +363,7 @@ end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
-  $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-KEY-#{arch} #{arg1}")[:stdout]
+  $command_output, _code = $server.run("mgr-bootstrap --activation-keys=1-SUSE-KEY-#{arch} #{arg1}")
 end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
@@ -373,27 +373,27 @@ end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
-    output = sshcmd("grep #{content} #{file}", ignore_err: true)
-    break if output[:stdout] =~ /#{content}/
+    output, _code = $server.run("grep #{content} #{file}", false)
+    break if output =~ /#{content}/
     sleep 2
-    "\n-----\n#{output[:stderr]}\n-----\n"
+    "\n-----\n#{output}\n-----\n"
   end
 end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
-  output = sshcmd("grep -F '#{content}' #{file}", ignore_err: true)
-  raise "'#{content}' not found in file #{file}" if output[:stdout] !~ /#{content}/
-  "\n-----\n#{output[:stderr]}\n-----\n"
+  output, _code = $server.run("grep -F '#{content}' #{file}", false)
+  raise "'#{content}' not found in file #{file}" if output !~ /#{content}/
+  "\n-----\n#{output}\n-----\n"
 end
 
 Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, content|
-  output = sshcmd("grep -F '#{content}' #{file} || echo 'notfound'", ignore_err: true)
-  raise "'#{content}' found in file #{file}" if output[:stdout] != "notfound\n"
-  "\n-----\n#{output[:stderr]}\n-----\n"
+  output, _code = $server.run("grep -F '#{content}' #{file} || echo 'notfound'", false)
+  raise "'#{content}' found in file #{file}" if output != "notfound\n"
+  "\n-----\n#{output}\n-----\n"
 end
 
 Then(/^the tomcat logs should not contain errors$/) do
-  output = $server.run('cat /var/log/tomcat/*')
+  output, _code = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
     raise "-#{msg}-  msg found on tomcat logs" if output.include? msg
@@ -599,7 +599,7 @@ end
 
 Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
   node = get_target(host)
-  output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
+  output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", false)
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
@@ -622,7 +622,7 @@ When(/^I start tftp on the proxy$/) do
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
-  output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
+  output, _code = $server.run("cobbler system report --name #{name}", false)
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
@@ -660,8 +660,8 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
 end
 
 When(/^I clean the search index on the server$/) do
-  output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
-  raise 'The output includes an error log' if output[:stdout].include?('ERROR')
+  output, _code = $server.run('/usr/sbin/rcrhn-search cleanindex', false)
+  raise 'The output includes an error log' if output.include?('ERROR')
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
@@ -778,11 +778,11 @@ Then(/^I wait and check that "([^"]*)" has rebooted$/) do |host|
 end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
-  @command_output = sshcmd("spacewalk-repo-sync -c #{arg1} -u #{arg2}")[:stdout]
+  @command_output, _code = $server.run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", false)
 end
 
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
-  @command_output = sshcmd("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'")[:stdout]
+  @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", false)
 end
 
 When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
