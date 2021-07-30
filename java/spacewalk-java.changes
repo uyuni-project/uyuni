@@ -12,6 +12,12 @@
 - Readable error when "mgr-sync add channel" is called with a no-existing label (bsc#1173143)
 
 -------------------------------------------------------------------
+Fri Jul 30 12:16:57 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.27-1
+- Fix system information forwarding to SCC (bsc#1188900)
+
+-------------------------------------------------------------------
 Tue Jul 20 13:55:18 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.26-1
