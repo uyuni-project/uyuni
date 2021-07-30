@@ -302,7 +302,7 @@ while read PKG_NAME; do
           cp -v * $OBS_TEST_PROJECT/$PKG_NAME  
           cd $OBS_TEST_PROJECT/$PKG_NAME
           $OSC add *
-      	  $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+          $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
           cd -
         fi  
       else
