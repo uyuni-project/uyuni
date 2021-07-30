@@ -1,4 +1,3 @@
-- Fix system information forwarding to SCC (bsc#1188900)
 - Add support for Kiwi options
 - Ensure XMLRPC returns 'issue_date' in ISO format when listing erratas (bsc#1188260)
 - Fix NullPointerException in HardwareMapper.getUpdatedGuestMemory

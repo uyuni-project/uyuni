@@ -54,12 +54,7 @@ public class SCCMinProductJson {
         this.identifier = product.getName();
         this.version = product.getVersion();
         this.releaseType = product.getRelease();
-        if (product.getArch() != null) {
-            this.arch = product.getArch().getLabel();
-        }
-        else {
-            this.arch = null;
-        }
+        this.arch = product.getArch().getLabel();
     }
 
     /**

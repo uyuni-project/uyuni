@@ -74,15 +74,10 @@ public class SCCSystemRegistrationManager {
                             SCCCachingFactory.deleteRegCacheItem(cacheItem);
                         }
                         catch (SCCClientException e) {
-                            LOG.error("SCC error while deregistering system " + cacheItem.getId(), e);
+                            LOG.error("Error deregistering system " + cacheItem.getId(), e);
                             if (forceDBDeletion || e.getHttpStatusCode() == 404) {
                                 SCCCachingFactory.deleteRegCacheItem(cacheItem);
                             }
-                            cacheItem.setRegistrationErrorTime(new Date());
-                        }
-                        catch (Exception e) {
-                            LOG.error("Error deregistering system " + cacheItem.getId(), e);
-                            cacheItem.setRegistrationErrorTime(new Date());
                         }
                     },
                     () -> {
@@ -115,7 +110,7 @@ public class SCCSystemRegistrationManager {
                 cacheItem.setRegistrationErrorTime(null);
                 cacheItem.setCredentials(itemCredentials);
             }
-            catch (Exception e) {
+            catch (SCCClientException e) {
                 LOG.error("Error registering system " + cacheItem.getId(), e);
                 cacheItem.setRegistrationErrorTime(new Date());
             }
