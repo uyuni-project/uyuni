@@ -16,7 +16,7 @@ This document here focuses on he test suite side.
 
 ### Testing with a proxy
 
-Using a SUSE Manager proxy with the testsuite is not mandatory.
+Using a Uyuni proxy with the testsuite is not mandatory.
 
 If you do not want a proxy, do not define `$PROXY` environment variable
 before you run the testsuite. That's all.
@@ -276,9 +276,9 @@ Inside of the testsuite, the scenarios that are tagged with one of:
 are executed only if the corresponding virtualization host minion is available.
 
 
-### Testing SUSE Manager for Retail
+### Testing Uyuni for Retail
 
-Testing SUSE Manager for Retail is optional. To test it, you need:
+Testing Uyuni for Retail is optional. To test it, you need:
 * a private network;
 * a PXE boot minion.
 
@@ -335,14 +335,14 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only if the PXE boot minion is available.
 
 
-## HTTP Proxy for the SUSE Manager server
+## HTTP Proxy for the Uyuni server
 
-Using an HTTP proxy for the SUSE Manager server when testing is not mandatory.
+Using an HTTP proxy for the Uyuni server when testing is not mandatory.
 
 If you do not want an HTTP proxy, do not define `SERVER_HTTP_PROXY`
 environment variable before you run the testsuite. That's all.
 
-If you want to specify an HTTP proxy on SUSE Manager's "Setup Wizard" page,
+If you want to specify an HTTP proxy on Uyuni's "Setup Wizard" page,
 make this variable contain the hostname and port of the proxy:
 ```bash
 export SERVER_HTTP_PROXY = "hostname:port"

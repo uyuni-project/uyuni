@@ -1,3 +1,8 @@
+- Use correct API endpoint in list_proxies (bsc#1188042)
+- Add schedule_deletearchived to bulk delete archived actions (bsc#1181223)
+- make spacecmd aware of retracted patches/packages
+- Bump version to 4.3.0
+
 -------------------------------------------------------------------
 Tue Jun 01 11:48:01 CEST 2021 - jgonzalez@suse.com
 

@@ -46,6 +46,8 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-almarelease_|-cat /etc/almalinux-release_|-run";
     public static final String PKG_PROFILE_AMAZON_RELEASE =
             "cmd_|-amazonrelease_|-cat /etc/system-release_|-run";
+    public static final String PKG_PROFILE_ROCKY_RELEASE =
+            "cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
@@ -79,6 +81,9 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_AMAZON_RELEASE)
     private StateApplyResult<CmdResult> amazonReleaseFile;
+
+    @SerializedName(PKG_PROFILE_ROCKY_RELEASE)
+    private StateApplyResult<CmdResult> rockyReleaseFile;
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
     private StateApplyResult<CmdResult> whatProvidesResReleasePkg;
@@ -155,6 +160,13 @@ public class PkgProfileUpdateSlsResult {
      */
     public StateApplyResult<CmdResult> getAmazonReleaseFile() {
         return amazonReleaseFile;
+    }
+
+    /**
+     * @return the content of the file /etc/rocky-release
+     */
+    public StateApplyResult<CmdResult> getRockyReleaseFile() {
+        return rockyReleaseFile;
     }
 
     /**

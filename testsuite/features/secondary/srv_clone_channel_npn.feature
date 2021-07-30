@@ -8,8 +8,8 @@ Feature: Clone a channel
     Given I am authorized for the "Admin" section
 
   Scenario: Clone a channel without patches
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Test-Channel-x86_64" as the origin channel
     And I choose "original"
     And I click on "Clone Channel"
@@ -19,15 +19,15 @@ Feature: Clone a channel
     Then I should see a "Clone of Test-Channel-x86_64" text
 
   Scenario: Check that this channel has no patches
-    Given I am on the manage software channels page
+    When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Test-Channel-x86_64"
-    When I follow "Patches" in the content area
+    And I follow "Patches" in the content area
     And I follow "List/Remove Patches"
     Then I should see a "There are no patches associated with this channel." text
 
   Scenario: Clone a channel with patches
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Test-Channel-x86_64" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
@@ -37,9 +37,9 @@ Feature: Clone a channel
     Then I should see a "Clone 2 of Test-Channel-x86_64" text
 
   Scenario: Check that this channel has patches
-    Given I am on the manage software channels page
+    When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone 2 of Test-Channel-x86_64"
-    When I follow "Patches" in the content area
+    And I follow "Patches" in the content area
     And I follow "List/Remove Patches"
     Then I should see a "CL-hoag-dummy-7890" link
     And I should see a "CL-virgo-dummy-3456" link
@@ -47,8 +47,8 @@ Feature: Clone a channel
     And I should see a "CL-andromeda-dummy-6789" link
 
   Scenario: Clone a channel with selected patches
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Test-Channel-x86_64" as the origin channel
     And I choose "select"
     And I click on "Clone Channel"
@@ -66,7 +66,6 @@ Feature: Clone a channel
     And I should see a "CL-virgo-dummy-3456" link
 
   Scenario: Check that new patches exists
-    Given I am on the patches page
     When I follow the left menu "Patches > Patch List > All"
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     Then I should see a "CL-hoag-dummy-7890" link
@@ -75,7 +74,6 @@ Feature: Clone a channel
     And I should see a "CL-andromeda-dummy-6789" link
 
   Scenario: Check CL-hoag-dummy-7890 patches
-    Given I am on the patches page
     When I follow the left menu "Patches > Patch List > All"
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-hoag-dummy-7890"
@@ -84,7 +82,6 @@ Feature: Clone a channel
     And I should see a "https://bugzilla.opensuse.org/show_bug.cgi?id=704608" link
 
   Scenario: Check CM-virgo-dummy-3456 patches
-    Given I am on the patches page
     When I follow the left menu "Patches > Patch List > All"
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-virgo-dummy-3456"
@@ -93,9 +90,8 @@ Feature: Clone a channel
     And I should see a "CVE-1999-9998" link
 
   Scenario: Compare channel packages
-    Given I am on the manage software channels page
-    # bsc#904690 - After migration from SUSE Manager 1.7 to 2.1 attempting to perform a channel package compare returns internal server error
-    When I follow "Clone 2 of Test-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone 2 of Test-Channel-x86_64"
     And I follow "Packages" in the content area
     And I follow "Compare"
     And I select "Clone 3 of Test-Channel-x86_64" from "selected_channel"
@@ -105,8 +101,8 @@ Feature: Clone a channel
     And I should see a "This channel only" text
 
   Scenario: Cleanup: remove cloned channels
-    Given I am on the manage software channels page
-    When I follow "Clone of Test-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"

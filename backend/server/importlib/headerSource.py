@@ -163,7 +163,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                             header_start, header_end)
 
         # bz 1218762: if package group is None
-        if self['package_group'] is None:
+        if not self['package_group']:
             self['package_group'] = "Unspecified"
 
         # workaround for bug in rpm-python <= 4.4.2.3-27.el5 (BZ# 783451)
@@ -252,7 +252,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                 # empty version and flags values
                 if not len(v) and k == 'version':
                     hash[k] = ''
-                elif not len(v) and k == 'flags':
+                elif not len(v) and k in ('device', 'flags'):
                     hash[k] = 0
                 else:
                     hash[k] = v[i]
@@ -314,7 +314,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         rpmPackage.populate(self, header, size, checksum_type, checksum, path, org_id,
                             header_start, header_end)
         # bz 1218762: if package group is None
-        if self['package_group'] is None:
+        if not self['package_group']:
             self['package_group'] = "Unspecified"
 
         nvr = []

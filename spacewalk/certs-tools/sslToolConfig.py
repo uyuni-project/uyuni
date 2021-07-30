@@ -54,7 +54,7 @@ CA_OPENSSL_CNF_NAME = 'rhn-ca-openssl.cnf'
 SERVER_OPENSSL_CNF_NAME = 'rhn-server-openssl.cnf'
 
 MD = 'sha256'
-CRYPTO = '-des3'
+CRYPTO = '-aes-256-cbc'
 
 
 def getOption(options, opt):

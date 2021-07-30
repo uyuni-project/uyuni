@@ -12,7 +12,7 @@
     "imports.d.ts",
     "lib.es5.d.ts"
   ],
-  "exclude": ["**/node_modules", "**/\\.*/", "flow-typed/**"],
+  "exclude": ["**/node_modules", "**/\\.*/"],
   "compilerOptions": {
     // See: https://github.com/microsoft/TypeScript/issues/25430
     "baseUrl": "./",
@@ -28,7 +28,9 @@
       "dom",
       "dom.iterable",
       "es2019.array",
-      "es2019.object"
+      "es2019.object",
+      // For: String.replaceAll()
+      "ESNext.String"
     ],
     "strict": true,
     // Should eventually be false

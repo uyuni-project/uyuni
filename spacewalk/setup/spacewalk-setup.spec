@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -36,13 +36,13 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.2.6
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -89,8 +89,8 @@ BuildRequires:  perl-libwww-perl
 Requires:       %{sbinpath}/restorecon
 %endif
 %if 0%{?pylint_check}
-BuildRequires:  spacewalk-%{pythonX}-pylint
 BuildRequires:  %{pythonX}-setuptools
+BuildRequires:  spacewalk-%{pythonX}-pylint
 %endif
 Requires:       cobbler >= 2.0.0
 Requires:       perl-Satcon
@@ -310,6 +310,6 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
 %endif
 %{_mandir}/man8/spacewalk-make-mount-points*
-%doc LICENSE
+%license LICENSE
 
 %changelog

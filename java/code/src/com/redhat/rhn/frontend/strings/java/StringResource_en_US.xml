@@ -7285,6 +7285,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.guest_migrate" xml:space="preserve">
+        <source>Migrate a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.pool_refresh" xml:space="preserve">
         <source>Virtual storage pool refresh</source>
         <context-group name="ctx">
@@ -7370,7 +7376,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting" xml:space="preserve">
-        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
+        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -8498,9 +8504,8 @@ Please check:
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
-for more detailed errors.  If you don't resolve the errors the autoinstallable
-tree will not be usable for autoinstalling.
-        </source>
+for more detailed errors. If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.</source>
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
         <source>Successfully deleted {0} patches.</source>
@@ -8635,7 +8640,7 @@ Note that only one set of ISO images is necessary to install any particular rele
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1" xml:space="preserve">
         <source>
-Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -8720,13 +8725,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.graceperiod" xml:space="preserve">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
       </trans-unit>
       <trans-unit id="restricted.forbidden" xml:space="preserve">
         <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>

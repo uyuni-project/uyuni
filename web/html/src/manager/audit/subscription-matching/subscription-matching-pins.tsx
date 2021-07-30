@@ -52,7 +52,7 @@ class Pins extends React.Component<PinsProps> {
   };
 
   onRemovePin = pinId => {
-    Network.post("/rhn/manager/api/subscription-matching/pins/" + pinId + "/delete").promise.then(data =>
+    Network.post("/rhn/manager/api/subscription-matching/pins/" + pinId + "/delete").then(data =>
       this.props.onPinChanged(data)
     );
   };
@@ -69,7 +69,7 @@ class Pins extends React.Component<PinsProps> {
     Network.post("/rhn/manager/api/subscription-matching/pins", {
       system_id: systemId,
       subscription_id: subscriptionId,
-    }).promise.then(data => this.props.onPinChanged(data));
+    }).then(data => this.props.onPinChanged(data));
     jQuery("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
   };

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -119,23 +118,12 @@ public abstract class AbstractVirtualizationController {
     /**
      * Displays a page server-related virtual page
      *
-     * @param request the request
-     * @param response the response
-     * @param user the user
      * @param template the name to the Jade template of the page
      * @param modelExtender provides additional properties to pass to the Jade template
      * @return the ModelAndView object to render the page
      */
-    protected ModelAndView renderPage(Request request, Response response, User user,
-                                    String template,
-                                    Supplier<Map<String, Object>> modelExtender) {
+    protected ModelAndView renderPage(String template, Supplier<Map<String, Object>> modelExtender) {
         Map<String, Object> data = new HashMap<>();
-        Server server = getServer(request, user);
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(server.getId()));
-
         if (modelExtender != null) {
             data.putAll(modelExtender.get());
         }
@@ -146,10 +134,10 @@ public abstract class AbstractVirtualizationController {
     }
 
     protected <T extends ScheduledRequestJson> String action(Request request, Response response, User user,
+                          Server host,
                           BiFunction<T, String, Action> actionCreator,
                           Function<T, List<String>> actionKeysGetter,
                           Class<T> jsonClass) {
-        Server host = getServer(request, user);
 
         T data;
         try {

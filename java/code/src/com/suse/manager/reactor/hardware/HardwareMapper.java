@@ -165,6 +165,14 @@ public class HardwareMapper {
                     .flatMap(ValueMap::toString).orElse(null)));
             cpu.setMHz("0");
         }
+        else if (CpuArchUtil.isAarch64(cpuarch)) {
+            cpu.setVendor(cpuarch);
+            cpu.setModel(cpuarch);
+            cpu.setBogomips(grains.getValueAsString("bogomips", 16));
+            cpu.setVendor(grains.getValueAsString("cpu_vendor", 32));
+            cpu.setStepping(grains.getValueAsString("cpu_stepping", 16));
+            cpu.setModel(truncateModel(grains.getValueAsString("cpu_model")));
+        }
         else {
             cpu.setVendor(cpuarch);
             cpu.setModel(cpuarch);
@@ -551,8 +559,8 @@ public class HardwareMapper {
                 virtualInstance.getHostSystem().hasEntitlement(EntitlementManager.FOREIGN);
         long newMemory = memory;
         // Only foreign system (s390 and VHM) and systems with no memory set should have updated memory
-        if (!isForeign && 0 != virtualInstance.getTotalMemory() &&
-                virtualInstance.getTotalMemory() != null) {
+        if (!isForeign && virtualInstance.getTotalMemory() != null &&
+                0 != virtualInstance.getTotalMemory()) {
             newMemory = virtualInstance.getTotalMemory();
         }
         return newMemory;
@@ -881,11 +889,9 @@ public class HardwareMapper {
                     .findFirst());
         }
 
-        primaryNetIf.ifPresent(netIf -> {
-            // we found an interface with the same addr as the
-            // primary IPv4/v6 addr, make it primary
-            netIf.setPrimary("Y");
-        });
+        // we found an interface with the same addr as the
+        // primary IPv4/v6 addr, make it primary
+        primaryNetIf.ifPresent(server::setPrimaryInterface);
 
     }
 

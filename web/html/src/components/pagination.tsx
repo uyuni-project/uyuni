@@ -65,7 +65,7 @@ const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
   <select
     className="display-number"
     defaultValue={props.currentValue}
-    onChange={e => props.onChange(parseInt(e.target.value))}
+    onChange={e => props.onChange(parseInt(e.target.value, 10))}
   >
     {[5, 10, 15, 25, 50, 100, 250, 500].map(o => (
       <option value={o} key={o}>
@@ -91,7 +91,7 @@ const PageSelector = (props: PageSelectorProps) => {
           className="display-number small-select"
           defaultValue={props.currentValue}
           value={props.currentValue}
-          onChange={e => props.onChange(parseInt(e.target.value))}
+          onChange={e => props.onChange(parseInt(e.target.value, 10))}
         >
           {Array.from(Array(props.lastPage)).map((o, i) => (
             <option value={i + 1} key={i + 1}>

@@ -1,3 +1,6 @@
+- Update to postgresql13 for non-SUSE environments.
+- Bump version to 4.3.0
+
 -------------------------------------------------------------------
 Mon Feb 08 11:30:23 CET 2021 - jgonzalez@suse.com
 

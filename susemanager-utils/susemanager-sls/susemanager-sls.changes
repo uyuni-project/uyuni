@@ -1,3 +1,24 @@
+- Add UEFI support for VM creation
+- Add virt-tuner templates to VM creation
+- Add missing symlinks to generate the "certs" state for
+  SLE Micro 5.0 and openSUSE MicroOS minions (bsc#1188503)
+- Remove systemid file on salt client cleanup
+- Skip 'update-ca-certificates' run if the certs are updated automatically
+- Fix parameters for 'runplaybook' state (bsc#1188395)
+- Parameterised apache document root.
+- Add support for bootstrapping Raspbian 9 and 10
+- Add support for bootstrapping with salt bundle
+- Add Rocky Linux 8 support
+- Use lscpu to provide more CPU grains for all architectures
+- Add findutils to Kiwi bootstrap packages
+- Add support for Kiwi options
+- Fix Salt scap state to use new 'xccdf_eval' function
+- Fix deleting stopped virtual network (bsc#1186281)
+- Handle virtual machines running on pacemaker cluster
+- fix product detection for native RHEL products (bsc#1187397)
+- when bootstrapping with ssh-push with tunnel use the port number
+  for fetching GPG keys from the server (bsc#1187441)
+
 -------------------------------------------------------------------
 Thu Jun 10 13:46:47 CEST 2021 - jgonzalez@suse.com
 

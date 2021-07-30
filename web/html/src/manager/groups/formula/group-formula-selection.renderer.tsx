@@ -10,7 +10,7 @@ export const renderer = (renderId, { groupId, warningMessage }) => {
   const messageTexts = {
     formulas_saved: (
       <p>
-        {t("Formula saved. Edit configuration options " + "in the enabled formulas and apply the ")}
+        {t("Formula saved. Edit configuration options in the enabled formulas and apply the ")}
         <a href={"/rhn/manager/groups/details/highstate?sgid=" + groupId}>{t("Highstate")}</a>
         {t(" for the changes to take effect.")}
       </p>
@@ -28,7 +28,7 @@ export const renderer = (renderId, { groupId, warningMessage }) => {
     formData.id = groupId;
     formData.selected = selectedFormulas;
 
-    return Network.post("/rhn/manager/api/formulas/select", JSON.stringify(formData), "application/json").promise.then(
+    return Network.post("/rhn/manager/api/formulas/select", formData).then(
       data => {
         component.setState({
           messages: data.map(msg => getMessageText(msg)),

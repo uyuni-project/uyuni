@@ -1,4 +1,8 @@
 - Enable uyuni proxy stable leap 15.3
+- Add Rocky Linux 8 repositories
+- Fix a typo at the AlmaLinux 8 Uyuni client tools for devel
+- Fix the GPG key fingerprint for Springdale Linux 8
+- Updated cloneByDate.py formatting to allow pylint pass.
 
 -------------------------------------------------------------------
 Fri Jun 18 15:18:20 CEST 2021 - jgonzalez@suse.com

@@ -18,13 +18,12 @@ function matchUrl(target) {
 function applyRequest(component) {
   return Network.post(
     "/rhn/manager/api/states/apply",
-    JSON.stringify({
+    {
       id: window.groupId,
       type: "GROUP",
       states: ["custom_groups"],
-    }),
-    "application/json"
-  ).promise.then(data => {
+    },
+  ).then(data => {
     component.setState({
       messages: MessagesUtils.info(
         t("Applying the config channels has been scheduled for each minion server in this group")
@@ -36,12 +35,11 @@ function applyRequest(component) {
 function saveRequest(states) {
   return Network.post(
     "/rhn/manager/api/states/save",
-    JSON.stringify({
+    {
       id: window.groupId,
       type: "GROUP",
       channels: states,
-    }),
-    "application/json"
+    }
   );
 }
 

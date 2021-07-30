@@ -1,53 +1,63 @@
 import * as React from "react";
-import { PopUp } from "../popup";
+import ReactModal from 'react-modal';
 
-// TODO: Move to popup once that gets migrated
-type Instance = JQuery & {
-  modal(...args: any[]): any;
-};
-type Modal = (...args: any[]) => Instance;
-
-declare global {
-  interface JQuery {
-    modal: Modal;
-  }
-}
-
-export function closeDialog(modalId: string) {
-  const closeModalPromise = new Promise(resolve => {
-    jQuery("#" + modalId).on("hidden.bs.modal", () => resolve(undefined));
-  });
-  jQuery("#" + modalId).modal("hide");
-  return closeModalPromise;
-}
-
-// TODO: Define props
 export type DialogProps = {
+  /** whether the dialog should be shown or hidden */
+  isOpen: boolean;
+  /** Function to call to close the modal. This typically changes the value of isOpen */
+  onClose?: () => void;
+  /** The id of the html div tag */
   id: string;
+  /** The css className for the 'modal-dialog' div */
   className?: string;
+  /** Title of the dialog */
   title?: React.ReactNode;
+  /** The body of the popup */
   content?: React.ReactNode;
-  buttons?: React.ReactNode;
-  item?: any;
+  /** The footer content of the dialog. Usually buttons. */
+  footer?: React.ReactNode;
+  /** Should the dialog show a header with a title. Defaults to False */
+  hideHeader?: boolean;
+  /** Can the modal be closed using the cross button, ESC or by clicking on the overlay? */
   closableModal?: boolean;
-  /** Whether to automatically focus the first input in the opened modal, true by default */
-  autoFocus?: boolean;
-  onClosePopUp?: (...args: any[]) => any;
-  onConfirm?: (...args: any[]) => any;
-  onConfirmAsync?: (...args: any[]) => Promise<any>;
-};
+}
+
+ReactModal.setAppElement(document.body);
 
 export function Dialog(props: DialogProps) {
-  const { onClosePopUp, buttons, ...OtherProps } = props;
+  const closableModal = props.closableModal ?? true;
 
-  React.useEffect(() => {
-    if (props.autoFocus === false) {
-      return;
-    }
-    jQuery("#" + props.id).on("shown.bs.modal", function() {
-      jQuery("#" + props.id + " :input:visible:enabled:first").focus();
-    });
-  }, []);
-
-  return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...OtherProps} />;
+  return (
+    <ReactModal
+      isOpen={props.isOpen}
+      id={props.id}
+      overlayClassName="modal-overlay"
+      className="modal-dialog react-modal"
+      shouldCloseOnOverlayClick={closableModal}
+      shouldCloseOnEsc={closableModal}
+      onRequestClose={
+        () => {
+          props.onClose?.();
+        }
+      }
+    >
+      <div className="modal-content">
+        <div className="modal-content">
+          {!props.hideHeader && (
+            <div className="modal-header">
+              {closableModal && (
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                  onClick={() => props.onClose?.()}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              )}
+              {props.title ? <h4 className="modal-title">{props.title}</h4> : null}
+            </div>
+          )}
+          <div className="modal-body">{props.content}</div>
+          {props.footer ? <div className="modal-footer">{props.footer}</div> : null}
+        </div>
+      </div>
+    </ReactModal>
+  );
 }

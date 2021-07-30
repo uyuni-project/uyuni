@@ -71,8 +71,8 @@ if $build_validation
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
   $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
-  $sle12sp4_buildhost = twopence_init("ssh:#{ENV['SLE12SP4_BUILDHOST']}") if ENV['SLE12SP4_BUILDHOST']
-  $sle12sp4_terminal = twopence_init("ssh:#{ENV['SLE12SP4_TERMINAL']}") if ENV['SLE12SP4_TERMINAL']
+  $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
+  $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
   # As we share core features for all the environments, we share also those vm twopence objects
@@ -95,7 +95,7 @@ if $build_validation
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
-             $sle12sp4_buildhost, $sle12sp4_terminal,
+             $sle12sp5_buildhost, $sle12sp5_terminal,
              $sle15sp3_buildhost, $sle15sp3_terminal,
              $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
 else
@@ -132,13 +132,6 @@ $nodes.each do |node|
   node.init_full_hostname(fqdn)
 
   puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
-end
-
-# Initialize IP address or domain name
-$nodes.each do |node|
-  next if node.nil?
-
-  node.init_ip(node.full_hostname)
 end
 
 # This function is used to get one of the nodes based on its type
@@ -233,16 +226,11 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
                   'sle_client'                => $client,
-                  'sle_migrated_minion'       => $client,
-                  'sle_ssh_tunnel_client'     => $client,
                   'sle_minion'                => $minion,
-                  'sle_ssh_tunnel_minion'     => $minion,
                   'ssh_minion'                => $ssh_minion,
                   'ceos_client'               => $ceos_minion,
                   'ceos_minion'               => $ceos_minion,
-                  'ceos_ssh_minion'           => $ceos_minion,
                   'ubuntu_minion'             => $ubuntu_minion,
-                  'ubuntu_ssh_minion'         => $ubuntu_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
                   'xen_server'                => $xen_server,
@@ -286,3 +274,59 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
                   'sle15sp3_terminal'         => $sle15sp3_terminal }
+
+# This is the inverse of `node_by_host`.
+$host_by_node = {}
+$node_by_host.each do |host, node|
+  next if node.nil?
+
+  [host, node].each do |it|
+    raise ">>> Either host '#{host}' of node '#{node}' is empty.  Please check" if it == ''
+  end
+
+  $host_by_node[node] = host
+end
+
+# rubocop:disable Metrics/MethodLength
+def client_public_ip(host)
+  node = $node_by_host[host]
+  raise "Cannot resolve node for host '#{host}'" if node.nil?
+
+  # For each node that we support we must know which network interface uses (see the case below).
+  # Having the IP as an attribute is something useful for the clients.
+  # Let's not implement it for nodes where we are likely not need this feature (e.g. ctl).
+  not_implemented = [$localhost]
+  not_implemented.each do |it|
+    return 'NOT_IMPLEMENTED' if node == it
+  end
+
+  interface = case host
+              when /^sle/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
+                'eth0'
+              when /^ubuntu/
+                'ens3'
+              when 'kvm_server', 'xen_server'
+                'br0'
+              else
+                raise "Unknown net interface for #{host}"
+              end
+  output, code = node.run("ip address show dev #{interface} | grep 'inet '")
+  raise 'Cannot resolve public ip' unless code.zero?
+
+  output.split[1].split('/')[0]
+end
+# rubocop:enable Metrics/MethodLength
+
+# Initialize IP address or domain name
+$nodes.each do |node|
+  next if node.nil?
+  next if node.is_a?(String) && node.empty?
+
+  node.init_ip(node.full_hostname)
+
+  host = $host_by_node[node]
+  raise "Cannot resolve host for node: '#{node.hostname}'" if host.nil? || host == ''
+
+  ip = client_public_ip host
+  node.init_public_ip ip
+end

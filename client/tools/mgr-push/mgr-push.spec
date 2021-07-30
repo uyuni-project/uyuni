@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-push
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -38,11 +38,11 @@ Name:           mgr-push
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
-Url:            https://github.com/uyuni-project/uyuni
-Version:        4.2.2
+URL:            https://github.com/uyuni-project/uyuni
+Version:        4.3.0
+Release:        0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
-Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -82,8 +82,8 @@ Requires:       rpm-python
 BuildRequires:  python-devel
 %endif
 Requires:       python2-rhn-client-tools
-Requires:       rhnlib >= 2.8.3
 Requires:       python2-uyuni-common-libs
+Requires:       rhnlib >= 2.8.3
 BuildRequires:  python2-rhn-client-tools
 BuildRequires:  python2-uyuni-common-libs
 

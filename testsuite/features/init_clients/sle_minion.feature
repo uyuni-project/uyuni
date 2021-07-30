@@ -20,7 +20,7 @@ Feature: Bootstrap a Salt minion via the GUI
   Scenario: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
-    When I am on the System Overview page
+    When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
@@ -39,12 +39,12 @@ Feature: Bootstrap a Salt minion via the GUI
     And I follow "Proxy" in the content area
     Then I should see "sle_minion" hostname
 
-  Scenario: Migrate this minion to SLE 15 SP2
+  Scenario: Migrate this minion to SLE 15 SP3
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" text
     And I click on "Select Channels"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
@@ -59,7 +59,7 @@ Feature: Bootstrap a Salt minion via the GUI
     And I wait at most 600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
-    Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
+    Then I should see a "SUSE Linux Enterprise Server 15 SP3" text
     And vendor change should be enabled for product migration on "sle_minion"
 
   Scenario: Install the latest Salt on this minion

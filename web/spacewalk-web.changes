@@ -1,3 +1,15 @@
+- Expose UEFI parameters in the VM creation/editing pages
+- Add virt-tuner templates to VM creation
+- Fix virtualization guests to handle null HostInfo
+- Compare lowercase CPU arch with libvirt domain capabilities
+- Add option to run Ansible playbooks in 'test' mode
+- Add support for Kiwi options
+- New filter template: Live patching based on a system
+- Refresh JWT virtual console token before it expires
+- Handle virtual machines running on pacemaker cluster
+- Fix bugged search in formula catalog
+- Convert Virtualization modal dialogs to react-modal
+
 -------------------------------------------------------------------
 Fri Jun 18 15:23:09 CEST 2021 - jgonzalez@suse.com
 

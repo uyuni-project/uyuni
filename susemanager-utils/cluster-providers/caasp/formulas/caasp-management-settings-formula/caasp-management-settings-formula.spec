@@ -1,7 +1,7 @@
 #
 # spec file for package caasp-management-settings-formula
 #
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,8 +19,8 @@
 %define fname caasp-management-settings
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           caasp-management-settings-formula
-Version:        4.2.1
-Release:        1
+Version:        4.3.0
+Release:        0
 Summary:        Salt formula for storing the settings used to manage a CaaSP cluster
 License:        GPL-2.0-only
 Group:          Applications/System

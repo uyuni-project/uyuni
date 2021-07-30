@@ -2,7 +2,7 @@
 # SLS to trigger a playbook execution on an Ansible control node
 #
 # This SLS requires pillar data to render properly.
-# 
+#
 # Example (inventory is optional):
 #
 # pillar = {

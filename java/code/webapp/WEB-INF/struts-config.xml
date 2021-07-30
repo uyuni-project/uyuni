@@ -804,6 +804,7 @@
         type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
         <form-property name="params" type="java.lang.String"/>
         <form-property name="path" type="java.lang.String"/>
+        <form-property name="ovalfiles" type="java.lang.String"/>
         <form-property name="submitted" type="java.lang.Boolean"/>
         <!-- fields needed by datePicker -->
         <form-property name="schedule_type" type="java.lang.String"/>

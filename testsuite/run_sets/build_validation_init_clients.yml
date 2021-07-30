@@ -2,33 +2,33 @@
 
 ## Init clients BEGIN ###
 
+- features/build_validation/init_clients/ceos7_client.feature
 - features/build_validation/init_clients/ceos7_minion.feature
 - features/build_validation/init_clients/ceos7_ssh_minion.feature
-- features/build_validation/init_clients/ceos7_client.feature
 - features/build_validation/init_clients/ceos8_minion.feature
 - features/build_validation/init_clients/ceos8_ssh_minion.feature
 
+- features/build_validation/init_clients/sle11sp4_client.feature
 - features/build_validation/init_clients/sle11sp4_minion.feature
 - features/build_validation/init_clients/sle11sp4_ssh_minion.feature
-- features/build_validation/init_clients/sle11sp4_client.feature
-- features/build_validation/init_clients/sle12sp4_minion.feature
-- features/build_validation/init_clients/sle12sp4_ssh_minion.feature
 - features/build_validation/init_clients/sle12sp4_client.feature
 - features/build_validation/init_clients/sle12sp4_minion.feature
 - features/build_validation/init_clients/sle12sp4_ssh_minion.feature
-- features/build_validation/init_clients/sle12sp4_client.feature
+- features/build_validation/init_clients/sle12sp5_client.feature
+- features/build_validation/init_clients/sle12sp5_minion.feature
+- features/build_validation/init_clients/sle12sp5_ssh_minion.feature
+- features/build_validation/init_clients/sle15_client.feature
 - features/build_validation/init_clients/sle15_minion.feature
 - features/build_validation/init_clients/sle15_ssh_minion.feature
-- features/build_validation/init_clients/sle15_client.feature
+- features/build_validation/init_clients/sle15sp1_client.feature
 - features/build_validation/init_clients/sle15sp1_minion.feature
 - features/build_validation/init_clients/sle15sp1_ssh_minion.feature
-- features/build_validation/init_clients/sle15sp1_client.feature
+- features/build_validation/init_clients/sle15sp2_client.feature
 - features/build_validation/init_clients/sle15sp2_minion.feature
 - features/build_validation/init_clients/sle15sp2_ssh_minion.feature
-- features/build_validation/init_clients/sle15sp2_client.feature
+- features/build_validation/init_clients/sle15sp3_client.feature
 - features/build_validation/init_clients/sle15sp3_minion.feature
 - features/build_validation/init_clients/sle15sp3_ssh_minion.feature
-- features/build_validation/init_clients/sle15sp3_client.feature
 
 - features/build_validation/init_clients/ubuntu1804_minion.feature
 - features/build_validation/init_clients/ubuntu1804_ssh_minion.feature

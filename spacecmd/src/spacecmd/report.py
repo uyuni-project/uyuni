@@ -203,7 +203,7 @@ def do_report_ipaddresses(self, args):
         return 1
 
     report = {}
-    for system in systems:
+    for system in sorted(systems):
         system_id = self.get_system_id(system)
         network = self.client.system.getNetwork(self.session, system_id)
         report[system] = {'hostname': network.get('hostname'),
@@ -267,7 +267,7 @@ def do_report_kernels(self, args):
         return 1
 
     report = {}
-    for system in systems:
+    for system in sorted(systems):
         system_id = self.get_system_id(system)
         kernel = self.client.system.getRunningKernel(self.session, system_id)
         report[system] = kernel

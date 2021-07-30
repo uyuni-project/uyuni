@@ -59,11 +59,6 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "Autoinstallation: fedora_kickstart_profile" text
     And I should see a "Autoinstallation Details" link
 
-  Scenario: Autoinstallation profiles page
-    When I am on the Create Autoinstallation Profile page
-    When I follow the left menu "Systems > Autoinstallation > Profiles"
-    Then I should see a "Distributions" text
-
   Scenario: Upload a profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/Autoyast File"
@@ -136,8 +131,8 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Test for PXE environment files
     Given cobblerd is running
-    Then file "/srv/tftpboot/pxelinux.cfg/default" should exist on server
-    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
+    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1" on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server

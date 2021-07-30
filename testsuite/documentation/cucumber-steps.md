@@ -10,7 +10,7 @@
     1. [Buttons](#b5)
     1. [Text input](#b6)
     1. [Operating system](#b7)
-    1. [SUSE Manager utilities](#b8)
+    1. [Uyuni utilities](#b8)
     1. [Registration and channels](#b9)
     1. [Events](#b10)
     1. [Salt](#b11)
@@ -33,15 +33,15 @@ Possible values are currently:
 
 | Test host | Ruby target |  Bash environment variable | Step host name | Sumaform module |
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
-| SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
-| SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` or ```"sle_ssh_tunnel_client"```| ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` or ```"sle_ssh_tunnel_minion"``` | ```"minion"``` |
+| Uyuni server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
+| Uyuni proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
+| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
+| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ```"ceos_ssh_minion"``` | ```"minion"``` |
-| Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` or ```"ubuntu_ssh_minion"``` | ```"minion"``` |
-| PXE-Boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
+| CentOS Salt minion | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"``` | ```"minion"``` |
+| Ubuntu Salt minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` | ```"minion"``` |
+| PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
 | KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
 | Xen virtual host minion | ```$xen_server``` | ```$VIRTHOST_XEN_URL``` and ```$VIRTHOST_XEN_PASSWORD``` | ```"xen_server"``` | ```"virthost"``` |
 
@@ -178,7 +178,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to Systems => System Set Manager => Overview
 
 ```cucumber
-  When I am on System Set Manager Overview
+  When I follow the left menu "Systems > System Set Manager > Overview"
 ```
 
 * Go to Users => Users list => Active
@@ -484,7 +484,7 @@ Note that the text area variant handles the new lines characters while the other
 
 <a name="b8" />
 
-#### SUSE Manager utilities
+#### Uyuni utilities
 
 * Execute mgr-sync
 
@@ -671,7 +671,7 @@ For example:
 
 * Create a test virtual machine on a given host
 
-The virtual machine is created without SUSE Manager, directly on the virtual host
+The virtual machine is created without Uyuni, directly on the virtual host
 using `qemu-img` and `virt-install`
 
 ```cucumber

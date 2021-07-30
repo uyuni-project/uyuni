@@ -51,10 +51,14 @@ class TestSCMisc:
         :return:
         """
         mprint = MagicMock()
-        with patch("spacecmd.misc.print", mprint) as prt:
+        shell.client.proxy.listProxies.return_value = "Print me"
+
+        with patch("spacecmd.misc.print", mprint):
             spacecmd.misc.do_list_proxies(shell, "")
+
         assert mprint.called
-        assert shell.client.satellite.listProxies.called
+        assert_expect(mprint.call_args_list, "Print me")
+        assert shell.client.proxy.listProxies.called
 
     def test_get_session(self, shell):
         """

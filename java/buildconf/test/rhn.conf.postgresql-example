@@ -111,6 +111,8 @@ web.subscribe_proxy_channel = 0
 # Auditing settings
 web.audit.logdir = /var/lib/spacewalk/systemlogs
 
+web.ssh_push_port_https = 1233
+
 # OSA configuration
 server.jabber_server = linux.fritz.box
 osa-dispatcher.jabber_server = linux.fritz.box

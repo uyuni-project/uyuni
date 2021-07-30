@@ -1,3 +1,7 @@
+- Handle broken RPM packages to prevent exceptions
+  causing fails on repository synchronization (bsc#1186650)
+- Bump version to 4.3.0
+
 -------------------------------------------------------------------
 Fri May 28 09:11:32 CEST 2021 - jgonzalez@suse.com
 

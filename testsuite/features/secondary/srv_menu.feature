@@ -276,7 +276,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Your organization has no system groups." text
 
   Scenario: Sidebar link destination for Systems => System Set Manager
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     Then I should see a "System Set Manager" text
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
@@ -311,7 +311,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "No Custom Info Keys Found" text
 
   Scenario: Sidebar link destination for Systems => Autoinstallation
-    When I am on Autoinstallation Overview page
+    When I follow the left menu "Systems > Autoinstallation > Overview"
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
     And I should see a "Unprovisioned" link in the left menu

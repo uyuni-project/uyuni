@@ -27,7 +27,7 @@ class FormulaDetail extends React.Component<Props, State> {
   }
 
   getServerData = () => {
-    Network.get("/rhn/manager/api/formula-catalog/formula/" + window.formulaName + "/data").promise.then(data => {
+    Network.get("/rhn/manager/api/formula-catalog/formula/" + window.formulaName + "/data").then(data => {
       this.setState({ metadata: data });
     });
   };

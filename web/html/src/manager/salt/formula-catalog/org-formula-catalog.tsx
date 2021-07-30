@@ -28,7 +28,7 @@ class FormulaCatalog extends React.Component<Props, State> {
   }
 
   refreshServerData = () => {
-    Network.get("/rhn/manager/api/formula-catalog/data").promise.then(data => {
+    Network.get("/rhn/manager/api/formula-catalog/data").then(data => {
       this.setState({ serverData: data });
     });
   };
@@ -37,7 +37,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     this.refreshServerData();
   }
 
-  sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
+  sortByText = (aRaw = "", bRaw = "", columnKey, sortDirection) => {
     return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
   };
 
@@ -45,8 +45,8 @@ class FormulaCatalog extends React.Component<Props, State> {
     return rowData;
   };
 
-  searchData = (data, criteria) => {
-    return data.filter(row => row.toLowerCase().includes(criteria.toLowerCase()));
+  searchData = (row: string = "", criteria?: string) => {
+    return !criteria || row.toLowerCase().includes(criteria.toLowerCase());
   };
 
   render() {
@@ -56,7 +56,7 @@ class FormulaCatalog extends React.Component<Props, State> {
         text: (
           <p>
             The formula catalog page enables viewing of currently installed{" "}
-            <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">
+            <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">
               Salt Formulas
             </a>
             . Apply these formulas to individual systems or server groups. Formulas allow automatic installation and

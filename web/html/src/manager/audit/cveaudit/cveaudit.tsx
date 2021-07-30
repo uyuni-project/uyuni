@@ -47,15 +47,11 @@ const YEARS = (function() {
 })();
 
 function cveAudit(cveId, target, statuses) {
-  return Network.post(
-    "/rhn/manager/api/audit/cve",
-    JSON.stringify({
-      cveIdentifier: cveId,
-      target: target,
-      statuses: statuses,
-    }),
-    "application/json"
-  ).promise;
+  return Network.post("/rhn/manager/api/audit/cve", {
+    cveIdentifier: cveId,
+    target: target,
+    statuses: statuses,
+  });
 }
 
 type Props = {};
@@ -103,7 +99,7 @@ class CVEAudit extends React.Component<Props, State> {
 
     this.setState({ selectedItems: items }, () => {
       DWRItemSelector.select("system_list", list, isAdd, res => {
-        // TODO: If you touch this code, please get rid of this `eval()` call
+        // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
@@ -127,7 +123,7 @@ class CVEAudit extends React.Component<Props, State> {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
     if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
-      const year = Number.parseInt(parts[1]);
+      const year = Number.parseInt(parts[1], 10);
       if (YEARS.includes(year)) {
         const number = parts[2];
         this.setState({

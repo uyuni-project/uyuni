@@ -20,6 +20,10 @@ script(type='text/javascript').
                           arch: "#{server.cpu.archName}"
                       },
                       saltEntitled: #{isSalt},
+                      inCluster: #{inCluster},
+                      raCanStartResources: #{raCanStartResources},
+                      templates: !{templates}
+                      uefiAutoLoader: #{uefiAutoLoader},
                   },
                   actionChains: !{actionChains},
                   timezone: "#{h.renderTimezone()}",

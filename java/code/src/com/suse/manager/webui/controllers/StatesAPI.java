@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.PackageState;
@@ -123,7 +122,6 @@ public class StatesAPI {
     private final ServerGroupManager serverGroupManager;
 
     private static final Gson GSON = new GsonBuilder().create();
-    public static final String SALT_PACKAGE_FILES = "packages";
 
     /** ID of the state that installs the SUSE Manager repo file in SUSE systems. */
     public static final String ZYPPER_SUMA_CHANNEL_REPO_FILE
@@ -643,10 +641,9 @@ public class StatesAPI {
 
         try {
             Path baseDir = Paths.get(
-                    SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SALT_PACKAGE_FILES);
+                    SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
             Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(
-                    getPackagesSlsName(new MinionSummary(server)));
+            Path filePath = baseDir.resolve(getPackagesSlsName(server.getMachineId()));
             SaltStateGenerator saltStateGenerator =
                     new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(new SaltInclude(ApplyStatesEventMessage.CHANNELS),
@@ -658,12 +655,30 @@ public class StatesAPI {
     }
 
     /**
+     * Remove package state file for the given minion
+     *
+     * @param machineId the salt machineId
+     */
+    public static void removePackageState(String machineId) {
+        Path baseDir = Paths.get(
+                SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
+        Path filePath = baseDir.resolve(getPackagesSlsName(machineId));
+
+        try {
+            Files.deleteIfExists(filePath);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    /**
      * Get the name of the package sls file.
-     * @param server the minion server
+     * @param machineId the salt machineId
      * @return the name of the package sls file
      */
-    public static String getPackagesSlsName(MinionSummary server) {
-        return "packages_" + server.getDigitalServerId() + ".sls";
+    public static String getPackagesSlsName(String machineId) {
+        return SaltConstants.SALT_SERVER_PACKAGES_STATE_FILE_PREFIX + machineId + ".sls";
     }
 
     /**

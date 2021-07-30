@@ -188,7 +188,7 @@ def do_errata_apply(self, args, only_systems=None):
                     to_apply.setdefault(erratum_id, []).append(system_id)
 
         # apply the errata
-        for erratum in to_apply:
+        for erratum in sorted(to_apply):
             self.client.system.scheduleApplyErrata(self.session,
                                                    to_apply[erratum],
                                                    [erratum],
@@ -397,6 +397,7 @@ def do_errata_details(self, args):
         print(_('Name:       %s') % erratum)
         print(_('Product:    %s') % (details.get('product') or "N/A"))
         print(_('Type:       %s') % (details.get('type') or "N/A"))
+        print(_('Status:     %s') % (details.get('advisory_status') or "N/A"))
         print(_('Issue Date: %s') % (details.get('issue_date') or "N/A"))
         print('')
         print(_('Topic'))
@@ -580,6 +581,7 @@ def do_errata_search(self, args, doreturn=False):
                     # build a structure to pass to print_errata_summary()
                     errata.append({'advisory_name': name,
                                    'advisory_type': match['advisory_type'],
+                                   'advisory_status': match['advisory_status'],
                                    'advisory_synopsis': match['advisory_synopsis'],
                                    'date': match['date']})
 

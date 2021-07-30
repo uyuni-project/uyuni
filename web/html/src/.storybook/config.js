@@ -1,4 +1,4 @@
-import { configure, addDecorator, addParameters } from '@storybook/react';
+import { configure, addParameters } from '@storybook/react';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
 import '../../../../branding/css/uyuni.less';
 
@@ -13,8 +13,4 @@ addParameters({
   },
 });
 
-configure(require.context('../components', true, /\.stories\.js$/), module);
-
-configure(loadStories, module);
-
-
+configure(require.context('../components', true, /\.stories\.(ts|js)x?$/), module);

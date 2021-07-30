@@ -9,7 +9,7 @@ import { VirtualHostManagerEdit } from "./virtualhostmanager-edit";
 import { Utils as MessagesUtils } from "components/messages";
 import SpaRenderer from "core/spa/spa-renderer";
 
-const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
+const hashUrlRegex = /^#\/([^/]*)(?:\/(.+))?$/;
 
 const msgModuleTypes = {
   file: t("File-based"),
@@ -70,7 +70,6 @@ class VirtualHostManager extends React.Component<Props, State> {
   }
 
   updateView(action, id) {
-    let async;
     if ((action === "edit" || action === "details") && id)
       this.getVhmDetails(id, action).then(data => this.setState({ selected: data.data, action: action }));
     else if (!action) {
@@ -95,18 +94,18 @@ class VirtualHostManager extends React.Component<Props, State> {
   }
 
   getVhmDetails(id, action?: any) {
-    return Network.get("/rhn/manager/api/vhms/" + id).promise.catch(this.handleResponseError);
+    return Network.get("/rhn/manager/api/vhms/" + id).catch(this.handleResponseError);
   }
 
   getVhmList() {
     return Network.get("/rhn/manager/api/vhms")
-      .promise.then(data => this.setState({ action: undefined, selected: undefined, vhms: data.data }))
+      .then(data => this.setState({ action: undefined, selected: undefined, vhms: data.data }))
       .catch(this.handleResponseError);
   }
 
   getAvailableModules() {
     return Network.get("/rhn/manager/api/vhms/modules")
-      .promise.then(data => this.setState({ availableModules: data }))
+      .then(data => this.setState({ availableModules: data }))
       .catch(this.handleResponseError);
   }
 
@@ -117,7 +116,7 @@ class VirtualHostManager extends React.Component<Props, State> {
   deleteVhm(item) {
     if (!item) return false;
     return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
-      .promise.then(data => {
+      .then(data => {
         this.handleBackAction();
         this.setState({
           messages: MessagesUtils.info("Virtual Host Manager has been deleted."),

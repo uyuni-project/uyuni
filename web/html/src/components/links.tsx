@@ -7,11 +7,18 @@ type LinkProps = {
   className?: string;
   title?: string;
 };
+
+const targetProps = (props: LinkProps): Partial<React.HTMLProps<HTMLAnchorElement>> => {
+  const target = props.newWindow ? "_blank" : "_self";
+  const rel = props.newWindow ? "noopener noreferrer" : undefined;
+  return { target, rel };
+};
+
 const ChannelAnchorLink = (props: LinkProps) => (
   <a
     className="channel-anchor-link"
     href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
-    target={props.newWindow ? "_blank" : "_self"}
+    {...targetProps(props)}
   >
     <i className="fa fa-link fa-right"></i>
   </a>
@@ -20,8 +27,8 @@ const ChannelAnchorLink = (props: LinkProps) => (
 const ChannelLink = (props: LinkProps) => (
   <a
     href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
-    target={props.newWindow ? "_blank" : "_self"}
     title={props.title}
+    {...targetProps(props)}
   >
     {props.children}
   </a>
@@ -30,8 +37,8 @@ const ChannelLink = (props: LinkProps) => (
 const ActionLink = (props: LinkProps) => (
   <a
     href={"/rhn/schedule/ActionDetails.do?aid=" + props.id}
-    target={props.newWindow ? "_blank" : "_self"}
     className={props.className}
+    {...targetProps(props)}
   >
     {props.children}
   </a>
@@ -40,8 +47,8 @@ const ActionLink = (props: LinkProps) => (
 const SystemLink = (props: LinkProps) => (
   <a
     href={"/rhn/systems/details/Overview.do?sid=" + props.id}
-    target={props.newWindow ? "_blank" : "_self"}
     className={props.className}
+    {...targetProps(props)}
   >
     {props.children}
   </a>
@@ -50,8 +57,8 @@ const SystemLink = (props: LinkProps) => (
 const ActionChainLink = (props: LinkProps) => (
   <a
     href={"/rhn/schedule/ActionChain.do?id=" + props.id}
-    target={props.newWindow ? "_blank" : "_self"}
     className={props.className}
+    {...targetProps(props)}
   >
     {props.children}
   </a>
@@ -60,8 +67,8 @@ const ActionChainLink = (props: LinkProps) => (
 const SystemGroupLink = (props: LinkProps) => (
   <a
     href={`/rhn/groups/GroupDetail.do?sgid=${props.id}`}
-    target={props.newWindow ? "_blank" : "_self"}
     className={props.className}
+    {...targetProps(props)}
   >
     {props.children}
   </a>

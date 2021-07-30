@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-07-29 08:02+0000\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -23,11 +23,201 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "'%s' 아키텍처는 지원되지 않습니다."
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "기본 채널 충돌"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "%s 그룹에 서버를 추가하지 못했습니다."
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "%s의 최대 사용 횟수에 도달했습니다."
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "'%s' 토큰을 찾을 수 없음"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "일치하지 않는 조직에서 제공된 토큰"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "킥스타트 세션 불일치"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "재등록 토큰 스택은 지원되지 않습니다."
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "잘못된 사용자 이름/비밀번호 조합"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "'%s' 사용자 이름은 예약되지 않았습니다."
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "이메일 주소가 지정되지 않았습니다."
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "사용자 이름은 %d자 이상이어야 합니다."
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "사용자 이름은 %d자 미만이어야 합니다."
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "사용자 이름 = `%s', 유효하지 않은 문자 `%s'"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "이메일 주소는 %s자 이하여야 합니다."
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "비밀번호는 %d자 이상이어야 합니다."
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "비밀번호는 %d자 미만이어야 합니다."
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "비밀번호에 '%s' 문자가 포함되었습니다."
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "미완료 프록시 인증 토큰: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "거부된 프록시 인증"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"중요 메시지:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"'%s' 실행 중: 다음이 catch됨:\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "유효하지 않은 URI %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Null 조직에서 패키지를 관리할 권한 없음"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "%s 조직에서 패키지를 관리할 권한 없음"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "관리 작업을 수행할 권한 없음"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "%s 채널을 관리할 권한이 없거나 해당 채널이 없음"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               %s 계정이 이 서버에서 비활성화되었습니다.\n"
+"               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "이 서버에서 ISS가 비활성화되었습니다."
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
+
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -37,6 +227,95 @@ msgstr ""
 "\n"
 "                   %s 계정이 이 서버에서 비활성화되었습니다.\n"
 "                   조직 관리자에게 문의하여 추가적인 지원을 요청하십시오."
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "유효하지 않은 세션 키"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "이 서버 ID는 더 이상 존재하지 않음"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "유효하지 않은 작업 값 유형 %s(%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "%s 작업은 %s 서버에 속하지 않음"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "유효하지 않은 값 %s(%s)"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "유효하지 않은 system_id/action_id 쌍입니다."
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "다음이 아닌 패키지 이름이 필요: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "다음이 아닌 패키지 필요: %s"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "필수 데이터 누락"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "필수 멤버 누락"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "시스템의 유효하지 않은 사용자 이름 등록 시도"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "유효하지 않은 시스템 릴리스 버전 요청됨"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+"유효한 네트워크 인터페이스를 찾을 수 없습니다. ipaddr 및 ip6addr를 모두 찾을 "
+"수 없습니다."
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "{PRODUCT_NAME} 환영 메시지"
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+msgid "Privacy Statement"
+msgstr "개인정보 보호정책"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "제품 인수로 딕셔너리가 필요함"
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "%s(%s)에 유효하지 않은 값 '%s'"
+
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "{PRODUCT_NAME} 데이터베이스에서 시스템을 찾을 수 없음"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -106,124 +385,6 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "잘못된 사용자 이름/비밀번호 조합"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "'%s' 사용자 이름은 예약되지 않았습니다."
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "이메일 주소가 지정되지 않았습니다."
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "사용자 이름은 %d자 이상이어야 합니다."
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "사용자 이름은 %d자 미만이어야 합니다."
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "사용자 이름 = `%s', 유효하지 않은 문자 `%s'"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "이메일 주소는 %s자 이하여야 합니다."
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "비밀번호는 %d자 이상이어야 합니다."
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "비밀번호는 %d자 미만이어야 합니다."
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "비밀번호에 '%s' 문자가 포함되었습니다."
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"중요 메시지:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"'%s' 실행 중: 다음이 catch됨:\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "유효하지 않은 URI %s"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Null 조직에서 패키지를 관리할 권한 없음"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "%s 조직에서 패키지를 관리할 권한 없음"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "관리 작업을 수행할 권한 없음"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "%s 채널을 관리할 권한이 없거나 해당 채널이 없음"
-
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               %s 계정이 이 서버에서 비활성화되었습니다.\n"
-"               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
-
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -234,167 +395,6 @@ msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
 msgid "Package not found"
 msgstr "패키지를 찾을 수 없음"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "미완료 프록시 인증 토큰: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "거부된 프록시 인증"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-msgid "Required data missing"
-msgstr "필수 데이터 누락"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-msgid "Required members missing"
-msgstr "필수 멤버 누락"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-msgid "Attempt to register a system to an invalid username"
-msgstr "시스템의 유효하지 않은 사용자 이름 등록 시도"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-msgid "Invalid system release version requested"
-msgstr "유효하지 않은 시스템 릴리스 버전 요청됨"
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"유효한 네트워크 인터페이스를 찾을 수 없습니다. ipaddr 및 ip6addr를 모두 찾을 "
-"수 없습니다."
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} 환영 메시지"
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-msgid "Privacy Statement"
-msgstr "개인정보 보호정책"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-msgid "Expected a dictionary as a product argument"
-msgstr "제품 인수로 딕셔너리가 필요함"
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "%s(%s)에 유효하지 않은 값 '%s'"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "유효하지 않은 세션 키"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "이 서버 ID는 더 이상 존재하지 않음"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "유효하지 않은 system_id/action_id 쌍입니다."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "다음이 아닌 패키지 이름이 필요: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "다음이 아닌 패키지 필요: %s"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "유효하지 않은 작업 값 유형 %s(%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "%s 작업은 %s 서버에 속하지 않음"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "유효하지 않은 값 %s(%s)"
-
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "{PRODUCT_NAME} 데이터베이스에서 시스템을 찾을 수 없음"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "이 서버에서 ISS가 비활성화되었습니다."
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "기본 채널 충돌"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "%s 그룹에 서버를 추가하지 못했습니다."
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "%s의 최대 사용 횟수에 도달했습니다."
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "'%s' 토큰을 찾을 수 없음"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "일치하지 않는 조직에서 제공된 토큰"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "킥스타트 세션 불일치"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "재등록 토큰 스택은 지원되지 않습니다."
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "'%s' 아키텍처는 지원되지 않습니다."
-
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
 msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
@@ -403,16 +403,6 @@ msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "오류: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "역추적: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1057,235 +1047,21 @@ msgstr "오류 클래스 정보: %s\n"
 msgid "Explanation: %s"
 msgstr "설명: %s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 로그를 이메일로 전송 +++"
-
-#: ../satellite_tools/reposync.py:121
+#: ../common/rhnTB.py:205
 #, python-format
-msgid "%s sync. report from %s"
-msgstr "%s의 %s 동기화 보고서"
+msgid "ERROR: %s %s: %s"
+msgstr "오류: %s %s: %s"
 
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "역추적: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s의 형식은 YYYYMMDD여야 합니다.\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\"(명령줄에 지정됨)\n"
-"열거나 읽을 수 없음:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\"을(를) 열거나\n"
-"쓸 수 없는 대상:\n"
-"%s"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"오류: %s 단계 실행 중. 오류:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니"
-"다.\n"
-"       채널 ISO에서 이 디렉토리로 모든 데이터를 마이그레이션하셨습니까?\n"
-"       그러한 경우, 채널 ISO를 다시 확인하고 데이터가 모두 있는지 확인한 후\n"
-"       반복해서 다시 마운트하고 임시 리포지토리(%s)를 다시 채우십시오.\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"오류: 정보를 동기화하는 동안 오류가 발생했습니다.\n"
-"       오류 메시지: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"오류: ISS Master와 통신하는 동안 오류가 발생했습니다.\n"
-"       오류 세부 정보에 따라, 구성, 기본 네트워크 연결 및/또는 이름 확인을 검"
-"토한 후\n"
-"       다시 시도하십시오.\n"
-"       오류 메시지: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"오류: 상위 채널이 동기화되지 않은 경우 하위 채널을 동기화할 수 없습니다.\n"
-"       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화"
-"되어야 합니다.\n"
-"       이 트랜잭션에서 누락된 상위 채널:\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"오류: 이 채널 집합의 채널을 동기화할 권한이 없습니다.\n"
-"SUSE Manager 담당자에게 문의하십시오.\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  오류: 장치의 여유 공간(%sKB)이 부족합니다."
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s 패치 성공: %s(%s바이트)"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    비활성 패키지:  %s"
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr "   총 크기: %s"
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      %s/%s 다운로드 완료. 예상 남은 시간: %s"
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    패치 실패: %s"
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   RPM 패치 요약: %s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr "       성공: %d"
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr "       실패:  %d"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr "       비활성: %d"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   *관련* 패키지 메타데이터 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   오류 데이터 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   킥스타트 데이터 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   킥스타트 트리 파일 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   *관련* 패키지 메타데이터 가져오는 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * 경고: 시간이 오래 걸리는 프로세스일 수 있습니다."
-
-#: ../satellite_tools/messages.py:82
-msgid "Linking packages to channels"
-msgstr "패키지를 채널에 연결"
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   *관련* 오류 가져오는 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr "   가져올 새 킥스타트 가능 트리 없음"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "킥스타트 가능 트리 가져오기(%d)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "가져온 킥스타트 가능 트리(%d)"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1351,10 +1127,18 @@ msgstr "SUSE Manager는 조직 데이터 동기화를 지원하지 않습니다.
 msgid "Skipping..."
 msgstr "건너뛰는 중..."
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr "+++ 로그를 이메일로 전송 +++"
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "%s의 SUSE Manager 내부 서버 동기화 보고서"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2047,3 +1831,219 @@ msgstr "  28 - 오류: --master는 --mount-point와 함께 사용하는 경우�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "오류: 알 수 없는 덤프 버전, %s 중 하나 시도"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\"(명령줄에 지정됨)\n"
+"열거나 읽을 수 없음:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\"을(를) 열거나\n"
+"쓸 수 없는 대상:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s의 %s 동기화 보고서"
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"오류: %s 단계 실행 중. 오류:\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니"
+"다.\n"
+"       채널 ISO에서 이 디렉토리로 모든 데이터를 마이그레이션하셨습니까?\n"
+"       그러한 경우, 채널 ISO를 다시 확인하고 데이터가 모두 있는지 확인한 후\n"
+"       반복해서 다시 마운트하고 임시 리포지토리(%s)를 다시 채우십시오.\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"오류: 정보를 동기화하는 동안 오류가 발생했습니다.\n"
+"       오류 메시지: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"오류: ISS Master와 통신하는 동안 오류가 발생했습니다.\n"
+"       오류 세부 정보에 따라, 구성, 기본 네트워크 연결 및/또는 이름 확인을 검"
+"토한 후\n"
+"       다시 시도하십시오.\n"
+"       오류 메시지: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"오류: 상위 채널이 동기화되지 않은 경우 하위 채널을 동기화할 수 없습니다.\n"
+"       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화"
+"되어야 합니다.\n"
+"       이 트랜잭션에서 누락된 상위 채널:\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"오류: 이 채널 집합의 채널을 동기화할 권한이 없습니다.\n"
+"SUSE Manager 담당자에게 문의하십시오.\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  오류: 장치의 여유 공간(%sKB)이 부족합니다."
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s 패치 성공: %s(%s바이트)"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    비활성 패키지:  %s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr "   총 크기: %s"
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      %s/%s 다운로드 완료. 예상 남은 시간: %s"
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    패치 실패: %s"
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   RPM 패치 요약: %s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr "       성공: %d"
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr "       실패:  %d"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr "       비활성: %d"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   *관련* 패키지 메타데이터 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   오류 데이터 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   킥스타트 데이터 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   킥스타트 트리 파일 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   *관련* 패키지 메타데이터 가져오는 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * 경고: 시간이 오래 걸리는 프로세스일 수 있습니다."
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr "패키지를 채널에 연결"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   *관련* 오류 가져오는 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr "   가져올 새 킥스타트 가능 트리 없음"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "킥스타트 가능 트리 가져오기(%d)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "가져온 킥스타트 가능 트리(%d)"

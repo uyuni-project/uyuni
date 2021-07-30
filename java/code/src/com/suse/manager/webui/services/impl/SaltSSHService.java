@@ -30,6 +30,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ActionSaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
@@ -91,7 +92,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.suse.manager.webui.controllers.StatesAPI.SALT_PACKAGE_FILES;
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static java.util.Collections.singletonList;
@@ -887,7 +887,8 @@ public class SaltSSHService {
 
         // add packages/package_<minion_machine_id>
         Set<String> pkgRefs = statesPerMinion.entrySet().stream()
-                .map(entry -> SALT_FS_PREFIX + SALT_PACKAGE_FILES + "/" + StatesAPI.getPackagesSlsName(entry.getKey()))
+                .map(entry -> SALT_FS_PREFIX + SaltConstants.SALT_PACKAGES_STATES_DIR + "/" +
+                        StatesAPI.getPackagesSlsName(entry.getKey().getMachineId()))
                 .collect(Collectors.toSet());
 
 

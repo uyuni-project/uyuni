@@ -68,9 +68,9 @@ def do_softwarechannel_list(self, args, doreturn=False):
     arg_parser.add_argument('-v', '--verbose', action='store_true')
     arg_parser.add_argument('-t', '--tree', action='store_true')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
-    if (options.tree):
+    if options.tree:
         labels = self.list_base_channels()
     else:
         channels = self.client.channel.listAllChannels(self.session)
@@ -79,24 +79,27 @@ def do_softwarechannel_list(self, args, doreturn=False):
     # filter the list if arguments were passed
     if args:
         labels = filter_results(labels, args, True)
+    if labels:
+        labels = sorted(labels)
 
     if doreturn:
         return labels
+
     elif labels:
-        if (options.verbose):
-            for l in sorted(labels):
+        if options.verbose:
+            for l in labels:
                 details = self.client.channel.software.getDetails(
                     self.session, l)
                 print("%s : %s" % (l, details['summary']))
-                if (options.tree):
+                if options.tree:
                     for c in self.list_child_channels(parent=l):
                         cdetails = self.client.channel.software.getDetails(
                             self.session, c)
                         print(" |-%s : %s" % (c, cdetails['summary']))
         else:
-            for l in sorted(labels):
+            for l in labels:
                 print("%s" % l)
-                if (options.tree):
+                if options.tree:
                     for c in self.list_child_channels(parent=l):
                         print(" |-%s" % c)
 
@@ -115,10 +118,8 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-v', '--verbose', action='store_true')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
-
-    channels = self.client.channel.listManageableChannels(self.session)
-    labels = [c.get('label') for c in channels]
+    args, options = parse_command_arguments(args, arg_parser)
+    labels = list(sorted([c.get('label') for c in self.client.channel.listManageableChannels(self.session)]))
 
     # filter the list if arguments were passed
     if args:
@@ -126,15 +127,14 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
 
     if doreturn:
         return labels
+
     elif labels:
         if options.verbose:
-            for l in sorted(labels):
-                details = \
-                    self.client.channel.software.getDetails(self.session, l)
-
+            for l in labels:
+                details = self.client.channel.software.getDetails(self.session, l)
                 print("%s : %s" % (l, details['summary']))
         else:
-            for l in sorted(labels):
+            for l in labels:
                 print("%s" % l)
 
 ####################
@@ -183,20 +183,16 @@ def do_softwarechannel_listchildchannels(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-v', '--verbose', action='store_true')
 
-    (args, options) = parse_command_arguments(args, arg_parser)
-    if not args:
-        channels = self.list_child_channels()
-    else:
-        channels = self.list_child_channels(parent=args[0])
+    args, options = parse_command_arguments(args, arg_parser)
+    channels = sorted(self.list_child_channels() if not args else self.list_child_channels(parent=args[0]))
 
     if channels:
-        if (options.verbose):
-            for c in sorted(channels):
-                details = \
-                    self.client.channel.software.getDetails(self.session, c)
+        if options.verbose:
+            for c in channels:
+                details = self.client.channel.software.getDetails(self.session, c)
                 print("%s : %s" % (c, details['summary']))
         else:
-            print('\n'.join(sorted(channels)))
+            print('\n'.join(channels))
 
     return 0
 
@@ -214,27 +210,19 @@ def complete_softwarechannel_listsystems(self, text, line, beg, end):
 
 
 def do_softwarechannel_listsystems(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listsystems()
         return
 
-    channel = args[0]
-
-    systems = \
-        self.client.channel.software.listSubscribedSystems(self.session,
-                                                           channel)
-
-    systems = [s.get('name') for s in systems]
+    systems = sorted([s.get('name') for s in self.client.channel.software.listSubscribedSystems(self.session, args[0])])
 
     if doreturn:
         return systems
     else:
         if systems:
-            print('\n'.join(sorted(systems)))
+            print('\n'.join(systems))
 
 ####################
 
@@ -254,26 +242,20 @@ def complete_softwarechannel_listpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listpackages(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listpackages()
         return
 
-    channel = args[0]
-
-    packages = self.client.channel.software.listLatestPackages(self.session,
-                                                               channel)
-
-    packages = build_package_names(packages)
+    packages = list(sorted(build_package_names(
+        self.client.channel.software.listLatestPackages(self.session, args[0]))))
 
     if doreturn:
         return packages
     else:
         if packages:
-            print('\n'.join(sorted(packages)))
+            print('\n'.join(packages))
 
 ####################
 
@@ -292,26 +274,19 @@ def complete_softwarechannel_listallpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listallpackages(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listallpackages()
         return
 
-    channel = args[0]
-
-    packages = self.client.channel.software.listAllPackages(self.session,
-                                                            channel)
-
-    packages = build_package_names(packages)
+    packages = list(sorted(build_package_names(self.client.channel.software.listAllPackages(self.session, args[0]))))
 
     if doreturn:
         return packages
     else:
         if packages:
-            print('\n'.join(sorted(packages)))
+            print('\n'.join(packages))
 
 ####################
 
@@ -325,7 +300,7 @@ def filter_latest_packages(pkglist):
     # for each arch.  This approach avoids nested loops :)
     latest = {}
     for p in pkglist:
-        tuplekey = p['name'], p['arch_label']
+        tuplekey = p['name'], p.get('arch_label', p.get("arch"))
         if tuplekey not in latest:
             latest[tuplekey] = p
         else:
@@ -351,28 +326,20 @@ def complete_softwarechannel_listlatestpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
-    arg_parser = get_argument_parser()
+    args, _ = parse_command_arguments(args, get_argument_parser())
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
-
-    if not args:
+    if len(args) != 1:
         self.help_softwarechannel_listlatestpackages()
         return
 
-    channel = args[0]
-
-    allpackages = self.client.channel.software.listAllPackages(self.session,
-                                                               channel)
-
-    latestpackages = filter_latest_packages(allpackages)
-
-    packages = build_package_names(latestpackages)
+    packages = list(sorted(build_package_names(list(filter_latest_packages(
+        self.client.channel.software.listAllPackages(self.session, args[0]))))))
 
     if doreturn:
         return packages
     else:
         if packages:
-            print('\n'.join(sorted(packages)))
+            print('\n'.join(packages))
 
 ####################
 

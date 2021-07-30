@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
@@ -65,6 +66,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -1271,6 +1273,42 @@ public class ServerFactory extends HibernateFactory {
         return getSession().createQuery(criteria).getResultList().stream()
                 .collect(Collectors.toList());
 
+    }
+
+    /**
+     * Get all SLES systems containing the name query string
+     *
+     * @param nameQuery the partial system name to query
+     * @param limit the limit of the result stream
+     * @param user the requesting user
+     * @return a stream of SLES systems
+     */
+    public static Stream<Server> querySlesSystems(String nameQuery, int limit, User user) {
+        return HibernateFactory.getSession().createQuery(
+                "SELECT s FROM UserImpl user " +
+                "JOIN user.servers s " +
+                "WHERE user = :user " +
+                "AND s.os = 'SLES' " +
+                "AND s.name LIKE :nameQuery ", Server.class)
+                .setParameter("user", user)
+                .setParameter("nameQuery", '%' + StringUtils.defaultString(nameQuery) + '%')
+                .setMaxResults(limit)
+                .getResultStream();
+    }
+
+    /**
+     * Get all kernel versions installed in a server
+     *
+     * @param server the server
+     * @return the stream of EVRs of every installed kernel on the system
+     */
+    public static Stream<PackageEvr> getInstalledKernelVersions(Server server) {
+        return HibernateFactory.getSession().createQuery(
+                "SELECT DISTINCT pkg.evr FROM InstalledPackage pkg " +
+                "WHERE pkg.name.name LIKE 'kernel-default%' " +
+                "AND pkg.server = :server", PackageEvr.class)
+                .setParameter("server", server)
+                .getResultStream();
     }
 
     /**

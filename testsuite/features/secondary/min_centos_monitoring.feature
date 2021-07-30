@@ -8,7 +8,7 @@
 @scope_monitoring
 @scope_res
 Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
-  In order to monitor SUSE Manager server
+  In order to monitor Uyuni server
   As an authorized user
   I want to enable Prometheus exporters
 

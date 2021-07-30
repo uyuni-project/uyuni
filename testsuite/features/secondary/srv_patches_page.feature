@@ -11,7 +11,7 @@ Feature: Patches page
     Given I am authorized for the "Admin" section
 
   Scenario: Patches left menu
-    Given I am on the patches page
+    When I follow the left menu "Patches > Patch List > Relevant"
     Then I should see a "Patches Relevant to Your Systems" text
     And I should see a "Relevant" link in the left menu
     And I should see a "All" link in the left menu

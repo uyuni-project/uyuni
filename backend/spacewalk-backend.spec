@@ -47,8 +47,8 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.2.14
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -318,7 +318,7 @@ install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/sate
 
 %find_lang %{name}-server
 
-%if 0%{?is_opensuse}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
 sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
 %if 0%{?fedora} || 0%{?rhel} > 6

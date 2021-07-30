@@ -22,18 +22,7 @@ CREATE TABLE rhnActionVirtCreate
                              CONSTRAINT rhn_action_virt_create_aid_pk
                                  PRIMARY KEY,
     uuid                 VARCHAR(128),
-    vm_type              VARCHAR(10),
-    vm_name              VARCHAR(256),
-    os_type              VARCHAR(20),
-    memory               NUMERIC,
-    vcpus                NUMERIC,
-    arch                 VARCHAR(20),
-    graphics_type        VARCHAR(20),
-    remove_disks         CHAR(1),
-    remove_interfaces    CHAR(1),
-    cobbler_system       VARCHAR(256),
-    kickstart_host       VARCHAR(256),
-    kernel_options       VARCHAR(2048)
+    details              TEXT
 )
 
 ;

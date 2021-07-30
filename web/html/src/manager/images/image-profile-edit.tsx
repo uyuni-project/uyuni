@@ -89,7 +89,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   setValues(id) {
-    Network.get("/rhn/manager/api/cm/imageprofiles/" + id).promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/" + id).then(res => {
       if (res.success) {
         var data = res.data;
         this.setState({
@@ -97,6 +97,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             label: data.label,
             activationKey: data.activationKey ? data.activationKey.key : undefined,
             path: data.path,
+            kiwiOptions: data.kiwiOptions,
             imageType: data.imageType,
             imageStore: data.store,
           },
@@ -126,7 +127,7 @@ class CreateImageProfile extends React.Component<Props, State> {
       return;
     }
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then(res => {
       // Prevent out-of-order async results
       if (!DEPRECATED_unsafeEquals(res.activationKey, this.state.model.activationKey)) return false;
 
@@ -146,7 +147,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   handleImageStoreChange(name, storeLabel) {
-    Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel).promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel).then(res => {
       this.setState({
         storeUri: res.success && res.data.uri,
       });
@@ -186,7 +187,7 @@ class CreateImageProfile extends React.Component<Props, State> {
 
     // Check for uniqueness
     return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
-      .promise.then(res => !res.success && isValid)
+      .then(res => !res.success && isValid)
       .catch(() => false);
   }
 
@@ -201,9 +202,8 @@ class CreateImageProfile extends React.Component<Props, State> {
     model.path = model.path.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/update/" + window.profileId,
-      JSON.stringify(model),
-      "application/json"
-    ).promise.then(data => {
+      model
+    ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imageprofiles");
       } else {
@@ -231,9 +231,8 @@ class CreateImageProfile extends React.Component<Props, State> {
     model.path = model.path.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/create",
-      JSON.stringify(model),
-      "application/json"
-    ).promise.then(data => {
+      model
+    ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imageprofiles");
       } else {
@@ -269,7 +268,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   getImageStores(type) {
-    return Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json").promise.then(data => {
+    return Network.get("/rhn/manager/api/cm/imagestores/type/" + type).then(data => {
       // Preselect store after retrieval
       const model = Object.assign({}, this.state.model, { imageStore: data[0] && data[0].label });
       const storeUri = data[0] && data[0].uri;
@@ -298,7 +297,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         divClass="col-md-6"
         hint={this.state.storeUri}
         invalidHint={
-          <span>
+          <span key="invalidHint">
             Target Image Store is required.&nbsp;
             <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.
           </span>
@@ -317,7 +316,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             label={t("Dockerfile URL")}
             required
             hint={
-              <span>
+              <span key="hint">
                 Git URL pointing to the directory containing the Dockerfile
                 <br />
                 Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>
@@ -343,7 +342,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             label={t("Config URL")}
             required
             hint={
-              <span>
+              <span key="hint">
                 Git URL pointing to the directory containing the Kiwi config files
                 <br />
                 Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>
@@ -353,6 +352,22 @@ class CreateImageProfile extends React.Component<Props, State> {
                   SUSE Manager templates repository
                 </a>{" "}
                 for some out-of-the-box working examples.
+              </span>
+            }
+            labelClass="col-md-3"
+            divClass="col-md-6"
+          />
+        );
+        typeInputs.push(
+          <Text
+            key="kiwiOptions"
+            name="kiwiOptions"
+            label={t("Kiwi options")}
+            hint={
+              <span key="hint">
+                Kiwi command line options
+                <br />
+                Example: <em>--profile jeos</em>
               </span>
             }
             labelClass="col-md-3"
@@ -388,6 +403,7 @@ class CreateImageProfile extends React.Component<Props, State> {
 
     return (
       <Select
+        key="activationKey"
         name="activationKey"
         label={t("Activation Key")}
         invalidHint={t("Activation key is required for kiwi images.")}
@@ -408,7 +424,7 @@ class CreateImageProfile extends React.Component<Props, State> {
 
       return (
         key && (
-          <FormGroup>
+          <FormGroup key={key.label}>
             <Label className="col-md-3" name={key.label} />
             <div className="col-md-6">
               <div className="input-group">
@@ -444,7 +460,7 @@ class CreateImageProfile extends React.Component<Props, State> {
     });
 
     const select = (
-      <FormGroup>
+      <FormGroup key="custom-info-values-formgroup">
         <Label className="col-md-3" name={t("Custom Info Values")} />
         <div className="col-md-6">
           <ReactSelect

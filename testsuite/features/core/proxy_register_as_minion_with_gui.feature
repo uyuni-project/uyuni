@@ -8,12 +8,13 @@
 
 @scope_proxy
 @proxy
-Feature: Setup SUSE Manager proxy
-  In order to use a proxy with the SUSE manager server
+Feature: Setup Uyuni proxy
+  In order to use a proxy with the Uyuni server
   As the system administrator
   I want to register the proxy to the server
 
   Scenario: Install proxy software
+    When I refresh the metadata for "proxy"
     # uncomment when product is out:
     # When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy

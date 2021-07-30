@@ -364,6 +364,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     ws.onmessage = e => {
       var event = JSON.parse(e.data);
       var minionsMap: Map<any, any> | undefined;
+      var previewed;
+      var ran;
       switch (event.type) {
         case "asyncJobStart":
           this.setState({
@@ -445,8 +447,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             timedOutDone = true;
           }
 
-          var previewed = this.state.previewed;
-          var ran = this.state.ran;
+          previewed = this.state.previewed;
+          ran = this.state.ran;
 
           if (timedOutDone) {
             if (previewed.state() === "pending") {
@@ -494,8 +496,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             Array.from(minionsMap || [], e => e[1]).every(v => v.type !== "pending") && !this.state.result.waitForSSH;
 
           if (noPending) {
-            var previewed = this.state.previewed;
-            var ran = this.state.ran;
+            previewed = this.state.previewed;
+            ran = this.state.ran;
             if (previewed && previewed.state() === "pending") {
               previewed = jQuery.Deferred();
               ran = ran.resolve();

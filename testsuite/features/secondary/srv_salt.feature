@@ -3,7 +3,7 @@
 
 @scope_salt
 Feature: Salt is configured and running
-  In order to operate SUSE Manager based on Salt
+  In order to operate Uyuni based on Salt
   I want to use general Salt functionality and system registration
 
   Scenario: salt-api is properly configured

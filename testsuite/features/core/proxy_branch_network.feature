@@ -8,10 +8,17 @@
 @sle_client
 @scope_proxy
 @scope_retail
-Feature: Setup SUSE Manager for Retail branch network
-  In order to deploy SUSE Manager for Retail solution
+Feature: Setup Uyuni for Retail branch network
+  In order to deploy Uyuni for Retail solution
   As the system administrator
   I want to prepare the branch network
+
+@proxy
+@private_net
+  Scenario: Remove dhcp packages on the proxy
+    # WORKAROUND
+    When I remove package "dhcp dhcp-client" from this "proxy"
+    # End of WORKAROUND
 
 @proxy
 @private_net
@@ -23,9 +30,19 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+@susemanager
   Scenario: Install the Retail pattern on the server
+    When I refresh the metadata for "server"
     When I install pattern "suma_retail" on this "server"
     And I wait for "patterns-suma_retail" to be installed on "server"
+
+@proxy
+@private_net
+@uyuni
+  Scenario: Install the Retail pattern on the server
+    When I refresh the metadata for "server"
+    When I install pattern "uyuni_retail" on this "server"
+    And I wait for "patterns-uyuni_retail" to be installed on "server"
 
 @proxy
 @private_net

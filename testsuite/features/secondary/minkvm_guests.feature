@@ -21,8 +21,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "kvm_server"
 
-  Scenario: Setting the virtualization entitlement for KVM
+  Scenario: Show the KVM host system overview
     Given I am on the Systems overview page of this "kvm_server"
+
+  Scenario: Set the virtualization entitlement for KVM
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "virtualization_host"
@@ -63,6 +65,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create "test-vm" virtual machine on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
+
+  Scenario: Show the KVM host virtualization tab
+    Given I follow "Virtualization" in the content area
 
   Scenario: Start a KVM virtual machine
     When I click on "Start" in row "test-vm"
@@ -204,6 +209,30 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
+  Scenario: Create a KVM UEFI virtual machine
+    When I follow "Create Guest"
+    And I wait until I see "General" text
+    And I enter "test-vm2" as "name"
+    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I select "test-net0" from "network0_source"
+    And I check "uefi"
+    And I enter "/usr/share/qemu/ovmf-x86_64-ms.bin" as "uefiLoader"
+    And I enter "/usr/share/qemu/ovmf-x86_64-ms-vars.bin" as "nvramTemplate"
+    And I click on "Create"
+    Then I should see a "Hosted Virtual Systems" text
+    When I wait until I see "test-vm2" text
+    And I wait until table row for "test-vm2" contains button "Stop"
+    And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
+    And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
+    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
+    And "test-vm2" virtual machine on "kvm_server" should be UEFI enabled
+
+  Scenario: delete a running KVM UEFI virtual machine
+    When I follow "Virtualization" in the content area
+    And I click on "Delete" in row "test-vm2"
+    And I click on "Delete" in "Delete Guest" modal
+    Then I should not see a "test-vm2" virtual machine on "kvm_server"
+
   Scenario: Refresh a virtual storage pool for KVM
     When I follow "Storage"
     And I click on "Refresh" in tree item "test-pool0"
@@ -230,7 +259,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Create a virtual storage pool for KVM
     When I follow "Storage"
     And I follow "Create Pool"
-    And I wait until option "dir" appears in list "type"
+    And I wait until I see "General" text
     And I select "dir" from "type"
     And I enter "test-pool1" as "name"
     And I uncheck "autostart"

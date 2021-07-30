@@ -7424,7 +7424,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting" xml:space="preserve">
-        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
+        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -8577,9 +8577,8 @@ Please check:
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
-for more detailed errors.  If you don't resolve the errors the autoinstallable
-tree will not be usable for autoinstalling.
-        </source>
+for more detailed errors. If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.</source>
       <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
@@ -8721,7 +8720,7 @@ Note that only one set of ISO images is necessary to install any particular rele
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1" xml:space="preserve">
         <source>
-Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -8805,7 +8804,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
@@ -8813,7 +8812,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="satellite.graceperiod" xml:space="preserve">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
       <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="restricted.forbidden" xml:space="preserve">
@@ -9557,6 +9556,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.guest_migrate" xml:space="preserve">
+        <source>Migrate a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
       <target state="new" />
   </trans-unit>
       </body>

@@ -4,7 +4,7 @@ Test spacecmd.utils
 """
 from unittest.mock import MagicMock, patch, mock_open
 import pytest
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect, exc2str
 import spacecmd.utils
 from xmlrpc import client as xmlrpclib
 import os
@@ -386,7 +386,7 @@ class TestSCUtils:
             spacecmd.utils.print_errata_summary(erratum=erratum)
 
         assert_expect(mprint.call_args_list,
-                      'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes  2019.01.15')
+                      'CVE-12345-678   Sometimes synopsis has a long text here.                      2019.01.15')
 
     def test_print_errata_summary_no_date_no_issue_date_key(self):
         """
@@ -401,7 +401,7 @@ class TestSCUtils:
             spacecmd.utils.print_errata_summary(erratum=erratum)
 
         assert_expect(mprint.call_args_list,
-                      'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes       N/A')
+                      'CVE-12345-678   Sometimes synopsis has a long text here.                           N/A')
 
     def test_print_errata_list_no_errata(self):
         """
@@ -440,11 +440,11 @@ class TestSCUtils:
                                 ['Security Errata',
                                  '---------------',
                                  'CVE-123-4567    text here text here text here text here '
-                                 'text here   2019.01.15', '', 'Bug Fix Errata', '--------------',
+                                 'text here             2019.01.15', '', 'Bug Fix Errata', '--------------',
                                  'CVE-123-4567    text here text here text here text here '
-                                 'text here   2019.01.15', '', 'Enhancement Errata', '------------------',
+                                 'text here             2019.01.15', '', 'Enhancement Errata', '------------------',
                                  'CVE-123-4567    text here text here text here text here '
-                                 'text here   2019.01.15']
+                                 'text here             2019.01.15']
                                 )
 
     def test_max_length(self):
@@ -731,7 +731,7 @@ class TestSCUtils:
         for value in [b"", 1, {}, [], ()]:
             with pytest.raises(IOError) as exc:
                 spacecmd.utils.string_to_bool(value)
-            assert "Parameter" in str(exc)
+            assert "Parameter" in exc2str(exc)
 
     def test_string_to_bool_correct_type(self):
         """

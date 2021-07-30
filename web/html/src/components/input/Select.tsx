@@ -1,17 +1,28 @@
 import * as React from "react";
 import ReactSelect from "react-select";
+import AsyncSelect from "react-select/async";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = InputBaseProps<string | string[]> & {
-  /** Select options */
-  options: Array<Object | string>;
-
-  /** Resolves option data to a string to be displayed as the label by components */
-  getOptionLabel: (option: any) => string;
+type SingleMode = InputBaseProps<string> & {
+  /** Set to true to allow multiple selected values */
+  isMulti?: false;
 
   /** Resolves option data to a string to compare options and specify value attributes */
   getOptionValue: (option: any) => string;
+};
+
+type MultiMode = InputBaseProps<string | string[]> & {
+  /** Set to true to allow multiple selected values */
+  isMulti: true;
+
+  /** Resolves option data to a string to compare options and specify value attributes */
+  getOptionValue: (option: any) => string | string[];
+};
+
+type CommonSelectProps = (SingleMode | MultiMode) & {
+  /** Resolves option data to a string to be displayed as the label by components */
+  getOptionLabel: (option: any) => string;
 
   /** Formats option labels in the menu and control as React components */
   formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
@@ -28,9 +39,6 @@ type Props = InputBaseProps<string | string[]> & {
   /** Set to true to allow removing the selected value */
   isClearable: boolean;
 
-  /** Set to true to allow multiple selected values */
-  isMulti: boolean;
-
   /** Value placeholder to display when no value is entered */
   inputClass?: string;
 
@@ -38,10 +46,25 @@ type Props = InputBaseProps<string | string[]> & {
   name?: string;
 };
 
-export function Select(props: Props) {
+type SelectProps = CommonSelectProps & {
+  /** Select options */
+  options: Array<Object | string>;
+}
+
+type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
+  // 'value' and 'defaultValue' are not currently supported with the async Select
+  // because string => Object value conversion is not possible with dynamic options
+
+  /**
+   * Function that returns a promise, which is the set of options to be used once the promise resolves.
+   */
+  loadOptions: (inputValue: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
+  cacheOptions?: boolean;
+}
+
+export function Select(props: SelectProps | AsyncSelectProps) {
   const {
     inputClass,
-    options,
     getOptionLabel,
     getOptionValue,
     formatOptionLabel,
@@ -51,11 +74,11 @@ export function Select(props: Props) {
     isClearable,
     ...propsToPass
   } = props;
+
   const formContext = React.useContext(FormContext);
-  const convertedOptions = (options || []).map(item =>
-    typeof item === "string" ? { label: item, value: item } : item
-  );
-  const defaultValue = convertedOptions.find(item => getOptionValue(item) === props.defaultValue);
+  const isAsync = (props: SelectProps | AsyncSelectProps): props is AsyncSelectProps => {
+    return (props as AsyncSelectProps).loadOptions !== undefined;
+  }
 
   const bootstrapStyles = {
     control: (styles: {}) => ({
@@ -81,46 +104,69 @@ export function Select(props: Props) {
     }),
     menuPortal: (styles: {}) => ({
       ...styles,
-      zIndex: 9999
+      zIndex: 9999,
     }),
   };
 
+  // TODO: This `any` should be inferred based on the props instead, currently the props expose the right interfaces but we don't have strict checks here
   return (
-    <InputBase<string | string[]> {...propsToPass}>
+    <InputBase<any> {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = newValue => {
           const value = Array.isArray(newValue) ? newValue.map(item => getOptionValue(item)) : getOptionValue(newValue);
           setValue(props.name, value);
         };
         const value = (formContext.model || {})[props.name || ""];
-        const optionFinder = needle => convertedOptions.find(option => getOptionValue(option) === needle);
-        const valueOption = Array.isArray(value) ? value.map(item => optionFinder(item)) : optionFinder(value);
 
-        return (
-          <ReactSelect
-            className={inputClass ? ` ${inputClass}` : ""}
-            name={props.name}
-            inputId={props.name}
-            isDisabled={props.disabled}
-            defaultValue={defaultValue}
-            value={valueOption ?? defaultValue ?? null}
-            onBlur={onBlur}
-            onChange={onChange}
-            options={convertedOptions}
-            getOptionLabel={option => (option != null ? getOptionLabel(option) : "")}
-            getOptionValue={option => (option != null ? getOptionValue(option) : "")}
-            formatOptionLabel={formatOptionLabel}
-            placeholder={placeholder}
-            isLoading={isLoading}
-            noOptionsMessage={() => emptyText}
-            isClearable={isClearable}
-            styles={bootstrapStyles}
-            isMulti={props.isMulti}
-            aria-label={props.title}
-            menuPortalTarget={document.body}
-            classNamePrefix={`class-${props.name}`}
-          />
-        );
+        // Common props to pass to both 'react-select' and 'react-select/async'
+        const commonProps = {
+          className: inputClass ? ` ${inputClass}` : "",
+          name: props.name,
+          inputId: props.name,
+          isDisabled: props.disabled,
+          onBlur: onBlur,
+          onChange: onChange,
+          getOptionLabel: option => (option != null ? getOptionLabel(option) : ""),
+          getOptionValue: option => (option != null ? getOptionValue(option) : ""),
+          formatOptionLabel: formatOptionLabel,
+          placeholder: placeholder,
+          isLoading: isLoading,
+          noOptionsMessage: () => emptyText,
+          isClearable: isClearable,
+          styles: bootstrapStyles,
+          isMulti: props.isMulti,
+          menuPortalTarget: document.body,
+          classNamePrefix: `class-${props.name}`
+        };
+
+        if (isAsync(props)) {
+          return (
+            <AsyncSelect
+              loadOptions={props.loadOptions}
+              cacheOptions={props.cacheOptions}
+              defaultOptions
+              aria-label={props.title}
+              {...commonProps}
+            />);
+        }
+        else {
+          const convertedOptions = (props.options || []).map(item =>
+            typeof item === "string" ? { label: item, value: item } : item
+          );
+          const defaultValue = convertedOptions.find(item => getOptionValue(item) === props.defaultValue);
+          const optionFinder = needle => convertedOptions.find(option => getOptionValue(option) === needle);
+          const valueOption = Array.isArray(value) ? value.map(item => optionFinder(item)) : optionFinder(value);
+
+          return (
+            <ReactSelect
+              options={convertedOptions}
+              value={valueOption ?? defaultValue ?? null}
+              defaultValue={defaultValue}
+              aria-label={props.title}
+              {...commonProps}
+            />
+          );
+        }
       }}
     </InputBase>
   );
@@ -143,4 +189,5 @@ Select.defaultProps = {
   invalidHint: undefined,
   onChange: undefined,
   isMulti: false,
+  cacheOptions: false
 };

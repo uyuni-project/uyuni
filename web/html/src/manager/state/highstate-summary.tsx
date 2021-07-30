@@ -38,7 +38,7 @@ export default function HighstateSummary({ minionId }) {
 
   useEffect(() => {
     setLoading(true);
-    Network.get(`/rhn/manager/api/states/summary?sid=${minionId}`).promise
+    Network.get(`/rhn/manager/api/states/summary?sid=${minionId}`)
       .then(data => data.map(toDisplayValues))
       .then(setSummary)
       .then(() => setLoading(false));
@@ -68,7 +68,7 @@ function HighstateOutput({ minionId }) {
   const [highstate, setHighstate] = useState("");
 
   function requestHighstate(id: number) {
-    return Network.get(`/rhn/manager/api/states/highstate?sid=${id}`).promise;
+    return Network.get(`/rhn/manager/api/states/highstate?sid=${id}`);
   }
 
   if (!highstate) {

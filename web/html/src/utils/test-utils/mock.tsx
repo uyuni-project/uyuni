@@ -1,5 +1,3 @@
-import * as React from "react";
-
 // Mock the datetime picker to avoid it causing issues due to missing jQuery/Bootstrap parts
 jest.mock("components/datetimepicker", () => {
   return {
@@ -19,3 +17,5 @@ jest.mock("components/ace-editor", () => {
     },
   };
 });
+
+export {};

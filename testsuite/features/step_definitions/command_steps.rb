@@ -9,10 +9,18 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run('hostname -f')
+  result, return_code = node.run('hostname -f', false)
   result.delete!("\n")
   raise 'cannot determine hostname' unless return_code.zero?
   raise 'hostname is not fully qualified' unless result == node.full_hostname
+end
+
+Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run("getent hosts #{node.ip}", false)
+  result.delete!("\n")
+  raise 'cannot do reverse resolution' unless return_code.zero?
+  raise "reverse resolution returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|
@@ -328,6 +336,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   end
 end
 
+Then(/^the reposync logs should not report errors$/) do
+  result, code = $server.run('grep "ERROR:" /var/log/rhn/reposync/*.log', false)
+  raise "Errors during reposync:\n#{result}" if code.zero?
+end
+
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
   $server.run("find /var/spacewalk/packages -name #{pkg}")
 end
@@ -590,9 +603,60 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
+When(/^I start tftp on the proxy$/) do
+  node = get_target('proxy')
+  case $product
+  # TODO: Should we handle this in Sumaform?
+  when 'Uyuni'
+    step %(I enable repositories before installing branch server)
+    cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
+          'zypper --non-interactive install tftp && ' \
+          'systemctl enable tftp.socket && ' \
+          'systemctl start tftp.socket'
+    node.run(cmd)
+    step %(I disable repositories after installing branch server)
+  else
+    cmd = "systemctl enable tftp.socket && systemctl start tftp.socket"
+    node.run(cmd)
+  end
+end
+
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
   output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
   raise "Not found:\n#{output}" unless output.include?(text)
+end
+
+When(/^I configure tftp on the "([^"]*)"$/) do |host|
+  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+
+  case host
+  when 'server'
+    $server.run("configure-tftpsync.sh #{ENV['PROXY']}")
+  when 'proxy'
+    cmd = "configure-tftpsync.sh --tftpbootdir=/srv/tftpboot \
+--server-fqdn=#{ENV['PROXY']} --server-ip=#{$server.public_ip} \
+--proxy-fqdn=#{ENV['SERVER']} --proxy-ip=#{$proxy.public_ip}"
+    $proxy.run(cmd)
+  end
+end
+
+When(/^I synchronize the tftp configuration on the proxy with the server$/) do
+  out, _code = $server.run('cobbler sync')
+  raise 'cobbler sync failt' if out.include? 'Push failed'
+end
+
+When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
+  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+
+  node = get_target(host)
+  target = '/srv/tftpboot/pxelinux.cfg/default'
+  case entry
+  when 'local boot'
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
+  when 'target profile'
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp2-cobbler:1:SUSETest/'"
+  end
+  node.run("sed -i #{script} #{target}")
 end
 
 When(/^I clean the search index on the server$/) do
@@ -866,14 +930,6 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
-end
-
-# On CentOS 7, OpenSCAP files are for RedHat and need a small adaptation for CentOS
-When(/^I fix CentOS 7 OpenSCAP files on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  script = '/<\/rear-matter>/a  <platform idref="cpe:/o:centos:centos:7"/>'
-  file = "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml"
-  node.run("sed -i '#{script}' #{file}")
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -1397,6 +1453,17 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should be UEFI enabled$/) do |vm, host|
+  node = get_target(host)
+  output, _code = node.run("virsh dumpxml #{vm}")
+  tree = Nokogiri::XML(output)
+  has_loader = tree.xpath('//os/loader').size == 1
+  has_nvram = tree.xpath('//os/nvram').size == 1
+  unless has_loader && has_nvram
+    raise "No loader and nvram set: not UEFI enabled"
+  end
+end
+
 When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
   node = get_target(host)
   node.run("qemu-img create -f qcow2 #{path} 1G")
@@ -1606,4 +1673,16 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
   return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
+end
+
+When(/^I copy unset package file on server$/) do
+  base_dir = File.dirname(__FILE__) + "/../upload_files/unset_package/"
+  return_code = file_inject($server, base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
+  raise 'File injection failed' unless return_code.zero?
+end
+
+And(/^I copy vCenter configuration file on server$/) do
+  base_dir = File.dirname(__FILE__) + "/../upload_files/virtualization/"
+  return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
+  raise 'File injection failed' unless return_code.zero?
 end

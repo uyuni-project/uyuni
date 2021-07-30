@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,12 +18,12 @@
 
 
 Name:           spacewalk
-Version:        4.2.3
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -37,8 +37,8 @@ Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
 BuildRequires:  python3
-BuildRequires:  spacewalk-base-minimal-config
 BuildRequires:  spacewalk-backend
+BuildRequires:  spacewalk-base-minimal-config
 Requires:       python3
 Requires:       spacewalk-setup
 
@@ -132,8 +132,8 @@ Conflicts:      postgresql-contrib-implementation >= 13
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12
 # we do not support postgresql versions > 13.x yet
-Conflicts:      postgresql >= 13
-Conflicts:      postgresql-contrib >= 13
+Conflicts:      postgresql >= 14
+Conflicts:      postgresql-contrib >= 14
 %endif # if suse_version
 
 %description postgresql

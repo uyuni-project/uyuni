@@ -26,6 +26,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.State;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -38,6 +39,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -59,21 +62,35 @@ public class VirtManagerSalt implements VirtManager {
      * {@inheritDoc}
      */
     @Override
-    public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+    public Optional<GuestDefinition> getGuestDefinition(String minionId, String uuid) {
+        String fixedUuid = uuid;
+        String uuidPattern = "^([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{12}$)";
+        Matcher matcher = Pattern.compile(uuidPattern).matcher(uuid);
+        if (matcher.matches()) {
+             fixedUuid = String.format("%s-%s-%s-%s-%s", matcher.group(1), matcher.group(2), matcher.group(3),
+                    matcher.group(4), matcher.group(5));
+        }
+
         Map<String, Object> args = new LinkedHashMap<>();
-        args.put("vm_", domainName);
+        args.put("uuid", fixedUuid);
 
-        LocalCall<Map<String, VmInfoJson>> vmInfoCall =
-                new LocalCall<>("virt.vm_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, VmInfoJson>>() { });
-        Optional<Map<String, VmInfoJson>> vmInfo = saltApi.callSync(vmInfoCall, minionId);
+        LocalCall<Map<String, JsonElement>> vmDefCall = new LocalCall<>("virt_utils.vm_definition",
+                Optional.empty(), Optional.of(args),
+                new TypeToken<Map<String, JsonElement>>() { });
+        Optional<Map<String, JsonElement>> data = saltApi.callSync(vmDefCall, minionId);
 
-        LocalCall<String> call =
-                new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
-
-        Optional<String> result = saltApi.callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml,
-                vmInfo.map(data -> data.get(domainName))));
+        return data.map(vmData -> {
+            Optional<VmInfoJson> info = Optional.empty();
+            if (vmData.containsKey("info")) {
+                info = Optional.ofNullable(new GsonBuilder().create()
+                        .fromJson(vmData.get("info"), new TypeToken<VmInfoJson>() { }.getType()));
+            }
+            if (vmData.containsKey("definition")) {
+                String xml = vmData.get("definition").getAsString();
+                return GuestDefinition.parse(xml, info);
+            }
+            return null;
+        });
     }
 
     /**
@@ -215,10 +232,10 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
-    public Optional<String> getHypervisor(String minionId) {
-        LocalCall<String> call =
-                new LocalCall<>("virt.get_hypervisor", Optional.empty(), Optional.empty(),
-                        new TypeToken<String>() { });
+    public Optional<HostInfo> getHostInfo(String minionId) {
+        LocalCall<HostInfo> call =
+                new LocalCall<>("virt_utils.host_info", Optional.empty(), Optional.empty(),
+                        new TypeToken<HostInfo>() { });
 
         return saltApi.callSync(call, minionId);
     }
@@ -279,5 +296,23 @@ public class VirtManagerSalt implements VirtManager {
         Optional<Map<String, Map<String, Boolean>>> data = saltApi.callSync(Grains.item(false,
                 new TypeToken<Map<String, Map<String, Boolean>>>() { }, grainName), minionId);
         return data.map(features -> features.get(grainName));
+    }
+
+    @Override
+    public Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId) {
+        LocalCall<Map<String, Map<String, JsonElement>>> call =
+                new LocalCall<>("virt_utils.vm_info", Optional.empty(), Optional.empty(),
+                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+
+        return saltApi.callSync(call, minionId);
+    }
+
+    @Override
+    public Optional<List<String>> getTuningTemplates(String minionId) {
+        LocalCall<List<String>> call =
+                new LocalCall<>("virt_utils.virt_tuner_templates", Optional.empty(), Optional.empty(),
+                        new TypeToken<List<String>>() { });
+
+        return saltApi.callSync(call, minionId);
     }
 }

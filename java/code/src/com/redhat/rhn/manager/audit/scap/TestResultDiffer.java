@@ -55,6 +55,9 @@ public class TestResultDiffer {
         result.add(buildItem("system.audit.xccdfdetails.jsp.path",
                 first.getScapActionDetails().getPath(),
                 second.getScapActionDetails().getPath()));
+        result.add(buildItem("system.audit.xccdfdetails.jsp.ovalfiles",
+                first.getScapActionDetails().getOvalfiles(),
+                second.getScapActionDetails().getOvalfiles()));
         result.add(buildItem("system.audit.schedulexccdf.jsp.arguments",
                 first.getScapActionDetails().getParametersContents(),
                 second.getScapActionDetails().getParametersContents()));

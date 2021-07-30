@@ -45,13 +45,13 @@ export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
       };
     }
 
-    return Network.post(uri, JSON.stringify(data), "application/json", false)
-      .promise.then(() => props.onMessage(MessagesUtils.success(successMsg)))
+    return Network.post(uri, data)
+      .then(() => props.onMessage(MessagesUtils.success(successMsg)))
       .catch(xhr => props.onMessage(MessagesUtils.error(Network.errorMessageByStatus(xhr.status))));
   };
 
   useEffect(() => {
-    Network.get("/rhn/manager/api/maintenance/schedule/list").promise.then(setSchedules);
+    Network.get("/rhn/manager/api/maintenance/schedule/list").then(setSchedules);
   }, []);
 
   return props.children(schedules, onAssign);
@@ -65,7 +65,7 @@ type SchedulePickerFormProps = {
 export function SchedulePickerForm(props: SchedulePickerFormProps) {
   const [model, setModel] = useState<any>({});
   const [isValid, setValid] = useState(false);
-  const onSubmit = () => props.onAssign(parseInt(model.scheduleId), model.cancelActions);
+  const onSubmit = () => props.onAssign(parseInt(model.scheduleId, 10), model.cancelActions);
   const onChange = model => setModel(Object.assign({}, model));
 
   return (
