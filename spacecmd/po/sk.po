@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-27 19:11+0000\n"
+"PO-Revision-Date: 2021-07-30 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5049,52 +5049,52 @@ msgstr "Názov \"%s\" už používa kanál %s"
 #. get confirmation
 #: ../src/spacecmd/softwarechannel.py:475
 msgid "Setting following attributes..."
-msgstr ""
+msgstr "Nastavovanie nasledujúcich atribútov..."
 
 #: ../src/spacecmd/softwarechannel.py:478
 #, python-format
 msgid "Name:             %s"
-msgstr ""
+msgstr "Názov:             %s"
 
 #: ../src/spacecmd/softwarechannel.py:480
 #, python-format
 msgid "Summary:          %s"
-msgstr ""
+msgstr "Súhrn:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:482
 #, python-format
 msgid "Description:      %s"
-msgstr ""
+msgstr "Popis:      %s"
 
 #: ../src/spacecmd/softwarechannel.py:484
 #, python-format
 msgid "Checksum:         %s"
-msgstr ""
+msgstr "Kontrolný súčet:         %s"
 
 #: ../src/spacecmd/softwarechannel.py:486
 #, python-format
 msgid "Maintainer name:  %s"
-msgstr ""
+msgstr "Meno správcu:  %s"
 
 #: ../src/spacecmd/softwarechannel.py:488
 #, python-format
 msgid "Maintainer email: %s"
-msgstr ""
+msgstr "Email správcu: %s"
 
 #: ../src/spacecmd/softwarechannel.py:490
 #, python-format
 msgid "Maintainer phone: %s"
-msgstr ""
+msgstr "Telefón správcu: %s"
 
 #: ../src/spacecmd/softwarechannel.py:492
 #, python-format
 msgid "GPG Key:          %s"
-msgstr ""
+msgstr "Kľúč GPG:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:494
 #, python-format
 msgid "GPG Fingerprint:  %s"
-msgstr ""
+msgstr "Odtlačok GPG:  %s"
 
 #: ../src/spacecmd/softwarechannel.py:496
 #, python-format
