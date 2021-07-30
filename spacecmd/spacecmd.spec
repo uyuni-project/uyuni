@@ -48,7 +48,6 @@ Version:        4.3.0
 Release:        0
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
-Group:          Applications/System
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni packagers <uyuni-devel@lists.opensuse.org>
 Group:          admin
