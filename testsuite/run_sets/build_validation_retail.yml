@@ -1,0 +1,19 @@
+# This file describes the order of features in a Build Validation test suite run.
+
+## Prepare configuration for all retail terminals and buildhosts
+
+- features/build_validation/retail/sle15_deployment_preparation.feature
+- features/build_validation/retail/sle12_deployment_preparation.feature
+- features/build_validation/retail/sle11_deployment_preparation.feature
+
+## Build kiwi images for all retail terminals (expected time of building is around 1 hour / 20 minutes for each terminal)
+
+- features/build_validation/retail/build_sle15_kiwi_image.feature
+- features/build_validation/retail/build_sle12_kiwi_image.feature
+- features/build_validation/retail/build_sle11_kiwi_image.feature
+
+## Deployment of retail terminals one by one (these tests mustn't be executed on parallel)
+
+- features/build_validation/retail/deploy_sle15_terminal.feature
+- features/build_validation/retail/deploy_sle12_terminal.feature
+- features/build_validation/retail/deploy_sle11_terminal.feature

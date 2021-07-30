@@ -43,7 +43,7 @@ class GuestsCreate extends React.Component<Props, State> {
       ),
       {
         type: model.vmType,
-        memory: model.memory * 1024,
+        memory: model.memory,
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
       disks.length !== 0 ? { disks } : undefined,

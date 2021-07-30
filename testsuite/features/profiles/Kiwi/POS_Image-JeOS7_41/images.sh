@@ -24,7 +24,7 @@ test -f /.profile && . /.profile
 
 systemctl enable salt-minion.service
 
-# notify SUSE Manager about newly deployed image
+# notify Uyuni about newly deployed image
 systemctl enable image-deployed.service
 
 # install bootloader and generate boot menu

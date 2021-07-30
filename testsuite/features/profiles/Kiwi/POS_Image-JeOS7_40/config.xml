@@ -29,8 +29,8 @@
       <file name="drivers/block/virtio_blk.ko" />
     </drivers>
 
-    <!-- remove all the following repositories if you want to get their packages through SUSE Manager;
-         in that case, sync those repos in SUSE Manager, and add them to the activation key;
+    <!-- remove all the following repositories if you want to get their packages through Uyuni;
+         in that case, sync those repos in Uyuni, and add them to the activation key;
          finally, re-enable option  '- -ignore-repos-used-for-build' in file 'kiwi-image-build.sls' -->
     <repository type="rpm-md">  <!-- product -->
         <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Product-SLES/15-SP2/x86_64/product/"/>

@@ -57,8 +57,8 @@ There are also hints about [Pitfalls in writing the testsuite](documentation/pit
 
 * Release (to be run against a nightly or released *tagged* version of SUSE Manager):
 
-  * [`Manager-4.0`](https://github.com/SUSE/spacewalk/tree/Manager-4.0)
-  * [`Manager-3.2`](https://github.com/SUSE/spacewalk/tree/Manager-3.2)
+  * [`Manager-4.1`](https://github.com/SUSE/spacewalk/tree/Manager-4.1)
+  * [`Manager-4.2`](https://github.com/SUSE/spacewalk/tree/Manager-4.2)
 
 
 # Dummy packages used by the Testsuite

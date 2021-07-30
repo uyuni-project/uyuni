@@ -675,10 +675,18 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-Then(/^I add proxy record into hosts file on "([^"]*)" if avahi is used$/) do |host|
+Then(/^I ensure the "([^"]*)" resolves its own public address$/) do |host|
   node = get_target(host)
+  node.run("sed -i 's/^127\.0\.1\.1/#{node.public_ip}/' /etc/hosts")
+end
+
+Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used$/) do |select_system, host|
+  node = get_target(host)
+  record = get_target(select_system)
   if node.full_hostname.include? 'tf.local'
-    node.run("echo '#{$proxy.public_ip} #{$proxy.full_hostname} #{$proxy.hostname}' >> /etc/hosts")
+    output, _code = record.run("ip address show dev eth0")
+    ip = output.split("\n")[2].split[1].split('/')[0]
+    node.run("echo '#{record.public_ip} #{record.full_hostname} #{record.hostname}' >> /etc/hosts")
   else
     puts 'Record not added - avahi domain is not detected'
   end

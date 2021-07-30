@@ -306,4 +306,13 @@ public class VirtManagerSalt implements VirtManager {
 
         return saltApi.callSync(call, minionId);
     }
+
+    @Override
+    public Optional<List<String>> getTuningTemplates(String minionId) {
+        LocalCall<List<String>> call =
+                new LocalCall<>("virt_utils.virt_tuner_templates", Optional.empty(), Optional.empty(),
+                        new TypeToken<List<String>>() { });
+
+        return saltApi.callSync(call, minionId);
+    }
 }

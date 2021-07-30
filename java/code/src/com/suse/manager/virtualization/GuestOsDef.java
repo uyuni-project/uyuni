@@ -27,6 +27,8 @@ public class GuestOsDef {
     private String arch;
     private String type;
     private String machine;
+    private String uefiLoader;
+    private String nvramTemplate;
 
     /**
      * @return VM architecture
@@ -80,6 +82,34 @@ public class GuestOsDef {
     }
 
     /**
+     * @return value of uefiLoader
+     */
+    public String getUefiLoader() {
+        return uefiLoader;
+    }
+
+    /**
+     * @param uefiLoaderIn value of uefiLoader
+     */
+    public void setUefiLoader(String uefiLoaderIn) {
+        uefiLoader = uefiLoaderIn;
+    }
+
+    /**
+     * @return value of nvramTemplate
+     */
+    public String getNvramTemplate() {
+        return nvramTemplate;
+    }
+
+    /**
+     * @param nvramTemplateIn value of nvramTemplate
+     */
+    public void setNvramTemplate(String nvramTemplateIn) {
+        nvramTemplate = nvramTemplateIn;
+    }
+
+    /**
      * Parse the libvirt &lt;os&gt; element
      *
      * @param element XML element
@@ -94,6 +124,14 @@ public class GuestOsDef {
         def.setType(typeElement.getTextTrim());
         def.setMachine(typeElement.getAttributeValue("machine"));
 
+        Element loaderElement = element.getChild("loader");
+        if (loaderElement != null) {
+            def.setUefiLoader(loaderElement.getTextTrim());
+            Element nvramElement = element.getChild("nvram");
+            if (nvramElement != null) {
+                def.setNvramTemplate(nvramElement.getAttributeValue("template"));
+            }
+        }
         return def;
     }
 

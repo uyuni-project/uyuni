@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.virtualization.gson;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,8 +31,8 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private String osType;
     private String arch;
     private Long memory;
-    private List<DiskData> disks;
-    private List<InterfaceData> interfaces;
+    private List<DiskData> disks = new ArrayList<>();
+    private List<InterfaceData> interfaces = new ArrayList<>();
     private String graphicsType;
     @SerializedName("cobbler_profile")
     private String cobblerId;
@@ -39,6 +40,10 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private String kernelOptions;
     @SerializedName("cluster_definitions")
     private String clusterDefinitions;
+    private String template;
+    private boolean uefi;
+    private String uefiLoader;
+    private String nvramTemplate;
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -112,14 +117,14 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     }
 
     /**
-     * @return amount of memory in KiB to set
+     * @return amount of memory in MiB to set
      */
     public Long getMemory() {
         return memory;
     }
 
     /**
-     * @param memoryIn amount of memory in MB to set
+     * @param memoryIn amount of memory in MiB to set
      */
     public void setMemory(Long memoryIn) {
         memory = memoryIn;
@@ -206,6 +211,62 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
      */
     public void setClusterDefinitions(String clusterDefinitionsIn) {
         clusterDefinitions = clusterDefinitionsIn;
+    }
+
+    /**
+     * @return value of template
+     */
+    public String getTemplate() {
+        return template;
+    }
+
+    /**
+     * @param templateIn value of template
+     */
+    public void setTemplate(String templateIn) {
+        template = templateIn;
+    }
+
+    /**
+     * @return value of uefi
+     */
+    public boolean isUefi() {
+        return uefi;
+    }
+
+    /**
+     * @param uefiIn value of uefi
+     */
+    public void setUefi(boolean uefiIn) {
+        uefi = uefiIn;
+    }
+
+    /**
+     * @return value of uefiLoader
+     */
+    public String getUefiLoader() {
+        return uefiLoader;
+    }
+
+    /**
+     * @param uefiLoaderIn value of uefiLoader
+     */
+    public void setUefiLoader(String uefiLoaderIn) {
+        uefiLoader = uefiLoaderIn;
+    }
+
+    /**
+     * @return value of nvramTemplate
+     */
+    public String getNvramTemplate() {
+        return nvramTemplate;
+    }
+
+    /**
+     * @param nvramTemplateIn value of nvramTemplate
+     */
+    public void setNvramTemplate(String nvramTemplateIn) {
+        nvramTemplate = nvramTemplateIn;
     }
 
     /**

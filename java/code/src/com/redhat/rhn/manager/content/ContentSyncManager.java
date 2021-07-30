@@ -1952,7 +1952,9 @@ public class ContentSyncManager {
         List<SUSEProductSCCRepository> suseProductSCCRepositories = SUSEProductFactory.lookupPSRByChannelLabel(label);
 
         Opt.consume(suseProductSCCRepositories.stream().findFirst(),
-                () -> log.error("No product tree entry found for label: '" + label + "'"),
+                () -> {
+                    throw new ContentSyncException("No product tree entry found for label: '" + label + "'");
+                },
                 productrepo -> {
                     SUSEProduct product = productrepo.getProduct();
 
@@ -1998,73 +2000,79 @@ public class ContentSyncManager {
         List<SUSEProductSCCRepository> suseProductSCCRepositories = SUSEProductFactory.lookupPSRByChannelLabel(label);
         List<SUSEProduct> products = suseProductSCCRepositories.stream()
                 .map(s -> s.getProduct()).collect(Collectors.toList());
-        SUSEProductSCCRepository productrepo = suseProductSCCRepositories.stream().findFirst().get();
-        SUSEProduct product = productrepo.getProduct();
+        Opt.consume(suseProductSCCRepositories.stream().findFirst(),
+                () -> {
+                    throw new ContentSyncException("No product tree entry found for label: '" + label + "'");
+                },
+                productrepo -> {
+                    SUSEProduct product = productrepo.getProduct();
 
-        if (getAvailableRepositories(productrepo.getRootProduct(), product)
-                .noneMatch(e -> e.getChannelLabel().equals(label))) {
-            throw new ContentSyncException("Channel is not available: " + label);
-        }
+                    if (getAvailableRepositories(productrepo.getRootProduct(), product)
+                            .noneMatch(e -> e.getChannelLabel().equals(label))) {
+                        throw new ContentSyncException("Channel is not available: " + label);
+                    }
 
-        SCCRepository repository = productrepo.getRepository();
-        if (!repository.isAccessible()) {
-            throw new ContentSyncException("Channel is not mirrorable: " + label);
-        }
+                    SCCRepository repository = productrepo.getRepository();
+                    if (!repository.isAccessible()) {
+                        throw new ContentSyncException("Channel is not mirrorable: " + label);
+                    }
 
-        // Create the channel
-        Channel dbChannel = new Channel();
-        dbChannel.setBaseDir("/dev/null");
-        // from product
-        dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(product.getArch(), label));
-        dbChannel.setChannelFamily(product.getChannelFamily());
-        // Checksum type is only a dummy here. spacewalk-repo-sync will update it
-        // and set it to the type used in the (last) repo to hash the primary file
-        dbChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
-        // channel['summary'] = product.get('uiname')
-        // channel['description'] = product.find('description').text or channel['summary']
-        dbChannel.setLabel(label);
-        dbChannel.setName(productrepo.getChannelName());
-        dbChannel.setSummary(product.getFriendlyName());
-        dbChannel.setDescription(Optional.ofNullable(product.getDescription()).orElse(product.getFriendlyName()));
-        dbChannel.setParentChannel(MgrSyncUtils.getChannel(productrepo.getParentChannelLabel()));
-        dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
-        dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
-        dbChannel.setUpdateTag(productrepo.getUpdateTag());
-        dbChannel.setInstallerUpdates(repository.isInstallerUpdates());
+                    // Create the channel
+                    Channel dbChannel = new Channel();
+                    dbChannel.setBaseDir("/dev/null");
+                    // from product
+                    dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(product.getArch(), label));
+                    dbChannel.setChannelFamily(product.getChannelFamily());
+                    // Checksum type is only a dummy here. spacewalk-repo-sync will update it
+                    // and set it to the type used in the (last) repo to hash the primary file
+                    dbChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
+                    // channel['summary'] = product.get('uiname')
+                    // channel['description'] = product.find('description').text or channel['summary']
+                    dbChannel.setLabel(label);
+                    dbChannel.setName(productrepo.getChannelName());
+                    dbChannel.setSummary(product.getFriendlyName());
+                    dbChannel.setDescription(
+                            Optional.ofNullable(product.getDescription()).orElse(product.getFriendlyName()));
+                    dbChannel.setParentChannel(MgrSyncUtils.getChannel(productrepo.getParentChannelLabel()));
+                    dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
+                    dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
+                    dbChannel.setUpdateTag(productrepo.getUpdateTag());
+                    dbChannel.setInstallerUpdates(repository.isInstallerUpdates());
 
-        // Create or link the content source
-        Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
-        if (auth.isPresent()) {
-            String url = contentSourceUrlOverwrite(repository, auth.get().getUrl(), mirrorUrl);
-            ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
-            if (source == null) {
-                source = new ContentSource();
-                source.setLabel(productrepo.getChannelLabel());
-                source.setMetadataSigned(repository.isSigned());
-                source.setOrg(null);
-                source.setSourceUrl(url);
-                source.setType(ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
-            }
-            else {
-                // update the URL as the token might have changed
-                source.setSourceUrl(url);
-            }
-            ChannelFactory.save(source);
-            dbChannel.getSources().add(source);
-            auth.get().setContentSource(source);
-        }
+                    // Create or link the content source
+                    Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
+                    if (auth.isPresent()) {
+                        String url = contentSourceUrlOverwrite(repository, auth.get().getUrl(), mirrorUrl);
+                        ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
+                        if (source == null) {
+                            source = new ContentSource();
+                            source.setLabel(productrepo.getChannelLabel());
+                            source.setMetadataSigned(repository.isSigned());
+                            source.setOrg(null);
+                            source.setSourceUrl(url);
+                            source.setType(ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
+                        }
+                        else {
+                            // update the URL as the token might have changed
+                            source.setSourceUrl(url);
+                        }
+                        ChannelFactory.save(source);
+                        dbChannel.getSources().add(source);
+                        auth.get().setContentSource(source);
+                    }
 
-        // Save the channel
-        ChannelFactory.save(dbChannel);
+                    // Save the channel
+                    ChannelFactory.save(dbChannel);
 
-         // Create the product/channel relations
-         for (SUSEProduct p : products) {
-             SUSEProductChannel spc = new SUSEProductChannel();
-             spc.setProduct(p);
-             spc.setChannel(dbChannel);
-             spc.setMandatory(productrepo.isMandatory());
-             SUSEProductFactory.save(spc);
-         }
+                     // Create the product/channel relations
+                     for (SUSEProduct p : products) {
+                         SUSEProductChannel spc = new SUSEProductChannel();
+                         spc.setProduct(p);
+                         spc.setChannel(dbChannel);
+                         spc.setMandatory(productrepo.isMandatory());
+                         SUSEProductFactory.save(spc);
+                     }
+                });
     }
 
     /**

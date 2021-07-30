@@ -17,6 +17,7 @@ import { GuestPropertiesTraditional } from "./properties/guest-properties-tradit
 import { VirtualizationDomainsCapsApi } from "./virtualization-domains-caps-api";
 import { VirtualizationListRefreshApi } from "../virtualization-list-refresh-api";
 import { VirtualizationPoolCapsApi } from "../pools/virtualization-pools-capabilities-api";
+import { TemplatesMessages } from "./properties/templates";
 
 type Props = {
   host: any;
@@ -188,6 +189,29 @@ export function GuestProperties(props: Props) {
                                       .filter((item, index, array) => array.indexOf(item) === index)}
                                   />
                                 )}
+                                <Check
+                                  name="uefi"
+                                  label={t('Enable UEFI')}
+                                  divClass="col-md-6 col-md-offset-3"
+                                />
+                                {model["uefi"] && (
+                                  <>
+                                    <Text
+                                      name="uefiLoader"
+                                      label={t('UEFI firmware path')}
+                                      required={model["uefi"] && !props.host.uefiAutoLoader}
+                                      labelClass="col-md-3"
+                                      divClass="col-md-6"
+                                    />
+                                    <Text
+                                      name="nvramTemplate"
+                                      label={t('NVRAM template path')}
+                                      required={model["uefi"] && !props.host.uefiAutoLoader}
+                                      labelClass="col-md-3"
+                                      divClass="col-md-6"
+                                    />
+                                  </>
+                                )}
                                 {initialModel.vmType === undefined && props.cobblerProfiles !== {} && (
                                   <>
                                     <Select
@@ -242,6 +266,25 @@ export function GuestProperties(props: Props) {
                                         required={model["in_cluster"]}
                                       />
                                     </>
+                                  )
+                                }
+                                { initialModel.name === undefined && props.host.templates && (
+                                    <Select
+                                      labelClass="col-md-3"
+                                      divClass="col-md-6"
+                                      name="template"
+                                      label={t("Template")}
+                                      options={props.host.templates}
+                                      formatOptionLabel={
+                                        ({value}) => {
+                                          const description = TemplatesMessages[value];
+                                           if (description != null) {
+                                             return `${value} - ${description}`;
+                                           }
+                                           return value;
+                                        }
+                                      }
+                                    />
                                   )
                                 }
                               </Panel>,

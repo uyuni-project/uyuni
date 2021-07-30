@@ -21,8 +21,6 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -225,17 +223,23 @@ public class VirtualizationActionHelper {
             }
             action.setName(actionName);
 
-            action.setType(data.getType());
+            GuestCreateDetails details = new GuestCreateDetails();
+            action.setDetails(details);
+            details.setType(data.getType());
             // So far the salt virt.update function doesn't allow renaming a guest,
             // and that is only possible for the KVM driver.
-            action.setGuestName(data.getName());
-            action.setOsType(data.getOsType());
-            action.setMemory(data.getMemory());
-            action.setVcpus(data.getVcpu());
-            action.setArch(data.getArch());
-            action.setGraphicsType(data.getGraphicsType());
-            action.setKernelOptions(data.getKernelOptions());
-            action.setClusterDefinitions(data.getClusterDefinitions());
+            details.setName(data.getName());
+            details.setOsType(data.getOsType());
+            details.setMemory(data.getMemory());
+            details.setVcpu(data.getVcpu());
+            details.setArch(data.getArch());
+            details.setGraphicsType(data.getGraphicsType());
+            details.setKernelOptions(data.getKernelOptions());
+            details.setClusterDefinitions(data.getClusterDefinitions());
+            details.setTemplate(data.getTemplate());
+            details.setUefi(data.isUefi());
+            details.setUefiLoader(data.getUefiLoader());
+            details.setNvramTemplate(data.getNvramTemplate());
 
             if (name.isEmpty() && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
                 // Create cobbler profile
@@ -250,39 +254,36 @@ public class VirtualizationActionHelper {
                 cobblerCmd.setKickstartHost(ksHost);
                 cobblerCmd.store();
 
-                action.setCobblerSystem(cobblerCmd.getCobblerSystemRecordName());
-                action.setKickstartHost(ksHost);
+                details.setCobblerSystem(cobblerCmd.getCobblerSystemRecordName());
+                details.setKickstartHost(ksHost);
             }
 
             if (data.getDisks() != null) {
-                action.setDisks(data.getDisks().stream().map(disk -> {
-                    VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
-                    details.setDevice(disk.getDevice());
-                    details.setTemplate(disk.getTemplate());
-                    details.setSize(disk.getSize());
-                    details.setBus(disk.getBus());
-                    details.setPool(disk.getPool());
-                    details.setSourceFile(disk.getSourceFile());
-                    details.setFormat(disk.getFormat());
-                    details.setAction(action);
-                    return details;
+                details.setDisks(data.getDisks().stream().map(disk -> {
+                    VirtualGuestsUpdateActionJson.DiskData diskDetails = details.new DiskData();
+                    diskDetails.setDevice(disk.getDevice());
+                    diskDetails.setTemplate(disk.getTemplate());
+                    diskDetails.setSize(disk.getSize());
+                    diskDetails.setBus(disk.getBus());
+                    diskDetails.setPool(disk.getPool());
+                    diskDetails.setSourceFile(disk.getSourceFile());
+                    diskDetails.setFormat(disk.getFormat());
+                    return diskDetails;
                 }).collect(Collectors.toList()));
             }
 
             if (data.getInterfaces() != null) {
-                action.setInterfaces(data.getInterfaces().stream().map(nic -> {
-                    VirtualizationCreateActionInterfaceDetails details =
-                            new VirtualizationCreateActionInterfaceDetails();
-                    details.setType(nic.getType());
-                    details.setSource(nic.getSource());
-                    details.setMac(nic.getMac());
-                    details.setAction(action);
-                    return details;
+                details.setInterfaces(data.getInterfaces().stream().map(nic -> {
+                    VirtualGuestsUpdateActionJson.InterfaceData ifaceDetails = details.new InterfaceData();
+                    ifaceDetails.setType(nic.getType());
+                    ifaceDetails.setSource(nic.getSource());
+                    ifaceDetails.setMac(nic.getMac());
+                    return ifaceDetails;
                 }).collect(Collectors.toList()));
             }
-            action.setRemoveDisks(data.getDisks() != null && data.getDisks().isEmpty());
+            details.setRemoveDisks(data.getDisks() != null && data.getDisks().isEmpty());
 
-            action.setRemoveInterfaces(data.getInterfaces() != null && data.getInterfaces().isEmpty());
+            details.setRemoveInterfaces(data.getInterfaces() != null && data.getInterfaces().isEmpty());
             return action;
         };
 

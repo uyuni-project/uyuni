@@ -1,3 +1,11 @@
+- Add UEFI support for VM creation
+- Add virt-tuner templates to VM creation
+- Add missing symlinks to generate the "certs" state for
+  SLE Micro 5.0 and openSUSE MicroOS minions (bsc#1188503)
+- Remove systemid file on salt client cleanup
+- Skip 'update-ca-certificates' run if the certs are updated automatically
+- Fix parameters for 'runplaybook' state (bsc#1188395)
+- Parameterised apache document root.
 - Add support for bootstrapping Raspbian 9 and 10
 - Add support for bootstrapping with salt bundle
 - Add Rocky Linux 8 support

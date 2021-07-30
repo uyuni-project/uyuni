@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 // D3 UI "components" used for visualization
 
 // Add a filter to given selection

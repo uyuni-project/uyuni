@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -577,6 +578,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<ProductTreeEntry>>() {}.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
+
+        try {
+            Channel channelWithWrongLabel = ChannelFactoryTest.createTestChannel(user.getOrg());
+            //force use an non-existing label (mgr-sync from CLI can cause it)
+            channelWithWrongLabel.setLabel("non-existing-label");
+            ContentSyncManager.updateChannel(channelWithWrongLabel);
+            fail("update non-existing-channel should fail");
+        }
+        catch (ContentSyncException e) {
+            assertContains(e.getMessage(), "No product tree entry found for label:");
+        }
+
         csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1370,6 +1383,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         ContentSyncManager csm = new ContentSyncManager();
+
+        try {
+            csm.addChannel("non-existing-channel", null);
+            fail("adding non-existing-channel should fail");
+        }
+        catch (ContentSyncException e) {
+            assertContains(e.getMessage(), "No product tree entry found for label:");
+        }
+
         try {
             csm.addChannel("sles12-updates-x86_64", null);
             fail("adding sles12-updates-x86_64 should not work here");

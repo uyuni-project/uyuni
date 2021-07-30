@@ -260,6 +260,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
                'routers'                  => 'dhcpd#subnets#0#routers#0',
                'next server'              => 'dhcpd#subnets#0#next_server',
+               'pxeboot next server'      => 'dhcpd#hosts#2#next_server',
                'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
                'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
                'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
@@ -316,6 +317,7 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'listen interfaces'               => 'dhcpd#listen_interfaces#0',
                'network mask'                    => 'dhcpd#subnets#0#netmask',
                'filename'                        => 'dhcpd#subnets#0#filename',
+               'pxeboot filename'                => 'dhcpd#hosts#2#filename',
                'first reserved hostname'         => 'dhcpd#hosts#0#$key',
                'second reserved hostname'        => 'dhcpd#hosts#1#$key',
                'third reserved hostname'         => 'dhcpd#hosts#2#$key',
@@ -383,6 +385,7 @@ When(/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
   fieldids = { 'third CNAME name'   => 'bind#available_zones#0#records#CNAME#2#1',
                'third name server'  => 'bind#available_zones#2#soa#ns',
                'fifth A name'       => 'bind#available_zones#2#records#A#0#0',
+               'sixth A name'       => 'bind#available_zones#2#records#A#1#0',
                'third NS'           => 'bind#available_zones#2#records#NS#@#0' }
   fill_in fieldids[field], with: "#{system_name}."
 end

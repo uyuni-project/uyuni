@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-13 13:24+0000\n"
+"POT-Creation-Date: 2021-07-29 12:44+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -258,11 +258,11 @@ msgstr "Annulla"
 msgid "Delete"
 msgstr ""
 
-#: ../html/src/components/dialog/dialog.stories.js:20
+#: ../html/src/components/dialog/dialog.stories.tsx:20
 msgid "Delete project"
 msgstr ""
 
-#: ../html/src/components/dialog/dialog.stories.js:23
+#: ../html/src/components/dialog/dialog.stories.tsx:23
 msgid "Are you sure you want to delete project "
 msgstr ""
 
@@ -315,63 +315,23 @@ msgstr ""
 msgid "Toggle section visibility"
 msgstr ""
 
-#: ../html/src/components/input/Check.stories.js:31
-#: ../html/src/components/input/DateTime.stories.js:35
-#: ../html/src/components/input/FormMultiInput.stories.js:75
-#: ../html/src/components/input/FormMultiInput.stories.js:132
-#: ../html/src/components/input/FormMultiInput.stories.js:181
-#: ../html/src/components/input/FormMultiInput.stories.js:262
-#: ../html/src/components/input/Password.stories.js:36
-#: ../html/src/components/input/Radio.stories.js:39
-#: ../html/src/components/input/Radio.stories.js:69
-#: ../html/src/components/input/Radio.stories.js:99
-#: ../html/src/components/input/Radio.stories.js:130
-#: ../html/src/components/input/Range.stories.js:50
-#: ../html/src/components/input/Select.stories.js:36
-#: ../html/src/components/input/Text.stories.js:44
-#: ../html/src/components/input/form.stories.js:36
+#: ../html/src/components/input/Check.stories.tsx:31
+#: ../html/src/components/input/DateTime.stories.tsx:35
+#: ../html/src/components/input/FormMultiInput.stories.tsx:77
+#: ../html/src/components/input/FormMultiInput.stories.tsx:134
+#: ../html/src/components/input/FormMultiInput.stories.tsx:183
+#: ../html/src/components/input/FormMultiInput.stories.tsx:264
+#: ../html/src/components/input/Password.stories.tsx:36
+#: ../html/src/components/input/Radio.stories.tsx:39
+#: ../html/src/components/input/Radio.stories.tsx:69
+#: ../html/src/components/input/Radio.stories.tsx:99
+#: ../html/src/components/input/Radio.stories.tsx:130
+#: ../html/src/components/input/Range.stories.tsx:50
+#: ../html/src/components/input/Select.stories.tsx:36
+#: ../html/src/components/input/Text.stories.tsx:44
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
-msgstr ""
-
-#: ../html/src/components/input/DateTime.stories.js:27
-msgid "Time"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.js:26
-#: ../html/src/components/input/FormMultiInput.stories.js:94
-#: ../html/src/components/input/FormMultiInput.stories.js:151
-#: ../html/src/components/input/FormMultiInput.stories.js:207
-msgid "Users"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/Text.stories.js:26
-#: ../html/src/components/input/form.stories.js:26
-msgid "First Name"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.js:54
-#: ../html/src/components/input/FormMultiInput.stories.js:63
-#: ../html/src/components/input/FormMultiInput.stories.js:120
-#: ../html/src/components/input/FormMultiInput.stories.js:236
-#: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
-#: ../html/src/components/input/Text.stories.js:28
-#: ../html/src/components/input/Text.stories.js:37
-#: ../html/src/components/input/form.stories.js:28
-msgid "Minimum 2 characters"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.js:61
-msgid "Last Name"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.js:118
-#: ../html/src/manager/login/login.tsx:126
-msgid "Login"
 msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
@@ -379,69 +339,30 @@ msgstr ""
 msgid "Remove"
 msgstr "Rimuovi"
 
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
+msgid "Minimum 2 characters"
+msgstr ""
+
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
 msgstr ""
 
-#: ../html/src/components/input/Password.stories.js:26
-#: ../html/src/manager/images/image-store-edit.tsx:187
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
-msgid "Password"
-msgstr "Password"
-
-#: ../html/src/components/input/Password.stories.js:28
-msgid "Minimum 4 characters"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.js:26
-#: ../html/src/components/input/Radio.stories.js:55
-#: ../html/src/components/input/Radio.stories.js:86
-#: ../html/src/components/input/Radio.stories.js:116
-#: ../html/src/components/input/Select.stories.js:27
-msgid "Level"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.js:31
-#: ../html/src/components/input/Radio.stories.js:61
-#: ../html/src/components/input/Radio.stories.js:91
-#: ../html/src/components/input/Radio.stories.js:122
-msgid "Beginner"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.js:32
-#: ../html/src/components/input/Radio.stories.js:62
-#: ../html/src/components/input/Radio.stories.js:92
-#: ../html/src/components/input/Radio.stories.js:123
-msgid "Normal"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.js:33
-#: ../html/src/components/input/Radio.stories.js:63
-#: ../html/src/components/input/Radio.stories.js:93
-#: ../html/src/components/input/Radio.stories.js:124
-msgid "Expert"
-msgstr ""
-
-#: ../html/src/components/input/Range.stories.js:34
-msgid "Port range"
-msgstr ""
-
-#: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr ""
 
-#: ../html/src/components/input/Select.stories.js:62
+#: ../html/src/components/input/Select.stories.tsx:62
 msgid "Flavor"
 msgstr ""
 
-#: ../html/src/components/input/Select.stories.js:64
+#: ../html/src/components/input/Select.stories.tsx:64
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr ""
 
-#: ../html/src/components/input/Select.stories.js:65
+#: ../html/src/components/input/Select.stories.tsx:65
 msgid "No flavors"
 msgstr ""
 
@@ -595,8 +516,8 @@ msgstr ""
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:286
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -805,7 +726,7 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:123
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:124
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:52
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:217
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:239
@@ -961,7 +882,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:182
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
 msgstr ""
 
@@ -1201,7 +1122,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:128
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:221
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
@@ -1815,7 +1736,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:488
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:302
 msgid "Type"
 msgstr ""
 
@@ -2101,6 +2022,7 @@ msgid "Live patching based on a SUSE product"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
 msgstr ""
 
@@ -2761,7 +2683,7 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:221
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:108
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
 msgid "Update"
@@ -2840,6 +2762,12 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
 msgid "Username"
 msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.tsx:187
+#: ../html/src/manager/login/login.tsx:137
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
+msgid "Password"
+msgstr "Password"
 
 #: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Edit Image Store: '"
@@ -3268,6 +3196,10 @@ msgstr ""
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
 msgid "Sign In"
+msgstr ""
+
+#: ../html/src/manager/login/login.tsx:126
+msgid "Login"
 msgstr ""
 
 #: ../html/src/manager/login/use-login-api.ts:12
@@ -4699,46 +4631,46 @@ msgstr ""
 msgid "Action Status"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:245
 msgid "Can not contain the following characters: /\\"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:139
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:140
 msgid "Hypervisor"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:150
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:151
 msgid "Virtual Machine Type"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:162
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:163
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:55
 msgid "Maximum Memory (MiB)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:165
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:174
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:57
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:66
 msgid "A positive integer is required"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:171
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:172
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:64
 msgid "Virtual CPU Count"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:196
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:220
 msgid "Auto-installation Profile"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:212
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:236
 msgid "Kernel options"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:255
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr ""
 
@@ -4897,6 +4829,10 @@ msgstr "Reti"
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:581
 msgid "Clear Fields"
 msgstr "Cancella i campi"
+
+#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
+msgid "Single virtual machine using almost all the host resources"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"
@@ -5446,102 +5382,102 @@ msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:133
+#: ../html/src/manager/visualization/data-tree.ts:134
 msgid "  security advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:139
+#: ../html/src/manager/visualization/data-tree.ts:140
 msgid "  bug fix advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:149
+#: ../html/src/manager/visualization/data-tree.ts:150
 msgid "  product enhancement advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:195
+#: ../html/src/manager/visualization/data-tree.ts:196
 msgid "Add/remove system from SSM"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:253
+#: ../html/src/manager/visualization/data-tree.ts:254
 msgid "Add children to SSM"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:62
+#: ../html/src/manager/visualization/hierarchy.tsx:63
 msgid "Filtering"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:71
+#: ../html/src/manager/visualization/hierarchy.tsx:72
 msgid "Partitioning"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:94
+#: ../html/src/manager/visualization/hierarchy.tsx:95
 msgid "Show systems with:"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:123
+#: ../html/src/manager/visualization/hierarchy.tsx:124
 msgid "security advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:128
+#: ../html/src/manager/visualization/hierarchy.tsx:129
 msgid "bug fix advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:131
+#: ../html/src/manager/visualization/hierarchy.tsx:132
 msgid "product enhancement advisories"
 msgstr ""
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.tsx:142
 msgid "Filter by system name"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.tsx:142
 msgid "e.g., client.nue.sles"
 msgstr ""
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.tsx:148
 msgid "Filter by system base channel"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.tsx:148
 msgid "e.g., SLE12"
 msgstr ""
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "Filter by system installed products"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "e.g., SLES"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:198
+#: ../html/src/manager/visualization/hierarchy.tsx:199
 msgid "Partition systems based on whether there are patches for them:"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:240
+#: ../html/src/manager/visualization/hierarchy.tsx:241
 msgid "There was an error fetching data from the server."
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:283
+#: ../html/src/manager/visualization/hierarchy.tsx:284
 msgid " filters"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:42
+#: ../html/src/manager/visualization/ui/components.ts:44
 msgid "Partition systems by given check-in time:"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:149
+#: ../html/src/manager/visualization/ui/components.ts:151
 msgid "Add a grouping level"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:193
+#: ../html/src/manager/visualization/ui/components.ts:195
 msgid "Select a system group"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:245
+#: ../html/src/manager/visualization/ui/components.ts:247
 msgid "Split into groups"
 msgstr ""
 

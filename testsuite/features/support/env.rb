@@ -334,7 +334,7 @@ Before('@uyuni') do
   skip_this_scenario unless $product == 'Uyuni'
 end
 
-# do test only if HTTP proxy for SUSE Manager is defined
+# do test only if HTTP proxy for Uyuni is defined
 Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
 end

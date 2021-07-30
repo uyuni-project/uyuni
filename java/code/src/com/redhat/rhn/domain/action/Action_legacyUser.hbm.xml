@@ -353,35 +353,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction"
                 discriminator-value="508" lazy="true">
-          <list name="disks" lazy="true" cascade="save-update">
-              <key column="action_id"/>
-              <list-index column="idx"/>
-              <one-to-many
-                  class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails" />
-          </list>
-
-          <list name="interfaces" lazy="true"  cascade="save-update">
-              <key column="action_id"/>
-              <list-index column="idx"/>
-              <one-to-many
-                  class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails" />
-          </list>
           <join table="rhnActionVirtCreate">
             <key column="action_id"/>
             <property name="uuid" type="string" column="uuid"/>
-            <property name="type" type="string" column="vm_type"/>
-            <property name="guestName" type="string" column="vm_name"/>
-            <property name="osType" type="string" column="os_type"/>
-            <property name="memory" type="long" column="memory"/>
-            <property name="vcpus" type="long" column="vcpus"/>
-            <property name="arch" type="string" column="arch"/>
-            <property name="graphicsType" type="string" column="graphics_type"/>
-            <property name="removeDisks" type="yes_no" column="remove_disks"/>
-            <property name="removeInterfaces" type="yes_no" column="remove_interfaces"/>
-            <property name="cobblerSystem" type="string" column="cobbler_system"/>
-            <property name="kickstartHost" type="string" column="kickstart_host"/>
-            <property name="kernelOptions" type="string" column="kernel_options"/>
-            <property name="clusterDefinitions" type="string" column="cluster_definitions"/>
+            <property name="detailsAsString" type="string" column="details"/>
           </join>
         </subclass>
 
@@ -638,19 +613,7 @@ select {ra.*}
     (select NULL as uuid, NULL as vcpu from dual) ra_8_,
     (select NULL as uuid from dual) ra_10_,
     (select NULL as uuid,
-            NULL as vm_type,
-            NULL as vm_name,
-            NULL as os_type,
-            NULL as memory,
-            NULL as vcpus,
-            NULL as arch,
-            NULL as graphics_type,
-            NULL as remove_disks,
-            NULL as remove_interfaces,
-            NULL as cobbler_system,
-            NULL as kickstart_host,
-            NULL as kernel_options,
-            NULL as cluster_definitions from dual) ra_11_,
+            NULL as details from dual) ra_11_,
     (select NULL as pool_name from dual) ra_12_,
     (select NULL as pool_name from dual) ra_13_,
     (select NULL as pool_name from dual) ra_14_,
@@ -788,19 +751,7 @@ select sa.server_id
                      (select NULL as uuid, NULL as vcpu from dual) ra_8_,
                      (select NULL as uuid from dual) ra_10_,
                      (select NULL as uuid,
-                             NULL as vm_type,
-                             NULL as vm_name,
-                             NULL as os_type,
-                             NULL as memory,
-                             NULL as vcpus,
-                             NULL as arch,
-                             NULL as graphics_type,
-                             NULL as remove_disks,
-                             NULL as remove_interfaces,
-                             NULL as cobbler_system,
-                             NULL as kickstart_host,
-                             NULL as kernel_options,
-                             NULL as cluster_definitions from dual) ra_11_,
+                             NULL as details from dual) ra_11_,
                      (select NULL as pool_name from dual) ra_12_,
                      (select NULL as pool_name from dual) ra_13_,
                      (select NULL as pool_name from dual) ra_14_,

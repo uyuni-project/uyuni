@@ -1,3 +1,8 @@
+- Force a one-off VACUUM ANALYZE
+- Upgrade scripts idempotency fixes
+- Simplify the VM creation action in DB
+- Refresh virtual host pillar to clear the virtpoller beacon (bsc#1188393)
+- Add Beijing timezone to selectable timezones (bsc#1188193)
 - Add Rocky Linux 8 key and vendor
 - Add 'test' flag to Ansible playbook actions
 - Add Kiwi commandline options to Kiwi profile

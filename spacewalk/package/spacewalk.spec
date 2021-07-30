@@ -132,8 +132,8 @@ Conflicts:      postgresql-contrib-implementation >= 13
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12
 # we do not support postgresql versions > 13.x yet
-Conflicts:      postgresql >= 13
-Conflicts:      postgresql-contrib >= 13
+Conflicts:      postgresql >= 14
+Conflicts:      postgresql-contrib >= 14
 %endif # if suse_version
 
 %description postgresql

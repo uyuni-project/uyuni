@@ -12,6 +12,6 @@
 -- in this software or its documentation.
 --
 
-ALTER TABLE rhnActionVirtCreateDiskDetails
+ALTER TABLE IF EXISTS rhnActionVirtCreateDiskDetails
 ADD COLUMN IF NOT EXISTS format VARCHAR(10);
 

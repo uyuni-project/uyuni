@@ -57,7 +57,7 @@ Feature: Retracted patches
     And I follow "Packages" in the content area
     And I follow "rute-dummy-2.0-1.2.x86_64"
     And I follow "Target Systems"
-    Then I should see "sle_minion" hostname
+    And I refresh page until I see "sle_minion" hostname as text
    
   Scenario: Target systems for retracted packages should be empty
     When I follow the left menu "Software > Channel List > All"
@@ -101,7 +101,7 @@ Feature: Retracted patches
     Then the table row for "rute-dummy-2.1-1.1.x86_64" should contain "retracted" icon
 
   Scenario: SSM: Retracted package should not be available for installation
-    When I follow the left menu "Home > Overview"
+    When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client 
     And I follow the left menu "Systems > System Set Manager > Overview"

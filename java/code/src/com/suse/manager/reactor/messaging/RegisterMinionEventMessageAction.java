@@ -353,8 +353,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         else if (!machineId.equals(oldMachineId)) {
             SaltStateGeneratorService.INSTANCE.removeConfigChannelAssignments(registeredMinion);
             SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(
-                    registeredMinion, Optional.empty());
-            StatesAPI.removePackageState(registeredMinion);
+                    registeredMinion.getMachineId(), Optional.empty());
+            StatesAPI.removePackageState(registeredMinion.getMachineId());
 
             registeredMinion.setMachineId(machineId);
             registeredMinion.setDigitalServerId(machineId);

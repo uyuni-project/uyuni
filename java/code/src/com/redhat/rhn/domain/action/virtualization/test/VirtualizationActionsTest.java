@@ -20,8 +20,6 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationGuestPackageInstall;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationHostPackageInstall;
@@ -36,8 +34,10 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestActio
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import com.suse.manager.virtualization.GuestCreateDetails;
 import com.suse.manager.virtualization.PoolSourceAuthentication;
 import com.suse.manager.virtualization.PoolSourceDevice;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,31 +148,30 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
     public void testCreateLookup() throws Exception {
         VirtualizationCreateGuestAction a1 = (VirtualizationCreateGuestAction)ActionFactoryTest
                 .createAction(user, ActionFactory.TYPE_VIRTUALIZATION_CREATE);
-        a1.setType("kvm");
-        a1.setName("guest0");
-        a1.setArch("x86_64");
-        a1.setMemory(1024L);
-        a1.setVcpus(2L);
-        a1.setOsType("hvm");
-        a1.setKernelOptions("kernelopts");
-        a1.setCobblerSystem("cobbler:system:id");
-        a1.setKickstartHost("https://cobbler.host.local");
+        a1.setDetails(new GuestCreateDetails());
+        a1.getDetails().setType("kvm");
+        a1.getDetails().setName("guest0");
+        a1.getDetails().setArch("x86_64");
+        a1.getDetails().setMemory(1024L);
+        a1.getDetails().setVcpu(2L);
+        a1.getDetails().setOsType("hvm");
+        a1.getDetails().setKernelOptions("kernelopts");
+        a1.getDetails().setCobblerSystem("cobbler:system:id");
+        a1.getDetails().setKickstartHost("https://cobbler.host.local");
 
-        List<VirtualizationCreateActionDiskDetails> disks = new ArrayList<>();
-        VirtualizationCreateActionDiskDetails disk0 = new VirtualizationCreateActionDiskDetails();
+        List<VirtualGuestsUpdateActionJson.DiskData> disks = new ArrayList<>();
+        VirtualGuestsUpdateActionJson.DiskData disk0 = a1.getDetails().new DiskData();
         disk0.setTemplate("templateimage.qcow2");
         disk0.setBus("virtio");
-        disk0.setAction(a1);
         disk0.setPool("default");
         disks.add(disk0);
-        a1.setDisks(disks);
+        a1.getDetails().setDisks(disks);
 
         List<String> nets = Arrays.asList("net0", "net1");
-        a1.setInterfaces(
+        a1.getDetails().setInterfaces(
             nets.stream().map(net -> {
-                VirtualizationCreateActionInterfaceDetails detail = new VirtualizationCreateActionInterfaceDetails();
+                VirtualGuestsUpdateActionJson.InterfaceData detail = a1.getDetails().new InterfaceData();
                 detail.setSource(net);
-                detail.setAction(a1);
                 return detail;
             }).collect(Collectors.toList()));
 
@@ -183,23 +182,23 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertNotNull(a);
         assertTrue(a instanceof VirtualizationCreateGuestAction);
         VirtualizationCreateGuestAction actual = (VirtualizationCreateGuestAction)a;
-        assertEquals("kvm", actual.getType());
-        assertEquals("guest0", actual.getName());
-        assertEquals("x86_64", actual.getArch());
-        assertEquals(Long.valueOf(1024), actual.getMemory());
-        assertEquals(Long.valueOf(2), actual.getVcpus());
-        assertEquals("hvm", actual.getOsType());
-        assertEquals("kernelopts", actual.getKernelOptions());
-        assertEquals("cobbler:system:id", actual.getCobblerSystem());
-        assertEquals("https://cobbler.host.local", actual.getKickstartHost());
+        assertEquals("kvm", actual.getDetails().getType());
+        assertEquals("guest0", actual.getDetails().getName());
+        assertEquals("x86_64", actual.getDetails().getArch());
+        assertEquals(Long.valueOf(1024), actual.getDetails().getMemory());
+        assertEquals(Long.valueOf(2), actual.getDetails().getVcpu());
+        assertEquals("hvm", actual.getDetails().getOsType());
+        assertEquals("kernelopts", actual.getDetails().getKernelOptions());
+        assertEquals("cobbler:system:id", actual.getDetails().getCobblerSystem());
+        assertEquals("https://cobbler.host.local", actual.getDetails().getKickstartHost());
 
-        assertEquals(1, actual.getDisks().size());
-        assertEquals("templateimage.qcow2", actual.getDisks().get(0).getTemplate());
-        assertEquals("virtio", actual.getDisks().get(0).getBus());
-        assertEquals("default", actual.getDisks().get(0).getPool());
-        assertEquals(2, actual.getInterfaces().size());
-        assertEquals("net0", actual.getInterfaces().get(0).getSource());
-        assertEquals("net1", actual.getInterfaces().get(1).getSource());
+        assertEquals(1, actual.getDetails().getDisks().size());
+        assertEquals("templateimage.qcow2", actual.getDetails().getDisks().get(0).getTemplate());
+        assertEquals("virtio", actual.getDetails().getDisks().get(0).getBus());
+        assertEquals("default", actual.getDetails().getDisks().get(0).getPool());
+        assertEquals(2, actual.getDetails().getInterfaces().size());
+        assertEquals("net0", actual.getDetails().getInterfaces().get(0).getSource());
+        assertEquals("net1", actual.getDetails().getInterfaces().get(1).getSource());
     }
 
     public void testPoolCreate() throws Exception {

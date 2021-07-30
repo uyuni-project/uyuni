@@ -21,8 +21,10 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait at most 300 seconds until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "xen_server"
 
-  Scenario: Setting the virtualization entitlement for Xen
+  Scenario: Show the Xen host system overview
     Given I am on the Systems overview page of this "xen_server"
+
+  Scenario: Set the virtualization entitlement for Xen
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "virtualization_host"
@@ -65,8 +67,10 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I create "test-vm" virtual machine on "xen_server"
     And I wait until I see "test-vm" text
 
+  Scenario: Show the Xen host virtualization tab
+    Given I follow "Virtualization" in the content area
+
   Scenario: Start a Xen virtual machine
-    When I follow "Virtualization" in the content area
     And I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "xen_server"
 

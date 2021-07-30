@@ -3,8 +3,6 @@ import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import { Utils } from "utils/functions";
 
-declare var Loggerhead: any;
-
 export function mapFilterFormToRequest(
   filterForm: Partial<FilterFormType>,
   projectLabel?: string,

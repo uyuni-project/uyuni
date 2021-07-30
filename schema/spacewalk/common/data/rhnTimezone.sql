@@ -323,4 +323,10 @@ values
   (sequence_nextval('rhn_timezone_id_seq'),
    'Asia/Kuala_Lumpur', 'Malaysia');
 
+insert into rhnTimezone
+  (id, olson_name, display_name)
+values
+  (sequence_nextval('rhn_timezone_id_seq'),
+   'Asia/Beijing', 'China');
+
 commit;

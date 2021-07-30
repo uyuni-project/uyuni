@@ -31,6 +31,12 @@ public class SUSEProductUpgrade extends BaseDomainHelper implements Serializable
     private SUSEProduct toProduct;
 
     /**
+     * Default constructor
+     */
+    public SUSEProductUpgrade() {
+    }
+
+    /**
      * Constructor taking two {@link SUSEProduct}s.
      * @param from original product
      * @param to target product

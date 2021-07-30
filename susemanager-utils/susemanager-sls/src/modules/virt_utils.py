@@ -13,6 +13,11 @@ try:
 except ImportError:
     pass
 
+try:
+    import virt_tuner
+except ImportError:
+    virt_tuner = None
+
 from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
@@ -216,3 +221,23 @@ def vm_definition(uuid):
             if cnx:
                 cnx.close()
         return {}
+
+
+def virt_tuner_templates():
+    """
+    Get the virt-tuner templates names
+    """
+    if virt_tuner:
+        return sorted(list(virt_tuner.templates.keys()))
+    return []
+
+
+def domain_parameters(cpu, mem, template):
+    """
+    Return the VM parameters with the potential virt-tuner template applied
+    """
+    params = {"cpu": cpu, "mem": mem}
+    if virt_tuner and template in virt_tuner.templates:
+        template_params = virt_tuner.templates[template].function()
+        params.update(template_params)
+    return params
