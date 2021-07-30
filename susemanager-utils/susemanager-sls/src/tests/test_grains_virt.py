@@ -7,7 +7,7 @@ from ..grains import virt
 
 @pytest.fixture
 def libvirt():
-    if not hasattr(virt, "libvirt"):
+    if virt.libvirt is None:
         virt.libvirt = Mock()
     return virt.libvirt
 
