@@ -18,19 +18,19 @@ Put the complexity in the step. Keep the feature free of how the test is execute
 
 ```ruby
 When(/^I start database with the command "(.*?)"$/) do |start_command|
-  $output, _code = $server.run(start_command)
+  $output = sshcmd(start_command)
 end
 
 When(/^when I stop the database with the command "(.*?)"$/) do |stop_command|
-  $output, _code = $server.run(stop_command)
+  $output = sshcmd(stop_command)
 end
 
 When(/^when I check the database status with the command "(.*?)"$/) do |check_command|
-  $output, _code = $server.run(check_command)
+  $output = sshcmd(check_command)
 end
 
 When(/^I stop the database with the command "(.*?)"$/) do |stop_command|
-  $output, _code = $server.run(stop_command)
+  $output = sshcmd(stop_command)
 end
 ```
 
@@ -53,7 +53,7 @@ As last resort, use assert and refute plus a boolean expression.
 
 ```ruby
 When(/^I start database with the command "(.*?)"$/) do |start_command|
-  $output, _code = $server.run(start_command)
+  $output = sshcmd(start_command)
 end
 
 # do something with $output then
