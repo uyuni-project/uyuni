@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-30 19:11+0000\n"
+"PO-Revision-Date: 2021-08-01 18:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5099,68 +5099,68 @@ msgstr "Odtlačok GPG:  %s"
 #: ../src/spacecmd/softwarechannel.py:496
 #, python-format
 msgid "GPG URL:          %s"
-msgstr ""
+msgstr "URL GPG:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:498
 msgid "... for the following channels:"
-msgstr ""
+msgstr "... pre nasledujúce kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:501
 msgid "Apply? [y/N]:"
-msgstr ""
+msgstr "Použiť? [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:513
 #, python-format
 msgid "Could not get details for %s"
-msgstr ""
+msgstr "Nepodarilo sa získať podrobnosti o %s"
 
 #: ../src/spacecmd/softwarechannel.py:525
 #, python-format
 msgid "Error while setting details for %s"
-msgstr ""
+msgstr "Chyba pri nastavovaní podrobností pre %s"
 
 #: ../src/spacecmd/softwarechannel.py:528
 #, python-format
 msgid "Channels changed: %d"
-msgstr ""
+msgstr "Zmenené kanály: %d"
 
 #: ../src/spacecmd/softwarechannel.py:536
 msgid "softwarechannel_details: Show the details of a software channel"
-msgstr ""
+msgstr "softwarechannel_details: Zobraziť podrobnosti o softvérovom kanáli"
 
 #: ../src/spacecmd/softwarechannel.py:537
 msgid "usage: softwarechannel_details <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_details <KANÁL ...>"
 
 #: ../src/spacecmd/softwarechannel.py:577
 #, python-format
 msgid "Label:              %s"
-msgstr ""
+msgstr "Označenie:              %s"
 
 #: ../src/spacecmd/softwarechannel.py:578
 #, python-format
 msgid "Name:               %s"
-msgstr ""
+msgstr "Názov:               %s"
 
 #: ../src/spacecmd/softwarechannel.py:579
 #, python-format
 msgid "Architecture:       %s"
-msgstr ""
+msgstr "Architektúra:       %s"
 
 #: ../src/spacecmd/softwarechannel.py:580
 #, python-format
 msgid "Parent:             %s"
-msgstr ""
+msgstr "Rodič:             %s"
 
 #: ../src/spacecmd/softwarechannel.py:581
 #, python-format
 msgid "Systems Subscribed: %s"
-msgstr ""
+msgstr "Prihlásené systémy: %s"
 
 #: ../src/spacecmd/softwarechannel.py:582
 #, python-format
 msgid "Number of Packages: %i"
-msgstr ""
+msgstr "Počet balíkov: %i"
 
 #: ../src/spacecmd/softwarechannel.py:586
 msgid "Summary"
@@ -5169,34 +5169,34 @@ msgstr "Súhrn"
 #: ../src/spacecmd/softwarechannel.py:597
 #, python-format
 msgid "GPG Key:            %s"
-msgstr ""
+msgstr "Kľúč GPG:            %s"
 
 #: ../src/spacecmd/softwarechannel.py:598
 #, python-format
 msgid "GPG Fingerprint:    %s"
-msgstr ""
+msgstr "Odtlačok GPG:    %s"
 
 #: ../src/spacecmd/softwarechannel.py:599
 #, python-format
 msgid "GPG URL:            %s"
-msgstr ""
+msgstr "URL GPG:            %s"
 
 #: ../src/spacecmd/softwarechannel.py:600
 #, python-format
 msgid "GPG CHECK:          %s"
-msgstr ""
+msgstr "OVEROVANIE GPG:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:604
 msgid "Kickstart Trees"
-msgstr ""
+msgstr "Stromy Kickstart"
 
 #: ../src/spacecmd/softwarechannel.py:622
 msgid "softwarechannel_listerrata: List the errata associated with a"
-msgstr "softwarechannel_listerrata: Vypísať zoznam opráv chýb spojených s"
+msgstr "softwarechannel_listerrata: Vypísať zoznam opráv chýb spojených so"
 
 #: ../src/spacecmd/softwarechannel.py:623
 msgid "                            software channel"
-msgstr ""
+msgstr "                            softvérovým kanálom"
 
 #: ../src/spacecmd/softwarechannel.py:624
 msgid ""
