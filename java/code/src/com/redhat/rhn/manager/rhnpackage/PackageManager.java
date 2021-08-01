@@ -348,6 +348,16 @@ public class PackageManager extends BaseManager {
     }
 
     /**
+     * Returns the list of all installed packages available for locking on a none SUSE system
+     * @param sid Server Id
+     * @param pc PageControl can also be null.
+     * @return list of packages for given server
+     */
+    public static DataResult<PackageListItem> nonSUSEsystemLockingPackages(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_installed_pkgs_non_suse_locking", pc);
+    }
+
+    /**
      * Call any template from the Package_queries with the system ID.
      *
      * @param sid
