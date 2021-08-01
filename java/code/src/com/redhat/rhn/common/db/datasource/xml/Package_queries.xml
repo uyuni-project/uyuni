@@ -512,6 +512,28 @@ ORDER BY UPPER(X.nvre)
   </query>
 </mode>
 
+<mode name="system_installed_pkgs_non_suse_locking" class="com.redhat.rhn.frontend.dto.PackageListItem">
+  <query params="sid">
+SELECT PN.name as NAME,
+       PN.name || '-' || evr_t_as_vre_simple(SPE.evr) AS NVRE,
+       PN.name || '-' || evr_t_as_vre_simple(SPE.evr) || '.' || PA.label AS NVREA,
+       PN.id || '|' || lookup_evr((SPE.evr).epoch, (SPE.evr).version, (SPE.evr).release, (SPE.evr).type) || '|' || PA.id AS ID_COMBO,
+       PA.label AS ARCH,
+       lck.pending,
+       CASE WHEN lck.server_id IS NOT NULL THEN 'Y' ELSE NULL END AS locked
+  FROM rhnServerPackage SP
+  JOIN rhnPackageName PN ON SP.name_id = PN.id
+  JOIN rhnPackageEVR SPE ON SP.evr_id = SPE.id
+  LEFT JOIN rhnPackageArch PA ON SP.package_arch_id = PA.id
+  LEFT JOIN rhnArchType AT ON AT.id = PA.arch_type_id
+  LEFT JOIN rhnlockedpackages lck ON lck.name_id = SP.name_id
+                                 AND lck.evr_id = SP.evr_id
+                                 AND lck.arch_id = SP.package_arch_id
+                                 AND lck.server_id = SP.server_id
+ WHERE SP.server_id = :sid
+  </query>
+</mode>
+
 <mode name="system_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
   SELECT (SELECT max(p.id) FROM rhnPackage p
