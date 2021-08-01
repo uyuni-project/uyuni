@@ -1,3 +1,4 @@
+- Fixed com.sun.bind issue on package update.
 - Enabled pylint for all builds.
 - Enable logging for salt SSH
 - Increase max size for uploaded files to Salt master
