@@ -24825,6 +24825,9 @@ given channel.</source>
       <trans-unit id="sdc.channels.info.change" xml:space="preserve">
         <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
       </trans-unit>
+      <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
+        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
         <context-group name="ctx">
