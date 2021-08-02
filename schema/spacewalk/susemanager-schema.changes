@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 02 10:24:28 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.22-1
 - Force a one-off VACUUM ANALYZE
 - Upgrade scripts idempotency fixes
 - Add Beijing timezone to selectable timezones (bsc#1188193)
