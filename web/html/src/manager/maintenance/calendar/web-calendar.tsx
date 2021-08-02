@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 
+import moment from "moment";
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -17,6 +19,7 @@ type WebCalendarProps = {
   messages: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
+  date?: moment.Moment | undefined;
 };
 
 type Event = {
@@ -60,12 +63,14 @@ const WebCalendar = (props: WebCalendarProps) => {
     getEvents("initial");
     setCurrentDate(getApi().currentDataManager.data.currentDate);
     // Hack: Make Fullcalendar button icons show correctly
-    jQuery(".fc-backButton-button").html('<div class="fa fa-angle-left"></div>');
-    jQuery(".fc-nextButton-button").html('<div class="fa fa-angle-right"></div>');
+    jQuery(".fc-backButton-button").attr("data-testid", "back")
+      .html('<div class="fa fa-angle-left"></div>');
+    jQuery(".fc-nextButton-button").attr("data-testid", "next")
+      .html('<div class="fa fa-angle-right"></div>');
     jQuery(".fc-skipBackButton-button").html('<div class="fa fa-angle-double-left"></div>')
-      .prop('title', t("Skip to the last maintenance window"));
+      .attr("data-testid", "skip-back").prop('title', t("Skip to the last maintenance window"));
     jQuery(".fc-skipNextButton-button").html('<div class="fa fa-angle-double-right"></div>')
-      .prop('title', t("Skip to the next maintenance window"));
+      .attr("data-testid", "skip-next").prop('title', t("Skip to the next maintenance window"));
   }, []);
 
   const getApi = () => {
@@ -179,7 +184,8 @@ const WebCalendar = (props: WebCalendarProps) => {
       case "current":
         return moment(getApi().currentDataManager.data.currentDate);
       default:
-        return moment(getApi().currentDataManager.data.dateProfileGenerator.nowDate);
+        return props.date ? props.date
+          : moment(getApi().currentDataManager.data.dateProfileGenerator.nowDate).startOf('date');
     }
   };
 
@@ -195,7 +201,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         getApi().gotoDate(getApi().currentDataManager.data.currentDate);
         break;
       default:
-        getApi().today();
+        props.date ? getApi().gotoDate(props.date.format("YYYY-MM-DD")) : getApi().today();
     }
   }
 
@@ -273,7 +279,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         timeZone={""} // Prevent FullCalendar from using the browsers set timezone
         locales={allLocales}
         // locale strings come with '_' from the backend but FullCalendar expects them with '-' so we exchange these
-        locale={window.preferredLocale.replace("_", "-")}
+        locale={window.preferredLocale ? window.preferredLocale.replace("_", "-") : "en-US"}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         customButtons={{
           skipBackButton: {

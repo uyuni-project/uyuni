@@ -2,7 +2,7 @@
 
 PYLINTRC='/etc/spacewalk-pylint.rc'
 
-for bin in /usr/bin/pylint /usr/bin/pylint-2 ; do
+for bin in /usr/bin/pylint /usr/bin/pylint-2* ; do
     # check if pylint works (see bz1456049)
     if "$bin" --version 2>/dev/null ; then
         PYLINT="$bin"
