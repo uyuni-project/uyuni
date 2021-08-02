@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-08-01 18:11+0000\n"
+"PO-Revision-Date: 2021-08-02 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5207,31 +5207,32 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:682
 msgid "softwarechannel_listarches: lists the potential software"
-msgstr ""
+msgstr "softwarechannel_listarches: vypíše zoznam potenciálnych architektúr"
 
 #: ../src/spacecmd/softwarechannel.py:683
 msgid "                            channel architectures that can be created"
 msgstr ""
+"                            softvérového kanála, ktoré môžu byť vytvorené"
 
 #: ../src/spacecmd/softwarechannel.py:684
 msgid "usage: softwarechannel_listarches"
-msgstr ""
+msgstr "použitie: softwarechannel_listarches"
 
 #: ../src/spacecmd/softwarechannel.py:685 ../src/spacecmd/system.py:3844
 msgid "options:"
-msgstr ""
+msgstr "voľby:"
 
 #: ../src/spacecmd/softwarechannel.py:686
 msgid "    -v verbose (display label and name)"
-msgstr ""
+msgstr "    -v podrobný (zobrazenie označenia a názvu)"
 
 #: ../src/spacecmd/softwarechannel.py:707
 msgid "softwarechannel_delete: Delete a software channel"
-msgstr ""
+msgstr "softwarechannel_delete: Vymazať softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:708
 msgid "usage: softwarechannel_delete <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_delete <KANÁL ...>"
 
 #: ../src/spacecmd/softwarechannel.py:733
 msgid "Channels"
@@ -5239,7 +5240,7 @@ msgstr "Kanály"
 
 #: ../src/spacecmd/softwarechannel.py:761
 msgid "softwarechannel_update: Update a software channel"
-msgstr ""
+msgstr "softwarechannel_update: Aktualizovať softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:762
 #, python-format
@@ -5256,12 +5257,23 @@ msgid ""
 "  -f GPG-FINGERPRINT\n"
 "  -g DISABLE-GPG-CHECK"
 msgstr ""
+"použitie: softwarechannel_update OZNAČENIE(Na určenie kanála) [voľby]\n"
+"options:\n"
+"  -l OZNAČENIE(Povinné)\n"
+"  -n NÁZOV\n"
+"  -s SÚHRN\n"
+"  -d POPIS\n"
+"  -c KONTROLNÝ-SÚČET %s\n"
+"  -u URL-GPG\n"
+"  -i ID-GPG\n"
+"  -f ODTLAČOK-GPG\n"
+"  -g ZAKÁZANIE-KONTROLY-GPG"
 
 #: ../src/spacecmd/softwarechannel.py:793
 #: ../src/spacecmd/softwarechannel.py:925
 #: ../src/spacecmd/softwarechannel.py:1095
 msgid "Channel Label:"
-msgstr ""
+msgstr "Označenie kanála:"
 
 #: ../src/spacecmd/softwarechannel.py:798
 msgid "New Name (blank to keep unchanged)"
