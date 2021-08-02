@@ -1,3 +1,5 @@
+- Unify decompression of metadata with uyuni.common.fileutils
+- Fix yum reposync plugin for Fedora 33-35 repos
 - require python macros for building
 - Add headers to update proxy auth token in listChannels (bsc#1193585)
 

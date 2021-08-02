@@ -1,3 +1,4 @@
+- Add decompression of zck files to fileutils
 - require python macros for building
 
 -------------------------------------------------------------------
