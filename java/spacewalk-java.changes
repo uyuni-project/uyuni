@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 02 10:20:35 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.39-1
 - Fix random NullPointerException when rendering page tabs (bsc#1182769)
 - Ensure XMLRPC returns 'issue_date' in ISO format when listing erratas (bsc#1188260)
 - Fix entitlements not being updated during system transfer (bsc#1188032)
