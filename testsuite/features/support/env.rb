@@ -25,8 +25,8 @@ puts "Executing long running tests" if $long_tests_enabled
 # the tests return much before that delay in case of success
 $stdout.sync = true
 STARTTIME = Time.new.to_i
-Capybara.default_max_wait_time = 10
-DEFAULT_TIMEOUT = 250
+Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
+DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
@@ -34,11 +34,6 @@ if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
   $build_validation = true
-  # HACK
-  # Build Validations will require longer timeouts due to the low performance of our VMs
-  # if we ever improve this fact, we can reduce these timeouts.
-  Capybara.default_max_wait_time = 30
-  DEFAULT_TIMEOUT = 1800
 end
 
 def enable_assertions
