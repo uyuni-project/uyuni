@@ -1,3 +1,7 @@
+------------------------------------------------------------------
+Mon Aug 02 10:17:33 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.27-1
 - Fix rpm handling of empty package group and devicefiles tag (bsc#1186650)
 - show better error message when reposync failed
 
