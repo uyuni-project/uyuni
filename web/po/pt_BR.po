@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 12:44+0000\n"
+"POT-Creation-Date: 2021-07-30 13:27+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -3240,36 +3240,36 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
 #, fuzzy
 msgid "Skip to the last maintenance window"
 msgstr "Sem janelas de manutenção futuras"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
 #, fuzzy
 msgid "Skip to the next maintenance window"
 msgstr "Sem janelas de manutenção futuras"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
 #, fuzzy
 msgid "There are no more past maintenance windows"
 msgstr "Sem janelas de manutenção futuras"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
 #, fuzzy
 msgid "There are no more future maintenance windows"
 msgstr "Sem janelas de manutenção futuras"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
 msgid "Today"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
 #, fuzzy
 msgid "Month"
 msgstr "Mensal:"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
 #, fuzzy
 msgid "Day"
 msgstr "Diariamente:"

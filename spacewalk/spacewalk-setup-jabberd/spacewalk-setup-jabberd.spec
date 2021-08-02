@@ -83,6 +83,6 @@ make test
 %{_sysconfdir}/pki/spacewalk
 
 %post
-/usr/share/spacewalk/setup/jabberd/manage_database -s >/dev/null ||:
+/usr/share/spacewalk/setup/jabberd/manage_database -s 2>/dev/null ||:
 
 %changelog
