@@ -1,3 +1,5 @@
+- Fix wrongly assigned entitlements due to system transfer (bsc#1188032)
+
 -------------------------------------------------------------------
 Mon Aug 02 10:24:28 CEST 2021 - jmassaguerpla@suse.de
 
