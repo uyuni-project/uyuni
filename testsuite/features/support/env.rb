@@ -292,16 +292,16 @@ Before('@sle15sp3_client') do
 end
 
 Before('@skip_for_debianlike') do |scenario|
-  filename = scenario.feature.location.file
+  filename = scenario.location.file
   skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
 end
 
 Before('@skip_for_minion') do |scenario|
-  skip_this_scenario if scenario.feature.location.file.include? 'minion'
+  skip_this_scenario if scenario.location.file.include? 'minion'
 end
 
 Before('@skip_for_traditional') do |scenario|
-  skip_this_scenario if scenario.feature.location.file.include? 'client'
+  skip_this_scenario if scenario.location.file.include? 'client'
 end
 
 # do some tests only if we have SCC credentials
