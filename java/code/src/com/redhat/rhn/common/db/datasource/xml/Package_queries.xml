@@ -531,6 +531,7 @@ SELECT PN.name as NAME,
                                  AND lck.arch_id = SP.package_arch_id
                                  AND lck.server_id = SP.server_id
  WHERE SP.server_id = :sid
+ ORDER BY NAME
   </query>
 </mode>
 
