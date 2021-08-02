@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 02 10:28:13 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.9-1
 - Handle broken RPM packages to prevent exceptions
   causing fails on repository synchronization (bsc#1186650)
 
