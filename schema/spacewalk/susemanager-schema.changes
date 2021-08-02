@@ -1,3 +1,4 @@
+- Fix wrongly assigned entitlements due to system transfer (bsc#1188032)
 - Force a one-off VACUUM ANALYZE
 - Add Kiwi commandline options to Kiwi profile
 - Upgrade scripts idempotency fixes
