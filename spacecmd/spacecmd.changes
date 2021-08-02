@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 02 10:10:07 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.13-1
 - Add schedule_deletearchived to bulk delete archived actions (bsc#1181223)
 
 -------------------------------------------------------------------
