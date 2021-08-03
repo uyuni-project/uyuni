@@ -1,3 +1,4 @@
+- Fix cleanup always being executed on delete system (bsc#1189011)
 - Expose UEFI parameters in the VM creation/editing pages
 - Add virt-tuner templates to VM creation
 - Fix virtualization guests to handle null HostInfo
