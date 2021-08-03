@@ -77,7 +77,6 @@ Requires:       spacewalk-backend >= 1.7.24
 Requires:       spacewalk-setup-jabberd
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       sos
-Requires:       spacewalk-proxy-selinux
 Requires(preun): initscripts
 %endif
 BuildRequires:  /usr/bin/docbook2man
@@ -337,18 +336,32 @@ fi > /dev/null 2>&1
 exit 0
 
 %pre salt
+%if !0%{?rhel}
 %service_add_pre salt-broker.service
+%endif
 
 %post salt
+%if 0%{?rhel}
+%systemd_post salt-broker.service
+%else
 %service_add_post salt-broker.service
+%endif
 systemctl enable salt-broker.service > /dev/null 2>&1 || :
 systemctl start salt-broker.service > /dev/null 2>&1 || :
 
 %preun salt
+%if 0%{?rhel}
+%systemd_preun salt-broker.service
+%else
 %service_del_preun salt-broker.service
+%endif
 
 %postun salt
+%if 0%{?rhel}
+%systemd_postun salt-broker.service
+%else
 %service_del_postun salt-broker.service
+%endif
 
 %preun broker
 if [ $1 -eq 0 ] ; then
@@ -387,7 +400,11 @@ fi
 %{destdir}/broker/rhnRepository.py*
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
+%if 0%{?rhel}
+%dir %{_var}/log/rhn
+%else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-broker
 # config files
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_broker.conf
@@ -399,7 +416,11 @@ fi
 %dir %{destdir}
 %{destdir}/redirect/__init__.py*
 %{destdir}/redirect/rhnRedirect.py*
+%if 0%{?rhel}
+%dir %{_var}/log/rhn
+%else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-redirect
 # config files
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
@@ -421,7 +442,11 @@ fi
 %{destdir}/rhnAuthProtocol.py*
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
+%if 0%{?rhel}
+%dir %{_var}/log/rhn
+%else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%endif
 # config files
 %attr(640,root,%{apache_group}) %config(noreplace) %{rhnconf}/rhn.conf
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf

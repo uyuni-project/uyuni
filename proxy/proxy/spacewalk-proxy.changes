@@ -1,3 +1,4 @@
+- Adapted directory and file ownerships
 - Modified for pylint pass.
 - Fix build on Enterprise Linux
 - Fix traceback on handling sslerror (bsc#1187673)
