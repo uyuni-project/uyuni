@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 10:47+0000\n"
+"POT-Creation-Date: 2021-07-07 08:29+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -154,8 +154,8 @@ msgid "Confirm"
 msgstr "确认"
 
 #: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:184
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:189
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 msgid "Save Changes"
 msgstr "保存更改"
 
@@ -725,7 +725,7 @@ msgstr "发生了错误。监视状态未知。请刷新页面。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:205
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
@@ -1760,7 +1760,7 @@ msgstr "这不会销毁该群集，而只会将它从 Uyuni 中去除"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:774
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr "概览"
 
@@ -3299,31 +3299,31 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
 msgid "Skip to the last maintenance window"
 msgstr "跳到最后一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
 msgid "Skip to the next maintenance window"
 msgstr "跳到下一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
 msgid "There are no more past maintenance windows"
 msgstr "没有更多过去的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
 msgid "There are no more future maintenance windows"
 msgstr "没有更多将来的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
 msgstr "今天"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
 msgid "Month"
 msgstr "月"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
 msgid "Day"
 msgstr "日"
 
@@ -3333,7 +3333,7 @@ msgid "Delete maintenance calendar"
 msgstr "删除维护日历"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:42
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:154
@@ -3342,7 +3342,7 @@ msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:43
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:48
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
@@ -3372,48 +3372,48 @@ msgstr "URL"
 msgid "Calendar Details"
 msgstr "日历细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:44
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr "删除维护日程安排"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:58
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
 msgid "Assigned Systems"
 msgstr "指派的系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:95
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
 msgid "Schedule name"
 msgstr "日程安排名称"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Assigned calendar"
 msgstr "指派的日历"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Schedule type"
 msgstr "日程安排类型"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr "单个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr "多个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:102
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:157
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "已将维护日程安排指派到 {0} 个系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3421,11 +3421,11 @@ msgstr "已将维护日程安排指派到 {0} 个系统"
 msgid "Cancel affected actions"
 msgstr "取消受影响的操作"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:196
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 msgid "Search systems"
 msgstr "搜索系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:215
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
 msgid "Current Schedule"
 msgstr "当前日程安排"
 

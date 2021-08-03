@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 10:47+0000\n"
+"POT-Creation-Date: 2021-07-07 08:29+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -158,8 +158,8 @@ msgid "Confirm"
 msgstr "확인"
 
 #: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:184
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:189
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 msgid "Save Changes"
 msgstr "변경사항 저장"
 
@@ -746,7 +746,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:205
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
@@ -1800,7 +1800,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:774
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr "개요"
 
@@ -3362,31 +3362,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
 msgid "Skip to the last maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
 msgid "Skip to the next maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
 msgid "There are no more past maintenance windows"
 msgstr "마지막 유지보수 기간이 더 이상 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
 msgid "There are no more future maintenance windows"
 msgstr "더 이상 향후 유지보수 기간이 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
 msgstr "오늘"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
 msgid "Month"
 msgstr "월"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
 msgid "Day"
 msgstr "일"
 
@@ -3396,7 +3396,7 @@ msgid "Delete maintenance calendar"
 msgstr "유지보수 달력 삭제"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:42
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:154
@@ -3405,7 +3405,7 @@ msgid "Are you sure you want to delete the selected item?"
 msgstr "선택한 항목을 삭제하시겠습니까?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:43
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:48
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr "이 작업을 수행하면 할당된 모든 시스템에서 현재 일정이 제거됩니다."
@@ -3435,48 +3435,48 @@ msgstr "Url"
 msgid "Calendar Details"
 msgstr "달력 세부 사항"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:44
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr "유지보수 일정 삭제"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:58
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
 msgid "Assigned Systems"
 msgstr "할당된 시스템"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:95
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
 msgid "Schedule name"
 msgstr "일정 이름"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Assigned calendar"
 msgstr "할당된 달력"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Schedule type"
 msgstr "일정 유형"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr "단일"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr "다중"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:102
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "일정 세부 사항"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:157
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "유지보수 일정이 {0}개 시스템에 할당되었습니다."
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3484,11 +3484,11 @@ msgstr "유지보수 일정이 {0}개 시스템에 할당되었습니다."
 msgid "Cancel affected actions"
 msgstr "영향을 받는 작업 취소"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:196
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 msgid "Search systems"
 msgstr "검색 시스템"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:215
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
 msgid "Current Schedule"
 msgstr "현재 일정"
 

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 10:47+0000\n"
+"POT-Creation-Date: 2021-07-07 08:29+0000\n"
 "PO-Revision-Date: 2021-05-20 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -160,8 +160,8 @@ msgid "Confirm"
 msgstr "Potvrdiť"
 
 #: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:184
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:189
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 msgid "Save Changes"
 msgstr "Uložiť zmeny"
 
@@ -749,7 +749,7 @@ msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:205
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
@@ -1817,7 +1817,7 @@ msgstr "Klaster sa týmto nezničí. Odstráni ho to iba z Uyuni"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:774
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr "Prehľad"
 
@@ -3387,31 +3387,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
 msgid "Skip to the last maintenance window"
 msgstr "Preskočiť na posledné okno údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
 msgid "Skip to the next maintenance window"
 msgstr "Preskočiť na ďalšie okno údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
 msgid "There are no more past maintenance windows"
 msgstr "Už neexistujú okná minulej údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
 msgid "There are no more future maintenance windows"
 msgstr "Už neexistujú okná budúcej údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
 msgstr "Dnes"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
 msgid "Month"
 msgstr "Mesiac"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
 msgid "Day"
 msgstr "Deň"
 
@@ -3421,7 +3421,7 @@ msgid "Delete maintenance calendar"
 msgstr "Vymazať kalendár údržby"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:42
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:154
@@ -3430,7 +3430,7 @@ msgid "Are you sure you want to delete the selected item?"
 msgstr "Naozaj chcete zmazať vybranú položku?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:43
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:48
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr ""
@@ -3461,48 +3461,48 @@ msgstr "Url"
 msgid "Calendar Details"
 msgstr "Podrobnosti kalendára"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:44
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr "Vymazať plán údržby"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:58
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
 msgid "Assigned Systems"
 msgstr "Priradené systémy"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:95
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
 msgid "Schedule name"
 msgstr "Názov plánu"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Assigned calendar"
 msgstr "Priradený kalendár"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Schedule type"
 msgstr "Typ plánu"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr "Jednotlivý"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr "Viacnásobný"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:102
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "Podrobnosti plánu"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:157
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "Plán údržby bol priradený k {0} systému(om)"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3510,11 +3510,11 @@ msgstr "Plán údržby bol priradený k {0} systému(om)"
 msgid "Cancel affected actions"
 msgstr "Zrušiť ovplyvnené akcie"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:196
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 msgid "Search systems"
 msgstr "Vyhľadať systémy"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:215
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
 msgid "Current Schedule"
 msgstr "Aktuálny plán"
 
