@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 13:27+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -41,31 +41,6 @@ msgid ""
 msgstr ""
 "Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいず"
 "れかをお使いください"
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-"formula を保存しました。この formula に対する highstate の適用は不要です。"
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "必須の項目に入力を行なってください: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "項目の書式が正しくありません: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
-"を行なうことができます。"
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -278,6 +253,36 @@ msgstr "プロジェクトの削除"
 msgid "Are you sure you want to delete project "
 msgstr "下記のプロジェクトを削除してよろしいですか "
 
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+"formula を保存しました。この formula に対する highstate の適用は不要です。"
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "必須の項目に入力を行なってください: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "項目の書式が正しくありません: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
+"を行なうことができます。"
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
+
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr " グループ無し"
@@ -304,15 +309,10 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
 msgstr "Formula"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
@@ -337,6 +337,7 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:134
 #: ../html/src/components/input/FormMultiInput.stories.tsx:183
 #: ../html/src/components/input/FormMultiInput.stories.tsx:264
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:69
@@ -345,7 +346,6 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/Range.stories.tsx:50
 #: ../html/src/components/input/Select.stories.tsx:36
 #: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "送信"
@@ -533,8 +533,8 @@ msgstr "すべてを選択"
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -1465,6 +1465,31 @@ msgstr "サブスクリプションが見つかりませんでした。"
 msgid "Your subscriptions"
 msgstr "お使いのサブスクリプション"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
+msgid "Edit Virtual Host Managers"
+msgstr "仮想ホストマネージャの編集"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Subscription Matching"
+msgstr "サブスクリプションマッチング"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+msgid "Subscriptions"
+msgstr "サブスクリプション"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "該当のない製品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+msgid "Pins "
+msgstr "ピン "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Messages "
+msgstr "メッセージ "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "製品名"
@@ -1481,11 +1506,6 @@ msgstr "システム一覧の表示"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "一致しない製品は見つかりませんでした。"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
-msgid "Unmatched Products"
-msgstr "該当のない製品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1514,26 +1534,6 @@ msgstr "1〜2 ソケットまたは 1〜2 台の仮想マシン"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "インスタンスごと"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
-msgid "Edit Virtual Host Managers"
-msgstr "仮想ホストマネージャの編集"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Subscription Matching"
-msgstr "サブスクリプションマッチング"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
-msgid "Subscriptions"
-msgstr "サブスクリプション"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
-msgid "Pins "
-msgstr "ピン "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-msgid "Messages "
-msgstr "メッセージ "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -2601,6 +2601,33 @@ msgstr ""
 "このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしまし"
 "た"
 
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
+msgid "Formula saved. Apply the "
+msgstr "formula を保存しました。下記を適用します "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/state/highstate.tsx:138
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+msgid " for the changes to take effect."
+msgstr " 変更した設定を反映させるには、再起動が必要です。"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+msgid "Invalid target type."
+msgstr "ターゲットタイプが正しくありません。"
+
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
 #, fuzzy
@@ -2610,33 +2637,6 @@ msgid ""
 msgstr ""
 "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
 "を適用してください "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:138
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr " 変更した設定を反映させるには、再起動が必要です。"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
-msgid "Invalid target type."
-msgstr "ターゲットタイプが正しくありません。"
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid "Formula saved. Apply the "
-msgstr "formula を保存しました。下記を適用します "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -3759,8 +3759,8 @@ msgstr "動作を"
 msgid "Applying the config channels has been "
 msgstr "設定チャンネルの適用を "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 msgid "Configuration"
 msgstr "設定"
 
@@ -4796,23 +4796,25 @@ msgstr "仮想ホストマネージャ"
 msgid "Add a virtual host manager"
 msgstr "仮想ホストマネージャの追加"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "libvirt python モジュールをインストールしてください。"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Disconnected"
+msgstr "切断済み"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Failed to connect"
+msgstr "接続に失敗しました"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:164
-msgid "{0} selected"
-msgstr "{0} 個を選択しました"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
+msgid "Toggle full size"
+msgstr "フルサイズの切り替え"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:243
-msgid "Action Status"
-msgstr "動作の状態"
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
+msgid "Something went wrong, connection is closed"
+msgstr "何らかの問題が発生しています。接続が閉じられました"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
+msgid "Create Virtual Machine"
+msgstr "仮想マシンの作成"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
@@ -4856,26 +4858,6 @@ msgstr "カーネルオプション"
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr "グラフィック"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Disconnected"
-msgstr "切断済み"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Failed to connect"
-msgstr "接続に失敗しました"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
-msgid "Toggle full size"
-msgstr "フルサイズの切り替え"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
-msgid "Something went wrong, connection is closed"
-msgstr "何らかの問題が発生しています。接続が閉じられました"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
-msgid "Create Virtual Machine"
-msgstr "仮想マシンの作成"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:32
 msgid "Start / Resume"
@@ -4970,6 +4952,10 @@ msgstr "ファイル"
 msgid "Format"
 msgstr "フォーマット"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+msgid "Disks"
+msgstr "ディスク"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
 msgid "Source storage pool"
 msgstr "ソースストレージプール"
@@ -4985,10 +4971,6 @@ msgstr "ディスクサイズ (GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
 msgid "Source template image URL"
 msgstr "ソーステンプレートのイメージ URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
-msgid "Disks"
-msgstr "ディスク"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
@@ -5016,6 +4998,24 @@ msgstr "項目の消去"
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
 msgstr ""
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
+msgstr "libvirt python モジュールをインストールしてください。"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr ""
+
+#: ../html/src/manager/virtualization/ListTab.tsx:164
+msgid "{0} selected"
+msgstr "{0} 個を選択しました"
+
+#: ../html/src/manager/virtualization/ListTab.tsx:243
+msgid "Action Status"
+msgstr "動作の状態"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"
@@ -5251,6 +5251,51 @@ msgstr "TXT レコード"
 msgid "Value"
 msgstr "値"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
+"IP アドレス、 DHCP/DNS サービスは追加されません"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
+"ク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
+"ない仮想ネットワーク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+#, fuzzy
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr ""
+"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
+"ゲストとホストの間では通信できません"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr "SR-IOV プール"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
 msgid "Network address"
 msgstr "ネットワークアドレス"
@@ -5346,52 +5391,6 @@ msgstr "タグ有り"
 #: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
 msgid "Untagged"
 msgstr "タグ無し"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
-"IP アドレス、 DHCP/DNS サービスは追加されません"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
-"ク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
-"ない仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
-"ゲストとホストの間では通信できません"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV プール"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."

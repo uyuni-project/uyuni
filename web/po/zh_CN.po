@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 13:27+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -40,28 +40,6 @@ msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "公式已保存。无需对此公式应用 highstate。"
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "请输入必填字段：{0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "无效的字段格式：{0}"
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -269,6 +247,32 @@ msgstr "删除项目"
 msgid "Are you sure you want to delete project "
 msgstr "您确定要删除项目吗 "
 
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "公式已保存。无需对此公式应用 highstate。"
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "请输入必填字段：{0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "无效的字段格式：{0}"
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
+
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr " 无组"
@@ -294,14 +298,10 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
 msgstr "公式"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
@@ -326,6 +326,7 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:134
 #: ../html/src/components/input/FormMultiInput.stories.tsx:183
 #: ../html/src/components/input/FormMultiInput.stories.tsx:264
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:69
@@ -334,7 +335,6 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/Range.stories.tsx:50
 #: ../html/src/components/input/Select.stories.tsx:36
 #: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "提交"
@@ -522,8 +522,8 @@ msgstr "全选"
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -1414,6 +1414,31 @@ msgstr "找不到订阅。"
 msgid "Your subscriptions"
 msgstr "您的订阅"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
+msgid "Edit Virtual Host Managers"
+msgstr "编辑虚拟主机管理器"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Subscription Matching"
+msgstr "订阅匹配"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+msgid "Subscriptions"
+msgstr "订阅"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "不匹配的产品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+msgid "Pins "
+msgstr "关联 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Messages "
+msgstr "消息 "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "产品名称"
@@ -1430,11 +1455,6 @@ msgstr "显示系统列表"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "找不到不匹配的产品。"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
-msgid "Unmatched Products"
-msgstr "不匹配的产品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1463,26 +1483,6 @@ msgstr "1-2 个插槽或 1-2 台虚拟机"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "每个实例"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
-msgid "Edit Virtual Host Managers"
-msgstr "编辑虚拟主机管理器"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Subscription Matching"
-msgstr "订阅匹配"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
-msgid "Subscriptions"
-msgstr "订阅"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
-msgid "Pins "
-msgstr "关联 "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-msgid "Messages "
-msgstr "消息 "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -2522,6 +2522,33 @@ msgid ""
 "this group"
 msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
+msgid "Formula saved. Apply the "
+msgstr "已保存公式。请应用 "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/state/highstate.tsx:138
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+msgid " for the changes to take effect."
+msgstr " 以使更改生效。"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+msgid "Invalid target type."
+msgstr "无效目标类型。"
+
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
 #, fuzzy
@@ -2529,33 +2556,6 @@ msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
 msgstr "已保存公式。请编辑配置选项 "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:138
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr " 以使更改生效。"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
-msgid "Invalid target type."
-msgstr "无效目标类型。"
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid "Formula saved. Apply the "
-msgstr "已保存公式。请应用 "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -3645,8 +3645,8 @@ msgstr "剧本的执行已"
 msgid "Applying the config channels has been "
 msgstr "应用配置频道 "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 msgid "Configuration"
 msgstr "配置"
 
@@ -4648,23 +4648,25 @@ msgstr "虚拟主机管理器"
 msgid "Add a virtual host manager"
 msgstr "添加虚拟主机管理器"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "请安装 libvirt Python 模块。"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Disconnected"
+msgstr "已断开连接"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Failed to connect"
+msgstr "无法连接"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:164
-msgid "{0} selected"
-msgstr "已选择 {0}"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
+msgid "Toggle full size"
+msgstr "切换完整大小"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:243
-msgid "Action Status"
-msgstr "操作状态"
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
+msgid "Something went wrong, connection is closed"
+msgstr "出现了问题，已关闭连接"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
+msgid "Create Virtual Machine"
+msgstr "创建虚拟机"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
@@ -4708,26 +4710,6 @@ msgstr "内核选项"
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr "显卡"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Disconnected"
-msgstr "已断开连接"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Failed to connect"
-msgstr "无法连接"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
-msgid "Toggle full size"
-msgstr "切换完整大小"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
-msgid "Something went wrong, connection is closed"
-msgstr "出现了问题，已关闭连接"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
-msgid "Create Virtual Machine"
-msgstr "创建虚拟机"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:32
 msgid "Start / Resume"
@@ -4822,6 +4804,10 @@ msgstr "文件"
 msgid "Format"
 msgstr "格式"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+msgid "Disks"
+msgstr "磁盘"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
 msgid "Source storage pool"
 msgstr "源储存池"
@@ -4837,10 +4823,6 @@ msgstr "磁盘大小 (GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
 msgid "Source template image URL"
 msgstr "源模板映像 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
-msgid "Disks"
-msgstr "磁盘"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
@@ -4868,6 +4850,24 @@ msgstr "清除字段"
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
 msgstr ""
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
+msgstr "请安装 libvirt Python 模块。"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr ""
+
+#: ../html/src/manager/virtualization/ListTab.tsx:164
+msgid "{0} selected"
+msgstr "已选择 {0}"
+
+#: ../html/src/manager/virtualization/ListTab.tsx:243
+msgid "Action Status"
+msgstr "操作状态"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"
@@ -5101,6 +5101,44 @@ msgstr "TXT 记录"
 msgid "Value"
 msgstr "值"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr "不连接其他网络的虚拟网络"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+#, fuzzy
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr "网络基于 macvtap 驱动程序使用物理接口池。Guest 与主机之间无法通讯"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr "SR-IOV 池"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
 msgid "Network address"
 msgstr "网络地址"
@@ -5196,45 +5234,6 @@ msgstr "已标记"
 #: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
 msgid "Untagged"
 msgstr "未标记"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "不连接其他网络的虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "网络基于 macvtap 驱动程序使用物理接口池。Guest 与主机之间无法通讯"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV 池"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."

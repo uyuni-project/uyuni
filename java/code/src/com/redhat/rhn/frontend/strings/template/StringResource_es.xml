@@ -15,7 +15,7 @@
         </context-group>
         <target>Su cuenta de @@PRODUCT_NAME@@ está lista</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -32,6 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target>Hola,
+
+{0} {1} ha creado un usuario de @@PRODUCT_NAME@@. Su usuario de 
+@@PRODUCT_NAME@@, junto con una subscripción activa de @@VENDOR_NAME@@,
+le permite acceder a administrar sistemas en @@PRODUCT_NAME@@.
+
+  Usuario de @@PRODUCT_NAME@@: {2}
+  Clave: {3}
+  Correo electrónico: {4}
+
+  {5}
+
+Importante: por favor, cambie su clave de acceso al entrar en el sistema por primera vez.
+
+Gracias por usar @@PRODUCT_NAME@@.
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -46,7 +62,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -63,6 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target>Hola,
+
+Se ha creado un usuario de @@PRODUCT_NAME@@ para usted. Su usuario de 
+@@PRODUCT_NAME@@, junto con una subscripción activa de @@VENDOR_NAME@@,
+le permite acceder a administrar sistemas en @@PRODUCT_NAME@@.
+
+  Usuario de @@PRODUCT_NAME@@: {0}
+  Clave: {1}
+  Correo electrónico: {2}
+
+  {3}
+
+Importante: por favor, cambie su clave de acceso al entrar en el sistema por primera vez.
+
+Gracias por usar @@PRODUCT_NAME@@.
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -190,7 +222,7 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -202,7 +234,7 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target>
+        <target>
 @@PRODUCT_NAME@@ ha determinado que el siguiente consejo se aplica a
 uno o más sistemas que usted ha registrado:
 
@@ -221,8 +253,8 @@ Resumen:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -233,11 +265,11 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
-          <target>
+        <target>
 ---------------------
 Lista de sistemas afectados
 ---------------------
-Puede que esta asesoría de erratas aplique a los sistemas listados a continuación. Si sabe que
+Puede que esta evaluación de erratas aplique a los sistemas listados a continuación. Si sabe que
 estas erratas no aplican a uno de los sistemas listados entonces es posible que
 el perfil del paquete para ese servidor esté desactualizado. En ese caso debe ejecutar
 'up2date -p' (RHEL 4 y anteriores) o 'rhn-profile-sync' (RHEL 5 y posteriores) como usuario root en el sistema en cuestión para actualizar el perfil de su software.
@@ -245,39 +277,39 @@ el perfil del paquete para ese servidor esté desactualizado. En ese caso debe e
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <target>
+        <target>
 Hay 1 sistema afectado registrado en la 'Sinopsis' (solo aparecen los sistemas para
 los que ha habilitado explícitamente las alertas de erratas).
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target>
+        <target>
 Hay {0} sistemas afectados registrados en la 'Sinopsis' (solo aparecen los sistemas para
 los que ha habilitado explícitamente las alertas de erratas).
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -292,13 +324,13 @@ You may address the issues outlined in this advisory in two ways:
 
      - run the Update Agent on each affected server.
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target>
+        <target>
 Lanzamiento    Arq.      Nombre de perfil
 ---------- ---------- ---------------------------------------------
 {0}
@@ -315,8 +347,8 @@ Puede abordar los problemas que señalamos de dos maneras:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -332,20 +364,21 @@ click the "Details" tab.
 {1}
 {2}
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target>
+        <target>
 Cambio de preferencias en la notificación
 ---------------------------------
-Para habilitar o inhabilitar sus preferencias de alerta de erratas de de forma global, inicie sesión en @@PRODUCT_NAME@@
-y navegue desde "Visión General" / "Su cuenta" a la pestaña de "Preferencias".
+Para habilitar o inhabilitar sus preferencias de alerta de erratas de de forma global, inicie 
+sesión en @@PRODUCT_NAME@@ y navegue desde "Visión General" / "Su cuenta" a la 
+pestaña de "Preferencias".
 
-        URL: {0}
+ URL: {0}
 
 También puede habilitar o inhabilitar las notificaciones por sistema, al seleccionar un
 sistema individual de la "Lista de sistemas". De la vista de sistemas individuales
@@ -357,7 +390,7 @@ haga clic en la pestaña de "Detalles".
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
@@ -424,7 +457,7 @@ Gracias por utilizar @@PRODUCT_NAME@@.
 {6}
 </target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password" xml:space="preserve">
+      <trans-unit approved="yes" id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -441,6 +474,23 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Este correo electrónico automático enviado a {0} se ha generado a petición suya.]
+
+Se ha recibido una petición para restablecer la clave de acceso de 
+@@PRODUCT_NAME@@ para el usuario {2}.
+
+Para continuar con el restablecimiento, por favor clique en el enlace:
+
+{1}
+
+Si no quiere restablecer su contraseña, puede ignorar este correo electrónico.
+
+Si tiene dificultades con el restablecimiento de clave, por favor contacte con su
+administrador de @@PRODUCT_NAME@@.
+
+Gracias por usar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -497,7 +547,7 @@ Si no solicitó este correo, ignore este mensaje.
 Gracias por utilizar  @@PRODUCT_NAME@@.
         </target>
       </trans-unit>
-      <trans-unit id="email.reset.password" xml:space="preserve">
+      <trans-unit approved="yes" id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 
@@ -509,6 +559,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Este es un correo electrónico automático enviado a {0}. ]
+
+La clave de acceso del usuario {1} de @@PRODUCT_NAME@@ se ha restablecido en respuesta
+a una petición de restablecimiento hecha en {2}.
+
+Si usted no inició este restablecimiento de clave, por favor contacte INMEDIATAMENTE con el
+administrador de @@PRODUCT_NAME@@ en {2} para ayuda.
+
+Grcias por usar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
