@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 13:20+0000\n"
+"POT-Creation-Date: 2021-05-04 13:34+0000\n"
 "PO-Revision-Date: 2021-05-01 01:57+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -27,51 +27,21 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.6\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "不完全なプロキシ認証トークンです: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "プロキシ認証が拒否されました"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "null org にあるパッケージを管理する権限が与えられていません"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "%s org 内のパッケージの管理は許可されていません"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "管理に関する作業を行う許可がありません"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していま"
-"せん"
-
-#: ../server/importlib/userAuth.py:204
+#: ../server/configFilesHandler.py:129
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/app/packages.py:192
 #, python-format
 msgid ""
 "\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
+"                   %s Account has been deactivated on this server.\n"
+"                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"               %s アカウントは本サーバー上では無効化されています。\n"
-"                   詳しくは組織の管理者にお問い合わせください。"
+"                   %s アカウントは本サーバー上では非アクティブになっていま"
+"す。\n"
+"                   組織の管理者にお問い合わせください。"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -208,64 +178,89 @@ msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてく�
 msgid "Cannot register usernames ending with %s"
 msgstr "%s で終わるユーザー名は登録できません"
 
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "このサーバでは ISS が無効化されています。"
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/apacheRequest.py:59
 #, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "サーバー「%s」は ISS に有効になっていません。"
+msgid "Invalid request received (%s)."
+msgstr "無効な要求を受け取りました (%s)。"
 
-#: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:217
-#: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要なメッセージです:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"「%s」の実行中: 次をキャッチしました\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "無効な URI %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "null org にあるパッケージを管理する権限が与えられていません"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "%s org 内のパッケージの管理は許可されていません"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "管理に関する作業を行う許可がありません"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr ""
+"チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していま"
+"せん"
+
+#: ../server/importlib/userAuth.py:204
 #, python-format
 msgid ""
 "\n"
-"                   %s Account has been deactivated on this server.\n"
-"                   Please contact your Org administrator for more help."
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s アカウントは本サーバー上では非アクティブになっていま"
-"す。\n"
-"                   組織の管理者にお問い合わせください。"
+"               %s アカウントは本サーバー上では無効化されています。\n"
+"                   詳しくは組織の管理者にお問い合わせください。"
 
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていませ"
-"ん: \"%s\""
+msgid "Invalid RPM package %s requested"
+msgstr "無効な RPM パッケージ %s を要求しています"
 
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "無効なセッションキー"
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "パッケージが見つかりません"
 
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "このサーバー ID は既になくなりました"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "system_id/action_id の対が正しくありません。"
-
-#: ../server/handlers/xmlrpc/queue.py:434
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "無効な動作値タイプ %s (%s)"
+msgid "incomplete proxy authentication token: %s"
+msgstr "不完全なプロキシ認証トークンです: %s"
 
-#: ../server/handlers/xmlrpc/queue.py:462
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "動作 %s はサーバー %s に属していません"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "プロキシ認証が拒否されました"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -308,6 +303,25 @@ msgstr "製品の引数としてディクショナリが期待されています
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "無効な値 '%s' − %s (%s)"
 
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていませ"
+"ん: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "無効なセッションキー"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "このサーバー ID は既になくなりました"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "system_id/action_id の対が正しくありません。"
+
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -318,63 +332,34 @@ msgstr "パッケージ名が期待されています、次ではありません
 msgid "Expected a package, not: %s"
 msgstr "パッケージが期待されています、 次ではありません: %s"
 
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "無効な動作値タイプ %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "動作 %s はサーバー %s に属していません"
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "無効な値 %s (%s)"
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "このサーバでは ISS が無効化されています。"
+
+#: ../server/handlers/sat/auth.py:50
 #, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "無効な RPM パッケージ %s を要求しています"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "パッケージが見つかりません"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "無効な要求を受け取りました (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要なメッセージです:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"「%s」の実行中: 次をキャッチしました\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "無効な URI %s"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "アーキテクチャ `%s' はサポートされていません"
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "サーバー「%s」は ISS に有効になっていません。"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -421,6 +406,21 @@ msgstr "キックスタートセッションの不一致です"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "再登録トークンの積み重ねには対応していません"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "アーキテクチャ `%s' はサポートされていません"
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -1092,6 +1092,47 @@ msgstr "エラークラス情報: %s\n"
 msgid "Explanation: %s"
 msgstr "説明: %s"
 
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 電子メールでログを送信 +++"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同期。 %s からのレポート"
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr "%s の書式は少なくとも YYYYMMDD であるべきです。\n"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
+
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1285,28 +1326,6 @@ msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "キックスタート可能なツリーを取り込みました (%d)"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1371,18 +1390,10 @@ msgstr "SUSE Manager マスターは組織データの同期をサポートし�
 msgid "Skipping..."
 msgstr "飛ばしています..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
-msgid "+++ sending log as an email +++"
-msgstr "+++ 電子メールでログを送信 +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "SUSE Manager サーバ間同期です。 %s からのレポート"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2096,17 +2107,6 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "%s の書式は少なくとも YYYYMMDD であるべきです。\n"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同期。 %s からのレポート"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "クラッシュ情報が正しくないか、不完全です"

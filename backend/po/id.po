@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 13:20+0000\n"
+"POT-Creation-Date: 2021-05-04 13:34+0000\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -19,54 +19,20 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/apacheAuth.py:66
-#, fuzzy, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "token otentikasi proksi tidak lengkap: %s"
-
-#: ../server/apacheAuth.py:84
-#, fuzzy, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
-
-#: ../server/apacheAuth.py:119
-#, fuzzy
-msgid "declined proxy authentication"
-msgstr "otentikasi proxy yang ditolak"
-
-#: ../server/importlib/userAuth.py:98
-#, fuzzy
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Anda tidak berwenang untuk mengelola paket di null org"
-
-#: ../server/importlib/userAuth.py:103
-#, fuzzy, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "Anda tidak diizinkan untuk mengelola paket dalam organisasi %s"
-
-#: ../server/importlib/userAuth.py:121
-#, fuzzy
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
-
-#: ../server/importlib/userAuth.py:144
-#, fuzzy, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak "
-"ada"
-
-#: ../server/importlib/userAuth.py:204
+#: ../server/configFilesHandler.py:129
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/app/packages.py:192
 #, fuzzy, python-format
 msgid ""
 "\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
+"                   %s Account has been deactivated on this server.\n"
+"                   Please contact your Org administrator for more help."
 msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
-"               Silakan hubungi administrator Organisasi Anda untuk bantuan "
-"lebih lanjut."
+"                   Silakan hubungi administrator Organisasi Anda untuk "
+"bantuan lebih lanjut."
 
 #: ../server/rhnChannel.py:1999
 #, fuzzy, python-format
@@ -198,66 +164,93 @@ msgstr "username harus setidaknya %d karakter panjang"
 msgid "Cannot register usernames ending with %s"
 msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
 
-#: ../server/handlers/sat/auth.py:45
-#, fuzzy
-msgid "ISS is disabled on this server."
-msgstr "ISS dinonaktifkan di server ini."
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/apacheRequest.py:59
 #, fuzzy, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
+msgid "Invalid request received (%s)."
+msgstr "Permintaan tidak valid diterima (%s)."
 
-#: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:217
-#: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
+#: ../server/apacheRequest.py:120
+#, fuzzy, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"PESAN PENTING BERIKUT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, fuzzy, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Saat menjalankan '%s': tertangkap\n"
+"%s : %s (Dalam Bahasa Inggris)"
+
+#: ../server/apacheRequest.py:606
+#, fuzzy, python-format
+msgid "Invalid URI %s"
+msgstr "URI “%s” Tidak Sah"
+
+#: ../server/importlib/userAuth.py:98
+#, fuzzy
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Anda tidak berwenang untuk mengelola paket di null org"
+
+#: ../server/importlib/userAuth.py:103
+#, fuzzy, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Anda tidak diizinkan untuk mengelola paket dalam organisasi %s"
+
+#: ../server/importlib/userAuth.py:121
+#, fuzzy
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
+
+#: ../server/importlib/userAuth.py:144
+#, fuzzy, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr ""
+"Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak "
+"ada"
+
+#: ../server/importlib/userAuth.py:204
 #, fuzzy, python-format
 msgid ""
 "\n"
-"                   %s Account has been deactivated on this server.\n"
-"                   Please contact your Org administrator for more help."
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
 msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
-"                   Silakan hubungi administrator Organisasi Anda untuk "
-"bantuan lebih lanjut."
+"               Silakan hubungi administrator Organisasi Anda untuk bantuan "
+"lebih lanjut."
 
-#: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Sistem Anda tidak ditemukan dalam rhn database"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, fuzzy, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
+msgid "Invalid RPM package %s requested"
+msgstr "Paket RPM %s tidak valid diminta"
 
-#: ../server/handlers/xmlrpc/proxy.py:85
+#: ../server/rhnPackage.py:112
 #, fuzzy
-msgid "Invalid session key"
-msgstr "Kunci sesi tidak valid"
+msgid "Package not found"
+msgstr "Paket tidak ditemukan"
 
-#: ../server/handlers/xmlrpc/proxy.py:93
-#, fuzzy
-msgid "This server ID no longer exists"
-msgstr "ID server ini tidak ada lagi"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Pasangan system_id/action_id tidak valid."
-
-#: ../server/handlers/xmlrpc/queue.py:434
+#: ../server/apacheAuth.py:66
 #, fuzzy, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipe nilai tindakan %s (%s) tidak valid"
+msgid "incomplete proxy authentication token: %s"
+msgstr "token otentikasi proksi tidak lengkap: %s"
 
-#: ../server/handlers/xmlrpc/queue.py:462
+#: ../server/apacheAuth.py:84
 #, fuzzy, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Tindakan %s bukan milik server %s"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
+
+#: ../server/apacheAuth.py:119
+#, fuzzy
+msgid "declined proxy authentication"
+msgstr "otentikasi proxy yang ditolak"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 #, fuzzy
@@ -307,6 +300,27 @@ msgstr "Mengharapkan kamus sebagai argumen produk"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nilai '%s' tidak valid untuk %s (%s)"
 
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+#, fuzzy
+msgid "Invalid session key"
+msgstr "Kunci sesi tidak valid"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+#, fuzzy
+msgid "This server ID no longer exists"
+msgstr "ID server ini tidak ada lagi"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Pasangan system_id/action_id tidak valid."
+
 #: ../server/handlers/xmlrpc/errata.py:64
 #, fuzzy, python-format
 msgid "Expected a package name, not: %s"
@@ -317,64 +331,35 @@ msgstr "Diduga sebuah nama paket, bukan: %s"
 msgid "Expected a package, not: %s"
 msgstr "Diduga sebuah paket, bukan: %s"
 
+#: ../server/handlers/xmlrpc/queue.py:434
+#, fuzzy, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Tipe nilai tindakan %s (%s) tidak valid"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, fuzzy, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Tindakan %s bukan milik server %s"
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, fuzzy, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Nilai %s (%s) tidak valid"
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, fuzzy, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Paket RPM %s tidak valid diminta"
+#: ../server/handlers/applet/applet.py:78
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Sistem Anda tidak ditemukan dalam rhn database"
 
-#: ../server/rhnPackage.py:112
+#: ../server/handlers/sat/auth.py:45
 #, fuzzy
-msgid "Package not found"
-msgstr "Paket tidak ditemukan"
+msgid "ISS is disabled on this server."
+msgstr "ISS dinonaktifkan di server ini."
 
-#: ../server/rhnHandler.py:62
-#, fuzzy
-msgid "Please run rhn_register as root on this client"
-msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
-
-#: ../server/rhnHandler.py:75
+#: ../server/handlers/sat/auth.py:50
 #, fuzzy, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
-
-#: ../server/apacheRequest.py:59
-#, fuzzy, python-format
-msgid "Invalid request received (%s)."
-msgstr "Permintaan tidak valid diterima (%s)."
-
-#: ../server/apacheRequest.py:120
-#, fuzzy, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"PESAN PENTING BERIKUT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, fuzzy, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Saat menjalankan '%s': tertangkap\n"
-"%s : %s (Dalam Bahasa Inggris)"
-
-#: ../server/apacheRequest.py:606
-#, fuzzy, python-format
-msgid "Invalid URI %s"
-msgstr "URI “%s” Tidak Sah"
-
-#: ../server/rhnServer/server_class.py:97
-#, fuzzy, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arsitektur '%s' tidak didukung"
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
 
 #: ../server/rhnServer/server_token.py:78
 #, fuzzy, python-format
@@ -426,6 +411,21 @@ msgstr "Ketidakcocokan sesi kickstart"
 #, fuzzy
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Penumpukan token pendaftaran ulang tidak didukung"
+
+#: ../server/rhnServer/server_class.py:97
+#, fuzzy, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arsitektur '%s' tidak didukung"
+
+#: ../server/rhnHandler.py:62
+#, fuzzy
+msgid "Please run rhn_register as root on this client"
+msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
+
+#: ../server/rhnHandler.py:75
+#, fuzzy, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
 
 #: ../common/rhnTB.py:205
 #, fuzzy, python-format
@@ -1156,6 +1156,49 @@ msgstr "Galat Info Kelas: %s"
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
 
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
+#: ../satellite_tools/reposync.py:121
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, fuzzy, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr "format dari %s harus setidaknya YYYYMMDD."
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, fuzzy, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (ditentukan dalam baris perintah)\n"
+"tidak dapat dibuka dan dibaca:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, fuzzy, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" tidak dapat dibuka\n"
+"dan/atau tertulis kepada:\n"
+"%s"
+
 #: ../satellite_tools/messages.py:26
 #, fuzzy, python-format
 msgid ""
@@ -1348,28 +1391,6 @@ msgstr "Mengimpor pohon kickstartable (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, fuzzy, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (ditentukan dalam baris perintah)\n"
-"tidak dapat dibuka dan dibaca:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, fuzzy, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" tidak dapat dibuka\n"
-"dan/atau tertulis kepada:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, fuzzy, python-format
 msgid "No handler for step %s"
@@ -1442,20 +1463,10 @@ msgstr "Master Manajer SUSE tidak mendukung sinkronisasi data organisasi."
 msgid "Skipping..."
 msgstr "Melewatkan: %s\n"
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
 #: ../satellite_tools/satsync.py:442
 #, fuzzy, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sinkronisasi SUSE Manager Inter Server. laporan dari %s"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
-#, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
 
 #: ../satellite_tools/satsync.py:520
 #, fuzzy
@@ -2269,17 +2280,6 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, fuzzy, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "format dari %s harus setidaknya YYYYMMDD."
-
-#: ../satellite_tools/reposync.py:121
-#, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
 
 #, fuzzy
 #~ msgid "Crash information is invalid or incomplete"
