@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 10:41+0000\n"
+"POT-Creation-Date: 2021-07-21 09:41+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -5576,102 +5576,102 @@ msgid ""
 msgstr ""
 "サーバからストレージプールの機能を取得できませんでした。再試行してください。"
 
-#: ../html/src/manager/visualization/data-tree.ts:134
+#: ../html/src/manager/visualization/data-tree.ts:133
 msgid "  security advisories"
 msgstr "  セキュリティアドバイザリ"
 
-#: ../html/src/manager/visualization/data-tree.ts:140
+#: ../html/src/manager/visualization/data-tree.ts:139
 msgid "  bug fix advisories"
 msgstr "  バグ修正アドバイザリ"
 
-#: ../html/src/manager/visualization/data-tree.ts:150
+#: ../html/src/manager/visualization/data-tree.ts:149
 msgid "  product enhancement advisories"
 msgstr "  製品の機能強化アドバイザリ"
 
-#: ../html/src/manager/visualization/data-tree.ts:196
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "SSM からシステムを追加／削除"
 
-#: ../html/src/manager/visualization/data-tree.ts:254
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "SSM に子を追加"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:63
+#: ../html/src/manager/visualization/hierarchy.tsx:62
 msgid "Filtering"
 msgstr "フィルタリング"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:72
+#: ../html/src/manager/visualization/hierarchy.tsx:71
 msgid "Partitioning"
 msgstr "パーティション設定"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:95
+#: ../html/src/manager/visualization/hierarchy.tsx:94
 msgid "Show systems with:"
 msgstr "下記のシステムを表示:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:124
+#: ../html/src/manager/visualization/hierarchy.tsx:123
 msgid "security advisories"
 msgstr "セキュリティアドバイザリ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:129
+#: ../html/src/manager/visualization/hierarchy.tsx:128
 msgid "bug fix advisories"
 msgstr "バグ修正アドバイザリ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:132
+#: ../html/src/manager/visualization/hierarchy.tsx:131
 msgid "product enhancement advisories"
 msgstr "製品の機能強化アドバイザリ"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "Filter by system name"
 msgstr "システム名でフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "e.g., client.nue.sles"
 msgstr "例: client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "Filter by system base channel"
 msgstr "システムのベースチャンネルでフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "e.g., SLE12"
 msgstr "例: SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "Filter by system installed products"
 msgstr "システムにインストールされている製品でフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "e.g., SLES"
 msgstr "例: SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:199
+#: ../html/src/manager/visualization/hierarchy.tsx:198
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:241
+#: ../html/src/manager/visualization/hierarchy.tsx:240
 msgid "There was an error fetching data from the server."
 msgstr "サーバからデータを取り出す際にエラーが発生しました。"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:284
+#: ../html/src/manager/visualization/hierarchy.tsx:283
 msgid " filters"
 msgstr " フィルタ"
 
-#: ../html/src/manager/visualization/ui/components.ts:44
+#: ../html/src/manager/visualization/ui/components.ts:42
 msgid "Partition systems by given check-in time:"
 msgstr "指定したチェックイン名でシステムのパーティションを設定する:"
 
-#: ../html/src/manager/visualization/ui/components.ts:151
+#: ../html/src/manager/visualization/ui/components.ts:149
 msgid "Add a grouping level"
 msgstr "グループレベルの追加"
 
-#: ../html/src/manager/visualization/ui/components.ts:195
+#: ../html/src/manager/visualization/ui/components.ts:193
 msgid "Select a system group"
 msgstr "システムグループの選択"
 
-#: ../html/src/manager/visualization/ui/components.ts:247
+#: ../html/src/manager/visualization/ui/components.ts:245
 msgid "Split into groups"
 msgstr "グループに分割"
 

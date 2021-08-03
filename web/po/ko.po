@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 10:41+0000\n"
+"POT-Creation-Date: 2021-07-21 09:41+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -5506,102 +5506,102 @@ msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
 
-#: ../html/src/manager/visualization/data-tree.ts:134
+#: ../html/src/manager/visualization/data-tree.ts:133
 msgid "  security advisories"
 msgstr "  보안 자문"
 
-#: ../html/src/manager/visualization/data-tree.ts:140
+#: ../html/src/manager/visualization/data-tree.ts:139
 msgid "  bug fix advisories"
 msgstr "  버그 수정 자문"
 
-#: ../html/src/manager/visualization/data-tree.ts:150
+#: ../html/src/manager/visualization/data-tree.ts:149
 msgid "  product enhancement advisories"
 msgstr "  제품 향상 자문"
 
-#: ../html/src/manager/visualization/data-tree.ts:196
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "SSM에서 시스템 추가/제거"
 
-#: ../html/src/manager/visualization/data-tree.ts:254
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "SSM에 하위 추가"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:63
+#: ../html/src/manager/visualization/hierarchy.tsx:62
 msgid "Filtering"
 msgstr "필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:72
+#: ../html/src/manager/visualization/hierarchy.tsx:71
 msgid "Partitioning"
 msgstr "파티셔닝"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:95
+#: ../html/src/manager/visualization/hierarchy.tsx:94
 msgid "Show systems with:"
 msgstr "다음과 함께 표시:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:124
+#: ../html/src/manager/visualization/hierarchy.tsx:123
 msgid "security advisories"
 msgstr "보안 자문"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:129
+#: ../html/src/manager/visualization/hierarchy.tsx:128
 msgid "bug fix advisories"
 msgstr "버그 수정 자문"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:132
+#: ../html/src/manager/visualization/hierarchy.tsx:131
 msgid "product enhancement advisories"
 msgstr "제품 향상 자문"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "Filter by system name"
 msgstr "시스템 이름을 기준으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "e.g., client.nue.sles"
 msgstr "예: client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "Filter by system base channel"
 msgstr "시스템 기본 채널을 기분으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "e.g., SLE12"
 msgstr "예: SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "Filter by system installed products"
 msgstr "시스템 설치 제품을 기준으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "e.g., SLES"
 msgstr "예: SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:199
+#: ../html/src/manager/visualization/hierarchy.tsx:198
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "패치 존재 여부에 따른 시스템 파티션:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:241
+#: ../html/src/manager/visualization/hierarchy.tsx:240
 msgid "There was an error fetching data from the server."
 msgstr "서버에서 데이터를 가져오는 동안 오류가 발생했습니다."
 
-#: ../html/src/manager/visualization/hierarchy.tsx:284
+#: ../html/src/manager/visualization/hierarchy.tsx:283
 msgid " filters"
 msgstr " 필터"
 
-#: ../html/src/manager/visualization/ui/components.ts:44
+#: ../html/src/manager/visualization/ui/components.ts:42
 msgid "Partition systems by given check-in time:"
 msgstr "지정된 체크인 시간을 기준으로 시스템 파티션:"
 
-#: ../html/src/manager/visualization/ui/components.ts:151
+#: ../html/src/manager/visualization/ui/components.ts:149
 msgid "Add a grouping level"
 msgstr "그룹 수준 추가"
 
-#: ../html/src/manager/visualization/ui/components.ts:195
+#: ../html/src/manager/visualization/ui/components.ts:193
 msgid "Select a system group"
 msgstr "시스템 그룹 선택"
 
-#: ../html/src/manager/visualization/ui/components.ts:247
+#: ../html/src/manager/visualization/ui/components.ts:245
 msgid "Split into groups"
 msgstr "그룹으로 분할"
 

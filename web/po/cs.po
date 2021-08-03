@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 10:41+0000\n"
+"POT-Creation-Date: 2021-07-21 09:41+0000\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -5528,102 +5528,102 @@ msgstr ""
 "Nelze zjistit, jaké schopnosti má fond úložiště ze serveru. Prosím zkuste to "
 "znovu."
 
-#: ../html/src/manager/visualization/data-tree.ts:134
+#: ../html/src/manager/visualization/data-tree.ts:133
 msgid "  security advisories"
 msgstr "  bezpečnostní poradenství"
 
-#: ../html/src/manager/visualization/data-tree.ts:140
+#: ../html/src/manager/visualization/data-tree.ts:139
 msgid "  bug fix advisories"
 msgstr "  poradenství k opravě chyby"
 
-#: ../html/src/manager/visualization/data-tree.ts:150
+#: ../html/src/manager/visualization/data-tree.ts:149
 msgid "  product enhancement advisories"
 msgstr "  poradenství ke zlepšení produktu"
 
-#: ../html/src/manager/visualization/data-tree.ts:196
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "Přidat/odebrat systém do/ze SSM"
 
-#: ../html/src/manager/visualization/data-tree.ts:254
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "Přidat podřízené do SSM"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:63
+#: ../html/src/manager/visualization/hierarchy.tsx:62
 msgid "Filtering"
 msgstr "Filtrování"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:72
+#: ../html/src/manager/visualization/hierarchy.tsx:71
 msgid "Partitioning"
 msgstr "Dělení na oddíly"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:95
+#: ../html/src/manager/visualization/hierarchy.tsx:94
 msgid "Show systems with:"
 msgstr "Zobrazit systémy s:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:124
+#: ../html/src/manager/visualization/hierarchy.tsx:123
 msgid "security advisories"
 msgstr "bezpečnostní poradenství"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:129
+#: ../html/src/manager/visualization/hierarchy.tsx:128
 msgid "bug fix advisories"
 msgstr "poradenství k opravám chyb"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:132
+#: ../html/src/manager/visualization/hierarchy.tsx:131
 msgid "product enhancement advisories"
 msgstr "poradenství k vylepšení produktu"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "Filter by system name"
 msgstr "Filtrovat podle názvu systému"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "e.g., client.nue.sles"
 msgstr "např. client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "Filter by system base channel"
 msgstr "Filtrovat podle kanálu základního systému"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "e.g., SLE12"
 msgstr "např. SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "Filter by system installed products"
 msgstr "Filtrovat podle instalovaných produktů systémů"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "e.g., SLES"
 msgstr "např. SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:199
+#: ../html/src/manager/visualization/hierarchy.tsx:198
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "Dělit systémy ne/mající opravy:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:241
+#: ../html/src/manager/visualization/hierarchy.tsx:240
 msgid "There was an error fetching data from the server."
 msgstr "Při načítání dat ze serveru došlo k chybě."
 
-#: ../html/src/manager/visualization/hierarchy.tsx:284
+#: ../html/src/manager/visualization/hierarchy.tsx:283
 msgid " filters"
 msgstr " filtry"
 
-#: ../html/src/manager/visualization/ui/components.ts:44
+#: ../html/src/manager/visualization/ui/components.ts:42
 msgid "Partition systems by given check-in time:"
 msgstr "Dělit systémy podle daného času registrace:"
 
-#: ../html/src/manager/visualization/ui/components.ts:151
+#: ../html/src/manager/visualization/ui/components.ts:149
 msgid "Add a grouping level"
 msgstr "Přidejte úroveň seskupení"
 
-#: ../html/src/manager/visualization/ui/components.ts:195
+#: ../html/src/manager/visualization/ui/components.ts:193
 msgid "Select a system group"
 msgstr "Vyberte systémovou skupinu"
 
-#: ../html/src/manager/visualization/ui/components.ts:247
+#: ../html/src/manager/visualization/ui/components.ts:245
 msgid "Split into groups"
 msgstr "Rozdělit do skupin"
 
