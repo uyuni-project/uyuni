@@ -65,6 +65,13 @@ Feature: Management of minion keys
     When I click on "Delete Profile"
     Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
     When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
+    # WORKAROUND for bsc#1189011
+    And I click on "Cancel"
+    And I start salt-minion on "sle_minion"
+    And I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    # End of WORKAROUND
     And I wait until I see "has been deleted" text
     Then "sle_minion" should not be registered
 
