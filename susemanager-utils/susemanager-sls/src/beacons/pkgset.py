@@ -16,9 +16,9 @@ log = logging.getLogger(__name__)
 __virtualname__ = 'pkgset'
 
 PKG_PLUGINS = OrderedDict([
-        ("/usr/lib/zypp/plugins/commit/venv-zyppnotify", "/var/opt/venv-salt-minion/cache/rpmdb.cookie"),
-        ("/usr/share/yum-plugins/venv-yumnotify.py",     "/var/opt/venv-salt-minion/cache/rpmdb.cookie"),
-        ("/usr/bin/venv-dpkgnotify",                     "/var/opt/venv-salt-minion/cache/dpkg.cookie"),
+        ("/usr/lib/zypp/plugins/commit/venv-zyppnotify", "/var/cache/venv-salt-minion/rpmdb.cookie"),
+        ("/usr/share/yum-plugins/venv-yumnotify.py",     "/var/cache/venv-salt-minion/rpmdb.cookie"),
+        ("/usr/bin/venv-dpkgnotify",                     "/var/cache/venv-salt-minion/dpkg.cookie"),
         ("/usr/lib/zypp/plugins/commit/zyppnotify",      "/var/cache/salt/minion/rpmdb.cookie"),
         ("/usr/share/yum-plugins/yumnotify.py",          "/var/cache/salt/minion/rpmdb.cookie"),
         ("/usr/bin/dpkgnotify",                          "/var/cache/salt/minion/dpkg.cookie")
