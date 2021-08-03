@@ -1,3 +1,4 @@
+- Enable logrotate configuration for Salt SSH minion logs
 - Add UEFI support for VM creation
 - Add virt-tuner templates to VM creation
 - Handle more ocsf2 setups in virt_utils module
