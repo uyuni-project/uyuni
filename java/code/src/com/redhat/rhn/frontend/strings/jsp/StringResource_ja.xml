@@ -29759,20 +29759,6 @@ given channel.</source>
         <source>Forward Registration</source>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
-        <source>Optional OVAL Files (comma separated)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        <target state="new" />
-  </trans-unit>
-        <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
-          <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Events Pages</context>
-        </context-group>
-        <target state="new" />
-  </trans-unit>
-        </body>
+      </body>
   </file>
 </xliff>
