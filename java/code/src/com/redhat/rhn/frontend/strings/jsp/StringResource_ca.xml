@@ -24439,10 +24439,6 @@ given channel.</source>
         </context-group>
         <target state="new" />
   </trans-unit>
-        <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        </body>
   </file>
 </xliff>
