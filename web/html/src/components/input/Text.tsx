@@ -1,27 +1,17 @@
 import * as React from "react";
-import { FieldProps, FieldAttributes } from "formik";
+import { FieldProps } from "formik";
 import InputBase, { InputBaseProps } from "./FormikInputBase";
 
 type Props<Value> = InputBaseProps<Value> & {
-  maxLength: number,
+  maxLength: number;
 };
 
 export const Text = <Value extends string>(props: Props<Value>) => {
   const { inputClass, ...propsToPass } = props;
   return (
     <InputBase {...propsToPass}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }: FieldProps<Value>) => (
-        <div>
-          <input
-            id={field.name}
-            className={`form-control${props.inputClass ? ` ${props.inputClass}` : ""}`}
-            {...field}
-          />
-        </div>
+      {({ field }: FieldProps<Value>) => (
+        <input id={field.name} className={`form-control${props.inputClass ? ` ${props.inputClass}` : ""}`} {...field} />
       )}
     </InputBase>
   );

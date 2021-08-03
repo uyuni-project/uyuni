@@ -71,7 +71,6 @@ const InputBase = <Value,>(props: InputBaseProps<Value>) => {
 
   const validate = async (input: Value) => {
     const results = await Promise.all(validators.map(validator => validator(input)));
-    console.log(validators, results.filter(Boolean));
     // Show the first error we find by default, usually this will be the required validation
     return results.filter(Boolean)[0];
   };
