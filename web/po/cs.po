@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 08:29+0000\n"
+"POT-Creation-Date: 2021-07-07 08:16+0000\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -5598,11 +5598,11 @@ msgstr "  poradenství k opravě chyby"
 msgid "  product enhancement advisories"
 msgstr "  poradenství ke zlepšení produktu"
 
-#: ../html/src/manager/visualization/data-tree.ts:195
+#: ../html/src/manager/visualization/data-tree.ts:184
 msgid "Add/remove system from SSM"
 msgstr "Přidat/odebrat systém do/ze SSM"
 
-#: ../html/src/manager/visualization/data-tree.ts:253
+#: ../html/src/manager/visualization/data-tree.ts:242
 msgid "Add children to SSM"
 msgstr "Přidat podřízené do SSM"
 
