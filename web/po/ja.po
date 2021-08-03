@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 13:11+0000\n"
+"POT-Creation-Date: 2021-07-08 11:54+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -1726,7 +1726,7 @@ msgstr "プロパティの編集"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:33
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
 #: ../html/src/manager/images/image-build.tsx:268
-#: ../html/src/manager/images/image-profile-edit.tsx:544
+#: ../html/src/manager/images/image-profile-edit.tsx:526
 #: ../html/src/manager/images/image-profiles.tsx:182
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
@@ -1936,7 +1936,7 @@ msgid "Create project"
 msgstr "プロジェクトの作成"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
-#: ../html/src/manager/images/image-profile-edit.tsx:519
+#: ../html/src/manager/images/image-profile-edit.tsx:501
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-profiles.tsx:152
 #: ../html/src/manager/images/image-store-edit.tsx:234
@@ -2746,7 +2746,7 @@ msgid "No profile selected"
 msgstr "プロファイルが選択されていません"
 
 #: ../html/src/manager/images/image-build.tsx:272
-#: ../html/src/manager/images/image-profile-edit.tsx:553
+#: ../html/src/manager/images/image-profile-edit.tsx:535
 msgid "Image Type"
 msgstr "イメージタイプ"
 
@@ -2762,7 +2762,7 @@ msgstr "パス"
 
 #: ../html/src/manager/images/image-build.tsx:284
 #: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.tsx:410
+#: ../html/src/manager/images/image-profile-edit.tsx:392
 msgid "Activation Key"
 msgstr "アクティベーションキー"
 
@@ -2788,7 +2788,7 @@ msgid "The image import has been scheduled."
 msgstr "イメージの取り込みをスケジュールしました。"
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.tsx:402
+#: ../html/src/manager/images/image-profile-edit.tsx:385
 msgid "There are no channels assigned to this key."
 msgstr "このキーに割り当てられているチャンネルはありません。"
 
@@ -2824,47 +2824,42 @@ msgid "Import"
 msgstr "取り込み"
 
 #: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.tsx:497
+#: ../html/src/manager/images/image-profile-edit.tsx:479
 #: ../html/src/manager/images/image-store-edit.tsx:211
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:191
 msgid "Clear fields"
 msgstr "項目の消去"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:294
+#: ../html/src/manager/images/image-profile-edit.tsx:293
 msgid "Target Image Store"
 msgstr "ターゲットのイメージストア"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:318
+#: ../html/src/manager/images/image-profile-edit.tsx:317
 msgid "Dockerfile URL"
 msgstr "Docker ファイル URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:344
+#: ../html/src/manager/images/image-profile-edit.tsx:343
 msgid "Config URL"
 msgstr "設定 URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:367
-#, fuzzy
-msgid "Kiwi options"
-msgstr "カーネルオプション"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:411
+#: ../html/src/manager/images/image-profile-edit.tsx:393
 msgid "Activation key is required for kiwi images."
 msgstr "kiwi イメージに対してはアクティベーションキーが必要です。"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:451
+#: ../html/src/manager/images/image-profile-edit.tsx:433
 msgid "Remove entry"
 msgstr "項目の削除"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:466
+#: ../html/src/manager/images/image-profile-edit.tsx:448
 msgid "Custom Info Values"
 msgstr "独自の info 値"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:480
+#: ../html/src/manager/images/image-profile-edit.tsx:462
 msgid "Create additional custom info keys"
 msgstr "追加の独自 info 鍵の作成"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:508
+#: ../html/src/manager/images/image-profile-edit.tsx:490
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
@@ -2874,15 +2869,15 @@ msgstr "追加の独自 info 鍵の作成"
 msgid "Update"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:531
+#: ../html/src/manager/images/image-profile-edit.tsx:513
 msgid "Edit Image Profile: '"
 msgstr "イメージプロファイルの編集: '"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:531
+#: ../html/src/manager/images/image-profile-edit.tsx:513
 msgid "Create Image Profile"
 msgstr "イメージプロファイルの作成"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:547
+#: ../html/src/manager/images/image-profile-edit.tsx:529
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
