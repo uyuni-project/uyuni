@@ -3626,13 +3626,6 @@
         </context-group>
         <target state="translated">（GMT+0800）马来西亚</target>
       </trans-unit>
-    <trans-unit id="Asia/Beijing" xml:space="preserve">
-        <source>(GMT+0800) China</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+    </body>
   </file>
 </xliff>
