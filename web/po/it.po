@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 11:54+0000\n"
+"POT-Creation-Date: 2021-07-08 10:47+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -719,7 +719,6 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:205
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
@@ -2092,27 +2091,23 @@ msgstr ""
 msgid "Projects in use"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
-msgid "Live patching based on a specific system"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
 msgid "Live patching based on a SUSE product"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "Template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
 msgid "Product"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
 msgid "Kernel"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
 msgid "latest"
 msgstr ""
 
