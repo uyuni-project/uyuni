@@ -15,26 +15,17 @@
 
 package com.suse.manager.webui.controllers.utils;
 
-import static java.util.Optional.of;
-
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.AnsibleManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
-import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.apache.log4j.Logger;
@@ -43,7 +34,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Code for bootstrapping salt minions using salt-ssh.
@@ -125,48 +115,4 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         return result;
     }
 
-    /**
-     * We want to cleanup the authorized ssh key, which was copied by Ansible and was used for authentication of the
-     * primal bootstrap call.
-     *
-     * Since we don't have the minion id of the bootstrap minion yet, we need to use Ansible for removing the authorized
-     * key.
-     *
-     * @param params bootstrap params
-     * @param user the user
-     */
-    @Override
-    protected void handleAnsibleCleanup(BootstrapParameters params, User user) {
-        LOG.info("Ansible authentication cleanup for " + params.getHost());
-        params.getAnsibleInventoryId()
-                .flatMap(pathId -> AnsibleManager.lookupAnsiblePathById(pathId, user))
-                .filter(path -> path instanceof InventoryPath)
-                .ifPresent(inventoryPath -> {
-                    Map<String, Object> pillar = Map.of(
-                            "user", params.getUser(),
-                            "inventory", inventoryPath.getPath().toString(),
-                            "target_host", params.getHost(),
-                            "ssh_pubkey", FileUtils.readStringFromFile(SaltSSHService.SSH_PUBKEY_PATH));
-
-                    LocalCall<Map<String, ApplyResult>> call =
-                            State.apply(List.of("ansible.mgr-ssh-pubkey-removed"), of(pillar));
-                    String minionId = inventoryPath.getMinionServer().getMinionId();
-                    saltApi.callSync(call, minionId).ifPresentOrElse(
-                            res -> {
-                                // all results must be successful, otherwise we throw an exception
-                                List<String> failedStates = res.entrySet().stream()
-                                        .filter(r -> !r.getValue().isResult())
-                                        .map(r -> r.getKey())
-                                        .collect(Collectors.toList());
-
-                                if (!failedStates.isEmpty()) {
-                                    throw new RuntimeException("Ansible cleanup states failed: " + failedStates);
-                                }
-                                LOG.debug("Ansible cleanup successful");
-                            },
-                            () -> {
-                                throw new RuntimeException("Minion '" + minionId + "' did not respond");
-                            });
-                });
-    }
 }

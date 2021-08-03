@@ -6,6 +6,12 @@ mgr_server_localhost_alias_absent:
     - names:
       - {{ salt['pillar.get']('mgr_server') }}
 
+no_ssh_push_key_authorized:
+  ssh_auth.absent:
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - source: salt://salt_ssh/mgr_ssh_id.pub
+    - comment: susemanager-default-contact-method
+
 # disable all susemanager:* repos
 {% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}

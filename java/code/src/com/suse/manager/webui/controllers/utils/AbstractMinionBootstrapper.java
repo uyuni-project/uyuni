@@ -223,9 +223,6 @@ public abstract class AbstractMinionBootstrapper {
         catch (Exception e) {
             return new BootstrapResult(false, Optional.empty(), e.getMessage());
         }
-        finally {
-            handleAnsibleCleanup(params, user);
-        }
     }
 
     /**
@@ -270,14 +267,6 @@ public abstract class AbstractMinionBootstrapper {
                             });
                 });
     }
-
-    /**
-     * Cleanup after Ansible authentication
-     *
-     * @param params bootstrap params
-     * @param user the user
-     */
-    protected abstract void handleAnsibleCleanup(BootstrapParameters params, User user);
 
     /**
      * Implementation-specific Validation of the json input.
