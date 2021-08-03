@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-21 10:02+0000\n"
+"POT-Creation-Date: 2021-07-07 10:17+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -4689,25 +4689,6 @@ msgstr "schedule_list：列出所有操作"
 #: ../src/spacecmd/schedule.py:448
 msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "用法：schedule_list [开始日期] [结束日期]"
-
-#: ../src/spacecmd/schedule.py:459
-#, fuzzy
-msgid "schedule_deletearchived: Delete all archived actions"
-msgstr "schedule_listarchived：列出存档的操作"
-
-#: ../src/spacecmd/schedule.py:460
-#, fuzzy
-msgid "usage: schedule_deletearchived"
-msgstr "用法：schedule_details ID"
-
-#: ../src/spacecmd/schedule.py:477
-msgid "Do you want to delete all ({}) archived actions? [y/N]"
-msgstr ""
-
-#: ../src/spacecmd/schedule.py:500
-#, fuzzy
-msgid "No archived actions found."
-msgstr "未找到编辑器"
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
