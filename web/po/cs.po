@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 13:27+0000\n"
+"POT-Creation-Date: 2021-07-29 12:44+0000\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -3308,31 +3308,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
 msgid "Skip to the last maintenance window"
 msgstr "Přeskočit na poslední okno údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
 msgid "Skip to the next maintenance window"
 msgstr "Přeskočit na další okno údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
 msgid "There are no more past maintenance windows"
 msgstr "Žádná okna předchozí údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
 msgid "There are no more future maintenance windows"
 msgstr "Žádná okna budoucí údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
 msgid "Today"
 msgstr "Dnes"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
 msgid "Month"
 msgstr "Měsíc"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
 msgid "Day"
 msgstr "Den"
 

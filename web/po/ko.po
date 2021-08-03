@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 13:27+0000\n"
+"POT-Creation-Date: 2021-07-29 12:44+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -3304,31 +3304,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
 msgid "Skip to the last maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
 msgid "Skip to the next maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
 msgid "There are no more past maintenance windows"
 msgstr "마지막 유지보수 기간이 더 이상 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
 msgid "There are no more future maintenance windows"
 msgstr "더 이상 향후 유지보수 기간이 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
 msgid "Today"
 msgstr "오늘"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
 msgid "Month"
 msgstr "월"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
 msgid "Day"
 msgstr "일"
 

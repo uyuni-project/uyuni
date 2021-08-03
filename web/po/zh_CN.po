@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 13:27+0000\n"
+"POT-Creation-Date: 2021-07-29 12:44+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -3241,31 +3241,31 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
 msgid "Skip to the last maintenance window"
 msgstr "跳到最后一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
 msgid "Skip to the next maintenance window"
 msgstr "跳到下一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
 msgid "There are no more past maintenance windows"
 msgstr "没有更多过去的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
 msgid "There are no more future maintenance windows"
 msgstr "没有更多将来的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
 msgid "Today"
 msgstr "今天"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
 msgid "Month"
 msgstr "月"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
 msgid "Day"
 msgstr "日"
 
