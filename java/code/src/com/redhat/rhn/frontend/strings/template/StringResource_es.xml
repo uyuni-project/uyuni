@@ -15,7 +15,7 @@
         </context-group>
         <target>Su cuenta de @@PRODUCT_NAME@@ está lista</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -62,7 +62,7 @@ Gracias por usar @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -254,7 +254,7 @@ Resumen:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -348,7 +348,7 @@ Puede abordar los problemas que señalamos de dos maneras:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -457,7 +457,7 @@ Gracias por utilizar @@PRODUCT_NAME@@.
 {6}
 </target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -547,7 +547,7 @@ Si no solicitó este correo, ignore este mensaje.
 Gracias por utilizar  @@PRODUCT_NAME@@.
         </target>
       </trans-unit>
-      <trans-unit id="email.reset.password" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 
