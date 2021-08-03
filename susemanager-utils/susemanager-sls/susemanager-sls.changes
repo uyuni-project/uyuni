@@ -1,3 +1,4 @@
+- Enable logrotate configuration for Salt SSH minion logs
 - States and pkgset beacon modified for new salt bundle file placement
 - Handle more ocsf2 setups in virt_utils module
 - Add UEFI support for VM creation

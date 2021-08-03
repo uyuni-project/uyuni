@@ -47,3 +47,8 @@ mgr_remove_own_ssh_pub_key:
 mgr_remove_own_ssh_key:
   file.absent:
     - name: {{ home }}/.ssh/mgr_own_id
+
+# Remove logrotate configuration
+mgr_remove_logrotate_configuration:
+  file.absent:
+    - name: /etc/logrotate.d/salt-ssh
