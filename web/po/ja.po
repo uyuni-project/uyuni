@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-21 09:41+0000\n"
+"POT-Creation-Date: 2021-07-13 13:24+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -270,11 +270,11 @@ msgstr "取り消し"
 msgid "Delete"
 msgstr "削除"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:20
+#: ../html/src/components/dialog/dialog.stories.js:20
 msgid "Delete project"
 msgstr "プロジェクトの削除"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:23
+#: ../html/src/components/dialog/dialog.stories.js:23
 msgid "Are you sure you want to delete project "
 msgstr "下記のプロジェクトを削除してよろしいですか "
 
@@ -331,55 +331,134 @@ msgstr "パスワードの表示／非表示"
 msgid "Toggle section visibility"
 msgstr "セクション表示の切り替え"
 
-#: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:35
-#: ../html/src/components/input/FormMultiInput.stories.tsx:77
-#: ../html/src/components/input/FormMultiInput.stories.tsx:134
-#: ../html/src/components/input/FormMultiInput.stories.tsx:183
-#: ../html/src/components/input/FormMultiInput.stories.tsx:264
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:69
-#: ../html/src/components/input/Radio.stories.tsx:99
-#: ../html/src/components/input/Radio.stories.tsx:130
-#: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:36
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
+#: ../html/src/components/input/Check.stories.js:31
+#: ../html/src/components/input/DateTime.stories.js:35
+#: ../html/src/components/input/FormMultiInput.stories.js:75
+#: ../html/src/components/input/FormMultiInput.stories.js:132
+#: ../html/src/components/input/FormMultiInput.stories.js:181
+#: ../html/src/components/input/FormMultiInput.stories.js:262
+#: ../html/src/components/input/Password.stories.js:36
+#: ../html/src/components/input/Radio.stories.js:39
+#: ../html/src/components/input/Radio.stories.js:69
+#: ../html/src/components/input/Radio.stories.js:99
+#: ../html/src/components/input/Radio.stories.js:130
+#: ../html/src/components/input/Range.stories.js:50
+#: ../html/src/components/input/Select.stories.js:36
+#: ../html/src/components/input/Text.stories.js:44
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "送信"
+
+#: ../html/src/components/input/DateTime.stories.js:27
+msgid "Time"
+msgstr "時刻"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:26
+#: ../html/src/components/input/FormMultiInput.stories.js:94
+#: ../html/src/components/input/FormMultiInput.stories.js:151
+#: ../html/src/components/input/FormMultiInput.stories.js:207
+msgid "Users"
+msgstr "ユーザー"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:52
+#: ../html/src/components/input/Text.stories.js:26
+#: ../html/src/components/input/form.stories.js:26
+msgid "First Name"
+msgstr "名"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:54
+#: ../html/src/components/input/FormMultiInput.stories.js:63
+#: ../html/src/components/input/FormMultiInput.stories.js:120
+#: ../html/src/components/input/FormMultiInput.stories.js:236
+#: ../html/src/components/input/FormMultiInput.stories.js:244
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
+#: ../html/src/components/input/Text.stories.js:28
+#: ../html/src/components/input/Text.stories.js:37
+#: ../html/src/components/input/form.stories.js:28
+msgid "Minimum 2 characters"
+msgstr "最低 2 文字"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:61
+msgid "Last Name"
+msgstr "姓"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:118
+#: ../html/src/manager/login/login.tsx:126
+msgid "Login"
+msgstr "ログイン"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "削除"
 
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
-msgid "Minimum 2 characters"
-msgstr "最低 2 文字"
-
 #: ../html/src/components/input/InputBase.tsx:276
 #, fuzzy
 msgid "required"
 msgstr "要再起動"
 
+#: ../html/src/components/input/Password.stories.js:26
+#: ../html/src/manager/images/image-store-edit.tsx:187
+#: ../html/src/manager/login/login.tsx:137
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
+msgid "Password"
+msgstr "パスワード"
+
+#: ../html/src/components/input/Password.stories.js:28
+msgid "Minimum 4 characters"
+msgstr "最低 4 文字"
+
+#: ../html/src/components/input/Radio.stories.js:26
+#: ../html/src/components/input/Radio.stories.js:55
+#: ../html/src/components/input/Radio.stories.js:86
+#: ../html/src/components/input/Radio.stories.js:116
+#: ../html/src/components/input/Select.stories.js:27
+msgid "Level"
+msgstr "レベル"
+
+#: ../html/src/components/input/Radio.stories.js:31
+#: ../html/src/components/input/Radio.stories.js:61
+#: ../html/src/components/input/Radio.stories.js:91
+#: ../html/src/components/input/Radio.stories.js:122
+msgid "Beginner"
+msgstr "初心者"
+
+#: ../html/src/components/input/Radio.stories.js:32
+#: ../html/src/components/input/Radio.stories.js:62
+#: ../html/src/components/input/Radio.stories.js:92
+#: ../html/src/components/input/Radio.stories.js:123
+msgid "Normal"
+msgstr "通常"
+
+#: ../html/src/components/input/Radio.stories.js:33
+#: ../html/src/components/input/Radio.stories.js:63
+#: ../html/src/components/input/Radio.stories.js:93
+#: ../html/src/components/input/Radio.stories.js:124
+msgid "Expert"
+msgstr "熟練者"
+
+#: ../html/src/components/input/Range.stories.js:34
+msgid "Port range"
+msgstr "ポート範囲"
+
+#: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr "両方の値は正の整数である必要があります"
 
-#: ../html/src/components/input/Select.stories.tsx:62
+#: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
 msgstr "フレーバー"
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.js:64
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "入力してください..."
 
-#: ../html/src/components/input/Select.stories.tsx:65
+#: ../html/src/components/input/Select.stories.js:65
 msgid "No flavors"
 msgstr "フレーバー無し"
 
@@ -2873,12 +2952,6 @@ msgstr "資格情報の使用"
 msgid "Username"
 msgstr "ユーザ名"
 
-#: ../html/src/manager/images/image-store-edit.tsx:187
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
-msgid "Password"
-msgstr "パスワード"
-
 #: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Edit Image Store: '"
 msgstr "イメージストアの編集: '"
@@ -3317,10 +3390,6 @@ msgstr "下記についてさらに詳しく"
 #: ../html/src/manager/login/login.tsx:145
 msgid "Sign In"
 msgstr "サインイン"
-
-#: ../html/src/manager/login/login.tsx:126
-msgid "Login"
-msgstr "ログイン"
 
 #: ../html/src/manager/login/use-login-api.ts:12
 msgid "Either the password or username is incorrect."
@@ -5708,36 +5777,6 @@ msgstr ""
 #, fuzzy
 msgid "foo {0} tea {1}"
 msgstr "{0} / {1} ページ"
-
-#~ msgid "Time"
-#~ msgstr "時刻"
-
-#~ msgid "Users"
-#~ msgstr "ユーザー"
-
-#~ msgid "First Name"
-#~ msgstr "名"
-
-#~ msgid "Last Name"
-#~ msgstr "姓"
-
-#~ msgid "Minimum 4 characters"
-#~ msgstr "最低 4 文字"
-
-#~ msgid "Level"
-#~ msgstr "レベル"
-
-#~ msgid "Beginner"
-#~ msgstr "初心者"
-
-#~ msgid "Normal"
-#~ msgstr "通常"
-
-#~ msgid "Expert"
-#~ msgstr "熟練者"
-
-#~ msgid "Port range"
-#~ msgstr "ポート範囲"
 
 #~ msgid "Guest is not running"
 #~ msgstr "ゲストは動作していません"

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-21 09:41+0000\n"
+"POT-Creation-Date: 2021-07-13 13:24+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -261,11 +261,11 @@ msgstr "取消"
 msgid "Delete"
 msgstr "删除"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:20
+#: ../html/src/components/dialog/dialog.stories.js:20
 msgid "Delete project"
 msgstr "删除项目"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:23
+#: ../html/src/components/dialog/dialog.stories.js:23
 msgid "Are you sure you want to delete project "
 msgstr "您确定要删除项目吗 "
 
@@ -320,55 +320,134 @@ msgstr "显示/隐藏口令"
 msgid "Toggle section visibility"
 msgstr "切换部分可见性"
 
-#: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:35
-#: ../html/src/components/input/FormMultiInput.stories.tsx:77
-#: ../html/src/components/input/FormMultiInput.stories.tsx:134
-#: ../html/src/components/input/FormMultiInput.stories.tsx:183
-#: ../html/src/components/input/FormMultiInput.stories.tsx:264
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:69
-#: ../html/src/components/input/Radio.stories.tsx:99
-#: ../html/src/components/input/Radio.stories.tsx:130
-#: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:36
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
+#: ../html/src/components/input/Check.stories.js:31
+#: ../html/src/components/input/DateTime.stories.js:35
+#: ../html/src/components/input/FormMultiInput.stories.js:75
+#: ../html/src/components/input/FormMultiInput.stories.js:132
+#: ../html/src/components/input/FormMultiInput.stories.js:181
+#: ../html/src/components/input/FormMultiInput.stories.js:262
+#: ../html/src/components/input/Password.stories.js:36
+#: ../html/src/components/input/Radio.stories.js:39
+#: ../html/src/components/input/Radio.stories.js:69
+#: ../html/src/components/input/Radio.stories.js:99
+#: ../html/src/components/input/Radio.stories.js:130
+#: ../html/src/components/input/Range.stories.js:50
+#: ../html/src/components/input/Select.stories.js:36
+#: ../html/src/components/input/Text.stories.js:44
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "提交"
+
+#: ../html/src/components/input/DateTime.stories.js:27
+msgid "Time"
+msgstr "时间"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:26
+#: ../html/src/components/input/FormMultiInput.stories.js:94
+#: ../html/src/components/input/FormMultiInput.stories.js:151
+#: ../html/src/components/input/FormMultiInput.stories.js:207
+msgid "Users"
+msgstr "用户"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:52
+#: ../html/src/components/input/Text.stories.js:26
+#: ../html/src/components/input/form.stories.js:26
+msgid "First Name"
+msgstr "名字"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:54
+#: ../html/src/components/input/FormMultiInput.stories.js:63
+#: ../html/src/components/input/FormMultiInput.stories.js:120
+#: ../html/src/components/input/FormMultiInput.stories.js:236
+#: ../html/src/components/input/FormMultiInput.stories.js:244
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
+#: ../html/src/components/input/Text.stories.js:28
+#: ../html/src/components/input/Text.stories.js:37
+#: ../html/src/components/input/form.stories.js:28
+msgid "Minimum 2 characters"
+msgstr "最少 2 个字符"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:61
+msgid "Last Name"
+msgstr "姓氏"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:118
+#: ../html/src/manager/login/login.tsx:126
+msgid "Login"
+msgstr "登录"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "去除"
 
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
-msgid "Minimum 2 characters"
-msgstr "最少 2 个字符"
-
 #: ../html/src/components/input/InputBase.tsx:276
 #, fuzzy
 msgid "required"
 msgstr "需要重引导"
 
+#: ../html/src/components/input/Password.stories.js:26
+#: ../html/src/manager/images/image-store-edit.tsx:187
+#: ../html/src/manager/login/login.tsx:137
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
+msgid "Password"
+msgstr "口令"
+
+#: ../html/src/components/input/Password.stories.js:28
+msgid "Minimum 4 characters"
+msgstr "最少 4 个字符"
+
+#: ../html/src/components/input/Radio.stories.js:26
+#: ../html/src/components/input/Radio.stories.js:55
+#: ../html/src/components/input/Radio.stories.js:86
+#: ../html/src/components/input/Radio.stories.js:116
+#: ../html/src/components/input/Select.stories.js:27
+msgid "Level"
+msgstr "级别"
+
+#: ../html/src/components/input/Radio.stories.js:31
+#: ../html/src/components/input/Radio.stories.js:61
+#: ../html/src/components/input/Radio.stories.js:91
+#: ../html/src/components/input/Radio.stories.js:122
+msgid "Beginner"
+msgstr "新手"
+
+#: ../html/src/components/input/Radio.stories.js:32
+#: ../html/src/components/input/Radio.stories.js:62
+#: ../html/src/components/input/Radio.stories.js:92
+#: ../html/src/components/input/Radio.stories.js:123
+msgid "Normal"
+msgstr "普通"
+
+#: ../html/src/components/input/Radio.stories.js:33
+#: ../html/src/components/input/Radio.stories.js:63
+#: ../html/src/components/input/Radio.stories.js:93
+#: ../html/src/components/input/Radio.stories.js:124
+msgid "Expert"
+msgstr "专家"
+
+#: ../html/src/components/input/Range.stories.js:34
+msgid "Port range"
+msgstr "端口范围"
+
+#: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr "两个值都必须为正整数"
 
-#: ../html/src/components/input/Select.stories.tsx:62
+#: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
 msgstr "风格"
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.js:64
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "开始键入..."
 
-#: ../html/src/components/input/Select.stories.tsx:65
+#: ../html/src/components/input/Select.stories.js:65
 msgid "No flavors"
 msgstr "无风格"
 
@@ -2784,12 +2863,6 @@ msgstr "使用身份凭证"
 msgid "Username"
 msgstr "用户名"
 
-#: ../html/src/manager/images/image-store-edit.tsx:187
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
-msgid "Password"
-msgstr "口令"
-
 #: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Edit Image Store: '"
 msgstr "编辑映像储存：'"
@@ -3218,10 +3291,6 @@ msgstr "了解详细信息"
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
 msgid "Sign In"
-msgstr "登录"
-
-#: ../html/src/manager/login/login.tsx:126
-msgid "Login"
 msgstr "登录"
 
 #: ../html/src/manager/login/use-login-api.ts:12
@@ -5546,36 +5615,6 @@ msgstr ""
 #, fuzzy
 msgid "foo {0} tea {1}"
 msgstr "第 {0} 页，共 {1} 页"
-
-#~ msgid "Time"
-#~ msgstr "时间"
-
-#~ msgid "Users"
-#~ msgstr "用户"
-
-#~ msgid "First Name"
-#~ msgstr "名字"
-
-#~ msgid "Last Name"
-#~ msgstr "姓氏"
-
-#~ msgid "Minimum 4 characters"
-#~ msgstr "最少 4 个字符"
-
-#~ msgid "Level"
-#~ msgstr "级别"
-
-#~ msgid "Beginner"
-#~ msgstr "新手"
-
-#~ msgid "Normal"
-#~ msgstr "普通"
-
-#~ msgid "Expert"
-#~ msgstr "专家"
-
-#~ msgid "Port range"
-#~ msgstr "端口范围"
 
 #~ msgid "Guest is not running"
 #~ msgstr "Guest 未运行"

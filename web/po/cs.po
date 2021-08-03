@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-21 09:41+0000\n"
+"POT-Creation-Date: 2021-07-13 13:24+0000\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -265,11 +265,11 @@ msgstr "Zrušit"
 msgid "Delete"
 msgstr "Smazat"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:20
+#: ../html/src/components/dialog/dialog.stories.js:20
 msgid "Delete project"
 msgstr "Smazat projekt"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:23
+#: ../html/src/components/dialog/dialog.stories.js:23
 msgid "Are you sure you want to delete project "
 msgstr "Opravdu chcete smazat projekt "
 
@@ -327,55 +327,134 @@ msgstr "Zobrazit/skrýt heslo"
 msgid "Toggle section visibility"
 msgstr "Přepnout viditelnost sekce"
 
-#: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:35
-#: ../html/src/components/input/FormMultiInput.stories.tsx:77
-#: ../html/src/components/input/FormMultiInput.stories.tsx:134
-#: ../html/src/components/input/FormMultiInput.stories.tsx:183
-#: ../html/src/components/input/FormMultiInput.stories.tsx:264
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:69
-#: ../html/src/components/input/Radio.stories.tsx:99
-#: ../html/src/components/input/Radio.stories.tsx:130
-#: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:36
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
+#: ../html/src/components/input/Check.stories.js:31
+#: ../html/src/components/input/DateTime.stories.js:35
+#: ../html/src/components/input/FormMultiInput.stories.js:75
+#: ../html/src/components/input/FormMultiInput.stories.js:132
+#: ../html/src/components/input/FormMultiInput.stories.js:181
+#: ../html/src/components/input/FormMultiInput.stories.js:262
+#: ../html/src/components/input/Password.stories.js:36
+#: ../html/src/components/input/Radio.stories.js:39
+#: ../html/src/components/input/Radio.stories.js:69
+#: ../html/src/components/input/Radio.stories.js:99
+#: ../html/src/components/input/Radio.stories.js:130
+#: ../html/src/components/input/Range.stories.js:50
+#: ../html/src/components/input/Select.stories.js:36
+#: ../html/src/components/input/Text.stories.js:44
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "Předložit"
+
+#: ../html/src/components/input/DateTime.stories.js:27
+msgid "Time"
+msgstr "Čas"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:26
+#: ../html/src/components/input/FormMultiInput.stories.js:94
+#: ../html/src/components/input/FormMultiInput.stories.js:151
+#: ../html/src/components/input/FormMultiInput.stories.js:207
+msgid "Users"
+msgstr "Uživatelé"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:52
+#: ../html/src/components/input/Text.stories.js:26
+#: ../html/src/components/input/form.stories.js:26
+msgid "First Name"
+msgstr "První jméno"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:54
+#: ../html/src/components/input/FormMultiInput.stories.js:63
+#: ../html/src/components/input/FormMultiInput.stories.js:120
+#: ../html/src/components/input/FormMultiInput.stories.js:236
+#: ../html/src/components/input/FormMultiInput.stories.js:244
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
+#: ../html/src/components/input/Text.stories.js:28
+#: ../html/src/components/input/Text.stories.js:37
+#: ../html/src/components/input/form.stories.js:28
+msgid "Minimum 2 characters"
+msgstr "Aspoň dva znaky"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:61
+msgid "Last Name"
+msgstr "Poslední jméno (příjmení)"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:118
+#: ../html/src/manager/login/login.tsx:126
+msgid "Login"
+msgstr "Přihlášení"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "Odstranit"
 
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
-msgid "Minimum 2 characters"
-msgstr "Aspoň dva znaky"
-
 #: ../html/src/components/input/InputBase.tsx:276
 #, fuzzy
 msgid "required"
 msgstr "Nutný restart systému"
 
+#: ../html/src/components/input/Password.stories.js:26
+#: ../html/src/manager/images/image-store-edit.tsx:187
+#: ../html/src/manager/login/login.tsx:137
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
+msgid "Password"
+msgstr "Heslo"
+
+#: ../html/src/components/input/Password.stories.js:28
+msgid "Minimum 4 characters"
+msgstr "Aspoň čtyři znaky"
+
+#: ../html/src/components/input/Radio.stories.js:26
+#: ../html/src/components/input/Radio.stories.js:55
+#: ../html/src/components/input/Radio.stories.js:86
+#: ../html/src/components/input/Radio.stories.js:116
+#: ../html/src/components/input/Select.stories.js:27
+msgid "Level"
+msgstr "Úroveň"
+
+#: ../html/src/components/input/Radio.stories.js:31
+#: ../html/src/components/input/Radio.stories.js:61
+#: ../html/src/components/input/Radio.stories.js:91
+#: ../html/src/components/input/Radio.stories.js:122
+msgid "Beginner"
+msgstr "Začátečník"
+
+#: ../html/src/components/input/Radio.stories.js:32
+#: ../html/src/components/input/Radio.stories.js:62
+#: ../html/src/components/input/Radio.stories.js:92
+#: ../html/src/components/input/Radio.stories.js:123
+msgid "Normal"
+msgstr "Normální"
+
+#: ../html/src/components/input/Radio.stories.js:33
+#: ../html/src/components/input/Radio.stories.js:63
+#: ../html/src/components/input/Radio.stories.js:93
+#: ../html/src/components/input/Radio.stories.js:124
+msgid "Expert"
+msgstr "Odborník"
+
+#: ../html/src/components/input/Range.stories.js:34
+msgid "Port range"
+msgstr "Rozsah portů"
+
+#: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr "Obě hodnoty musí být celá kladná čísla"
 
-#: ../html/src/components/input/Select.stories.tsx:62
+#: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
 msgstr "Varianta"
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.js:64
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "Začněte psát..."
 
-#: ../html/src/components/input/Select.stories.tsx:65
+#: ../html/src/components/input/Select.stories.js:65
 msgid "No flavors"
 msgstr "Bez variant"
 
@@ -2847,12 +2926,6 @@ msgstr "Použít pověření"
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: ../html/src/manager/images/image-store-edit.tsx:187
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
-msgid "Password"
-msgstr "Heslo"
-
 #: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Edit Image Store: '"
 msgstr "Upravit úložiště obrazů: '"
@@ -3283,10 +3356,6 @@ msgstr "Poznat více o"
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
 msgid "Sign In"
-msgstr "Přihlášení"
-
-#: ../html/src/manager/login/login.tsx:126
-msgid "Login"
 msgstr "Přihlášení"
 
 #: ../html/src/manager/login/use-login-api.ts:12
@@ -5660,36 +5729,6 @@ msgstr ""
 #, fuzzy
 msgid "foo {0} tea {1}"
 msgstr "Strana {0} z {1}"
-
-#~ msgid "Time"
-#~ msgstr "Čas"
-
-#~ msgid "Users"
-#~ msgstr "Uživatelé"
-
-#~ msgid "First Name"
-#~ msgstr "První jméno"
-
-#~ msgid "Last Name"
-#~ msgstr "Poslední jméno (příjmení)"
-
-#~ msgid "Minimum 4 characters"
-#~ msgstr "Aspoň čtyři znaky"
-
-#~ msgid "Level"
-#~ msgstr "Úroveň"
-
-#~ msgid "Beginner"
-#~ msgstr "Začátečník"
-
-#~ msgid "Normal"
-#~ msgstr "Normální"
-
-#~ msgid "Expert"
-#~ msgstr "Odborník"
-
-#~ msgid "Port range"
-#~ msgstr "Rozsah portů"
 
 #~ msgid "Guest is not running"
 #~ msgstr "Hostitel není spuštěn"
