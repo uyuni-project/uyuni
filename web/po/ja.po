@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 15:03+0000\n"
+"POT-Creation-Date: 2021-07-08 13:11+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -142,7 +142,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:120
@@ -1766,7 +1766,7 @@ msgstr "動作を "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:221
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:185
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
@@ -3582,7 +3582,7 @@ msgstr "続行して問題ないかご確認ください。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:440
@@ -3781,45 +3781,39 @@ msgstr "読み込んでいます.."
 msgid "Nothing configured. Please add paths in the "
 msgstr "何も設定されていません。パスを追加してください "
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
 msgid "Loading playbook contents.."
 msgstr "playbook の内容を読み込んでいます.."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:101
-#: ../html/src/manager/state/highstate.tsx:118
-#: ../html/src/manager/state/recurring-states-edit.tsx:113
-msgid "Test mode"
-msgstr "テストモード"
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 msgid "Back to playbook list"
 msgstr "playbook の一覧に戻る"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
 msgid "Schedule playbook execution"
 msgstr "playbook の実行のスケジュール"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:115
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
 msgstr "playbook '{0}'"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
 msgstr "playbook 実行のスケジュール"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
 msgstr "インベントリパス"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:156
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
 msgstr "playbook の内容"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
 msgid "Action has been successfully added to action chain"
 msgstr "動作を動作チェーンに追加しました"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:184
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 msgid "Playbook execution has been"
 msgstr "動作を"
 
@@ -4260,6 +4254,11 @@ msgstr "highstate の適用を "
 #: ../html/src/manager/state/highstate.tsx:70
 msgid "scheduled."
 msgstr "スケジュールしました。"
+
+#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/recurring-states-edit.tsx:113
+msgid "Test mode"
+msgstr "テストモード"
 
 #: ../html/src/manager/state/highstate.tsx:126
 msgid "Apply Highstate"
