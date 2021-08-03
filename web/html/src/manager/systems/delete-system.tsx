@@ -32,9 +32,8 @@ class DeleteSystem extends React.Component<Props, State> {
     };
   }
 
-  handleDelete = cleanupErr => {
-    const nocleanupParam = cleanupErr ? { nocleanup: "true" } : {};
-    return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, $.param(nocleanupParam))
+  handleDelete = (cleanupErr: Boolean) => {
+    return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, { nocleanup: cleanupErr })
       .then(data => {
         if (data.success && this.props.onDeleteSuccess) {
           this.props.onDeleteSuccess();
