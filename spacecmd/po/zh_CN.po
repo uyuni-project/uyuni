@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:18+0200\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -217,7 +217,7 @@ msgid "Description [None]:"
 msgstr "说明 [None]："
 
 #: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:79
-#: ../src/spacecmd/softwarechannel.py:928
+#: ../src/spacecmd/softwarechannel.py:895
 msgid "Base Channels"
 msgstr "基础频道"
 
@@ -334,11 +334,11 @@ msgstr "权利"
 msgid "System Groups"
 msgstr "系统组"
 
-#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:207
-#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1391
-#: ../src/spacecmd/softwarechannel.py:1493
-#: ../src/spacecmd/softwarechannel.py:1575
-#: ../src/spacecmd/softwarechannel.py:1821
+#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:209
+#: ../src/spacecmd/package.py:266 ../src/spacecmd/softwarechannel.py:1358
+#: ../src/spacecmd/softwarechannel.py:1460
+#: ../src/spacecmd/softwarechannel.py:1542
+#: ../src/spacecmd/softwarechannel.py:1788
 msgid "Packages"
 msgstr "软件包"
 
@@ -949,7 +949,7 @@ msgstr ""
 #: ../src/spacecmd/custominfo.py:199 ../src/spacecmd/distribution.py:72
 #: ../src/spacecmd/filepreservation.py:70 ../src/spacecmd/group.py:179
 #: ../src/spacecmd/repo.py:350 ../src/spacecmd/repo.py:462
-#: ../src/spacecmd/softwarechannel.py:801
+#: ../src/spacecmd/softwarechannel.py:768
 msgid "Name:"
 msgstr "名称："
 
@@ -959,7 +959,7 @@ msgstr "标签："
 
 #: ../src/spacecmd/configchannel.py:476 ../src/spacecmd/cryptokey.py:67
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:204
-#: ../src/spacecmd/group.py:184 ../src/spacecmd/softwarechannel.py:813
+#: ../src/spacecmd/group.py:184 ../src/spacecmd/softwarechannel.py:780
 #: ../src/spacecmd/system.py:3537
 msgid "Description:"
 msgstr "说明："
@@ -994,7 +994,7 @@ msgstr "用法：configchannel_delete CHANNEL ..."
 msgid "No channels matched argument(s): %s"
 msgstr "没有任何频道与参数相匹配：%s"
 
-#: ../src/spacecmd/configchannel.py:540 ../src/spacecmd/softwarechannel.py:737
+#: ../src/spacecmd/configchannel.py:540 ../src/spacecmd/softwarechannel.py:704
 msgid "Delete these channels [y/N]:"
 msgstr "删除这些频道 [y/N]："
 
@@ -1139,14 +1139,14 @@ msgstr ""
 "  文件，需要以二进制文件 (-b) 形式发送。我们会尽努力来\n"
 "  自动检测需要此选项的文件，但您可能需要显式指定此选项。\n"
 
-#: ../src/spacecmd/configchannel.py:806 ../src/spacecmd/softwarechannel.py:820
-#: ../src/spacecmd/softwarechannel.py:941
-#: ../src/spacecmd/softwarechannel.py:948
+#: ../src/spacecmd/configchannel.py:806 ../src/spacecmd/softwarechannel.py:787
+#: ../src/spacecmd/softwarechannel.py:908
+#: ../src/spacecmd/softwarechannel.py:915
 msgid "Select:"
 msgstr "选择："
 
 #: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:920
-#: ../src/spacecmd/softwarechannel.py:1375
+#: ../src/spacecmd/softwarechannel.py:1342
 #, python-format
 msgid "%s is not a valid channel"
 msgstr "%s 不是有效频道"
@@ -1642,6 +1642,7 @@ msgid "distribution_create: Create a Kickstart tree"
 msgstr "distribution_create：创建 Kickstart 树"
 
 #: ../src/spacecmd/distribution.py:44
+#, fuzzy
 msgid ""
 "usage: distribution_create [options]\n"
 "\n"
@@ -1649,7 +1650,8 @@ msgid ""
 "  -n NAME\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora|rhel_4/5/6|generic_rpm]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 msgstr ""
 "用法：distribution_create [选项]\n"
 "\n"
@@ -1732,17 +1734,17 @@ msgstr "distribution_details：显示 Kickstart 树的细节"
 msgid "usage: distribution_details LABEL"
 msgstr "用法：distribution_details LABEL"
 
-#: ../src/spacecmd/distribution.py:249 ../src/spacecmd/package.py:92
+#: ../src/spacecmd/distribution.py:249
 #, python-format
 msgid "Name:    %s"
 msgstr "名称：%s"
 
-#: ../src/spacecmd/distribution.py:250 ../src/spacecmd/package.py:99
+#: ../src/spacecmd/distribution.py:250
 #, python-format
 msgid "Path:    %s"
 msgstr "路径：%s"
 
-#: ../src/spacecmd/distribution.py:251 ../src/spacecmd/softwarechannel.py:657
+#: ../src/spacecmd/distribution.py:251 ../src/spacecmd/softwarechannel.py:624
 #, python-format
 msgid "Channel: %s"
 msgstr "频道：%s"
@@ -1760,13 +1762,15 @@ msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update：更新 Kickstart 树的路径"
 
 #: ../src/spacecmd/distribution.py:290
+#, fuzzy
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
 "options:\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora|rhel_4/5/6|generic_rpm]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 msgstr ""
 "用法：distribution_update NAME [选项]\n"
 "\n"
@@ -1909,97 +1913,102 @@ msgid "Type:       %s"
 msgstr "类型：%s"
 
 #: ../src/spacecmd/errata.py:400
+#, fuzzy, python-format
+msgid "Status:     %s"
+msgstr "OSA 状态：%s"
+
+#: ../src/spacecmd/errata.py:401
 #, python-format
 msgid "Issue Date: %s"
 msgstr "颁发日期：%s"
 
-#: ../src/spacecmd/errata.py:402
+#: ../src/spacecmd/errata.py:403
 msgid "Topic"
 msgstr "主题"
 
-#: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:106
-#: ../src/spacecmd/softwarechannel.py:592
+#: ../src/spacecmd/errata.py:407 ../src/spacecmd/package.py:108
+#: ../src/spacecmd/softwarechannel.py:559
 msgid "Description"
 msgstr "说明"
 
-#: ../src/spacecmd/errata.py:412
+#: ../src/spacecmd/errata.py:413
 msgid "Notes"
 msgstr "笔记"
 
-#: ../src/spacecmd/errata.py:417
+#: ../src/spacecmd/errata.py:418
 msgid "CVEs"
 msgstr "CVE"
 
-#: ../src/spacecmd/errata.py:421
+#: ../src/spacecmd/errata.py:422
 msgid "Solution"
 msgstr "解决方案"
 
-#: ../src/spacecmd/errata.py:425
+#: ../src/spacecmd/errata.py:426
 msgid "References"
 msgstr "参考"
 
-#: ../src/spacecmd/errata.py:429
+#: ../src/spacecmd/errata.py:430
 msgid "Affected Channels"
 msgstr "受影响的频道"
 
-#: ../src/spacecmd/errata.py:433 ../src/spacecmd/org.py:279
+#: ../src/spacecmd/errata.py:434 ../src/spacecmd/org.py:279
 msgid "Affected Systems"
 msgstr "受影响的系统"
 
-#: ../src/spacecmd/errata.py:437
+#: ../src/spacecmd/errata.py:438
 msgid "Affected Packages"
 msgstr "受影响的软件包"
 
-#: ../src/spacecmd/errata.py:447
+#: ../src/spacecmd/errata.py:448
 msgid "errata_delete: Delete an patch"
 msgstr "errata_delete：删除补丁"
 
-#: ../src/spacecmd/errata.py:448
+#: ../src/spacecmd/errata.py:449
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr "用法：errata_delete ERRATA|search:XXX ..."
 
-#: ../src/spacecmd/errata.py:468
+#: ../src/spacecmd/errata.py:469
 msgid "No patches to delete"
 msgstr "没有可删除的补丁"
 
-#: ../src/spacecmd/errata.py:471
+#: ../src/spacecmd/errata.py:472
 msgid "Erratum            Channels"
 msgstr "勘误            频道"
 
-#: ../src/spacecmd/errata.py:479
+#: ../src/spacecmd/errata.py:480
 msgid "Delete these patches [y/N]:"
 msgstr "删除这些补丁 [y/N]："
 
-#: ../src/spacecmd/errata.py:485
+#: ../src/spacecmd/errata.py:486
 #, python-format
 msgid "Deleted %i patches"
 msgstr "已删除 %i 个补丁"
 
-#: ../src/spacecmd/errata.py:495
+#: ../src/spacecmd/errata.py:496
 msgid "errata_publish: Publish an patch to a channel"
 msgstr "errata_publish：将补丁发布到频道"
 
-#: ../src/spacecmd/errata.py:496
+#: ../src/spacecmd/errata.py:497
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr "用法：errata_publish ERRATA|search:XXX <频道 ...>"
 
-#: ../src/spacecmd/errata.py:523
+#: ../src/spacecmd/errata.py:524
 msgid "No patches to publish"
 msgstr "没有可发布的补丁"
 
-#: ../src/spacecmd/errata.py:528
+#: ../src/spacecmd/errata.py:529
 msgid "Publish these patches [y/N]:"
 msgstr "发布这些补丁 [y/N]："
 
-#: ../src/spacecmd/errata.py:540
+#: ../src/spacecmd/errata.py:541
 msgid "errata_search: List patches that meet the given criteria"
 msgstr "errata_search：列出符合给定准则的补丁"
 
-#: ../src/spacecmd/errata.py:541
+#: ../src/spacecmd/errata.py:542
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr "用法：errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
-#: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:180
+#: ../src/spacecmd/errata.py:544 ../src/spacecmd/scap.py:180
 msgid "Example:"
 msgstr "示例："
 
@@ -3431,7 +3440,7 @@ msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) 太旧（必须指定 >= %s）"
 
 #: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:561
+#: ../src/spacecmd/utils.py:562
 #, python-format
 msgid "Could not read %s"
 msgstr "无法读取 %s"
@@ -3505,48 +3514,48 @@ msgid "** Generating errata cache **"
 msgstr "** 正在生成勘误缓存 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:574
+#: ../src/spacecmd/misc.py:575
 msgid "** Generating package cache **"
 msgstr "** 正在生成软件包缓存 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:681
+#: ../src/spacecmd/misc.py:682
 msgid "** Generating system cache **"
 msgstr "** 正在生成系统缓存 **"
 
-#: ../src/spacecmd/misc.py:716
+#: ../src/spacecmd/misc.py:717
 #, python-format
 msgid "Could not create directory %s"
 msgstr "无法创建目录 %s"
 
-#: ../src/spacecmd/misc.py:788
+#: ../src/spacecmd/misc.py:789
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "找不到 %s 的系统 ID"
 
-#: ../src/spacecmd/misc.py:793
+#: ../src/spacecmd/misc.py:794
 msgid "Duplicate system profile names found!"
 msgstr "找到了重复的系统配置文件名称！"
 
-#: ../src/spacecmd/misc.py:794
+#: ../src/spacecmd/misc.py:795
 msgid "Please reference systems by ID or resolve the"
 msgstr "请按 ID 引用系统，或者解决"
 
-#: ../src/spacecmd/misc.py:795
+#: ../src/spacecmd/misc.py:796
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' 或 'system_rename' 的根本性问题"
 
-#: ../src/spacecmd/misc.py:861
+#: ../src/spacecmd/misc.py:862
 #, python-format
 msgid "No systems in group %s"
 msgstr "组 %s 中没有系统"
 
-#: ../src/spacecmd/misc.py:875
+#: ../src/spacecmd/misc.py:876
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "没有系统订阅 %s"
 
-#: ../src/spacecmd/misc.py:935
+#: ../src/spacecmd/misc.py:936
 msgid "Is this ok [y/N]:"
 msgstr "是否正常 [y/N]："
 
@@ -3837,150 +3846,174 @@ msgstr "配置频道：%i"
 msgid "Show the details of a software package"
 msgstr "显示软件包细节"
 
-#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:301
-#: ../src/spacecmd/package.py:348 ../src/spacecmd/package.py:390
+#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:303
+#: ../src/spacecmd/package.py:350 ../src/spacecmd/package.py:392
 msgid "No packages found"
 msgstr "未找到软件包"
 
-#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:401
+#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:403
 #, python-format
 msgid "%s is not a valid package"
 msgstr "%s 不是有效软件包"
 
+#: ../src/spacecmd/package.py:92
+#, fuzzy, python-format
+msgid "Name:      %s"
+msgstr "名称：%s"
+
 #: ../src/spacecmd/package.py:93
-#, python-format
-msgid "Version: %s"
+#, fuzzy, python-format
+msgid "Version:   %s"
 msgstr "版本：%s"
 
 #: ../src/spacecmd/package.py:94
-#, python-format
-msgid "Release: %s"
+#, fuzzy, python-format
+msgid "Release:   %s"
 msgstr "发行版：%s"
 
 #: ../src/spacecmd/package.py:95
-#, python-format
-msgid "Epoch:   %s"
+#, fuzzy, python-format
+msgid "Epoch:     %s"
 msgstr "纪元：%s"
 
 #: ../src/spacecmd/package.py:96
-#, python-format
-msgid "Arch:    %s"
+#, fuzzy, python-format
+msgid "Arch:      %s"
 msgstr "体系结构：%s"
 
 #: ../src/spacecmd/package.py:98
-#, python-format
-msgid "File:    %s"
+#, fuzzy, python-format
+msgid "File:      %s"
 msgstr "文件：%s"
 
+#: ../src/spacecmd/package.py:99
+#, fuzzy, python-format
+msgid "Path:      %s"
+msgstr "路径：%s"
+
 #: ../src/spacecmd/package.py:100
-#, python-format
-msgid "Size:    %s"
+#, fuzzy, python-format
+msgid "Size:      %s"
 msgstr "大小：%s"
 
-#: ../src/spacecmd/package.py:104
+#: ../src/spacecmd/package.py:101
+msgid "Yes"
+msgstr ""
+
+#: ../src/spacecmd/package.py:102
+#, fuzzy
+msgid "No"
+msgstr "无"
+
+#: ../src/spacecmd/package.py:101
+#, fuzzy, python-format
+msgid "Retracted: %s"
+msgstr "创建时间：%s"
+
+#: ../src/spacecmd/package.py:106
 #, python-format
 msgid "Installed Systems: %i"
 msgstr "已安装系统：%i"
 
-#: ../src/spacecmd/package.py:110
+#: ../src/spacecmd/package.py:112
 msgid "Available From Channels"
 msgstr "从频道提供"
 
-#: ../src/spacecmd/package.py:124
+#: ../src/spacecmd/package.py:126
 #, python-format
 msgid "usage: %s NAME|QUERY"
 msgstr "用法：%s NAME|QUERY"
 
-#: ../src/spacecmd/package.py:126
+#: ../src/spacecmd/package.py:128
 #, python-format
 msgid "Example: %s kernel"
 msgstr "示例：%s kernel"
 
-#: ../src/spacecmd/package.py:128
+#: ../src/spacecmd/package.py:130
 msgid "Advanced Search:"
 msgstr "高级搜索："
 
-#: ../src/spacecmd/package.py:129
+#: ../src/spacecmd/package.py:131
 msgid ""
 "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr "可用字段：name、epoch、version、release、arch、description、summary"
 
-#: ../src/spacecmd/package.py:130
+#: ../src/spacecmd/package.py:132
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
 msgstr "示例：name:kernel AND version:2.6.18 AND -description:devel"
 
-#: ../src/spacecmd/package.py:179
+#: ../src/spacecmd/package.py:181
 msgid "package_remove: Remove a package from Spacewalk"
 msgstr "package_remove：从 Spacewalk 中去除软件包"
 
-#: ../src/spacecmd/package.py:180
+#: ../src/spacecmd/package.py:182
 msgid "usage: package_remove PACKAGE ..."
 msgstr "用法：package_remove PACKAGE ..."
 
-#: ../src/spacecmd/package.py:200
+#: ../src/spacecmd/package.py:202
 msgid "No packages found to remove"
 msgstr "未找到要去除的软件包"
 
-#: ../src/spacecmd/package.py:203 ../src/spacecmd/package.py:260
-#: ../src/spacecmd/softwarechannel.py:1579 ../src/spacecmd/system.py:945
+#: ../src/spacecmd/package.py:205 ../src/spacecmd/package.py:262
+#: ../src/spacecmd/softwarechannel.py:1546 ../src/spacecmd/system.py:945
 msgid "Remove these packages [y/N]:"
 msgstr "去除这些软件包 [y/N]："
 
-#: ../src/spacecmd/package.py:204
+#: ../src/spacecmd/package.py:206
 msgid "No packages has been removed"
 msgstr "未去除任何软件包"
 
-#: ../src/spacecmd/package.py:216 ../src/spacecmd/package.py:272
+#: ../src/spacecmd/package.py:218 ../src/spacecmd/package.py:274
 #, python-format
 msgid "Failed to remove package ID %i"
 msgstr "无法去除软件包 ID %i"
 
-#: ../src/spacecmd/package.py:227
+#: ../src/spacecmd/package.py:229
 msgid "package_listorphans: List packages that are not in a channel"
 msgstr "package_listorphans：列出不在频道中的软件包"
 
-#: ../src/spacecmd/package.py:228
+#: ../src/spacecmd/package.py:230
 msgid "usage: package_listorphans"
 msgstr "用法：package_listorphans"
 
-#: ../src/spacecmd/package.py:247
+#: ../src/spacecmd/package.py:249
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr "package_removeorphans：去除不在频道中的软件包"
 
-#: ../src/spacecmd/package.py:248
+#: ../src/spacecmd/package.py:250
 msgid "usage: package_removeorphans"
 msgstr "用法：package_removeorphans"
 
-#: ../src/spacecmd/package.py:256
+#: ../src/spacecmd/package.py:258
 msgid "No orphaned packages has been found"
 msgstr "未找到孤立的软件包"
 
-#: ../src/spacecmd/package.py:257
+#: ../src/spacecmd/package.py:259
 msgid "No orphaned packages"
 msgstr "无孤立软件包"
 
-#: ../src/spacecmd/package.py:261
+#: ../src/spacecmd/package.py:263
 msgid "No packages were removed"
 msgstr "未去除任何软件包"
 
-#: ../src/spacecmd/package.py:282
+#: ../src/spacecmd/package.py:284
 msgid "List the systems with a package installed"
 msgstr "列出装有某个软件包的系统"
 
-#: ../src/spacecmd/package.py:329
+#: ../src/spacecmd/package.py:331
 msgid "List the errata that provide this package"
 msgstr "列出提供此软件包的勘误"
 
-#: ../src/spacecmd/package.py:375
+#: ../src/spacecmd/package.py:377
 msgid "List the dependencies for a package"
 msgstr "列出软件包的依赖项"
 
-#: ../src/spacecmd/package.py:406
+#: ../src/spacecmd/package.py:408
 #, python-format
 msgid "Package Name: %s"
 msgstr "软件包名称：%s"
 
-#: ../src/spacecmd/package.py:408
+#: ../src/spacecmd/package.py:410
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "依赖项：%s，类型：%s，修饰符：%s"
@@ -4106,7 +4139,7 @@ msgstr "repo_delete：删除用户储存库"
 msgid "usage: repo_delete <repo ...>"
 msgstr "用法：repo_delete <储存库 ...>"
 
-#: ../src/spacecmd/repo.py:308 ../src/spacecmd/softwarechannel.py:611
+#: ../src/spacecmd/repo.py:308 ../src/spacecmd/softwarechannel.py:578
 msgid "Repos"
 msgstr "储存库"
 
@@ -4657,6 +4690,25 @@ msgstr "schedule_list：列出所有操作"
 msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "用法：schedule_list [开始日期] [结束日期]"
 
+#: ../src/spacecmd/schedule.py:459
+#, fuzzy
+msgid "schedule_deletearchived: Delete all archived actions"
+msgstr "schedule_listarchived：列出存档的操作"
+
+#: ../src/spacecmd/schedule.py:460
+#, fuzzy
+msgid "usage: schedule_deletearchived"
+msgstr "用法：schedule_details ID"
+
+#: ../src/spacecmd/schedule.py:477
+msgid "Do you want to delete all ({}) archived actions? [y/N]"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:500
+#, fuzzy
+msgid "No archived actions found."
+msgstr "未找到编辑器"
+
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
 msgstr "无法读取历史记录文件"
@@ -4774,15 +4826,15 @@ msgstr ""
 "  -v 详细（显示标签和摘要）\n"
 "  -t 树视图（精美列显（子频道））\n"
 
-#: ../src/spacecmd/softwarechannel.py:107
+#: ../src/spacecmd/softwarechannel.py:110
 msgid "softwarechannel_listmanageablechannels: List all software channels"
 msgstr "softwarechannel_listmanageablechannels：列出所有软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:108
+#: ../src/spacecmd/softwarechannel.py:111
 msgid "                                        manageable by current user"
 msgstr "                                        可由当前用户管理"
 
-#: ../src/spacecmd/softwarechannel.py:109
+#: ../src/spacecmd/softwarechannel.py:112
 msgid ""
 "usage: softwarechannel_listmanageablechannels [options]\n"
 "options:\n"
@@ -4811,7 +4863,7 @@ msgid "softwarechannel_listchildchannels: List child software channels"
 msgstr "softwarechannel_listchildchannels：列出子软件频道"
 
 #: ../src/spacecmd/softwarechannel.py:174
-#: ../src/spacecmd/softwarechannel.py:2734
+#: ../src/spacecmd/softwarechannel.py:2701
 msgid "usage:"
 msgstr "用法："
 
@@ -4837,53 +4889,53 @@ msgstr ""
 "选项：\n"
 " -v 详细（显示标签和摘要）"
 
-#: ../src/spacecmd/softwarechannel.py:207
+#: ../src/spacecmd/softwarechannel.py:203
 msgid "softwarechannel_listsystems: List all systems subscribed to"
 msgstr "softwarechannel_listsystems：列出订阅某个软件"
 
-#: ../src/spacecmd/softwarechannel.py:208
+#: ../src/spacecmd/softwarechannel.py:204
 msgid "                             a software channel"
 msgstr "                             频道的所有系统"
 
-#: ../src/spacecmd/softwarechannel.py:209
+#: ../src/spacecmd/softwarechannel.py:205
 msgid "usage: softwarechannel_listsystems CHANNEL"
 msgstr "用法：softwarechannel_listsystems CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:243
+#: ../src/spacecmd/softwarechannel.py:231
 msgid "softwarechannel_listpackages: List the most recent packages"
 msgstr "softwarechannel_listpackages：列出软件频道中"
 
-#: ../src/spacecmd/softwarechannel.py:244
+#: ../src/spacecmd/softwarechannel.py:232
 msgid "                              available from a software channel"
 msgstr "                              最近提供的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:245
+#: ../src/spacecmd/softwarechannel.py:233
 msgid "usage: softwarechannel_listpackages CHANNEL"
 msgstr "用法：softwarechannel_listpackages CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:282
+#: ../src/spacecmd/softwarechannel.py:264
 msgid "softwarechannel_listallpackages: List all packages in a channel"
 msgstr "softwarechannel_listallpackages：列出频道中的所有软件包"
 
-#: ../src/spacecmd/softwarechannel.py:283
+#: ../src/spacecmd/softwarechannel.py:265
 msgid "usage: softwarechannel_listallpackages CHANNEL"
 msgstr "用法：softwarechannel_listallpackages CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:341
+#: ../src/spacecmd/softwarechannel.py:316
 msgid ""
 "softwarechannel_listlatestpackages: List the newest version of all packages "
 "in a channel"
 msgstr "softwarechannel_listlatestpackages：列出频道中所有软件包的最新版本"
 
-#: ../src/spacecmd/softwarechannel.py:342
+#: ../src/spacecmd/softwarechannel.py:317
 msgid "usage: softwarechannel_listlatestpackages CHANNEL"
 msgstr "用法：softwarechannel_listlatestpackages CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:381
+#: ../src/spacecmd/softwarechannel.py:348
 msgid "softwarechannel_setdetails: Modify details of a software channel"
 msgstr "softwarechannel_setdetails：修改软件频道的细节"
 
-#: ../src/spacecmd/softwarechannel.py:382
+#: ../src/spacecmd/softwarechannel.py:349
 #, python-format
 msgid ""
 "usage: softwarechannel_setdetails [options] <CHANNEL ...>)\n"
@@ -4914,218 +4966,218 @@ msgstr ""
 "  -i GPG ID\n"
 "  -f GPG 指纹"
 
-#: ../src/spacecmd/softwarechannel.py:444
+#: ../src/spacecmd/softwarechannel.py:411
 msgid "At least one attribute to set must be given"
 msgstr "必须至少指定一个要设置的属性"
 
-#: ../src/spacecmd/softwarechannel.py:450
+#: ../src/spacecmd/softwarechannel.py:417
 msgid "No channels matching that label"
 msgstr "没有任何频道与该标签相匹配"
 
-#: ../src/spacecmd/softwarechannel.py:462
+#: ../src/spacecmd/softwarechannel.py:429
 msgid "Setting same name for more than one channel will fail"
 msgstr "为多个频道设置相同的名称将会失败"
 
-#: ../src/spacecmd/softwarechannel.py:470
+#: ../src/spacecmd/softwarechannel.py:437
 #, python-format
 msgid "Name \"%s\" already in use by channel %s"
 msgstr "名称 \"%s\" 已由频道 %s 使用"
 
 #. get confirmation
-#: ../src/spacecmd/softwarechannel.py:475
+#: ../src/spacecmd/softwarechannel.py:442
 msgid "Setting following attributes..."
 msgstr "正在设置以下属性..."
 
-#: ../src/spacecmd/softwarechannel.py:478
+#: ../src/spacecmd/softwarechannel.py:445
 #, python-format
 msgid "Name:             %s"
 msgstr "名称：%s"
 
-#: ../src/spacecmd/softwarechannel.py:480
+#: ../src/spacecmd/softwarechannel.py:447
 #, python-format
 msgid "Summary:          %s"
 msgstr "摘要：%s"
 
-#: ../src/spacecmd/softwarechannel.py:482
+#: ../src/spacecmd/softwarechannel.py:449
 #, python-format
 msgid "Description:      %s"
 msgstr "说明：%s"
 
-#: ../src/spacecmd/softwarechannel.py:484
+#: ../src/spacecmd/softwarechannel.py:451
 #, python-format
 msgid "Checksum:         %s"
 msgstr "校验和：%s"
 
-#: ../src/spacecmd/softwarechannel.py:486
+#: ../src/spacecmd/softwarechannel.py:453
 #, python-format
 msgid "Maintainer name:  %s"
 msgstr "维护者姓名：%s"
 
-#: ../src/spacecmd/softwarechannel.py:488
+#: ../src/spacecmd/softwarechannel.py:455
 #, python-format
 msgid "Maintainer email: %s"
 msgstr "维护者电子邮件地址：%s"
 
-#: ../src/spacecmd/softwarechannel.py:490
+#: ../src/spacecmd/softwarechannel.py:457
 #, python-format
 msgid "Maintainer phone: %s"
 msgstr "维护者电话：%s"
 
-#: ../src/spacecmd/softwarechannel.py:492
+#: ../src/spacecmd/softwarechannel.py:459
 #, python-format
 msgid "GPG Key:          %s"
 msgstr "GPG 密钥：%s"
 
-#: ../src/spacecmd/softwarechannel.py:494
+#: ../src/spacecmd/softwarechannel.py:461
 #, python-format
 msgid "GPG Fingerprint:  %s"
 msgstr "GPG 指纹：%s"
 
-#: ../src/spacecmd/softwarechannel.py:496
+#: ../src/spacecmd/softwarechannel.py:463
 #, python-format
 msgid "GPG URL:          %s"
 msgstr "GPG URL：%s"
 
-#: ../src/spacecmd/softwarechannel.py:498
+#: ../src/spacecmd/softwarechannel.py:465
 msgid "... for the following channels:"
 msgstr "... 针对以下频道："
 
-#: ../src/spacecmd/softwarechannel.py:501
+#: ../src/spacecmd/softwarechannel.py:468
 msgid "Apply? [y/N]:"
 msgstr "是否应用？[y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:513
+#: ../src/spacecmd/softwarechannel.py:480
 #, python-format
 msgid "Could not get details for %s"
 msgstr "无法获取 %s 的细节"
 
-#: ../src/spacecmd/softwarechannel.py:525
+#: ../src/spacecmd/softwarechannel.py:492
 #, python-format
 msgid "Error while setting details for %s"
 msgstr "设置 %s 的细节时出错"
 
-#: ../src/spacecmd/softwarechannel.py:528
+#: ../src/spacecmd/softwarechannel.py:495
 #, python-format
 msgid "Channels changed: %d"
 msgstr "频道已更改：%d"
 
-#: ../src/spacecmd/softwarechannel.py:536
+#: ../src/spacecmd/softwarechannel.py:503
 msgid "softwarechannel_details: Show the details of a software channel"
 msgstr "softwarechannel_details：显示软件频道的细节"
 
-#: ../src/spacecmd/softwarechannel.py:537
+#: ../src/spacecmd/softwarechannel.py:504
 msgid "usage: softwarechannel_details <CHANNEL ...>"
 msgstr "用法：softwarechannel_details <频道 ...>"
 
-#: ../src/spacecmd/softwarechannel.py:577
+#: ../src/spacecmd/softwarechannel.py:544
 #, python-format
 msgid "Label:              %s"
 msgstr "标签：%s"
 
-#: ../src/spacecmd/softwarechannel.py:578
+#: ../src/spacecmd/softwarechannel.py:545
 #, python-format
 msgid "Name:               %s"
 msgstr "名称：%s"
 
-#: ../src/spacecmd/softwarechannel.py:579
+#: ../src/spacecmd/softwarechannel.py:546
 #, python-format
 msgid "Architecture:       %s"
 msgstr "体系结构：%s"
 
-#: ../src/spacecmd/softwarechannel.py:580
+#: ../src/spacecmd/softwarechannel.py:547
 #, python-format
 msgid "Parent:             %s"
 msgstr "父项：%s"
 
-#: ../src/spacecmd/softwarechannel.py:581
+#: ../src/spacecmd/softwarechannel.py:548
 #, python-format
 msgid "Systems Subscribed: %s"
 msgstr "已订阅系统：%s"
 
-#: ../src/spacecmd/softwarechannel.py:582
+#: ../src/spacecmd/softwarechannel.py:549
 #, python-format
 msgid "Number of Packages: %i"
 msgstr "软件包数：%i"
 
-#: ../src/spacecmd/softwarechannel.py:586
+#: ../src/spacecmd/softwarechannel.py:553
 msgid "Summary"
 msgstr "摘要"
 
-#: ../src/spacecmd/softwarechannel.py:597
+#: ../src/spacecmd/softwarechannel.py:564
 #, python-format
 msgid "GPG Key:            %s"
 msgstr "GPG 密钥：%s"
 
-#: ../src/spacecmd/softwarechannel.py:598
+#: ../src/spacecmd/softwarechannel.py:565
 #, python-format
 msgid "GPG Fingerprint:    %s"
 msgstr "GPG 指纹：%s"
 
-#: ../src/spacecmd/softwarechannel.py:599
+#: ../src/spacecmd/softwarechannel.py:566
 #, python-format
 msgid "GPG URL:            %s"
 msgstr "GPG URL：%s"
 
-#: ../src/spacecmd/softwarechannel.py:600
+#: ../src/spacecmd/softwarechannel.py:567
 #, python-format
 msgid "GPG CHECK:          %s"
 msgstr "GPG 检查：%s"
 
-#: ../src/spacecmd/softwarechannel.py:604
+#: ../src/spacecmd/softwarechannel.py:571
 msgid "Kickstart Trees"
 msgstr "Kickstart 树"
 
-#: ../src/spacecmd/softwarechannel.py:622
+#: ../src/spacecmd/softwarechannel.py:589
 msgid "softwarechannel_listerrata: List the errata associated with a"
 msgstr "softwarechannel_listerrata：列出与某个软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:623
+#: ../src/spacecmd/softwarechannel.py:590
 msgid "                            software channel"
 msgstr "                            关联的勘误"
 
-#: ../src/spacecmd/softwarechannel.py:624
+#: ../src/spacecmd/softwarechannel.py:591
 msgid ""
 "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr ""
 "用法：softwarechannel_listerrata <频道 ...> [from=yyyymmdd [to=yyyymmdd]]"
 
-#: ../src/spacecmd/softwarechannel.py:682
+#: ../src/spacecmd/softwarechannel.py:649
 msgid "softwarechannel_listarches: lists the potential software"
 msgstr "softwarechannel_listarches：列出可创建的潜在"
 
-#: ../src/spacecmd/softwarechannel.py:683
+#: ../src/spacecmd/softwarechannel.py:650
 msgid "                            channel architectures that can be created"
 msgstr "                            软件频道体系结构"
 
-#: ../src/spacecmd/softwarechannel.py:684
+#: ../src/spacecmd/softwarechannel.py:651
 msgid "usage: softwarechannel_listarches"
 msgstr "用法：softwarechannel_listarches"
 
-#: ../src/spacecmd/softwarechannel.py:685 ../src/spacecmd/system.py:3844
+#: ../src/spacecmd/softwarechannel.py:652 ../src/spacecmd/system.py:3844
 msgid "options:"
 msgstr "选项："
 
-#: ../src/spacecmd/softwarechannel.py:686
+#: ../src/spacecmd/softwarechannel.py:653
 msgid "    -v verbose (display label and name)"
 msgstr "    -v 详细（显示标签和名称）"
 
-#: ../src/spacecmd/softwarechannel.py:707
+#: ../src/spacecmd/softwarechannel.py:674
 msgid "softwarechannel_delete: Delete a software channel"
 msgstr "softwarechannel_delete：删除软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:708
+#: ../src/spacecmd/softwarechannel.py:675
 msgid "usage: softwarechannel_delete <CHANNEL ...>"
 msgstr "用法：softwarechannel_delete <频道 ...>"
 
-#: ../src/spacecmd/softwarechannel.py:733
+#: ../src/spacecmd/softwarechannel.py:700
 msgid "Channels"
 msgstr "频道"
 
-#: ../src/spacecmd/softwarechannel.py:761
+#: ../src/spacecmd/softwarechannel.py:728
 msgid "softwarechannel_update: Update a software channel"
 msgstr "softwarechannel_update：更新软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:762
+#: ../src/spacecmd/softwarechannel.py:729
 #, python-format
 msgid ""
 "usage: softwarechannel_update LABEL(To identify the channel) [options]\n"
@@ -5152,88 +5204,88 @@ msgstr ""
 "  -f GPG 指纹\n"
 "  -g 禁用 GPG 检查"
 
-#: ../src/spacecmd/softwarechannel.py:793
-#: ../src/spacecmd/softwarechannel.py:925
-#: ../src/spacecmd/softwarechannel.py:1095
+#: ../src/spacecmd/softwarechannel.py:760
+#: ../src/spacecmd/softwarechannel.py:892
+#: ../src/spacecmd/softwarechannel.py:1062
 msgid "Channel Label:"
 msgstr "频道标签："
 
-#: ../src/spacecmd/softwarechannel.py:798
+#: ../src/spacecmd/softwarechannel.py:765
 msgid "New Name (blank to keep unchanged)"
 msgstr "新名称（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:804
+#: ../src/spacecmd/softwarechannel.py:771
 msgid "New Summary (blank to keep unchanged)"
 msgstr "新摘要（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:807
+#: ../src/spacecmd/softwarechannel.py:774
 msgid "Summary:"
 msgstr "摘要："
 
-#: ../src/spacecmd/softwarechannel.py:810
+#: ../src/spacecmd/softwarechannel.py:777
 msgid "New Description (blank to keep unchanged)"
 msgstr "新说明（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:816
+#: ../src/spacecmd/softwarechannel.py:783
 msgid "New Checksum type (blank to keep unchanged)"
 msgstr "新校验和类型（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:823
+#: ../src/spacecmd/softwarechannel.py:790
 msgid "New GPG URL (blank to keep unchanged)"
 msgstr "新 GPG URL（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:826
-#: ../src/spacecmd/softwarechannel.py:954
-#: ../src/spacecmd/softwarechannel.py:1108
-#: ../src/spacecmd/softwarechannel.py:1197
+#: ../src/spacecmd/softwarechannel.py:793
+#: ../src/spacecmd/softwarechannel.py:921
+#: ../src/spacecmd/softwarechannel.py:1075
+#: ../src/spacecmd/softwarechannel.py:1164
 msgid "GPG URL:"
 msgstr "GPG URL："
 
-#: ../src/spacecmd/softwarechannel.py:829
+#: ../src/spacecmd/softwarechannel.py:796
 msgid "New GPG ID (blank to keep unchanged)"
 msgstr "新 GPG ID（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:832
-#: ../src/spacecmd/softwarechannel.py:960
-#: ../src/spacecmd/softwarechannel.py:1109
-#: ../src/spacecmd/softwarechannel.py:1198
+#: ../src/spacecmd/softwarechannel.py:799
+#: ../src/spacecmd/softwarechannel.py:927
+#: ../src/spacecmd/softwarechannel.py:1076
+#: ../src/spacecmd/softwarechannel.py:1165
 msgid "GPG ID:"
 msgstr "GPG ID："
 
-#: ../src/spacecmd/softwarechannel.py:835
+#: ../src/spacecmd/softwarechannel.py:802
 msgid "New GPG Fingerprint (blank to keep unchanged)"
 msgstr "新 GPG 指纹（留空会保留现有值）"
 
-#: ../src/spacecmd/softwarechannel.py:838
-#: ../src/spacecmd/softwarechannel.py:966
-#: ../src/spacecmd/softwarechannel.py:1110
-#: ../src/spacecmd/softwarechannel.py:1199
+#: ../src/spacecmd/softwarechannel.py:805
+#: ../src/spacecmd/softwarechannel.py:933
+#: ../src/spacecmd/softwarechannel.py:1077
+#: ../src/spacecmd/softwarechannel.py:1166
 msgid "GPG Fingerprint:"
 msgstr "GPG 指纹："
 
-#: ../src/spacecmd/softwarechannel.py:841
+#: ../src/spacecmd/softwarechannel.py:808
 msgid "Disable GPG CHECK (blank to keep unchanged)"
 msgstr "禁用 GPG 检查（留空会保留现有设置）"
 
-#: ../src/spacecmd/softwarechannel.py:844
-#: ../src/spacecmd/softwarechannel.py:1111
-#: ../src/spacecmd/softwarechannel.py:1200
+#: ../src/spacecmd/softwarechannel.py:811
+#: ../src/spacecmd/softwarechannel.py:1078
+#: ../src/spacecmd/softwarechannel.py:1167
 msgid "Disable GPG Check [yes/no]? "
 msgstr "禁用 GPG 检查 [是/否]？ "
 
-#: ../src/spacecmd/softwarechannel.py:847
+#: ../src/spacecmd/softwarechannel.py:814
 msgid "A channel label is required to identify the channel"
 msgstr "必须指定一个频道标签来标识频道"
 
-#: ../src/spacecmd/softwarechannel.py:850
+#: ../src/spacecmd/softwarechannel.py:817
 msgid "Only [yes/no] values are acceptable for --disable_gpg_check"
 msgstr "--disable_gpg_check 仅接受 [yes/no] 值"
 
-#: ../src/spacecmd/softwarechannel.py:890
+#: ../src/spacecmd/softwarechannel.py:857
 msgid "softwarechannel_create: Create a software channel"
 msgstr "softwarechannel_create：创建软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:891
+#: ../src/spacecmd/softwarechannel.py:858
 #, python-format
 msgid ""
 "usage: softwarechannel_create [options])\n"
@@ -5264,73 +5316,73 @@ msgstr ""
 "  -f GPG 指纹\n"
 "  -g 禁用 GPG 检查"
 
-#: ../src/spacecmd/softwarechannel.py:924
-#: ../src/spacecmd/softwarechannel.py:1094
+#: ../src/spacecmd/softwarechannel.py:891
+#: ../src/spacecmd/softwarechannel.py:1061
 msgid "Channel Name:"
 msgstr "频道名称："
 
-#: ../src/spacecmd/softwarechannel.py:926
+#: ../src/spacecmd/softwarechannel.py:893
 msgid "Channel Summary:"
 msgstr "频道摘要："
 
-#: ../src/spacecmd/softwarechannel.py:934
-#: ../src/spacecmd/softwarechannel.py:1102
+#: ../src/spacecmd/softwarechannel.py:901
+#: ../src/spacecmd/softwarechannel.py:1069
 msgid "Select Parent [blank to create a base channel]:"
 msgstr "选择父项 [留空会创建基础频道]："
 
-#: ../src/spacecmd/softwarechannel.py:937
+#: ../src/spacecmd/softwarechannel.py:904
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../src/spacecmd/softwarechannel.py:944
+#: ../src/spacecmd/softwarechannel.py:911
 msgid "Checksum type"
 msgstr "校验和类型"
 
-#: ../src/spacecmd/softwarechannel.py:951
+#: ../src/spacecmd/softwarechannel.py:918
 msgid "GPG URL"
 msgstr "GPG URL"
 
-#: ../src/spacecmd/softwarechannel.py:957
+#: ../src/spacecmd/softwarechannel.py:924
 msgid "GPG ID"
 msgstr "GPG ID"
 
-#: ../src/spacecmd/softwarechannel.py:963
+#: ../src/spacecmd/softwarechannel.py:930
 msgid "GPG Fingerprint"
 msgstr "GPG 指纹"
 
-#: ../src/spacecmd/softwarechannel.py:969
+#: ../src/spacecmd/softwarechannel.py:936
 msgid "GPG CHECK"
 msgstr "GPG 检查"
 
-#: ../src/spacecmd/softwarechannel.py:972
+#: ../src/spacecmd/softwarechannel.py:939
 msgid "Disable GPG Check [y/N]? "
 msgstr "禁用 GPG 检查 [y/N]？ "
 
-#: ../src/spacecmd/softwarechannel.py:1024
-#: ../src/spacecmd/softwarechannel.py:1122
+#: ../src/spacecmd/softwarechannel.py:991
+#: ../src/spacecmd/softwarechannel.py:1089
 msgid "A channel name is required"
 msgstr "必须指定频道名称"
 
-#: ../src/spacecmd/softwarechannel.py:1028
-#: ../src/spacecmd/softwarechannel.py:1126
+#: ../src/spacecmd/softwarechannel.py:995
+#: ../src/spacecmd/softwarechannel.py:1093
 msgid "A channel label is required"
 msgstr "必须指定频道标签"
 
-#: ../src/spacecmd/softwarechannel.py:1041
+#: ../src/spacecmd/softwarechannel.py:1008
 #, python-format
 msgid "Name %s already in use by channel %s"
 msgstr "名称 %s 已由频道 %s 使用"
 
-#: ../src/spacecmd/softwarechannel.py:1045
+#: ../src/spacecmd/softwarechannel.py:1012
 #, python-format
 msgid "Label %s already in use by channel %s"
 msgstr "标签 %s 已由频道 %s 使用"
 
-#: ../src/spacecmd/softwarechannel.py:1053
+#: ../src/spacecmd/softwarechannel.py:1020
 msgid "softwarechannel_clone: Clone a software channel"
 msgstr "softwarechannel_clone：克隆软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:1054
+#: ../src/spacecmd/softwarechannel.py:1021
 msgid ""
 "usage: softwarechannel_clone [options])\n"
 "\n"
@@ -5364,46 +5416,46 @@ msgstr ""
 "  --regex/-x \"s/foo/bar\"：可选的正则表达式替换选项，\n"
 "        将克隆版本名称和标签中的 foo 替换为 bar"
 
-#: ../src/spacecmd/softwarechannel.py:1089
-#: ../src/spacecmd/softwarechannel.py:1189
+#: ../src/spacecmd/softwarechannel.py:1056
+#: ../src/spacecmd/softwarechannel.py:1156
 msgid "Source Channels:"
 msgstr "源频道："
 
-#: ../src/spacecmd/softwarechannel.py:1093
-#: ../src/spacecmd/softwarechannel.py:1192
+#: ../src/spacecmd/softwarechannel.py:1060
+#: ../src/spacecmd/softwarechannel.py:1159
 msgid "Select source channel:"
 msgstr "选择源频道："
 
-#: ../src/spacecmd/softwarechannel.py:1097
+#: ../src/spacecmd/softwarechannel.py:1064
 msgid "Base Channels:"
 msgstr "基础频道："
 
-#: ../src/spacecmd/softwarechannel.py:1105
-#: ../src/spacecmd/softwarechannel.py:1195
+#: ../src/spacecmd/softwarechannel.py:1072
+#: ../src/spacecmd/softwarechannel.py:1162
 msgid "Copy source channel GPG details? [y/N]:"
 msgstr "复制源频道 GPG 细节？[y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:1114
-#: ../src/spacecmd/softwarechannel.py:1203
+#: ../src/spacecmd/softwarechannel.py:1081
+#: ../src/spacecmd/softwarechannel.py:1170
 msgid "Original State (No Errata) [y/N]:"
 msgstr "原始状态（无勘误）[y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:1118
-#: ../src/spacecmd/softwarechannel.py:1206
+#: ../src/spacecmd/softwarechannel.py:1085
+#: ../src/spacecmd/softwarechannel.py:1173
 msgid "A source channel is required"
 msgstr "必须指定源频道"
 
-#: ../src/spacecmd/softwarechannel.py:1139
-#: ../src/spacecmd/softwarechannel.py:1217
+#: ../src/spacecmd/softwarechannel.py:1106
+#: ../src/spacecmd/softwarechannel.py:1184
 msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
 msgstr "--disable-gpg-check 仅接受 [yes/no] 值"
 
-#: ../src/spacecmd/softwarechannel.py:1155
+#: ../src/spacecmd/softwarechannel.py:1122
 msgid ""
 "softwarechannel_clonetree: Clone a software channel and its child channels"
 msgstr "softwarechannel_clonetree：克隆软件频道及其子频道"
 
-#: ../src/spacecmd/softwarechannel.py:1156
+#: ../src/spacecmd/softwarechannel.py:1123
 msgid ""
 "usage: softwarechannel_clonetree [options])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
@@ -5441,98 +5493,98 @@ msgstr ""
 "  --regex/-x \"s/foo/bar\"：可选的正则表达式替换选项，\n"
 "        将克隆版本名称、标签和说明中的 foo 替换为 bar"
 
-#: ../src/spacecmd/softwarechannel.py:1193
+#: ../src/spacecmd/softwarechannel.py:1160
 msgid "Prefix:"
 msgstr "前缀："
 
-#: ../src/spacecmd/softwarechannel.py:1210
+#: ../src/spacecmd/softwarechannel.py:1177
 msgid "A prefix or regex is required"
 msgstr "必须指定前缀或正则表达式"
 
-#: ../src/spacecmd/softwarechannel.py:1222
-#: ../src/spacecmd/softwarechannel.py:1993
-#: ../src/spacecmd/softwarechannel.py:2033
+#: ../src/spacecmd/softwarechannel.py:1189
+#: ../src/spacecmd/softwarechannel.py:1960
+#: ../src/spacecmd/softwarechannel.py:2000
 msgid "Channel does not exist or is not a base channel!"
 msgstr "频道不存在或者不是基础频道！"
 
 #. Shouldn't ever get here due to earlier checks
-#: ../src/spacecmd/softwarechannel.py:1249
+#: ../src/spacecmd/softwarechannel.py:1216
 msgid "called without prefix or regex option!"
 msgstr "在未指定前缀或正则表达式选项的情况下调用！"
 
-#: ../src/spacecmd/softwarechannel.py:1301
+#: ../src/spacecmd/softwarechannel.py:1268
 #, python-format
 msgid "Cloning %s as %s"
 msgstr "正在将 %s 克隆为 %s"
 
-#: ../src/spacecmd/softwarechannel.py:1349
+#: ../src/spacecmd/softwarechannel.py:1316
 msgid "softwarechannel_addpackages: Add packages to a software channel"
 msgstr "softwarechannel_addpackages：将软件包添加到软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:1350
+#: ../src/spacecmd/softwarechannel.py:1317
 msgid "usage: softwarechannel_addpackages CHANNEL <PACKAGE ...>"
 msgstr "用法：softwarechannel_addpackages CHANNEL <软件包 ...>"
 
-#: ../src/spacecmd/softwarechannel.py:1388
+#: ../src/spacecmd/softwarechannel.py:1355
 msgid "No packages to add"
 msgstr "没有可添加的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:1395
+#: ../src/spacecmd/softwarechannel.py:1362
 msgid "Add these packages [y/N]:"
 msgstr "添加这些软件包 [y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:1407
+#: ../src/spacecmd/softwarechannel.py:1374
 msgid ""
 "softwarechannel_mergepackages: Merge packages from one software channel into "
 "another"
 msgstr ""
 "softwarechannel_mergepackages：将一个软件频道中的软件包合并到另一个软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:1408
+#: ../src/spacecmd/softwarechannel.py:1375
 msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:1432
+#: ../src/spacecmd/softwarechannel.py:1399
 msgid "softwarechannel_removeerrata: Remove patches from a software channel"
 msgstr "softwarechannel_removeerrata：从软件频道中去除补丁"
 
-#: ../src/spacecmd/softwarechannel.py:1434
+#: ../src/spacecmd/softwarechannel.py:1401
 msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
 msgstr "用法：softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
 
-#: ../src/spacecmd/softwarechannel.py:1487
+#: ../src/spacecmd/softwarechannel.py:1454
 msgid "No patches to remove"
 msgstr "没有可去除的补丁"
 
-#: ../src/spacecmd/softwarechannel.py:1498
-#: ../src/spacecmd/softwarechannel.py:1827
+#: ../src/spacecmd/softwarechannel.py:1465
+#: ../src/spacecmd/softwarechannel.py:1794
 #, python-format
 msgid "Total Errata:   %s"
 msgstr "勘误总计：%s"
 
-#: ../src/spacecmd/softwarechannel.py:1499
-#: ../src/spacecmd/softwarechannel.py:1830
+#: ../src/spacecmd/softwarechannel.py:1466
+#: ../src/spacecmd/softwarechannel.py:1797
 #, python-format
 msgid "Total Packages: %s"
 msgstr "软件包总计：%s"
 
-#: ../src/spacecmd/softwarechannel.py:1501
+#: ../src/spacecmd/softwarechannel.py:1468
 msgid "Remove these patches [y/N]:"
 msgstr "去除这些补丁 [y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:1516
+#: ../src/spacecmd/softwarechannel.py:1483
 msgid "softwarechannel_removepackages: Remove packages from a software channel"
 msgstr "softwarechannel_removepackages：从软件频道中去除软件包"
 
-#: ../src/spacecmd/softwarechannel.py:1518
+#: ../src/spacecmd/softwarechannel.py:1485
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
 msgstr "用法：softwarechannel_removepackages CHANNEL <软件包 ...>"
 
-#: ../src/spacecmd/softwarechannel.py:1572
+#: ../src/spacecmd/softwarechannel.py:1539
 msgid "No packages to remove"
 msgstr "没有可去除的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:1592
+#: ../src/spacecmd/softwarechannel.py:1559
 msgid ""
 "softwarechannel_adderratabydate: Add errata from one channel into another "
 "channel based on a date range"
@@ -5540,121 +5592,121 @@ msgstr ""
 "softwarechannel_adderratabydate：根据日期范围将一个频道中的勘误添加到另一个频"
 "道"
 
-#: ../src/spacecmd/softwarechannel.py:1594
+#: ../src/spacecmd/softwarechannel.py:1561
 msgid ""
 "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
 "ENDDATE"
 msgstr ""
 "用法：softwarechannel_adderratabydate [选项] SOURCE DEST BEGINDATE ENDDATE"
 
-#: ../src/spacecmd/softwarechannel.py:1595
-#: ../src/spacecmd/softwarechannel.py:1670
+#: ../src/spacecmd/softwarechannel.py:1562
+#: ../src/spacecmd/softwarechannel.py:1637
 msgid "Date format : YYYYMMDD"
 msgstr "日期格式：YYYYMMDD"
 
-#: ../src/spacecmd/softwarechannel.py:1596
-#: ../src/spacecmd/softwarechannel.py:1727
-#: ../src/spacecmd/softwarechannel.py:2619
-#: ../src/spacecmd/softwarechannel.py:2662
-#: ../src/spacecmd/softwarechannel.py:2878
+#: ../src/spacecmd/softwarechannel.py:1563
+#: ../src/spacecmd/softwarechannel.py:1694
+#: ../src/spacecmd/softwarechannel.py:2586
+#: ../src/spacecmd/softwarechannel.py:2629
+#: ../src/spacecmd/softwarechannel.py:2845
 msgid "Options:"
 msgstr "选项："
 
-#: ../src/spacecmd/softwarechannel.py:1597
+#: ../src/spacecmd/softwarechannel.py:1564
 msgid "        -p/--publish : Publish errata to the channel (don't clone)"
 msgstr "        -p/--publish：将勘误发布到频道（不克隆）"
 
-#: ../src/spacecmd/softwarechannel.py:1624
-#: ../src/spacecmd/softwarechannel.py:1629
-#: ../src/spacecmd/softwarechannel.py:1695
-#: ../src/spacecmd/softwarechannel.py:1700
+#: ../src/spacecmd/softwarechannel.py:1591
+#: ../src/spacecmd/softwarechannel.py:1596
+#: ../src/spacecmd/softwarechannel.py:1662
+#: ../src/spacecmd/softwarechannel.py:1667
 #, python-format
 msgid "%s is an invalid date"
 msgstr "%s 不是有效日期"
 
-#: ../src/spacecmd/softwarechannel.py:1642
+#: ../src/spacecmd/softwarechannel.py:1609
 msgid "No patches found between the given dates"
 msgstr "在给定的日期范围内未找到补丁"
 
-#: ../src/spacecmd/softwarechannel.py:1649
+#: ../src/spacecmd/softwarechannel.py:1616
 #, python-format
 msgid "Publishing errata %s to %s"
 msgstr "正在将勘误 %s 发布到 %s"
 
-#: ../src/spacecmd/softwarechannel.py:1667
+#: ../src/spacecmd/softwarechannel.py:1634
 msgid ""
 "softwarechannel_listerratabydate: list errata from channelbased on a date "
 "range"
 msgstr "softwarechannel_listerratabydate：根据日期范围列出频道中的勘误"
 
-#: ../src/spacecmd/softwarechannel.py:1669
+#: ../src/spacecmd/softwarechannel.py:1636
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
 msgstr "用法：softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
 
-#: ../src/spacecmd/softwarechannel.py:1713
+#: ../src/spacecmd/softwarechannel.py:1680
 msgid "No errata found between the given dates"
 msgstr "在给定的日期范围内未找到勘误"
 
-#: ../src/spacecmd/softwarechannel.py:1724
+#: ../src/spacecmd/softwarechannel.py:1691
 msgid ""
 "softwarechannel_adderrata: Add patches from one channel into another channel"
 msgstr "softwarechannel_adderrata：将一个频道中的补丁添加到另一个频道"
 
-#: ../src/spacecmd/softwarechannel.py:1726
+#: ../src/spacecmd/softwarechannel.py:1693
 msgid "usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>"
 msgstr "用法：softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>"
 
-#: ../src/spacecmd/softwarechannel.py:1728
+#: ../src/spacecmd/softwarechannel.py:1695
 msgid "    -q/--quick : Don't display list of packages (slightly faster)"
 msgstr "    -q/--quick：不显示软件包列表（速度略快）"
 
-#: ../src/spacecmd/softwarechannel.py:1729
+#: ../src/spacecmd/softwarechannel.py:1696
 msgid "    -s/--skip :  Skip errata which appear to exist already in DEST"
 msgstr "    -s/--skip：跳过 DEST（目标）中似乎已存在的勘误"
 
-#: ../src/spacecmd/softwarechannel.py:1755
+#: ../src/spacecmd/softwarechannel.py:1722
 #, python-format
 msgid "source channel %s does not exist!"
 msgstr "源频道 %s 不存在！"
 
-#: ../src/spacecmd/softwarechannel.py:1760
+#: ../src/spacecmd/softwarechannel.py:1727
 #, python-format
 msgid "dest channel %s does not exist!"
 msgstr "目标频道 %s 不存在！"
 
-#: ../src/spacecmd/softwarechannel.py:1813
+#: ../src/spacecmd/softwarechannel.py:1780
 msgid "No patch to add"
 msgstr "没有可添加的补丁"
 
-#: ../src/spacecmd/softwarechannel.py:1832
+#: ../src/spacecmd/softwarechannel.py:1799
 msgid "Add these patches [y/N]:"
 msgstr "添加这些补丁 [y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:1846
+#: ../src/spacecmd/softwarechannel.py:1813
 msgid "Using the old errata.clone function"
 msgstr "使用旧的 errata.clone 函数"
 
-#: ../src/spacecmd/softwarechannel.py:1847
+#: ../src/spacecmd/softwarechannel.py:1814
 msgid ""
 "If you have base channels for multiple OS versions, check no unexpected "
 "packages have been added"
 msgstr "如果您有多个操作系统版本的基础频道，请确认未添加意外的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:1860
+#: ../src/spacecmd/softwarechannel.py:1827
 msgid ""
 "softwarechannel_getorgaccess: Get the org-access for the software channel"
 msgstr "softwarechannel_getorgaccess：获取软件频道的组织访问权限"
 
-#: ../src/spacecmd/softwarechannel.py:1861
+#: ../src/spacecmd/softwarechannel.py:1828
 msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
 msgstr "用法：softwarechannel_getorgaccess [频道 ...]"
 
-#: ../src/spacecmd/softwarechannel.py:1899
+#: ../src/spacecmd/softwarechannel.py:1866
 msgid ""
 "softwarechannel_setorgaccess: Set the org-access for the software channel"
 msgstr "softwarechannel_setorgaccess：设置软件频道的组织访问权限"
 
-#: ../src/spacecmd/softwarechannel.py:1900
+#: ../src/spacecmd/softwarechannel.py:1867
 msgid ""
 "usage : softwarechannel_setorgaccess <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
@@ -5667,50 +5719,50 @@ msgstr ""
 "-e、--enable：启用组织访问（仅所有可信组织进行公共访问）\n"
 "-p、--protected ORG：仅限 ORG 进行受保护访问（允许 -p ORG 的多个实例）"
 
-#: ../src/spacecmd/softwarechannel.py:1940
+#: ../src/spacecmd/softwarechannel.py:1907
 #, python-format
 msgid "Making org sharing public for channel : %s "
 msgstr "正在为频道设置公共组织共享：%s "
 
-#: ../src/spacecmd/softwarechannel.py:1945
+#: ../src/spacecmd/softwarechannel.py:1912
 #, python-format
 msgid "Making org sharing private for channel : %s "
 msgstr "正在为频道设置私密组织共享：%s "
 
-#: ../src/spacecmd/softwarechannel.py:1950
+#: ../src/spacecmd/softwarechannel.py:1917
 #, python-format
 msgid "Making org sharing protected for channel : %s "
 msgstr "正在为频道设置受保护组织共享：%s "
 
-#: ../src/spacecmd/softwarechannel.py:1956
+#: ../src/spacecmd/softwarechannel.py:1923
 #, python-format
 msgid "Enabling %s access for channel : %s "
 msgstr "正在为频道启用 %s 访问：%s "
 
-#: ../src/spacecmd/softwarechannel.py:1961
+#: ../src/spacecmd/softwarechannel.py:1928
 #, python-format
 msgid "Disabling %s access for channel : %s "
 msgstr "正在为频道禁用 %s 访问：%s "
 
-#: ../src/spacecmd/softwarechannel.py:1974
+#: ../src/spacecmd/softwarechannel.py:1941
 msgid ""
 "softwarechannel_getorgaccesstree: Get the org-access for a software base "
 "channel and its children"
 msgstr ""
 "softwarechannel_getorgaccesstree：获取软件基础频道及其子项的组织访问权限"
 
-#: ../src/spacecmd/softwarechannel.py:1975
+#: ../src/spacecmd/softwarechannel.py:1942
 msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
 msgstr "用法：softwarechannel_getorgaccesstree [频道]"
 
-#: ../src/spacecmd/softwarechannel.py:2008
+#: ../src/spacecmd/softwarechannel.py:1975
 msgid ""
 "softwarechannel_setorgaccesstree: set the org-access for a software base "
 "channel and its children"
 msgstr ""
 "softwarechannel_setorgaccesstree：设置软件基础频道及其子项的组织访问权限"
 
-#: ../src/spacecmd/softwarechannel.py:2009
+#: ../src/spacecmd/softwarechannel.py:1976
 msgid ""
 "usage: softwarechannel_setorgaccesstree <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
@@ -5723,27 +5775,27 @@ msgstr ""
 "-e、--enable：启用组织访问（仅所有可信组织进行公共访问）\n"
 "-p、--protected ORG：仅限 ORG 进行受保护访问（允许 -p ORG 的多个实例）"
 
-#: ../src/spacecmd/softwarechannel.py:2048
+#: ../src/spacecmd/softwarechannel.py:2015
 msgid "softwarechannel_regenerateneededcache: "
 msgstr "softwarechannel_regenerateneededcache： "
 
-#: ../src/spacecmd/softwarechannel.py:2049
+#: ../src/spacecmd/softwarechannel.py:2016
 msgid "Regenerate the needed errata and package cache for all systems"
 msgstr "为所有系统重新生成所需的勘误和软件包缓存"
 
-#: ../src/spacecmd/softwarechannel.py:2051
+#: ../src/spacecmd/softwarechannel.py:2018
 msgid "usage: softwarechannel_regenerateneededcache"
 msgstr "用法：softwarechannel_regenerateneededcache"
 
-#: ../src/spacecmd/softwarechannel.py:2065
+#: ../src/spacecmd/softwarechannel.py:2032
 msgid "softwarechannel_regenerateyumcache: "
 msgstr "softwarechannel_regenerateyumcache： "
 
-#: ../src/spacecmd/softwarechannel.py:2066
+#: ../src/spacecmd/softwarechannel.py:2033
 msgid "Regenerate the YUM cache for a software channel"
 msgstr "为某个软件频道重新生成 YUM 缓存"
 
-#: ../src/spacecmd/softwarechannel.py:2068
+#: ../src/spacecmd/softwarechannel.py:2035
 msgid ""
 "usage: softwarechannel_regenerateyumcache [options] <CHANNEL ...>\n"
 "\n"
@@ -5757,39 +5809,39 @@ msgstr ""
 "      -f 强制重新生成缓存\n"
 "    "
 
-#: ../src/spacecmd/softwarechannel.py:2112
+#: ../src/spacecmd/softwarechannel.py:2079
 msgid "no softwarechannel label given"
 msgstr "未指定软件频道标签"
 
-#: ../src/spacecmd/softwarechannel.py:2115
+#: ../src/spacecmd/softwarechannel.py:2082
 msgid "invalid softwarechannel label "
 msgstr "无效的软件频道标签 "
 
-#: ../src/spacecmd/softwarechannel.py:2133
+#: ../src/spacecmd/softwarechannel.py:2100
 msgid "softwarechannel_diff: diff softwarechannel files"
 msgstr "softwarechannel_diff：比较软件频道文件的差异"
 
-#: ../src/spacecmd/softwarechannel.py:2135
+#: ../src/spacecmd/softwarechannel.py:2102
 msgid "usage: softwarechannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：softwarechannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:2196
+#: ../src/spacecmd/softwarechannel.py:2163
 msgid "softwarechannel_errata_diff: diff softwarechannel files"
 msgstr "softwarechannel_errata_diff：比较软件频道文件的差异"
 
-#: ../src/spacecmd/softwarechannel.py:2198
+#: ../src/spacecmd/softwarechannel.py:2165
 msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:2247
+#: ../src/spacecmd/softwarechannel.py:2214
 msgid "softwarechannel_sync: "
 msgstr "softwarechannel_sync： "
 
-#: ../src/spacecmd/softwarechannel.py:2248
+#: ../src/spacecmd/softwarechannel.py:2215
 msgid "sync the packages of two software channels"
 msgstr "同步两个软件频道的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:2250
+#: ../src/spacecmd/softwarechannel.py:2217
 msgid ""
 "usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
 "    -q,--quiet : quiet mode (omits the output of common packages in both "
@@ -5798,127 +5850,127 @@ msgstr ""
 "用法：softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [选项])\n"
 "    -q、--quiet：静默模式（省略两个频道共有的软件包的输出）"
 
-#: ../src/spacecmd/softwarechannel.py:2292
+#: ../src/spacecmd/softwarechannel.py:2259
 #, python-format
 msgid "%s packages from softwarechannel %s to %s"
 msgstr "%s 软件包从软件频道 %s 到 %s"
 
-#: ../src/spacecmd/softwarechannel.py:2311
-#: ../src/spacecmd/softwarechannel.py:2319
-#: ../src/spacecmd/softwarechannel.py:2433
-#: ../src/spacecmd/softwarechannel.py:2441
-#: ../src/spacecmd/softwarechannel.py:2573
-#: ../src/spacecmd/softwarechannel.py:2581
+#: ../src/spacecmd/softwarechannel.py:2278
+#: ../src/spacecmd/softwarechannel.py:2286
+#: ../src/spacecmd/softwarechannel.py:2400
+#: ../src/spacecmd/softwarechannel.py:2408
+#: ../src/spacecmd/softwarechannel.py:2540
+#: ../src/spacecmd/softwarechannel.py:2548
 msgid "failed to read key id"
 msgstr "无法读取密钥 ID"
 
-#: ../src/spacecmd/softwarechannel.py:2322
+#: ../src/spacecmd/softwarechannel.py:2289
 msgid "packages common in both channels:"
 msgstr "两个频道共有的软件包："
 
-#: ../src/spacecmd/softwarechannel.py:2327
+#: ../src/spacecmd/softwarechannel.py:2294
 msgid "Omitting common packages in both specified channels"
 msgstr "正在省略两个指定频道共有的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:2332
+#: ../src/spacecmd/softwarechannel.py:2299
 msgid "packages to add to channel \""
 msgstr "要添加到以下频道的软件包 \""
 
-#: ../src/spacecmd/softwarechannel.py:2340
+#: ../src/spacecmd/softwarechannel.py:2307
 msgid "packages to remove from channel \""
 msgstr "要从以下频道中去除的软件包 \""
 
-#: ../src/spacecmd/softwarechannel.py:2346
-#: ../src/spacecmd/softwarechannel.py:2468
-#: ../src/spacecmd/softwarechannel.py:2598
+#: ../src/spacecmd/softwarechannel.py:2313
+#: ../src/spacecmd/softwarechannel.py:2435
+#: ../src/spacecmd/softwarechannel.py:2565
 msgid "summary:"
 msgstr "摘要："
 
-#: ../src/spacecmd/softwarechannel.py:2347
-#: ../src/spacecmd/softwarechannel.py:2348
+#: ../src/spacecmd/softwarechannel.py:2314
+#: ../src/spacecmd/softwarechannel.py:2315
 msgid " packages"
 msgstr " 软件包"
 
-#: ../src/spacecmd/softwarechannel.py:2349
+#: ../src/spacecmd/softwarechannel.py:2316
 msgid "    add    "
 msgstr "    添加    "
 
-#: ../src/spacecmd/softwarechannel.py:2350
+#: ../src/spacecmd/softwarechannel.py:2317
 msgid " packages to   "
 msgstr " 软件包至   "
 
-#: ../src/spacecmd/softwarechannel.py:2353
+#: ../src/spacecmd/softwarechannel.py:2320
 msgid "    remove "
 msgstr "    去除 "
 
-#: ../src/spacecmd/softwarechannel.py:2354
+#: ../src/spacecmd/softwarechannel.py:2321
 msgid " packages from "
 msgstr " 软件包自 "
 
-#: ../src/spacecmd/softwarechannel.py:2356
-#: ../src/spacecmd/softwarechannel.py:2476
+#: ../src/spacecmd/softwarechannel.py:2323
+#: ../src/spacecmd/softwarechannel.py:2443
 msgid "Perform these changes to channel "
 msgstr "对以下频道执行这些更改 "
 
-#: ../src/spacecmd/softwarechannel.py:2377
+#: ../src/spacecmd/softwarechannel.py:2344
 msgid "softwarechannel_errata_sync: "
 msgstr "softwarechannel_errata_sync： "
 
-#: ../src/spacecmd/softwarechannel.py:2378
+#: ../src/spacecmd/softwarechannel.py:2345
 msgid "sync errata of two software channels"
 msgstr "同步两个软件频道的勘误"
 
-#: ../src/spacecmd/softwarechannel.py:2380
+#: ../src/spacecmd/softwarechannel.py:2347
 msgid "usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:2419
+#: ../src/spacecmd/softwarechannel.py:2386
 msgid "syncing errata from softwarechannel "
 msgstr "正在将以下软件频道中的勘误同步 "
 
-#: ../src/spacecmd/softwarechannel.py:2420
-#: ../src/spacecmd/softwarechannel.py:2552
+#: ../src/spacecmd/softwarechannel.py:2387
+#: ../src/spacecmd/softwarechannel.py:2519
 msgid " to "
 msgstr " 到 "
 
-#: ../src/spacecmd/softwarechannel.py:2444
+#: ../src/spacecmd/softwarechannel.py:2411
 msgid "errata common in both channels:"
 msgstr "两个频道共有的勘误："
 
-#: ../src/spacecmd/softwarechannel.py:2453
+#: ../src/spacecmd/softwarechannel.py:2420
 msgid "errata to add to channel \""
 msgstr "要添加到以下频道的勘误 \""
 
-#: ../src/spacecmd/softwarechannel.py:2462
+#: ../src/spacecmd/softwarechannel.py:2429
 msgid "errata to remove from channel \""
 msgstr "要从以下频道中去除的勘误 \""
 
-#: ../src/spacecmd/softwarechannel.py:2471
-#: ../src/spacecmd/softwarechannel.py:2601
+#: ../src/spacecmd/softwarechannel.py:2438
+#: ../src/spacecmd/softwarechannel.py:2568
 msgid "    add   "
 msgstr "    添加   "
 
-#: ../src/spacecmd/softwarechannel.py:2472
+#: ../src/spacecmd/softwarechannel.py:2439
 msgid "errata to  "
 msgstr "勘误至  "
 
-#: ../src/spacecmd/softwarechannel.py:2473
+#: ../src/spacecmd/softwarechannel.py:2440
 msgid "    remove"
 msgstr "    去除"
 
-#: ../src/spacecmd/softwarechannel.py:2474
+#: ../src/spacecmd/softwarechannel.py:2441
 msgid "errata from"
 msgstr "勘误自"
 
-#: ../src/spacecmd/softwarechannel.py:2499
+#: ../src/spacecmd/softwarechannel.py:2466
 msgid "softwarechannel_errata_merge: "
 msgstr "softwarechannel_errata_merge： "
 
-#: ../src/spacecmd/softwarechannel.py:2500
+#: ../src/spacecmd/softwarechannel.py:2467
 msgid "merge errata of one software channel into another"
 msgstr "将一个软件频道中的勘误合并到另一个软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:2502
+#: ../src/spacecmd/softwarechannel.py:2469
 msgid ""
 "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
 "[FROM_DATE] [TO_DATE]"
@@ -5926,205 +5978,205 @@ msgstr ""
 "用法：  softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [开始日"
 "期] [结束日期]"
 
-#: ../src/spacecmd/softwarechannel.py:2503
+#: ../src/spacecmd/softwarechannel.py:2470
 msgid ""
 "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
 "2018-01-01"
 msgstr ""
 "示例：softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
 
-#: ../src/spacecmd/softwarechannel.py:2504
+#: ../src/spacecmd/softwarechannel.py:2471
 msgid ""
 "note:    Providing only FROM_DATE will merge all errata since that date."
 msgstr "注意：仅提供开始日期会合并自该日期开始的所有勘误。"
 
-#: ../src/spacecmd/softwarechannel.py:2505
+#: ../src/spacecmd/softwarechannel.py:2472
 msgid "note:    When no date is provided, all errata will be merged."
 msgstr "注意：如果未提供日期，将合并所有勘误。"
 
-#: ../src/spacecmd/softwarechannel.py:2535
-#: ../src/spacecmd/softwarechannel.py:2542
+#: ../src/spacecmd/softwarechannel.py:2502
+#: ../src/spacecmd/softwarechannel.py:2509
 msgid "wrong dateformat: "
 msgstr "错误的日期格式： "
 
-#: ../src/spacecmd/softwarechannel.py:2535
-#: ../src/spacecmd/softwarechannel.py:2542
+#: ../src/spacecmd/softwarechannel.py:2502
+#: ../src/spacecmd/softwarechannel.py:2509
 msgid " please specify as: YYYY-MM-DD"
 msgstr " 请指定为：YYYY-MM-DD"
 
-#: ../src/spacecmd/softwarechannel.py:2551
+#: ../src/spacecmd/softwarechannel.py:2518
 msgid "merging errata from softwarechannel "
 msgstr "正在合并以下软件频道中的勘误 "
 
-#: ../src/spacecmd/softwarechannel.py:2588
+#: ../src/spacecmd/softwarechannel.py:2555
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} 不包含 {} 中尚不存在的勘误"
 
-#: ../src/spacecmd/softwarechannel.py:2593
+#: ../src/spacecmd/softwarechannel.py:2560
 msgid "errata to add to channel {}: "
 msgstr "要添加到频道 {} 的勘误： "
 
-#: ../src/spacecmd/softwarechannel.py:2599
-#: ../src/spacecmd/softwarechannel.py:2600
+#: ../src/spacecmd/softwarechannel.py:2566
+#: ../src/spacecmd/softwarechannel.py:2567
 msgid " errata"
 msgstr " 勘误"
 
-#: ../src/spacecmd/softwarechannel.py:2602
+#: ../src/spacecmd/softwarechannel.py:2569
 msgid " errata to  "
 msgstr " 勘误至  "
 
-#: ../src/spacecmd/softwarechannel.py:2604
+#: ../src/spacecmd/softwarechannel.py:2571
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "对频道 {} 执行这些更改 [y/N]："
 
-#: ../src/spacecmd/softwarechannel.py:2615
+#: ../src/spacecmd/softwarechannel.py:2582
 msgid "softwarechannel_syncrepos: "
 msgstr "softwarechannel_syncrepos： "
 
-#: ../src/spacecmd/softwarechannel.py:2616
+#: ../src/spacecmd/softwarechannel.py:2583
 msgid "Sync users repos for a software channel"
 msgstr "同步软件频道的用户储存库"
 
-#: ../src/spacecmd/softwarechannel.py:2618
+#: ../src/spacecmd/softwarechannel.py:2585
 msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
 msgstr "用法：softwarechannel_syncrepos <频道 ...>"
 
-#: ../src/spacecmd/softwarechannel.py:2620
-#: ../src/spacecmd/softwarechannel.py:2663
+#: ../src/spacecmd/softwarechannel.py:2587
+#: ../src/spacecmd/softwarechannel.py:2630
 msgid "    -e/--no-errata : Do not sync errata"
 msgstr "    -e/--no-errata：不同步勘误"
 
-#: ../src/spacecmd/softwarechannel.py:2621
-#: ../src/spacecmd/softwarechannel.py:2664
+#: ../src/spacecmd/softwarechannel.py:2588
+#: ../src/spacecmd/softwarechannel.py:2631
 msgid "    -f/--fail : Terminate upon any error"
 msgstr "    -f/--fail：出现任何错误时终止"
 
-#: ../src/spacecmd/softwarechannel.py:2622
-#: ../src/spacecmd/softwarechannel.py:2665
+#: ../src/spacecmd/softwarechannel.py:2589
+#: ../src/spacecmd/softwarechannel.py:2632
 msgid "    -k/--sync-kickstart : Create kickstartable tree"
 msgstr "    -k/--sync-kickstart：创建 kickstart 树"
 
-#: ../src/spacecmd/softwarechannel.py:2623
-#: ../src/spacecmd/softwarechannel.py:2666
+#: ../src/spacecmd/softwarechannel.py:2590
+#: ../src/spacecmd/softwarechannel.py:2633
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
 msgstr "    -l/--latest：同步储存库时仅下载最新软件包版本"
 
-#: ../src/spacecmd/softwarechannel.py:2658
+#: ../src/spacecmd/softwarechannel.py:2625
 msgid "softwarechannel_setsyncschedule: "
 msgstr "softwarechannel_setsyncschedule： "
 
-#: ../src/spacecmd/softwarechannel.py:2659
+#: ../src/spacecmd/softwarechannel.py:2626
 msgid "Sets the repo sync schedule for a software channel"
 msgstr "设置软件频道的储存库同步日程安排"
 
-#: ../src/spacecmd/softwarechannel.py:2661
+#: ../src/spacecmd/softwarechannel.py:2628
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
 msgstr "用法：softwarechannel_setsyncschedule <频道> <日程安排>"
 
-#: ../src/spacecmd/softwarechannel.py:2668
+#: ../src/spacecmd/softwarechannel.py:2635
 msgid ""
 "The schedule is specified in Quartz CronTrigger format without enclosing "
 "quotes."
 msgstr "日程安排以不带左右引号的 Quartz CronTrigger 格式指定。"
 
-#: ../src/spacecmd/softwarechannel.py:2669
+#: ../src/spacecmd/softwarechannel.py:2636
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
 msgstr "例如，要将日程安排设置为每日凌晨 1 点，<日程安排> 应是 0 0 1 * * ?"
 
-#: ../src/spacecmd/softwarechannel.py:2670
+#: ../src/spacecmd/softwarechannel.py:2637
 msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "如果将 <日程安排> 留空，则会禁用日程安排。"
 
-#: ../src/spacecmd/softwarechannel.py:2705
+#: ../src/spacecmd/softwarechannel.py:2672
 msgid "softwarechannel_removesyncschedule: "
 msgstr "softwarechannel_removesyncschedule： "
 
-#: ../src/spacecmd/softwarechannel.py:2706
+#: ../src/spacecmd/softwarechannel.py:2673
 msgid "Removes the repo sync schedule for a software channel"
 msgstr "去除软件频道的储存库同步日程安排"
 
-#: ../src/spacecmd/softwarechannel.py:2708
+#: ../src/spacecmd/softwarechannel.py:2675
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
 msgstr "用法：softwarechannel_removesyncschedule <频道>"
 
-#: ../src/spacecmd/softwarechannel.py:2733
+#: ../src/spacecmd/softwarechannel.py:2700
 msgid ""
 "softwarechannel_listsyncschedule: List sync schedules for all software "
 "channels"
 msgstr "softwarechannel_listsyncschedule：列出所有软件频道的同步日程安排"
 
-#: ../src/spacecmd/softwarechannel.py:2735
+#: ../src/spacecmd/softwarechannel.py:2702
 msgid "softwarechannel_listsyncschedule : List all channels"
 msgstr "softwarechannel_listsyncschedule：列出所有频道"
 
-#: ../src/spacecmd/softwarechannel.py:2758
+#: ../src/spacecmd/softwarechannel.py:2725
 msgid "key"
 msgstr "密钥"
 
-#: ../src/spacecmd/softwarechannel.py:2758
+#: ../src/spacecmd/softwarechannel.py:2725
 msgid "Channel Name"
 msgstr "频道名称"
 
-#: ../src/spacecmd/softwarechannel.py:2758
+#: ../src/spacecmd/softwarechannel.py:2725
 msgid "Update Schedule"
 msgstr "更新日程安排"
 
-#: ../src/spacecmd/softwarechannel.py:2770
+#: ../src/spacecmd/softwarechannel.py:2737
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
 msgstr "softwarechannel_addrepo：将储存库添加到软件频道"
 
-#: ../src/spacecmd/softwarechannel.py:2771
+#: ../src/spacecmd/softwarechannel.py:2738
 msgid "usage: softwarechannel_addrepo CHANNEL REPO"
 msgstr "用法：softwarechannel_addrepo CHANNEL REPO"
 
-#: ../src/spacecmd/softwarechannel.py:2804
+#: ../src/spacecmd/softwarechannel.py:2771
 msgid "softwarechannel_removerepo: Remove a repo from a software channel"
 msgstr "softwarechannel_removerepo：从软件频道中去除储存库"
 
-#: ../src/spacecmd/softwarechannel.py:2805
+#: ../src/spacecmd/softwarechannel.py:2772
 msgid "usage: softwarechannel_removerepo CHANNEL REPO"
 msgstr "用法：softwarechannel_removerepo CHANNEL REPO"
 
-#: ../src/spacecmd/softwarechannel.py:2845
+#: ../src/spacecmd/softwarechannel.py:2812
 msgid "softwarechannel_listrepos: List the repos for a software channel"
 msgstr "softwarechannel_listrepos：列出软件频道的储存库"
 
-#: ../src/spacecmd/softwarechannel.py:2846
+#: ../src/spacecmd/softwarechannel.py:2813
 msgid "usage: softwarechannel_listrepos CHANNEL"
 msgstr "用法：softwarechannel_listrepos CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:2869
+#: ../src/spacecmd/softwarechannel.py:2836
 msgid "No repos have been found for this channel."
 msgstr "未找到此频道的储存库。"
 
-#: ../src/spacecmd/softwarechannel.py:2876
+#: ../src/spacecmd/softwarechannel.py:2843
 msgid "softwarechannel_mirrorpackages: Download packages of a given channel"
 msgstr "softwarechannel_mirrorpackages：下载给定频道的软件包"
 
-#: ../src/spacecmd/softwarechannel.py:2877
+#: ../src/spacecmd/softwarechannel.py:2844
 msgid "usage: softwarechannel_mirrorpackages CHANNEL"
 msgstr "用法：softwarechannel_mirrorpackages CHANNEL"
 
-#: ../src/spacecmd/softwarechannel.py:2879
+#: ../src/spacecmd/softwarechannel.py:2846
 msgid "    -l/--latest : Only mirror latest package version"
 msgstr "    -l/--latest：仅镜像最新软件包版本"
 
-#: ../src/spacecmd/softwarechannel.py:2910
+#: ../src/spacecmd/softwarechannel.py:2877
 msgid "Skipping"
 msgstr "正在跳过"
 
-#: ../src/spacecmd/softwarechannel.py:2912
+#: ../src/spacecmd/softwarechannel.py:2879
 msgid "Fetching package"
 msgstr "正在提取软件包"
 
-#: ../src/spacecmd/softwarechannel.py:2917
+#: ../src/spacecmd/softwarechannel.py:2884
 #, python-format
 msgid "Received package %s from channel %s is broken. Content is too short"
 msgstr "收到的软件包 %s（从频道 %s）已受破坏。内容太短"
 
-#: ../src/spacecmd/softwarechannel.py:2921
+#: ../src/spacecmd/softwarechannel.py:2888
 #, python-format
 msgid "Could not fetch package %s from channel %s"
 msgstr "无法提取软件包 %s（从频道 %s）"
@@ -8015,90 +8067,93 @@ msgstr "未找到编辑器"
 msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
-#: ../src/spacecmd/utils.py:456
+#: ../src/spacecmd/utils.py:457
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s 是未知勘误类型"
 
-#: ../src/spacecmd/utils.py:464
+#: ../src/spacecmd/utils.py:465
 msgid "Security Errata"
 msgstr "安全勘误"
 
-#: ../src/spacecmd/utils.py:473
+#: ../src/spacecmd/utils.py:474
 msgid "Bug Fix Errata"
 msgstr "Bug 修复勘误"
 
-#: ../src/spacecmd/utils.py:482
+#: ../src/spacecmd/utils.py:483
 msgid "Enhancement Errata"
 msgstr "增强勘误"
 
-#: ../src/spacecmd/utils.py:492
+#: ../src/spacecmd/utils.py:493
 msgid "Current Selections"
 msgstr "当前选择内容"
 
-#: ../src/spacecmd/utils.py:502
+#: ../src/spacecmd/utils.py:503
 msgid "Available Configuration Channels"
 msgstr "可用配置频道"
 
-#: ../src/spacecmd/utils.py:508 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:509 ../src/spacecmd/utils.py:529
 msgid "Channel:"
 msgstr "频道："
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:512 ../src/spacecmd/utils.py:532
 msgid "Invalid channel"
 msgstr "无效频道"
 
-#: ../src/spacecmd/utils.py:515
+#: ../src/spacecmd/utils.py:516
 msgid "New Rank:"
 msgstr "新排名："
 
-#: ../src/spacecmd/utils.py:522 ../src/spacecmd/utils.py:525
+#: ../src/spacecmd/utils.py:523 ../src/spacecmd/utils.py:526
 msgid "Invalid rank"
 msgstr "无效排名"
 
-#: ../src/spacecmd/utils.py:536
+#: ../src/spacecmd/utils.py:537
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:692
+#: ../src/spacecmd/utils.py:693
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:699
+#: ../src/spacecmd/utils.py:700
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:710
+#: ../src/spacecmd/utils.py:711
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:712
+#: ../src/spacecmd/utils.py:713
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:742
+#: ../src/spacecmd/utils.py:743
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:759
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:844
+#: ../src/spacecmd/utils.py:845
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "获取 FQDN 时发生未经处理的异常："
+
+#~ msgid "Arch:    %s"
+#~ msgstr "体系结构：%s"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search：查找符合给定准则的软件包"
