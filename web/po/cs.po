@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:45
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
@@ -13,13 +12,11 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:90
-#: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 13:20+0000\n"
+"POT-Creation-Date: 2021-05-21 13:17+0200\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -41,30 +38,6 @@ msgid ""
 msgstr ""
 "Prohlížeč Internet Explorer není podporován. Zkuste použít Firefox, Chrome "
 "nebo Edge"
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "Zadejte prosím povinná pole: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "Neplatný formát polí: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"Na této stránce můžete nakonfigurovat vzorce Salt pro automatickou instalaci "
-"a konfiguraci softwaru."
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -134,8 +107,8 @@ msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďt
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
 #: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:52
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
+#: ../html/src/manager/images/image-view.tsx:794
 #: ../html/src/manager/images/image-view.tsx:796
-#: ../html/src/manager/images/image-view.tsx:798
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
@@ -205,18 +178,16 @@ msgstr "Označení kanálu"
 msgid "Assign"
 msgstr "Přiřadit"
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:72
+#: ../html/src/components/dialog/ActionConfirm.tsx:71
 msgid "Are you sure you want to {0} {1} "
 msgstr "Opravdu chcete {0} {1} "
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:84
+#: ../html/src/components/dialog/ActionConfirm.tsx:83
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
 msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 
-#: ../html/src/components/dialog/DangerDialog.tsx:60
-#: ../html/src/components/dialog/DangerDialog.tsx:61
-#: ../html/src/components/dialog/LegacyDangerDialog.tsx:52
-#: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
+#: ../html/src/components/dialog/DangerDialog.tsx:49
+#: ../html/src/components/dialog/DangerDialog.tsx:50
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
@@ -233,19 +204,19 @@ msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../html/src/components/dialog/DeleteDialog.tsx:28
+#: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
-#: ../html/src/manager/images/image-profiles.tsx:140
-#: ../html/src/manager/images/image-profiles.tsx:215
+#: ../html/src/manager/images/image-profiles.tsx:137
+#: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
 #: ../html/src/manager/images/image-stores.tsx:209
-#: ../html/src/manager/images/image-view.tsx:355
-#: ../html/src/manager/images/image-view.tsx:365
-#: ../html/src/manager/images/image-view.tsx:686
+#: ../html/src/manager/images/image-view.tsx:353
+#: ../html/src/manager/images/image-view.tsx:363
+#: ../html/src/manager/images/image-view.tsx:684
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -260,18 +231,48 @@ msgstr "Zrušit"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:37
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:29
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:282
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:318
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:280
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
 msgstr "Smazat"
 
-#: ../html/src/components/dialog/dialog.stories.js:20
+#: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
 msgstr "Smazat projekt"
 
-#: ../html/src/components/dialog/dialog.stories.js:23
+#: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
 msgstr "Opravdu chcete smazat projekt "
+
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "Zadejte prosím povinná pole: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "Neplatný formát polí: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"Na této stránce můžete nakonfigurovat vzorce Salt pro automatickou instalaci "
+"a konfiguraci softwaru."
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+"Toto pole se používá jako identifikátor 'klíče' ve výsledných pilířových "
+"datech (v Salt)."
 
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
@@ -299,16 +300,10 @@ msgid "Save"
 msgstr "Uložit"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
 msgstr "Vzorce"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"Toto pole se používá jako identifikátor 'klíče' ve výsledných pilířových "
-"datech (v Salt)."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
@@ -333,6 +328,7 @@ msgstr "Přepnout viditelnost sekce"
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
 #: ../html/src/components/input/FormMultiInput.stories.js:262
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -341,7 +337,6 @@ msgstr "Přepnout viditelnost sekce"
 #: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
-#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr "Předložit"
@@ -358,8 +353,8 @@ msgid "Users"
 msgstr "Uživatelé"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/Text.stories.js:26
 #: ../html/src/components/input/form.stories.js:26
+#: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
 msgstr "První jméno"
 
@@ -368,12 +363,12 @@ msgstr "První jméno"
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
+#: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/InputBase.test.tsx:42
 #: ../html/src/components/input/InputBase.test.tsx:68
 #: ../html/src/components/input/InputBase.test.tsx:96
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
-#: ../html/src/components/input/form.stories.js:28
 msgid "Minimum 2 characters"
 msgstr "Aspoň dva znaky"
 
@@ -558,7 +553,7 @@ msgid "Configuration Channel: {0}"
 msgstr "Konfigurační kanál: {0}"
 
 #: ../html/src/components/salt-state-popup.tsx:59
-#: ../html/src/manager/images/image-profiles.tsx:209
+#: ../html/src/manager/images/image-profiles.tsx:206
 #: ../html/src/manager/images/image-stores.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
@@ -610,8 +605,8 @@ msgstr "Vybrat vše"
 #: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/nets/network-properties.js:502
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
@@ -880,11 +875,11 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.tsx:145
+#: ../html/src/manager/images/image-profiles.tsx:142
 #: ../html/src/manager/images/image-stores.tsx:145
-#: ../html/src/manager/images/image-view.tsx:379
+#: ../html/src/manager/images/image-view.tsx:377
 #: ../html/src/manager/notifications/notification-messages.tsx:426
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
 msgstr "Aktualizovat"
 
@@ -903,7 +898,7 @@ msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-patches.tsx:92
-#: ../html/src/manager/images/image-view.tsx:677
+#: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:126
@@ -1152,7 +1147,7 @@ msgstr " sekund"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:252
+#: ../html/src/manager/virtualization/ListTab.js:236
 msgid "Filter by name"
 msgstr "Filtrovat podle názvu"
 
@@ -1237,7 +1232,7 @@ msgstr "Auditovat obrazy"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
-#: ../html/src/manager/images/image-view.tsx:631
+#: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
@@ -1245,22 +1240,22 @@ msgstr "Auditovat obrazy"
 #: ../html/src/manager/virtualization/nets/network-properties.js:229
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
 msgstr "Název"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
-#: ../html/src/manager/images/image-profiles.tsx:195
+#: ../html/src/manager/images/image-profiles.tsx:192
 #: ../html/src/manager/images/image-stores.tsx:197
-#: ../html/src/manager/images/image-view.tsx:671
+#: ../html/src/manager/images/image-view.tsx:669
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:276
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:352
+#: ../html/src/manager/virtualization/ListTab.js:260
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "Akce"
 
@@ -1535,6 +1530,31 @@ msgstr "Nenašlo se žádné předplatné."
 msgid "Your subscriptions"
 msgstr "Vaše předplatná"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+msgid "Edit Virtual Host Managers"
+msgstr "Upravit správce virtuálních hostitelů"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+msgid "Subscription Matching"
+msgstr "Párování předplatného"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+msgid "Subscriptions"
+msgstr "Předplatné"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "Nespárované produkty"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+msgid "Pins "
+msgstr "Piny "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+msgid "Messages "
+msgstr "Zprávy "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "Název produktu"
@@ -1551,11 +1571,6 @@ msgstr "Ukázat seznam systémů"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "Nenalezeny žádné nespárované produkty."
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
-msgid "Unmatched Products"
-msgstr "Nespárované produkty"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1584,26 +1599,6 @@ msgstr "1-2 sokety nebo 1-2 virtuální stroje"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "Na každou instanci"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
-msgid "Edit Virtual Host Managers"
-msgstr "Upravit správce virtuálních hostitelů"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
-msgid "Subscription Matching"
-msgstr "Párování předplatného"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
-msgid "Subscriptions"
-msgstr "Předplatné"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
-msgid "Pins "
-msgstr "Piny "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
-msgid "Messages "
-msgstr "Zprávy "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -1716,9 +1711,9 @@ msgstr "Upravit vlastnosti"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
-#: ../html/src/manager/images/image-build.tsx:268
+#: ../html/src/manager/images/image-build.tsx:270
 #: ../html/src/manager/images/image-profile-edit.tsx:526
-#: ../html/src/manager/images/image-profiles.tsx:182
+#: ../html/src/manager/images/image-profiles.tsx:179
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:266
@@ -1756,7 +1751,7 @@ msgid "Action has been "
 msgstr "Akce byla "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.tsx:221
+#: ../html/src/manager/images/image-build.tsx:223
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
@@ -1769,7 +1764,7 @@ msgid " successfully."
 msgstr " úspěšně."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.tsx:215
+#: ../html/src/manager/images/image-build.tsx:217
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "Action has been successfully added to the Action Chain "
@@ -1802,7 +1797,7 @@ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
 msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:772
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr "Přehled"
@@ -1870,7 +1865,7 @@ msgstr "Klastry"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
 #: ../html/src/manager/images/image-stores.tsx:189
 #: ../html/src/manager/images/image-view-patches.tsx:84
-#: ../html/src/manager/images/image-view.tsx:630
+#: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/state/highstate-summary.tsx:59
@@ -1924,8 +1919,8 @@ msgstr "Vytvořit projekt"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.tsx:501
-#: ../html/src/manager/images/image-profiles.tsx:151
-#: ../html/src/manager/images/image-profiles.tsx:152
+#: ../html/src/manager/images/image-profiles.tsx:148
+#: ../html/src/manager/images/image-profiles.tsx:149
 #: ../html/src/manager/images/image-store-edit.tsx:234
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:152
@@ -2063,8 +2058,8 @@ msgstr "Epocha"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
-#: ../html/src/manager/images/image-build.tsx:384
-#: ../html/src/manager/images/image-view.tsx:632
+#: ../html/src/manager/images/image-build.tsx:386
+#: ../html/src/manager/images/image-view.tsx:630
 msgid "Version"
 msgstr "Verze"
 
@@ -2137,9 +2132,9 @@ msgid "Select unused"
 msgstr "Vybrat nepoužité"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
-#: ../html/src/manager/images/image-profiles.tsx:141
+#: ../html/src/manager/images/image-profiles.tsx:138
 #: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:356
+#: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
@@ -2344,11 +2339,11 @@ msgstr "Sestavení ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
-#: ../html/src/manager/images/image-build.tsx:414
-#: ../html/src/manager/images/image-profiles.tsx:203
+#: ../html/src/manager/images/image-build.tsx:416
+#: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
 #: ../html/src/manager/images/image-view-overview.tsx:675
-#: ../html/src/manager/images/image-view.tsx:659
+#: ../html/src/manager/images/image-view.tsx:657
 msgid "Build"
 msgstr "Sestavení"
 
@@ -2421,13 +2416,13 @@ msgid "Generating repositories data"
 msgstr "Generování dat úložiště"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Built"
 msgstr "Sestaveno"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view-overview.tsx:79
-#: ../html/src/manager/images/image-view.tsx:509
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Failed"
 msgstr "Selhalo"
 
@@ -2439,18 +2434,6 @@ msgstr "nesestaveno"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr "Čas sestavení"
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
-msgid "Loading global filters..."
-msgstr "Načítání globálních filtrů..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
-msgid "Updating project filters..."
-msgstr "Aktualizace filtrů projektu..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
-msgid "Create New Filter"
-msgstr "Vytvořit nový filtr"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
@@ -2484,6 +2467,18 @@ msgstr "odfiltrovat"
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "vyberte z úplného zdroje, i když jste je dříve vyloučili příkazem deny"
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+msgid "Loading global filters..."
+msgstr "Načítání globálních filtrů..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+msgid "Updating project filters..."
+msgstr "Aktualizace filtrů projektu..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+msgid "Create New Filter"
+msgstr "Vytvořit nový filtr"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
@@ -2587,7 +2582,7 @@ msgid "Sources edited successfully"
 msgstr "Zdroje upraveny úspěšně"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
-#: ../html/src/manager/images/image-build.tsx:297
+#: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr "Softwarové kanály"
 
@@ -2638,37 +2633,37 @@ msgstr ""
 "Použití konfiguračních kanálů bylo naplánováno pro každý minion server v "
 "této skupině"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-msgid "Formula saved. Edit configuration options "
-msgstr "Vzorec uložen. Upravte možnosti konfigurace "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr " aby se změny uplatnily."
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
-msgid "Invalid target type."
-msgstr "Neplatný typ cíle."
-
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "Vzorec uložen. Použijte "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+msgid " for the changes to take effect."
+msgstr " aby se změny uplatnily."
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+msgid "Invalid target type."
+msgstr "Neplatný typ cíle."
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+msgid "Formula saved. Edit configuration options "
+msgstr "Vzorec uložen. Upravte možnosti konfigurace "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -2686,48 +2681,48 @@ msgid ""
 msgstr ""
 "Při plánování úkolu došlo k chybě. Ujistěte se, že je spuštěn plánovač úloh."
 
-#: ../html/src/manager/images/image-build.tsx:220
+#: ../html/src/manager/images/image-build.tsx:222
 msgid "Building the image has been "
 msgstr "Sestavení obrazu bylo "
 
-#: ../html/src/manager/images/image-build.tsx:251
+#: ../html/src/manager/images/image-build.tsx:253
 msgid "Profile Summary"
 msgstr "Souhrn profilu"
 
-#: ../html/src/manager/images/image-build.tsx:261
+#: ../html/src/manager/images/image-build.tsx:263
 msgid "No profile selected"
 msgstr "Není vybrán žádný profil"
 
-#: ../html/src/manager/images/image-build.tsx:272
+#: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-profile-edit.tsx:535
 msgid "Image Type"
 msgstr "Typ obrazu"
 
-#: ../html/src/manager/images/image-build.tsx:276
+#: ../html/src/manager/images/image-build.tsx:278
 #: ../html/src/manager/images/image-import.tsx:264
 msgid "Image Store"
 msgstr "Úložiště obrazu"
 
-#: ../html/src/manager/images/image-build.tsx:280
+#: ../html/src/manager/images/image-build.tsx:282
 #: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "Cesta"
 
-#: ../html/src/manager/images/image-build.tsx:284
+#: ../html/src/manager/images/image-build.tsx:286
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:392
 msgid "Activation Key"
 msgstr "Aktivační klíč"
 
-#: ../html/src/manager/images/image-build.tsx:353
+#: ../html/src/manager/images/image-build.tsx:355
 msgid "Build Image"
 msgstr "Sestavit obraz"
 
-#: ../html/src/manager/images/image-build.tsx:369
+#: ../html/src/manager/images/image-build.tsx:371
 msgid "Image Profile"
 msgstr "Profil obrazu"
 
-#: ../html/src/manager/images/image-build.tsx:390
+#: ../html/src/manager/images/image-build.tsx:392
 #: ../html/src/manager/images/image-import.tsx:302
 msgid "Build Host"
 msgstr "Sestavení hostitele"
@@ -2770,7 +2765,7 @@ msgid "Image version is required."
 msgstr "Verze obrazu je povinná."
 
 #: ../html/src/manager/images/image-import.tsx:318
-#: ../html/src/manager/images/image-view.tsx:374
+#: ../html/src/manager/images/image-view.tsx:372
 msgid "Import"
 msgstr "Import"
 
@@ -2856,32 +2851,32 @@ msgstr "Profil obrazu byl smazán."
 msgid "Image profiles have been deleted."
 msgstr "Profily obrazů byly odstraněny."
 
-#: ../html/src/manager/images/image-profiles.tsx:162
+#: ../html/src/manager/images/image-profiles.tsx:159
 msgid "Image Profiles"
 msgstr "Profily obrazů"
 
-#: ../html/src/manager/images/image-profiles.tsx:189
+#: ../html/src/manager/images/image-profiles.tsx:186
 msgid "Build Type"
 msgstr "Typ sestavení"
 
-#: ../html/src/manager/images/image-profiles.tsx:231
+#: ../html/src/manager/images/image-profiles.tsx:228
 #: ../html/src/manager/systems/delete-system-confirm.tsx:18
 msgid "Delete Profile"
 msgstr "Odstranit profil"
 
-#: ../html/src/manager/images/image-profiles.tsx:234
+#: ../html/src/manager/images/image-profiles.tsx:231
 msgid "Are you sure you want to delete profile"
 msgstr "Opravdu chcete smazat profil"
 
-#: ../html/src/manager/images/image-profiles.tsx:244
+#: ../html/src/manager/images/image-profiles.tsx:241
 msgid "Delete Selected Profile(s)"
 msgstr "Odstranit vybraný/-é profil/-y"
 
-#: ../html/src/manager/images/image-profiles.tsx:248
+#: ../html/src/manager/images/image-profiles.tsx:245
 msgid "Are you sure you want to delete the selected profile?"
 msgstr "Opravdu chcete odstranit vybraný profil?"
 
-#: ../html/src/manager/images/image-profiles.tsx:250
+#: ../html/src/manager/images/image-profiles.tsx:247
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
 msgstr "Opravdu chcete odstranit vybrané profily? (Vybráno {0} profilů)"
@@ -2962,13 +2957,13 @@ msgstr "Opravdu chcete smazat zvolená úložiště? (Vybráno {0} úložišť)"
 #: ../html/src/manager/images/image-view-overview.tsx:466
 #: ../html/src/manager/images/image-view-runtime.tsx:68
 #: ../html/src/manager/images/image-view-runtime.tsx:105
-#: ../html/src/manager/images/image-view.tsx:482
-#: ../html/src/manager/images/image-view.tsx:531
+#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "No information"
 msgstr "Žádné údaje"
 
 #: ../html/src/manager/images/image-view-overview.tsx:43
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Queued"
 msgstr "Ve frontě"
 
@@ -3005,7 +3000,7 @@ msgstr " selhalo"
 
 #: ../html/src/manager/images/image-view-overview.tsx:103
 #: ../html/src/manager/images/image-view-overview.tsx:104
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Built externally"
 msgstr "Sestaveno externě"
 
@@ -3018,37 +3013,37 @@ msgid "Picked Up"
 msgstr "Zachyceno"
 
 #: ../html/src/manager/images/image-view-overview.tsx:184
-#: ../html/src/manager/images/image-view.tsx:557
+#: ../html/src/manager/images/image-view.tsx:555
 msgid "Cluster"
 msgstr "Klastr"
 
 #: ../html/src/manager/images/image-view-overview.tsx:185
-#: ../html/src/manager/images/image-view.tsx:558
-#: ../html/src/manager/images/image-view.tsx:610
+#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:608
 msgid "Instances"
 msgstr "Instance"
 
 #: ../html/src/manager/images/image-view-overview.tsx:195
 #: ../html/src/manager/images/image-view-overview.tsx:232
-#: ../html/src/manager/images/image-view.tsx:519
-#: ../html/src/manager/images/image-view.tsx:568
+#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:566
 msgid "Waiting for update ..."
 msgstr "Čeká se na aktualizaci ..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:212
-#: ../html/src/manager/images/image-view.tsx:585
+#: ../html/src/manager/images/image-view.tsx:583
 msgid "View cluster summary"
 msgstr "Zobrazit souhrn klastru"
 
 #: ../html/src/manager/images/image-view-overview.tsx:243
 #: ../html/src/manager/images/image-view-overview.tsx:245
-#: ../html/src/manager/images/image-view.tsx:527
+#: ../html/src/manager/images/image-view.tsx:525
 msgid "All instances are consistent with SUSE Manager"
 msgstr "Všechny instance jsou v souladu se Správcem SUSE"
 
 #: ../html/src/manager/images/image-view-overview.tsx:258
 #: ../html/src/manager/images/image-view-overview.tsx:259
-#: ../html/src/manager/images/image-view.tsx:533
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "Outdated instances found"
 msgstr "Byly nalezeny zastaralé instance"
 
@@ -3061,31 +3056,31 @@ msgid "Edit store"
 msgstr "Upravit úložiště"
 
 #: ../html/src/manager/images/image-view-overview.tsx:417
-#: ../html/src/manager/images/image-view.tsx:731
+#: ../html/src/manager/images/image-view.tsx:729
 msgid "Instance Details for '{0}'"
 msgstr "Podrobnosti instance pro '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.tsx:472
 #: ../html/src/manager/images/image-view-overview.tsx:473
-#: ../html/src/manager/images/image-view.tsx:484
+#: ../html/src/manager/images/image-view.tsx:482
 msgid "Critical updates available"
 msgstr "Jsou dostupné zásadní aktualizace"
 
 #: ../html/src/manager/images/image-view-overview.tsx:479
 #: ../html/src/manager/images/image-view-overview.tsx:480
-#: ../html/src/manager/images/image-view.tsx:487
+#: ../html/src/manager/images/image-view.tsx:485
 msgid "Non-critical updates available"
 msgstr "Jsou dostupné běžné aktualizace"
 
 #: ../html/src/manager/images/image-view-overview.tsx:486
 #: ../html/src/manager/images/image-view-overview.tsx:487
-#: ../html/src/manager/images/image-view.tsx:490
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Package updates available"
 msgstr "Jsou dostupné aktualizace balíčků"
 
 #: ../html/src/manager/images/image-view-overview.tsx:493
 #: ../html/src/manager/images/image-view-overview.tsx:494
-#: ../html/src/manager/images/image-view.tsx:492
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Image is up to date"
 msgstr "Obraz je aktuální"
 
@@ -3127,13 +3122,13 @@ msgid "Custom Image Information"
 msgstr "Údaje o zákaznickém obrazu"
 
 #: ../html/src/manager/images/image-view-overview.tsx:630
-#: ../html/src/manager/images/image-view.tsx:366
-#: ../html/src/manager/images/image-view.tsx:700
+#: ../html/src/manager/images/image-view.tsx:364
+#: ../html/src/manager/images/image-view.tsx:698
 msgid "Delete Image"
 msgstr "Odstranit obraz"
 
 #: ../html/src/manager/images/image-view-overview.tsx:633
-#: ../html/src/manager/images/image-view.tsx:703
+#: ../html/src/manager/images/image-view.tsx:701
 msgid "Are you sure you want to delete image"
 msgstr "Opravdu chcete odstranit obraz"
 
@@ -3234,69 +3229,69 @@ msgstr "Kokon"
 msgid "Namespace"
 msgstr "Prostor názvů"
 
-#: ../html/src/manager/images/image-view.tsx:309
+#: ../html/src/manager/images/image-view.tsx:307
 msgid "Deleted successfully."
 msgstr "Úspěšně odstraněno."
 
-#: ../html/src/manager/images/image-view.tsx:325
+#: ../html/src/manager/images/image-view.tsx:323
 msgid "Image inspect has been scheduled."
 msgstr "Byla naplánována kontrola obrazu."
 
-#: ../html/src/manager/images/image-view.tsx:341
+#: ../html/src/manager/images/image-view.tsx:339
 msgid "Image build has been scheduled."
 msgstr "Je naplánováno vytvoření obrazu."
 
-#: ../html/src/manager/images/image-view.tsx:389
+#: ../html/src/manager/images/image-view.tsx:387
 msgid "Images"
 msgstr "Obrazy"
 
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
 msgstr "Sestavuje se"
 
-#: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:238
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
+#: ../html/src/manager/images/image-view.tsx:509
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:236
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: ../html/src/manager/images/image-view.tsx:605
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:603
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Runtime"
 msgstr "Runtime"
 
-#: ../html/src/manager/images/image-view.tsx:635
+#: ../html/src/manager/images/image-view.tsx:633
 msgid "Revision"
 msgstr "Revize"
 
-#: ../html/src/manager/images/image-view.tsx:639
+#: ../html/src/manager/images/image-view.tsx:637
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:108
 msgid "Updates"
 msgstr "Aktualizace"
 
-#: ../html/src/manager/images/image-view.tsx:642
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Patches"
 msgstr "Záplaty"
 
-#: ../html/src/manager/images/image-view.tsx:655
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:653
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Packages"
 msgstr "Balíčky"
 
-#: ../html/src/manager/images/image-view.tsx:663
+#: ../html/src/manager/images/image-view.tsx:661
 msgid "Last Modified"
 msgstr "Naposledy upraveno"
 
-#: ../html/src/manager/images/image-view.tsx:716
+#: ../html/src/manager/images/image-view.tsx:714
 msgid "Delete Selected Image(s)"
 msgstr "Odstranit vybrané obrazy"
 
-#: ../html/src/manager/images/image-view.tsx:720
+#: ../html/src/manager/images/image-view.tsx:718
 msgid "Are you sure you want to delete the selected image?"
 msgstr "Opravdu chcete odstranit vybraný obraz?"
 
-#: ../html/src/manager/images/image-view.tsx:722
+#: ../html/src/manager/images/image-view.tsx:720
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "Opravdu chcete odstranit vybrané obrazy? (Vybráno {0} obrazů)"
 
@@ -3749,8 +3744,8 @@ msgstr "Provedení scénáře bylo"
 msgid "Applying the config channels has been "
 msgstr "Použití konfiguračních kanálů bylo "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 msgid "Configuration"
 msgstr "Konfigurace"
 
@@ -3811,7 +3806,7 @@ msgstr "Stavy balíčku"
 #: ../html/src/manager/salt/keys/key-management.tsx:187
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:119
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:60
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "Stát"
 
@@ -4787,17 +4782,29 @@ msgstr "Správci virtuálních hostiteľů"
 msgid "Add a virtual host manager"
 msgstr "Přidat Správce virtuálních hostiteľů"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
-msgid "Please install libvirt python module."
-msgstr "Instalujte prosím modul libvirt python."
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+msgid "Disconnected"
+msgstr "Odpojeno"
 
-#: ../html/src/manager/virtualization/ListTab.js:157
-msgid "{0} selected"
-msgstr "{0} vybráno"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+msgid "Failed to connect"
+msgstr "Spojení selhalo"
 
-#: ../html/src/manager/virtualization/ListTab.js:259
-msgid "Action Status"
-msgstr "Stav akce"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
+msgid "Toggle full size"
+msgstr "Přepnout plnou velikost"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
+msgid "Guest is not running"
+msgstr "Hostitel není spuštěn"
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
+msgid "Something went wrong, connection is closed"
+msgstr "Něco se pokazilo, spojení ukončeno"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+msgid "Create Virtual Machine"
+msgstr "Vytvořit virtuální stroj"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/nets/network-properties.js:231
@@ -4842,37 +4849,13 @@ msgstr "Volby jádra"
 msgid "Graphics"
 msgstr "Grafika"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
-msgid "Disconnected"
-msgstr "Odpojeno"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
-msgid "Failed to connect"
-msgstr "Spojení selhalo"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
-msgid "Toggle full size"
-msgstr "Přepnout plnou velikost"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
-msgid "Guest is not running"
-msgstr "Hostitel není spuštěn"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
-msgid "Something went wrong, connection is closed"
-msgstr "Něco se pokazilo, spojení ukončeno"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
-msgid "Create Virtual Machine"
-msgstr "Vytvořit virtuální stroj"
-
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr "Spustit / Pokračovat"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:26
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:268
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
 msgstr "Zastavit"
 
@@ -4961,6 +4944,10 @@ msgstr "Soubor"
 msgid "Format"
 msgstr "Formát"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
+msgstr "Disky"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "Fond úložiště zdrojů"
@@ -4976,10 +4963,6 @@ msgstr "Velikost disku (GB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "URL obrazu zdrojové šablony"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
-msgid "Disks"
-msgstr "Disky"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
@@ -5004,13 +4987,25 @@ msgstr "Sítě"
 msgid "Clear Fields"
 msgstr "Vyprázdnit pole"
 
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
+msgstr "Instalujte prosím modul libvirt python."
+
+#: ../html/src/manager/virtualization/ListTab.js:144
+msgid "{0} selected"
+msgstr "{0} vybráno"
+
+#: ../html/src/manager/virtualization/ListTab.js:243
+msgid "Action Status"
+msgstr "Stav akce"
+
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
 msgstr "Vytvořit virtuální síť"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:23
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:97
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:258
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "Start"
 
@@ -5033,12 +5028,12 @@ msgstr ""
 "Verze Salt v tomto systému nepodporuje vytváření a úpravy virtuálních sítí"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:67
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:347
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr "Automatický start"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:76
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr "Trvalý"
 
@@ -5239,6 +5234,51 @@ msgstr "Záznamy TXT"
 msgid "Value"
 msgstr "Hodnota"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"Použijte existující, konfigurovaný most (bridge). Není aktivní žádné "
+"pravidlo iptables, IP adresa ani služba DHCP/DNS"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "Virtuální síť používající směrovací zásobník IP adres hostitelů a NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+"Virtuální síť používající směrovací zásobník IP adres hostitelů bez NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+"Virtuální síť používající směrovací zásobník IP adres hostitelů bez pravidel "
+"firewallu, bez NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
+msgid "Virtual network with no connection to other networks"
+msgstr "Virtuální síť bez připojení k jiným sítím"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
+msgstr ""
+"Síť založená na ovladači macvtap k použití fondu fyzických rozhraní. Není "
+"možná komunikace mezi hostem a hostitelem"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
+msgid "SR-IOV pool"
+msgstr "fond SR-IOV"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "Projít jedním zařízením fondu virtuálních funkcí SR-IOV"
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
 msgstr "Síťová adresa"
@@ -5335,51 +5375,6 @@ msgstr "Označeno"
 msgid "Untagged"
 msgstr "Neoznačeno"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"Použijte existující, konfigurovaný most (bridge). Není aktivní žádné "
-"pravidlo iptables, IP adresa ani služba DHCP/DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "Virtuální síť používající směrovací zásobník IP adres hostitelů a NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-"Virtuální síť používající směrovací zásobník IP adres hostitelů bez NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"Virtuální síť používající směrovací zásobník IP adres hostitelů bez pravidel "
-"firewallu, bez NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
-msgid "Virtual network with no connection to other networks"
-msgstr "Virtuální síť bez připojení k jiným sítím"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
-msgstr ""
-"Síť založená na ovladači macvtap k použití fondu fyzických rozhraní. Není "
-"možná komunikace mezi hostem a hostitelem"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
-msgid "SR-IOV pool"
-msgstr "fond SR-IOV"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "Projít jedním zařízením fondu virtuálních funkcí SR-IOV"
-
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
 msgid "Could not get network devices from the server. Please try again."
 msgstr "Nelze získat síťová zařízení serveru. Prosím zkuste to znovu."
@@ -5388,36 +5383,36 @@ msgstr "Nelze získat síťová zařízení serveru. Prosím zkuste to znovu."
 msgid "Create Virtual Storage Pool"
 msgstr "Vytvořte fond virtuálních úložišť"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Delete the pool, including the contained volumes. "
 msgstr "Odstranit fond včetně obsažených svazků. "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Cannot be undone"
 msgstr "Nelze vrátit"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:275
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
 msgid "Edit Pool"
 msgstr "Upravit fond"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
 msgid "Location"
 msgstr "Umístění"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "Usage"
 msgstr "Použití"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:360
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:361
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid "Create Pool"
 msgstr "Vytvořit fond"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:367
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:363
 msgid "Virtual Storage Pools and Volumes"
 msgstr "Fondy a svazky virtuálních úložišť"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:364
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
@@ -5425,7 +5420,7 @@ msgstr ""
 "Toto je seznam fondů úložišť definovaných na tomto hostiteli, které obsahují "
 "disky virtuálních hostů."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:378
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:374
 msgid "Filter by pool or volume name"
 msgstr "Filtrovat podle názvu fondu nebo svazku"
 
@@ -5675,21 +5670,6 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
-
-#: ../html/src/utils/test-utils/setup/t.test.ts:5
-msgid "foo"
-msgstr ""
-
-#: ../html/src/utils/test-utils/setup/t.test.ts:6
-msgid "undefined"
-msgstr ""
-
-#: ../html/src/utils/test-utils/setup/t.test.ts:11
-#: ../html/src/utils/test-utils/setup/t.test.ts:12
-#: ../html/src/utils/test-utils/setup/t.test.ts:13
-#, fuzzy
-msgid "foo {0} tea {1}"
-msgstr "Strana {0} z {1}"
 
 #~ msgid "Apply"
 #~ msgstr "Použít"
