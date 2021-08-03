@@ -223,7 +223,7 @@
         </context-group>
       </trans-unit>
       <!--# Struts Validator Error Messages-->
-      <trans-unit id="errors.invalid.value" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="errors.invalid.value" xml:space="preserve">
         <source>Only valid values for {0} are ({1})</source>
         <target>{0}에만 유효한 값은 ({1})입니다.</target>
       </trans-unit>
@@ -3073,7 +3073,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.on" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.on" xml:space="preserve">
         <source>on</source>
         <target>날짜:</target>
         <context-group name="ctx">
@@ -3101,35 +3101,35 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.packages.update" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.packages.update" xml:space="preserve">
         <source>Install or update {0} on</source>
         <target>{0} 설치 또는 업데이트:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.packages.remove" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.packages.remove" xml:space="preserve">
         <source>Remove {0} from</source>
         <target>{0} 제거 위치:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.packages.verify" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.packages.verify" xml:space="preserve">
         <source>Verify {0} on</source>
         <target>{0} 확인:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.errata.update" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.errata.update" xml:space="preserve">
         <source>Apply patch(es) {0} on</source>
         <target>{0} 패치 적용:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.script.run" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.script.run" xml:space="preserve">
         <source>Run a remote command on</source>
         <target>원격 명령 실행:</target>
         <context-group name="ctx">
@@ -3143,14 +3143,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.configfiles.deploy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.configfiles.deploy" xml:space="preserve">
         <source>Deploy {0} to</source>
         <target>{0} 배포 위치:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.configfiles.diff" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.configfiles.diff" xml:space="preserve">
         <source>Compare {0} on</source>
         <target>{0} 비교:</target>
         <context-group name="ctx">
@@ -3262,14 +3262,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.channels.subscribe" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.channels.subscribe" xml:space="preserve">
         <source>Change channels subscription on</source>
         <target>채널 구독 변경:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.virt.create" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.virt.create" xml:space="preserve">
         <source>Create or update a virtual machine on</source>
         <target>가상 시스템 생성 또는 업데이트:</target>
         <context-group name="ctx">
@@ -5632,7 +5632,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.lock" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.misc.lock" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
         <target>시스템 &lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;잠금/잠금 해제&lt;/a&gt;</target>
         <context-group name="ctx">
@@ -5854,7 +5854,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.tabs.lockunlock" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.misc.index.tabs.lockunlock" xml:space="preserve">
           <source>Lock/Unlock</source>
         <target>잠금/잠금 해제</target>
         <context-group name="ctx">
@@ -6218,7 +6218,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.misc.lockunlock.tabtitle" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.misc.lockunlock.tabtitle" xml:space="preserve">
           <source>Lock/Unlock</source>
         <target>잠금/잠금 해제</target>
         <context-group name="ctx">
@@ -8298,7 +8298,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="pkg.lock.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="pkg.lock.summary" xml:space="preserve">
         <source>
                 You can lock packages so they will remain unmodified.
                 However, it is important to keep in mind that requesting a 
@@ -8358,7 +8358,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="packages.setLocks" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="packages.setLocks" xml:space="preserve">
         <source>Packages Lock/Unlock</source>
         <target>패키지 잠금/잠금 해제</target>
         <context-group name="ctx">
@@ -10073,7 +10073,7 @@ Please note that some manual configuration of these scripts may still be require
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
       </trans-unit>
-      <trans-unit id="bootstrapsystemlist.jsp.detected_on" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrapsystemlist.jsp.detected_on" xml:space="preserve">
           <source>Detected on</source>
         <target>감지됨:</target>
         <context-group name="ctx">
@@ -10297,7 +10297,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>Filters</source>
         <target>필터</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.filters.tip" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="repos.jsp.filters.tip" xml:space="preserve">
         <source>-zsh*,kernel +zsh-html</source>
         <target>-zsh*,kernel +zsh-html</target>
       </trans-unit>
@@ -11684,7 +11684,7 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.postnetconn.bondoptionstip.jsp.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.postnetconn.bondoptionstip.jsp.label" xml:space="preserve">
         <source>You can input a space-separated list of any valid "bonding" kernel module options. Common options include mode=[0,1,2] (0 is round-robin, 1 is active-backup, 2 is balance-xor) and miimon=100</source>
         <target>유효한 "결합" 커널 모듈 옵션의 공백으로 구분된 목록을 입력할 수 있습니다. 공통 옵션에는 모드=[0,1,2](0은 라운드 로빈, 1은 활성 백업, 2는 balance-xor) 및 miimon=100 등이 있습니다.</target>
         <context-group name="ctx">
@@ -11915,7 +11915,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>정의된 공개키나 ssl 인증서가 없습니다.</target>
       </trans-unit>
-      <trans-unit id="keys.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="keys.jsp.summary" xml:space="preserve">
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
@@ -13023,7 +13023,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>전체 시스템 그룹 보기</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.nogroups" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.nogroups" xml:space="preserve">
         <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
         <target>&lt;strong&gt;시스템 그룹이 없습니다.&lt;/strong&gt;&lt;p&gt;시스템 그룹은 &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; 시스템 설정 관리자 &gt; 그룹 &gt; 그룹 생성&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;에서 생성할 수 있습니다.</target>
         <context-group name="ctx">
@@ -13918,7 +13918,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.jsp.allowed-values" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-key.jsp.allowed-values" xml:space="preserve">
           <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
         <target>활성화 키에는 숫자 [0-9], 문자 [a-z A-Z], '-', '_' 및 '.'를 포함할 수 있습니다.</target>
         <context-group name="ctx">
@@ -15269,7 +15269,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.event.details.execute" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.event.details.execute" xml:space="preserve">
           <source>This action will be executed after {0}</source>
         <target>이 작업은 {1} 이후에 실행됩니다.</target>
         <context-group name="ctx">
@@ -17500,7 +17500,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>현재 버전</target>
       </trans-unit>
@@ -17508,7 +17508,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>마지막 수정</target>
       </trans-unit>
@@ -17537,7 +17537,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>이 채널에 등록된 시스템 중 배치할 수 있는 시스템이 없음</target>
       </trans-unit>
@@ -17545,7 +17545,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>작업</target>
       </trans-unit>
@@ -17553,7 +17553,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -17561,7 +17561,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>모든 파일을 배치</target>
       </trans-unit>
@@ -17569,7 +17569,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>선택한 파일을 배치</target>
       </trans-unit>
@@ -17577,7 +17577,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>설정 파일 배치</target>
       </trans-unit>
@@ -17585,7 +17585,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>아래 목록에서 배치하려는 파일을 선택할 수 있습니다. 그 후 선택한 파일을 배치할 시스템을 선택해야 합니다.</target>
       </trans-unit>
@@ -17593,7 +17593,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -17601,7 +17601,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>확인 &amp; 선택한 시스템 배치</target>
       </trans-unit>
@@ -17609,7 +17609,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>설정 파일 배치: 배치할 시스템 선택</target>
       </trans-unit>
@@ -17617,7 +17617,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>선택한 파일을 배치할 시스템을 선택하십시오.</target>
       </trans-unit>
@@ -17625,7 +17625,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>&lt;strong&gt;경고:&lt;/strong&gt; {0} 설정 채널에서 배치하려는 파일이 보다 높은 순위의 채널에 있는 같은 이름을 가진 파일에 의해 덮어쓰이거나 순위가 앞서게 되었을 경우, 특정 시스템이 등록되어 {0} 설정 채널에 있는 파일 버전이 아닌 덮어쓰여진/ 가장 높은 순위에 있는 파일 버전이 이 시스템에 배치됩니다.</target>
       </trans-unit>
@@ -18494,7 +18494,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
         <target>설정 파일 삭제</target>
       </trans-unit>
-      <trans-unit id="deletefile.jsp.info" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="deletefile.jsp.info" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Deleting the configuration file described below
 will remove ALL revisions of the file from this channel.  It will also remove all currently-pending
 deployment actions for any of those revisions, as well as all deployment history regarding
@@ -21960,7 +21960,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <target>킥스타트 프로파일 없음.</target>
       </trans-unit>
-      <trans-unit id="kickstart.packageprofiles.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.packageprofiles.jsp.summary" xml:space="preserve">
         <source>You may sync kickstarting systems to the package profile
 of a system registered to @@PRODUCT_NAME@@ by choosing a package profile
 below.  &lt;strong&gt;Note&lt;/strong&gt;: This list will
@@ -23321,7 +23321,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target>자동 설치 가능한 프로파일 선택</target>
       </trans-unit>
-      <trans-unit id="virtualization.provision.first.jsp.summary1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="virtualization.provision.first.jsp.summary1" xml:space="preserve">
         <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
         <target>아래 양식을 작성하여 &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;에서 호스팅할 새 가상 시스템을 생성하십시오.</target>
         <context-group name="ctx">
@@ -24365,7 +24365,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">시스템 전송</target>
       </trans-unit>
-      <trans-unit id="sdc.details.migrate.success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.migrate.success" xml:space="preserve">
         <source>System successfully transferred</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
@@ -25389,7 +25389,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
 신뢰 상태를 삭제하기 전 변경 사항을 확인하십시오.
         </target>
       </trans-unit>
-      <trans-unit id="org.trust.affectedsystems.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="org.trust.affectedsystems.summary" xml:space="preserve">
         <source>
             The systems listed below will be affected by removing the trust relationship between
             the &lt;b&gt;{0}&lt;/b&gt; organization and the &lt;b&gt;{1}&lt;/b&gt; organization.
@@ -25598,7 +25598,7 @@ Below is a list of channels in your organization.
           </context-group>
         <target>서브스크립션 변경</target>
       </trans-unit>
-      <trans-unit id="ssmchildsubconfirm.jsp.noSystems" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssmchildsubconfirm.jsp.noSystems" xml:space="preserve">
           <source>There are no systems available in your System Set to process the subscribe/unsubscribe actions you have selected.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptionsAction.do</context>
@@ -25976,7 +25976,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>Packages by Name</source>
         <target>이름별 패키지</target>
       </trans-unit>
-      <trans-unit id="packagesbyname.jsp.introparagraph" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="packagesbyname.jsp.introparagraph" xml:space="preserve">
         <source>NOTE: Different architectures of the same package can exist in a
 single channel, this may cause a package to be listed twice for a
 given channel.</source>
@@ -26105,7 +26105,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="help.jsp.about.overviewsummary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.jsp.about.overviewsummary" xml:space="preserve">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -26385,7 +26385,7 @@ given channel.</source>
         <source>Select the changes you want to perform on {0}:</source>
         <target>{0}에서 수행할 변경 사항 선택:</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.package.comparemergemessage2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.jsp.package.comparemergemessage2" xml:space="preserve">
         <source>Please note that all of the packages associated with these
                 channels are listed here, not just the latest versions of each
                 package. Older versions of a given package will not appear in the
@@ -27804,7 +27804,7 @@ given channel.</source>
         </context-group>
         <target>종료 시간</target>
       </trans-unit>
-      <trans-unit id="confirmprivate.jsp.confirmmsg" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="confirmprivate.jsp.confirmmsg" xml:space="preserve">
         <source>Are you sure you want to set this channel to
         &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your
         organization? There are system(s) in other organization(s) listed below
@@ -27822,7 +27822,7 @@ given channel.</source>
          채널에 의해 제공되는 컨텐츠에 대해 더 이상 중요 보안 업데이트를 받을 수 없게 되는 등
          시스템에 악영향을 미칠 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="confirmprivate.jsp.confirmmsg.deux" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="confirmprivate.jsp.confirmmsg.deux" xml:space="preserve">
         <source>Please review the change you are about to make before confirming
         this access removal.</source>
         <context-group name="ctx">
@@ -27830,7 +27830,7 @@ given channel.</source>
         </context-group>
         <target>액세스 제거를 확인하기 전 변경하려는 내용을 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="confirmprotected.jsp.confirmmsg" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="confirmprotected.jsp.confirmmsg" xml:space="preserve">
         <source>Are you sure you want to set this channel's access policy to
         being a &lt;strong&gt;protected&lt;/strong&gt; channel, note that the
         organizations below have systems that subscribe to this channel.
@@ -29036,7 +29036,7 @@ given channel.</source>
         <source>Select Channels</source>
         <target>채널 선택</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.targetProductSelectedEmpty" xml:space="preserve">
         <source>Please select one target product to migrate</source>
         <target>마이그레이션할 대상 시스템 1개를 선택하십시오.</target>
       </trans-unit>
@@ -29376,7 +29376,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="channel.delete.jsp.state.scheduled.info" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.delete.jsp.state.scheduled.info" xml:space="preserve">
         <source>
            Application of the channel state will be scheduled immediately after confirming on any minions
            that currently have this channel assigned. This will update repository files on those minions to
@@ -29422,7 +29422,7 @@ given channel.</source>
         <source>Bootstrap</source>
         <target>부트스트랩</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.body" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="copyright.jsp.body" xml:space="preserve">
         <source>
 &lt;p&gt;
     This software is a modular operating system comprised of numerous components
@@ -29479,7 +29479,7 @@ given channel.</source>
         <source>States</source>
         <target>상태</target>
       </trans-unit>
-      <trans-unit id="Highstate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Highstate" xml:space="preserve">
         <source>Highstate</source>
         <target>Highstate</target>
       </trans-unit>
@@ -29709,34 +29709,60 @@ given channel.</source>
         <source>Product Migration</source>
         <target state="translated">제품 마이그레이션</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.title.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.title.repo" xml:space="preserve">
           <source>We're sorry, but the repository could not be found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">죄송하지만 리포지토리를 찾을 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.reason1.repo" xml:space="preserve">
           <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">요청한 리포지토리가 없습니다. 책갈피 또는 하이퍼링크가 아닌 다른 링크를 통해 이 페이지에 도달한 경우일 가능성이 높습니다.</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.reason2.repo" xml:space="preserve">
           <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">이 리포지토리를 볼 수 있는 권한이 없습니다.</target>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
         <target state="final">Ansible 플레이북 실행</target>
       </trans-unit>
-    </body>
+    <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
+        <source>Optional OVAL Files (comma separated)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
+          <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+        <source>Modular Data Cleanup</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
+        <source>Forward Registration</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
+        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
