@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 11:37+0000\n"
+"POT-Creation-Date: 2021-07-06 10:33+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -551,7 +551,7 @@ msgid "Custom Quartz format:"
 msgstr "独自のクォーツ書式:"
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:336
+#: ../html/src/components/table/TableDataHandler.tsx:339
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
@@ -609,7 +609,7 @@ msgstr "消去"
 msgid "Select All"
 msgstr "すべてを選択"
 
-#: ../html/src/components/table/TableDataHandler.tsx:337
+#: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:256
@@ -619,7 +619,7 @@ msgstr "すべてを選択"
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:367
+#: ../html/src/components/table/TableDataHandler.tsx:370
 msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
@@ -1201,7 +1201,7 @@ msgid "There are no tasks running on the server at the moment."
 msgstr "現時点では、サーバ内で動作しているタスクはありません。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:106
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
@@ -1209,7 +1209,7 @@ msgstr ""
 "してください。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
@@ -1561,7 +1561,7 @@ msgid "No unmatching products are found."
 msgstr "一致しない製品は見つかりませんでした。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
 msgid "Unmatched Products"
 msgstr "該当のない製品"
 
@@ -1593,23 +1593,23 @@ msgstr "1〜2 ソケットまたは 1〜2 台の仮想マシン"
 msgid "Per-instance"
 msgstr "インスタンスごと"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
 msgid "Edit Virtual Host Managers"
 msgstr "仮想ホストマネージャの編集"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
 msgid "Subscription Matching"
 msgstr "サブスクリプションマッチング"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
 msgid "Subscriptions"
 msgstr "サブスクリプション"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
 msgid "Pins "
 msgstr "ピン "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
 msgid "Messages "
 msgstr "メッセージ "
 

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 11:37+0000\n"
+"POT-Creation-Date: 2021-07-06 10:33+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -540,7 +540,7 @@ msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:336
+#: ../html/src/components/table/TableDataHandler.tsx:339
 msgid "There are no entries to show."
 msgstr "没有可显示的项。"
 
@@ -598,7 +598,7 @@ msgstr "清除"
 msgid "Select All"
 msgstr "全选"
 
-#: ../html/src/components/table/TableDataHandler.tsx:337
+#: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:256
@@ -608,7 +608,7 @@ msgstr "全选"
 msgid "Loading..."
 msgstr "正在装载..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:367
+#: ../html/src/components/table/TableDataHandler.tsx:370
 msgid "items per page"
 msgstr "项每页"
 
@@ -1168,13 +1168,13 @@ msgid "There are no tasks running on the server at the moment."
 msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:106
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
@@ -1510,7 +1510,7 @@ msgid "No unmatching products are found."
 msgstr "找不到不匹配的产品。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
 msgid "Unmatched Products"
 msgstr "不匹配的产品"
 
@@ -1542,23 +1542,23 @@ msgstr "1-2 个插槽或 1-2 台虚拟机"
 msgid "Per-instance"
 msgstr "每个实例"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
 msgid "Edit Virtual Host Managers"
 msgstr "编辑虚拟主机管理器"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
 msgid "Subscription Matching"
 msgstr "订阅匹配"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
 msgid "Subscriptions"
 msgstr "订阅"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
 msgid "Pins "
 msgstr "关联 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
 msgid "Messages "
 msgstr "消息 "
 
