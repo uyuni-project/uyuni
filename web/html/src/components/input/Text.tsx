@@ -1,52 +1,15 @@
 import * as React from "react";
-import { Field, FieldProps, FieldAttributes, FieldConfig } from "formik";
-import { FormGroup } from "./FormGroup";
-import { Label } from "./Label";
+import { FieldProps, FieldAttributes } from "formik";
+import InputBase, { InputBaseProps } from "./FormikInputBase";
 
-type Props = FieldAttributes<unknown> & {
-  /** CSS class for the <input> element */
-  inputClass?: string;
+type Props<Value> = InputBaseProps<Value> & {
+  maxLength: number,
 };
 
-function isCallable(input: any): input is (...args: any[]) => any {
-  return typeof input === "function";
-}
-
-const FieldWrapper = <Value extends unknown>(props: Props) => {
-  const { label, labelClass, divClass, ...propsToPass } = props;
-  return (
-    <Field {...propsToPass}>
-      {(fieldProps: FieldProps<Value>) => {
-        // TODO: Check
-        const isError = !!fieldProps.form.errors[fieldProps.field.name];
-        // TODO: Implement
-        const hints = null;
-        return (
-          <FormGroup isError={isError} key={`${props.name}-group`} className={props.className}>
-            {props.label && (
-              <Label
-                name={props.label}
-                className={props.labelClass}
-                required={props.required}
-                key={`${props.name}-label`}
-                htmlFor={typeof props.name === "string" ? props.name : undefined}
-              />
-            )}
-            <div className={props.divClass}>
-              {isCallable(props.children) ? props.children(fieldProps) : props.children}
-              {hints && <div className="help-block">{hints}</div>}
-            </div>
-          </FormGroup>
-        );
-      }}
-    </Field>
-  );
-};
-
-export const Text = <Value extends string>(props: Props) => {
+export const Text = <Value extends string>(props: Props<Value>) => {
   const { inputClass, ...propsToPass } = props;
   return (
-    <FieldWrapper {...propsToPass}>
+    <InputBase {...propsToPass}>
       {({
         field, // { name, value, onChange, onBlur }
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
@@ -58,14 +21,13 @@ export const Text = <Value extends string>(props: Props) => {
             className={`form-control${props.inputClass ? ` ${props.inputClass}` : ""}`}
             {...field}
           />
-          {meta.touched && meta.error && <div className="error">{meta.error}</div>}
         </div>
       )}
-    </FieldWrapper>
+    </InputBase>
   );
 };
 
-const defaultProps: Partial<Props> = {
+const defaultProps: Partial<Props<string>> = {
   type: "text",
   maxLength: undefined,
   placeholder: undefined,

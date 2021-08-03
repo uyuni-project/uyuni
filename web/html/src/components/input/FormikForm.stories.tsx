@@ -24,11 +24,11 @@ export const Example = () => (
       name="firstname"
       label={t('First Name')}
       required
-      // invalidHint={t('Minimum 2 characters')}
       labelClass="col-md-3"
       disabled
       divClass="col-md-6"
-      // validators={[(value => (value.length > 2))]}
+      validators={[(value => (value.length > 2))]}
+      invalidHint={t('Minimum 2 characters')}
     />
     <SubmitButton
       id="submit-btn"
