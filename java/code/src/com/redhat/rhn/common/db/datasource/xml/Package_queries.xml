@@ -41,7 +41,7 @@ SELECT * FROM
                                       AND lck.evr_id = pkg.evr_id
                                       AND lck.arch_id = pkg.package_arch_id
                                       AND lck.server_id = :sid) pkgs
-order by name
+order by locked ASC NULLS LAST, name
   </query>
 </mode>
 
@@ -531,7 +531,7 @@ SELECT PN.name as NAME,
                                  AND lck.arch_id = SP.package_arch_id
                                  AND lck.server_id = SP.server_id
  WHERE SP.server_id = :sid
- ORDER BY NAME
+ ORDER BY locked ASC NULLS LAST, NAME
   </query>
 </mode>
 
