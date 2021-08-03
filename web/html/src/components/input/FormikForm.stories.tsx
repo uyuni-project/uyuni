@@ -12,13 +12,12 @@ let model = {
   firstname: 'John',
 };
 
-//Form props:
-//divClass="col-md-12"
-//formDirection="form-horizontal"
 export const Example = () => (
   <FormikForm
     model={model}
     onSubmit={(foo) => console.log(foo)}
+    divClass="col-md-12"
+    formDirection="form-horizontal"
   >
     <Text
       name="firstname"

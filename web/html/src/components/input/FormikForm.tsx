@@ -46,25 +46,22 @@ export default class FormikForm extends React.PureComponent<Props> {
 
   render() {
     return (
-      <React.Fragment>
-        <p>Foo</p>
-        <Formik
-          initialValues={this.props.model ?? {}}
-          onSubmit={this.onSubmit}
-          className={this.props.className}
-          title={this.props.title}
-        >
-          {formikProps => (
-            <Form>
-              <div
-                className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}
-              >
-                {React.Children.toArray(this.props.children).map(child => cloneReactElement(child, { ...formikProps }))}
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </React.Fragment>
+      <Formik
+        initialValues={this.props.model ?? {}}
+        onSubmit={this.onSubmit}
+        className={this.props.className}
+        title={this.props.title}
+      >
+        {formikProps => (
+          <Form>
+            <div
+              className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}
+            >
+              {React.Children.toArray(this.props.children).map(child => cloneReactElement(child, { ...formikProps }))}
+            </div>
+          </Form>
+        )}
+      </Formik>
     );
   }
 }
