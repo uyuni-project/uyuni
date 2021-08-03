@@ -61,5 +61,22 @@ authorize_own_key:
       - file: ownership_own_ssh_key
       - ssh_auth: no_own_key_authorized
 
+logrotate_configuration:
+  file.managed:
+    - name: /etc/logrotate.d/salt-ssh
+    - user: root
+    - group: root
+    - mode: 644
+    - makedirs: True
+    - contents: |
+        /var/log/salt-ssh.log {
+                su root root
+                weekly
+                missingok
+                rotate 7
+                compress
+                notifempty
+        }
+
 {% include 'channels/gpg-keys.sls' %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
