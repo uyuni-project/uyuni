@@ -10728,13 +10728,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>{0} filter(s) from template created successfully</source>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="virt.guest_migrate" xml:space="preserve">
-        <source>Migrate a virtual domain</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>
