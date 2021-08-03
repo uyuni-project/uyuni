@@ -99,7 +99,10 @@ public class DebReleaseWriter {
     }
 
     private String toArchString(ChannelArch channelArch) {
-        return channelArch.getLabel().replaceAll("channel-", "").replaceAll("-deb", "");
+        return (String)channelArch.getCompatiblePackageArches().stream()
+                .map(a -> ((PackageArch)a).getLabel().replaceAll("-deb", ""))
+                .filter(a -> !("all".equals(a) || "src".equals(a)))
+                .collect(Collectors.joining(" "));
     }
 
     @FunctionalInterface
