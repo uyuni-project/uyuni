@@ -1,7 +1,7 @@
 {%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}
 {# Prefer venv-salt-minion if installed #}
 {%- if salt['pkg.version']('venv-salt-minion') %}
-{%- set susemanager_minion_config = '/etc/opt/venv-salt-minion/minion.d/susemanager.conf' %}
+{%- set susemanager_minion_config = '/etc/venv-salt-minion/minion.d/susemanager.conf' %}
 {%- endif -%}
 mgr_start_event_grains:
   file.append:

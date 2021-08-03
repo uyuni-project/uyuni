@@ -1,3 +1,4 @@
+- States and pkgset beacon modified for new salt bundle file placement
 - Handle more ocsf2 setups in virt_utils module
 - Add UEFI support for VM creation
 - Add virt-tuner templates to VM creation

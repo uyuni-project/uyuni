@@ -1,3 +1,5 @@
+- Bootstrap script generator modified to handle new placement
+  of salt bundle
 - added support of bootstrapping Raspbian 10 and 9
   with bootstrap script
 - added support of bootstrapping with salt bundle
