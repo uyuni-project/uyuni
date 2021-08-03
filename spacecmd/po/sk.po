@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-02 20:11+0000\n"
+"PO-Revision-Date: 2021-08-03 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1686,7 +1686,6 @@ msgid "distribution_create: Create a Kickstart tree"
 msgstr "distribution_create: Vytvoriť strom Kickstart"
 
 #: ../src/spacecmd/distribution.py:44
-#, fuzzy
 msgid ""
 "usage: distribution_create [options]\n"
 "\n"
@@ -1703,7 +1702,8 @@ msgstr ""
 "  -n NÁZOV\n"
 "  -p cesta k stromu\n"
 "  -b základný kanál, s ktorým sa má spojiť\n"
-"  -t inštalovaný typ [fedora|rhel_4/5/6|generic_rpm]"
+"  -t inštalovaný typ [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1807,7 +1807,6 @@ msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update: Aktualizovať cestu stromu Kickstart"
 
 #: ../src/spacecmd/distribution.py:290
-#, fuzzy
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -1822,7 +1821,8 @@ msgstr ""
 "voľby:\n"
 "  -p cesta k stromu\n"
 "  -b základný kanál, s ktorým sa má spojiť\n"
-"  -t inštalovaný typ [fedora|rhel_4/5/6|generic_rpm]"
+"  -t inštalovaný typ [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -1959,9 +1959,9 @@ msgid "Type:       %s"
 msgstr "Typ:       %s"
 
 #: ../src/spacecmd/errata.py:400
-#, fuzzy, python-format
+#, python-format
 msgid "Status:     %s"
-msgstr "Cesta:     %s"
+msgstr "Stav:     %s"
 
 #: ../src/spacecmd/errata.py:401
 #, python-format
@@ -3944,58 +3944,57 @@ msgid "%s is not a valid package"
 msgstr "%s nie je platný balík"
 
 #: ../src/spacecmd/package.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "Name:      %s"
-msgstr "Názov:       %s"
+msgstr "Názov:      %s"
 
 #: ../src/spacecmd/package.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "Version:   %s"
-msgstr "Verzia: %s"
+msgstr "Verzia:   %s"
 
 #: ../src/spacecmd/package.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "Release:   %s"
-msgstr "Vydanie: %s"
+msgstr "Vydanie:   %s"
 
 #: ../src/spacecmd/package.py:95
-#, fuzzy, python-format
+#, python-format
 msgid "Epoch:     %s"
-msgstr "Obdobie:   %s"
+msgstr "Obdobie:     %s"
 
 #: ../src/spacecmd/package.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Arch:      %s"
-msgstr "Arch:    %s"
+msgstr "Arch:      %s"
 
 #: ../src/spacecmd/package.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "File:      %s"
-msgstr "Súbor:    %s"
+msgstr "Súbor:      %s"
 
 #: ../src/spacecmd/package.py:99
-#, fuzzy, python-format
+#, python-format
 msgid "Path:      %s"
-msgstr "Cesta:     %s"
+msgstr "Cesta:      %s"
 
 #: ../src/spacecmd/package.py:100
-#, fuzzy, python-format
+#, python-format
 msgid "Size:      %s"
-msgstr "Veľkosť:    %s"
+msgstr "Veľkosť:      %s"
 
 #: ../src/spacecmd/package.py:101
 msgid "Yes"
-msgstr ""
+msgstr "Áno"
 
 #: ../src/spacecmd/package.py:102
-#, fuzzy
 msgid "No"
-msgstr "Žiadny"
+msgstr "Nie"
 
 #: ../src/spacecmd/package.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "Retracted: %s"
-msgstr "Vytvorený:  %s"
+msgstr "Stiahnuté späť: %s"
 
 #: ../src/spacecmd/package.py:106
 #, python-format
@@ -4791,23 +4790,20 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "použitie: schedule_list [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:459
-#, fuzzy
 msgid "schedule_deletearchived: Delete all archived actions"
-msgstr "schedule_listarchived: Vypísať zoznam archivovaných akcií"
+msgstr "schedule_deletearchived: Vymazať všetky archivované akcie"
 
 #: ../src/spacecmd/schedule.py:460
-#, fuzzy
 msgid "usage: schedule_deletearchived"
-msgstr "použitie: schedule_details ID"
+msgstr "použitie: schedule_deletearchived"
 
 #: ../src/spacecmd/schedule.py:477
 msgid "Do you want to delete all ({}) archived actions? [y/N]"
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:500
-#, fuzzy
 msgid "No archived actions found."
-msgstr "Žiadne neúspešné akcie na opätovné naplánovanie"
+msgstr "Nenašli sa žiadne archivované akcie."
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
