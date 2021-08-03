@@ -9,17 +9,17 @@
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:90
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:90
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
 #: ../html/src/utils/test-utils/setup/t.ts:2
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 10:33+0000\n"
+"POT-Creation-Date: 2021-07-01 13:20+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -220,9 +220,9 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
@@ -237,7 +237,8 @@ msgstr "취소"
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
-#: ../html/src/manager/content-management/project/project.tsx:92
+#: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-profiles.tsx:215
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -257,11 +258,10 @@ msgstr "취소"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:144
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:34
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:37
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:29
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:282
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:318
 msgid "Delete"
 msgstr "삭제"
 
@@ -309,7 +309,7 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:43
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Reset"
 msgstr "재설정"
 
@@ -340,7 +340,7 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/components/input/form.stories.js:36
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
+#: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr "제출"
 
@@ -568,8 +568,8 @@ msgstr "구성 채널: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:200
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:116
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:183
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:106
 msgid "Edit"
 msgstr "편집"
 
@@ -606,10 +606,10 @@ msgstr "모두 선택"
 #: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:256
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:463
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/nets/network-properties.js:502
+#: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr "로드하는 중..."
 
@@ -750,7 +750,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:110
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:92
 msgid "System"
 msgstr "시스템"
 
@@ -831,10 +831,10 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "SUSE Manager 서버 모니터링을 설정하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:121
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:52
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:217
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:239
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:131
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
+#: ../html/src/manager/virtualization/nets/network-properties.js:224
+#: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "일반"
 
@@ -847,7 +847,7 @@ msgid "Organizations"
 msgstr "조직"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:39
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
 msgstr "다시 시작"
 
@@ -885,7 +885,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/images/image-stores.tsx:145
 #: ../html/src/manager/images/image-view.tsx:379
 #: ../html/src/manager/notifications/notification-messages.tsx:426
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
 msgid "Refresh"
 msgstr "새로 고침"
 
@@ -997,7 +997,7 @@ msgstr "제품 설명"
 #: ../html/src/manager/admin/setup/products/products.tsx:1003
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:180
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "아키텍처"
 
@@ -1034,7 +1034,7 @@ msgid "This product is mirrored."
 msgstr "이 제품은 미러링되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:888
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:56
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:537
@@ -1042,7 +1042,7 @@ msgid "recommended"
 msgstr "권장"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:906
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:74
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
@@ -1151,7 +1151,7 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.tsx:248
+#: ../html/src/manager/virtualization/ListTab.js:252
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1178,7 +1178,7 @@ msgstr "경과 시간"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:60
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Status"
@@ -1232,19 +1232,19 @@ msgstr "감사 이미지"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:631
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:66
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:221
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:243
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
+#: ../html/src/manager/virtualization/nets/network-properties.js:229
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
+#: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
 msgstr "이름"
 
@@ -1257,8 +1257,8 @@ msgstr "이름"
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.tsx:271
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
+#: ../html/src/manager/virtualization/ListTab.js:276
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:352
 msgid "Actions"
 msgstr "동작"
 
@@ -1492,10 +1492,10 @@ msgstr "시스템 선택으로 돌아가기"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:44
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:41
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:35
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
 msgstr "설명"
 
@@ -1637,7 +1637,7 @@ msgid "Name:"
 msgstr "이름:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:92
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:46
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
 msgstr "레이블:"
 
@@ -1654,19 +1654,19 @@ msgid "Settings saved successfully"
 msgstr "설정 저장됨"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:186
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
 msgstr "예"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "No"
 msgstr "아니요"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:162
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:144
 msgid "(none)"
 msgstr "(없음)"
 
@@ -1709,9 +1709,9 @@ msgid "Edit properties"
 msgstr "속성 편집"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:264
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:37
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
 #: ../html/src/manager/images/image-build.tsx:268
 #: ../html/src/manager/images/image-profile-edit.tsx:526
 #: ../html/src/manager/images/image-profiles.tsx:182
@@ -1866,14 +1866,14 @@ msgid "Clusters"
 msgstr "클러스터"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:29
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
 #: ../html/src/manager/images/image-stores.tsx:189
 #: ../html/src/manager/images/image-view-patches.tsx:84
 #: ../html/src/manager/images/image-view.tsx:630
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "유형"
 
@@ -1909,19 +1909,19 @@ msgstr "클러스터 업그레이드 예약"
 msgid "Upgrade"
 msgstr "업그레이드"
 
-#: ../html/src/manager/content-management/create-project/create-project.tsx:28
+#: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
 msgstr "이 작업을 수행할 권한이 없습니다."
 
-#: ../html/src/manager/content-management/create-project/create-project.tsx:33
+#: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
 msgstr "새 컨텐트 라이프사이클 프로젝트 만들기"
 
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:14
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
 msgid "Create project"
 msgstr "프로젝트 만들기"
 
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.tsx:501
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-profiles.tsx:152
@@ -1933,45 +1933,45 @@ msgstr "프로젝트 만들기"
 #: ../html/src/manager/state/recurring-states-list.tsx:60
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:214
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:80
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:30
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:28
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:90
+#: ../html/src/manager/virtualization/nets/create/nets-create.js:38
+#: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
 msgstr "만들기"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:27
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
 msgid "Module"
 msgstr "모듈"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:32
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
 msgid "Select a module..."
 msgstr "모듈을 선택하십시오..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:34
 msgid "No modules available"
 msgstr "사용할 수 있는 모듈 없음"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:41
-#: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:8
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
 msgid "Stream"
 msgstr "스트림"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:46
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
 msgid "Select a stream..."
 msgstr "스트림을 선택하십시오..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:48
 msgid "No streams available"
 msgstr "사용할 수 있는 스트림 없음"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:32
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
 msgid "Channel"
 msgstr "채널"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:7
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 msgid "Module Name"
 msgstr "모듈 이름"
 
@@ -2056,10 +2056,10 @@ msgstr "에포크"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:49
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-build.tsx:384
 #: ../html/src/manager/images/image-view.tsx:632
 msgid "Version"
@@ -2110,12 +2110,12 @@ msgid "Advisory Keywords"
 msgstr "자문 키워드"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "거부"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "허용"
 
@@ -2187,31 +2187,31 @@ msgid "Content Lifecycle Projects"
 msgstr "컨텐트 라이프싸이클 프로젝트"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:109
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr "환경 라이프싸이클"
 
-#: ../html/src/manager/content-management/project/project.tsx:53
+#: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "찾고 있는 프로젝트가 없거나 삭제되었습니다."
 
-#: ../html/src/manager/content-management/project/project.tsx:87
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr "컨텐트 라이프싸이클 프로젝트 - {0}"
 
-#: ../html/src/manager/content-management/project/project.tsx:99
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr "프로젝트 삭제"
 
-#: ../html/src/manager/content-management/project/project.tsx:102
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr "프로젝트를 삭제하시겠습니까"
 
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:35
 #: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:35
 #: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
 msgid ""
@@ -2335,12 +2335,12 @@ msgstr "패키지 포함"
 msgid "enable module"
 msgstr "모듈 활성화"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr "빌드({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:414
 #: ../html/src/manager/images/image-profiles.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2349,15 +2349,15 @@ msgstr "빌드({0})"
 msgid "Build"
 msgstr "빌드"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:82
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr "프로젝트 빌드"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr "프로젝트를 빌드하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
@@ -2365,242 +2365,225 @@ msgstr ""
 "프로젝트에 동기화되지 않은 패치가 있는 채널이 포함되어 있습니다. 그러한 채널"
 "은 조직 설정에 따라 동기화됩니다."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr "버전 메시지"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:111
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr "버전 {0} 기록"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:147
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr "{0} 버전이 {1}(으)로 빌드됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
 msgid "Insert before"
 msgstr "다음 앞에 삽입"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
 msgid "Add Environment"
 msgstr "환경 추가"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:52
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
 msgid "Environment created successfully"
 msgstr "환경 생성됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:68
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
 msgid "Creating the environment..."
 msgstr "환경을 생성하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:84
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
 msgid "No environments created"
 msgstr "환경이 생성되지 않음"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:108
 msgid "Environment updated successfully"
 msgstr "환경 업데이트됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:124
 msgid "Environment {0} deleted successfully"
 msgstr "{0} 환경 삭제됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:140
-msgid ""
-"This environment cannot be deleted since it is being used in an {0}"
-"autoinstallation distribution{1}."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
 msgid "New"
 msgstr "새로 만들기"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
 msgid "Cloning channels"
 msgstr "채널 복제"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
 msgid "Generating repositories data"
 msgstr "저장소 데이터 생성"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
 #: ../html/src/manager/images/image-view.tsx:507
 msgid "Built"
 msgstr "빌드됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view-overview.tsx:79
 #: ../html/src/manager/images/image-view.tsx:509
 msgid "Failed"
 msgstr "실패"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:53
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:83
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:85
 msgid "not built"
 msgstr "빌드되지 않음"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:72
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr "빌드된 시간"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:33
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
 msgid "Loading global filters..."
 msgstr "전역 필터를 로드하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:37
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
 msgid "Updating project filters..."
 msgstr "프로젝트 필터를 업데이트하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:63
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
 msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:30
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
 msgstr "{0} 필터 편집"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:89
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:90
 msgid "Filters"
 msgstr "필터"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:90
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Attach/Detach Filters"
 msgstr "필터 연결/분리"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:107
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:108
 msgid "Filter edited successfully"
 msgstr "필터 편집됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "AppStreams"
 msgstr "AppStreams"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "enabled module streams"
 msgstr "활성화된 모듈 스트림"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "filter out"
 msgstr "필터링"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:178
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "거부를 사용하여 이전에 제외한 경우에도 전체 소스에서 선택"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:51
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
 msgstr "진행 중인 환경 빌드를 승격하거나 충돌하는 버전 없음"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:57
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:59
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
 msgid "Promote"
 msgstr "승격"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:73
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:77
 msgid "Promoting project.."
 msgstr "프로젝트를 승격하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:90
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:91
 msgid "Target environment"
 msgstr "대상 환경"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:96
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:96
 msgid "Promote version {0} into {1}"
 msgstr "버전을 {0}에서 {1}(으)로 승격"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:111
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:111
 msgid "Promote environment"
 msgstr "환경 승격"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:125
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:119
 msgid "Version {0} successfully promoted into {1}"
 msgstr "{0} 버전이 {0}(으)로 승격됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:15
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:53
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
 msgstr "프로젝트 속성"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:35
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
 msgid "(draft - not built) - Check the changes below"
 msgstr "(초안 - 빌드되지 않음) - 아래에서 변경 사항 확인"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:49
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
 msgid "Edit Properties"
 msgstr "속성 편집"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:68
 msgid "Project properties updated successfully"
 msgstr "프로젝트 속성 업데이트됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:83
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:87
 msgid "Editing properties.."
 msgstr "속성을 편집하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:54
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
 msgid "Versions history:"
 msgstr "버전 기록:"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:65
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
 msgid "show more"
 msgstr "자세히 표시"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:71
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
 msgid "Versions history"
 msgstr "버전 기록"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:84
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
 msgstr "새 기본 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:114
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:114
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "새 기본 채널로 선택할 채널 선택"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:121
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:123
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
 msgid "Child Channels"
 msgstr "하위 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:136
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:137
 msgid "Clear Search"
 msgstr "검색 지우기"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:20
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:96
 msgid "no child channels"
 msgstr "하위 채널 없음"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:55
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
 msgstr "이 채널이 권장됩니다."
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
-#, fuzzy
-msgid "This channel is mandatory"
-msgstr "이 채널이 권장됩니다."
-
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
-msgid "mandatory"
-msgstr "필수"
-
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:49
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
 msgstr "동기화되지 않은 패치 있음"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:92
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr "소스"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr "소스 편집됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:132
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:297
 msgid "Software Channels"
 msgstr "소프트웨어 채널"
@@ -2723,7 +2706,7 @@ msgid "Image Store"
 msgstr "이미지 저장소"
 
 #: ../html/src/manager/images/image-build.tsx:280
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:529
+#: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "경로"
 
@@ -2828,9 +2811,9 @@ msgstr "추가 사용자 정의 정보 키 만들기"
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:204
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
+#: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
+#: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "업데이트"
 
@@ -2904,7 +2887,7 @@ msgstr "자격 증명 사용"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
+#: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "사용자 이름"
 
@@ -3267,8 +3250,8 @@ msgid "Building"
 msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:238
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -3282,7 +3265,7 @@ msgid "Revision"
 msgstr "리비전"
 
 #: ../html/src/manager/images/image-view.tsx:639
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:126
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:108
 msgid "Updates"
 msgstr "업데이트"
 
@@ -3530,9 +3513,9 @@ msgstr "계속 진행할지 여부를 확인하십시오."
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:565
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
+#: ../html/src/manager/virtualization/nets/network-properties.js:471
+#: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr "일정"
 
@@ -3821,9 +3804,9 @@ msgstr "패키지 상태"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/salt/keys/key-management.tsx:187
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:137
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:72
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:119
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "State"
 msgstr "시/도"
 
@@ -3951,14 +3934,14 @@ msgstr "알림 삭제"
 
 #: ../html/src/manager/notifications/notifications.tsx:39
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:340
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
+#: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 "Websocket 연결이 종료되었습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
 #: ../html/src/manager/notifications/notifications.tsx:52
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:360
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
+#: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 "서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십"
@@ -4340,6 +4323,11 @@ msgid ""
 "selected child channels."
 msgstr ""
 "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
+
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
+msgid "mandatory"
+msgstr "필수"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:211
 msgid ""
@@ -4788,877 +4776,862 @@ msgstr "가상 호스트 관리자"
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
 msgstr "libvirt python 모듈을 설치하십시오."
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.tsx:174
+#: ../html/src/manager/virtualization/ListTab.js:157
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:253
+#: ../html/src/manager/virtualization/ListTab.js:259
 msgid "Action Status"
 msgstr "작업 상태"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:245
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:138
+#: ../html/src/manager/virtualization/nets/network-properties.js:231
+#: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr "다음 문자를 포함할 수 없음: /\\"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:137
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:149
 msgid "Hypervisor"
 msgstr "하이퍼바이저"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:148
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:161
 msgid "Virtual Machine Type"
 msgstr "가상 머신 유형"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:160
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:55
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:170
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr "최대 메모리(MiB)"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:162
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:171
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:57
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:66
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:181
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr "양수 필요"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:169
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:64
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:179
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr "가상 CPU 수"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:194
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Auto-installation Profile"
 msgstr "자동 설치 프로파일"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:210
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:221
 msgid "Kernel options"
 msgstr "커널 옵션"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:225
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
 msgstr "그래픽"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:160
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
 msgid "Disconnected"
 msgstr "연결 끊김"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:160
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
 msgid "Failed to connect"
 msgstr "연결 실패"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:294
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
 msgid "Toggle full size"
 msgstr "전체 크기 전환"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:313
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
 msgid "Guest is not running"
 msgstr "게스트가 실행 중이 아님"
 
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
 msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
 
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:77
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
 msgid "Create Virtual Machine"
 msgstr "가상 머신 생성"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:25
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr "시작/다시 시작"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:31
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:28
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:26
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:268
 msgid "Stop"
 msgstr "중지"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:35
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Force off"
 msgstr "강제 종료"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:47
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:34
 msgid "Suspend"
 msgstr "일시 중지"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:47
 msgid "Synchronize Guests List"
 msgstr "게스트 목록 동기화"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:66
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Synchronize"
 msgstr "동기화"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:87
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
 msgstr "호스팅된 가상 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:88
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:85
 msgid "Guest"
 msgstr "게스트"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:113
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:95
 msgid "Unregistered System"
 msgstr "미등록 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:145
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:127
 msgid "Current Memory"
 msgstr "현재 메모리"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:159
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:141
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:182
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:166
 msgid "paused"
 msgstr "일시 중지됨"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:192
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:175
 msgid "Graphical Console"
 msgstr "그래픽 콘솔"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
 msgid "Device type"
 msgstr "장치 유형"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:60
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
 msgid "Disk"
 msgstr "디스크"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:61
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
 msgid "CDROM"
 msgstr "CDROM"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
 msgid "Floppy"
 msgstr "플로피"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:73
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:79
 msgid "Bus"
 msgstr "버스"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:25
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
 msgid "File"
 msgstr "파일"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:34
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:112
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:499
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:114
+#: ../html/src/manager/virtualization/pools/pool-properties.js:488
 msgid "Format"
 msgstr "형식"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "소스 저장소 풀"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:81
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
 msgid "Source Volume"
 msgstr "소스 볼륨"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:94
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
 msgid "Disk size (GiB)"
 msgstr "디스크 크기(GiB)"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "소스 템플릿 이미지 URL"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
 msgid "Disks"
 msgstr "디스크"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
 msgstr "네트워크"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:87
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:90
 msgid "MAC address"
 msgstr "MAC 주소"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:52
 msgid "Leave blank to generate a MAC address"
 msgstr "MAC 주소를 생성하려면 공백 유지"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
 msgstr "네트워크"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:120
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:456
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:581
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
+#: ../html/src/manager/virtualization/nets/network-properties.js:495
+#: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "필드 지우기"
 
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
+#: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
 msgstr "가상 네트워크 만들기"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:22
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:108
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:97
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:258
 msgid "Start"
 msgstr "시작"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:47
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:40
 msgid "Virtual Networks"
 msgstr "가상 네트워크"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:48
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:41
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:56
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:45
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr ""
 "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:79
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:67
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:347
 msgid "Autostart"
 msgstr "자동 시작"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:89
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:76
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Persistent"
 msgstr "영구"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:98
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:262
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:86
+#: ../html/src/manager/virtualization/nets/network-properties.js:274
 msgid "Bridge"
 msgstr "브리지"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:214
+#: ../html/src/manager/virtualization/nets/network-properties.js:221
 msgid "network properties"
 msgstr "네트워크 속성"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:231
+#: ../html/src/manager/virtualization/nets/network-properties.js:239
 msgid "Network type"
 msgstr "네트워크 유형"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:243
+#: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
 msgstr "Macvtap 모드"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:252
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:265
+#: ../html/src/manager/virtualization/nets/network-properties.js:260
+#: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
 msgstr "가상 호스트 부팅 중 시작"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:258
+#: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Connectivity"
 msgstr "연결성"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:271
+#: ../html/src/manager/virtualization/nets/network-properties.js:283
 msgid "Maximum Transmission Unit (MTU)"
 msgstr "최대 전송 단위(MTU)"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:275
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:176
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:185
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:194
+#: ../html/src/manager/virtualization/nets/network-properties.js:287
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
 msgid "The value has to be a positive integer"
 msgstr "값은 양의 정수여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:283
+#: ../html/src/manager/virtualization/nets/network-properties.js:295
 msgid "Virtual Port Type"
 msgstr "가상 포트 유형"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:299
+#: ../html/src/manager/virtualization/nets/network-properties.js:315
 msgid "Select interfaces"
 msgstr "인터페이스 선택"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:305
+#: ../html/src/manager/virtualization/nets/network-properties.js:321
 msgid "By physical function"
 msgstr "물리적 기능별"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:308
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By virtual functions"
 msgstr "가상 기능별"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:309
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By interfaces"
 msgstr "인터페이스별"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:320
+#: ../html/src/manager/virtualization/nets/network-properties.js:332
 msgid "Interfaces"
 msgstr "인터페이스"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:340
+#: ../html/src/manager/virtualization/nets/network-properties.js:354
 msgid "Physical Function"
 msgstr "물리적 기능"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:355
+#: ../html/src/manager/virtualization/nets/network-properties.js:369
 msgid "Virtual Functions"
 msgstr "가상 기능"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:377
+#: ../html/src/manager/virtualization/nets/network-properties.js:393
 msgid "VLAN tag"
 msgstr "VLAN 태그"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:381
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:56
+#: ../html/src/manager/virtualization/nets/network-properties.js:397
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
 msgstr "0에서 4095 사이의 정수"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:386
+#: ../html/src/manager/virtualization/nets/network-properties.js:404
 msgid "VLAN tags trunking"
 msgstr "VLAN 태그 트렁킹"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:394
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:395
+#: ../html/src/manager/virtualization/nets/network-properties.js:414
+#: ../html/src/manager/virtualization/nets/network-properties.js:415
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 범위"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:405
+#: ../html/src/manager/virtualization/nets/network-properties.js:424
 msgid "Both values has to be IPv4 addresses"
 msgstr "두 값 모두 IPv4 주소여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:409
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:410
+#: ../html/src/manager/virtualization/nets/network-properties.js:428
+#: ../html/src/manager/virtualization/nets/network-properties.js:429
 msgid "NAT port range"
 msgstr "NAT 포트 범위"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:423
+#: ../html/src/manager/virtualization/nets/network-properties.js:439
 msgid "Both values has to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:431
+#: ../html/src/manager/virtualization/nets/network-properties.js:449
 msgid "Addressing"
 msgstr "주소"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:433
+#: ../html/src/manager/virtualization/nets/network-properties.js:455
 msgid "Enable IPv6"
 msgstr "IPv6 활성화"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:435
+#: ../html/src/manager/virtualization/nets/network-properties.js:461
 msgid "Domain name"
 msgstr "도메인 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:17
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
 msgstr "DNS"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:22
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
 msgstr "전달자"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:35
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
 msgstr "도메인"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:36
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
 msgstr "DNS 서버 주소"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:49
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:162
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:237
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
 msgstr "유효한 정규화된 호스트 이름이어야 합니다."
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:57
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:98
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
 msgid "Has to be an IP address"
 msgstr "IP 주소여야 함"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:64
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:281
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
+#: ../html/src/manager/virtualization/pools/pool-properties.js:283
 msgid "Hosts"
 msgstr "호스트"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:78
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
 msgid "Address"
 msgstr "주소"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:82
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
 msgstr "호스트 이름(쉼표로 구분)"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:109
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
 msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:116
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
 msgstr "SRV 레코드"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:136
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
 msgid "Service name"
 msgstr "서비스 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:144
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
 msgstr "프로토콜"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:156
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
 msgid "Service domain name"
 msgstr "서비스 도메인 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
 msgid "Target hostname"
 msgstr "대상 호스트 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:172
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:221
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
+#: ../html/src/manager/virtualization/pools/pool-properties.js:214
 msgid "Port"
 msgstr "포트"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:181
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
 msgid "Target priority"
 msgstr "대상 우선순위"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:190
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
 msgid "Target weight"
 msgstr "대상 가중치"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:203
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
 msgstr "TXT 레코드"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:221
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
 msgstr "값"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
 msgstr "네트워크 주소"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:38
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:53
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:69
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:102
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:132
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:72
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
 msgstr "v6"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:82
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
 msgid "IP address"
 msgstr "IP 주소"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:91
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
 msgstr "DHCP 고유 식별자(DUID)"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:116
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
 msgid "Needs to be a MAC address"
 msgstr "MAC 주소여야 함"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:141
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
 msgid "BOOTP image file"
 msgstr "BOOTP 이미지 파일"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:142
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
 msgstr "BOOTP 서버"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:143
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
 msgstr "TFTP 루트 경로"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:21
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
 msgstr "파라미터"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:27
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
 msgid "By profile id"
 msgstr "프로파일 ID별"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:28
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
 msgstr "VSI(Virtual Station Interface) 파라미터"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:36
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
 msgstr "프로파일 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:46
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
 msgstr "인터페이스 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:54
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
 msgid "VSI manager id"
 msgstr "VSI 관리자 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:55
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
 msgstr "VSI 유형 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:58
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
 msgid "VSI type id version"
 msgstr "VSI 유형 ID 버전"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:64
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
 msgid "VSI instance id"
 msgstr "VSI 인스턴스 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:68
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
 msgstr "값은 유효한 UUID여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:18
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
 msgstr "VLAN"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:39
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
 msgid "Tag"
 msgstr "태그"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:42
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
 msgid "Native mode"
 msgstr "기본 모드"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:62
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
 msgstr "태그됨"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
 msgstr "태그되지 않음"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
-msgid "Use an existing and configured bridge device. "
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
 msgstr ""
 "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
 "DNS 서비스가 추가되지 않았습니다."
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
 msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
 msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
 msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
 msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
 msgstr ""
 "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. 게스트와 호스"
 "트 간의 통신이 불가능합니다."
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
 msgstr "SR-IOV 풀"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
 
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:28
+#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
 msgid "Could not get network devices from the server. Please try again."
 msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
 
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:25
+#: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
 msgstr "가상 저장소 풀 생성"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
-msgid "Virtual Storage Pool"
-msgstr "가상 저장소 풀 생성"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
-msgid "Virtual Storage Volume"
-msgstr "가상 저장소 풀 및 볼륨"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Delete the pool, including the contained volumes. "
 msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Cannot be undone"
 msgstr "실행을 취소할 수 없음"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:275
 msgid "Edit Pool"
 msgstr "풀 편집"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
 msgid "Location"
 msgstr "위치"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
 msgid "Usage"
 msgstr "사용"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:360
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:361
 msgid "Create Pool"
 msgstr "풀 생성"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:367
 msgid "Virtual Storage Pools and Volumes"
 msgstr "가상 저장소 풀 및 볼륨"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:383
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:378
 msgid "Filter by pool or volume name"
 msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:181
+#: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
 msgstr "파티션 구분자"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:212
+#: ../html/src/manager/virtualization/pools/pool-properties.js:205
 msgid "Host name"
 msgstr "호스트 이름"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:254
+#: ../html/src/manager/virtualization/pools/pool-properties.js:248
 msgid "Pool Type"
 msgstr "풀 유형"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:271
+#: ../html/src/manager/virtualization/pools/pool-properties.js:267
 msgid "Source"
 msgstr "소스"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:313
+#: ../html/src/manager/virtualization/pools/pool-properties.js:315
 msgid "Devices"
 msgstr "장치"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:354
+#: ../html/src/manager/virtualization/pools/pool-properties.js:348
 msgid "Initiator IQN"
 msgstr "이니시에이터 IQN"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:364
+#: ../html/src/manager/virtualization/pools/pool-properties.js:359
 msgid "Adapter type"
 msgstr "어댑터 유형"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:388
+#: ../html/src/manager/virtualization/pools/pool-properties.js:379
 msgid "Adapter name"
 msgstr "어댑터 이름"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:397
+#: ../html/src/manager/virtualization/pools/pool-properties.js:388
 msgid "Adapter parent PCI address"
 msgstr "어댑터 상위 PCI 주소"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:401
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:414
+#: ../html/src/manager/virtualization/pools/pool-properties.js:392
+#: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "PCI address formatted like 0000:00:00.0"
 msgstr "0000:00:00.0와 같은 형식의 PCI 주소"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:410
+#: ../html/src/manager/virtualization/pools/pool-properties.js:399
 msgid "Adapter parent address unique ID"
 msgstr "어댑터 상위 주소 고유 ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:421
+#: ../html/src/manager/virtualization/pools/pool-properties.js:410
 msgid "Adapter parent name"
 msgstr "어댑터 상위 이름"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:429
+#: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "Adapter parent wwnn"
 msgstr "어댑터 상위 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:432
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:442
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:452
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:463
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:474
+#: ../html/src/manager/virtualization/pools/pool-properties.js:421
+#: ../html/src/manager/virtualization/pools/pool-properties.js:431
+#: ../html/src/manager/virtualization/pools/pool-properties.js:441
+#: ../html/src/manager/virtualization/pools/pool-properties.js:452
+#: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
 msgstr "16자리 Long 16진법 값입니다. 예: 500277a4100c4e21"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:439
+#: ../html/src/manager/virtualization/pools/pool-properties.js:428
 msgid "Adapter parent wwpn"
 msgstr "어댑터 상위 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:449
+#: ../html/src/manager/virtualization/pools/pool-properties.js:438
 msgid "Adapter parent fabric wwn"
 msgstr "어댑터 상위 패브릭 wwn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:459
+#: ../html/src/manager/virtualization/pools/pool-properties.js:448
 msgid "Adapter wwnn"
 msgstr "어댑터 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:470
+#: ../html/src/manager/virtualization/pools/pool-properties.js:459
 msgid "Adapter wwpn"
 msgstr "어댑터 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:481
+#: ../html/src/manager/virtualization/pools/pool-properties.js:470
 msgid "Manage vHBA deletion"
 msgstr "vHBA 감지 관리"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:490
+#: ../html/src/manager/virtualization/pools/pool-properties.js:479
 msgid "Source name"
 msgstr "소스 이름"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:516
+#: ../html/src/manager/virtualization/pools/pool-properties.js:505
 msgid "Passphrase"
 msgstr "비밀번호"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:526
+#: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Target"
 msgstr "대상"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:537
+#: ../html/src/manager/virtualization/pools/pool-properties.js:530
 msgid "Owner UID"
 msgstr "소유자 UID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:541
+#: ../html/src/manager/virtualization/pools/pool-properties.js:534
 msgid "UID is a numeric value"
 msgstr "UID는 숫자 값입니다."
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:545
+#: ../html/src/manager/virtualization/pools/pool-properties.js:538
 msgid "Group ID"
 msgstr "그룹 ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:549
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:558
+#: ../html/src/manager/virtualization/pools/pool-properties.js:542
+#: ../html/src/manager/virtualization/pools/pool-properties.js:551
 msgid "GID is a numeric value"
 msgstr "GID는 숫자 값입니다."
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:553
+#: ../html/src/manager/virtualization/pools/pool-properties.js:546
 msgid "Permission mode"
 msgstr "권한 모드"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
+#: ../html/src/manager/virtualization/pools/pool-properties.js:547
 msgid "target directory permissions in octal form, like 0775"
 msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
 
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:561
+#: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "SELinux label"
 msgstr "SELinux 레이블"
 
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:28
+#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
 
-#: ../html/src/manager/visualization/data-tree.ts:133
-msgid "  security advisories"
-msgstr "  보안 자문"
-
-#: ../html/src/manager/visualization/data-tree.ts:139
-msgid "  bug fix advisories"
-msgstr "  버그 수정 자문"
-
-#: ../html/src/manager/visualization/data-tree.ts:149
-msgid "  product enhancement advisories"
-msgstr "  제품 향상 자문"
-
-#: ../html/src/manager/visualization/data-tree.ts:195
+#: ../html/src/manager/visualization/data-tree.js:167
 msgid "Add/remove system from SSM"
 msgstr "SSM에서 시스템 추가/제거"
 
-#: ../html/src/manager/visualization/data-tree.ts:253
+#: ../html/src/manager/visualization/data-tree.js:201
+msgid "  security advisories"
+msgstr "  보안 자문"
+
+#: ../html/src/manager/visualization/data-tree.js:207
+msgid "  bug fix advisories"
+msgstr "  버그 수정 자문"
+
+#: ../html/src/manager/visualization/data-tree.js:214
+msgid "  product enhancement advisories"
+msgstr "  제품 향상 자문"
+
+#: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
 msgstr "SSM에 하위 추가"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:62
+#: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
 msgstr "필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:71
+#: ../html/src/manager/visualization/hierarchy.js:63
 msgid "Partitioning"
 msgstr "파티셔닝"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:94
+#: ../html/src/manager/visualization/hierarchy.js:84
 msgid "Show systems with:"
 msgstr "다음과 함께 표시:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:123
+#: ../html/src/manager/visualization/hierarchy.js:109
 msgid "security advisories"
 msgstr "보안 자문"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:128
+#: ../html/src/manager/visualization/hierarchy.js:110
 msgid "bug fix advisories"
 msgstr "버그 수정 자문"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:131
+#: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
 msgstr "제품 향상 자문"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.js:115
 msgid "Filter by system name"
 msgstr "시스템 이름을 기준으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
 msgstr "예: client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.js:121
 msgid "Filter by system base channel"
 msgstr "시스템 기본 채널을 기분으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
 msgstr "예: SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.js:127
 msgid "Filter by system installed products"
 msgstr "시스템 설치 제품을 기준으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
 msgstr "예: SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:198
+#: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "패치 존재 여부에 따른 시스템 파티션:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:240
+#: ../html/src/manager/visualization/hierarchy.js:204
 msgid "There was an error fetching data from the server."
 msgstr "서버에서 데이터를 가져오는 동안 오류가 발생했습니다."
 
-#: ../html/src/manager/visualization/hierarchy.tsx:283
+#: ../html/src/manager/visualization/hierarchy.js:240
 msgid " filters"
 msgstr " 필터"
 
-#: ../html/src/manager/visualization/ui/components.ts:42
+#: ../html/src/manager/visualization/ui/components.js:42
 msgid "Partition systems by given check-in time:"
 msgstr "지정된 체크인 시간을 기준으로 시스템 파티션:"
 
-#: ../html/src/manager/visualization/ui/components.ts:149
+#: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
 msgstr "그룹 수준 추가"
 
-#: ../html/src/manager/visualization/ui/components.ts:193
+#: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
 msgstr "시스템 그룹 선택"
 
-#: ../html/src/manager/visualization/ui/components.ts:245
+#: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
 msgstr "그룹으로 분할"
 

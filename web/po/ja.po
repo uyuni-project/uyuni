@@ -9,17 +9,17 @@
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:90
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:90
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
 #: ../html/src/utils/test-utils/setup/t.ts:2
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 10:33+0000\n"
+"POT-Creation-Date: 2021-07-01 13:20+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -225,9 +225,9 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
@@ -242,7 +242,8 @@ msgstr "取り消し"
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
-#: ../html/src/manager/content-management/project/project.tsx:92
+#: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-profiles.tsx:215
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -262,11 +263,10 @@ msgstr "取り消し"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:144
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:34
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:37
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:29
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:282
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:318
 msgid "Delete"
 msgstr "削除"
 
@@ -315,7 +315,7 @@ msgstr ""
 "この項目は、生成される pillar データの 'key' 識別子として使用されます。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:43
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Reset"
 msgstr "リセット"
 
@@ -346,7 +346,7 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/components/input/form.stories.js:36
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
+#: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr "送信"
 
@@ -574,8 +574,8 @@ msgstr "設定チャンネル: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:200
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:116
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:183
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:106
 msgid "Edit"
 msgstr "編集"
 
@@ -612,10 +612,10 @@ msgstr "すべてを選択"
 #: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:256
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:463
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/nets/network-properties.js:502
+#: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
@@ -755,7 +755,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:110
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:92
 msgid "System"
 msgstr "システム"
 
@@ -836,10 +836,10 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:121
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:52
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:217
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:239
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:131
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
+#: ../html/src/manager/virtualization/nets/network-properties.js:224
+#: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "全般"
 
@@ -852,7 +852,7 @@ msgid "Organizations"
 msgstr "組織"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:39
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
 msgstr "再起動"
 
@@ -890,7 +890,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-stores.tsx:145
 #: ../html/src/manager/images/image-view.tsx:379
 #: ../html/src/manager/notifications/notification-messages.tsx:426
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
 msgid "Refresh"
 msgstr "更新"
 
@@ -1002,7 +1002,7 @@ msgstr "製品説明"
 #: ../html/src/manager/admin/setup/products/products.tsx:1003
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:180
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
@@ -1039,7 +1039,7 @@ msgid "This product is mirrored."
 msgstr "この製品はミラーされています。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:888
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:56
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:537
@@ -1047,7 +1047,7 @@ msgid "recommended"
 msgstr "推奨"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:906
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:74
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
@@ -1158,7 +1158,7 @@ msgstr " 秒"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.tsx:248
+#: ../html/src/manager/virtualization/ListTab.js:252
 msgid "Filter by name"
 msgstr "名前でフィルタ"
 
@@ -1185,7 +1185,7 @@ msgstr "経過時間"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:60
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Status"
@@ -1240,19 +1240,19 @@ msgstr "監査イメージ"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:631
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:66
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:221
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:243
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
+#: ../html/src/manager/virtualization/nets/network-properties.js:229
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
+#: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
 msgstr "名前"
 
@@ -1265,8 +1265,8 @@ msgstr "名前"
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.tsx:271
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
+#: ../html/src/manager/virtualization/ListTab.js:276
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:352
 msgid "Actions"
 msgstr "動作"
 
@@ -1504,10 +1504,10 @@ msgstr "システム選択に戻る"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:44
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:41
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:35
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
 msgstr "説明"
 
@@ -1649,7 +1649,7 @@ msgid "Name:"
 msgstr "名前:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:92
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:46
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
 msgstr "ラベル:"
 
@@ -1666,19 +1666,19 @@ msgid "Settings saved successfully"
 msgstr "設定の保存が完了しました"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:186
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
 msgstr "はい"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "No"
 msgstr "いいえ"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:162
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:144
 msgid "(none)"
 msgstr "(なし)"
 
@@ -1721,9 +1721,9 @@ msgid "Edit properties"
 msgstr "プロパティの編集"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:264
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:37
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
 #: ../html/src/manager/images/image-build.tsx:268
 #: ../html/src/manager/images/image-profile-edit.tsx:526
 #: ../html/src/manager/images/image-profiles.tsx:182
@@ -1879,14 +1879,14 @@ msgid "Clusters"
 msgstr "クラスタ"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:29
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
 #: ../html/src/manager/images/image-stores.tsx:189
 #: ../html/src/manager/images/image-view-patches.tsx:84
 #: ../html/src/manager/images/image-view.tsx:630
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "タイプ"
 
@@ -1922,19 +1922,19 @@ msgstr "クラスタのアップグレードのスケジュール"
 msgid "Upgrade"
 msgstr "アップグレード"
 
-#: ../html/src/manager/content-management/create-project/create-project.tsx:28
+#: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
 msgstr "この動作を実行するための権限がありません"
 
-#: ../html/src/manager/content-management/create-project/create-project.tsx:33
+#: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
 msgstr "新しいコンテンツライフサイクルプロジェクトの作成"
 
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:14
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
 msgid "Create project"
 msgstr "プロジェクトの作成"
 
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.tsx:501
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-profiles.tsx:152
@@ -1946,45 +1946,45 @@ msgstr "プロジェクトの作成"
 #: ../html/src/manager/state/recurring-states-list.tsx:60
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:214
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:80
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:30
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:28
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:90
+#: ../html/src/manager/virtualization/nets/create/nets-create.js:38
+#: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
 msgstr "作成"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:27
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
 msgid "Module"
 msgstr "モジュール"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:32
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
 msgid "Select a module..."
 msgstr "モジュールを選択してください..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:34
 msgid "No modules available"
 msgstr "利用可能なモジュールがありません"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:41
-#: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:8
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
 msgid "Stream"
 msgstr "ストリーム"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:46
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
 msgid "Select a stream..."
 msgstr "ストリームを選択してください..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:48
 msgid "No streams available"
 msgstr "利用可能なストリームがありません"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:32
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
 msgid "Channel"
 msgstr "チャンネル"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:7
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 msgid "Module Name"
 msgstr "モジュール名"
 
@@ -2071,10 +2071,10 @@ msgstr "エポック"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:49
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-build.tsx:384
 #: ../html/src/manager/images/image-view.tsx:632
 msgid "Version"
@@ -2125,12 +2125,12 @@ msgid "Advisory Keywords"
 msgstr "アドバイザリキーワード"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "拒否"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "許可"
 
@@ -2204,31 +2204,31 @@ msgid "Content Lifecycle Projects"
 msgstr "コンテンツライフサイクルプロジェクト"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:109
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr "環境ライフサイクル"
 
-#: ../html/src/manager/content-management/project/project.tsx:53
+#: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "お探しのプロジェクトは存在していないか、削除されています"
 
-#: ../html/src/manager/content-management/project/project.tsx:87
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr "コンテンツライフサイクルプロジェクト - {0}"
 
-#: ../html/src/manager/content-management/project/project.tsx:99
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr "プロジェクトの削除"
 
-#: ../html/src/manager/content-management/project/project.tsx:102
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr "プロジェクトを削除してよろしいですか"
 
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:35
 #: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:35
 #: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
 msgid ""
@@ -2356,12 +2356,12 @@ msgstr "パッケージを含むもの"
 msgid "enable module"
 msgstr "モジュールの有効化"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr "ビルド ({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:414
 #: ../html/src/manager/images/image-profiles.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2370,15 +2370,15 @@ msgstr "ビルド ({0})"
 msgid "Build"
 msgstr "ビルド"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:82
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr "プロジェクトのビルド"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr "プロジェクトをビルドしています..."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
@@ -2386,242 +2386,225 @@ msgstr ""
 "このプロジェクトには同期されていないパッチを含むチャンネルがあります。これら"
 "の同期は、お使いの組織の設定に従って行なわれます。"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr "バージョンメッセージ"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:111
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr "バージョン {0} の履歴"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:147
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr "バージョン {0} を {1} にビルドしました"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
 msgid "Insert before"
 msgstr "前に挿入"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
 msgid "Add Environment"
 msgstr "環境の追加"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:52
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
 msgid "Environment created successfully"
 msgstr "環境を作成しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:68
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
 msgid "Creating the environment..."
 msgstr "環境を作成しています..."
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:84
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
 msgid "No environments created"
 msgstr "何も環境を作成していません"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:108
 msgid "Environment updated successfully"
 msgstr "環境を更新しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:124
 msgid "Environment {0} deleted successfully"
 msgstr "環境 {0} を削除しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:140
-msgid ""
-"This environment cannot be deleted since it is being used in an {0}"
-"autoinstallation distribution{1}."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
 msgid "New"
 msgstr "新規"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
 msgid "Cloning channels"
 msgstr "チャンネルを複製しています"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
 msgid "Generating repositories data"
 msgstr "リポジトリデータを生成しています"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
 #: ../html/src/manager/images/image-view.tsx:507
 msgid "Built"
 msgstr "構築済み"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view-overview.tsx:79
 #: ../html/src/manager/images/image-view.tsx:509
 msgid "Failed"
 msgstr "失敗"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:53
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:83
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:85
 msgid "not built"
 msgstr "未構築"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:72
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr "ビルド時間"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:33
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
 msgid "Loading global filters..."
 msgstr "グローバルフィルタを読み込んでいます..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:37
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
 msgid "Updating project filters..."
 msgstr "プロジェクトフィルタを更新しています..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:63
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
 msgid "Create New Filter"
 msgstr "新しいフィルタの作成"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:30
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
 msgstr "フィルタ {0} の編集"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:89
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:90
 msgid "Filters"
 msgstr "フィルタ"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:90
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Attach/Detach Filters"
 msgstr "フィルタの割り当て／取り外し"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:107
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:108
 msgid "Filter edited successfully"
 msgstr "フィルタを編集しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "AppStreams"
 msgstr "AppStream"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "enabled module streams"
 msgstr "有効化されたモジュールストリーム"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "filter out"
 msgstr "除外"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:178
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "deny で既に除外している場合でも、完全なソースから選択します"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:51
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
 msgstr "公開すべきバージョンや処理中の環境構築と衝突するバージョンはありません"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:57
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:59
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
 msgid "Promote"
 msgstr "公開"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:73
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:77
 msgid "Promoting project.."
 msgstr "プロジェクトを公開しています.."
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:90
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:91
 msgid "Target environment"
 msgstr "ターゲット環境"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:96
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:96
 msgid "Promote version {0} into {1}"
 msgstr "{1} 内にバージョン {0} を公開"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:111
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:111
 msgid "Promote environment"
 msgstr "環境の公開"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:125
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:119
 msgid "Version {0} successfully promoted into {1}"
 msgstr "{1} 内にバージョン {0} を公開しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:15
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:53
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
 msgstr "プロジェクトのプロパティ"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:35
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
 msgid "(draft - not built) - Check the changes below"
 msgstr "(ドラフト - 未構築) - 下記の変更をご確認ください"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:49
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
 msgid "Edit Properties"
 msgstr "プロパティの編集"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:68
 msgid "Project properties updated successfully"
 msgstr "プロジェクトのプロパティを更新しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:83
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:87
 msgid "Editing properties.."
 msgstr "プロパティを編集しています.."
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:54
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
 msgid "Versions history:"
 msgstr "バージョン履歴:"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:65
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
 msgid "show more"
 msgstr "さらに表示"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:71
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
 msgid "Versions history"
 msgstr "バージョン履歴"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:84
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
 msgstr "新しいベースチャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:114
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:114
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "新しいベースチャンネルとして選択すべきチャンネルを選んでください"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:121
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:123
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
 msgid "Child Channels"
 msgstr "子チャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:136
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:137
 msgid "Clear Search"
 msgstr "検索の消去"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:20
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:96
 msgid "no child channels"
 msgstr "子チャンネル無し"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:55
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
 msgstr "このチャンネルは推奨チャンネルです"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
-#, fuzzy
-msgid "This channel is mandatory"
-msgstr "このチャンネルは推奨チャンネルです"
-
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
-msgid "mandatory"
-msgstr "必須"
-
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:49
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
 msgstr "同期されていないパッチがあります"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:92
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr "ソース"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr "ソースを編集しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:132
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:297
 msgid "Software Channels"
 msgstr "ソフトウェアチャンネル"
@@ -2748,7 +2731,7 @@ msgid "Image Store"
 msgstr "イメージストア"
 
 #: ../html/src/manager/images/image-build.tsx:280
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:529
+#: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "パス"
 
@@ -2855,9 +2838,9 @@ msgstr "追加の独自 info 鍵の作成"
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:204
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
+#: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
+#: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "更新"
 
@@ -2935,7 +2918,7 @@ msgstr "資格情報の使用"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
+#: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "ユーザ名"
 
@@ -3301,8 +3284,8 @@ msgid "Building"
 msgstr "構築しています"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:238
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
 msgid "Unknown"
 msgstr "不明"
 
@@ -3316,7 +3299,7 @@ msgid "Revision"
 msgstr "リビジョン"
 
 #: ../html/src/manager/images/image-view.tsx:639
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:126
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:108
 msgid "Updates"
 msgstr "更新"
 
@@ -3571,9 +3554,9 @@ msgstr "続行して問題ないかご確認ください。"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:565
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
+#: ../html/src/manager/virtualization/nets/network-properties.js:471
+#: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr "スケジュール"
 
@@ -3868,9 +3851,9 @@ msgstr "パッケージの状態"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/salt/keys/key-management.tsx:187
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:137
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:72
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:119
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "State"
 msgstr "都道府県"
 
@@ -3998,13 +3981,13 @@ msgstr "通知の削除"
 
 #: ../html/src/manager/notifications/notifications.tsx:39
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:340
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
+#: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 接続が閉じられました。ページを更新してやり直してください。"
 
 #: ../html/src/manager/notifications/notifications.tsx:52
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:360
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
+#: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 "サーバへの接続時にエラーが発生しました。ページを更新してやり直してください。"
@@ -4390,6 +4373,11 @@ msgid ""
 msgstr ""
 "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
 "をサブスクライブします。"
+
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
+msgid "mandatory"
+msgstr "必須"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:211
 msgid ""
@@ -4850,247 +4838,241 @@ msgstr "仮想ホストマネージャ"
 msgid "Add a virtual host manager"
 msgstr "仮想ホストマネージャの追加"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
 msgstr "libvirt python モジュールをインストールしてください。"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.tsx:174
+#: ../html/src/manager/virtualization/ListTab.js:157
 msgid "{0} selected"
 msgstr "{0} 個を選択しました"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:253
+#: ../html/src/manager/virtualization/ListTab.js:259
 msgid "Action Status"
 msgstr "動作の状態"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:245
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:138
+#: ../html/src/manager/virtualization/nets/network-properties.js:231
+#: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr "下記の文字を含めることはできません: /\\"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:137
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:149
 msgid "Hypervisor"
 msgstr "ハイパーバイザ"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:148
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:161
 msgid "Virtual Machine Type"
 msgstr "仮想マシンのタイプ"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:160
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:55
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:170
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr "最大メモリ (MiB)"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:162
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:171
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:57
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:66
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:181
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr "正の整数を指定する必要があります"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:169
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:64
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:179
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr "仮想 CPU 数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:194
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Auto-installation Profile"
 msgstr "自動インストールプロファイル"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:210
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:221
 msgid "Kernel options"
 msgstr "カーネルオプション"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:225
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
 msgstr "グラフィック"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:160
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
 msgid "Disconnected"
 msgstr "切断済み"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:160
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
 msgid "Failed to connect"
 msgstr "接続に失敗しました"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:294
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
 msgid "Toggle full size"
 msgstr "フルサイズの切り替え"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:313
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
 msgid "Guest is not running"
 msgstr "ゲストは動作していません"
 
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
 msgstr "何らかの問題が発生しています。接続が閉じられました"
 
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:77
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
 msgid "Create Virtual Machine"
 msgstr "仮想マシンの作成"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:25
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr "開始／再開"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:31
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:28
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:26
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:268
 msgid "Stop"
 msgstr "停止"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:35
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Force off"
 msgstr "強制停止"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:47
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:34
 msgid "Suspend"
 msgstr "一時停止"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:47
 msgid "Synchronize Guests List"
 msgstr "ゲスト一覧の同期"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:66
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Synchronize"
 msgstr "同期"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:87
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
 msgstr "ホストされている仮想システム"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:88
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "これはこのホストで実行するよう設定されている仮想化ゲストの一覧です。"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:85
 msgid "Guest"
 msgstr "ゲスト"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:113
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:95
 msgid "Unregistered System"
 msgstr "未登録のシステム"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:145
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:127
 msgid "Current Memory"
 msgstr "現在のメモリ"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:159
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:141
 msgid "Base Software Channel"
 msgstr "ベースソフトウェアチャンネル"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:182
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:166
 msgid "paused"
 msgstr "一時停止済み"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:192
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:175
 msgid "Graphical Console"
 msgstr "グラフィカルコンソール"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
 msgid "Device type"
 msgstr "デバイスのタイプ"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:60
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
 msgid "Disk"
 msgstr "ディスク"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:61
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
 msgid "CDROM"
 msgstr "CDROM"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
 msgid "Floppy"
 msgstr "フロッピィ"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:73
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:79
 msgid "Bus"
 msgstr "バス"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:25
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
 msgid "File"
 msgstr "ファイル"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:34
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:112
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:499
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:114
+#: ../html/src/manager/virtualization/pools/pool-properties.js:488
 msgid "Format"
 msgstr "フォーマット"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "ソースストレージプール"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:81
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
 msgid "Source Volume"
 msgstr "ソースボリューム"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:94
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
 msgid "Disk size (GiB)"
 msgstr "ディスクサイズ (GiB)"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "ソーステンプレートのイメージ URL"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
 msgid "Disks"
 msgstr "ディスク"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
 msgstr "ネットワーク"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:87
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:90
 msgid "MAC address"
 msgstr "MAC アドレス"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:52
 msgid "Leave blank to generate a MAC address"
 msgstr "MAC アドレスを生成する場合は何も入力しないでください"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
 msgstr "ネットワーク"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:120
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:456
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:581
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
+#: ../html/src/manager/virtualization/nets/network-properties.js:495
+#: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "項目の消去"
 
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
+#: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
 msgstr "仮想ネットワークの作成"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:22
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:108
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:97
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:258
 msgid "Start"
 msgstr "開始"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:47
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:40
 msgid "Virtual Networks"
 msgstr "仮想ネットワーク"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:48
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:41
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr "これはこのホスト内に設定されている仮想ネットワークの一覧です。"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:56
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:45
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
@@ -5098,327 +5080,328 @@ msgstr ""
 "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していま"
 "せん"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:79
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:67
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:347
 msgid "Autostart"
 msgstr "自動起動"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:89
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:76
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Persistent"
 msgstr "恒久"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:98
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:262
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:86
+#: ../html/src/manager/virtualization/nets/network-properties.js:274
 msgid "Bridge"
 msgstr "ブリッジ"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:214
+#: ../html/src/manager/virtualization/nets/network-properties.js:221
 msgid "network properties"
 msgstr "ネットワークプロパティ"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:231
+#: ../html/src/manager/virtualization/nets/network-properties.js:239
 msgid "Network type"
 msgstr "ネットワークの種類"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:243
+#: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
 msgstr "Macvtap モード"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:252
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:265
+#: ../html/src/manager/virtualization/nets/network-properties.js:260
+#: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
 msgstr "仮想ホストの起動時に起動"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:258
+#: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Connectivity"
 msgstr "接続性"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:271
+#: ../html/src/manager/virtualization/nets/network-properties.js:283
 msgid "Maximum Transmission Unit (MTU)"
 msgstr "最大送信単位 (MTU)"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:275
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:176
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:185
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:194
+#: ../html/src/manager/virtualization/nets/network-properties.js:287
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
 msgid "The value has to be a positive integer"
 msgstr "値は正の整数でなければなりません"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:283
+#: ../html/src/manager/virtualization/nets/network-properties.js:295
 msgid "Virtual Port Type"
 msgstr "仮想ポートの種類"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:299
+#: ../html/src/manager/virtualization/nets/network-properties.js:315
 msgid "Select interfaces"
 msgstr "インターフェイスの選択"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:305
+#: ../html/src/manager/virtualization/nets/network-properties.js:321
 msgid "By physical function"
 msgstr "物理機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:308
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By virtual functions"
 msgstr "仮想機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:309
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By interfaces"
 msgstr "インターフェイス"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:320
+#: ../html/src/manager/virtualization/nets/network-properties.js:332
 msgid "Interfaces"
 msgstr "インターフェイス"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:340
+#: ../html/src/manager/virtualization/nets/network-properties.js:354
 msgid "Physical Function"
 msgstr "物理機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:355
+#: ../html/src/manager/virtualization/nets/network-properties.js:369
 msgid "Virtual Functions"
 msgstr "仮想機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:377
+#: ../html/src/manager/virtualization/nets/network-properties.js:393
 msgid "VLAN tag"
 msgstr "VLAN タグ"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:381
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:56
+#: ../html/src/manager/virtualization/nets/network-properties.js:397
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
 msgstr "0 から 4095 の範囲内の整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:386
+#: ../html/src/manager/virtualization/nets/network-properties.js:404
 msgid "VLAN tags trunking"
 msgstr "VLAN タグトランキング"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:394
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:395
+#: ../html/src/manager/virtualization/nets/network-properties.js:414
+#: ../html/src/manager/virtualization/nets/network-properties.js:415
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 範囲"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:405
+#: ../html/src/manager/virtualization/nets/network-properties.js:424
 msgid "Both values has to be IPv4 addresses"
 msgstr "両方の値は IPv4 アドレスでなければなりません"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:409
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:410
+#: ../html/src/manager/virtualization/nets/network-properties.js:428
+#: ../html/src/manager/virtualization/nets/network-properties.js:429
 msgid "NAT port range"
 msgstr "NAT ポート範囲"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:423
+#: ../html/src/manager/virtualization/nets/network-properties.js:439
 msgid "Both values has to be positive integers"
 msgstr "両方の値は正の整数でなければなりません"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:431
+#: ../html/src/manager/virtualization/nets/network-properties.js:449
 msgid "Addressing"
 msgstr "アドレス"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:433
+#: ../html/src/manager/virtualization/nets/network-properties.js:455
 msgid "Enable IPv6"
 msgstr "IPv6 の有効化"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:435
+#: ../html/src/manager/virtualization/nets/network-properties.js:461
 msgid "Domain name"
 msgstr "ドメイン名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:17
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
 msgstr "DNS"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:22
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
 msgstr "フォワーダ"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:35
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
 msgstr "ドメイン"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:36
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
 msgstr "DNS サーバのアドレス"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:49
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:162
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:237
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
 msgstr "正しい修飾ホスト名でなければなりません"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:57
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:98
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
 msgid "Has to be an IP address"
 msgstr "IP アドレスでなければなりません"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:64
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:281
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
+#: ../html/src/manager/virtualization/pools/pool-properties.js:283
 msgid "Hosts"
 msgstr "ホスト"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:78
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
 msgid "Address"
 msgstr "アドレス"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:82
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
 msgstr "ホスト名 (カンマ区切り)"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:109
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
 msgstr "カンマ区切りのホスト名リストでなければなりません"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:116
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
 msgstr "SRV レコード"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:136
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
 msgid "Service name"
 msgstr "サービス名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:144
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
 msgstr "プロトコル"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:156
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
 msgid "Service domain name"
 msgstr "サービスドメイン名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
 msgid "Target hostname"
 msgstr "ターゲットホスト名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:172
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:221
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
+#: ../html/src/manager/virtualization/pools/pool-properties.js:214
 msgid "Port"
 msgstr "ポート"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:181
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
 msgid "Target priority"
 msgstr "ターゲット優先順位"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:190
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
 msgid "Target weight"
 msgstr "ターゲットウエイト"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:203
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
 msgstr "TXT レコード"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:221
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
 msgstr "値"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
 msgstr "ネットワークアドレス"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:38
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:53
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:69
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:102
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:132
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:72
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
 msgstr "v6"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:82
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
 msgid "IP address"
 msgstr "IP アドレス"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:91
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
 msgstr "DHCP ユニーク識別子 (DUID)"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:116
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
 msgid "Needs to be a MAC address"
 msgstr "MAC アドレスである必要があります"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:141
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
 msgid "BOOTP image file"
 msgstr "BOOTP イメージファイル"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:142
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
 msgstr "BOOTP サーバ"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:143
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
 msgstr "TFTP ルートパス"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:21
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
 msgstr "パラメータ"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:27
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
 msgid "By profile id"
 msgstr "プロファイル ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:28
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
 msgstr "仮想ステーションインターフェイス (VSI) パラメータ"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:36
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
 msgstr "プロファイル ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:46
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
 msgstr "インターフェイス ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:54
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
 msgid "VSI manager id"
 msgstr "VSI マネージャ ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:55
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
 msgstr "VSI タイプ ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:58
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
 msgid "VSI type id version"
 msgstr "VSI タイプ ID バージョン"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:64
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
 msgid "VSI instance id"
 msgstr "VSI インスタンス ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:68
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
 msgstr "値は正しい UUID である必要があります"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:18
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
 msgstr "VLAN"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:39
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
 msgid "Tag"
 msgstr "タグ"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:42
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
 msgid "Native mode"
 msgstr "ネイティブモード"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:62
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
 msgstr "タグ有り"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
+#: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
 msgstr "タグ無し"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
-msgid "Use an existing and configured bridge device. "
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
 msgstr ""
 "既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
 "IP アドレス、 DHCP/DNS サービスは追加されません"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
 msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
 msgstr ""
 "ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
 "ク"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
@@ -5426,73 +5409,64 @@ msgstr ""
 "ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
 "ない仮想ネットワーク"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
 msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
 msgstr ""
 "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
 "ゲストとホストの間では通信できません"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
 msgstr "SR-IOV プール"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
 
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:28
+#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
 msgid "Could not get network devices from the server. Please try again."
 msgstr "サーバからネットワークデバイスを取得できません。再試行してください。"
 
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:25
+#: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
 msgstr "仮想ストレージプールの作成"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
-msgid "Virtual Storage Pool"
-msgstr "仮想ストレージプールの作成"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
-msgid "Virtual Storage Volume"
-msgstr "仮想ストレージプールとボリューム"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Delete the pool, including the contained volumes. "
 msgstr "含まれているボリュームを含めてプールを削除します。 "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Cannot be undone"
 msgstr "取り消しできません"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:275
 msgid "Edit Pool"
 msgstr "プールの編集"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
 msgid "Location"
 msgstr "場所"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
 msgid "Usage"
 msgstr "使用"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:360
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:361
 msgid "Create Pool"
 msgstr "プールの作成"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:367
 msgid "Virtual Storage Pools and Volumes"
 msgstr "仮想ストレージプールとボリューム"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
@@ -5500,235 +5474,234 @@ msgstr ""
 "これはこのホストにおいて仮想ゲストディスクを含んでいるストレージプールの一覧"
 "です。"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:383
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:378
 msgid "Filter by pool or volume name"
 msgstr "プールまたはボリューム名でフィルタ"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:181
+#: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
 msgstr "パーティションの区切り"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:212
+#: ../html/src/manager/virtualization/pools/pool-properties.js:205
 msgid "Host name"
 msgstr "ホスト名"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:254
+#: ../html/src/manager/virtualization/pools/pool-properties.js:248
 msgid "Pool Type"
 msgstr "プールタイプ"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:271
+#: ../html/src/manager/virtualization/pools/pool-properties.js:267
 msgid "Source"
 msgstr "ソース"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:313
+#: ../html/src/manager/virtualization/pools/pool-properties.js:315
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:354
+#: ../html/src/manager/virtualization/pools/pool-properties.js:348
 msgid "Initiator IQN"
 msgstr "イニシエータの IQN"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:364
+#: ../html/src/manager/virtualization/pools/pool-properties.js:359
 msgid "Adapter type"
 msgstr "アダプタのタイプ"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:388
+#: ../html/src/manager/virtualization/pools/pool-properties.js:379
 msgid "Adapter name"
 msgstr "アダプタ名"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:397
+#: ../html/src/manager/virtualization/pools/pool-properties.js:388
 msgid "Adapter parent PCI address"
 msgstr "アダプタの親 PCI アドレス"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:401
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:414
+#: ../html/src/manager/virtualization/pools/pool-properties.js:392
+#: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "PCI address formatted like 0000:00:00.0"
 msgstr "PCI アドレスは 0000:00:00.0 のような形式で指定します"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:410
+#: ../html/src/manager/virtualization/pools/pool-properties.js:399
 msgid "Adapter parent address unique ID"
 msgstr "アダプタの親アドレスのユニーク ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:421
+#: ../html/src/manager/virtualization/pools/pool-properties.js:410
 msgid "Adapter parent name"
 msgstr "アダプタの親の名前"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:429
+#: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "Adapter parent wwnn"
 msgstr "アダプタの親 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:432
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:442
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:452
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:463
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:474
+#: ../html/src/manager/virtualization/pools/pool-properties.js:421
+#: ../html/src/manager/virtualization/pools/pool-properties.js:431
+#: ../html/src/manager/virtualization/pools/pool-properties.js:441
+#: ../html/src/manager/virtualization/pools/pool-properties.js:452
+#: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
 msgstr "16 文字の長さの 16 進数です。例: 500277a4100c4e21"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:439
+#: ../html/src/manager/virtualization/pools/pool-properties.js:428
 msgid "Adapter parent wwpn"
 msgstr "アダプタの親 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:449
+#: ../html/src/manager/virtualization/pools/pool-properties.js:438
 msgid "Adapter parent fabric wwn"
 msgstr "アダプタの親ファブリック wwn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:459
+#: ../html/src/manager/virtualization/pools/pool-properties.js:448
 msgid "Adapter wwnn"
 msgstr "アダプタの wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:470
+#: ../html/src/manager/virtualization/pools/pool-properties.js:459
 msgid "Adapter wwpn"
 msgstr "アダプタの wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:481
+#: ../html/src/manager/virtualization/pools/pool-properties.js:470
 msgid "Manage vHBA deletion"
 msgstr "管理している vHBA の削除"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:490
+#: ../html/src/manager/virtualization/pools/pool-properties.js:479
 msgid "Source name"
 msgstr "ソース名"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:516
+#: ../html/src/manager/virtualization/pools/pool-properties.js:505
 msgid "Passphrase"
 msgstr "パスフレーズ"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:526
+#: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Target"
 msgstr "ターゲット"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:537
+#: ../html/src/manager/virtualization/pools/pool-properties.js:530
 msgid "Owner UID"
 msgstr "所有者 UID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:541
+#: ../html/src/manager/virtualization/pools/pool-properties.js:534
 msgid "UID is a numeric value"
 msgstr "UID は数値です"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:545
+#: ../html/src/manager/virtualization/pools/pool-properties.js:538
 msgid "Group ID"
 msgstr "グループ ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:549
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:558
+#: ../html/src/manager/virtualization/pools/pool-properties.js:542
+#: ../html/src/manager/virtualization/pools/pool-properties.js:551
 msgid "GID is a numeric value"
 msgstr "GID は数値です"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:553
+#: ../html/src/manager/virtualization/pools/pool-properties.js:546
 msgid "Permission mode"
 msgstr "パーミッションモード"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
+#: ../html/src/manager/virtualization/pools/pool-properties.js:547
 msgid "target directory permissions in octal form, like 0775"
 msgstr "ターゲットディレクトリのパーミッション (8進数 (例: 0775))"
 
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:561
+#: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "SELinux label"
 msgstr "SELinux ラベル"
 
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:28
+#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
 "サーバからストレージプールの機能を取得できませんでした。再試行してください。"
 
-#: ../html/src/manager/visualization/data-tree.ts:133
-msgid "  security advisories"
-msgstr "  セキュリティアドバイザリ"
-
-#: ../html/src/manager/visualization/data-tree.ts:139
-msgid "  bug fix advisories"
-msgstr "  バグ修正アドバイザリ"
-
-#: ../html/src/manager/visualization/data-tree.ts:149
-msgid "  product enhancement advisories"
-msgstr "  製品の機能強化アドバイザリ"
-
-#: ../html/src/manager/visualization/data-tree.ts:195
+#: ../html/src/manager/visualization/data-tree.js:167
 msgid "Add/remove system from SSM"
 msgstr "SSM からシステムを追加／削除"
 
-#: ../html/src/manager/visualization/data-tree.ts:253
+#: ../html/src/manager/visualization/data-tree.js:201
+msgid "  security advisories"
+msgstr "  セキュリティアドバイザリ"
+
+#: ../html/src/manager/visualization/data-tree.js:207
+msgid "  bug fix advisories"
+msgstr "  バグ修正アドバイザリ"
+
+#: ../html/src/manager/visualization/data-tree.js:214
+msgid "  product enhancement advisories"
+msgstr "  製品の機能強化アドバイザリ"
+
+#: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
 msgstr "SSM に子を追加"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:62
+#: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
 msgstr "フィルタリング"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:71
+#: ../html/src/manager/visualization/hierarchy.js:63
 msgid "Partitioning"
 msgstr "パーティション設定"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:94
+#: ../html/src/manager/visualization/hierarchy.js:84
 msgid "Show systems with:"
 msgstr "下記のシステムを表示:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:123
+#: ../html/src/manager/visualization/hierarchy.js:109
 msgid "security advisories"
 msgstr "セキュリティアドバイザリ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:128
+#: ../html/src/manager/visualization/hierarchy.js:110
 msgid "bug fix advisories"
 msgstr "バグ修正アドバイザリ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:131
+#: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
 msgstr "製品の機能強化アドバイザリ"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.js:115
 msgid "Filter by system name"
 msgstr "システム名でフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:141
+#: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
 msgstr "例: client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.js:121
 msgid "Filter by system base channel"
 msgstr "システムのベースチャンネルでフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:147
+#: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
 msgstr "例: SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.js:127
 msgid "Filter by system installed products"
 msgstr "システムにインストールされている製品でフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:153
+#: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
 msgstr "例: SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:198
+#: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:240
+#: ../html/src/manager/visualization/hierarchy.js:204
 msgid "There was an error fetching data from the server."
 msgstr "サーバからデータを取り出す際にエラーが発生しました。"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:283
+#: ../html/src/manager/visualization/hierarchy.js:240
 msgid " filters"
 msgstr " フィルタ"
 
-#: ../html/src/manager/visualization/ui/components.ts:42
+#: ../html/src/manager/visualization/ui/components.js:42
 msgid "Partition systems by given check-in time:"
 msgstr "指定したチェックイン名でシステムのパーティションを設定する:"
 
-#: ../html/src/manager/visualization/ui/components.ts:149
+#: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
 msgstr "グループレベルの追加"
 
-#: ../html/src/manager/visualization/ui/components.ts:193
+#: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
 msgstr "システムグループの選択"
 
-#: ../html/src/manager/visualization/ui/components.ts:245
+#: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
 msgstr "グループに分割"
 
