@@ -8488,7 +8488,7 @@ Follow this url to see the full list of inactive systems:
         <target>{0} gerenciador(es) de canal foram atualizados com sucesso.</target>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting" xml:space="preserve">
-        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
+        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
         <target state="needs-adaptation">Há uma sessão de kickstart em andamento para este sistema. A modificação dessa chave de ativação provavelmente fará com que o sistema falhe ao se registrar novamente quando a sessão de kickstart estiver concluída. Usar esta chave manualmente pode causar efeitos colaterais não intencionais.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
@@ -9882,8 +9882,9 @@ Please check:
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
-for more detailed errors. If you don't resolve the errors the autoinstallable
-tree will not be usable for autoinstalling.</source>
+for more detailed errors.  If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.
+        </source>
         <target state="needs-adaptation">A seguir, é apresentada uma lista de erros coletados enquanto o @@PRODUCT_NAME@@ tenta sincronizar distribuições instaláveis automaticamente de @@PRODUCT_NAME@@ para o Cobbler. Esses erros devem ser corrigidos para que as distribuições estejam disponíveis para sistemas de instalação automática: {0} Verifique: /var/log/rhn/rhn_taskomatic_daemon.log e /var/log/rhn/rhn_web_ui.log /var/log/ cobbler/cobbler.log para erros mais detalhados. Se você não resolver os erros, a árvore auto-instalável não será utilizável na instalação automática.</target>
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
@@ -10050,7 +10051,7 @@ Note that only one set of ISO images is necessary to install any particular rele
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1" xml:space="preserve">
         <source>
-Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
 </source>
         <target state="needs-adaptation">Abaixo estão todos os ISOs de conteúdo do canal disponíveis para uso com o canal {0}. Se algum ISO de conteúdo de canal parecer estar ausente abaixo, verifique se o seu Certificado de titularidade @@PRODUCT_NAME@@ foi enviado para @@PRODUCT_NAME@@ e identifique corretamente os canais de destino.</target>
         <context-group name="ctx">
