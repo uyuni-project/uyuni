@@ -1,38 +1,67 @@
 import * as React from "react";
-import { FieldProps } from "formik";
-import InputBase, { InputBaseProps } from "./FormikInputBase";
+import { InputBase, InputBaseProps } from "./InputBase";
+import { FormContext } from "./Form";
 
-type Props<Value> = InputBaseProps<Value> & {
-  maxLength: number;
+type Props = InputBaseProps & {
+  /** <input> type */
+  type?: string;
+
+  /** Maximum number of characters of the input field */
+  maxLength?: number;
+
+  /** Value placeholder to display when no value is entered */
+  placeholder?: string;
+
+  /** CSS class for the <input> element */
+  inputClass?: string;
+
+  /** name of the field to map in the form model */
+  name: string;
 };
 
-export const Text = <Value extends string>(props: Props<Value>) => {
-  const { inputClass, ...propsToPass } = props;
+export const Text = (props: Props) => {
+  const { type, maxLength, placeholder, inputClass, ...propsToPass } = props;
+  const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
-      {({ field }: FieldProps<Value>) => (
-        <input id={field.name} className={`form-control${props.inputClass ? ` ${props.inputClass}` : ""}`} {...field} />
-      )}
+      {({ setValue, onBlur }) => {
+        const onChange = (event: any) => {
+          setValue(event.target.name, event.target.value);
+        };
+        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
+        return (
+          <input
+            className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
+            type={type || "text"}
+            name={props.name}
+            id={props.name}
+            value={fieldValue}
+            onChange={onChange}
+            disabled={props.disabled}
+            onBlur={onBlur}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            title={props.title}
+          />
+        );
+      }}
     </InputBase>
   );
 };
 
-const defaultProps: Partial<Props<string>> = {
+Text.defaultProps = {
   type: "text",
   maxLength: undefined,
   placeholder: undefined,
   inputClass: undefined,
   defaultValue: undefined,
-  // TODO: Fix these
-  // label: undefined,
-  // hint: undefined,
-  // labelClass: undefined,
-  // divClass: undefined,
+  label: undefined,
+  hint: undefined,
+  labelClass: undefined,
+  divClass: undefined,
   className: undefined,
   required: false,
   disabled: false,
-  // invalidHint: undefined,
+  invalidHint: undefined,
   onChange: undefined,
 };
-
-Text.defaultProps = defaultProps;

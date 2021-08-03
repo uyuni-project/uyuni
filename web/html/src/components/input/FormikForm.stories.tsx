@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FormikForm from './FormikForm';
-import { Text } from './Text';
+import { Text } from './FormikText';
 import { SubmitButton } from 'components/buttons';
 
 export default {
