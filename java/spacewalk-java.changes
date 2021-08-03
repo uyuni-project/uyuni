@@ -1,3 +1,4 @@
+- Fix cleanup always being executed on delete system (bsc#1189011)
 - Warning in Overview page for SLE Micro system (bsc#1188551)
 - Add support for Kiwi options
 - Ensure XMLRPC returns 'issue_date' in ISO format when listing erratas (bsc#1188260)
