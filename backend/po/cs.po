@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
@@ -23,11 +23,25 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "Neúplný autentifikační token pro proxy: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Zaslaný podpis proxy %s neodpovídá našemu %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "zamítnutá proxy autentifikace"
+
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -37,6 +51,221 @@ msgstr ""
 "\n"
 "                   Účet %s byl na tomto serveru deaktivován.\n"
 "                   Pro další pomoc kontaktujte správce své organizace."
+
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Váš systém nebyl v databázi {PRODUCT_NAME} nalezen"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "ISS je na tomto serveru deaktivováno."
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Server \"%s\" nemá povolen ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Neplatný pár system_id/action_id."
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Očekávám jméno balíku, nikoliv \"%s\""
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Očekávám balík, nikoliv \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Serverový profil \"%s\" nemá aktivovánu službu SUSE Manager Proxy"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Neplatný session key"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Toto ID serveru již neexistuje"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "Chybí požadovaná data"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "Chybí požadovaní členi"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "Pokoušíte se zaregistrovat systém na neexistujicího uživate"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "Požadována neplatná release verze systému"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+"Nelze najít platné síťové rozhraní, ipaddr (IPv4) a ip6addr (IPv6) nebyly "
+"nalezeny."
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "Uvítací zpráva {PRODUCT_NAME}"
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+msgid "Privacy Statement"
+msgstr "Prohlášení o ochraně soukromí"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "Jako argument u produktu je očekáván slovník"
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "Neplatná hodnota '%s' pro %s (%s)"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Neplatná hodnota %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Neplatná hodnota operace typu %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Operace %s nenáleží k serveru %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Prázdná organizace nemá právo spravovat balíčky"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Nemáte právo spravovat balíčky v organizaci  %s"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Nemáte právo provádět úkoly správy"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "Nemáte právo spravovat kanál %s, nebo takový kanál ani neexistuje"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               Účet %s byl na tomto serveru deaktivován.\n"
+"               Pro další pomoc kontaktujte správce své organizace."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Tato služba není aktivována pro systémový profil: \"%s\""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Architektura '%s' není podporována"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token `%s' má přiřazen více jak jeden kanál"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Konflikt hlavních kanálů"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Nepodařilo se přidat server do skupiny %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Bylo dosaženo maximálního počtu užívání %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Skládání re-registračních tokenů s povoleními na různé hlavní kanály není "
+"podporováno"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Nepodařilo se nalézt token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Tokeny jsou z neodpovídajících si organizací"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Nesouhlasí session kickstartu"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Sčítání re-registračních tokenů není podporováno"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Neplatná žádost (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"DŮLEŽITÉ UPOZORNĚNÍ:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Při běhu '%s': zachyceno\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Neplatné URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -107,6 +336,16 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Byl vyžádán neplatný RPM balík %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Balík nenalezen"
+
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
 msgstr "Neplatná kombinace uživatelského jména a hesla"
@@ -166,245 +405,6 @@ msgstr "uživatelské jméno by mělo mít alespoň %d znaků"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nelze registrovat uživatelská jména končící na %s"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Neplatná žádost (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"DŮLEŽITÉ UPOZORNĚNÍ:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Při běhu '%s': zachyceno\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Neplatné URI %s"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Prázdná organizace nemá právo spravovat balíčky"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "Nemáte právo spravovat balíčky v organizaci  %s"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Nemáte právo provádět úkoly správy"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "Nemáte právo spravovat kanál %s, nebo takový kanál ani neexistuje"
-
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               Účet %s byl na tomto serveru deaktivován.\n"
-"               Pro další pomoc kontaktujte správce své organizace."
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Byl vyžádán neplatný RPM balík %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Balík nenalezen"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "Neúplný autentifikační token pro proxy: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Zaslaný podpis proxy %s neodpovídá našemu %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "zamítnutá proxy autentifikace"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-msgid "Required data missing"
-msgstr "Chybí požadovaná data"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-msgid "Required members missing"
-msgstr "Chybí požadovaní členi"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-msgid "Attempt to register a system to an invalid username"
-msgstr "Pokoušíte se zaregistrovat systém na neexistujicího uživate"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-msgid "Invalid system release version requested"
-msgstr "Požadována neplatná release verze systému"
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Nelze najít platné síťové rozhraní, ipaddr (IPv4) a ip6addr (IPv6) nebyly "
-"nalezeny."
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "Uvítací zpráva {PRODUCT_NAME}"
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-msgid "Privacy Statement"
-msgstr "Prohlášení o ochraně soukromí"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-msgid "Expected a dictionary as a product argument"
-msgstr "Jako argument u produktu je očekáván slovník"
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Neplatná hodnota '%s' pro %s (%s)"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Serverový profil \"%s\" nemá aktivovánu službu SUSE Manager Proxy"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Neplatný session key"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Toto ID serveru již neexistuje"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Neplatný pár system_id/action_id."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Očekávám jméno balíku, nikoliv \"%s\""
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Očekávám balík, nikoliv \"%s\""
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Neplatná hodnota operace typu %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Operace %s nenáleží k serveru %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
-
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Váš systém nebyl v databázi {PRODUCT_NAME} nalezen"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "ISS je na tomto serveru deaktivováno."
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Server \"%s\" nemá povolen ISS."
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token `%s' má přiřazen více jak jeden kanál"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Konflikt hlavních kanálů"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Nepodařilo se přidat server do skupiny %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Bylo dosaženo maximálního počtu užívání %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Skládání re-registračních tokenů s povoleními na různé hlavní kanály není "
-"podporováno"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Nepodařilo se nalézt token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Tokeny jsou z neodpovídajících si organizací"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Nesouhlasí session kickstartu"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Sčítání re-registračních tokenů není podporováno"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Architektura '%s' není podporována"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Tato služba není aktivována pro systémový profil: \"%s\""
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -1062,6 +1062,12 @@ msgstr "Informace o třídě chyb: %s\n"
 msgid "Explanation: %s"
 msgstr "Vysvětlení: %s"
 
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr "formát %s by měl být alespoň RRRRMMDD.\n"
+
 #: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ odesílání protokolu jako e-mailu +++"
@@ -1074,12 +1080,6 @@ msgstr "%s synchronizační zpráva od %s"
 #: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "formát %s by měl být alespoň RRRRMMDD.\n"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
