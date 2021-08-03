@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 08:16+0000\n"
+"POT-Creation-Date: 2021-07-07 07:46+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -2597,10 +2597,7 @@ msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
+msgid "Formula saved. Edit configuration options "
 msgstr "已保存公式。请编辑配置选项 "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
@@ -3977,20 +3974,20 @@ msgstr "未预览目标系统"
 msgid "No target systems found"
 msgstr "未找到目标系统"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:464
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
 msgid "Not all minions responded on time."
 msgstr "并非所有受控端都按时做出了响应。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
 msgid "No minions matched the target expression."
 msgstr "没有任何受控端与目标表达式匹配。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:492
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "Server returned an error: {0}"
 msgstr "服务器返回了错误：{0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
 msgid "Matching ssh-push minions..."
 msgstr "正在匹配 ssh-push 受控端..."
 
@@ -5252,9 +5249,7 @@ msgstr "未标记"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
 #, fuzzy
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
+msgid "Use an existing and configured bridge device. "
 msgstr ""
 "使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
 
@@ -5486,11 +5481,11 @@ msgstr "  bug 修复建议"
 msgid "  product enhancement advisories"
 msgstr "  产品增强建议"
 
-#: ../html/src/manager/visualization/data-tree.ts:184
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "在 SSM 中添加/去除系统"
 
-#: ../html/src/manager/visualization/data-tree.ts:242
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "将子项添加到 SSM"
 

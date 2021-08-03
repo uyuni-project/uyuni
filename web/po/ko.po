@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 08:16+0000\n"
+"POT-Creation-Date: 2021-07-07 07:46+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -2653,10 +2653,7 @@ msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었�
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
+msgid "Formula saved. Edit configuration options "
 msgstr "수식이 저장되었습니다. 변경 사항을 적용하려면 "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
@@ -4047,20 +4044,20 @@ msgstr "미리 본 대상 시스템 없음"
 msgid "No target systems found"
 msgstr "대상 시스템을 찾지 못함"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:464
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
 msgid "Not all minions responded on time."
 msgstr "일부 minion이 정시에 응답하지 않았습니다."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
 msgid "No minions matched the target expression."
 msgstr "대상 식과 일치하는 minion이 없습니다."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:492
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "Server returned an error: {0}"
 msgstr "서버에서 오류가 반환됨: {0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
 msgid "Matching ssh-push minions..."
 msgstr "ssh-push minion을 일치시키는 중..."
 
@@ -5339,9 +5336,7 @@ msgstr "태그되지 않음"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
 #, fuzzy
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
+msgid "Use an existing and configured bridge device. "
 msgstr ""
 "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
 "DNS 서비스가 추가되지 않았습니다."
@@ -5576,11 +5571,11 @@ msgstr "  버그 수정 자문"
 msgid "  product enhancement advisories"
 msgstr "  제품 향상 자문"
 
-#: ../html/src/manager/visualization/data-tree.ts:184
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "SSM에서 시스템 추가/제거"
 
-#: ../html/src/manager/visualization/data-tree.ts:242
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "SSM에 하위 추가"
 

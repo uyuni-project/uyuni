@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 08:16+0000\n"
+"POT-Creation-Date: 2021-07-07 07:46+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -2676,10 +2676,7 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
+msgid "Formula saved. Edit configuration options "
 msgstr ""
 "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
 "を適用してください "
@@ -4094,20 +4091,20 @@ msgstr "ターゲットシステムをプレビューしていません"
 msgid "No target systems found"
 msgstr "ターゲットのシステムが見つかりませんでした"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:464
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
 msgid "Not all minions responded on time."
 msgstr "一部の minion が時間通りに応答しませんでした。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
 msgid "No minions matched the target expression."
 msgstr "ターゲット式に一致する minion はありません。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:492
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "Server returned an error: {0}"
 msgstr "サーバはエラーを返しました: {0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
 msgid "Matching ssh-push minions..."
 msgstr "一致する ssh-push minion..."
 
@@ -5402,9 +5399,7 @@ msgstr "タグ無し"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
 #, fuzzy
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
+msgid "Use an existing and configured bridge device. "
 msgstr ""
 "既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
 "IP アドレス、 DHCP/DNS サービスは追加されません"
@@ -5646,11 +5641,11 @@ msgstr "  バグ修正アドバイザリ"
 msgid "  product enhancement advisories"
 msgstr "  製品の機能強化アドバイザリ"
 
-#: ../html/src/manager/visualization/data-tree.ts:184
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "SSM からシステムを追加／削除"
 
-#: ../html/src/manager/visualization/data-tree.ts:242
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "SSM に子を追加"
 
