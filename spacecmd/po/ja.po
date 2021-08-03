@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 10:17+0000\n"
+"POT-Creation-Date: 2021-07-01 13:20+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -356,8 +356,8 @@ msgstr "エンタイトルメント"
 msgid "System Groups"
 msgstr "システムグループ"
 
-#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:209
-#: ../src/spacecmd/package.py:266 ../src/spacecmd/softwarechannel.py:1358
+#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:207
+#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1358
 #: ../src/spacecmd/softwarechannel.py:1460
 #: ../src/spacecmd/softwarechannel.py:1542
 #: ../src/spacecmd/softwarechannel.py:1788
@@ -1778,12 +1778,12 @@ msgstr "distribution_details: キックスタートツリーの詳細を表示"
 msgid "usage: distribution_details LABEL"
 msgstr "使用方法: distribution_details ラベル"
 
-#: ../src/spacecmd/distribution.py:249
+#: ../src/spacecmd/distribution.py:249 ../src/spacecmd/package.py:92
 #, python-format
 msgid "Name:    %s"
 msgstr "名前:    %s"
 
-#: ../src/spacecmd/distribution.py:250
+#: ../src/spacecmd/distribution.py:250 ../src/spacecmd/package.py:99
 #, python-format
 msgid "Path:    %s"
 msgstr "パス:    %s"
@@ -1957,102 +1957,97 @@ msgid "Type:       %s"
 msgstr "タイプ:       %s"
 
 #: ../src/spacecmd/errata.py:400
-#, fuzzy, python-format
-msgid "Status:     %s"
-msgstr "OSA ステータス:    %s"
-
-#: ../src/spacecmd/errata.py:401
 #, python-format
 msgid "Issue Date: %s"
 msgstr "発行日: %s"
 
-#: ../src/spacecmd/errata.py:403
+#: ../src/spacecmd/errata.py:402
 msgid "Topic"
 msgstr "トピック"
 
-#: ../src/spacecmd/errata.py:407 ../src/spacecmd/package.py:108
+#: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:106
 #: ../src/spacecmd/softwarechannel.py:559
 msgid "Description"
 msgstr "説明"
 
-#: ../src/spacecmd/errata.py:413
+#: ../src/spacecmd/errata.py:412
 msgid "Notes"
 msgstr "メモ"
 
-#: ../src/spacecmd/errata.py:418
+#: ../src/spacecmd/errata.py:417
 msgid "CVEs"
 msgstr "CVE"
 
-#: ../src/spacecmd/errata.py:422
+#: ../src/spacecmd/errata.py:421
 msgid "Solution"
 msgstr "ソリューション"
 
-#: ../src/spacecmd/errata.py:426
+#: ../src/spacecmd/errata.py:425
 msgid "References"
 msgstr "リファレンス"
 
-#: ../src/spacecmd/errata.py:430
+#: ../src/spacecmd/errata.py:429
 msgid "Affected Channels"
 msgstr "影響を受けるチャンネル"
 
-#: ../src/spacecmd/errata.py:434 ../src/spacecmd/org.py:279
+#: ../src/spacecmd/errata.py:433 ../src/spacecmd/org.py:279
 msgid "Affected Systems"
 msgstr "影響を受けるシステム"
 
-#: ../src/spacecmd/errata.py:438
+#: ../src/spacecmd/errata.py:437
 msgid "Affected Packages"
 msgstr "影響を受けるパッケージ"
 
-#: ../src/spacecmd/errata.py:448
+#: ../src/spacecmd/errata.py:447
 msgid "errata_delete: Delete an patch"
 msgstr "errata_delete: パッチを削除"
 
-#: ../src/spacecmd/errata.py:449
+#: ../src/spacecmd/errata.py:448
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr "使用方法: errata_delete エラータ|search:XXX ..."
 
-#: ../src/spacecmd/errata.py:469
+#: ../src/spacecmd/errata.py:468
 msgid "No patches to delete"
 msgstr "削除すべきパッチはありません"
 
-#: ../src/spacecmd/errata.py:472
+#: ../src/spacecmd/errata.py:471
 msgid "Erratum            Channels"
 msgstr "エラータ            チャンネル"
 
-#: ../src/spacecmd/errata.py:480
+#: ../src/spacecmd/errata.py:479
 msgid "Delete these patches [y/N]:"
 msgstr "これらのパッチを削除します [y/N]:"
 
-#: ../src/spacecmd/errata.py:486
+#: ../src/spacecmd/errata.py:485
 #, python-format
 msgid "Deleted %i patches"
 msgstr "%i 個のパッチを削除しました"
 
-#: ../src/spacecmd/errata.py:496
+#: ../src/spacecmd/errata.py:495
 msgid "errata_publish: Publish an patch to a channel"
 msgstr "errata_publish: パッチをチャンネルに公開"
 
-#: ../src/spacecmd/errata.py:497
+#: ../src/spacecmd/errata.py:496
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr "使用方法: errata_publish エラータ|search:XXX <チャンネル ...>"
 
-#: ../src/spacecmd/errata.py:524
+#: ../src/spacecmd/errata.py:523
 msgid "No patches to publish"
 msgstr "公開すべきパッチはありません"
 
-#: ../src/spacecmd/errata.py:529
+#: ../src/spacecmd/errata.py:528
 msgid "Publish these patches [y/N]:"
 msgstr "これらのパッチを公開します [y/N]:"
 
-#: ../src/spacecmd/errata.py:541
+#: ../src/spacecmd/errata.py:540
 msgid "errata_search: List patches that meet the given criteria"
 msgstr "errata_search: 指定した条件に合致するパッチを表示"
 
-#: ../src/spacecmd/errata.py:542
+#: ../src/spacecmd/errata.py:541
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr "例: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
-#: ../src/spacecmd/errata.py:544 ../src/spacecmd/scap.py:180
+#: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:180
 msgid "Example:"
 msgstr "例:"
 
@@ -3546,7 +3541,7 @@ msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) が古すぎます (>= %s が必要です)"
 
 #: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:562
+#: ../src/spacecmd/utils.py:561
 #, python-format
 msgid "Could not read %s"
 msgstr "%s を読み込めませんでした"
@@ -3620,48 +3615,48 @@ msgid "** Generating errata cache **"
 msgstr "** エラータキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:575
+#: ../src/spacecmd/misc.py:574
 msgid "** Generating package cache **"
 msgstr "** パッケージキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:682
+#: ../src/spacecmd/misc.py:681
 msgid "** Generating system cache **"
 msgstr "** システムキャッシュを生成しています **"
 
-#: ../src/spacecmd/misc.py:717
+#: ../src/spacecmd/misc.py:716
 #, python-format
 msgid "Could not create directory %s"
 msgstr "ディレクトリ %s を作成できませんでした"
 
-#: ../src/spacecmd/misc.py:789
+#: ../src/spacecmd/misc.py:788
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s に対するシステム ID が見つかりません"
 
-#: ../src/spacecmd/misc.py:794
+#: ../src/spacecmd/misc.py:793
 msgid "Duplicate system profile names found!"
 msgstr "重複したシステムプロファイル名が見つかりました！"
 
-#: ../src/spacecmd/misc.py:795
+#: ../src/spacecmd/misc.py:794
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID でシステムを参照するか、もしくは"
 
-#: ../src/spacecmd/misc.py:796
+#: ../src/spacecmd/misc.py:795
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' や 'system_rename' で問題点をご確認ください"
 
-#: ../src/spacecmd/misc.py:862
+#: ../src/spacecmd/misc.py:861
 #, python-format
 msgid "No systems in group %s"
 msgstr "グループ %s 内にはシステムがありません"
 
-#: ../src/spacecmd/misc.py:876
+#: ../src/spacecmd/misc.py:875
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s をサブスクライブしているシステムはありません"
 
-#: ../src/spacecmd/misc.py:936
+#: ../src/spacecmd/misc.py:935
 msgid "Is this ok [y/N]:"
 msgstr "よろしいですか [y/N]:"
 
@@ -3952,176 +3947,152 @@ msgstr "設定チャンネル数: %i"
 msgid "Show the details of a software package"
 msgstr "ソフトウェアパッケージの詳細を表示"
 
-#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:303
-#: ../src/spacecmd/package.py:350 ../src/spacecmd/package.py:392
+#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:301
+#: ../src/spacecmd/package.py:348 ../src/spacecmd/package.py:390
 msgid "No packages found"
 msgstr "パッケージが見つかりませんでした"
 
-#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:403
+#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:401
 #, python-format
 msgid "%s is not a valid package"
 msgstr "%s は正しいパッケージではありません"
 
-#: ../src/spacecmd/package.py:92
-#, fuzzy, python-format
-msgid "Name:      %s"
-msgstr "名前:       %s"
-
 #: ../src/spacecmd/package.py:93
-#, fuzzy, python-format
-msgid "Version:   %s"
+#, python-format
+msgid "Version: %s"
 msgstr "バージョン: %s"
 
 #: ../src/spacecmd/package.py:94
-#, fuzzy, python-format
-msgid "Release:   %s"
+#, python-format
+msgid "Release: %s"
 msgstr "リリース: %s"
 
 #: ../src/spacecmd/package.py:95
-#, fuzzy, python-format
-msgid "Epoch:     %s"
+#, python-format
+msgid "Epoch:   %s"
 msgstr "エポック:   %s"
 
 #: ../src/spacecmd/package.py:96
-#, fuzzy, python-format
-msgid "Arch:      %s"
-msgstr "アーキテクチャ:     %s"
+#, python-format
+msgid "Arch:    %s"
+msgstr "アーキテクチャ:    %s"
 
 #: ../src/spacecmd/package.py:98
-#, fuzzy, python-format
-msgid "File:      %s"
+#, python-format
+msgid "File:    %s"
 msgstr "ファイル:    %s"
 
-#: ../src/spacecmd/package.py:99
-#, fuzzy, python-format
-msgid "Path:      %s"
-msgstr "パス:     %s"
-
 #: ../src/spacecmd/package.py:100
-#, fuzzy, python-format
-msgid "Size:      %s"
+#, python-format
+msgid "Size:    %s"
 msgstr "サイズ:    %s"
 
-#: ../src/spacecmd/package.py:101
-msgid "Yes"
-msgstr ""
-
-#: ../src/spacecmd/package.py:102
-#, fuzzy
-msgid "No"
-msgstr "なし"
-
-#: ../src/spacecmd/package.py:101
-#, fuzzy, python-format
-msgid "Retracted: %s"
-msgstr "作成日:  %s"
-
-#: ../src/spacecmd/package.py:106
+#: ../src/spacecmd/package.py:104
 #, python-format
 msgid "Installed Systems: %i"
 msgstr "インストール済みシステム数: %i"
 
-#: ../src/spacecmd/package.py:112
+#: ../src/spacecmd/package.py:110
 msgid "Available From Channels"
 msgstr "提供されているチャンネル"
 
-#: ../src/spacecmd/package.py:126
+#: ../src/spacecmd/package.py:124
 #, python-format
 msgid "usage: %s NAME|QUERY"
 msgstr "使用方法: %s 名前|検索文字列"
 
-#: ../src/spacecmd/package.py:128
+#: ../src/spacecmd/package.py:126
 #, python-format
 msgid "Example: %s kernel"
 msgstr "例: %s kernel"
 
-#: ../src/spacecmd/package.py:130
+#: ../src/spacecmd/package.py:128
 msgid "Advanced Search:"
 msgstr "高度な検索:"
 
-#: ../src/spacecmd/package.py:131
+#: ../src/spacecmd/package.py:129
 msgid ""
 "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr ""
 "利用可能な項目: name (名前), epoch (エポック), version (バージョン), release "
 "(リリース), arch (アーキテクチャ), description (説明), summary (概要)"
 
-#: ../src/spacecmd/package.py:132
+#: ../src/spacecmd/package.py:130
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
 msgstr "例: name:kernel AND version:2.6.18 AND -description:devel"
 
-#: ../src/spacecmd/package.py:181
+#: ../src/spacecmd/package.py:179
 msgid "package_remove: Remove a package from Spacewalk"
 msgstr "package_remove: Spacewalk からパッケージを削除"
 
-#: ../src/spacecmd/package.py:182
+#: ../src/spacecmd/package.py:180
 msgid "usage: package_remove PACKAGE ..."
 msgstr "使用方法: package_remove パッケージ ..."
 
-#: ../src/spacecmd/package.py:202
+#: ../src/spacecmd/package.py:200
 msgid "No packages found to remove"
 msgstr "削除すべきパッケージが見つかりませんでした"
 
-#: ../src/spacecmd/package.py:205 ../src/spacecmd/package.py:262
+#: ../src/spacecmd/package.py:203 ../src/spacecmd/package.py:260
 #: ../src/spacecmd/softwarechannel.py:1546 ../src/spacecmd/system.py:945
 msgid "Remove these packages [y/N]:"
 msgstr "これらのパッケージを削除します [y/N]:"
 
-#: ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:204
 msgid "No packages has been removed"
 msgstr "何もパッケージを削除しませんでした"
 
-#: ../src/spacecmd/package.py:218 ../src/spacecmd/package.py:274
+#: ../src/spacecmd/package.py:216 ../src/spacecmd/package.py:272
 #, python-format
 msgid "Failed to remove package ID %i"
 msgstr "パッケージ ID %i の削除に失敗しました"
 
-#: ../src/spacecmd/package.py:229
+#: ../src/spacecmd/package.py:227
 msgid "package_listorphans: List packages that are not in a channel"
 msgstr "package_listorphans: チャンネルに含まれていないパッケージを表示"
 
-#: ../src/spacecmd/package.py:230
+#: ../src/spacecmd/package.py:228
 msgid "usage: package_listorphans"
 msgstr "使用方法: package_listorphans"
 
-#: ../src/spacecmd/package.py:249
+#: ../src/spacecmd/package.py:247
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr "package_removeorphans: チャンネルに含まれていないパッケージを削除"
 
-#: ../src/spacecmd/package.py:250
+#: ../src/spacecmd/package.py:248
 msgid "usage: package_removeorphans"
 msgstr "使用方法: package_removeorphans"
 
-#: ../src/spacecmd/package.py:258
+#: ../src/spacecmd/package.py:256
 msgid "No orphaned packages has been found"
 msgstr "孤立したパッケージは見つかりませんでした"
 
-#: ../src/spacecmd/package.py:259
+#: ../src/spacecmd/package.py:257
 msgid "No orphaned packages"
 msgstr "孤立したパッケージはありません"
 
-#: ../src/spacecmd/package.py:263
+#: ../src/spacecmd/package.py:261
 msgid "No packages were removed"
 msgstr "何もパッケージを削除しませんでした"
 
-#: ../src/spacecmd/package.py:284
+#: ../src/spacecmd/package.py:282
 msgid "List the systems with a package installed"
 msgstr "パッケージがインストールされているシステムを表示"
 
-#: ../src/spacecmd/package.py:331
+#: ../src/spacecmd/package.py:329
 msgid "List the errata that provide this package"
 msgstr "このパッケージを提供するエラータを表示"
 
-#: ../src/spacecmd/package.py:377
+#: ../src/spacecmd/package.py:375
 msgid "List the dependencies for a package"
 msgstr "パッケージの依存関係を表示"
 
-#: ../src/spacecmd/package.py:408
+#: ../src/spacecmd/package.py:406
 #, python-format
 msgid "Package Name: %s"
 msgstr "パッケージ名: %s"
 
-#: ../src/spacecmd/package.py:410
+#: ../src/spacecmd/package.py:408
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "依存関係: %s タイプ: %s 修飾子: %s"
@@ -8280,96 +8251,93 @@ msgstr "エディタが見つかりませんでした"
 msgid "Invalid time provided"
 msgstr "時刻の指定が正しくありません"
 
-#: ../src/spacecmd/utils.py:457
+#: ../src/spacecmd/utils.py:456
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s は不明なエラータタイプです"
 
-#: ../src/spacecmd/utils.py:465
+#: ../src/spacecmd/utils.py:464
 msgid "Security Errata"
 msgstr "セキュリティエラータ"
 
-#: ../src/spacecmd/utils.py:474
+#: ../src/spacecmd/utils.py:473
 msgid "Bug Fix Errata"
 msgstr "バグ修正エラータ"
 
-#: ../src/spacecmd/utils.py:483
+#: ../src/spacecmd/utils.py:482
 msgid "Enhancement Errata"
 msgstr "機能強化エラータ"
 
-#: ../src/spacecmd/utils.py:493
+#: ../src/spacecmd/utils.py:492
 msgid "Current Selections"
 msgstr "現在の選択"
 
-#: ../src/spacecmd/utils.py:503
+#: ../src/spacecmd/utils.py:502
 msgid "Available Configuration Channels"
 msgstr "利用可能な設定チャンネル"
 
-#: ../src/spacecmd/utils.py:509 ../src/spacecmd/utils.py:529
+#: ../src/spacecmd/utils.py:508 ../src/spacecmd/utils.py:528
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../src/spacecmd/utils.py:512 ../src/spacecmd/utils.py:532
+#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
 msgid "Invalid channel"
 msgstr "チャンネルが正しくありません"
 
-#: ../src/spacecmd/utils.py:516
+#: ../src/spacecmd/utils.py:515
 msgid "New Rank:"
 msgstr "新しい順位:"
 
-#: ../src/spacecmd/utils.py:523 ../src/spacecmd/utils.py:526
+#: ../src/spacecmd/utils.py:522 ../src/spacecmd/utils.py:525
 msgid "Invalid rank"
 msgstr "順位が正しくありません"
 
-#: ../src/spacecmd/utils.py:537
+#: ../src/spacecmd/utils.py:536
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:693
+#: ../src/spacecmd/utils.py:692
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:700
+#: ../src/spacecmd/utils.py:699
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:711
+#: ../src/spacecmd/utils.py:710
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:713
+#: ../src/spacecmd/utils.py:712
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:714
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:743
+#: ../src/spacecmd/utils.py:742
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:759
+#: ../src/spacecmd/utils.py:758
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:845
+#: ../src/spacecmd/utils.py:844
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN を取得している際に未処理の例外が発生しました:"
-
-#~ msgid "Arch:    %s"
-#~ msgstr "アーキテクチャ:    %s"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search: 指定した条件に合致するパッケージを検索"
