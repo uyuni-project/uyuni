@@ -29,24 +29,28 @@ import sys
 # pylint: disable=E0611
 from hashlib import sha1
 
-#sys.path.append('/usr/share/rhn')
-from rhn import rpclib
-from rhn import SSL
+# common imports
+from uyuni.common.rhnLib import parseUrl
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnTranslate import _
-from up2date_client import config # pylint: disable=E0012, C0413
-from uyuni.common.rhnLib import parseUrl
 from uyuni.common.usix import raise_with_tb
+
+# local imports
+from rhn import rpclib
+from rhn import SSL
 from . import rhnAuthCacheClient
 
 if hasattr(socket, 'sslerror'):
-    socket_error = socket.sslerror # pylint: disable=no-member
+    socket_error = socket.sslerror
 else:
     from ssl import socket_error
+
+sys.path.append('/usr/share/rhn')
+from up2date_client import config # pylint: disable=E0012, C0413
 
 # To avoid doing unnecessary work, keep ProxyAuth object global
 __PROXY_AUTH = None
@@ -119,7 +123,7 @@ class ProxyAuth:
         ProxyAuth.__serverid = sysid[0]['system_id'][3:]
 
         log_debug(7, 'SystemId: "%s[...snip  snip...]%s"'
-                  % (ProxyAuth.__systemid[:20], ProxyAuth.__systemid[-20:])) # pylint: disable=unsubscriptable-object
+                  % (ProxyAuth.__systemid[:20], ProxyAuth.__systemid[-20:]))
         log_debug(7, 'ServerId: %s' % ProxyAuth.__serverid)
 
         # ids were updated
@@ -163,7 +167,7 @@ class ProxyAuth:
         # Cache the token.
         try:
             shelf[self.__cache_proxy_key()] = token
-        except: # pylint: disable=bare-except
+        except:
             text = _("""\
 Caching of authentication token for proxy id %s failed!
 Either the authentication caching daemon is experiencing
@@ -266,7 +270,7 @@ problems, isn't running, or the token is somehow corrupt.
                         # rather big problem: http proxy not running.
                         log_error("*** ERROR ***: %s" % error[1])
                         Traceback(mail=0)
-                    except socket_error as e:                             # pylint: disable=duplicate-except
+                    except socket_error as e:
                         error = ['socket.sslerror',
                                  '(%s) %s' % (CFG.HTTP_PROXY, e)]
                         # rather big problem: http proxy not running.
@@ -315,7 +319,7 @@ problems, isn't running, or the token is somehow corrupt.
                 raise_with_tb(rhnFault(1000,
                                        _("SUSE Manager Proxy error (during proxy login). "
                                          "Please contact your system administrator.")), sys.exc_info()[2])
-            except Exception as e: # pylint: disable=broad-except
+            except Exception as e:
                 token = None
                 log_error("Unhandled exception", e)
                 Traceback(mail=0)
@@ -467,7 +471,8 @@ class AuthLocalBackend:
         if not os.path.normpath(key_path).startswith(self._cache_prefix):
             raise ValueError("Path traversal detected for X-RHN-Server-ID. " +
                              "User is trying to set a path as server-id.")
-        return key_path
+        else:
+            return key_path
 
     def __len__(self):
         pass

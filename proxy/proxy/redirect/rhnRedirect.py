@@ -29,8 +29,10 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common import rhnFlags, apache
-from rhn import connections
 from uyuni.common import rhnLib
+
+# rhnlib imports
+from rhn import connections
 
 # local module imports
 from proxy.rhnShared import SharedHandler
@@ -93,7 +95,7 @@ class RedirectHandler(SharedHandler):
 
         log_debug(4, 'Initiating communication with server...')
         status = self._serverCommo()       # part 2
-        if status not in (apache.OK, apache.HTTP_PARTIAL_CONTENT):
+        if (status != apache.OK) and (status != apache.HTTP_PARTIAL_CONTENT):
             log_debug(3, "Leaving handler with status code %s" % status)
             return status
 
@@ -112,7 +114,8 @@ class RedirectHandler(SharedHandler):
         # In case of a 302, redirect the original request to the location
         # specified in the response.
 
-        if status in (apache.HTTP_MOVED_TEMPORARILY, apache.HTTP_MOVED_PERMANENTLY):
+        if status == apache.HTTP_MOVED_TEMPORARILY or \
+           status == apache.HTTP_MOVED_PERMANENTLY:
 
             log_debug(1, "Received redirect response: ", status)
 
@@ -144,7 +147,8 @@ class RedirectHandler(SharedHandler):
             #
             # We'll keep redirecting until we've received HTTP_OK or an error.
 
-            while redirectStatus in (apache.HTTP_MOVED_PERMANENTLY, apache.HTTP_MOVED_TEMPORARILY):
+            while redirectStatus == apache.HTTP_MOVED_PERMANENTLY or \
+                    redirectStatus == apache.HTTP_MOVED_TEMPORARILY:
 
                 # We've been told to redirect again.  We'll pass a special
                 # argument to ensure that if we end up back at the server, we
@@ -153,7 +157,7 @@ class RedirectHandler(SharedHandler):
                 log_debug(1, "Redirected again!  Code=", redirectStatus)
                 redirectStatus = self.__redirectToNextLocation(True)
 
-            if redirectStatus not in (apache.HTTP_OK, apache.HTTP_PARTIAL_CONTENT):
+            if (redirectStatus != apache.HTTP_OK) and (redirectStatus != apache.HTTP_PARTIAL_CONTENT):
 
                 # We must have run out of retry attempts.  Fail over to Hosted
                 # to perform the request.
@@ -356,7 +360,7 @@ class RedirectHandler(SharedHandler):
             # will be closed when the caller pops the context.
             return apache.HTTP_SERVICE_UNAVAILABLE
 
-        except socket.error as se: # pylint: disable=duplicate-except
+        except socket.error as se:
             # Some socket error occurred.  Possibly a read error.
             log_error("Redirect request failed.", redirectLocation, se)
             Traceback(mail=0)

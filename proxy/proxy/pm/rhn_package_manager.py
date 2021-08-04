@@ -45,7 +45,7 @@ try:
 except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
-from optparse import Option, OptionParser # pylint: disable=deprecated-module
+from optparse import Option, OptionParser
 
 # RHN imports
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -98,8 +98,7 @@ def main():
     # Process the command line arguments
     optionParser = OptionParser(option_list=optionsTable, usage="USAGE: %prog [OPTION] [<package>]")
     options, files = optionParser.parse_args()
-    # Below line needs fixing. Together with replacement of optparse.
-    upload = UploadClass(options, files=files) # pylint: disable=too-many-function-args,unexpected-keyword-arg
+    upload = UploadClass(options, files=files)
 
     if options.usage:
         optionParser.print_usage()
