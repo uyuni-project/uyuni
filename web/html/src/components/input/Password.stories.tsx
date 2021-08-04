@@ -17,7 +17,6 @@ export const Example = () => (
     model={model}
     onChange={newModel => {model['password'] = newModel['password']}}
     onSubmit={() => alert(`Secret revealed: ${model['password']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >

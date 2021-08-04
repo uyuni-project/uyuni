@@ -19,7 +19,6 @@ export const MultipleFields = () => {
       model={model}
       onChange={setModel}
       onSubmit={action('Submit clicked')}
-      onSubmitInvalid={action('Submit clicked when invalid')}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -87,7 +86,6 @@ export const SingleField = () => {
       model={model}
       onChange={setModel}
       onSubmit={action('Submit clicked')}
-      onSubmitInvalid={action('Submit clicked when invalid')}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -144,7 +142,6 @@ export const CustomFieldsWithModal = () => {
       model={model}
       onChange={setModel}
       onSubmit={action('Submit clicked')}
-      onSubmitInvalid={action('Submit clicked when invalid')}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -200,7 +197,6 @@ export const TableFields = () => {
       model={model}
       onChange={setModel}
       onSubmit={action('Submit clicked')}
-      onSubmitInvalid={action('Submit clicked when invalid')}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
