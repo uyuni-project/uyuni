@@ -39,7 +39,7 @@ except ImportError:     # python3
     raw_input = input
 
 # lib imports
-from optparse import Option, OptionParser # pylint: disable=deprecated-module
+from optparse import Option, OptionParser
 from rhn import rpclib, SSL
 
 from up2date_client import config # pylint: disable=E0012, C0413

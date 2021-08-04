@@ -1,8 +1,8 @@
 #!/usr/bin/python -u
-#pylint: disable=invalid-name
 
 import os
 import sys
+import time
 import argparse
 
 
@@ -47,8 +47,8 @@ if __name__ == "__main__":
                 with open(args.destination, 'wb') as _file:
                     _file.write(data['data'].encode('utf8'))
                     print("Certificate saved to: {0}".format(args.destination))
-            except Exception as ex: # pylint: disable=broad-except
-                print("Unable to write to destination: " + ex.message) # pylint: disable=no-member
+            except Exception as ex:
+                print("Unable to write to destination: " + ex.message)
                 sys.exit(1)
             sys.exit(0)
     print("Certificate not received from server. Exit.")
