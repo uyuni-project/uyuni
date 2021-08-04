@@ -145,7 +145,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
   }
 }
 
-type ButtonProps = BaseProps & {
+export type ButtonProps = BaseProps & {
   /** Callback function to execute on button click. */
   handler?: (...args: any[]) => any,
 };

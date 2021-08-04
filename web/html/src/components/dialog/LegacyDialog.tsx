@@ -21,7 +21,6 @@ export function closeDialog(modalId: string) {
   return closeModalPromise;
 }
 
-// TODO: Define props
 export type DialogProps = {
   id: string;
   className?: string;
