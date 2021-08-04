@@ -456,18 +456,34 @@ def do_schedule_list(self, args):
 ####################
 
 def help_schedule_deletearchived(self):
-    print(_('schedule_deletearchived: Delete all archived actions'))
-    print(_('usage: schedule_deletearchived'))
+    print(_('schedule_deletearchived: Delete all archived actions older than given date.'))
+    print(_('usage: schedule_deletearchived [yyyymmdd]'))
+    print('')
+    print(_('If no date is provided it will delete all archived actions'))
 
 def do_schedule_deletearchived(self, args):
     """
-    This method removes all of the archived actions.
+    This method removes all of the archived actions older than provided date.
+    If no date is provided it will delete all archived actions.
     """
     user_already_prompted = False
+    args = args.split() or []
+
+    if args:
+        limit_date = parse_time_input(args[0])
+        logging.debug('Limit Date: %s' % limit_date)
+    else:
+        limit_date = None
+
     while True:
         # Needs to happen in a loop, since we can only fetch in batches. 10k is the default.
         actions = self.client.schedule.listArchivedActions(self.session)
-        logging.debug("actions: {}".format(actions))
+
+        # Filter out actions by date if limit is set
+        if limit_date:
+            actions = [action for action in actions if action.get('earliest') < limit_date]
+            logging.debug("actions: {}".format(actions))
+
         if actions:
             if not user_already_prompted:
                 if len(actions) >= 10000:
