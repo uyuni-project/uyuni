@@ -28,6 +28,18 @@ test("check order by date function'", () => {
   expect(arr[0]).toEqual(eRaw);
 });
 
+describe("capitalize", () => {
+  test("simple cases", () => {
+    expect(Utils.capitalize("foo")).toEqual("Foo");
+    expect(Utils.capitalize("foo-bar")).toEqual("Foo Bar");
+    expect(Utils.capitalize("fooBar")).toEqual("Foobar");
+  });
+  test("acronym cases", () => {
+    expect(Utils.capitalize("FOO")).toEqual("FOO");
+    expect(Utils.capitalize("FO-O")).toEqual("FO-O");
+  });
+});
+
 describe("cancelable", () => {
   const { cancelable } = Utils;
 

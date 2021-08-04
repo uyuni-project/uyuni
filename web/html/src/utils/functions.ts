@@ -151,6 +151,11 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
  * Replace all "_" and "-" with spaces and capitalize the first letter of each word
  */
 function capitalize(str: string): string {
+  // Don't capitalize a string that is only caps and dashes since that it probably an acronym
+  if (str.match(/^[A-Z_-]+$/g)) {
+    return str;
+  }
+
   return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
