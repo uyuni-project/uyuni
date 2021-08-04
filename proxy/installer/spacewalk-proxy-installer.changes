@@ -1,4 +1,3 @@
-- Improved for Enterprise Linux build.
 - Modified for Pylint pass.
 - Add new refresh_pattern to the squid.conf to fix a case where the repodata
   was invalid due to being cached (bsc#1186026)
