@@ -175,6 +175,9 @@ type LinkProps = BaseProps & {
   /** 'href' attribute of the anchor. */
   href?: string;
 
+  /** target of the link */
+  target?: string,
+
   /** Callback function to execute on button click. */
   handler?: (...args: any[]) => any,
 };
@@ -184,6 +187,12 @@ type LinkProps = BaseProps & {
  */
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
+    const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> = this.props.target === "_blank" ? {
+      target: "_blank",
+      rel: "noopener noreferrer",
+    } : {
+      target : this.props.target,
+    };
     return (
       <a
         id={this.props.id}
@@ -191,6 +200,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         className={"btn " + this.props.className}
         href={this.props.href}
         onClick={this.props.handler}
+        {...targetProps}
       >
         {this.renderIcon()}
         {this.props.text}
