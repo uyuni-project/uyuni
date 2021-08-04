@@ -45,9 +45,6 @@ from .rhnConstants import HEADER_ACTUAL_URI, HEADER_EFFECTIVE_URI, \
     HEADER_CHECKSUM, SCHEME_HTTP, SCHEME_HTTPS, URI_PREFIX_KS, \
     URI_PREFIX_KS_CHECKSUM, COMPONENT_BROKER, COMPONENT_REDIRECT
 
-from .broker import rhnBroker
-from .redirect import rhnRedirect
-
 
 def getComponentType(req):
     """
@@ -359,9 +356,11 @@ class apacheHandler(rhnApache):
         log_debug(4, "Component", self._component)
 
         if self._component == COMPONENT_BROKER:
+            from .broker import rhnBroker
             handlerObj = rhnBroker.BrokerHandler(req)
         else:
             # Redirect
+            from .redirect import rhnRedirect
             handlerObj = rhnRedirect.RedirectHandler(req)
 
         try:
