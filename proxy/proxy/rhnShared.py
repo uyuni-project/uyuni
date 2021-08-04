@@ -147,8 +147,8 @@ class SharedHandler:
             log_error("Error opening connection", self.rhnParent, e)
             Traceback(mail=0)
             raise_with_tb(rhnFault(1000,
-                                   _("SUSE Manager Proxy could not successfully connect its SUSE Manager parent. "
-                                     "Please contact your system administrator.")), sys.exc_info()[2])
+                           _("SUSE Manager Proxy could not successfully connect its SUSE Manager parent. "
+                             "Please contact your system administrator.")), sys.exc_info()[2])
 
         # At this point the server should be okay
         log_debug(3, "Connected to parent: %s " % self.rhnParent)

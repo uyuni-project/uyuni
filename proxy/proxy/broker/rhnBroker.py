@@ -313,14 +313,14 @@ class BrokerHandler(SharedHandler):
                 log_debug(0, msg)
             elif error == '1004':
                 log_debug(1,
-                          "SUSE Manager Proxy Session Token expired, acquiring new one.")
+                    "SUSE Manager Proxy Session Token expired, acquiring new one.")
             else: # this should never happen.
                 msg = "SUSE Manager Proxy login failed, error code is %s" % error
                 log_error(msg)
                 log_debug(0, msg)
                 raise rhnFault(1000,
-                               _("SUSE Manager Proxy error (issues with proxy login). "
-                                 "Please contact your system administrator."))
+                  _("SUSE Manager Proxy error (issues with proxy login). "
+                    "Please contact your system administrator."))
 
             # Forced refresh of the proxy token
             rhnFlags.get('outputTransportOptions')['X-RHN-Proxy-Auth'] = self.proxyAuth.check_cached_token(1)
@@ -328,8 +328,8 @@ class BrokerHandler(SharedHandler):
             # The token could not be aquired
             log_debug(0, "Unable to acquire proxy authentication token")
             raise rhnFault(1000,
-                           _("SUSE Manager Proxy error (unable to acquire proxy auth token). "
-                             "Please contact your system administrator."))
+              _("SUSE Manager Proxy error (unable to acquire proxy auth token). "
+                "Please contact your system administrator."))
 
         # Support for yum byte-range
         if status not in (apache.OK, apache.HTTP_PARTIAL_CONTENT):
