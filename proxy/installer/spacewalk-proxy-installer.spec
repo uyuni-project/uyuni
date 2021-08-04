@@ -25,6 +25,12 @@
 %define apacheconfdir %{_sysconfdir}/apache2
 %endif
 
+%if 0%{?suse_version} > 1320 || 0%{?fedora}
+# SLE15 and Fedora builds on Python 3
+%global build_py3   1
+%endif
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
+
 Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
@@ -59,8 +65,8 @@ Requires:       rhnlib
 Requires:       libxslt
 Requires:       spacewalk-certs-tools >= 1.6.4
 %if 0%{?pylint_check}
-BuildRequires:  python3-rhn-client-tools
-BuildRequires:  spacewalk-python3-pylint
+BuildRequires:  %{pythonX}-rhn-client-tools
+BuildRequires:  spacewalk-%{pythonX}-pylint
 %endif
 BuildRequires:  /usr/bin/docbook2man
 
@@ -121,17 +127,19 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
 
 # Fixing shebang for Python 3
+%if 0%{?build_py3}
 for i in $(find . -type f);
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
+%endif
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-activate
 install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
 
 %check
 %if 0%{?pylint_check}
 # check coding style
-spacewalk-python3-pylint .
+spacewalk-%{pythonX}-pylint .
 %endif
 
 %files

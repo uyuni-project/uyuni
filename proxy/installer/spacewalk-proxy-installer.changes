@@ -1,6 +1,5 @@
 - Improved for Enterprise Linux build.
 - Modified for Pylint pass.
-- Removed Python 2 build.
 - Add new refresh_pattern to the squid.conf to fix a case where the repodata
   was invalid due to being cached (bsc#1186026)
 - Bump version to 4.3.0
