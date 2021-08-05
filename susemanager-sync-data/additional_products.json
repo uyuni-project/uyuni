@@ -1,5 +1,82 @@
 [
     {
+        "id" : -24,
+        "name" : "Rocky Linux 8",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Rocky Linux 8 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -292,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-8&arch=x86_64",
+                "name" : "rockylinux-8",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 8",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -293,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-8&arch=x86_64",
+                "name" : "rockylinux-8-appstream",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -294,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-8&arch=x86_64",
+                "name" : "rockylinux-8-extras",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 8 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -295,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=PowerTools-8&arch=x86_64",
+                "name" : "rockylinux-8-powertools",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -296,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-8&arch=x86_64",
+                "name" : "rockylinux-8-ha",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 8 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -23,
         "name" : "AlmaLinux 8",
         "identifier" : "almalinux",
@@ -136,7 +213,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
