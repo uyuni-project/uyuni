@@ -1,3 +1,4 @@
+- Make schedule_deletearchived to get all actions without display limit
 - Allow passing a date limit for schedule_deletearchived on spacecmd (bsc#1181223)
 - Use correct API endpoint in list_proxies (bsc#1188042)
 - Add schedule_deletearchived to bulk delete archived actions (bsc#1181223)
