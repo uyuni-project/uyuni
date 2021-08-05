@@ -1342,6 +1342,10 @@ DATA = {
         'BASECHANNEL' : 'almalinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
     },    
+    'rockylinux-8-x86_64' : {
+        'PDID' : [-24, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
+    },
     'rockylinux-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'rockylinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
