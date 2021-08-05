@@ -1,3 +1,6 @@
+- support Rocky Linux 8 x86_64
+- support MicroOS for Z-series
+
 -------------------------------------------------------------------
 Mon Aug 09 10:44:52 CEST 2021 - jgonzalez@suse.com
 
