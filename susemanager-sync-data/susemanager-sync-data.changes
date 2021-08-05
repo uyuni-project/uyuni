@@ -1,3 +1,4 @@
+- support Rocky Linux 8 x86_64
 - add channel family for MicroOS Z
 - set OES 2018 SP3 to released
 
