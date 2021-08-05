@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-03 19:11+0000\n"
+"PO-Revision-Date: 2021-08-05 09:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4799,7 +4799,7 @@ msgstr "použitie: schedule_deletearchived"
 
 #: ../src/spacecmd/schedule.py:477
 msgid "Do you want to delete all ({}) archived actions? [y/N]"
-msgstr ""
+msgstr "Chcete vymazať všetky ({}) archivované akcie? [a/N]"
 
 #: ../src/spacecmd/schedule.py:500
 msgid "No archived actions found."
@@ -5326,78 +5326,78 @@ msgstr "Označenie kanála:"
 
 #: ../src/spacecmd/softwarechannel.py:765
 msgid "New Name (blank to keep unchanged)"
-msgstr ""
+msgstr "Nový názov (prázdne, aby zostal nezmenený)"
 
 #: ../src/spacecmd/softwarechannel.py:771
 msgid "New Summary (blank to keep unchanged)"
-msgstr ""
+msgstr "Nový súhrn (prázdne, aby zostal nezmenený)"
 
 #: ../src/spacecmd/softwarechannel.py:774
 msgid "Summary:"
-msgstr ""
+msgstr "Súhrn:"
 
 #: ../src/spacecmd/softwarechannel.py:777
 msgid "New Description (blank to keep unchanged)"
-msgstr ""
+msgstr "Nový popis (prázdne, aby zostal nezmenený)"
 
 #: ../src/spacecmd/softwarechannel.py:783
 msgid "New Checksum type (blank to keep unchanged)"
-msgstr ""
+msgstr "Nový typ kontrolného súčtu (prázdne, aby zostal nezmenený)"
 
 #: ../src/spacecmd/softwarechannel.py:790
 msgid "New GPG URL (blank to keep unchanged)"
-msgstr ""
+msgstr "Nový URL GPG (prázdne, aby zostal nezmenený)"
 
 #: ../src/spacecmd/softwarechannel.py:793
 #: ../src/spacecmd/softwarechannel.py:921
 #: ../src/spacecmd/softwarechannel.py:1075
 #: ../src/spacecmd/softwarechannel.py:1164
 msgid "GPG URL:"
-msgstr ""
+msgstr "URL GPG:"
 
 #: ../src/spacecmd/softwarechannel.py:796
 msgid "New GPG ID (blank to keep unchanged)"
-msgstr ""
+msgstr "Nové ID GPG (prázdne, aby zostalo nezmenené)"
 
 #: ../src/spacecmd/softwarechannel.py:799
 #: ../src/spacecmd/softwarechannel.py:927
 #: ../src/spacecmd/softwarechannel.py:1076
 #: ../src/spacecmd/softwarechannel.py:1165
 msgid "GPG ID:"
-msgstr ""
+msgstr "ID GPG:"
 
 #: ../src/spacecmd/softwarechannel.py:802
 msgid "New GPG Fingerprint (blank to keep unchanged)"
-msgstr ""
+msgstr "Nový odtlačok GPG (prázdne, aby zostal nezmenený)"
 
 #: ../src/spacecmd/softwarechannel.py:805
 #: ../src/spacecmd/softwarechannel.py:933
 #: ../src/spacecmd/softwarechannel.py:1077
 #: ../src/spacecmd/softwarechannel.py:1166
 msgid "GPG Fingerprint:"
-msgstr ""
+msgstr "Odtlačok GPG:"
 
 #: ../src/spacecmd/softwarechannel.py:808
 msgid "Disable GPG CHECK (blank to keep unchanged)"
-msgstr ""
+msgstr "Zakázanie KONTROLY GPG (prázdne, aby zostalo nezmenené)"
 
 #: ../src/spacecmd/softwarechannel.py:811
 #: ../src/spacecmd/softwarechannel.py:1078
 #: ../src/spacecmd/softwarechannel.py:1167
 msgid "Disable GPG Check [yes/no]? "
-msgstr ""
+msgstr "Zakázať kontrolu GPG [áno/nie]? "
 
 #: ../src/spacecmd/softwarechannel.py:814
 msgid "A channel label is required to identify the channel"
-msgstr ""
+msgstr "Na identifikáciu kanála je potrebné označenie kanála"
 
 #: ../src/spacecmd/softwarechannel.py:817
 msgid "Only [yes/no] values are acceptable for --disable_gpg_check"
-msgstr ""
+msgstr "Pre --disable_gpg_check sú prípustné iba hodnoty [yes/no]"
 
 #: ../src/spacecmd/softwarechannel.py:857
 msgid "softwarechannel_create: Create a software channel"
-msgstr ""
+msgstr "softwarechannel_create: Vytvoriť softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:858
 #, python-format
@@ -5416,15 +5416,28 @@ msgid ""
 "  -f GPG_FINGERPRINT\n"
 "  -g DISABLE_GPG_CHECK"
 msgstr ""
+"použitie: softwarechannel_create [voľby]\n"
+"\n"
+"options:\n"
+"  -n NÁZOV\n"
+"  -l OZNAČENIE\n"
+"  -s SÚHRN\n"
+"  -p RODIČOVSKÝ_KANÁL\n"
+"  -a ARCHITEKTÚRA\n"
+"  -c KONTROLNÝ_SÚČET %s\n"
+"  -u URL_GPG\n"
+"  -i ID_GPG\n"
+"  -f ODTLAČOK_GPG\n"
+"  -g ZAKÁZANIE_KONTROLY_GPG"
 
 #: ../src/spacecmd/softwarechannel.py:891
 #: ../src/spacecmd/softwarechannel.py:1061
 msgid "Channel Name:"
-msgstr ""
+msgstr "Názov kanála:"
 
 #: ../src/spacecmd/softwarechannel.py:893
 msgid "Channel Summary:"
-msgstr ""
+msgstr "Súhrn kanála:"
 
 #: ../src/spacecmd/softwarechannel.py:901
 #: ../src/spacecmd/softwarechannel.py:1069
@@ -5441,7 +5454,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:918
 msgid "GPG URL"
-msgstr ""
+msgstr "URL GPG"
 
 #: ../src/spacecmd/softwarechannel.py:924
 msgid "GPG ID"
