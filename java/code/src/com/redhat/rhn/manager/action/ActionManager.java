@@ -895,13 +895,57 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Retrieve the list of completed actions for a particular user
+     * Retrieve the list of archived actions for a particular user
      * @param user The user in question
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult archivedActions(User user, PageControl pc) {
         return getActions(user, pc, "archived_action_list");
+    }
+
+    /**
+     * Retrieve the list of all archived actions for a particular user
+     * @param user The user in question
+     * @param pc The details of which results to return
+     * @return A list containing the pending actions for the user
+     */
+    public static DataResult allArchivedActions(User user, PageControl pc) {
+        return getActions(user, pc, "archived_action_list", null, true);
+    }
+
+    /**
+     * Helper method that does the work of getting a specific
+     * DataResult for scheduled actions.
+     * @param user The user in question
+     * @param pc The details of which results to return
+     * @param mode The mode
+     * @param noLimit Return all actions without limiting the results
+     * @return Returns a list containing the actions for the user
+     */
+    private static DataResult getActions(User user, PageControl pc, String mode,
+            String setLabel, boolean noLimit) {
+        SelectMode m = ModeFactory.getMode("Action_queries", mode);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
+        if (setLabel != null) {
+            params.put("set_label", setLabel);
+        }
+        if (pc != null) {
+            return makeDataResult(params, params, pc, m);
+        }
+	if (!noLimit) {
+            int limit = ConfigDefaults.get().getActionsDisplayLimit();
+            if (limit > 0) {
+                m.setMaxRows(limit);
+            }
+	}
+        DataResult dr = m.execute(params);
+        dr.setTotalSize(dr.size());
+        dr.setElaborationParams(params);
+        return dr;
     }
 
     /**
@@ -914,25 +958,7 @@ public class ActionManager extends BaseManager {
      */
     private static DataResult getActions(User user, PageControl pc, String mode,
             String setLabel) {
-        SelectMode m = ModeFactory.getMode("Action_queries", mode);
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", user.getId());
-        params.put("org_id", user.getOrg().getId());
-        params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
-        if (setLabel != null) {
-            params.put("set_label", setLabel);
-        }
-        if (pc != null) {
-            return makeDataResult(params, params, pc, m);
-        }
-        int limit = ConfigDefaults.get().getActionsDisplayLimit();
-        if (limit > 0) {
-            m.setMaxRows(limit);
-        }
-        DataResult dr = m.execute(params);
-        dr.setTotalSize(dr.size());
-        dr.setElaborationParams(params);
-        return dr;
+        return getActions(user, pc, mode, null, false);
     }
 
     /**
