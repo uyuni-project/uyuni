@@ -1,3 +1,4 @@
+- Mark SSH minion actions when they're picked up (bsc#1188505)
 - Add UEFI support for VM creation / editing
 - Add virt-tuner templates to VM creation
 - Fix cleanup always being executed on delete system (bsc#1189011)
