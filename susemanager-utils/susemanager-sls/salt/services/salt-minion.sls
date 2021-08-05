@@ -42,6 +42,25 @@ mgr_salt_minion:
     - order: last
 {% endif %}
 
+{%- if salt['pillar.get']('contact_method') in ['ssh-push', 'ssh-push-tunnel'] %}
+logrotate_configuration:
+  file.managed:
+    - name: /etc/logrotate.d/salt-ssh
+    - user: root
+    - group: root
+    - mode: 644
+    - makedirs: True
+    - contents: |
+        /var/log/salt-ssh.log {
+                su root root
+                weekly
+                missingok
+                rotate 7
+                compress
+                notifempty
+        }
+{% endif %}
+
 {# ensure /etc/sysconfig/rhn/systemid is created to indicate minion is managed by SUSE Manager #}
 /etc/sysconfig/rhn/systemid:
   file.managed:
