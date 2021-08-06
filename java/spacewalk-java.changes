@@ -1,3 +1,4 @@
+- Properly handle virtual networks without defined bridge (bsc#1189167)
 - Mark SSH minion actions when they're picked up (bsc#1188505)
 - Add UEFI support for VM creation / editing
 - Add virt-tuner templates to VM creation

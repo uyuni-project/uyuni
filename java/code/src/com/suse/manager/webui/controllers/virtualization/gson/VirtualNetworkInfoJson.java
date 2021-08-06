@@ -38,7 +38,9 @@ public class VirtualNetworkInfoJson {
     public VirtualNetworkInfoJson(String nameIn, JsonObject values) {
         setName(nameIn);
         setUuid(values.get("uuid").getAsString());
-        setBridge(values.get("bridge").getAsString());
+        if (values.get("bridge") != null) {
+            setBridge(values.get("bridge").getAsString());
+        }
         setActive(values.get("active").getAsInt() == 1);
         setAutostart(values.get("autostart").getAsInt() == 1);
         setPersistent(values.get("persistent").getAsInt() == 1);
