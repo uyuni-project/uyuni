@@ -1,3 +1,4 @@
+- Properly handle virtual networks without defined bridge (bsc#1189167)
 - Fix cleanup always being executed on delete system (bsc#1189011)
 - Warning in Overview page for SLE Micro system (bsc#1188551)
 - Fix system information forwarding to SCC (bsc#1188900)
