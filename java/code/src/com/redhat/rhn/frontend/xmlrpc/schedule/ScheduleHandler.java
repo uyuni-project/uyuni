@@ -234,8 +234,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listAllArchivedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.allArchivedActions(loggedInUser, null);
-        return dr.toArray();
+        return ActionManager.allArchivedActions(loggedInUser, null).toArray();
     }
 
     /**
@@ -387,5 +386,4 @@ public class ScheduleHandler extends BaseHandler {
         return 1;
     }
 }
-
 
