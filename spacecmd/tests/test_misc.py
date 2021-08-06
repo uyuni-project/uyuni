@@ -705,6 +705,39 @@ class TestSCMisc:
         assert shell.do_clear_caches.called
         assert_args_expect(shell.do_clear_caches.call_args_list, [(("", ), {})])
 
+    def test_whoami_negative(self, shell):
+        """
+        Test whoami
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.misc.print", mprint), \
+            patch.object(shell, "current_user", None), \
+            patch("spacecmd.misc.logging", logger):
+            spacecmd.misc.do_whoami(shell, "")
+
+        assert not mprint.called
+        assert logger.warning.called
+
+    def test_whoami_positive(self, shell):
+        """
+        Test whoami
+
+        :param shell:
+        :return:
+        """
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.misc.print", mprint), \
+                patch("spacecmd.misc.logging", logger):
+            spacecmd.misc.do_whoami(shell, "")
+
+        assert mprint.called
+        assert not logger.warning.called
+
     def test_whoamitalkingto(self, shell):
         """
         Test to display what server is connected.
