@@ -26,7 +26,7 @@ use File::Spec ();
 use File::Copy;
 use DBI ();
 use Digest::SHA qw/sha256_hex/;
-use DateTime ();
+use Time::Piece;
 use Sys::Hostname ();
 use Spacewalk::Setup ();
 use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
@@ -507,11 +507,11 @@ EOQ
 }
 
 sub default_cert_expiration {
-  my $dt = DateTime->now;
-  my $dt2 = new DateTime (year => 2038, month => 1, day => 18);
+  my $dt = Time::Piece->localtime;
+  my $dt2 = Time::Piece->strptime("2038-01-18", "%Y-%m-%d");
   my $diff = $dt2 - $dt;
 
-  return $diff->years - 1;
+  return int($diff->years) - 1;
 }
 
 

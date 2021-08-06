@@ -68,7 +68,6 @@ Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-DateTime
 Requires:       perl-Frontier-RPC
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
@@ -107,7 +106,6 @@ Recommends:     cobbler20
 %endif
 Requires:       /usr/bin/gpg
 Requires:       curl
-Requires:       perl-DateTime
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
 Requires:       spacewalk-base-minimal
