@@ -1019,6 +1019,9 @@ public class SaltService implements SystemQuery, SaltApi {
     public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
         return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId)
                 .map(result -> {
+                    if (result.isEmpty()) {
+                        return new RedhatProductInfo();
+                    }
                     Optional<String> oracleReleaseContent = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_ORACLE_RELEASE)
                             .getChanges(CmdResult.class).getStdout());

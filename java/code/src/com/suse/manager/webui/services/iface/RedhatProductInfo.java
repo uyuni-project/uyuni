@@ -55,6 +55,20 @@ public class RedhatProductInfo {
     }
 
     /**
+     * Default Constructor
+     */
+    public RedhatProductInfo() {
+        this.rockyReleaseContent = Optional.empty();
+        this.amazonReleaseContent = Optional.empty();
+        this.almaReleaseContent = Optional.empty();
+        this.alibabaReleaseContent = Optional.empty();
+        this.oracleReleaseContent = Optional.empty();
+        this.centosReleaseContent = Optional.empty();
+        this.rhelReleaseContent = Optional.empty();
+        this.whatProvidesRes = Optional.empty();
+    }
+
+    /**
      * @return rockylinux release content
      */
     public Optional<String> getRockyReleaseContent() {
