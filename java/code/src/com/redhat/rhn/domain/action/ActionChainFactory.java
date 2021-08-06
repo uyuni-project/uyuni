@@ -306,6 +306,16 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
+     * Returns all existing ActionChains in the database
+     *
+     * @return an ActionChain list
+     */
+    public static List<ActionChain> getAllActionChains() {
+        return singleton.listObjectsByNamedQuery(
+                "ActionChain.getAllActionChains", new HashMap<String, Object>());
+    }
+
+    /**
      * Gets the next sort order value.
      * @param actionChain the action chain
      * @return the next sort order value
