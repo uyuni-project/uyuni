@@ -936,12 +936,12 @@ public class ActionManager extends BaseManager {
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-	if (!noLimit) {
+        if (!noLimit) {
             int limit = ConfigDefaults.get().getActionsDisplayLimit();
             if (limit > 0) {
                 m.setMaxRows(limit);
             }
-	}
+        }
         DataResult dr = m.execute(params);
         dr.setTotalSize(dr.size());
         dr.setElaborationParams(params);
