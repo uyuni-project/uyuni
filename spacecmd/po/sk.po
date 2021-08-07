@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-06 20:12+0000\n"
+"PO-Revision-Date: 2021-08-07 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5494,7 +5494,7 @@ msgstr "Označenie %s už používa kanál %s"
 
 #: ../src/spacecmd/softwarechannel.py:1020
 msgid "softwarechannel_clone: Clone a software channel"
-msgstr ""
+msgstr "softwarechannel_clone: Klonovať softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:1021
 msgid ""
@@ -5514,16 +5514,31 @@ msgid ""
 "  --regex/-x \"s/foo/bar\" : Optional regex replacement,\n"
 "        replaces foo with bar in the clone name and label"
 msgstr ""
+"použitie: softwarechannel_clone [voľby])\n"
+"\n"
+"voľby:\n"
+"  -s ZDROJOVÝ_KANÁL\n"
+"  -n NÁZOV\n"
+"  -l OZNAČENIE\n"
+"  -p RODIČOVSKÝ_KANÁL\n"
+"  --gpg-copy/-g (kopírovanie podrobností GPG ZDROJOVÉHO_KANÁLA)\n"
+"  --gpg-url URL_GPG\n"
+"  --gpg-id ID_GPG\n"
+"  --gpg-fingerprint(ODTLAČOK_GPG)\n"
+"  --disable-gpg-check ZAKÁZANIE_KONTROLY_GPG\n"
+"  -o neklonovať žiadne opravy\n"
+"  --regex/-x \"s/foo/bar\" : Voliteľná náhrada regulárneho výrazu,\n"
+"        nahrádza foo s bar v názve klonu a označení"
 
 #: ../src/spacecmd/softwarechannel.py:1056
 #: ../src/spacecmd/softwarechannel.py:1156
 msgid "Source Channels:"
-msgstr ""
+msgstr "Zdrojové kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:1060
 #: ../src/spacecmd/softwarechannel.py:1159
 msgid "Select source channel:"
-msgstr ""
+msgstr "Vybrať zdrojový kanál:"
 
 #: ../src/spacecmd/softwarechannel.py:1064
 msgid "Base Channels:"
@@ -5532,7 +5547,7 @@ msgstr "Základné kanály:"
 #: ../src/spacecmd/softwarechannel.py:1072
 #: ../src/spacecmd/softwarechannel.py:1162
 msgid "Copy source channel GPG details? [y/N]:"
-msgstr ""
+msgstr "Kopírovať podrobnosti GPG zdrojového kanála? [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1081
 #: ../src/spacecmd/softwarechannel.py:1170
@@ -5542,17 +5557,18 @@ msgstr "Pôvodný stav (Žiadne opravy chýb) [a/N]:"
 #: ../src/spacecmd/softwarechannel.py:1085
 #: ../src/spacecmd/softwarechannel.py:1173
 msgid "A source channel is required"
-msgstr ""
+msgstr "Vyžaduje sa zdrojový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:1106
 #: ../src/spacecmd/softwarechannel.py:1184
 msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
-msgstr ""
+msgstr "Pre --disable-gpg-check sú prípustné iba hodnoty [yes/no]"
 
 #: ../src/spacecmd/softwarechannel.py:1122
 msgid ""
 "softwarechannel_clonetree: Clone a software channel and its child channels"
 msgstr ""
+"softwarechannel_clonetree: Klonovať softvérový kanál a jeho kanály potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:1123
 msgid ""
@@ -5577,11 +5593,11 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1160
 msgid "Prefix:"
-msgstr ""
+msgstr "Predpona:"
 
 #: ../src/spacecmd/softwarechannel.py:1177
 msgid "A prefix or regex is required"
-msgstr ""
+msgstr "Vyžaduje sa predpona alebo regulárny výraz"
 
 #: ../src/spacecmd/softwarechannel.py:1189
 #: ../src/spacecmd/softwarechannel.py:1960
