@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-07 19:12+0000\n"
+"PO-Revision-Date: 2021-08-08 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5590,6 +5590,24 @@ msgid ""
 "  --regex/-x \"s/foo/bar\" : Optional regex replacement,\n"
 "        replaces foo with bar in the clone name, label and description"
 msgstr ""
+"použitie: softwarechannel_clonetree [voľby])\n"
+"             napr.    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\""
+"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
+"\n"
+"voľby:\n"
+"  -s/--source-channel ZDROJOVÝ_KANÁL\n"
+"  -p/--prefix PREDPONA (sa doplní pred označenie a názov všetkých kanálov)\n"
+"  --gpg-copy/-g (skopírovanie podrobností GPG pre zodpovedajúci zdrojový "
+"kanál)\n"
+"  --gpg-url URL_GPG (použité na všetky kanály)\n"
+"  --gpg-id ID_GPG (použité na všetky kanály)\n"
+"  --gpg-fingerprint(ODTLAČOK_GPG (použité na všetky kanály))\n"
+"  --disable-gpg-check ZAKÁZANIE_KONTROLY_GPG (použité na všetky kanály)\n"
+"  -o neklonovať žiadne opravy chýb\n"
+"  --regex/-x \"s/foo/bar\" : Voliteľná náhrada regulárneho výrazu,\n"
+"        nahrádza foo s bar v názve klonu, označení a popise"
 
 #: ../src/spacecmd/softwarechannel.py:1160
 msgid "Prefix:"
@@ -5603,43 +5621,45 @@ msgstr "Vyžaduje sa predpona alebo regulárny výraz"
 #: ../src/spacecmd/softwarechannel.py:1960
 #: ../src/spacecmd/softwarechannel.py:2000
 msgid "Channel does not exist or is not a base channel!"
-msgstr ""
+msgstr "Kanál neexistuje alebo nie je základným kanálom!"
 
 #. Shouldn't ever get here due to earlier checks
 #: ../src/spacecmd/softwarechannel.py:1216
 msgid "called without prefix or regex option!"
-msgstr ""
+msgstr "volané bez voľby predpony alebo regulárneho výrazu!"
 
 #: ../src/spacecmd/softwarechannel.py:1268
 #, python-format
 msgid "Cloning %s as %s"
-msgstr ""
+msgstr "Klonovanie %s ako %s"
 
 #: ../src/spacecmd/softwarechannel.py:1316
 msgid "softwarechannel_addpackages: Add packages to a software channel"
-msgstr ""
+msgstr "softwarechannel_addpackages: Pridať balíky do softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:1317
 msgid "usage: softwarechannel_addpackages CHANNEL <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_addpackages KANÁL <BALÍK ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1355
 msgid "No packages to add"
-msgstr ""
+msgstr "Žiadne balíky na pridanie"
 
 #: ../src/spacecmd/softwarechannel.py:1362
 msgid "Add these packages [y/N]:"
-msgstr ""
+msgstr "Pridať tieto balíky [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1374
 msgid ""
 "softwarechannel_mergepackages: Merge packages from one software channel into "
 "another"
 msgstr ""
+"softwarechannel_mergepackages: Zlúčiť balíky z jedného softvérového kanála "
+"do druhého"
 
 #: ../src/spacecmd/softwarechannel.py:1375
 msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_mergepackages ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:1399
 msgid "softwarechannel_removeerrata: Remove patches from a software channel"
