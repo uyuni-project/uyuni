@@ -22,6 +22,8 @@ function VirtualSystems(props: Props) {
   const fetchURL = "/rhn/manager/api/systems/list/virtual";
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedSystems, setSelectedSystems] = useState([]);
+  const [selectedSystemsCount, setCount] = useState(0);
 
   useEffect(() => {
     Network.get(fetchURL)
@@ -34,6 +36,21 @@ function VirtualSystems(props: Props) {
       })
   }, [])
 
+  const handleSelectedSystems = (data) => {
+    setSelectedSystems(data);
+  };
+
+  useEffect(()=> {
+    setCount(selectedSystems.length);
+    document.getElementById("header_selcount").innerHTML = '<span id="spacewalk-set-system_list-counter" class="badge">'
+   + selectedSystemsCount.toString() + '</span>'
+   + (selectedSystemsCount==1? "system selected" : "systems selected");
+  }, [handleSelectedSystems])
+
+  const addToSSM = () => {
+    var url = "/rhn/manager/systems/addToSsm";
+    Network.post(url, selectedSystems);
+  }
 
   const searchData = (datum, criteria) => {
     if (criteria) {
@@ -52,10 +69,17 @@ function VirtualSystems(props: Props) {
         </a>
       </h1>
 
+      <div>
+        <button className="btn btn-default" onClick={addToSSM}>{t("Add Selected to SSM")}</button>
+      </div>
+
       <Table
         data={items}
         identifier={items => items.uuid}
         initialSortColumnKey="vHost"
+        selectable
+        selectedItems={selectedSystems}
+        onSelect={handleSelectedSystems}
         initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by System name: ")} />}
         emptyText={t("No Virtual Systems.")}

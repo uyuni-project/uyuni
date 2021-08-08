@@ -92,6 +92,8 @@ public class SsmController {
                 withUser(SsmController::computeAllowedChannelChanges));
         post("/manager/systems/ssm/channels",
                 withUser(SsmController::changeChannels));
+        post("/manager/systems/addToSsm",
+                withUser(SsmController::addSystemsToSsm));
     }
 
     /**
@@ -209,6 +211,19 @@ public class SsmController {
                 scheduleResult
         );
         return json(GSON, response, ResultJson.success(result));
+    }
+    /**
+     * Add selected systems to SSM
+     *
+     * @param request the http request
+     * @param response the http response
+     * @param user the user
+     * @return the json response
+     */
+    public static String addSystemsToSsm(Request request, Response response, User user) {
+        String[] serverIds = GSON.fromJson(request.body(), String[].class);
+        SsmManager.addServersToSsm(user, serverIds);
+        return json(GSON, response, ResultJson.success());
     }
 
 }
