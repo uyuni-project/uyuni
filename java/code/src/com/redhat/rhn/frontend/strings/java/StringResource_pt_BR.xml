@@ -1828,7 +1828,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">Conjunto de interface de rede primária para &lt;strong&gt;{0}&lt;/strong&gt;.</target>
+        <target state="translated">Propriedades de rede atualizadas.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -2262,21 +2262,32 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
-          &lt;p&gt;Para resolver este problema, por favor verifique os seguintes detalhes:&lt;/p&gt;
-          &lt;ul&gt;
-          &lt;li&gt;
-          O canal do software filho 'rhn-tools para este canal base do perfil kickstart/nestá disponível em sua organização? Caso não esteja, você deverá solicitar/ndireitos sobre o canal do software 'rhn-tools' para seu administrador @@PRODUCT_NAME@@./n&lt;/li&gt;
-          &lt;li&gt;
-          Certifique-se de que o canal filho 'rhn-tools' para este canal base do perfil kickstar/nestá disponível para seu @@PRODUCT_NAME@@. Caso não esteja, por favor contacte seu/nadministrador satellite e solicite um satellite-sync para seu canal rhn-tools/n e tente novamente./n&lt;/li&gt;
-          &lt;li&gt;
-          Certifique-se de que os pacotes  rhn-kickstart* correspondentes a este kickstart estão/n disponíveis no canal 'rhn-tools' do canal base kickstart. caso não estejam, você/nprecisará torná-los disponíveis para o perfil kickstart funcionar corretamente./n&lt;/li&gt;
-          &lt;li&gt;
-          Os pacotes listados acima disponíveis neste canal base kickstart? Caso não estejam, você precisará torná-los
-          disponíveis para seu perfil kickstart funcionar corretamente./n&lt;/li&gt;
-          &lt;/ul&gt;
-          &lt;/div&gt;
-        </target>
+        <target state="translated">&lt;div style="text-align:left;"&gt;
+&lt;p&gt; Para resolver esse problema, verifique o seguinte:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+É o canal de ferramentas do cliente para a base deste perfil de kickstart
+canal disponível para sua organização? Se não estiver, você precisará solicitar
+direitos para o canal de ferramentas do cliente de seu administrador @@ PRODUCT_NAME @@.
+&lt;/li&gt;
+&lt;li&gt;
+Certifique-se de que o canal de ferramentas do cliente para a base deste perfil de kickstart
+canal está disponível para seu @@ PRODUCT_NAME @@. Se não estiver, entre em contato com o seu
+@@ PRODUCT_NAME @@ administrador e solicite uma inter-sincronização mgr para o canal de ferramentas do cliente
+e tente novamente.
+&lt;/li&gt;
+&lt;li&gt;
+Certifique-se de que o pacote spacewalk-koan correspondente a este kickstart são
+disponível no canal de ferramentas do canal base do kickstart. Se não, você
+precisará torná-los disponíveis para que este perfil de kickstart funcione corretamente.
+&lt;/li&gt;
+&lt;li&gt;
+Os pacotes listados acima estão disponíveis no canal base deste kickstart? Caso contrário, você precisará torná-los
+disponível para que este perfil de kickstart funcione corretamente.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
@@ -2296,7 +2307,23 @@ and try again.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt; &lt;p&gt;Para resolver esse problema, verifique o seguinte:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; O canal de software filho 'appstream' para o canal base deste perfil do kickstart está disponível para sua organização? Caso contrário, você precisará solicitar direitos para o canal de software 'appstream' do seu administrador do @@PRODUCT_NAME@@ &lt;/li&gt; &lt;li&gt;Verifique se o canal filho 'appstream' desse canal base do perfil do kickstart está disponível para o seu @@PRODUCT_NAME@@. Caso contrário, entre em contato com o administrador do satélite e solicite um cdn-sync para o canal appstream e tente novamente. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt; Para resolver esse problema, verifique o seguinte: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+É o canal de software filho 'appstream' para a base deste perfil de kickstart
+canal disponível para sua organização? Se não estiver, você precisará solicitar
+direitos para o canal de software 'appstream' de seu administrador @@PRODUCT_NAME@@.
+&lt;/li&gt;
+&lt;li&gt;
+Certifique-se de que o canal filho 'appstream' para a base deste perfil de kickstart
+canal está disponível para seu @@PRODUCT_NAME@@. Se não estiver, entre em contato com o seu
+@@PRODUCT_NAME@@ administrador e solicite uma sincronização cdn para o canal appstream
+e tente novamente.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2327,7 +2354,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">O nome do kickstart que você selecionou é inválida. Ela deve conter no mínimo {0} caracteres e somente conter os seguintes caracteres: A-Z, a-z, 0-9, _, - </target>
+        <target state="translated">O rótulo de autoinstalação selecionado é inválido, deve ter pelo menos {0} caracteres e conter apenas os seguintes caracteres: A-Z, a-z, 0-9, _, - </target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
@@ -2464,7 +2491,7 @@ and try again.
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message" xml:space="preserve">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
-        <target state="needs-adaptation">O nome do arquivo do snippet solicitado não é válido. O nome do arquivo do snippet do kickstart não pode conter barra (/) nem começar com um ponto (.)</target>
+        <target state="translated">O nome do arquivo do snippet solicitado não é válido. O nome do arquivo do snippet do kickstart não pode conter uma barra (/) ou começar com um ponto (.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -3090,7 +3117,7 @@ and try again.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="needs-adaptation">Os arquivos de Índice estão faltando na procura de servidor. Se a data existe no banco de dados, os índices podem ser gerados novamente, rodando: /usr/sbin/rhn-search cleanindex, e depois reiniciar o rhn-search</target>
+        <target state="translated">Arquivos de índice ausentes no servidor de pesquisa. Assumindo que os dados existem no banco de dados, os índices podem ser regenerados executando: /usr/sbin/rhn-search cleanindex e reinicie o rhn-search</target>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing_for_docs" xml:space="preserve">
         <source>Index files were missing from search-server for your locale. The search operation was performed using the default locale. Assuming data exists in database for your locale, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
@@ -3477,7 +3504,9 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target state="needs-adaptation">Você não pode desativar outro administrador da organização. Por favor remova a função 'Administrador da Organização' deste usuário antes de tentar desativar sua conta.</target>
+        <target state="translated">Você não pode desativar outra organização
+administrador. Remova a função de 'Administrador da organização' deste
+usuário antes de tentar desativar sua conta.</target>
       </trans-unit>
       <trans-unit id="userdisable.error.userdisabled" xml:space="preserve">
         <source>User is already deactivated.</source>
@@ -4021,7 +4050,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;NOTA:&lt;/strong&gt; O @@PRODUCT_NAME@@ &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;agendado&lt;/a&gt;&lt;/strong&gt; uma verificação de atualizações de hardware para &lt;strong&gt;{2}&lt;/strong&gt; a ser rodado antes do pacote profile sync.  Isto é necessário para verificar se o sistema tem a habilidade de comparar pacotes.</target>
+        <target state="translated">&lt;strong&gt;NOTA:&lt;/strong&gt; O @@PRODUCT_NAME@@ &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;agendado&lt;/a&gt;&lt;/strong&gt; uma verificação de atualizações de hardware para &lt;strong&gt;{2}&lt;/strong&gt; a ser rodado antes do pacote profile sync.  Isto é necessário para verificar se o sistema tem a habilidade de comparar pacotes.</target>
       </trans-unit>
       <trans-unit id="filterCreate.success" xml:space="preserve">
         <source>The filter {0} was successfully created</source>
@@ -4049,7 +4078,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.systems.monitoring.BaseProbeAction</context>
         </context-group>
-        <target state="needs-adaptation">: </target>
+        <target state="translated">: </target>
       </trans-unit>
       <trans-unit id="error.duplicateprofilename" xml:space="preserve">
         <source>{0} is already in use. Please enter a different profile name.</source>
@@ -5944,7 +5973,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
-        <target state="needs-adaptation">Método de Notificação '{0}' já está em uso.  Por favor escolha um outro nome.</target>
+        <target state="translated">Método de Notificação com nome '{0}' já está em uso.  Por favor escolha um outro nome.</target>
       </trans-unit>
       <trans-unit id="Bootstrap Script" xml:space="preserve">
         <source>Bootstrap Script</source>
@@ -6050,14 +6079,14 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="needs-adaptation">Script de rotina de inicialização criado com sucesso.  Você pode acessá-lo em &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
+        <target state="translated">Script de bootstrap gerado com sucesso.  Você pode acessá-lo em &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="needs-adaptation">Ocorreu um erro ao reiniciar o satellite.  Este pode ser reiniciado manualmente pelo console atribuindo o comando: /usr/sbin/service rhn-satellite restart.  Por favor contate o suporte para mais informações.</target>
+        <target state="translated">Ocorreu um erro ao reiniciar o @@PRODUCT_NAME@@. Ele pode ser reiniciado manualmente no console emitindo o comando: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Entre em contato com o suporte para obter mais informações.</target>
       </trans-unit>
       <trans-unit id="config.storeconfig.error" xml:space="preserve">
         <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
@@ -6071,7 +6100,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="needs-adaptation">@@PRODUCT_NAME@@ reiniciando. Caso esta página não seja atualizada em 5 minutos, por favor clique  &lt;a href="/rhn/YourRhn.do"&gt;aqui&lt;/a&gt; para tentar manualmente. </target>
+        <target state="translated">@@PRODUCT_NAME@@ reiniciando. Caso esta página não seja atualizada em 5 minutos, por favor clique  &lt;a href="/rhn/YourRhn.do"&gt;aqui&lt;/a&gt; para tentar manualmente. </target>
       </trans-unit>
       <trans-unit id="restart.config.norestart" xml:space="preserve">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6141,7 +6170,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">Esta descrição já está em uso.  Por favor digite uma nova descrição para esta chave.</target>
+        <target state="translated">Esta descrição já está em uso.  Por favor digite uma nova descrição para esta chave.</target>
       </trans-unit>
       <trans-unit id="label" xml:space="preserve">
         <source>Label</source>
@@ -6183,7 +6212,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">Nome de Preservação de Arquivos já existe. Por favor escolha outro nome de Preservação de Arquivos único.</target>
+        <target state="translated">Nome de Preservação de Arquivos já existe. Por favor escolha outro nome de Preservação de Arquivos único. </target>
       </trans-unit>
       <trans-unit id="filelists.jsp.selectafilelist" xml:space="preserve">
         <source>No File List(s) selected.</source>
@@ -6235,17 +6264,17 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">Systems Not Checking In:
-          -------------------------
-          The following systems recently stopped checking in with @@PRODUCT_NAME@@:
+        <target state="translated">Sistemas que não fazem check-in:
+           -------------------------
+           Os sistemas a seguir interromperam recentemente o check-in com @@PRODUCT_NAME@@:
 
-          {0}
+           {0}
 
 
-          Please note that inactive systems cannot receive any updates.
+           Observe que os sistemas inativos não podem receber nenhuma atualização.
 
-          Follow this url to see the full list of inactive systems:
-          {1}</target>
+           Siga este url para ver a lista completa de sistemas inativos:
+           {1}</target>
       </trans-unit>
       <trans-unit id="taskomatic.daily.sid" xml:space="preserve">
         <source>System Id</source>
@@ -6414,7 +6443,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">Os parâmetros extras do kernel não podem ter mais que 128 caracteres.</target>
+        <target state="translated">Os parâmetros extras do kernel não podem ter mais que 2048 caracteres.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -6442,7 +6471,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
-        <target state="needs-adaptation">Kickstart clonado com sucesso.  Agora você está editando o Kickstart clonado.</target>
+        <target state="translated">Autoinstalação clonada com sucesso. Agora você está editando a Autoinstalação clonada.</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.success" xml:space="preserve">
         <source>Autoinstallation canceled.</source>
@@ -6470,7 +6499,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="needs-adaptation">Gravação do sistema criada para {0} no Cobbler. Isto permitirá que você inicie o kickstart deste sistema usando o perfil {1} a partir do terminal do {0} com uso do comando 'koan'.</target>
+        <target state="translated">Gravação do sistema criada para {0} no Cobbler.  Isto permitirá que você inicie o Autoinstalar deste sistema usando o perfil {1} a partir do terminal do {0} com uso do comando 'koan'.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate.bootstrap" xml:space="preserve">
         <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
@@ -6491,7 +6520,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="needs-adaptation">Não foi encontrado nenhum perfil que seja compatível com este sistema.  Ou você não criou nenhum Perfil de Kickstart ou este sistema não possui um Canal Base.</target>
+        <target state="translated">Não foi encontrado nenhum perfil que seja compatível com este sistema.  Ou você não criou nenhum Perfil de Autoinstalação ou este sistema não possui um Canal Base.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
@@ -6610,7 +6639,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">A formatação do nome está incorreta. O nome deve conter somente letras, números, hífens, pontos finais, e sublinhados (underscores).  Além disso, o nome deve ter no mínimo 4 caracteres</target>
+        <target state="translated">A formatação do nome está incorreta.  O nome deve conter somente letras, números, hífens, pontos finais, e sublinhados (underscores).  Além disso, o nome deve ter no mínimo 4 caracteres</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -6631,7 +6660,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
-        <target state="needs-adaptation">A Distribuição do Kickstart que você escolheu para remover está em uso.  Por favor remova ou mude a Distribuição para Perfis de Kickstart usando esta Distribuição.</target>
+        <target state="translated">A Distribuição do Autoinstalável que você escolheu para remover está em uso.  Por favor remova ou mude a Distribuição para Perfis de Autoinstalação usando esta Distribuição.</target>
       </trans-unit>
       <trans-unit id="basepath" xml:space="preserve">
         <source>External Location</source>
@@ -6769,7 +6798,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
         <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-        <target state="needs-adaptation">Você pode confirmar se a implementação da configuração estará ativada neste sistema ao selecionar este sistema na tela &lt;a href={0}&gt;{1}&lt;/a&gt; e depois clicando em  "{2}".</target>
+        <target state="translated">Você pode confirmar se a implementação da configuração estará ativada neste sistema ao selecionar este sistema na tela  &lt;a href={0}&gt;{1}&lt;/a&gt; e depois clicando em "{2}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -6838,7 +6867,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
-        <target state="needs-adaptation">Erro ao criar a Revisão de Arquivo de Configuração: Arquivo carregado não encontrado</target>
+        <target state="translated">Erro ao criar a Revisão de Arquivo de Configuração:  Arquivo carregado não encontrado</target>
       </trans-unit>
       <trans-unit id="error.config-empty" xml:space="preserve">
         <source>Error creating Configuration File Revision:  File {0} is empty.</source>
@@ -6846,7 +6875,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File /etc/testfile.txt not found.</context>
         </context-group>
-        <target state="needs-adaptation">Erro ao criar Revisão de Arquivo de Configuração: Arquivo {0} está vazio.</target>
+        <target state="translated">Erro ao criar Revisão de Arquivo de Configuração:  Arquivo {0} está vazio.</target>
       </trans-unit>
       <trans-unit id="error.configtoolarge" xml:space="preserve">
         <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
@@ -6854,7 +6883,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
         </context-group>
-        <target state="needs-adaptation">Erro ao criar Revisão de Arquivo de Configuração: Arquivo muito grande. O tamanho máximo de arquivo é {0}</target>
+        <target state="translated">Erro ao criar Revisão de Arquivo de Configuração:  Arquivo muito grande.  O tamanho máximo de arquivo é {0}</target>
       </trans-unit>
       <trans-unit id="config_revisions.failure" xml:space="preserve">
         <source>{0} revision deletions failed.</source>
@@ -8513,7 +8542,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="needs-adaptation">Nota: Algumas subscrições de canal não puderam ser atualizadas pois não haviam subscrições disponíveis.</target>
+        <target state="translated">Nota:  Algumas subscrições de canal não puderam ser atualizadas pois não haviam subscrições disponíveis.</target>
       </trans-unit>
       <trans-unit id="ssm.groups.changed" xml:space="preserve">
         <source>System Group membership changed.</source>
@@ -8608,7 +8637,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation">Não pôde subscrever automaticamente o sistema ao Canal de Ferramentas do RHN. Este canal contém pacotes solicitados para a virtualização. É bem provável que isto seja causado pela falta de serviços do canal.</target>
+        <target state="translated">Não foi possível inscrever automaticamente o sistema no canal @@PRODUCT_NAME@@ Tools. Este canal contém pacotes necessários para virtualização.  Provavelmente, isto é causado pela falta de direitos de canais.</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
@@ -8629,7 +8658,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation">Não foi possível subscrever automaticamente o sistema no Canal de Virtualização do RHEL. O canal contém pacotes necessários para a virtualização. Isto é causado mais provavelmente por causa da falta de serviços do canal.</target>
+        <target state="translated">Não foi possível subscrever automaticamente o sistema no Canal de Virtualização do RHEL.  O canal contém pacotes necessários para a virtualização.  Isto é causado mais provavelmente por causa da falta de serviços do canal.</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
@@ -8650,21 +8679,21 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target state="needs-adaptation">NOTA: Para habilitar e usar as capacidades de virtualização dentro do @@PRODUCT_NAME@@ para este sistema, instale o pacote do rhn-virtualization-host a partir do canal filho associado às Ferramentas do RHN. Reveja a documentação da Red Hat para qualquer consideração ou requerimento que o Red Hat Enterprise Linux tenha quanto à habilitação da Ferramenta de Virtualização de um sistema Host. </target>
+        <target state="translated">NOTA: Para habilitar e usar as capacidades de virtualização dentro do @@PRODUCT_NAME@@ para este sistema, instale o pacote do mgr-virtualization-host a partir do canal filho. Reveja a documentação para qualquer consideração e requerimento quanto à habilitação da Ferramenta de Virtualização de um sistema Host.</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">Este usuário falha com as permissões solicitadas para migração deste sistema.</target>
+        <target state="translated">Este usuário não possui as permissões necessárias para transferir este sistema.</target>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
         <source>Systems can only be transferred between trusted organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">Os sistemas podem apenas serem migrados entre organizações confiáveis.</target>
+        <target state="translated">Os sistemas só podem ser transferidos entre organizações confiáveis.</target>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
@@ -10815,191 +10844,191 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
         <source>Project {0} deleted successfully</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
         <source>Project already exists</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.label_required" xml:space="preserve">
         <source>Label is required</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
         <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
         <source>Label must not exceed 24 characters</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.name_required" xml:space="preserve">
         <source>Name is required</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
         <source>Filter {0} created successfully</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
-    <trans-unit id="virt.network_create" xml:space="preserve">
+      <trans-unit id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
-      <target state="new" />
-  </trans-unit>
-    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Transfer" xml:space="preserve">
         <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.guest_migrate" xml:space="preserve">
         <source>Migrate a virtual domain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
