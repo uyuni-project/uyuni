@@ -474,7 +474,6 @@ def do_schedule_deletearchived(self, args):
     else:
         date_limit = None
 
-    # Needs to happen in a loop, since we can only fetch in batches. 10k is the default.
     actions = self.client.schedule.listAllArchivedActions(self.session)
 
     # Filter out actions by date if limit is set
