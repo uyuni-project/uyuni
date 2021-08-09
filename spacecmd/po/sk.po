@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-08 19:11+0000\n"
+"PO-Revision-Date: 2021-08-09 19:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5663,7 +5663,7 @@ msgstr "použitie: softwarechannel_mergepackages ZDROJOVÝ_KANÁL CIEĽOVÝ_KAN�
 
 #: ../src/spacecmd/softwarechannel.py:1399
 msgid "softwarechannel_removeerrata: Remove patches from a software channel"
-msgstr ""
+msgstr "softwarechannel_removeerrata: Odstrániť opravy zo softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:1401
 msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
@@ -5672,7 +5672,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1454
 msgid "No patches to remove"
-msgstr ""
+msgstr "Žiadne opravy na odstránenie"
 
 #: ../src/spacecmd/softwarechannel.py:1465
 #: ../src/spacecmd/softwarechannel.py:1794
@@ -5684,23 +5684,23 @@ msgstr "Celkový počet opráv chýb:   %s"
 #: ../src/spacecmd/softwarechannel.py:1797
 #, python-format
 msgid "Total Packages: %s"
-msgstr ""
+msgstr "Celkový počet balíkov: %s"
 
 #: ../src/spacecmd/softwarechannel.py:1468
 msgid "Remove these patches [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto opravy [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1483
 msgid "softwarechannel_removepackages: Remove packages from a software channel"
-msgstr ""
+msgstr "softwarechannel_removepackages: Odstrániť balíky zo softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:1485
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_removepackages KANÁL <BALÍK ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1539
 msgid "No packages to remove"
-msgstr ""
+msgstr "Žiadne balíky na odstránenie"
 
 #: ../src/spacecmd/softwarechannel.py:1559
 msgid ""
@@ -5715,11 +5715,13 @@ msgid ""
 "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
 "ENDDATE"
 msgstr ""
+"použitie: softwarechannel_adderratabydate [voľby] ZDROJ CIEĽ DÁTUM_ZAČIATKU "
+"DÁTUM_UKONČENIA"
 
 #: ../src/spacecmd/softwarechannel.py:1562
 #: ../src/spacecmd/softwarechannel.py:1637
 msgid "Date format : YYYYMMDD"
-msgstr ""
+msgstr "Formát dátumu : RRRRMMDD"
 
 #: ../src/spacecmd/softwarechannel.py:1563
 #: ../src/spacecmd/softwarechannel.py:1694
@@ -5727,7 +5729,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:2629
 #: ../src/spacecmd/softwarechannel.py:2845
 msgid "Options:"
-msgstr ""
+msgstr "Voľby:"
 
 #: ../src/spacecmd/softwarechannel.py:1564
 msgid "        -p/--publish : Publish errata to the channel (don't clone)"
