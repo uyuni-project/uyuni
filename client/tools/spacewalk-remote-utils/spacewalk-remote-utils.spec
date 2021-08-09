@@ -22,8 +22,8 @@
 %endif
 
 Name:           spacewalk-remote-utils
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Summary:        Utilities to interact with a Spacewalk server remotely.
 License:        GPL-2.0-only
 Group:          Applications/System
