@@ -27,8 +27,8 @@ AutoReqProv:    no
 %global debug_package %{nil}
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 
 Summary:        Node.js software used by SUSE Manager at build time
 License:        Apache-2.0 AND 0BSD AND BSD-2-Clause AND BSD-3-Clause AND MIT AND CC-BY-3.0 AND ISC AND SUSE-Public-Domain AND WTFPL AND MPL-2.0
