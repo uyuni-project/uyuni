@@ -51,8 +51,8 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 URL:            https://github.com/uyuni-project/uyuni
