@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 09 11:09:21 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
 - Improved non-SUSE postgresql config handling.
 - Moved postgresql config from spec to mgr-setup.
 - Improve the error management for the PostgreSQL migration script (bsc#1188297)
