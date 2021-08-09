@@ -958,7 +958,7 @@ public class ActionManager extends BaseManager {
      */
     private static DataResult getActions(User user, PageControl pc, String mode,
             String setLabel) {
-        return getActions(user, pc, mode, null, false);
+        return getActions(user, pc, mode, setLabel, false);
     }
 
     /**
