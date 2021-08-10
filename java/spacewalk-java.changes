@@ -1,3 +1,5 @@
+- implement package locking for salt minions
+
 -------------------------------------------------------------------
 Mon Aug 30 11:57:33 CEST 2021 - jmassaguerpla@suse.de
 
