@@ -285,7 +285,11 @@ When(/^I create an activation key including custom channels for "([^"]*)" via XM
     selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
   end
 
-  @activation_key_api.add_child_channels(key, selected_child_channels)
+  begin
+    @activation_key_api.add_child_channels(key, selected_child_channels)
+  rescue XMLRPC::FaultException => e
+    puts "We could not add these channels: #{selected_child_channels}"
+  end
 end
 
 # actionchain namespace
