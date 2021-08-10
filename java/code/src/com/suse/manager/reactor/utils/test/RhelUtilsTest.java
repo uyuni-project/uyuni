@@ -307,7 +307,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rockylinux.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
                     assertEquals("RockyLinux", prod.get().getName());
                     assertEquals("Green Obsidian", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());

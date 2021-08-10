@@ -1,3 +1,6 @@
+- Bring back Beta product tag
+- fix NPE when no redhat info could be fetched
+
 -------------------------------------------------------------------
 Mon Aug 09 11:00:52 CEST 2021 - jgonzalez@suse.com
 
