@@ -633,9 +633,9 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   when 'server'
     $server.run("configure-tftpsync.sh #{ENV['PROXY']}")
   when 'proxy'
-    cmd = "configure-tftpsync.sh --tftpbootdir=/srv/tftpboot \
---server-fqdn=#{ENV['PROXY']} --server-ip=#{$server.public_ip} \
---proxy-fqdn=#{ENV['SERVER']} --proxy-ip=#{$proxy.public_ip}"
+    cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
+--server-fqdn=#{ENV['SERVER']} \
+--proxy-fqdn=#{ENV['PROXY']}"
     $proxy.run(cmd)
   end
 end
