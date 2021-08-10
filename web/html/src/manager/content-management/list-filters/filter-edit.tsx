@@ -52,7 +52,7 @@ type FilterEditProps = {
   icon: string;
   buttonText: string;
   onChange: Function;
-  openFilterId: number;
+  openFilterId?: number;
   projectLabel: string;
   editing?: boolean;
 };

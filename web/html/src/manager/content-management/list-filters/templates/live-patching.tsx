@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Select, FormContext } from "components/input";
 import Network, { JsonResult } from "utils/network";
 import { showErrorToastr } from "components/toastr/toastr";
@@ -49,8 +49,29 @@ function getKernels(id: number, type: string): Promise<Kernel[]> {
     });
 }
 
+function usePrevious<T>(value: T) {
+  const ref = useRef<T>();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
+const useChangeEffect = (...[callBack, dependencies]: Parameters<typeof useEffect>) => {
+  const didMount = useRef(false);
+
+  return useEffect(() => {
+    if (didMount.current) {
+      callBack();
+    } else {
+      didMount.current = true;
+    }
+  }, dependencies);
+}
+
 export default (props: FilterFormProps & { template: Template }) => {
   const template = props.template;
+  const prevTemplate = usePrevious(template);
   if (!template) {
     return null;
   }
@@ -58,6 +79,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   const formContext = React.useContext(FormContext);
   const setModelValue = formContext.setModelValue;
   const systemId = formContext.model.systemId;
+  console.log('model systemid is ', systemId);
   const productId = formContext.model.productId;
   const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
@@ -69,13 +91,28 @@ export default (props: FilterFormProps & { template: Template }) => {
   }, []);
 
   useEffect(() => {
+    // If the template changes, reset what we previously had
+    if (prevTemplate) {
+      setModelValue?.("systemId", null);
+      setModelValue?.("productId", null);
+      setModelValue?.("kernelId", null);
+      setKernels([]);
+    }
+  }, [template]);
+
+  useEffect(() => {
     if (systemId || productId) {
       getKernels(systemId ?? productId, systemId ? "system" : "product").then(result => {
         setKernels(result);
 
-        const latestKernel = result.find(item => Boolean(item.latest));
-        const kernelId = latestKernel?.id ?? result[0]?.id ?? null;
-        setModelValue?.("kernelId", kernelId);
+        // If the selected kernel exists in the set of available kernels, keep using that
+        const prevKernelId = formContext.model.kernelId;
+        if (result.every(item => item.id !== prevKernelId)) {
+          // Otherwise use the latest kernel, if any
+          const latestKernel = result.find(item => Boolean(item.latest));
+          const kernelId = latestKernel?.id ?? result[0]?.id ?? null;
+          setModelValue?.("kernelId", kernelId);
+        }
       })
         .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
     } else {
@@ -85,16 +122,15 @@ export default (props: FilterFormProps & { template: Template }) => {
   }, [
     systemId,
     productId,
-    setModelValue,
   ]);
 
-  useEffect(() => {
-    // If the template changes, reset what we previously had
-    setModelValue?.("systemId", null);
-    setModelValue?.("productId", null);
-    setModelValue?.("kernelId", null);
-    setKernels([]);
-  }, [template, setModelValue]);
+  // TODO: Perhaps it makes more sense to just implement a separate class to fetch url params?
+  const hasInitialValue = Boolean(props.filter.systemId && props.filter.systemName && props.filter.kernelId && props.filter.kernelName);
+  const defaultValueOption = hasInitialValue ? {
+    id: props.filter.systemId,
+    name: props.filter.systemName,
+    kernel: props.filter.kernelName,
+  } : undefined;
 
   return (
     <>
@@ -121,6 +157,7 @@ export default (props: FilterFormProps & { template: Template }) => {
             divClass="col-md-6"
             getOptionValue={system => system.id}
             getOptionLabel={system => `${system.name} (${system.kernel})`}
+            defaultValueOption={defaultValueOption}
           />
         </>
       )}

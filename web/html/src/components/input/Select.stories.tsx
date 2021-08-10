@@ -92,3 +92,48 @@ export const AdvancedExample = () => {
     </div>
   );
 }
+
+export const AsyncExample = () => {
+  const [model, setModel] = React.useState({
+    level: 1,
+  });
+
+  const loadOptions = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([
+          {
+            value: 1,
+            label: "Level 1",
+          },
+          {
+            value: 2,
+            label: "Level 2",
+          },
+        ]);
+      }, 100);
+    });
+  };
+
+  return (
+    <Form
+      model={model}
+      onChange={setModel}
+      onSubmit={() => alert(`Level: ${model["level"]}`)}
+      onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
+      divClass="col-md-12"
+      formDirection="form-horizontal"
+    >
+      <Select
+        loadOptions={loadOptions}
+        name="level"
+        label={t("Level")}
+        labelClass="col-md-3"
+        divClass="col-md-6"
+        getOptionValue={item => item.value}
+        getOptionLabel={item => item.label}
+        defaultValueOption={{ value: 2, label: "Level 2" }}
+      />
+    </Form>
+  );
+};

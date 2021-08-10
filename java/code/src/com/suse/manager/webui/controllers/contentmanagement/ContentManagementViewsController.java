@@ -174,6 +174,22 @@ public class ContentManagementViewsController {
         if (req.queryParams("projectLabel") != null) {
             data.put("projectLabel", req.queryParams("projectLabel"));
         }
+        String openTemplate = req.queryParams("openTemplate");
+        if (openTemplate != null) {
+            data.put("openTemplate", openTemplate);
+
+            String systemId = req.queryParams("systemId");
+            String systemName = req.queryParams("systemName");
+            String kernelId = req.queryParams("kernelId");
+            String kernelName = req.queryParams("kernelName");
+            // TODO: Check for system and kernelid not null here
+            if (openTemplate.equals("LivePatchingSystem")) {
+                data.put("systemId", systemId != null ? systemId : "");
+                data.put("systemName", systemName != null ? systemName : "");
+                data.put("kernelId", kernelId != null ? kernelId : "");
+                data.put("kernelName", kernelName != null ? kernelName : "");
+            }
+        }
 
 
         return new ModelAndView(data, "controllers/contentmanagement/templates/list-filters.jade");

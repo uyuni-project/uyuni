@@ -19,8 +19,13 @@ import { Button } from "components/buttons";
 
 type Props = {
   filters: Array<FilterServerType>;
-  openFilterId: number;
+  openFilterId?: number;
   projectLabel: string;
+  openTemplate?: string;
+  systemId?: number;
+  systemName: string;
+  kernelId?: number;
+  kernelName: string;
   flashMessage: string;
 };
 
@@ -98,12 +103,23 @@ const ListFilters = (props: Props) => {
     return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
   };
 
+  // TODO: OR with const values for testing
+  const initialFilterForm = {
+    rule: "deny",
+    labelPrefix: props.projectLabel,
+    template: props.openTemplate || "LivePatchingSystem",
+    systemId: props.systemId || 1000010000,
+    systemName: props.systemName || "Foo",
+    kernelId: props.kernelId || 188,
+    kernelName: props.kernelName || "Bar",
+  };
+
   const panelButtons = (
     <div className="pull-right btn-group">
       {hasEditingPermissions && (
         <FilterEdit
           id="create-filter-button"
-          initialFilterForm={{ rule: "deny", labelPrefix: props.projectLabel }}
+          initialFilterForm={initialFilterForm}
           icon="fa-plus"
           buttonText="Create Filter"
           openFilterId={props.openFilterId}
