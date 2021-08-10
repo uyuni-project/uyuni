@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-09 19:10+0000\n"
+"PO-Revision-Date: 2021-08-10 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5741,11 +5741,11 @@ msgstr "        -p/--publish : Publikovať opravy chýb na kanáli (neklonovať)
 #: ../src/spacecmd/softwarechannel.py:1667
 #, python-format
 msgid "%s is an invalid date"
-msgstr ""
+msgstr "%s je neplatný dátum"
 
 #: ../src/spacecmd/softwarechannel.py:1609
 msgid "No patches found between the given dates"
-msgstr ""
+msgstr "Medzi danými dátumami neboli nájdené žiadne opravy"
 
 #: ../src/spacecmd/softwarechannel.py:1616
 #, python-format
@@ -5763,6 +5763,8 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1636
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
 msgstr ""
+"použitie: softwarechannel_listerratabydate KANÁL DÁTUM_ZAČIATKU "
+"DÁTUM_UKONČENIA"
 
 #: ../src/spacecmd/softwarechannel.py:1680
 msgid "No errata found between the given dates"
@@ -5772,32 +5774,34 @@ msgstr "Medzi uvedenými dátumami sa nenašli žiadne opravy chýb"
 msgid ""
 "softwarechannel_adderrata: Add patches from one channel into another channel"
 msgstr ""
+"softwarechannel_adderrata: Pridať opravy z jedného kanála do ďalšieho kanála"
 
 #: ../src/spacecmd/softwarechannel.py:1693
 msgid "usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>"
 msgstr ""
+"použitie: softwarechannel_adderrata ZDROJ CIEĽ <OPRAVY_CHÝB|search:XXX ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1695
 msgid "    -q/--quick : Don't display list of packages (slightly faster)"
-msgstr ""
+msgstr "    -q/--quick : Nezobrazovať zoznam balíkov (o niečo rýchlejšie)"
 
 #: ../src/spacecmd/softwarechannel.py:1696
 msgid "    -s/--skip :  Skip errata which appear to exist already in DEST"
-msgstr ""
+msgstr "    -s/--skip :  Preskočiť opravy chýb, ktoré už existujú v CIELI"
 
 #: ../src/spacecmd/softwarechannel.py:1722
 #, python-format
 msgid "source channel %s does not exist!"
-msgstr ""
+msgstr "zdrojový kanál %s neexistuje!"
 
 #: ../src/spacecmd/softwarechannel.py:1727
 #, python-format
 msgid "dest channel %s does not exist!"
-msgstr ""
+msgstr "cieľový kanál %s neexistuje!"
 
 #: ../src/spacecmd/softwarechannel.py:1780
 msgid "No patch to add"
-msgstr ""
+msgstr "Žiadna oprava na pridanie"
 
 #: ../src/spacecmd/softwarechannel.py:1799
 msgid "Add these patches [y/N]:"
