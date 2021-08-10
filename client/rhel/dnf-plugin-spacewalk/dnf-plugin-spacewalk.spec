@@ -33,8 +33,8 @@ Summary:        DNF plugin for Spacewalk
 License:        GPL-2.0-only
 Group:          System Environment/Base
 Name:           dnf-plugin-spacewalk
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch

@@ -17,8 +17,8 @@
 
 
 Name:           dracut-mgrbootstrap
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source:         dracut-mgrbootstrap-%{version}.tar.bz2
 Summary:        PXE network boot dracut module

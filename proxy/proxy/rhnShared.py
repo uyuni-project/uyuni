@@ -147,8 +147,8 @@ class SharedHandler:
             log_error("Error opening connection", self.rhnParent, e)
             Traceback(mail=0)
             raise_with_tb(rhnFault(1000,
-                           _("SUSE Manager Proxy could not successfully connect its SUSE Manager parent. "
-                             "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy could not successfully connect its SUSE Manager parent. "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
 
         # At this point the server should be okay
         log_debug(3, "Connected to parent: %s " % self.rhnParent)
@@ -232,7 +232,7 @@ class SharedHandler:
             Traceback("SharedHandler._serverCommo", self.req, mail=0)
             raise_with_tb(rhnFault(1000, _(
                 "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), sys.exc_info()[2])
-        except socket.error:
+        except socket.error: # pylint: disable=duplicate-except
             # maybe self.req.read() failed?
             Traceback("SharedHandler._serverCommo", self.req)
             raise_with_tb(rhnFault(1000, _(
@@ -252,7 +252,7 @@ class SharedHandler:
             and send them back to the client with an error status.  This method
             should return apache.OK if everything went according to plan.
         """
-        if (status != apache.HTTP_OK) and (status != apache.HTTP_PARTIAL_CONTENT):
+        if status not in (apache.HTTP_OK, apache.HTTP_PARTIAL_CONTENT):
             # Non 200 response; have to treat it differently
             log_debug(2, "Forwarding status %s" % status)
             # Copy the incoming headers to headers_out

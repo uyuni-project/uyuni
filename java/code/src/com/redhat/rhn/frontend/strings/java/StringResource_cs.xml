@@ -979,7 +979,7 @@
       </trans-unit>
       <trans-unit id="Scout Config Push" xml:space="preserve">
         <source>Scout Config Push</source>
-        <target />
+        <target state="needs-translation">Scout Config Push</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -993,147 +993,147 @@
       </trans-unit>
       <trans-unit id="Sessions" xml:space="preserve">
         <source>Sessions</source>
-        <target />
+        <target>Relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sign In" xml:space="preserve">
         <source>Sign In</source>
-        <target />
+        <target>Přihlášení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Create First User" xml:space="preserve">
         <source>Create First User</source>
-        <target />
+        <target>Vytvořit prvního uživatele</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Software Channels" xml:space="preserve">
         <source>Software Channels</source>
-        <target />
+        <target>Softwarové kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
-        <target />
+        <target>Stav</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Stored Profiles" xml:space="preserve">
         <source>Stored Profiles</source>
-        <target />
+        <target>Uložené profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscription" xml:space="preserve">
         <source>Subscription</source>
-        <target />
+        <target>Předplatné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Entitlements" xml:space="preserve">
         <source>System Types</source>
-        <target />
+        <target>Typy systémů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Groups" xml:space="preserve">
         <source>System Groups</source>
-        <target />
+        <target>Skupiny systémů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Set Manager" xml:space="preserve">
         <source>System Set Manager</source>
-        <target />
+        <target>Správce systémových sad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Systems" xml:space="preserve">
         <source>Systems</source>
-        <target />
+        <target>Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System List" xml:space="preserve">
         <source>System List</source>
-        <target />
+        <target>Seznam systémů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Task Schedules" xml:space="preserve">
         <source>Task Schedules</source>
-        <target />
+        <target>Plány úkolů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Task Engine Status" xml:space="preserve">
         <source>Task Engine Status</source>
-        <target />
+        <target>Stav pohonu úloh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Last Execution Times" xml:space="preserve">
         <source>Last Execution Times</source>
-        <target />
+        <target>Poslední časy provedení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Runtime Status" xml:space="preserve">
         <source>Runtime Status</source>
-        <target />
+        <target>Stav běhu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Show Tomcat Logs" xml:space="preserve">
         <source>Show Tomcat Logs</source>
-        <target />
+        <target>Ukázat žurnály Tomcat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage" xml:space="preserve">
         <source>this is a test of the emergency broadcast</source>
-        <target />
+        <target>toto je test nouzového vysílání</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage.oneparam" xml:space="preserve">
         <source>this is a test of the {0}</source>
-        <target />
+        <target>toto je test {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage.html" xml:space="preserve">
         <source>&lt;p&gt;You do not have enough entitlements for &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} systems&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
-        <target />
+        <target>&lt;p&gt;Nemáte dostatečný nárok na systémy &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0}&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="traceback message header" xml:space="preserve">
         <source>The following exception occurred while executing this request:</source>
-        <target />
+        <target>Při provádění tohoto požadavku došlo k výjimce:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
@@ -1301,7 +1301,7 @@
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
-        <target />
+        <target>Uživatelé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -10877,96 +10877,96 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
         <target state="new" />
       </trans-unit>
-    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+      <trans-unit id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="Transfer" xml:space="preserve">
         <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="virt.guest_migrate" xml:space="preserve">
+        <target state="new" />
+      </trans-unit>
+    <trans-unit id="virt.guest_migrate" xml:space="preserve">
         <source>Migrate a virtual domain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>

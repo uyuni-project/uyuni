@@ -34,17 +34,16 @@ from spacewalk.common.rhnApache import rhnApache
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common import rhnFlags, apache
-from uyuni.common.rhnLib import setHeaderValue
 from spacewalk.common import byterange
-
 from rhn import rpclib, connections
 from rhn.UserDictCase import UserDictCase
+from uyuni.common.rhnLib import setHeaderValue
+from proxy.rhnProxyAuth import get_proxy_auth
+
+
 from .rhnConstants import HEADER_ACTUAL_URI, HEADER_EFFECTIVE_URI, \
     HEADER_CHECKSUM, SCHEME_HTTP, SCHEME_HTTPS, URI_PREFIX_KS, \
     URI_PREFIX_KS_CHECKSUM, COMPONENT_BROKER, COMPONENT_REDIRECT
-
-# local imports
-from proxy.rhnProxyAuth import get_proxy_auth
 
 
 def getComponentType(req):
@@ -317,7 +316,7 @@ class apacheHandler(rhnApache):
         uriParts = oldURI.split('/')
         numParts = 0
         for part in uriParts:
-            if len(part) is not 0:  # Account for double slashes ("//")
+            if len(part) != 0:  # Account for double slashes ("//")
                 numParts += 1
                 if numParts > 2:
                     newURI += "/" + part
@@ -586,7 +585,7 @@ class apacheHandler(rhnApache):
     @staticmethod
     def _response_fault_get(req, response):
         req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
-        faultString = base64.encodestring(response.faultString.encode()).decode().strip()
+        faultString = base64.encodestring(response.faultString.encode()).decode().strip() # pylint: disable=deprecated-method
         # Split the faultString into multiple lines
         for line in faultString.split('\n'):
             req.headers_out.add("X-RHN-Fault-String", line.strip())

@@ -25,8 +25,8 @@ Name:           mgr-custom-info
 Summary:        Set and list custom values for Spacewalk-enabled machines
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 # 5.4.43.2 was the last version+1 before renaming to mgr-custom-info
 Provides:       rhn-custom-info = 5.4.44
 Obsoletes:      rhn-custom-info < 5.4.44

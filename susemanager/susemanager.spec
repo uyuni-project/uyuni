@@ -45,8 +45,8 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -274,16 +274,6 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %endif
 
 %posttrans
-# make sure our database will use correct encoding
-. /etc/sysconfig/postgresql
-if [ -z $POSTGRES_LANG ]; then
-    grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
-    if [ $? = 0 ]; then
-        sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
-    else
-        echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
-    fi
-fi
 
 %postun
 %if 0%{?suse_version}

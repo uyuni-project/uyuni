@@ -28,19 +28,19 @@ except ImportError:
 
 # common module imports
 from rhn.UserDictCase import UserDictCase
-from uyuni.common.rhnLib import parseUrl
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common import rhnFlags, apache
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import suseLib
+from uyuni.common.rhnLib import parseUrl
 
 # local module imports
 from proxy.rhnShared import SharedHandler
 from proxy.rhnConstants import URI_PREFIX_KS_CHECKSUM
-from . import rhnRepository
 import proxy.rhnProxyAuth
+from . import rhnRepository
 
 
 # the version should not be never decreased, never mind that spacewalk has different versioning
@@ -313,14 +313,14 @@ class BrokerHandler(SharedHandler):
                 log_debug(0, msg)
             elif error == '1004':
                 log_debug(1,
-                    "SUSE Manager Proxy Session Token expired, acquiring new one.")
+                          "SUSE Manager Proxy Session Token expired, acquiring new one.")
             else: # this should never happen.
                 msg = "SUSE Manager Proxy login failed, error code is %s" % error
                 log_error(msg)
                 log_debug(0, msg)
                 raise rhnFault(1000,
-                  _("SUSE Manager Proxy error (issues with proxy login). "
-                    "Please contact your system administrator."))
+                               _("SUSE Manager Proxy error (issues with proxy login). "
+                                 "Please contact your system administrator."))
 
             # Forced refresh of the proxy token
             rhnFlags.get('outputTransportOptions')['X-RHN-Proxy-Auth'] = self.proxyAuth.check_cached_token(1)
@@ -328,11 +328,11 @@ class BrokerHandler(SharedHandler):
             # The token could not be aquired
             log_debug(0, "Unable to acquire proxy authentication token")
             raise rhnFault(1000,
-              _("SUSE Manager Proxy error (unable to acquire proxy auth token). "
-                "Please contact your system administrator."))
+                           _("SUSE Manager Proxy error (unable to acquire proxy auth token). "
+                             "Please contact your system administrator."))
 
         # Support for yum byte-range
-        if (status != apache.OK) and (status != apache.HTTP_PARTIAL_CONTENT):
+        if status not in (apache.OK, apache.HTTP_PARTIAL_CONTENT):
             log_debug(1, "Leaving handler with status code %s" % status)
             return status
 
@@ -517,7 +517,7 @@ class BrokerHandler(SharedHandler):
             log_debug(3, "Client server ID not found in headers")
             # XXX: no client server ID in headers, should we care?
             #raise rhnFault(1000, _("Client Server ID not found in headers!"))
-            return
+            return None
         serverId = 'X-RHN-Server-ID'
 
         self.clientServerId = headers[serverId]

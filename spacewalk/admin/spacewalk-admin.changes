@@ -1,5 +1,8 @@
+-------------------------------------------------------------------
+Mon Aug 09 10:57:26 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
 - added pidof requirement for RHEL (bsc#1186129).
-- Bump version to 4.3.0
 
 -------------------------------------------------------------------
 Mon May 17 17:21:16 CEST 2021 - jgonzalez@suse.com

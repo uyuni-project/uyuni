@@ -1,4 +1,8 @@
-- Enable uyuni proxy stable leap 15.3
+-------------------------------------------------------------------
+Mon Aug 09 11:07:38 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
+- Enable Uyuni Server and Proxy Stable for openSUSE Leap 15.3
 - Add Rocky Linux 8 repositories
 - Fix a typo at the AlmaLinux 8 Uyuni client tools for devel
 - Fix the GPG key fingerprint for Springdale Linux 8

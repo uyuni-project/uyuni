@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Mon Aug 09 11:05:32 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
+- Enable logging for salt SSH
 - Increase max size for uploaded files to Salt master
-- Bump version to 4.3.0
 
 -------------------------------------------------------------------
 Fri Apr 16 13:23:27 CEST 2021 - jgonzalez@suse.com

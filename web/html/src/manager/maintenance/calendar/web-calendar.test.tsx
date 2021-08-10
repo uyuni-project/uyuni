@@ -32,8 +32,9 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
+
     await waitFor(() => {
+      screen.getByText("July 2021");
       screen.getByText("8:00am CEST July Maintenance Window");
     });
   });
@@ -62,7 +63,9 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
+    await waitFor(() => {
+      screen.getByText("July 2021");
+    });
 
     const nextButton = screen.getByTestId("next") as HTMLButtonElement;
     click(nextButton);
@@ -97,7 +100,9 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
+    await waitFor(() => {
+      screen.getByText("July 2021");
+    });
 
     const nextButton = screen.getByTestId("back") as HTMLButtonElement;
     click(nextButton);
@@ -132,7 +137,9 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
+    await waitFor(() => {
+      screen.getByText("July 2021");
+    });
 
     const nextButton = screen.getByTestId("skip-next") as HTMLButtonElement;
     click(nextButton);
@@ -167,7 +174,9 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
+    await waitFor(() => {
+      screen.getByText("July 2021");
+    });
 
     const nextButton = screen.getByTestId("skip-back") as HTMLButtonElement;
     click(nextButton);
@@ -203,7 +212,9 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
+    await waitFor(() => {
+      screen.getByText("July 2021");
+    });
 
     const nextButton = screen.getByTestId("next") as HTMLButtonElement;
     click(nextButton);
@@ -249,9 +260,8 @@ describe("Web calendar", () => {
                         date={initialDate}
     />)
 
-    screen.getByText("July 2021");
-
     await waitFor(() => {
+      screen.getByText("July 2021");
       screen.getByText("9:00am CEST Today's Maintenance Window");
     })
 

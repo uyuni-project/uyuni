@@ -29747,14 +29747,6 @@ given channel.</source>
         </context-group>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
-        <source>Modular Data Cleanup</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
-        <source>Forward Registration</source>
-      <target state="new" />
-  </trans-unit>
       <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
@@ -29769,7 +29761,15 @@ given channel.</source>
         </context-group>
         <target state="new" />
   </trans-unit>
-        <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
+        <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+        <source>Modular Data Cleanup</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
+        <source>Forward Registration</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
       <target state="new" />
   </trans-unit>

@@ -29,28 +29,24 @@ import sys
 # pylint: disable=E0611
 from hashlib import sha1
 
-# common imports
-from uyuni.common.rhnLib import parseUrl
+#sys.path.append('/usr/share/rhn')
+from rhn import rpclib
+from rhn import SSL
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnTranslate import _
+from up2date_client import config # pylint: disable=E0012, C0413
+from uyuni.common.rhnLib import parseUrl
 from uyuni.common.usix import raise_with_tb
-
-# local imports
-from rhn import rpclib
-from rhn import SSL
 from . import rhnAuthCacheClient
 
 if hasattr(socket, 'sslerror'):
-    socket_error = socket.sslerror
+    socket_error = socket.sslerror # pylint: disable=no-member
 else:
     from ssl import socket_error
-
-sys.path.append('/usr/share/rhn')
-from up2date_client import config # pylint: disable=E0012, C0413
 
 # To avoid doing unnecessary work, keep ProxyAuth object global
 __PROXY_AUTH = None
@@ -89,8 +85,8 @@ class ProxyAuth:
         if not os.access(ProxyAuth.__systemid_filename, os.R_OK):
             log_error("unable to access %s" % ProxyAuth.__systemid_filename)
             raise rhnFault(1000,
-                      _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator."))
+                           _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                             "Please contact your system administrator."))
 
         mtime = None
         try:
@@ -98,8 +94,8 @@ class ProxyAuth:
         except IOError as e:
             log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
             raise_with_tb(rhnFault(1000,
-                      _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
 
         if not self.__systemid_mtime:
             ProxyAuth.__systemid_mtime = mtime
@@ -115,15 +111,15 @@ class ProxyAuth:
         except IOError as e:
             log_error("unable to read %s" % ProxyAuth.__systemid_filename)
             raise_with_tb(rhnFault(1000,
-                      _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
 
         # get serverid
         sysid, _cruft = xmlrpclib.loads(ProxyAuth.__systemid)
         ProxyAuth.__serverid = sysid[0]['system_id'][3:]
 
         log_debug(7, 'SystemId: "%s[...snip  snip...]%s"'
-                  % (ProxyAuth.__systemid[:20], ProxyAuth.__systemid[-20:]))
+                  % (ProxyAuth.__systemid[:20], ProxyAuth.__systemid[-20:])) # pylint: disable=unsubscriptable-object
         log_debug(7, 'ServerId: %s' % ProxyAuth.__serverid)
 
         # ids were updated
@@ -167,7 +163,7 @@ class ProxyAuth:
         # Cache the token.
         try:
             shelf[self.__cache_proxy_key()] = token
-        except:
+        except: # pylint: disable=bare-except
             text = _("""\
 Caching of authentication token for proxy id %s failed!
 Either the authentication caching daemon is experiencing
@@ -175,8 +171,8 @@ problems, isn't running, or the token is somehow corrupt.
 """) % self.__serverid
             Traceback("ProxyAuth.set_cached_token", extra=text)
             raise_with_tb(rhnFault(1000,
-                      _("SUSE Manager Proxy error (auth caching issue). "
-                        "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy error (auth caching issue). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
         log_debug(4, "successfully returning")
         return token
 
@@ -270,7 +266,7 @@ problems, isn't running, or the token is somehow corrupt.
                         # rather big problem: http proxy not running.
                         log_error("*** ERROR ***: %s" % error[1])
                         Traceback(mail=0)
-                    except socket_error as e:
+                    except socket_error as e:                             # pylint: disable=duplicate-except
                         error = ['socket.sslerror',
                                  '(%s) %s' % (CFG.HTTP_PROXY, e)]
                         # rather big problem: http proxy not running.
@@ -317,9 +313,9 @@ problems, isn't running, or the token is somehow corrupt.
                 # And raise a Proxy Error - the server made its point loud and
                 # clear
                 raise_with_tb(rhnFault(1000,
-                          _("SUSE Manager Proxy error (during proxy login). "
-                            "Please contact your system administrator.")), sys.exc_info()[2])
-            except Exception as e:
+                                       _("SUSE Manager Proxy error (during proxy login). "
+                                         "Please contact your system administrator.")), sys.exc_info()[2])
+            except Exception as e: # pylint: disable=broad-except
                 token = None
                 log_error("Unhandled exception", e)
                 Traceback(mail=0)
@@ -332,16 +328,14 @@ problems, isn't running, or the token is somehow corrupt.
             if error:
                 if error[0] in ('xmlrpclib.ProtocolError', 'socket.error', 'socket'):
                     raise rhnFault(1000,
-                                _("SUSE Manager Proxy error (error: %s). "
-                                  "Please contact your system administrator.") % error[0])
+                                   _("SUSE Manager Proxy error (error: %s). "
+                                     "Please contact your system administrator.") % error[0])
                 if error[0] in ('rhn.SSL.SSL.SSLError', 'socket.sslerror'):
                     raise rhnFault(1000,
-                                _("SUSE Manager Proxy error (SSL issues? Error: %s). "
-                                  "Please contact your system administrator.") % error[0])
-                else:
-                    raise rhnFault(1002, err_text='%s' % e)
-            else:
-                raise rhnFault(1001)
+                                   _("SUSE Manager Proxy error (SSL issues? Error: %s). "
+                                     "Please contact your system administrator.") % error[0])
+                raise rhnFault(1002, err_text='%s' % e)
+            raise rhnFault(1001)
         if self.hostname:
             token = token + ':' + self.hostname
         log_debug(6, "New proxy token: %s" % token)
@@ -416,9 +410,9 @@ problems, isn't running, or the token is somehow corrupt.
             if not os.access(CFG.CA_CHAIN, os.R_OK):
                 log_error('ERROR: missing or cannot access (for ca_chain): %s' % CFG.CA_CHAIN)
                 raise rhnFault(1000,
-                          _("SUSE Manager Proxy error (file access issues). "
-                            "Please contact your system administrator. "
-                            "Please refer to SUSE Manager Proxy logs."))
+                               _("SUSE Manager Proxy error (file access issues). "
+                                 "Please contact your system administrator. "
+                                 "Please refer to SUSE Manager Proxy logs."))
             serverObj.add_trusted_cert(CFG.CA_CHAIN)
         serverObj.add_header('X-RHN-Client-Version', 2)
         return serverObj
@@ -471,8 +465,7 @@ class AuthLocalBackend:
         if not os.path.normpath(key_path).startswith(self._cache_prefix):
             raise ValueError("Path traversal detected for X-RHN-Server-ID. " +
                              "User is trying to set a path as server-id.")
-        else:
-            return key_path
+        return key_path
 
     def __len__(self):
         pass

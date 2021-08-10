@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Mon Aug 09 11:11:17 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
+- Enable logrotate configuration for Salt SSH minion logs
 - States and pkgset beacon modified for new salt bundle file placement
 - Handle more ocsf2 setups in virt_utils module
 - Add UEFI support for VM creation
