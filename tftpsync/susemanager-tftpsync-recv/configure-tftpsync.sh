@@ -109,11 +109,11 @@ default_or_input "TFTP Boot directory" TFTPBOOT "/srv/tftpboot"
 
 default_or_input "SUSE Manager Proxy FQDN" SUMA_PROXY_FQDN $(hostname -f)
 
-default_or_input "SUSE Manager Proxy IP Address" SUMA_PROXY_IP $(host $SUMA_PROXY_FQDN | awk '{ print $4 }' || echo "")
+default_or_input "SUSE Manager Proxy IP Address" SUMA_PROXY_IP $(getent hosts $SUMA_PROXY_FQDN | awk '{ print $1 }' || echo "")
 
 default_or_input "SUSE Manager Server FQDN" SUMA_FQDN $PARENT_FQDN
 
-default_or_input "SUSE Manager Parent IP Address" SUMA_IP $( host $SUMA_FQDN | awk '{ print $4 }' || echo "" )
+default_or_input "SUSE Manager Parent IP Address" SUMA_IP $(getent hosts $SUMA_FQDN | awk '{ print $1 }' || echo "" )
 
 
 
