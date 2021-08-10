@@ -1,3 +1,5 @@
+- adapt configure-tftpsync.sh to work on machines with multiple IP's (bsc#1189263)
+
 -------------------------------------------------------------------
 Mon Feb 01 18:05:37 CET 2021 - jgonzalez@suse.com
 
