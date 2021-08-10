@@ -199,7 +199,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-prod
                           'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                           'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
-                          'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
+                          'no-appstream-result-RHEL8-Pool for x86_64' => 'no-appstream-result-rhel8-pool-x86_64',
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
