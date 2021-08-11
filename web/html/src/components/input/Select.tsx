@@ -112,12 +112,12 @@ export function Select(props: SelectProps | AsyncSelectProps) {
     }),
   };
 
-  const value = (formContext.model || {})[props.name || ""];
   let defaultValueOption;
   if (isAsync(props)) {
     defaultValueOption = props.defaultValueOption;
   }
   useEffect(() => {
+    const value = (formContext.model || {})[props.name || ""];
     // Since defaultValueOption is not bound to the model, ensure sanity
     if (isAsync(props) && typeof defaultValueOption !== 'undefined' && getOptionValue(defaultValueOption) !== value) {
       console.error(`Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(defaultValueOption)}, got ${value}`);
@@ -166,6 +166,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
             />);
         }
         else {
+          const value = (formContext.model || {})[props.name || ""];
           const convertedOptions = (props.options || []).map(item =>
             typeof item === "string" ? { label: item, value: item } : item
           );
