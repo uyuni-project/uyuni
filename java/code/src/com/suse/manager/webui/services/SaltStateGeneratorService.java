@@ -86,7 +86,7 @@ public enum SaltStateGeneratorService {
     /**
      * @param skip set skip set owner - used for testsuite
      */
-    public void setSkipSetOwber(boolean skip) {
+    public void setSkipSetOwner(boolean skip) {
         skipSetOwner = skip;
     }
 
