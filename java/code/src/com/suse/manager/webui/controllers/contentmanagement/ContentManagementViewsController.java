@@ -181,7 +181,8 @@ public class ContentManagementViewsController {
             String systemId = req.queryParams("systemId");
             String systemName = req.queryParams("systemName");
             String kernelName = req.queryParams("kernelName");
-            if (openTemplate.equals("LivePatchingSystem") && systemId != null && systemName != null && kernelName != null) {
+            if (openTemplate.equals("LivePatchingSystem") && systemId != null && systemName != null &&
+                kernelName != null) {
                 data.put("systemId", systemId);
                 data.put("systemName", systemName);
                 data.put("kernelName", kernelName);
