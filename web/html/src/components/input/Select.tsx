@@ -128,11 +128,11 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   return (
     <InputBase<any> {...propsToPass}>
       {({ setValue, onBlur }) => {
-        const value = (formContext.model || {})[props.name || ""];
         const onChange = newValue => {
           const value = Array.isArray(newValue) ? newValue.map(item => getOptionValue(item)) : getOptionValue(newValue);
           setValue(props.name, value);
         };
+        const value = (formContext.model || {})[props.name || ""];
 
         // Common props to pass to both 'react-select' and 'react-select/async'
         const commonProps = {
