@@ -78,8 +78,7 @@ export default (props: FilterFormProps & { template: Template }) => {
 
   const formContext = React.useContext(FormContext);
   const setModelValue = formContext.setModelValue;
-  const systemId = formContext.model.systemId;
-  const productId = formContext.model.productId;
+  const { productId, systemId, systemName, kernelId, kernelName } = formContext.model;
   const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
@@ -105,12 +104,11 @@ export default (props: FilterFormProps & { template: Template }) => {
         setKernels(result);
 
         // If the selected kernel exists in the set of available kernels, keep using that
-        const prevKernelId = formContext.model.kernelId;
-        if (result.every(item => item.id !== prevKernelId)) {
+        if (result.every(item => item.id !== kernelId)) {
           // Otherwise use the latest kernel, if any
           const latestKernel = result.find(item => Boolean(item.latest));
-          const kernelId = latestKernel?.id ?? result[0]?.id ?? null;
-          setModelValue?.("kernelId", kernelId);
+          const newKernelId = latestKernel?.id ?? result[0]?.id ?? null;
+          setModelValue?.("kernelId", newKernelId);
         }
       })
         .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
@@ -123,13 +121,12 @@ export default (props: FilterFormProps & { template: Template }) => {
     productId,
   ]);
 
-  // TODO: Perhaps it makes more sense to just implement a separate class to fetch url params?
-  const hasInitialValue = Boolean(props.filter.systemId && props.filter.systemName && props.filter.kernelId && props.filter.kernelName);
-  const defaultValueOption = hasInitialValue ? {
-    // TODO: Use context instead
-    id: props.filter.systemId,
-    name: props.filter.systemName,
-    kernel: props.filter.kernelName,
+  // Are we using predefined values from the URL params?
+  const hasInitialValues = Boolean(systemId && systemName && kernelId && kernelName);
+  const defaultValueOption = hasInitialValues ? {
+    id: systemId,
+    name: systemName,
+    kernel: kernelName,
   } : undefined;
 
   return (
