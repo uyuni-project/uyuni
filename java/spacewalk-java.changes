@@ -1,3 +1,4 @@
+- fix NPE when no redhat info could be fetched
 - Java enablement for Rocky Linux 8
 - Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
 - Properly handle virtual networks without defined bridge (bsc#1189167)
