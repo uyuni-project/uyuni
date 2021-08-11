@@ -8,7 +8,7 @@ import { MessagesContainer } from "components/toastr/toastr";
 
 export const renderer = (
   id,
-  { filters, projectLabel, openFilterId, openTemplate, systemId, systemName, kernelId, kernelName, flashMessage }
+  { filters, projectLabel, openFilterId, openTemplate, systemId, systemName, kernelName, flashMessage }
 ) => {
   let filtersJson = [];
   try {
@@ -28,7 +28,6 @@ export const renderer = (
           openTemplate={openTemplate}
           systemId={systemId}
           systemName={systemName}
-          kernelId={kernelId}
           kernelName={kernelName}
           flashMessage={flashMessage}
         />

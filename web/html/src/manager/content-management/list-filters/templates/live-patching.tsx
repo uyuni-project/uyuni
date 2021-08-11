@@ -66,7 +66,7 @@ export default (props: FilterFormProps & { template: Template }) => {
 
   const formContext = React.useContext(FormContext);
   const setModelValue = formContext.setModelValue;
-  const { productId, systemId, systemName, kernelId, kernelName } = formContext.model;
+  const { productId, systemId, systemName, kernelName } = formContext.model;
   const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
@@ -91,13 +91,9 @@ export default (props: FilterFormProps & { template: Template }) => {
       getKernels(systemId ?? productId, systemId ? "system" : "product").then(result => {
         setKernels(result);
 
-        // If the selected kernel exists in the set of available kernels, keep using that
-        if (result.every(item => item.id !== kernelId)) {
-          // Otherwise use the latest kernel, if any
-          const latestKernel = result.find(item => Boolean(item.latest));
-          const newKernelId = latestKernel?.id ?? result[0]?.id ?? null;
-          setModelValue?.("kernelId", newKernelId);
-        }
+        const latestKernel = result.find(item => Boolean(item.latest));
+        const kernelId = latestKernel?.id ?? result[0]?.id ?? null;
+        setModelValue?.("kernelId", kernelId);
       })
         .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
     } else {
@@ -110,7 +106,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   ]);
 
   // Are we using predefined values from the URL params?
-  const hasInitialValues = Boolean(systemId && systemName && kernelId && kernelName);
+  const hasInitialValues = Boolean(systemId && systemName && kernelName);
   const defaultValueOption = hasInitialValues ? {
     id: systemId,
     name: systemName,

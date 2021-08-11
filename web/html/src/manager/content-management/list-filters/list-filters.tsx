@@ -24,7 +24,6 @@ type Props = {
   openTemplate?: string;
   systemId?: number;
   systemName: string;
-  kernelId?: number;
   kernelName: string;
   flashMessage: string;
 };
@@ -109,7 +108,6 @@ const ListFilters = (props: Props) => {
     template: props.openTemplate,
     systemId: props.systemId,
     systemName: props.systemName,
-    kernelId: props.kernelId,
     kernelName: props.kernelName,
   };
 
