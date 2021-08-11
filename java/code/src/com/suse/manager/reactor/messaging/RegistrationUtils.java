@@ -358,7 +358,8 @@ public class RegistrationUtils {
                  "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "almalinux".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "amazon".equalsIgnoreCase(grains.getValueAsString(OS))) {
+                 "amazon".equalsIgnoreCase(grains.getValueAsString(OS)) ||
+                 "rocky".equalsIgnoreCase(grains.getValueAsString(OS))) {
 
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
@@ -366,7 +367,7 @@ public class RegistrationUtils {
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
                             server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
                             x.getOracleReleaseContent(), x.getAlibabaReleaseContent(), x.getAlmaReleaseContent(),
-                            x.getAmazonReleaseContent()));
+                            x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());

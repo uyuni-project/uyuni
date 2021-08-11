@@ -42,11 +42,16 @@
   "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
     "comment": "Command \"cat /etc/redhat-release\" run",
     "name": "cat /etc/redhat-release",
-    "start_time": "07:57:57.138995",
+    "start_time": "14:04:57.435091",
     "result": true,
-    "duration": 242.195,
+    "duration": 232.599,
     "__run_num__": 0,
-    "changes": {}
+    "changes": {
+      "pid": 860,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "CentOS Linux release 7.2.1511 (Core)"
+    }
   },
   "cmd_|-almarelease_|-cat /etc/almalinux-release_|-run": {
     "comment": "Command \"cat /etc/almalinux-release\" run",
@@ -66,12 +71,7 @@
     "result": true,
     "duration": 233.474,
     "__run_num__": 3,
-    "changes": {
-      "pid": 784,
-      "retcode": 0,
-      "stderr": "",
-      "stdout": "Amazon Linux release 2 (Karoo)"
-    }
+    "changes": {}
   },
   "cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run": {
     "comment": "Command \"cat /etc/rocky-release\" run",
@@ -81,6 +81,11 @@
     "result": true,
     "duration": 233.474,
     "__run_num__": 3,
-    "changes": {}
+    "changes": {
+      "pid": 784,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "Rocky Linux release 8.4 (Green Obsidian)"
+    }
   }
 }
