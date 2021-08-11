@@ -16,6 +16,7 @@ import { isOrgAdmin } from "core/auth/auth.utils";
 import { getValue } from "utils/data";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { Button } from "components/buttons";
+import getUrlParam from "utils/url-params";
 
 type Props = {
   filters: Array<FilterServerType>;
@@ -102,6 +103,12 @@ const ListFilters = (props: Props) => {
   const sortProjects = (row: FilterFormType) => {
     return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
   };
+
+  const systemId = getUrlParam("systemId", Number);
+  const systemName = getUrlParam("systemName");
+  const kernelId = getUrlParam("kernelId", Number);
+  const kernelName = getUrlParam("kernelName");
+  console.log("get", { systemId, systemName, kernelId, kernelName });
 
   // TODO: OR with const values for testing
   const initialFilterForm = {

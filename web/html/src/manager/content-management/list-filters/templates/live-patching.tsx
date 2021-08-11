@@ -79,7 +79,6 @@ export default (props: FilterFormProps & { template: Template }) => {
   const formContext = React.useContext(FormContext);
   const setModelValue = formContext.setModelValue;
   const systemId = formContext.model.systemId;
-  console.log('model systemid is ', systemId);
   const productId = formContext.model.productId;
   const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
@@ -127,6 +126,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   // TODO: Perhaps it makes more sense to just implement a separate class to fetch url params?
   const hasInitialValue = Boolean(props.filter.systemId && props.filter.systemName && props.filter.kernelId && props.filter.kernelName);
   const defaultValueOption = hasInitialValue ? {
+    // TODO: Use context instead
     id: props.filter.systemId,
     name: props.filter.systemName,
     kernel: props.filter.kernelName,
