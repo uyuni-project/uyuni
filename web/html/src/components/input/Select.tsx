@@ -128,6 +128,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   return (
     <InputBase<any> {...propsToPass}>
       {({ setValue, onBlur }) => {
+        const value = (formContext.model || {})[props.name || ""];
         const onChange = newValue => {
           const value = Array.isArray(newValue) ? newValue.map(item => getOptionValue(item)) : getOptionValue(newValue);
           setValue(props.name, value);
@@ -166,7 +167,6 @@ export function Select(props: SelectProps | AsyncSelectProps) {
             />);
         }
         else {
-          const value = (formContext.model || {})[props.name || ""];
           const convertedOptions = (props.options || []).map(item =>
             typeof item === "string" ? { label: item, value: item } : item
           );
