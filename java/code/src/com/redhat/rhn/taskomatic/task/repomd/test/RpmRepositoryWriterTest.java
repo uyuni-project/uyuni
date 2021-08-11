@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 
 public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
@@ -101,16 +102,16 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
         writer.writeRepomdFiles(channel);
 
         String repomdExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<repomd xmlns=\"http://linux.duke.edu/metadata/repo\"><data type=\"primary\"><location href=\"repodata/primary.xml.gz\"/>" +
+                "<repomd xmlns=\"http://linux.duke.edu/metadata/repo\"><data type=\"primary\"><location href=\"repodata/xxx-primary.xml.gz\"/>" +
                 "<checksum type=\"sha256\">61d08b336c520bdfade052b808616e5a80e5eec29d82c2e7dbbd58bc7ee93864</checksum>" +
                 "<open-checksum type=\"sha256\">d515cc563a9cf6dfe2f0fbe999bbcec0d495f4c7e1cd09286d7df74c58300e1b</open-checksum><timestamp>1544711985</timestamp>" +
-                "</data><data type=\"filelists\"><location href=\"repodata/filelists.xml.gz\"/>" +
+                "</data><data type=\"filelists\"><location href=\"repodata/xxx-filelists.xml.gz\"/>" +
                 "<checksum type=\"sha256\">b6528b97a62a107e9357d406e1d22be971ca55d4332abbc1bb0e9b84c3139d99</checksum>" +
                 "<open-checksum type=\"sha256\">9e1aca5fd324f66bbedd27f6dfc722da83354374a6808010886e93e09795bb30</open-checksum>" +
-                "<timestamp>1544711985</timestamp></data><data type=\"other\"><location href=\"repodata/other.xml.gz\"/>" +
+                "<timestamp>1544711985</timestamp></data><data type=\"other\"><location href=\"repodata/xxx-other.xml.gz\"/>" +
                 "<checksum type=\"sha256\">4fa5ac10cf38edc497f18e41f537e1ef24a2fb4d0b537c96248433ca3a51b975</checksum>" +
                 "<open-checksum type=\"sha256\">a50ffc2416654509bb720263a0ab090c3c53739305e8f637422f81937fabd700</open-checksum>" +
-                "<timestamp>1544711985</timestamp></data><data type=\"susedata\"><location href=\"repodata/susedata.xml.gz\"/>" +
+                "<timestamp>1544711985</timestamp></data><data type=\"susedata\"><location href=\"repodata/xxx-susedata.xml.gz\"/>" +
                 "<checksum type=\"sha256\">2818aff4276b64a24abb2e60fc97d152abee478c35a5f4b04015c7704e8b7cfe</checksum>" +
                 "<open-checksum type=\"sha256\">20c9750a06ddcc9b783504433cbc1eaea14c08889770f19274fa3f91bcbbd37f</open-checksum>" +
                 "<timestamp>1544711985</timestamp></data></repomd>";
@@ -145,7 +146,8 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
             fail(e.getMessage());
         }
 
-        File primaryXmlGz = channelDir.resolve("primary.xml.gz").toFile();
+        File primaryXmlGz = Files.list(channelDir).map(Path::toFile)
+                .filter(f -> f.getName().endsWith("-primary.xml.gz")).findFirst().get();
 
         try (FileInputStream fin = new FileInputStream(primaryXmlGz); InputStream gzipStream = new GZIPInputStream(fin)) {
             String primaryXmlStr = TestUtils.readAll(gzipStream);
@@ -161,7 +163,11 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     }
 
     private String cleanupRepomd(String str) {
-        String ret = str.trim().replaceFirst("<checksum type=\"sha256\">.*</checksum>", "<checksum type=\"sha256\">xxx</checksum>");
+        String ret = str.trim().replaceFirst("<location href=\"repodata/.*-primary.xml.gz\"/>", "<location href=\"repodata/xxx-primary.xml.gz\"/>");
+        ret = ret.replaceFirst("<location href=\"repodata/.*-filelists.xml.gz\"/>", "<location href=\"repodata/xxx-filelists.xml.gz\"/>");
+        ret = ret.replaceFirst("<location href=\"repodata/.*-other.xml.gz\"/>", "<location href=\"repodata/xxx-other.xml.gz\"/>");
+        ret = ret.replaceFirst("<location href=\"repodata/.*-susedata.xml.gz\"/>", "<location href=\"repodata/xxx-susedata.xml.gz\"/>");
+        ret = ret.replaceFirst("<checksum type=\"sha256\">.*</checksum>", "<checksum type=\"sha256\">xxx</checksum>");
         ret = ret.replaceFirst("<open-checksum type=\"sha256\">.*</open-checksum>", "<open-checksum type=\"sha256\">xxx</open-checksum>");
         ret = ret.replaceFirst("<timestamp>.*</timestamp>", "<timestamp>123</timestamp>");
         return ret;
