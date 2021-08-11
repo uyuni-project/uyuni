@@ -95,7 +95,7 @@ export const AdvancedExample = () => {
 
 export const AsyncExample = () => {
   const [model, setModel] = React.useState({
-    level: 1,
+    level: 2,
   });
 
   const loadOptions = () => {
