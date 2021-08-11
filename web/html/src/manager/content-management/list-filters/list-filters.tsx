@@ -16,7 +16,6 @@ import { isOrgAdmin } from "core/auth/auth.utils";
 import { getValue } from "utils/data";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { Button } from "components/buttons";
-import getUrlParam from "utils/url-params";
 
 type Props = {
   filters: Array<FilterServerType>;
@@ -104,21 +103,14 @@ const ListFilters = (props: Props) => {
     return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
   };
 
-  const systemId = getUrlParam("systemId", Number);
-  const systemName = getUrlParam("systemName");
-  const kernelId = getUrlParam("kernelId", Number);
-  const kernelName = getUrlParam("kernelName");
-  console.log("get", { systemId, systemName, kernelId, kernelName });
-
-  // TODO: OR with const values for testing
   const initialFilterForm = {
     rule: "deny",
     labelPrefix: props.projectLabel,
-    template: props.openTemplate || "LivePatchingSystem",
-    systemId: props.systemId || 1000010000,
-    systemName: props.systemName || "Foo",
-    kernelId: props.kernelId || 188,
-    kernelName: props.kernelName || "Bar",
+    template: props.openTemplate,
+    systemId: props.systemId,
+    systemName: props.systemName,
+    kernelId: props.kernelId,
+    kernelName: props.kernelName,
   };
 
   const panelButtons = (
