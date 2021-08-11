@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Copyright (c) 2021 SUSE LLC
 #
@@ -30,8 +30,6 @@ def backup_file(file_path: str):
     :param file_path: The full path to the file which should be backed up.
     :raises FileNotFoundError: In case the path specified was not existing.
     """
-    if not os.path.exists(file_path):
-        raise FileNotFoundError("file at path \"%s\" not found" % file_path)
     copyfile(file_path, "%s.backup" % file_path)
 
 
@@ -45,18 +43,12 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
     """
     full_path = os.path.join(config_dir, settings_yaml)
     backup_file(full_path)
-    # Read YAML
     with open(full_path) as settings_file:
         filecontent = yaml.safe_load(settings_file.read())
-    # Modify Server
     filecontent["server"] = socket.getfqdn()
-    # Modify Next Server
     filecontent["next_server"] = socket.getfqdn()
-    # Modify PXE just once
     filecontent["pxe_just_once"] = True
-    # Modify the Redhat Management Server
     filecontent["redhat_management_server"] = socket.getfqdn()
-    # Write YAML
     yaml_dump = yaml.safe_dump(filecontent)
     with open(full_path, "w") as settings_file:
         settings_file.write(yaml_dump)
