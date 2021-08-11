@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-10 19:11+0000\n"
+"PO-Revision-Date: 2021-08-11 19:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5805,31 +5805,33 @@ msgstr "Žiadna oprava na pridanie"
 
 #: ../src/spacecmd/softwarechannel.py:1799
 msgid "Add these patches [y/N]:"
-msgstr ""
+msgstr "Pridať tieto opravy [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1813
 msgid "Using the old errata.clone function"
-msgstr ""
+msgstr "Použitie starej funkcie errata.clone"
 
 #: ../src/spacecmd/softwarechannel.py:1814
 msgid ""
 "If you have base channels for multiple OS versions, check no unexpected "
 "packages have been added"
 msgstr ""
+"Ak máte základné kanály pre viacero verzií OS, skontrolujte, či neboli "
+"pridané žiadne neočakávané balíky"
 
 #: ../src/spacecmd/softwarechannel.py:1827
 msgid ""
 "softwarechannel_getorgaccess: Get the org-access for the software channel"
-msgstr ""
+msgstr "softwarechannel_getorgaccess: Získať prístup-org pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:1828
 msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
-msgstr ""
+msgstr "použitie: softwarechannel_getorgaccess [KANÁL ...]"
 
 #: ../src/spacecmd/softwarechannel.py:1866
 msgid ""
 "softwarechannel_setorgaccess: Set the org-access for the software channel"
-msgstr ""
+msgstr "softwarechannel_setorgaccess: Nastaviť prístup-org pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:1867
 msgid ""
@@ -5839,21 +5841,27 @@ msgid ""
 "-p,--protected ORG : protected org access for ORG only (multiple instances "
 "of -p ORG are allowed)"
 msgstr ""
+"prístup : softwarechannel_setorgaccess <KANÁL> [voľby])\n"
+"-d,--disable : zakázanie prístupu k org (súkromné, bez zdieľania org)\n"
+"-e,--enable : povolenie prístupu k org (verejný prístup ku všetkým "
+"dôveryhodným org)\n"
+"-p,--protected ORG : chránený prístup org len pre ORG (sú povolené viaceré "
+"inštancie -p ORG)"
 
 #: ../src/spacecmd/softwarechannel.py:1907
 #, python-format
 msgid "Making org sharing public for channel : %s "
-msgstr ""
+msgstr "Vytvorenie zdieľania org verejným pre kanál : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1912
 #, python-format
 msgid "Making org sharing private for channel : %s "
-msgstr ""
+msgstr "Vytvorenie zdieľania org súkromným pre kanál : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1917
 #, python-format
 msgid "Making org sharing protected for channel : %s "
-msgstr ""
+msgstr "Vytvorenie zdieľania org chráneným pre kanál : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1923
 #, python-format
