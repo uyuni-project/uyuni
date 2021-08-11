@@ -57,18 +57,6 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-const useChangeEffect = (...[callBack, dependencies]: Parameters<typeof useEffect>) => {
-  const didMount = useRef(false);
-
-  return useEffect(() => {
-    if (didMount.current) {
-      callBack();
-    } else {
-      didMount.current = true;
-    }
-  }, dependencies);
-}
-
 export default (props: FilterFormProps & { template: Template }) => {
   const template = props.template;
   const prevTemplate = usePrevious(template);

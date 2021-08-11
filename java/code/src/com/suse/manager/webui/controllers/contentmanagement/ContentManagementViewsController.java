@@ -182,12 +182,11 @@ public class ContentManagementViewsController {
             String systemName = req.queryParams("systemName");
             String kernelId = req.queryParams("kernelId");
             String kernelName = req.queryParams("kernelName");
-            // TODO: Check for system and kernelid not null here
-            if (openTemplate.equals("LivePatchingSystem")) {
-                data.put("systemId", systemId != null ? systemId : "");
-                data.put("systemName", systemName != null ? systemName : "");
-                data.put("kernelId", kernelId != null ? kernelId : "");
-                data.put("kernelName", kernelName != null ? kernelName : "");
+            if (openTemplate.equals("LivePatchingSystem") && systemId != null && systemName != null && kernelId != null && kernelName != null) {
+                data.put("systemId", systemId);
+                data.put("systemName", systemName);
+                data.put("kernelId", kernelId);
+                data.put("kernelName", kernelName);
             }
         }
 

@@ -26,7 +26,6 @@ export type Props = {
 const FilterForm = (props: Props) => {
   const { timezone, localTime } = useUserLocalization();
 
-  // TODO: Check
   const initialFilterBy = props.filter.template ? FilterBy.Template : FilterBy.Type;
   const [filterBy, setFilterBy] = useState(initialFilterBy);
 
