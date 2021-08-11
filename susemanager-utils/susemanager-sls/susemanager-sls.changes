@@ -1,3 +1,4 @@
+- Add Rocky Linux 8 support
 - Enable logrotate configuration for Salt SSH minion logs
 - Add UEFI support for VM creation
 - Add virt-tuner templates to VM creation
