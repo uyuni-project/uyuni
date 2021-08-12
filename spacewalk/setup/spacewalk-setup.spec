@@ -93,7 +93,7 @@ Requires:       %{sbinpath}/restorecon
 BuildRequires:  %{pythonX}-setuptools
 BuildRequires:  spacewalk-%{pythonX}-pylint
 %endif
-Requires:       cobbler >= 2.0.0
+Requires:       cobbler >= 3.0.0
 Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
@@ -142,6 +142,9 @@ touch Makefile
 sed -i "s/'python'/'python3'/g" lib/Spacewalk/Setup.pm
 %endif
 
+# Build RST manpages
+sphinx-build -b man doc/ out/
+
 %install
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
@@ -176,7 +179,6 @@ install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler
-install -m 0644 share/cobbler/* %{buildroot}/%{_datadir}/spacewalk/setup/cobbler/
 install -m 0644 salt/susemanager.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
 install -m 0644 salt/salt-ssh-logging.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
 
@@ -190,7 +192,10 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
-sphinx-build -b man %{buildroot}/doc/ $RPM_BUILD_ROOT%{_mandir}/man1/
+# Sphinx built manpage
+%define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
+install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1
+echo %{SOURCE0}
 
 # Standalone Salt formulas configuration
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas
