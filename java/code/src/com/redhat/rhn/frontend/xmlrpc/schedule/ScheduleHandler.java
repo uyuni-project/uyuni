@@ -220,6 +220,25 @@ public class ScheduleHandler extends BaseHandler {
     }
 
     /**
+     * List all the scheduled actions that have been archived.
+     * @param loggedInUser The current user
+     * @return Returns a list of actions with details
+     *
+     * @xmlrpc.doc Returns a list of actions that have been archived.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype
+     * #array_begin()
+     *   $ScheduleActionSerializer
+     * #array_end()
+     */
+    public Object[] listAllArchivedActions(User loggedInUser) {
+        // the second argument is "PageControl". This is not needed for the api usage;
+        // therefore, null will be used.
+        DataResult dr = ActionManager.allArchivedActions(loggedInUser, null);
+        return dr.toArray();
+    }
+
+    /**
      * List the systems that have completed a specific action.
      * @param loggedInUser The current user
      * @param actionId The id of the action.
