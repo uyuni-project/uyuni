@@ -13,14 +13,22 @@
 
 import os
 import socket
+
 import yaml
+import argparse
 from configparser import ConfigParser
 from shutil import copyfile
 
-cobbler_config_directory = "/etc/cobbler/"
-cobbler_config_files = ["modules.conf", "settings"]
-httpd_config_directory = "/etc/httpd"
-cobbler_http_config = "cobbler.conf"
+parser = argparse.ArgumentParser(description='Setup Cobbler for Uyuni.')
+parser.add_argument('--cobbler-config-directory', '-c', dest='cobbler_config_directory', default="/etc/cobbler/",
+                    help='The directory where "settings" and "modules.conf" are in.')
+parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_directory', default="/etc/httpd",
+                    help='The directory where the Apache config file "cobbler.conf" is in.')
+
+COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
+COBBLER_CONFIG_FILES = ["modules.conf", "settings"]
+HTTPD_CONFIG_DIRECTORY = "/etc/httpd/conf.d/"
+COBBLER_HTTP_CONFIG = "cobbler.conf"
 
 
 def backup_file(file_path: str):
@@ -90,16 +98,24 @@ def remove_virtual_host(conf_directory: str, conf_file: str):
         http_config.writelines(http_lines)
 
 
+def sanatize_args(args):
+    global COBBLER_CONFIG_DIRECTORY
+    COBBLER_CONFIG_DIRECTORY = os.path.join(args.cobbler_config_directory, '')
+    global HTTPD_CONFIG_DIRECTORY
+    HTTPD_CONFIG_DIRECTORY = os.path.join(args.httpd_config_directory, '')
+
+
 def main():
     """
     Main entrypoint for the script to get Cobbler in the correct state for SUMA.
     """
-    manipulate_cobbler_settings(cobbler_config_directory, cobbler_config_files[1])
-    manipulate_cobbler_modules(cobbler_config_directory, cobbler_config_files[0])
-    remove_virtual_host(httpd_config_directory, cobbler_http_config)
+    args = parser.parse_args()
+    sanatize_args(args)
+    manipulate_cobbler_settings(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1])
+    manipulate_cobbler_modules(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[0])
+    remove_virtual_host(HTTPD_CONFIG_DIRECTORY, COBBLER_HTTP_CONFIG)
 
 
 if __name__ == "__main__":
     # execute only if run as a script
     main()
-
