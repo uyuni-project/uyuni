@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-11 19:10+0000\n"
+"PO-Revision-Date: 2021-08-12 19:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5866,28 +5866,32 @@ msgstr "Vytvorenie zdieľania org chráneným pre kanál : %s "
 #: ../src/spacecmd/softwarechannel.py:1923
 #, python-format
 msgid "Enabling %s access for channel : %s "
-msgstr ""
+msgstr "Povolenie prístupu %s pre kanál : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1928
 #, python-format
 msgid "Disabling %s access for channel : %s "
-msgstr ""
+msgstr "Zakázanie prístupu %s pre kanál : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1941
 msgid ""
 "softwarechannel_getorgaccesstree: Get the org-access for a software base "
 "channel and its children"
 msgstr ""
+"softwarechannel_getorgaccesstree: Získať prístup-org pre softvérový základný "
+"kanál a jeho potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:1942
 msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
-msgstr ""
+msgstr "použitie: softwarechannel_getorgaccesstree [KANÁL]"
 
 #: ../src/spacecmd/softwarechannel.py:1975
 msgid ""
 "softwarechannel_setorgaccesstree: set the org-access for a software base "
 "channel and its children"
 msgstr ""
+"softwarechannel_setorgaccesstree: nastaviť prístup-org pre softvérový "
+"základný kanál a jeho potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:1976
 msgid ""
@@ -5897,22 +5901,29 @@ msgid ""
 "-p,--protected ORG : protected org access for ORG only (multiple instances "
 "of -p ORG are allowed)"
 msgstr ""
+"prístup : softwarechannel_setorgaccesstree <KANÁL> [voľby])\n"
+"-d,--disable : zakázanie prístupu k org (súkromné, bez zdieľania org)\n"
+"-e,--enable : povolenie prístupu k org (verejný prístup ku všetkým "
+"dôveryhodným org)\n"
+"-p,--protected ORG : chránený prístup org len pre ORG (sú povolené viaceré "
+"inštancie -p ORG)"
 
 #: ../src/spacecmd/softwarechannel.py:2015
 msgid "softwarechannel_regenerateneededcache: "
-msgstr ""
+msgstr "softwarechannel_regenerateneededcache: "
 
 #: ../src/spacecmd/softwarechannel.py:2016
 msgid "Regenerate the needed errata and package cache for all systems"
 msgstr ""
+"Obnoviť potrebné opravy chýb a vyrovnávaciu pamäť balíkov pre všetky systémy"
 
 #: ../src/spacecmd/softwarechannel.py:2018
 msgid "usage: softwarechannel_regenerateneededcache"
-msgstr ""
+msgstr "použitie: softwarechannel_regenerateneededcache"
 
 #: ../src/spacecmd/softwarechannel.py:2032
 msgid "softwarechannel_regenerateyumcache: "
-msgstr ""
+msgstr "softwarechannel_regenerateyumcache: "
 
 #: ../src/spacecmd/softwarechannel.py:2033
 msgid "Regenerate the YUM cache for a software channel"
