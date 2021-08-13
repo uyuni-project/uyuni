@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Aug 13 12:23:43 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
 - Tell the user to use the new PostgreSQL migration script
 
 -------------------------------------------------------------------
