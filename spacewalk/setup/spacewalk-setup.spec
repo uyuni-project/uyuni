@@ -52,7 +52,11 @@ BuildRequires:  perl-interpreter
 BuildRequires:  perl
 %endif
 BuildRequires:  perl(ExtUtils::MakeMaker)
+%if 0%{?suse_version}
 BuildRequires:  python3-Sphinx
+%else
+BuildRequires:  python3-sphinx
+%endif
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
@@ -195,7 +199,6 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 # Sphinx built manpage
 %define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
 install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1
-echo %{SOURCE0}
 
 # Standalone Salt formulas configuration
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas
