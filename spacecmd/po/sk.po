@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-12 19:13+0000\n"
+"PO-Revision-Date: 2021-08-13 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5927,7 +5927,7 @@ msgstr "softwarechannel_regenerateyumcache: "
 
 #: ../src/spacecmd/softwarechannel.py:2033
 msgid "Regenerate the YUM cache for a software channel"
-msgstr ""
+msgstr "Obnoviť vyrovnávaciu pamäť YUM pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:2035
 msgid ""
@@ -5937,38 +5937,43 @@ msgid ""
 "      -f force cache regeneration\n"
 "    "
 msgstr ""
+"použitie: softwarechannel_regenerateyumcache [voľby] <KANÁL ...>\n"
+"\n"
+"    voľby:\n"
+"      -f vynútenie obnovenia vyrovnávacej pamäte\n"
+"    "
 
 #: ../src/spacecmd/softwarechannel.py:2079
 msgid "no softwarechannel label given"
-msgstr ""
+msgstr "nie je uvedené označenie softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:2082
 msgid "invalid softwarechannel label "
-msgstr ""
+msgstr "neplatné označenie softvérového kanála "
 
 #: ../src/spacecmd/softwarechannel.py:2100
 msgid "softwarechannel_diff: diff softwarechannel files"
-msgstr ""
+msgstr "softwarechannel_diff: porovnať súbory softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:2102
 msgid "usage: softwarechannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_diff ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:2163
 msgid "softwarechannel_errata_diff: diff softwarechannel files"
-msgstr ""
+msgstr "softwarechannel_errata_diff: porovnať súbory softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:2165
 msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_errata_diff ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:2214
 msgid "softwarechannel_sync: "
-msgstr ""
+msgstr "softwarechannel_sync: "
 
 #: ../src/spacecmd/softwarechannel.py:2215
 msgid "sync the packages of two software channels"
-msgstr ""
+msgstr "synchronizovať balíky dvoch softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:2217
 msgid ""
