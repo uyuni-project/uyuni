@@ -83,7 +83,7 @@ def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
 
 def remove_virtual_host(conf_directory: str, conf_file: str):
     """
-    Replaces all occurences of lines with "VirtalHost" with an empty one.
+    Replaces all occurrences of lines with "VirtualHost" with an empty one.
     
     :param conf_directory: The directory where the Apache2 configuration files are.
     :param conf_file: The file to edit.
