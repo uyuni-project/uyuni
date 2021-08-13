@@ -19,4 +19,9 @@ describe("URL utils", () => {
     setSearchString("foo=foo");
     expect(getUrlParam("bar")).toEqual(undefined);
   });
+
+  test("yields empty string for param with no value", () => {
+    setSearchString("foo=");
+    expect(getUrlParam("foo")).toEqual("");
+  });
 });
