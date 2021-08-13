@@ -34,7 +34,7 @@ Feature: Build image with authenticated registry
     And I click on "submit-btn"
     Then I wait until I see "portus_profile" text
     # Verify the status of images in the authenticated image store
-    When I wait at most 600 seconds until container "portus_profile" is built successfully
+    When I wait at most 900 seconds until container "portus_profile" is built successfully
     And I refresh the page
     Then table row for "portus_profile" should contain "1"
 
