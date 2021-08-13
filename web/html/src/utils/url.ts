@@ -1,7 +1,7 @@
+/** Get URL parameter `paramName` as a string, or undefined if not found */
 function getUrlParam(paramName: string): string | undefined;
-// eslint-disable-next-line no-redeclare
+/** Get URL parameter `paramName` as a number, or undefined if not found */
 function getUrlParam(paramName: string, parser: NumberConstructor): number | undefined;
-// eslint-disable-next-line no-redeclare
 function getUrlParam(paramName: string, parser?: NumberConstructor | undefined) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
@@ -20,4 +20,4 @@ function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
   window.location.href = getUrlParam(qstrParamKey || "url_bounce") || defaultUrl;
 }
 
-export { getUrlParam };
+export { getUrlParam, urlBounce };

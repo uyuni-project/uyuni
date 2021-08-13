@@ -27,6 +27,9 @@ module.exports = {
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
     "radix": ["error", "always"],
+    // ESLint doesn't recongize overloads by default
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": ["error"],
     // TODO: Eventually this should be "error"
     "local-rules/no-raw-date": "off",
     // TODO: Eventually we should enforce this as well
