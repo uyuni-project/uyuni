@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-13 19:11+0000\n"
+"PO-Revision-Date: 2021-08-14 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -5981,11 +5981,14 @@ msgid ""
 "    -q,--quiet : quiet mode (omits the output of common packages in both "
 "channels)"
 msgstr ""
+"použitie: softwarechannel_sync ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL [voľby])\n"
+"    -q,--quiet : tichý režim (vynechá výstup spoločných balíkov v oboch "
+"kanáloch)"
 
 #: ../src/spacecmd/softwarechannel.py:2259
 #, python-format
 msgid "%s packages from softwarechannel %s to %s"
-msgstr ""
+msgstr "%s balíkov zo softvérového kanála %s do %s"
 
 #: ../src/spacecmd/softwarechannel.py:2278
 #: ../src/spacecmd/softwarechannel.py:2286
@@ -5994,38 +5997,38 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:2540
 #: ../src/spacecmd/softwarechannel.py:2548
 msgid "failed to read key id"
-msgstr ""
+msgstr "nepodarilo sa prečítať id kľúča"
 
 #: ../src/spacecmd/softwarechannel.py:2289
 msgid "packages common in both channels:"
-msgstr ""
+msgstr "balíky spoločné pre oba kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:2294
 msgid "Omitting common packages in both specified channels"
-msgstr ""
+msgstr "Vynechanie spoločných balíkov v oboch uvedených kanáloch"
 
 #: ../src/spacecmd/softwarechannel.py:2299
 msgid "packages to add to channel \""
-msgstr ""
+msgstr "balíky na pridanie do kanála \""
 
 #: ../src/spacecmd/softwarechannel.py:2307
 msgid "packages to remove from channel \""
-msgstr ""
+msgstr "balíky na odstránenie z kanála \""
 
 #: ../src/spacecmd/softwarechannel.py:2313
 #: ../src/spacecmd/softwarechannel.py:2435
 #: ../src/spacecmd/softwarechannel.py:2565
 msgid "summary:"
-msgstr ""
+msgstr "súhrn:"
 
 #: ../src/spacecmd/softwarechannel.py:2314
 #: ../src/spacecmd/softwarechannel.py:2315
 msgid " packages"
-msgstr ""
+msgstr " balíky"
 
 #: ../src/spacecmd/softwarechannel.py:2316
 msgid "    add    "
-msgstr ""
+msgstr "    pridať    "
 
 #: ../src/spacecmd/softwarechannel.py:2317
 msgid " packages to   "
