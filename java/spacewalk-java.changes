@@ -1,3 +1,5 @@
+- Removed unused joda-time dependencies.
+
 -------------------------------------------------------------------
 Mon Aug 09 11:00:52 CEST 2021 - jgonzalez@suse.com
 

@@ -136,8 +136,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jdom
     repository: Leap
-  - artifact: joda-time
-    repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j

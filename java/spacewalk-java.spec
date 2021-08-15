@@ -126,7 +126,6 @@ BuildRequires:  javassist
 BuildRequires:  jboss-logging
 BuildRequires:  jcommon
 BuildRequires:  jdom
-BuildRequires:  joda-time
 BuildRequires:  jose4j
 BuildRequires:  jpa-api
 BuildRequires:  jsch
@@ -209,7 +208,6 @@ Requires:       javamail
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       joda-time
 Requires:       jose4j
 Requires:       jpa-api
 Requires:       mgr-libmod
@@ -776,7 +774,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/pgjdbc-ng.jar
 %{jardir}/java-saml-core.jar
 %{jardir}/java-saml.jar
-%{jardir}/joda-time.jar
 %{jardir}/stax-api.jar
 %{jardir}/stax2-api.jar
 %{jardir}/woodstox-core-asl.jar
