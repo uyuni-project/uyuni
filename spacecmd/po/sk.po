@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-14 20:11+0000\n"
+"PO-Revision-Date: 2021-08-15 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6032,45 +6032,45 @@ msgstr "    pridať    "
 
 #: ../src/spacecmd/softwarechannel.py:2317
 msgid " packages to   "
-msgstr ""
+msgstr " balíky do   "
 
 #: ../src/spacecmd/softwarechannel.py:2320
 msgid "    remove "
-msgstr ""
+msgstr "    odstrániť "
 
 #: ../src/spacecmd/softwarechannel.py:2321
 msgid " packages from "
-msgstr ""
+msgstr " balíky z "
 
 #: ../src/spacecmd/softwarechannel.py:2323
 #: ../src/spacecmd/softwarechannel.py:2443
 msgid "Perform these changes to channel "
-msgstr ""
+msgstr "Vykonať tieto zmeny v kanáli "
 
 #: ../src/spacecmd/softwarechannel.py:2344
 msgid "softwarechannel_errata_sync: "
-msgstr ""
+msgstr "softwarechannel_errata_sync: "
 
 #: ../src/spacecmd/softwarechannel.py:2345
 msgid "sync errata of two software channels"
-msgstr ""
+msgstr "synchronizovať opravy chýb dvoch softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:2347
 msgid "usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_errata_sync ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:2386
 msgid "syncing errata from softwarechannel "
-msgstr ""
+msgstr "synchronizovanie opráv chýb zo softvérového kanála "
 
 #: ../src/spacecmd/softwarechannel.py:2387
 #: ../src/spacecmd/softwarechannel.py:2519
 msgid " to "
-msgstr ""
+msgstr " do "
 
 #: ../src/spacecmd/softwarechannel.py:2411
 msgid "errata common in both channels:"
-msgstr ""
+msgstr "opravy chýb spoločné pre oba kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:2420
 msgid "errata to add to channel \""
