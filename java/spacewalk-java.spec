@@ -249,11 +249,7 @@ Requires:       xerces-j2
 Requires:       xmlsec
 Requires(pre):  tomcat >= 7
 Requires:       tomcat-lib >= 7
-%if 0%{?suse_version}
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
-%else
-Requires:       servlet >= 3.0
-%endif
 Requires(pre):  salt
 
 %if 0%{?run_checkstyle}

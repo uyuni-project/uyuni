@@ -1,3 +1,4 @@
+- Updated Enterprise Linux servlet requirement.
 - Removed unused joda-time dependencies.
 
 -------------------------------------------------------------------
