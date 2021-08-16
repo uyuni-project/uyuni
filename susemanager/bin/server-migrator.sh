@@ -40,7 +40,7 @@ fi
 echo
 echo "==================================================================="
 echo "If you did not yet migrate the database to postgresql13, do so now"
-echo "by running /usr/lib/susemanager/bin/pg-migrate-12-to-13.sh"
+echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
 echo
 echo "Reboot system afterwards."
 echo "==================================================================="

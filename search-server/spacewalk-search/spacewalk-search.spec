@@ -29,8 +29,8 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git

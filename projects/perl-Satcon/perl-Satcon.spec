@@ -23,8 +23,8 @@ Name:           perl-Satcon
 Summary:        Framework for configuration files
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch

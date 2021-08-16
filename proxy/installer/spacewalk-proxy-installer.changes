@@ -1,9 +1,12 @@
+-------------------------------------------------------------------
+Mon Aug 09 11:02:43 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
 - Improved for Enterprise Linux build.
 - Modified for Pylint pass.
 - Removed Python 2 build.
 - Add new refresh_pattern to the squid.conf to fix a case where the repodata
   was invalid due to being cached (bsc#1186026)
-- Bump version to 4.3.0
 
 -------------------------------------------------------------------
 Wed May 05 16:38:27 CEST 2021 - jgonzalez@suse.com

@@ -17,8 +17,8 @@
 
 
 Name:           susemanager-branding-oss
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
 Group:          Applications/System
