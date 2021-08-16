@@ -23,5 +23,8 @@ describe("URL utils", () => {
   test("yields empty string for param with no value", () => {
     setSearchString("foo=");
     expect(getUrlParam("foo")).toEqual("");
+
+    setSearchString("bar");
+    expect(getUrlParam("bar")).toEqual("");
   });
 });

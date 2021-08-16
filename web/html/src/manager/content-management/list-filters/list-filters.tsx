@@ -16,15 +16,10 @@ import { isOrgAdmin } from "core/auth/auth.utils";
 import { getValue } from "utils/data";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { Button } from "components/buttons";
+import { getUrlParam } from "utils/url";
 
 type Props = {
   filters: Array<FilterServerType>;
-  openFilterId?: number;
-  projectLabel: string;
-  openTemplate?: string;
-  systemId?: number;
-  systemName: string;
-  kernelName: string;
   flashMessage: string;
 };
 
@@ -102,13 +97,20 @@ const ListFilters = (props: Props) => {
     return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
   };
 
+  const openFilterId = getUrlParam("openFilterId", Number);
+  const projectLabel = getUrlParam("projectLabel");
+  const openTemplate = getUrlParam("openTemplate");
+  const systemId = getUrlParam("systemId", Number);
+  const systemName = getUrlParam("systemName");
+  const kernelName = getUrlParam("kernelName");
+
   const initialFilterForm = {
     rule: "deny",
-    labelPrefix: props.projectLabel,
-    template: props.openTemplate,
-    systemId: props.systemId,
-    systemName: props.systemName,
-    kernelName: props.kernelName,
+    labelPrefix: projectLabel,
+    template: openTemplate,
+    systemId,
+    systemName,
+    kernelName,
   };
 
   const panelButtons = (
@@ -119,8 +121,8 @@ const ListFilters = (props: Props) => {
           initialFilterForm={initialFilterForm}
           icon="fa-plus"
           buttonText="Create Filter"
-          openFilterId={props.openFilterId}
-          projectLabel={props.projectLabel}
+          openFilterId={openFilterId}
+          projectLabel={projectLabel}
           onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
         />
       )}
@@ -199,8 +201,8 @@ const ListFilters = (props: Props) => {
                 icon="fa-edit"
                 buttonText="Edit Filter"
                 onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
-                openFilterId={props.openFilterId}
-                projectLabel={props.projectLabel}
+                openFilterId={openFilterId}
+                projectLabel={projectLabel}
                 editing
               />
             )

@@ -168,27 +168,6 @@ public class ContentManagementViewsController {
 
         data.put("flashMessage", FlashScopeHelper.flash(req));
         data.put("contentFilters", GSON.toJson(filterResponse));
-        if (req.queryParams("openFilterId") != null) {
-            data.put("openFilterId", req.queryParams("openFilterId"));
-        }
-        if (req.queryParams("projectLabel") != null) {
-            data.put("projectLabel", req.queryParams("projectLabel"));
-        }
-        String openTemplate = req.queryParams("openTemplate");
-        if (openTemplate != null) {
-            data.put("openTemplate", openTemplate);
-
-            String systemId = req.queryParams("systemId");
-            String systemName = req.queryParams("systemName");
-            String kernelName = req.queryParams("kernelName");
-            if (openTemplate.equals("LivePatchingSystem") && systemId != null && systemName != null &&
-                kernelName != null) {
-                data.put("systemId", systemId);
-                data.put("systemName", systemName);
-                data.put("kernelName", kernelName);
-            }
-        }
-
 
         return new ModelAndView(data, "controllers/contentmanagement/templates/list-filters.jade");
     }

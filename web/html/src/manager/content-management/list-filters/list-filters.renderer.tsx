@@ -6,10 +6,7 @@ import { UserLocalizationProvider } from "core/user-localization/user-localizati
 import SpaRenderer from "core/spa/spa-renderer";
 import { MessagesContainer } from "components/toastr/toastr";
 
-export const renderer = (
-  id,
-  { filters, projectLabel, openFilterId, openTemplate, systemId, systemName, kernelName, flashMessage }
-) => {
+export const renderer = (id, { filters, flashMessage }) => {
   let filtersJson = [];
   try {
     filtersJson = JSON.parse(filters);
@@ -23,12 +20,6 @@ export const renderer = (
         <MessagesContainer />
         <ListFilters
           filters={filtersJson}
-          openFilterId={openFilterId}
-          projectLabel={projectLabel}
-          openTemplate={openTemplate}
-          systemId={systemId}
-          systemName={systemName}
-          kernelName={kernelName}
           flashMessage={flashMessage}
         />
       </UserLocalizationProvider>
