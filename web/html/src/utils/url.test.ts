@@ -18,13 +18,16 @@ describe("URL utils", () => {
   test("yields undefined for missing params", () => {
     setSearchString("foo=foo");
     expect(getUrlParam("bar")).toEqual(undefined);
+    expect(getUrlParam("bar", Number)).toEqual(undefined);
   });
 
-  test("yields empty string for param with no value", () => {
+  test("yields undefined for params with no value", () => {
     setSearchString("foo=");
-    expect(getUrlParam("foo")).toEqual("");
+    expect(getUrlParam("foo")).toEqual(undefined);
+    expect(getUrlParam("foo", Number)).toEqual(undefined);
 
     setSearchString("bar");
-    expect(getUrlParam("bar")).toEqual("");
+    expect(getUrlParam("bar")).toEqual(undefined);
+    expect(getUrlParam("bar", Number)).toEqual(undefined);
   });
 });

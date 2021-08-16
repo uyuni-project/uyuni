@@ -13,7 +13,7 @@ function getUrlParam(paramName: string, parser?: NumberConstructor | undefined) 
     const result = Number(safeValue);
     return isNaN(result) ? undefined : result;
   }
-  return value;
+  return value || undefined;
 }
 
 function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
