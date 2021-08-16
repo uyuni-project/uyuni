@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-16 08:38+0000\n"
+"POT-Creation-Date: 2021-08-16 12:04+0000\n"
 "PO-Revision-Date: 2021-05-21 18:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -140,8 +140,8 @@ msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďt
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
-#: ../html/src/manager/state/recurring-states-details.tsx:154
-#: ../html/src/manager/state/recurring-states-details.tsx:156
+#: ../html/src/manager/state/recurring-states-details.tsx:142
+#: ../html/src/manager/state/recurring-states-details.tsx:144
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:119
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
@@ -251,9 +251,9 @@ msgstr "Zrušit"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:31
 #: ../html/src/manager/salt/keys/key-management.tsx:51
-#: ../html/src/manager/state/recurring-states-details.tsx:168
-#: ../html/src/manager/state/recurring-states-details.tsx:170
-#: ../html/src/manager/state/recurring-states-list.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:156
+#: ../html/src/manager/state/recurring-states-details.tsx:158
+#: ../html/src/manager/state/recurring-states-list.tsx:129
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:140
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
@@ -328,20 +328,20 @@ msgid "Toggle section visibility"
 msgstr "Přepnout viditelnost sekce"
 
 #: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:35
-#: ../html/src/components/input/FormMultiInput.stories.tsx:77
-#: ../html/src/components/input/FormMultiInput.stories.tsx:134
-#: ../html/src/components/input/FormMultiInput.stories.tsx:183
-#: ../html/src/components/input/FormMultiInput.stories.tsx:264
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:69
-#: ../html/src/components/input/Radio.stories.tsx:99
-#: ../html/src/components/input/Radio.stories.tsx:130
+#: ../html/src/components/input/DateTime.stories.tsx:34
+#: ../html/src/components/input/FormMultiInput.stories.tsx:76
+#: ../html/src/components/input/FormMultiInput.stories.tsx:132
+#: ../html/src/components/input/FormMultiInput.stories.tsx:180
+#: ../html/src/components/input/FormMultiInput.stories.tsx:260
+#: ../html/src/components/input/Password.stories.tsx:35
+#: ../html/src/components/input/Radio.stories.tsx:38
+#: ../html/src/components/input/Radio.stories.tsx:67
+#: ../html/src/components/input/Radio.stories.tsx:96
+#: ../html/src/components/input/Radio.stories.tsx:126
 #: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:36
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
+#: ../html/src/components/input/Select.stories.tsx:35
+#: ../html/src/components/input/Text.stories.tsx:43
+#: ../html/src/components/input/form.stories.tsx:35
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "Předložit"
@@ -365,16 +365,16 @@ msgstr "požadovaný"
 msgid "Both values need to be positive integers"
 msgstr "Obě hodnoty musí být celá kladná čísla"
 
-#: ../html/src/components/input/Select.stories.tsx:62
+#: ../html/src/components/input/Select.stories.tsx:61
 msgid "Flavor"
 msgstr "Varianta"
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.tsx:63
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "Začněte psát..."
 
-#: ../html/src/components/input/Select.stories.tsx:65
+#: ../html/src/components/input/Select.stories.tsx:64
 msgid "No flavors"
 msgstr "Bez variant"
 
@@ -428,7 +428,7 @@ msgstr "Strana {0} z {1}"
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:100
+#: ../html/src/manager/state/recurring-states-list.tsx:88
 msgid "Schedule Name"
 msgstr "Název plánu"
 
@@ -486,9 +486,9 @@ msgstr "Konfigurační kanál: {0}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:161
-#: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:133
+#: ../html/src/manager/state/recurring-states-details.tsx:149
+#: ../html/src/manager/state/recurring-states-details.tsx:151
+#: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:133
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
@@ -827,7 +827,7 @@ msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 #: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:125
+#: ../html/src/manager/state/recurring-states-list.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "Podrobnosti"
@@ -1178,7 +1178,7 @@ msgstr "Název"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.tsx:120
+#: ../html/src/manager/state/recurring-states-list.tsx:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
@@ -1852,7 +1852,7 @@ msgstr "Vytvořit projekt"
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.tsx:59
+#: ../html/src/manager/state/recurring-states-list.tsx:47
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:212
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:81
@@ -3343,7 +3343,7 @@ msgstr "Vymazat kalendář údržby"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:154
+#: ../html/src/manager/state/recurring-states-list.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr "Opravdu chcete vybranou položku odstranit?"
@@ -3412,7 +3412,7 @@ msgid "Multi"
 msgstr "Násobný"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/state/recurring-states-details.tsx:104
+#: ../html/src/manager/state/recurring-states-details.tsx:92
 msgid "Schedule Details"
 msgstr "Podrobnosti plánu"
 
@@ -4128,7 +4128,7 @@ msgid "System Group"
 msgstr "Systémová skupina"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
-#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:189
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
@@ -4154,65 +4154,57 @@ msgstr "Použít Highstate"
 msgid "Create Recurring"
 msgstr "Vytvořit opakování"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:14
-msgid "Minion"
-msgstr "Následovník"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:16
-msgid "Group"
-msgstr "Skupina"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:52
+#: ../html/src/manager/state/recurring-states-details.tsx:40
 msgid "Execution time"
 msgstr "Doba provedení"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:109
+#: ../html/src/manager/state/recurring-states-details.tsx:97
 msgid "State:"
 msgstr "Stav:"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:110
-#: ../html/src/manager/state/recurring-states-list.tsx:91
+#: ../html/src/manager/state/recurring-states-details.tsx:98
+#: ../html/src/manager/state/recurring-states-list.tsx:79
 msgid "Active"
 msgstr "Aktivní"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:110
+#: ../html/src/manager/state/recurring-states-details.tsx:98
 msgid "Inactive"
 msgstr "Neaktivní"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:114
+#: ../html/src/manager/state/recurring-states-details.tsx:102
 msgid "Test"
 msgstr "Test"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:115
+#: ../html/src/manager/state/recurring-states-details.tsx:103
 msgid "True"
 msgstr "Pravda"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:119
+#: ../html/src/manager/state/recurring-states-details.tsx:107
 msgid "Target type"
 msgstr "Typ cíle"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:124
+#: ../html/src/manager/state/recurring-states-details.tsx:112
 msgid "Organization name"
 msgstr "Název organizace"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:129
+#: ../html/src/manager/state/recurring-states-details.tsx:117
 msgid "Created by"
 msgstr "Vytvořeno"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:134
+#: ../html/src/manager/state/recurring-states-details.tsx:122
 msgid "Created at"
 msgstr "Vytvořeno v"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:140
+#: ../html/src/manager/state/recurring-states-details.tsx:128
 msgid "Quartz format string"
 msgstr "Řetězec formátu Quartz"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:183
-#: ../html/src/manager/state/recurring-states-list.tsx:153
+#: ../html/src/manager/state/recurring-states-details.tsx:171
+#: ../html/src/manager/state/recurring-states-list.tsx:141
 msgid "Delete Recurring State Schedule"
 msgstr "Odstranit plán opakování stavu"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:184
+#: ../html/src/manager/state/recurring-states-details.tsx:172
 msgid "Are you sure you want to delete this schedule?"
 msgstr "Opravdu chcete tento plán smazat?"
 
@@ -4232,21 +4224,29 @@ msgstr "Zpět na seznam"
 msgid "Schedule Recurring Highstate"
 msgstr "Naplánovat opakující se Highstate"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:69
+#: ../html/src/manager/state/recurring-states-list.tsx:57
 msgid "Recurring States"
 msgstr "Opakující se stavy"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:86
+#: ../html/src/manager/state/recurring-states-list.tsx:74
 msgid "No schedules created."
 msgstr "Nevytvořeny žádné plány."
 
-#: ../html/src/manager/state/recurring-states-list.tsx:107
+#: ../html/src/manager/state/recurring-states-list.tsx:95
 msgid "Frequency"
 msgstr "Frekvence"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:114
+#: ../html/src/manager/state/recurring-states-list.tsx:102
 msgid "Target Type"
 msgstr "Typ cíle"
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:4
+msgid "Minion"
+msgstr "Následovník"
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:6
+msgid "Group"
+msgstr "Skupina"
 
 #: ../html/src/manager/state/recurring-states.tsx:146
 msgid "Schedule successfully"

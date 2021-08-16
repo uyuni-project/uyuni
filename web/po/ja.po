@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-16 08:38+0000\n"
+"POT-Creation-Date: 2021-08-16 12:04+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -143,8 +143,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
-#: ../html/src/manager/state/recurring-states-details.tsx:154
-#: ../html/src/manager/state/recurring-states-details.tsx:156
+#: ../html/src/manager/state/recurring-states-details.tsx:142
+#: ../html/src/manager/state/recurring-states-details.tsx:144
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:119
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
@@ -256,9 +256,9 @@ msgstr "取り消し"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:31
 #: ../html/src/manager/salt/keys/key-management.tsx:51
-#: ../html/src/manager/state/recurring-states-details.tsx:168
-#: ../html/src/manager/state/recurring-states-details.tsx:170
-#: ../html/src/manager/state/recurring-states-list.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:156
+#: ../html/src/manager/state/recurring-states-details.tsx:158
+#: ../html/src/manager/state/recurring-states-list.tsx:129
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:140
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
@@ -332,20 +332,20 @@ msgid "Toggle section visibility"
 msgstr "セクション表示の切り替え"
 
 #: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:35
-#: ../html/src/components/input/FormMultiInput.stories.tsx:77
-#: ../html/src/components/input/FormMultiInput.stories.tsx:134
-#: ../html/src/components/input/FormMultiInput.stories.tsx:183
-#: ../html/src/components/input/FormMultiInput.stories.tsx:264
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:69
-#: ../html/src/components/input/Radio.stories.tsx:99
-#: ../html/src/components/input/Radio.stories.tsx:130
+#: ../html/src/components/input/DateTime.stories.tsx:34
+#: ../html/src/components/input/FormMultiInput.stories.tsx:76
+#: ../html/src/components/input/FormMultiInput.stories.tsx:132
+#: ../html/src/components/input/FormMultiInput.stories.tsx:180
+#: ../html/src/components/input/FormMultiInput.stories.tsx:260
+#: ../html/src/components/input/Password.stories.tsx:35
+#: ../html/src/components/input/Radio.stories.tsx:38
+#: ../html/src/components/input/Radio.stories.tsx:67
+#: ../html/src/components/input/Radio.stories.tsx:96
+#: ../html/src/components/input/Radio.stories.tsx:126
 #: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:36
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
+#: ../html/src/components/input/Select.stories.tsx:35
+#: ../html/src/components/input/Text.stories.tsx:43
+#: ../html/src/components/input/form.stories.tsx:35
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "送信"
@@ -370,16 +370,16 @@ msgstr "要再起動"
 msgid "Both values need to be positive integers"
 msgstr "両方の値は正の整数である必要があります"
 
-#: ../html/src/components/input/Select.stories.tsx:62
+#: ../html/src/components/input/Select.stories.tsx:61
 msgid "Flavor"
 msgstr "フレーバー"
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.tsx:63
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "入力してください..."
 
-#: ../html/src/components/input/Select.stories.tsx:65
+#: ../html/src/components/input/Select.stories.tsx:64
 msgid "No flavors"
 msgstr "フレーバー無し"
 
@@ -433,7 +433,7 @@ msgstr "{0} / {1} ページ"
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:100
+#: ../html/src/manager/state/recurring-states-list.tsx:88
 msgid "Schedule Name"
 msgstr "スケジュール名"
 
@@ -489,9 +489,9 @@ msgstr "設定チャンネル: {0}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:161
-#: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:133
+#: ../html/src/manager/state/recurring-states-details.tsx:149
+#: ../html/src/manager/state/recurring-states-details.tsx:151
+#: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:133
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
@@ -834,7 +834,7 @@ msgstr "操作は成功しませんでした: サーバからの応答が空で�
 #: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:125
+#: ../html/src/manager/state/recurring-states-list.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "詳細"
@@ -1185,7 +1185,7 @@ msgstr "名前"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.tsx:120
+#: ../html/src/manager/state/recurring-states-list.tsx:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
@@ -1865,7 +1865,7 @@ msgstr "プロジェクトの作成"
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.tsx:59
+#: ../html/src/manager/state/recurring-states-list.tsx:47
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:212
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:81
@@ -3378,7 +3378,7 @@ msgstr "メンテナンスカレンダーの削除"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:154
+#: ../html/src/manager/state/recurring-states-list.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr "選択した項目を削除してよろしいですか？"
@@ -3449,7 +3449,7 @@ msgid "Multi"
 msgstr "マルチ"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/state/recurring-states-details.tsx:104
+#: ../html/src/manager/state/recurring-states-details.tsx:92
 msgid "Schedule Details"
 msgstr "スケジュールの詳細"
 
@@ -4175,7 +4175,7 @@ msgid "System Group"
 msgstr "システムグループ"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
-#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:189
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
@@ -4201,65 +4201,57 @@ msgstr "highstate の適用"
 msgid "Create Recurring"
 msgstr "繰り返し作成"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:14
-msgid "Minion"
-msgstr "minion"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:16
-msgid "Group"
-msgstr "グループ"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:52
+#: ../html/src/manager/state/recurring-states-details.tsx:40
 msgid "Execution time"
 msgstr "実行時間"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:109
+#: ../html/src/manager/state/recurring-states-details.tsx:97
 msgid "State:"
 msgstr "状態:"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:110
-#: ../html/src/manager/state/recurring-states-list.tsx:91
+#: ../html/src/manager/state/recurring-states-details.tsx:98
+#: ../html/src/manager/state/recurring-states-list.tsx:79
 msgid "Active"
 msgstr "有効"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:110
+#: ../html/src/manager/state/recurring-states-details.tsx:98
 msgid "Inactive"
 msgstr "無効"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:114
+#: ../html/src/manager/state/recurring-states-details.tsx:102
 msgid "Test"
 msgstr "テスト"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:115
+#: ../html/src/manager/state/recurring-states-details.tsx:103
 msgid "True"
 msgstr "はい"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:119
+#: ../html/src/manager/state/recurring-states-details.tsx:107
 msgid "Target type"
 msgstr "ターゲットタイプ"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:124
+#: ../html/src/manager/state/recurring-states-details.tsx:112
 msgid "Organization name"
 msgstr "組織名"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:129
+#: ../html/src/manager/state/recurring-states-details.tsx:117
 msgid "Created by"
 msgstr "作成者"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:134
+#: ../html/src/manager/state/recurring-states-details.tsx:122
 msgid "Created at"
 msgstr "作成日時"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:140
+#: ../html/src/manager/state/recurring-states-details.tsx:128
 msgid "Quartz format string"
 msgstr "クォーツ書式文字列"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:183
-#: ../html/src/manager/state/recurring-states-list.tsx:153
+#: ../html/src/manager/state/recurring-states-details.tsx:171
+#: ../html/src/manager/state/recurring-states-list.tsx:141
 msgid "Delete Recurring State Schedule"
 msgstr "繰り返し状態スケジュールの削除"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:184
+#: ../html/src/manager/state/recurring-states-details.tsx:172
 msgid "Are you sure you want to delete this schedule?"
 msgstr "このスケジュールを削除してよろしいですか？"
 
@@ -4279,21 +4271,29 @@ msgstr "一覧に戻る"
 msgid "Schedule Recurring Highstate"
 msgstr "繰り返しの Highstate のスケジュール"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:69
+#: ../html/src/manager/state/recurring-states-list.tsx:57
 msgid "Recurring States"
 msgstr "繰り返し状態"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:86
+#: ../html/src/manager/state/recurring-states-list.tsx:74
 msgid "No schedules created."
 msgstr "スケジュールは作成されていません。"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:107
+#: ../html/src/manager/state/recurring-states-list.tsx:95
 msgid "Frequency"
 msgstr "頻度"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:114
+#: ../html/src/manager/state/recurring-states-list.tsx:102
 msgid "Target Type"
 msgstr "ターゲットタイプ"
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:4
+msgid "Minion"
+msgstr "minion"
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:6
+msgid "Group"
+msgstr "グループ"
 
 #: ../html/src/manager/state/recurring-states.tsx:146
 msgid "Schedule successfully"
