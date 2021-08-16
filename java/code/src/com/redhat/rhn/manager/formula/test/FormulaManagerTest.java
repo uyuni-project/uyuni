@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.formula.test;
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.dto.EndpointInfo;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -54,6 +55,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -63,6 +65,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
     static final String FORMULA_DATA = "dhcpd-formula-data.json";
     static final String FORMULA_DEFINITION = "dhcpd-formula-form.json";
+    static final String PROMETHEUS_EXPORTERS_FORMULA_DATA = "prometheus-exporters-formula-data.json";
 
     static final String TEMP_PATH = "formulas/";
     static final String formulaName = "dhcpd";
@@ -274,6 +277,34 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(combinedFormulaData.getSystemID(), minion.getId());
         assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
         assertNotNull(combinedFormulaData.getFormulaValues().get(formulaName));
+    }
+
+    public void testListEndpoints() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        String formulaValues = TestUtils.readAll(TestUtils.findTestData(PROMETHEUS_EXPORTERS_FORMULA_DATA));
+        Map<String, Object> formulaValuesMap = Json.GSON.fromJson(formulaValues, Map.class);
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        FormulaFactory.saveServerFormulas(minion.getMinionId(), Collections.singletonList(PROMETHEUS_EXPORTERS));
+        manager.saveServerFormulaData(user, minion.getId(), PROMETHEUS_EXPORTERS, formulaValuesMap);
+
+        List<EndpointInfo> endpoints = manager.listEndpoints(Collections.singletonList(minion.getId()));
+
+        assertNotNull(endpoints);
+        assertEquals(endpoints.size(), 2);
+        EndpointInfo nodeExporter = endpoints.stream()
+                .filter(e -> e.getExporterName().get().equals("node_exporter")).findFirst().get();
+        EndpointInfo apacheExporter = endpoints.stream()
+                .filter(e -> e.getExporterName().get().equals("apache_exporter")).findFirst().get();
+        assertEquals(nodeExporter.getSystemID(), minion.getId());
+        assertEquals(nodeExporter.getEndpointName(), "node_exporter");
+        assertNull(nodeExporter.getPath());
+        assertNull(nodeExporter.getModule());
+        assertFalse(nodeExporter.isTlsEnabled());
+        assertEquals(nodeExporter.getPort(), Integer.valueOf(9100));
+        assertEquals(apacheExporter.getPort(), Integer.valueOf(9117));
     }
 
     // Copy the pillar.example file to a temp dir used as metadata directory (in FormulaFactory)
