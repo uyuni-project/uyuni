@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-15 19:12+0000\n"
+"PO-Revision-Date: 2021-08-16 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6074,48 +6074,51 @@ msgstr "opravy chýb spoločné pre oba kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:2420
 msgid "errata to add to channel \""
-msgstr ""
+msgstr "opravy chýb na pridanie do kanála \""
 
 #: ../src/spacecmd/softwarechannel.py:2429
 msgid "errata to remove from channel \""
-msgstr ""
+msgstr "opravy chýb na odstránenie z kanála \""
 
 #: ../src/spacecmd/softwarechannel.py:2438
 #: ../src/spacecmd/softwarechannel.py:2568
 msgid "    add   "
-msgstr ""
+msgstr "    pridať   "
 
 #: ../src/spacecmd/softwarechannel.py:2439
 msgid "errata to  "
-msgstr ""
+msgstr "opravy chýb do  "
 
 #: ../src/spacecmd/softwarechannel.py:2440
 msgid "    remove"
-msgstr ""
+msgstr "    odstrániť"
 
 #: ../src/spacecmd/softwarechannel.py:2441
 msgid "errata from"
-msgstr ""
+msgstr "opravy chýb z"
 
 #: ../src/spacecmd/softwarechannel.py:2466
 msgid "softwarechannel_errata_merge: "
-msgstr ""
+msgstr "softwarechannel_errata_merge: "
 
 #: ../src/spacecmd/softwarechannel.py:2467
 msgid "merge errata of one software channel into another"
-msgstr ""
+msgstr "zlúčiť opravy chýb jedného softvérového kanála do druhého"
 
 #: ../src/spacecmd/softwarechannel.py:2469
 msgid ""
 "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
 "[FROM_DATE] [TO_DATE]"
 msgstr ""
+"použitie:   softwarechannel_errata_merge ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL "
+"[OD_DÁTUMU] [DO_DÁTUMU]"
 
 #: ../src/spacecmd/softwarechannel.py:2470
 msgid ""
 "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
 "2018-01-01"
 msgstr ""
+"príklad: softwarechannel_errata_merge StarýSoftKanál NovýSoftKanál 2018-01-01"
 
 #: ../src/spacecmd/softwarechannel.py:2471
 msgid ""
