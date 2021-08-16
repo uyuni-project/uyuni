@@ -141,7 +141,7 @@ bootstrap_repo:
 {%- set use_venv_salt = (0 < venv_available_request.get('status', 404) < 300) and not salt['pillar.get']('mgr_avoid_venv_salt_minion') %}
 {%- if use_venv_salt %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
-{%- set salt_config_dir = '/etc/opt/venv-salt-minion' %}
+{%- set salt_config_dir = '/etc/venv-salt-minion' %}
 {%- endif -%}
 
 salt-minion-package:

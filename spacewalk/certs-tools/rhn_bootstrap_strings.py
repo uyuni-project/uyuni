@@ -755,7 +755,7 @@ elif [ "$INSTALLER" == apt ]; then
             echo "* purging previous Salt config files"
             apt-get --yes purge "$SALT_MINION_PKG"
             if [ $VENV_ENABLED -eq 1 ]; then
-                rm -rf /etc/opt/venv-salt-minion/
+                rm -rf /etc/venv-salt-minion/
             else
                 apt-get purge salt-common
                 rm -rf /etc/salt/minion.d/
@@ -1118,8 +1118,8 @@ SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
 if [ $VENV_ENABLED -eq 1 ]; then
-    MINION_ID_FILE="/etc/opt/venv-salt-minion/minion_id"
-    SUSEMANAGER_MASTER_FILE="/etc/opt/venv-salt-minion/minion.d/susemanager.conf"
+    MINION_ID_FILE="/etc/venv-salt-minion/minion_id"
+    SUSEMANAGER_MASTER_FILE="/etc/venv-salt-minion/minion.d/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
 fi
 

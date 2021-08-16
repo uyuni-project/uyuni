@@ -48,7 +48,7 @@ def readSocket(fd, n):
     return result
 
 
-def send(fd, methodname=None, fault=None, *params):
+def send(fd, *params, methodname=None, fault=None):
     if methodname:
         buff = dumps(params, methodname=methodname)
     elif fault:

@@ -9,52 +9,60 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2011-03-04 16:04+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"PO-Revision-Date: 2021-07-29 13:10+0000\n"
+"Last-Translator: Laszlo Kardos <lkardos@web.de>\n"
+"Language-Team: Hungarian <https://l10n.opensuse.org/projects/uyuni/mgr-"
+"daemon/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../rhnsd.c:54
+#, fuzzy
 msgid "MINS"
-msgstr ""
+msgstr "MINS"
 
 #: ../rhnsd.c:55
+#, fuzzy
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr ""
+msgstr "A MINS percenként csatlakozzon a Spacewalkhoz"
 
 #: ../rhnsd.c:57
+#, fuzzy
 msgid "Run in foreground"
-msgstr ""
+msgstr "Futtatás az előtérben"
 
 #. Short description of program.
 #: ../rhnsd.c:62
+#, fuzzy
 msgid "Spacewalk Services Daemon"
-msgstr ""
+msgstr "Spacewalk szolgáltatásdémon"
 
 #: ../rhnsd.c:115
-#, c-format
+#, fuzzy, c-format
 msgid "Only root can run this program\n"
-msgstr ""
+msgstr "Ezt a programot csak a root futtathatja\n"
 
 #: ../rhnsd.c:135
+#, fuzzy
 msgid "wrong number of arguments"
-msgstr ""
+msgstr "téves argumentumszámok"
 
 #: ../rhnsd.c:142
+#, fuzzy
 msgid "already running"
-msgstr ""
+msgstr "már fut"
 
 #: ../rhnsd.c:254
-#, c-format
+#, fuzzy, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
-msgstr ""
+msgstr "Copyright (C) %s Red Hat, Inc.\n"
 
 #: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
-msgstr ""
+msgstr "Írta %s.\n"

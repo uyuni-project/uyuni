@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 12:44+0000\n"
-"PO-Revision-Date: 2021-05-17 20:59+0000\n"
+"POT-Creation-Date: 2021-08-16 08:38+0000\n"
+"PO-Revision-Date: 2021-05-21 18:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -228,8 +228,8 @@ msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
+#: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
-#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -358,9 +358,8 @@ msgid "Minimum 2 characters"
 msgstr "Aspoň dva znaky"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "Nutný restart systému"
+msgstr "požadovaný"
 
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
@@ -1940,22 +1939,23 @@ msgstr "Název filtru"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "Předpona"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
+"K názvu každého jednotlivého filtru vytvořeného šablonou bude připravena "
+"předpona"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "Použijte šablonu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "Vytvořit nový filtr"
+msgstr "Použijte manuální filtr"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2078,32 +2078,30 @@ msgid "Projects in use"
 msgstr "Používané projekty"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
+#, fuzzy
 msgid "Live patching based on a specific system"
-msgstr ""
+msgstr "Aktivní záplatování založené na produktu SUSE"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "Aktivní záplatování založené na produktu SUSE"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
-msgstr ""
+msgstr "Šablona"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
-#, fuzzy
 msgid "Product"
-msgstr "Produkty"
+msgstr "Produkt"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
-#, fuzzy
 msgid "Kernel"
-msgstr "Volby jádra"
+msgstr "Jádro"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
-#, fuzzy
 msgid "latest"
-msgstr "Nejnovější"
+msgstr "nejnovější"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
 msgid "Create a new content lifecycle project"
@@ -3308,31 +3306,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
 msgid "Skip to the last maintenance window"
 msgstr "Přeskočit na poslední okno údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
 msgid "Skip to the next maintenance window"
 msgstr "Přeskočit na další okno údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
 msgid "There are no more past maintenance windows"
 msgstr "Žádná okna předchozí údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
 msgid "There are no more future maintenance windows"
 msgstr "Žádná okna budoucí údržby"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
 msgid "Today"
 msgstr "Dnes"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
 msgid "Month"
 msgstr "Měsíc"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
 msgid "Day"
 msgstr "Den"
 
@@ -3612,14 +3610,12 @@ msgid "Inventory file empty."
 msgstr "Soubor soupisu je prázdný."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "Neregistrovaný systém"
+msgstr "Registrované systémy"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "Název hostitele uzlu"
+msgstr "Neznámé názvy hostitelů"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -4406,12 +4402,12 @@ msgstr "Vypršela doba pro výmaz. Zkontrolujte, zda je stroj dosažitelný."
 msgid "No result found in state apply response."
 msgstr "Ve stavu odpovědi na použití nenalezen žádný výsledek."
 
+#: ../html/src/manager/systems/delete-system.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:69
-#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr "Odstranit profil, bez výmazu"
 
-#: ../html/src/manager/systems/delete-system.tsx:90
+#: ../html/src/manager/systems/delete-system.tsx:89
 msgid "An error occurred during cleanup"
 msgstr "Během mazání došlo k chybě"
 
@@ -5300,7 +5296,6 @@ msgid "Untagged"
 msgstr "Neoznačeno"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"

@@ -676,7 +676,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   if host.include? 'ceos'
     node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', false)
   elsif (host.include? 'ubuntu') || (host.include? 'debian')
-    node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get purge salt-common salt-minion && apt-get autoremove', false)
+    node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', false)
   else
     node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', false)
   end
@@ -724,7 +724,7 @@ end
 
 When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   system_name = get_system_name(minion)
-  output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
+  output = $server.run("salt #{system_name} saltutil.kill_all_jobs")
   if output.include?(system_name) && output.include?('Signal 9 sent to job')
     puts output
   end

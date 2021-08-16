@@ -125,7 +125,7 @@ public class GuestOsDef {
         def.setMachine(typeElement.getAttributeValue("machine"));
 
         Element loaderElement = element.getChild("loader");
-        if (loaderElement != null) {
+        if (loaderElement != null && "pflash".equals(loaderElement.getAttributeValue("type"))) {
             def.setUefiLoader(loaderElement.getTextTrim());
             Element nvramElement = element.getChild("nvram");
             if (nvramElement != null) {

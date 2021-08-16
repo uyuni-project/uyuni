@@ -63,7 +63,7 @@
         <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/4.1:/SLE15-SUSE-Manager-Tools/SLE_15/"/>
+        <source path="http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/4.2:/SLE15-SUSE-Manager-Tools/SLE_15/"/>
     </repository>
 
     <packages type="image">

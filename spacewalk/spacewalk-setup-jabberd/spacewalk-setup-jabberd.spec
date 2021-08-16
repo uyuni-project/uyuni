@@ -18,8 +18,8 @@
 
 
 Name:           spacewalk-setup-jabberd
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Summary:        Tools to setup jabberd for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -83,6 +83,6 @@ make test
 %{_sysconfdir}/pki/spacewalk
 
 %post
-/usr/share/spacewalk/setup/jabberd/manage_database -s >/dev/null ||:
+/usr/share/spacewalk/setup/jabberd/manage_database -s 2>/dev/null ||:
 
 %changelog

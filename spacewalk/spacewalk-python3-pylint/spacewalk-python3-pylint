@@ -2,7 +2,7 @@
 
 PYLINTRC='/etc/spacewalk-python3-pylint.rc'
 
-for bin in /usr/bin/pylint-3 ; do
+for bin in /usr/bin/pylint-3* ; do
     # check if pylint works (see bz1456049)
     if "$bin" --version 2>/dev/null ; then
         PYLINT="$bin"

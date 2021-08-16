@@ -149,6 +149,16 @@ public class MinionServer extends Server implements SaltConfigurable {
         return !isSLES10() && !isSLES11();
     }
 
+    /**
+     * Return <code>true</code> if OS on this system supports Transactional Update,
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports Transactional Update
+     */
+    public boolean doesOsSupportsTransactionalUpdate() {
+        return isSLEMicro();
+    }
+
     @Override
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isRedHat6() ||
@@ -174,6 +184,13 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     private boolean isSLES11() {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("11");
+    }
+
+    /**
+     * @return true if the installer type is of SLE Micro
+     */
+    private boolean isSLEMicro() {
+        return ServerConstants.SLEMICRO.equals(getOs());
     }
 
     /**

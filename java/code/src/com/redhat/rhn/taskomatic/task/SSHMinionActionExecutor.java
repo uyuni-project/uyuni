@@ -16,6 +16,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -23,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -40,7 +42,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
                 .getJobDataMap().getLongValueFromString("action_id");
         String sshMinionId = context.getJobDetail().getJobDataMap().getString("ssh_minion_id");
         Optional<MinionServer> sshMinionOpt = MinionServerFactory.findByMinionId(sshMinionId);
-        if (sshMinionId.isEmpty()) {
+        if (sshMinionOpt.isEmpty()) {
             log.error("SSH Minion " + sshMinionId + " not found. Aborting execution of action " + actionId);
             return;
         }
@@ -49,6 +51,15 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
             log.error("Action not found: " + actionId);
             return;
         }
+
+        action.getServerActions().stream()
+                .filter(sa -> sshMinionOpt.get().getId().equals(sa.getServerId())).findFirst()
+                .ifPresent(sa -> {
+                    sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                    sa.setPickupTime(new Date());
+                    HibernateFactory.commitTransaction();
+                });
+
         log.info("Executing action: " + actionId + " on ssh minion: " + sshMinionId);
         GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE.executeSSHAction(action, sshMinionOpt.get());
     }

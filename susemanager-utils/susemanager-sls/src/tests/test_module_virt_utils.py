@@ -27,13 +27,15 @@ CRM_CONFIG_XML = b"""<?xml version="1.0" ?>
           <nvpair name="clone-max" value="8" id="c-clusterfs-meta_attributes-clone-max"/>
           <nvpair id="c-clusterfs-meta_attributes-target-role" name="target-role" value="Started"/>
         </meta_attributes>
-        <primitive id="clusterfs" class="ocf" provider="heartbeat" type="Filesystem">
-          <instance_attributes id="clusterfs-instance_attributes">
-            <nvpair name="directory" value="/srv/clusterfs" id="clusterfs-instance_attributes-directory"/>
-            <nvpair name="fstype" value="ocfs2" id="clusterfs-instance_attributes-fstype"/>
-            <nvpair name="device" value="/dev/vdc" id="clusterfs-instance_attributes-device"/>
-          </instance_attributes>
-        </primitive>
+        <group id="ocfs2-group">
+          <primitive id="clusterfs" class="ocf" provider="heartbeat" type="Filesystem">
+            <instance_attributes id="clusterfs-instance_attributes">
+              <nvpair name="directory" value="/srv/clusterfs" id="clusterfs-instance_attributes-directory"/>
+              <nvpair name="fstype" value="ocfs2" id="clusterfs-instance_attributes-fstype"/>
+              <nvpair name="device" value="/dev/vdc" id="clusterfs-instance_attributes-device"/>
+            </instance_attributes>
+          </primitive>
+        </group>
       </clone>
       <primitive id="vm01" class="ocf" provider="heartbeat" type="VirtualDomain">
         <instance_attributes id="vm01-instance_attributes">

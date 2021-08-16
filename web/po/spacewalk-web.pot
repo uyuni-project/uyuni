@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 12:44+0000\n"
+"POT-Creation-Date: 2021-08-16 08:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -220,8 +220,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
+#: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
-#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr ""
 
@@ -3217,31 +3217,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
 msgid "Skip to the last maintenance window"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
 msgid "Skip to the next maintenance window"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
 msgid "There are no more past maintenance windows"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
 msgid "There are no more future maintenance windows"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
 msgid "Today"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
 msgid "Month"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
 msgid "Day"
 msgstr ""
 
@@ -4290,12 +4290,12 @@ msgstr ""
 msgid "No result found in state apply response."
 msgstr ""
 
+#: ../html/src/manager/systems/delete-system.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:69
-#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.tsx:90
+#: ../html/src/manager/systems/delete-system.tsx:89
 msgid "An error occurred during cleanup"
 msgstr ""
 

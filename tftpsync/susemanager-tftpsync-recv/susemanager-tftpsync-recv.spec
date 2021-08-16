@@ -22,8 +22,8 @@
 %endif
 
 Name:           susemanager-tftpsync-recv
-Version:        4.3.0
-Release:        0
+Version:        4.3.2
+Release:        1
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -83,7 +83,7 @@ if [ -f /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew ]; then
             exit 1;
     fi;
 
-    SUMA_IP=$( host $PARENT_FQDN | awk '{ print $4 }' )
+    SUMA_IP=$(getent hosts $PARENT_FQDN | awk '{ print $1 }' || echo "")
 
     sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/        Allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
     sed -i "s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew

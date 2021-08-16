@@ -32,7 +32,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-  Scenario: Add the CentOS 8 DVD BaseOS repository
+  Scenario: Add the CentOS 8 BaseOS DVD repository
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "centos-8-iso-baseos" as "label"
@@ -41,7 +41,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-  Scenario: Add both ISO repositories to the custom channel for CentOS 8 DVD
+  Scenario: Add both repositories to the custom channel for CentOS 8 DVD
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 8 DVD"
     And I follow "Repositories" in the content area

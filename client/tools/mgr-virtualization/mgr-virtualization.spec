@@ -45,8 +45,8 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
 

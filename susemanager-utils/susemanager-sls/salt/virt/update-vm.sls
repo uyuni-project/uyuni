@@ -13,7 +13,7 @@ domain_update:
         - name: virt.update
         - m_name: {{ pillar['name'] }}
         - cpu: {{ pillar['vcpus'] }}
-        - mem: {{ pillar['mem'] // 1024 }}
+        - mem: {{ pillar['mem'] }}
 {% if 'disks' in pillar %}
         - disks:
     {% for disk in pillar['disks'] %}

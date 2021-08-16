@@ -114,7 +114,7 @@ Then(/^the salt event log on server should contain no failures$/) do
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   # print failures from salt event log
-  output, _code = $server.run("python3 /tmp/#{file}")
+  output = $server.run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
   raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s}\n" if count_failures.nonzero?
 end
@@ -511,19 +511,19 @@ When(/^I click the Add Product button$/) do
 end
 
 Then(/^the SLE12 SP5 product should be added$/) do
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', false)
-  raise unless output.include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
+  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
+  raise unless output[:stdout].include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
   if $product != 'Uyuni'
-    raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
+    raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
   end
-  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
 Then(/^the SLE15 (SP2|SP3) product should be added$/) do |sp_version|
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', false)
-  raise unless output.include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
-  raise unless output.include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
-  raise unless output.include? "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
+  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
+  raise unless output[:stdout].include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
+  raise unless output[:stdout].include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
+  raise unless output[:stdout].include? "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
@@ -932,7 +932,7 @@ def token(secret, claims = {})
 end
 
 def server_secret
-  rhnconf = $server.run('cat /etc/rhn/rhn.conf', false)
+  rhnconf = sshcmd('cat /etc/rhn/rhn.conf')[:stdout]
   data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
   data[1].strip
 end

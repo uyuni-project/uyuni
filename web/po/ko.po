@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 12:44+0000\n"
-"PO-Revision-Date: 2021-05-21 09:57+0000\n"
+"POT-Creation-Date: 2021-08-16 08:38+0000\n"
+"PO-Revision-Date: 2021-05-28 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -228,8 +228,8 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
+#: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
-#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "취소"
 
@@ -3304,31 +3304,31 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
 msgid "Skip to the last maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
 msgid "Skip to the next maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
 msgid "There are no more past maintenance windows"
 msgstr "마지막 유지보수 기간이 더 이상 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
 msgid "There are no more future maintenance windows"
 msgstr "더 이상 향후 유지보수 기간이 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
 msgid "Today"
 msgstr "오늘"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
 msgid "Month"
 msgstr "월"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
 msgid "Day"
 msgstr "일"
 
@@ -4399,12 +4399,12 @@ msgstr "정리 시간이 초과되었습니다. 머신에 연결할 수 있는�
 msgid "No result found in state apply response."
 msgstr "상태 적용 응답에서 결과를 찾을 수 없습니다."
 
+#: ../html/src/manager/systems/delete-system.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:69
-#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr "정리하지 않고 프로파일 삭제"
 
-#: ../html/src/manager/systems/delete-system.tsx:90
+#: ../html/src/manager/systems/delete-system.tsx:89
 msgid "An error occurred during cleanup"
 msgstr "정리 중 오류 발생"
 
@@ -5285,7 +5285,6 @@ msgid "Untagged"
 msgstr "태그되지 않음"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"

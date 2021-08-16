@@ -4,7 +4,7 @@
 {# Prefer venv-salt-minion if installed #}
 {%- if salt['pkg.version']('venv-salt-minion') %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
-{%- set susemanager_minion_config = '/etc/opt/venv-salt-minion/minion.d/susemanager-mine.conf' %}
+{%- set susemanager_minion_config = '/etc/venv-salt-minion/minion.d/susemanager-mine.conf' %}
 {%- endif -%}
 mgr_disable_mine:
   file.managed:

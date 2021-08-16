@@ -1,5 +1,5 @@
 {%- set susemanager_conf='/etc/salt/minion.d/susemanager.conf' %}
-{%- set venv_susemanager_conf='/etc/opt/venv-salt-minion/minion.d/susemanager.conf' %}
+{%- set venv_susemanager_conf='/etc/venv-salt-minion/minion.d/susemanager.conf' %}
 {%- set managed_minion=salt['file.file_exists'](susemanager_conf) and
                        not salt['file.replace'](susemanager_conf, '^master: .*', 'master: ' + pillar['mgr_server'],
                                                 dry_run=True, show_changes=False, ignore_if_missing=True) %}
@@ -19,7 +19,7 @@ mgr_venv_salt_minion_pkg:
 
 mgr_copy_salt_minion_id:
   file.copy:
-    - name: /etc/opt/venv-salt-minion/minion_id
+    - name: /etc/venv-salt-minion/minion_id
     - source: /etc/salt/minion_id
     - require:
       - pkg: mgr_venv_salt_minion_pkg
@@ -28,7 +28,7 @@ mgr_copy_salt_minion_id:
 
 mgr_copy_salt_minion_configs:
   cmd.run:
-    - name: cp -r /etc/salt/minion.d /etc/opt/venv-salt-minion/
+    - name: cp -r /etc/salt/minion.d /etc/venv-salt-minion/
     - require:
       - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
@@ -36,13 +36,13 @@ mgr_copy_salt_minion_configs:
 
 mgr_copy_salt_minion_keys:
   cmd.run:
-    - name: cp -r /etc/salt/pki/minion/minion* /etc/opt/venv-salt-minion/pki/minion/
+    - name: cp -r /etc/salt/pki/minion/minion* /etc/venv-salt-minion/pki/minion/
     - require:
       - cmd: mgr_copy_salt_minion_configs
     - onlyif:
       - test -f /etc/salt/pki/minion/minion_master.pub
     - unless:
-      - test -f /etc/opt/venv-salt-minion/pki/minion/minion_master.pub
+      - test -f /etc/venv-salt-minion/pki/minion/minion_master.pub
 
 mgr_enable_venv_salt_minion:
   service.running:

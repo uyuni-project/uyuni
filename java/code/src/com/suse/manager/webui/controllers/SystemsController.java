@@ -119,7 +119,7 @@ public class SystemsController {
      */
     public String delete(Request request, Response response, User user) {
         String sidStr = request.params("sid");
-        String noclean = request.queryParams("nocleanup");
+        Boolean noclean = Boolean.parseBoolean(GSON.fromJson(request.body(), Map.class).get("nocleanup").toString());
         long sid;
         try {
             sid = Long.parseLong(sidStr);
@@ -131,7 +131,7 @@ public class SystemsController {
         boolean isEmptyProfile = server.hasEntitlement(EntitlementManager.BOOTSTRAP);
 
         if (server.asMinionServer().isPresent()) {
-            if (!Boolean.parseBoolean(noclean) && !isEmptyProfile) {
+            if (!noclean && !isEmptyProfile) {
                 Optional<List<String>> cleanupErr =
                         saltApi.cleanupMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {

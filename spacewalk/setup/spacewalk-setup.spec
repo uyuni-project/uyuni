@@ -36,8 +36,8 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -180,6 +180,7 @@ install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewal
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler
 install -m 0644 share/cobbler/* %{buildroot}/%{_datadir}/spacewalk/setup/cobbler/
 install -m 0644 salt/susemanager.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
+install -m 0644 salt/salt-ssh-logging.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
 
 # create a directory for misc. Spacewalk things
 install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
@@ -288,6 +289,7 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %defattr(-,root,root,-)
 %doc Changes README answers.txt
 %config %{_sysconfdir}/salt/master.d/susemanager.conf
+%config %{_sysconfdir}/salt/master.d/salt-ssh-logging.conf
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd

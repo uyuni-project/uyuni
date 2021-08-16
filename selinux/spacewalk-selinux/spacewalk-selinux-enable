@@ -4,6 +4,14 @@ RUN_PRE=
 RUN_POST=
 
 RUN_PURE=
+
+if [ -d /srv/www/htdocs ];
+then
+    WWWDOCROOT=/srv/www/htdocs
+else
+    WWWDOCROOT=/var/www/html
+fi
+
 while [ -n "$1" ] ; do
 	case $1 in
 	--run-pure )
@@ -43,7 +51,7 @@ for selinuxvariant in mls strict targeted
   done
 
 /sbin/restorecon -rvvi /usr/share/rhn/satidmap.pl /usr/sbin/rhn-sat-restart-silent /var/log/rhn /var/cache/rhn \
-	    /usr/bin/rhn-sudo-ssl-tool /srv/www/htdocs/pub /usr/sbin/tanukiwrapper \
+	    /usr/bin/rhn-sudo-ssl-tool ${WWWDOCROOT}/pub /usr/sbin/tanukiwrapper \
         /var/lib/rhn/kickstarts
 
 for sebool in \

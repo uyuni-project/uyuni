@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-21 10:02+0000\n"
-"PO-Revision-Date: 2021-05-20 18:57+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"PO-Revision-Date: 2021-08-02 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -1008,7 +1008,7 @@ msgstr "Iba hodnoty [normal/state] sú prípustné pre typ"
 #: ../src/spacecmd/configchannel.py:488 ../src/spacecmd/distribution.py:110
 #: ../src/spacecmd/repo.py:358 ../src/spacecmd/repo.py:468
 msgid "A name is required"
-msgstr "Názov je povinný"
+msgstr "Vyžaduje sa názov"
 
 #: ../src/spacecmd/configchannel.py:497
 msgid "Only [normal/state] values are acceptable for --type parameter"
@@ -1272,7 +1272,8 @@ msgstr "ID akcie: %i"
 #: ../src/spacecmd/configchannel.py:1102
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
-"configchannel_export: exportovať konfiguračný kanál(y) do súboru formátu json"
+"configchannel_export: exportovať konfiguračný kanál(y) do súboru vo formáte "
+"json"
 
 #: ../src/spacecmd/configchannel.py:1103
 msgid ""
@@ -1541,7 +1542,7 @@ msgstr "neznámy typ súboru "
 
 #: ../src/spacecmd/cryptokey.py:44
 msgid "cryptokey_create: Create a cryptographic key"
-msgstr "cryptokey_create: Vytvoriť kryptografický kľúč"
+msgstr "cryptokey_create: Vytvoriť šifrovací kľúč"
 
 #: ../src/spacecmd/cryptokey.py:45
 msgid ""
@@ -1585,7 +1586,7 @@ msgstr "Neplatný typ kľúča"
 
 #: ../src/spacecmd/cryptokey.py:115
 msgid "cryptokey_delete: Delete a cryptographic key"
-msgstr "cryptokey_delete: Vymazať kryptografický kľúč"
+msgstr "cryptokey_delete: Vymazať šifrovací kľúč"
 
 #: ../src/spacecmd/cryptokey.py:116
 msgid "usage: cryptokey_delete NAME"
@@ -1597,8 +1598,7 @@ msgstr "Vymazať kľúč(e) [a/N]:"
 
 #: ../src/spacecmd/cryptokey.py:157
 msgid "cryptokey_list: List all cryptographic keys (SSL, GPG)"
-msgstr ""
-"cryptokey_list: Vypísať zoznam všetkých kryptografických kľúčov (SSL, GPG)"
+msgstr "cryptokey_list: Vypísať zoznam všetkých šifrovacích kľúčov (SSL, GPG)"
 
 #: ../src/spacecmd/cryptokey.py:158
 msgid "usage: cryptokey_list"
@@ -1606,7 +1606,7 @@ msgstr "použitie: cryptokey_list"
 
 #: ../src/spacecmd/cryptokey.py:175
 msgid "cryptokey_details: Show the contents of a cryptographic key"
-msgstr "cryptokey_details: Zobraziť obsah kryptografického kľúča"
+msgstr "cryptokey_details: Zobraziť obsah šifrovacieho kľúča"
 
 #: ../src/spacecmd/cryptokey.py:176
 msgid "usage: cryptokey_details KEY ..."
@@ -1615,7 +1615,7 @@ msgstr "použitie: cryptokey_details KĽÚČ ..."
 #: ../src/spacecmd/cryptokey.py:208
 #, python-format
 msgid "%s is not a valid crypto key"
-msgstr "%s nie je platný krypto kľúč"
+msgstr "%s nie je platný šifrovací kľúč"
 
 #: ../src/spacecmd/custominfo.py:40
 msgid "custominfo_createkey: Create a custom key"
@@ -1760,7 +1760,7 @@ msgstr "distribution_delete: Vymazať strom Kickstart"
 
 #: ../src/spacecmd/distribution.py:170
 msgid "usage: distribution_delete LABEL"
-msgstr "strom Kickstart"
+msgstr "použitie: distribution_delete OZNAČNIE"
 
 #: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
 #, python-format
@@ -1777,34 +1777,34 @@ msgstr "distribution_details: Zobraziť podrobnosti stromu Kickstart"
 
 #: ../src/spacecmd/distribution.py:211
 msgid "usage: distribution_details LABEL"
-msgstr ""
+msgstr "použitie: distribution_details OZNAČENIE"
 
 #: ../src/spacecmd/distribution.py:249
 #, python-format
 msgid "Name:    %s"
-msgstr ""
+msgstr "Názov:    %s"
 
 #: ../src/spacecmd/distribution.py:250
 #, python-format
 msgid "Path:    %s"
-msgstr ""
+msgstr "Cesta:    %s"
 
 #: ../src/spacecmd/distribution.py:251 ../src/spacecmd/softwarechannel.py:624
 #, python-format
 msgid "Channel: %s"
-msgstr ""
+msgstr "Kanál: %s"
 
 #: ../src/spacecmd/distribution.py:259
 msgid "distribution_rename: Rename a Kickstart tree"
-msgstr ""
+msgstr "distribution_rename: Premenovať Kickstart strom"
 
 #: ../src/spacecmd/distribution.py:260
 msgid "usage: distribution_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: distribution_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/distribution.py:289
 msgid "distribution_update: Update the path of a Kickstart tree"
-msgstr ""
+msgstr "distribution_update: Aktualizovať cestu stromu Kickstart"
 
 #: ../src/spacecmd/distribution.py:290
 #, fuzzy
@@ -1826,23 +1826,23 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
-msgstr ""
+msgstr "errata_list: Vypísať zoznam všetkých opráv"
 
 #: ../src/spacecmd/errata.py:51
 msgid "usage: errata_list"
-msgstr ""
+msgstr "použitie: errata_list"
 
 #: ../src/spacecmd/errata.py:67
 msgid "errata_summary: Print a summary of all errata"
-msgstr ""
+msgstr "errata_summary: Vytlačiť súhrn všetkých opráv chýb"
 
 #: ../src/spacecmd/errata.py:68
 msgid "usage: errata_summary"
-msgstr ""
+msgstr "použitie: errata_summary"
 
 #: ../src/spacecmd/errata.py:82
 msgid "errata_apply: Apply an erratum to all affected systems"
-msgstr ""
+msgstr "errata_apply: Použiť opravu chyby na všetky dotknuté systémy"
 
 #: ../src/spacecmd/errata.py:83
 msgid ""
@@ -1851,6 +1851,10 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
+"použitie: errata_apply [voľby] OPRAVY_CHÝB|search:XXX ...)\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/errata.py:110 ../src/spacecmd/system.py:418
 #: ../src/spacecmd/system.py:726 ../src/spacecmd/system.py:881
@@ -1858,16 +1862,16 @@ msgstr ""
 #: ../src/spacecmd/system.py:3691 ../src/spacecmd/system.py:4001
 #: ../src/spacecmd/system.py:4063 ../src/spacecmd/system.py:4227
 msgid "Start Time [now]:"
-msgstr ""
+msgstr "Čas spustenia [teraz]:"
 
 #: ../src/spacecmd/errata.py:158
 msgid "No patches to apply"
-msgstr ""
+msgstr "Žiadne opravy na aplikovanie"
 
 #. a summary of which errata we're going to apply
 #: ../src/spacecmd/errata.py:162
 msgid "Errata             Systems"
-msgstr ""
+msgstr "Systémy             opráv chýb"
 
 #: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:231
 #: ../src/spacecmd/system.py:468 ../src/spacecmd/system.py:821
@@ -1876,82 +1880,83 @@ msgstr ""
 #: ../src/spacecmd/system.py:4246
 #, python-format
 msgid "Start Time: %s"
-msgstr ""
+msgstr "Čas spustenia: %s"
 
 #: ../src/spacecmd/errata.py:168
 msgid "Apply these patches [y/N]:"
-msgstr ""
+msgstr "Použiť tieto opravy [a/N]:"
 
 #: ../src/spacecmd/errata.py:197
 #, python-format
 msgid "Scheduled %i system(s) for %s"
-msgstr ""
+msgstr "Naplánovaných %i systém(ov) pre %s"
 
 #: ../src/spacecmd/errata.py:218
 #, python-format
 msgid "No patches to schedule for %s"
-msgstr ""
+msgstr "Žiadne opravy na naplánovanie pre %s"
 
 #: ../src/spacecmd/errata.py:227
 #, python-format
 msgid "Scheduled %i patches for %s"
-msgstr ""
+msgstr "Naplánovaných %i opráv pre %s"
 
 #: ../src/spacecmd/errata.py:236
 msgid "errata_listaffectedsystems: List of systems affected by an patch"
 msgstr ""
+"errata_listaffectedsystems: Vypísať zoznam systémov ovplyvnených opravou"
 
 #: ../src/spacecmd/errata.py:237
 msgid "usage: errata_listaffectedsystems ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_listaffectedsystems OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:275
 msgid "errata_listcves: List of CVEs addressed by an patch"
-msgstr ""
+msgstr "errata_listcves: Zoznam CVE adresovaných opravou"
 
 #: ../src/spacecmd/errata.py:276
 msgid "usage: errata_listcves ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_listcves OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:312
 msgid "No errata has been found"
-msgstr ""
+msgstr "Žiadne opravy chýb sa nenašli"
 
 #: ../src/spacecmd/errata.py:319
 msgid "errata_findbycve: List errata addressing a CVE"
-msgstr ""
+msgstr "errata_findbycve: Vypísať zoznam opráv chýb adresujúcich CVE"
 
 #: ../src/spacecmd/errata.py:320
 msgid "usage: errata_findbycve CVE-YYYY-NNNN ..."
-msgstr ""
+msgstr "použitie: errata_findbycve CVE-YYYY-NNNN ..."
 
 #: ../src/spacecmd/errata.py:354
 msgid "errata_details: Show the details of an patch"
-msgstr ""
+msgstr "errata_details: Zobraziť podrobnosti opravy"
 
 #: ../src/spacecmd/errata.py:355
 msgid "usage: errata_details ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_details OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:390
 #, python-format
 msgid "%s is not a valid erratum"
-msgstr ""
+msgstr "%s nie je platná oprava chyby"
 
 #: ../src/spacecmd/errata.py:397
 #, python-format
 msgid "Name:       %s"
-msgstr ""
+msgstr "Názov:       %s"
 
 #: ../src/spacecmd/errata.py:398
 #, python-format
 msgid "Product:    %s"
-msgstr ""
+msgstr "Produkt:    %s"
 
 #: ../src/spacecmd/errata.py:399
 #, python-format
 msgid "Type:       %s"
-msgstr ""
+msgstr "Typ:       %s"
 
 #: ../src/spacecmd/errata.py:400
 #, fuzzy, python-format
@@ -1961,11 +1966,11 @@ msgstr "Cesta:     %s"
 #: ../src/spacecmd/errata.py:401
 #, python-format
 msgid "Issue Date: %s"
-msgstr ""
+msgstr "Dátum vydania: %s"
 
 #: ../src/spacecmd/errata.py:403
 msgid "Topic"
-msgstr ""
+msgstr "Predmet"
 
 #: ../src/spacecmd/errata.py:407 ../src/spacecmd/package.py:108
 #: ../src/spacecmd/softwarechannel.py:559
@@ -1974,151 +1979,154 @@ msgstr "Popis"
 
 #: ../src/spacecmd/errata.py:413
 msgid "Notes"
-msgstr ""
+msgstr "Poznámky"
 
 #: ../src/spacecmd/errata.py:418
 msgid "CVEs"
-msgstr ""
+msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:422
 msgid "Solution"
-msgstr ""
+msgstr "Riešenie"
 
 #: ../src/spacecmd/errata.py:426
 msgid "References"
-msgstr ""
+msgstr "Odkazy"
 
 #: ../src/spacecmd/errata.py:430
 msgid "Affected Channels"
-msgstr ""
+msgstr "Ovplyvnené kanály"
 
 #: ../src/spacecmd/errata.py:434 ../src/spacecmd/org.py:279
 msgid "Affected Systems"
-msgstr ""
+msgstr "Ovplyvnené systémy"
 
 #: ../src/spacecmd/errata.py:438
 msgid "Affected Packages"
-msgstr ""
+msgstr "Ovplyvnené balíky"
 
 #: ../src/spacecmd/errata.py:448
 msgid "errata_delete: Delete an patch"
-msgstr ""
+msgstr "errata_delete: Vymazať opravu"
 
 #: ../src/spacecmd/errata.py:449
 msgid "usage: errata_delete ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_delete OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:469
 msgid "No patches to delete"
-msgstr ""
+msgstr "Žiadne opravy na vymazanie"
 
 #: ../src/spacecmd/errata.py:472
 msgid "Erratum            Channels"
-msgstr ""
+msgstr "Kanály opravy chyby"
 
 #: ../src/spacecmd/errata.py:480
 msgid "Delete these patches [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto opravy [a/N]:"
 
 #: ../src/spacecmd/errata.py:486
 #, python-format
 msgid "Deleted %i patches"
-msgstr ""
+msgstr "Vymazať %i opráv"
 
 #: ../src/spacecmd/errata.py:496
 msgid "errata_publish: Publish an patch to a channel"
-msgstr ""
+msgstr "errata_publish: Zverejniť opravu na kanáli"
 
 #: ../src/spacecmd/errata.py:497
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: errata_publish OPRAVY_CHÝB|search:XXX <KANÁL ...>"
 
 #: ../src/spacecmd/errata.py:524
 msgid "No patches to publish"
-msgstr ""
+msgstr "Žiadne opravy na zverejnenie"
 
 #: ../src/spacecmd/errata.py:529
 msgid "Publish these patches [y/N]:"
-msgstr ""
+msgstr "Publikovať tieto opravy [a/N]:"
 
 #: ../src/spacecmd/errata.py:541
 msgid "errata_search: List patches that meet the given criteria"
 msgstr ""
+"errata_search: Vypísať zoznam opráv chýb, ktoré zodpovedajú daným kritériám"
 
 #: ../src/spacecmd/errata.py:542
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
-msgstr ""
+msgstr "použitie: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:544 ../src/spacecmd/scap.py:180
 msgid "Example:"
-msgstr ""
+msgstr "Príklad:"
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"
-msgstr ""
+msgstr "filepreservation_list: Vypísať zoznam všetkých zachovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:43
 msgid "usage: filepreservation_list"
-msgstr ""
+msgstr "použitie: filepreservation_list"
 
 #: ../src/spacecmd/filepreservation.py:58
 msgid "filepreservation_create: Create a file preservation list"
-msgstr ""
+msgstr "filepreservation_create: Vytvoriť zoznam uchovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:59
 msgid "usage: filepreservation_create [NAME] [FILE ...]"
-msgstr ""
+msgstr "použitie: filepreservation_create [NÁZOV] [SÚBOR ...]"
 
 #: ../src/spacecmd/filepreservation.py:78
 #: ../src/spacecmd/filepreservation.py:92
 msgid "File List"
-msgstr ""
+msgstr "Zoznam súborov"
 
 #: ../src/spacecmd/filepreservation.py:83
 msgid "File [blank to finish]:"
-msgstr ""
+msgstr "Súbor [prázdne na dokončenie]:"
 
 #: ../src/spacecmd/filepreservation.py:109
 msgid "filepreservation_delete: Delete a file preservation list"
-msgstr ""
+msgstr "filepreservation_delete: Vymazať zoznam zachovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:110
 msgid "usage: filepreservation_delete NAME"
-msgstr ""
+msgstr "použitie: filepreservation_delete NÁZOV"
 
 #: ../src/spacecmd/filepreservation.py:128
 msgid "Delete this list [y/N]:"
-msgstr ""
+msgstr "Vymazať tento zoznam [a/N]:"
 
 #: ../src/spacecmd/filepreservation.py:139
 msgid ""
 "filepreservation_details: Show the details of a file\n"
 "'preservation list"
 msgstr ""
+"filepreservation_details: Zobraziť podrobnosti zoznam\n"
+"'zachovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:141
 msgid "usage: filepreservation_details NAME"
-msgstr ""
+msgstr "použitie: filepreservation_details NÁZOV"
 
 #: ../src/spacecmd/group.py:52
 msgid "group_addsystems: Add systems to a group"
-msgstr ""
+msgstr "group_addsystems: Pridať systémy do skupiny"
 
 #: ../src/spacecmd/group.py:53
 msgid "usage: group_addsystems GROUP <SYSTEMS>"
-msgstr ""
+msgstr "použitie: group_addsystems SKUPINA <SYSTÉMY>"
 
 #: ../src/spacecmd/group.py:54
 msgid "       group_addsystems GROUP <ssm>"
-msgstr ""
+msgstr "       group_addsystems SKUPINA <ssm>"
 
 #: ../src/spacecmd/group.py:105
 msgid "group_removesystems: Remove systems from a group"
-msgstr ""
+msgstr "group_removesystems: Odstrániť systémy zo skupiny"
 
 #: ../src/spacecmd/group.py:106
 msgid "usage: group_removesystems GROUP <SYSTEMS>"
-msgstr ""
+msgstr "použitie: group_removesystems SKUPINA <SYSTÉMY>"
 
 #: ../src/spacecmd/group.py:147 ../src/spacecmd/system.py:119
 #: ../src/spacecmd/system.py:233 ../src/spacecmd/system.py:476
@@ -2129,14 +2137,14 @@ msgstr "Systémy"
 
 #: ../src/spacecmd/group.py:151
 msgid "Remove these systems [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto systémy [a/N]:"
 
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
 #: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
 #: ../src/spacecmd/system.py:4370
 msgid "No systems found"
-msgstr ""
+msgstr "Nenašli sa žiadne systémy"
 
 #: ../src/spacecmd/group.py:167
 msgid "group_create: Create a system group"
@@ -2144,7 +2152,7 @@ msgstr "group_create: Vytvoriť systémovú skupinu"
 
 #: ../src/spacecmd/group.py:168
 msgid "usage: group_create [NAME] [DESCRIPTION]"
-msgstr ""
+msgstr "použitie: group_create [NÁZOV] [POPIS]"
 
 #: ../src/spacecmd/group.py:194
 msgid "group_delete: Delete a system group"
@@ -2152,15 +2160,15 @@ msgstr "group_delete: Vymazať systémovú skupinu"
 
 #: ../src/spacecmd/group.py:195
 msgid "usage: group_delete NAME ..."
-msgstr ""
+msgstr "použitie: group_delete NÁZOV ..."
 
 #: ../src/spacecmd/group.py:214
 msgid "Delete these groups [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto skupiny [a/N]:"
 
 #: ../src/spacecmd/group.py:226
 msgid "group_backup: backup a system group"
-msgstr ""
+msgstr "group_backup: zálohovať systémovú skupinu"
 
 #: ../src/spacecmd/group.py:227
 msgid ""
@@ -2170,20 +2178,26 @@ msgid ""
 "\"OUTDIR\" defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME\n"
 "\"ALL\" is a keyword and collects all groups\n"
 msgstr ""
+"použitie: group_backup <NÁZOV> [VÝST_ADR])\n"
+"                    group_backup ALL\n"
+"\n"
+"\"VÝST_ADR\" predvolená hodnota je $HOME/spacecmd-backup/group/YYYY-MM-DD/"
+"NÁZOV\n"
+"\"ALL\" je kľúčové slovo a zhromažďuje všetky skupiny\n"
 
 #: ../src/spacecmd/group.py:272
 #, python-format
 msgid "Backup Group: %s"
-msgstr ""
+msgstr "Zálohovať skupinu: %s"
 
 #: ../src/spacecmd/group.py:275
 #, python-format
 msgid "Output File: %s"
-msgstr ""
+msgstr "Výstupný súbor: %s"
 
 #: ../src/spacecmd/group.py:286
 msgid "group_restore: restore a system group"
-msgstr ""
+msgstr "group_restore: obnoviť systémovú skupinu"
 
 #: ../src/spacecmd/group.py:287
 msgid ""
@@ -2197,49 +2211,59 @@ msgid ""
 "Setting dot (.) instead of full INPUTDIR will imply current directory.\n"
 "    "
 msgstr ""
+"\n"
+"usage: group_restore VSTUP_ADR [NÁZOV] ...\n"
+"       group_restore VSTUP_ADR ALL\n"
+"       group_restore VSTUP_ADR\n"
+"       group_restore .\n"
+"\n"
+"Zadanie iba VSTUP_ADR bude predvolené pre VŠETKY skupiny.\n"
+"Zadanie bodky (.) namiesto úplného VSTUP_ADR bude znamenať aktuálny "
+"adresár.\n"
+"    "
 
 #: ../src/spacecmd/group.py:331
 #, python-format
 msgid "Restore dir %s does not exits or is not a directory"
-msgstr ""
+msgstr "Adresár obnovenia %s neexistuje alebo nejde o adresár"
 
 #: ../src/spacecmd/group.py:335
 #, python-format
 msgid "Restore dir %s has no restore items"
-msgstr ""
+msgstr "Adresár obnovenia %s nemá žiadne položky obnovenia"
 
 #: ../src/spacecmd/group.py:342
 #, python-format
 msgid "Group %s was not found in backup"
-msgstr ""
+msgstr "Skupina %s sa nenašla v zálohe"
 
 #: ../src/spacecmd/group.py:345
 #, python-format
 msgid "Found %s missing groups, terminating"
-msgstr ""
+msgstr "Nájdené %s chýbajúce skupiny, ukončuje sa"
 
 #: ../src/spacecmd/group.py:360
 #, python-format
 msgid "Group %s already restored"
-msgstr ""
+msgstr "Skupina %s je už obnovená"
 
 #: ../src/spacecmd/group.py:367
 msgid "Changing description from:"
-msgstr ""
+msgstr "Zmena popisu z:"
 
 #: ../src/spacecmd/group.py:369
 msgid "Continue [y/N]:"
-msgstr ""
+msgstr "Pokračovať [a/N]:"
 
 #: ../src/spacecmd/group.py:372 ../src/spacecmd/group.py:375
 #, python-format
 msgid "Updating description for group: %s"
-msgstr ""
+msgstr "Aktualizácia popisu pre skupinu: %s"
 
 #: ../src/spacecmd/group.py:378
 #, python-format
 msgid "Creating new group %s"
-msgstr ""
+msgstr "Vytvorenie novej skupiny %s"
 
 #: ../src/spacecmd/group.py:387
 msgid "group_list: List available system groups"
@@ -2247,20 +2271,20 @@ msgstr "group_list: Vypísať zoznam dostupných systémových skupín"
 
 #: ../src/spacecmd/group.py:388
 msgid "usage: group_list"
-msgstr ""
+msgstr "použitie: group_list"
 
 #: ../src/spacecmd/group.py:405
 msgid "group_listsystems: List the members of a group"
-msgstr ""
+msgstr "group_listsystems: Vypísať zoznam členov skupiny"
 
 #: ../src/spacecmd/group.py:406
 msgid "usage: group_listsystems GROUP"
-msgstr ""
+msgstr "použitie: group_listsystems SKUPINA"
 
 #: ../src/spacecmd/group.py:428
 #, python-format
 msgid "%s is not a valid group"
-msgstr ""
+msgstr "%s nie je platná skupina"
 
 #: ../src/spacecmd/group.py:441
 msgid "group_details: Show the details of a system group"
@@ -2268,36 +2292,36 @@ msgstr "group_details: Zobraziť podrobnosti o systémovej skupine"
 
 #: ../src/spacecmd/group.py:442
 msgid "usage: group_details GROUP ..."
-msgstr ""
+msgstr "použitie: group_details SKUPINA ..."
 
 #: ../src/spacecmd/group.py:465 ../src/spacecmd/group.py:513
 #, python-format
 msgid "The group \"%s\" is invalid"
-msgstr ""
+msgstr "Skupina \"%s\" je neplatná"
 
 #: ../src/spacecmd/group.py:472
 #, python-format
 msgid "ID:                %i"
-msgstr ""
+msgstr "ID:                %i"
 
 #: ../src/spacecmd/group.py:473
 #, python-format
 msgid "Name:              %s"
-msgstr ""
+msgstr "Názov:              %s"
 
 #: ../src/spacecmd/group.py:474
 #, python-format
 msgid "Description:       %s"
-msgstr ""
+msgstr "Popis:       %s"
 
 #: ../src/spacecmd/group.py:475
 #, python-format
 msgid "Number of Systems: %i"
-msgstr ""
+msgstr "Počet systémov: %i"
 
 #: ../src/spacecmd/group.py:479
 msgid "Members"
-msgstr ""
+msgstr "Členovia"
 
 #: ../src/spacecmd/group.py:488
 msgid ""
@@ -2329,19 +2353,19 @@ msgstr "použitie: group_removeconfigchannels <SKUPINA> <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"
-msgstr ""
+msgstr "kickstart_list: Vypísať zoznam dostupných profilov Kickstart"
 
 #: ../src/spacecmd/kickstart.py:75
 msgid "usage: kickstart_list"
-msgstr ""
+msgstr "použitie: kickstart_list"
 
 #: ../src/spacecmd/kickstart.py:87 ../src/spacecmd/kickstart.py:2110
 msgid "No kickstart profiles available"
-msgstr ""
+msgstr "Nie sú k dostupné žiadne profily kickstart"
 
 #: ../src/spacecmd/kickstart.py:93
 msgid "kickstart_create: Create a Kickstart profile"
-msgstr ""
+msgstr "kickstart_create: Vytvoriť profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:94
 msgid ""
@@ -2353,84 +2377,91 @@ msgid ""
 "  -p ROOT_PASSWORD\n"
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
+"použitie: kickstart_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -d DISTRIBÚCIA\n"
+"  -p HESLO_ROOT\n"
+"  -v VIRT_TYP ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:115 ../src/spacecmd/kickstart.py:251
 msgid "Virtualization Types"
-msgstr ""
+msgstr "Typy virtualizácie"
 
 #: ../src/spacecmd/kickstart.py:120 ../src/spacecmd/kickstart.py:256
 msgid "Virtualization Type [none]:"
-msgstr ""
+msgstr "Typ virtualizácie [none]:"
 
 #: ../src/spacecmd/kickstart.py:128 ../src/spacecmd/kickstart.py:264
 msgid "Distributions"
-msgstr ""
+msgstr "Distribúcie"
 
 #: ../src/spacecmd/kickstart.py:138
 msgid "Root Password: "
-msgstr ""
+msgstr "Heslo správcu systému: "
 
 #: ../src/spacecmd/kickstart.py:139 ../src/spacecmd/org.py:91
 #: ../src/spacecmd/user.py:86
 msgid "Repeat Password: "
-msgstr ""
+msgstr "Zopakujte heslo: "
 
 #: ../src/spacecmd/kickstart.py:144 ../src/spacecmd/org.py:96
 #: ../src/spacecmd/user.py:91
 msgid "Password must be at least 5 characters"
-msgstr ""
+msgstr "Heslo musí mať minimálne 5 znakov"
 
 #: ../src/spacecmd/kickstart.py:146 ../src/spacecmd/org.py:98
 #: ../src/spacecmd/user.py:93
 msgid "Passwords don't match"
-msgstr ""
+msgstr "Heslá sa nezhodujú"
 
 #: ../src/spacecmd/kickstart.py:149 ../src/spacecmd/kickstart.py:272
 #: ../src/spacecmd/kickstart.py:1982 ../src/spacecmd/kickstart.py:2124
 msgid "The Kickstart name is required"
-msgstr ""
+msgstr "Vyžaduje sa názov Kickstart"
 
 #: ../src/spacecmd/kickstart.py:153 ../src/spacecmd/kickstart.py:276
 msgid "The distribution is required"
-msgstr ""
+msgstr "Vyžaduje sa distribúcia"
 
 #: ../src/spacecmd/kickstart.py:160
 msgid "A root password is required"
-msgstr ""
+msgstr "Vyžaduje sa heslo správcu systému"
 
 #: ../src/spacecmd/kickstart.py:179
 msgid "kickstart_delete: Delete kickstart profile(s)"
-msgstr ""
+msgstr "kickstart_delete: Vymazať profil(y) kickstart"
 
 #: ../src/spacecmd/kickstart.py:180
 msgid "usage: kickstart_delete PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_delete PROFIL"
 
 #: ../src/spacecmd/kickstart.py:181
 msgid "usage: kickstart_delete PROFILE1 PROFILE2"
-msgstr ""
+msgstr "použitie: kickstart_delete PROFIL1 PROFIL2"
 
 #: ../src/spacecmd/kickstart.py:182
 msgid "usage: kickstart_delete \"PROF*\""
-msgstr ""
+msgstr "použitie: kickstart_delete \"PROF*\""
 
 #: ../src/spacecmd/kickstart.py:205 ../src/spacecmd/kickstart.py:2598
 #: ../src/spacecmd/kickstart.py:2654 ../src/spacecmd/kickstart.py:2696
 msgid "No valid kickstart labels passed as arguments!"
-msgstr ""
+msgstr "Ako argumenty neboli zadané žiadne platné označenia kickstart!"
 
 #: ../src/spacecmd/kickstart.py:211
 msgid "The following kickstart labels are invalid:"
-msgstr ""
+msgstr "Nasledujúce označenia kickstart sú neplatné:"
 
 #: ../src/spacecmd/kickstart.py:216
 #, python-format
 msgid "Delete profile %s [y/N]:"
-msgstr ""
+msgstr "Vymazať profil %s [a/N]:"
 
 #: ../src/spacecmd/kickstart.py:224
 msgid "kickstart_import: Import a Kickstart profile from a file"
-msgstr ""
+msgstr "kickstart_import: Importovať profil Kickstart zo súboru"
 
 #: ../src/spacecmd/kickstart.py:225
 msgid ""
@@ -2442,15 +2473,24 @@ msgid ""
 "  -d DISTRIBUTION\n"
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
+"použitie: kickstart_import [voľby])\n"
+"\n"
+"voľby:\n"
+"  -f SÚBOR\n"
+"  -n NÁZOV\n"
+"  -d DISTRIBÚCIA\n"
+"  -v VIRT_TYP ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:280 ../src/spacecmd/kickstart.py:1986
 msgid "A filename is required"
-msgstr ""
+msgstr "Vyžaduje sa názov súboru"
 
 #: ../src/spacecmd/kickstart.py:310
 msgid ""
 "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
 msgstr ""
+"kickstart_import_raw: Importovať nespracovaný profil Kickstart alebo profil "
+"autoyast zo súboru"
 
 #: ../src/spacecmd/kickstart.py:311
 msgid ""
@@ -2462,52 +2502,59 @@ msgid ""
 "  -d DISTRIBUTION\n"
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
+"použitie: kickstart_import_raw [voľby])\n"
+"\n"
+"voľby:\n"
+"  -f SÚBOR\n"
+"  -n NÁZOV\n"
+"  -d DISTRIBÚCIA\n"
+"  -v VIRT_TYP ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:327
 msgid "kickstart_details: Show the details of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_details: Zobraziť podrobnosti profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:328
 msgid "usage: kickstart_details PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_details PROFIL"
 
 #: ../src/spacecmd/kickstart.py:355
 msgid "Invalid Kickstart profile"
-msgstr ""
+msgstr "Neplatný profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:417
 #, python-format
 msgid "Tree:        %s"
-msgstr ""
+msgstr "Strom:        %s"
 
 #: ../src/spacecmd/kickstart.py:418
 #, python-format
 msgid "Active:      %s"
-msgstr ""
+msgstr "Aktívny:      %s"
 
 #: ../src/spacecmd/kickstart.py:419
 #, python-format
 msgid "Advanced:    %s"
-msgstr ""
+msgstr "Pokročilé:    %s"
 
 #: ../src/spacecmd/kickstart.py:420
 #, python-format
 msgid "Org Default: %s"
-msgstr ""
+msgstr "Predvolený Org: %s"
 
 #: ../src/spacecmd/kickstart.py:423
 #, python-format
 msgid "Configuration Management: %s"
-msgstr ""
+msgstr "Správa konfigurácie: %s"
 
 #: ../src/spacecmd/kickstart.py:424
 #, python-format
 msgid "Remote Commands:          %s"
-msgstr ""
+msgstr "Vzdialené príkazy:          %s"
 
 #: ../src/spacecmd/kickstart.py:436
 msgid "Advanced Options"
-msgstr ""
+msgstr "Pokročilé možnosti"
 
 #: ../src/spacecmd/kickstart.py:444
 msgid "Custom Options"
@@ -2519,87 +2566,90 @@ msgstr "Rozdelenie"
 
 #: ../src/spacecmd/kickstart.py:456
 msgid "Software"
-msgstr ""
+msgstr "Softvér"
 
 #: ../src/spacecmd/kickstart.py:469
 msgid "Crypto Keys"
-msgstr ""
+msgstr "Šifrovacie kľúče"
 
 #: ../src/spacecmd/kickstart.py:476
 msgid "File Preservations"
-msgstr ""
+msgstr "Zachovania súborov"
 
 #: ../src/spacecmd/kickstart.py:485
 msgid "Variables"
-msgstr ""
+msgstr "Premenné"
 
 #: ../src/spacecmd/kickstart.py:492
 msgid "Scripts"
-msgstr ""
+msgstr "Skripty"
 
 #: ../src/spacecmd/kickstart.py:503 ../src/spacecmd/kickstart.py:1902
 #, python-format
 msgid "Chroot:      %s"
-msgstr ""
+msgstr "Chroot:      %s"
 
 #: ../src/spacecmd/kickstart.py:506 ../src/spacecmd/kickstart.py:1903
 #, python-format
 msgid "Interpreter: %s"
-msgstr ""
+msgstr "Interpreter: %s"
 
 #: ../src/spacecmd/kickstart.py:532
 msgid "Could not retrieve the Kickstart file"
-msgstr ""
+msgstr "Nepodarilo sa získať súbor Kickstart"
 
 #: ../src/spacecmd/kickstart.py:538
 msgid "kickstart_getcontents: Show the contents of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_getcontents: Zobraziť obsah profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:539
 msgid "                   as they would be presented to a client"
-msgstr ""
+msgstr "                   ako by boli predložené klientovi"
 
 #: ../src/spacecmd/kickstart.py:540
 msgid "usage: kickstart_getcontents LABEL"
-msgstr ""
+msgstr "použitie: kickstart_getcontents OZNAČENIE"
 
 #: ../src/spacecmd/kickstart.py:574
 msgid "kickstart_rename: Rename a Kickstart profile"
-msgstr ""
+msgstr "kickstart_rename: Premenovať profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:575
 msgid "usage: kickstart_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: kickstart_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/kickstart.py:603
 msgid ""
 "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
 "profile"
 msgstr ""
+"kickstart_listcryptokeys: Vypíše zoznam šifrovacích kľúčov spojených s "
+"profilom Kickstart"
 
 #: ../src/spacecmd/kickstart.py:605
 msgid "usage: kickstart_listcryptokeys PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listcryptokeys PROFIL"
 
 #: ../src/spacecmd/kickstart.py:634
 msgid "No crypto keys has been found"
-msgstr ""
+msgstr "Neboli nájdené žiadne šifrovacie kľúče"
 
 #: ../src/spacecmd/kickstart.py:640
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addcryptokeys: Pridať šifrovacie kľúče do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:641
 msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_addcryptokeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:667
 msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
 msgstr ""
+"kickstart_removecryptokeys: Odstrániť šifrovacie kľúče z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:669
 msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_removecryptokeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:709
 msgid ""
@@ -2611,7 +2661,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:711
 msgid "usage: kickstart_listactivationkeys PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listactivationkeys PROFIL"
 
 #: ../src/spacecmd/kickstart.py:741
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
@@ -2620,7 +2670,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:743
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_addactivationkeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:772
 msgid ""
@@ -2631,260 +2681,279 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:774
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_removeactivationkeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:798
 msgid "Remove these keys [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto kľúče [a/N]:"
 
 #: ../src/spacecmd/kickstart.py:813
 msgid ""
 "kickstart_enableconfigmanagement: Enable configuration management on a "
 "Kickstart profile"
 msgstr ""
+"kickstart_enableconfigmanagement: Povoliť správu konfigurácie na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:815
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_enableconfigmanagement PROFIL"
 
 #: ../src/spacecmd/kickstart.py:846
 msgid ""
 "kickstart_disableconfigmanagement: Disable configuration management on a "
 "Kickstart profile"
 msgstr ""
+"kickstart_disableconfigmanagement: Zakázať správu konfigurácie na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:848
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_disableconfigmanagement PROFIL"
 
 #: ../src/spacecmd/kickstart.py:879
 msgid ""
 "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr ""
+"kickstart_enableremotecommands: Povoliť vzdialené príkazy na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:881
 msgid "usage: kickstart_enableremotecommands PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_enableremotecommands PROFIL"
 
 #: ../src/spacecmd/kickstart.py:912
 msgid ""
 "kickstart_disableremotecommands: Disable remote commands on a Kickstart "
 "profile"
 msgstr ""
+"kickstart_disableremotecommands: Zakázať vzdialené príkazy na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:914
 msgid "usage: kickstart_disableremotecommands PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_disableremotecommands PROFIL"
 
 #: ../src/spacecmd/kickstart.py:944
 msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_setlocale: Nastaviť lokalizáciu pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:945
 msgid "usage: kickstart_setlocale PROFILE LOCALE"
-msgstr ""
+msgstr "použitie: kickstart_setlocale PROFIL LOKALIZÁCIA"
 
 #: ../src/spacecmd/kickstart.py:983
 msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_setselinux: Nastaviť režim pre SELinux pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:985
 msgid "usage: kickstart_setselinux PROFILE MODE"
-msgstr ""
+msgstr "použitie: kickstart_setselinux PROFIL REŽIM"
 
 #: ../src/spacecmd/kickstart.py:1020
 msgid ""
 "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr ""
+"kickstart_setpartitions: Nastaviť schému rozdelenia pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1022
 msgid "usage: kickstart_setpartitions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_setpartitions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1071
 msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_setdistribution: Nastaviť distribúciu pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1073
 msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
-msgstr ""
+msgstr "použitie: kickstart_setdistribution PROFIL DISTRIBÚCIA"
 
 #: ../src/spacecmd/kickstart.py:1107
 msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_enablelogging: Povoliť zaznamenávanie pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1108
 msgid "usage: kickstart_enablelogging PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_enablelogging PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1140
 msgid "kickstart_addvariable: Add a variable to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addvariable: Pridať premennú do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1141
 msgid "usage: kickstart_addvariable PROFILE KEY VALUE"
-msgstr ""
+msgstr "použitie: kickstart_addvariable PROFIL KĽÚČ HODNOTA"
 
 #: ../src/spacecmd/kickstart.py:1179
 msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
-msgstr ""
+msgstr "kickstart_updatevariable: Aktualizovať premennú v profile Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1181
 msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
-msgstr ""
+msgstr "použitie: kickstart_updatevariable PROFIL KĽÚČ HODNOTA"
 
 #: ../src/spacecmd/kickstart.py:1216
 msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removevariables: Odstrániť premenné z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1218
 msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_removevariables PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:1267
 msgid "kickstart_listvariables: List the variables of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listvariables: Vypísať zoznam premenných profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1269
 msgid "usage: kickstart_listvariables PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listvariables PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1302
 msgid "kickstart_addoption: Set an option for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addoption: Nastaviť možnosť pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1303
 msgid "usage: kickstart_addoption PROFILE KEY [VALUE]"
-msgstr ""
+msgstr "použitie: kickstart_addoption PROFIL KĽÚČ [HODNOTA]"
 
 #: ../src/spacecmd/kickstart.py:1350
 #, python-format
 msgid "%s needs to be set as a custom option"
-msgstr ""
+msgstr "%s je potrebné nastaviť ako vlastnú možnosť"
 
 #: ../src/spacecmd/kickstart.py:1358
 msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removeoptions: Odstrániť možnosti z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1359
 msgid "usage: kickstart_removeoptions PROFILE <OPTION ...>"
-msgstr ""
+msgstr "použitie: kickstart_removeoptions PROFIL <MOŽNOSŤ ...>"
 
 #: ../src/spacecmd/kickstart.py:1411
 msgid "kickstart_listoptions: List the options of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listoptions: Vypísať zoznam možností profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1413
 msgid "usage: kickstart_listoptions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listoptions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1447
 msgid ""
 "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr ""
+"kickstart_listcustomoptions: Vypísať zoznam vlastných možností profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1449
 msgid "usage: kickstart_listcustomoptions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listcustomoptions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1483
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
 msgstr ""
+"kickstart_setcustomoptions: Nastaviť vlastné možnosti pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1485
 msgid "usage: kickstart_setcustomoptions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_setcustomoptions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1533
 msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addchildchannels: Pridať kanály potomkov k profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1535
 msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: kickstart_addchildchannels PROFIL <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:1593
 msgid ""
 "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr ""
+"kickstart_removechildchannels: Odstrániť kanály potomkov z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1595
 msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: kickstart_removechildchannels PROFIL <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:1638
 msgid ""
 "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr ""
+"kickstart_listchildchannels: Vypísať zoznam kanálov potomkov profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1640
 msgid "usage: kickstart_listchildchannels PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listchildchannels PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1674
 msgid ""
 "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr ""
+"kickstart_addfilepreservations: Pridať zachovania súborov do profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1676
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
-msgstr ""
+msgstr "použitie: kickstart_addfilepreservations PROFIL <ZOZNAM_SÚBOROV ...>"
 
 #: ../src/spacecmd/kickstart.py:1711
 msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
 msgstr ""
+"kickstart_removefilepreservations: Odstrániť zachovania súborov z profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1713
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
-msgstr ""
+msgstr "použitie: kickstart_removefilepreservations PROFIL <SÚBOR ...>"
 
 #: ../src/spacecmd/kickstart.py:1758
 msgid "kickstart_listpackages: List the packages for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listpackages: Vypísať zoznam balíkov pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1760
 msgid "usage: kickstart_listpackages PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listpackages PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1792
 msgid "kickstart_addpackages: Add packages to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addpackages: Pridať balíky do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1793
 msgid "usage: kickstart_addpackages PROFILE <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: kickstart_addpackages PROFIL <BALÍK ...>"
 
 #: ../src/spacecmd/kickstart.py:1826
 msgid "kickstart_removepackages: Remove packages from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removepackages: Odstrániť balíky z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1828
 msgid "usage: kickstart_removepackages PROFILE <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: kickstart_removepackages PROFIL <BALÍK ...>"
 
 #: ../src/spacecmd/kickstart.py:1871
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listscripts: Vypísať zoznam skriptov pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1873
 msgid "usage: kickstart_listscripts PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listscripts PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1892
 #, python-format
 msgid "No scripts has been found for profile '%s'"
-msgstr ""
+msgstr "Pre profil '%s' sa nenašli žiadne skripty"
 
 #: ../src/spacecmd/kickstart.py:1900
 #, python-format
 msgid "ID:          %i"
-msgstr ""
+msgstr "ID:          %i"
 
 #: ../src/spacecmd/kickstart.py:1915
 msgid "kickstart_addscript: Add a script to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addscript: Pridať skript do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1916
 msgid ""
@@ -2898,79 +2967,88 @@ msgid ""
 "  -c execute in a chroot environment\n"
 "  -t ENABLING_TEMPLATING"
 msgstr ""
+"použitie: kickstart_addscript PROFIL [voľby])\n"
+"\n"
+"voľby:\n"
+"  -p PROFIL\n"
+"  -e ČAS_VYKONANIA ['pre', 'post']\n"
+"  -i INTERPRETER\n"
+"  -f SÚBOR\n"
+"  -c vykonať v prostredí chroot\n"
+"  -t POVOLENIE_ŠABLÓNOVANIA"
 
 #: ../src/spacecmd/kickstart.py:1949
 msgid "Profile Name:"
-msgstr ""
+msgstr "Názov profilu:"
 
 #: ../src/spacecmd/kickstart.py:1951
 msgid "Pre/Post Script [post]:"
-msgstr ""
+msgstr "Skript Pre/Post [post]:"
 
 #: ../src/spacecmd/kickstart.py:1952
 msgid "Chrooted [Y/n]:"
-msgstr ""
+msgstr "S aplikovaným chroot [A/n]:"
 
 #: ../src/spacecmd/kickstart.py:1953
 msgid "Interpreter [/bin/bash]:"
-msgstr ""
+msgstr "Interpreter [/bin/bash]:"
 
 #: ../src/spacecmd/kickstart.py:1990
 msgid "The execution time is required"
-msgstr ""
+msgstr "Vyžaduje sa čas vykonania"
 
 #: ../src/spacecmd/kickstart.py:2006
 #, python-format
 msgid "Profile Name:   %s"
-msgstr ""
+msgstr "Názov profilu:   %s"
 
 #: ../src/spacecmd/kickstart.py:2007
 #, python-format
 msgid "Execution Time: %s"
-msgstr ""
+msgstr "Čas vykonania: %s"
 
 #: ../src/spacecmd/kickstart.py:2008
 #, python-format
 msgid "Chroot:         %s"
-msgstr ""
+msgstr "Chroot:         %s"
 
 #: ../src/spacecmd/kickstart.py:2009
 #, python-format
 msgid "Template:       %s"
-msgstr ""
+msgstr "Šablóna:       %s"
 
 #: ../src/spacecmd/kickstart.py:2010
 #, python-format
 msgid "Interpreter:    %s"
-msgstr ""
+msgstr "Interpreter:    %s"
 
 #: ../src/spacecmd/kickstart.py:2011
 msgid "Contents:"
-msgstr ""
+msgstr "Obsah:"
 
 #: ../src/spacecmd/kickstart.py:2031
 msgid "kickstart_removescript: Remove a script from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removescript: Odstrániť skript z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2032
 msgid "usage: kickstart_removescript PROFILE [ID]"
-msgstr ""
+msgstr "použitie: kickstart_removescript PROFIL [ID]"
 
 #: ../src/spacecmd/kickstart.py:2060 ../src/spacecmd/kickstart.py:2073
 msgid "Invalid script ID"
-msgstr ""
+msgstr "Neplatný skript ID"
 
 #: ../src/spacecmd/kickstart.py:2068
 msgid "Script ID:"
-msgstr ""
+msgstr "ID skriptu:"
 
 #: ../src/spacecmd/kickstart.py:2075
 msgid "Remove this script [y/N]:"
-msgstr ""
+msgstr "Odstrániť tento skript [a/N]:"
 
 #: ../src/spacecmd/kickstart.py:2088
 msgid "kickstart_clone: Clone a Kickstart profile"
-msgstr ""
+msgstr "kickstart_clone: Klonovať profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2089
 msgid ""
@@ -2980,30 +3058,36 @@ msgid ""
 "  -n NAME\n"
 "  -c CLONE_NAME"
 msgstr ""
+"použitie: kickstart_clone [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -c NÁZOV_KLONU"
 
 #: ../src/spacecmd/kickstart.py:2114
 msgid "Kickstart Profiles"
-msgstr ""
+msgstr "Profily Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2119
 msgid "Original Profile:"
-msgstr ""
+msgstr "Pôvodný profil:"
 
 #: ../src/spacecmd/kickstart.py:2120
 msgid "Cloned Profile:"
-msgstr ""
+msgstr "Klonovaný profil:"
 
 #: ../src/spacecmd/kickstart.py:2128
 msgid "The Kickstart clone name is required"
-msgstr ""
+msgstr "Vyžaduje sa názov klonu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2133
 msgid "Kickstart profile you've entered was not found"
-msgstr ""
+msgstr "Profil Kickstart, ktorý ste zadali, sa nenašiel"
 
 #: ../src/spacecmd/kickstart.py:2146
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr ""
+"kickstart_export: exportovať profil(y) kickstart do súboru vo formáte json"
 
 #: ../src/spacecmd/kickstart.py:2147
 msgid ""
@@ -3018,89 +3102,102 @@ msgid ""
 "\n"
 "Note : KSPROFILE list is optional, default is to export ALL"
 msgstr ""
+"použitie: kickstart_export <KS_PROFIL>... [voľby])\n"
+"options:\n"
+"    -f outfile.json : určuje názov výstupného súboru, predvolené hodnoty sú "
+"<KS_PROFIL>.json,\n"
+"                      ak sa exportuje jeden, profiles.json pre viac "
+"profilov\n"
+"                      kickstart alebo ks_all.json, ak nie je zadaný žiadny "
+"KS_PROFIL\n"
+"                      napr. (exportovať VŠETKY)\n"
+"\n"
+"Note : Zoznam KS_PROFILOV je voliteľný, predvolený je export VŠETKÝCH"
 
 #: ../src/spacecmd/kickstart.py:2273
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
-msgstr ""
+msgstr "Exportovanie VŠETKÝCH profilov kickstart do %s"
 
 #: ../src/spacecmd/kickstart.py:2281
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
 msgstr ""
+"Chyba, nebol zadaný žiadny platný profil kickstart, skontrolujte správnosť "
+"názvu pomocou spacecmd kickstart_list"
 
 #: ../src/spacecmd/kickstart.py:2301
 #, python-format
 msgid "Exporting ks %s to %s"
-msgstr ""
+msgstr "Exportovanie ks %s do %s"
 
 #: ../src/spacecmd/kickstart.py:2308
 #, python-format
 msgid "File %s exists, "
-msgstr ""
+msgstr "Súbor %s existuje, "
 
 #: ../src/spacecmd/kickstart.py:2309
 msgid "confirm overwrite file? (y/n)"
-msgstr ""
+msgstr "potvrdiť prepísanie súboru? (a/n)"
 
 #: ../src/spacecmd/kickstart.py:2312
 msgid "Error saving exported kickstart profiles to file"
-msgstr ""
+msgstr "Chyba pri ukladaní exportovaných profilov kickstart do súboru"
 
 #: ../src/spacecmd/kickstart.py:2322
 msgid "kickstart_import: import kickstart profile(s) from json file"
-msgstr ""
+msgstr "kickstart_import: importovať profil(y) kickstart zo súboru json"
 
 #: ../src/spacecmd/kickstart.py:2323
 msgid "usage: kickstart_import <JSONFILES...>"
-msgstr ""
+msgstr "použitie: kickstart_import <SÚBORY_JSON...>"
 
 #: ../src/spacecmd/kickstart.py:2344
 #, python-format
 msgid "Error importing kickstart %s"
-msgstr ""
+msgstr "Chyba pri importovaní kickstart %s"
 
 #: ../src/spacecmd/kickstart.py:2357
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
-msgstr ""
+msgstr "CHYBA : profil kickstart %s už existuje! Preskakuje sa!"
 
 #. create the ks, we need to drop the org prefix from the ks name
 #: ../src/spacecmd/kickstart.py:2361
 #, python-format
 msgid "Found ks %s"
-msgstr ""
+msgstr "Nájdený ks %s"
 
 #: ../src/spacecmd/kickstart.py:2417
 #, python-format
 msgid "Error adding %s script"
-msgstr ""
+msgstr "Chyba pri pridávaní skriptu %s"
 
 #: ../src/spacecmd/kickstart.py:2425
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
-msgstr ""
+msgstr "nepodarilo sa pridať rozsah ip %s-%s, pokračuje sa"
 
 #: ../src/spacecmd/kickstart.py:2439
 #, python-format
 msgid "failed to add file preservation %s, skipping"
-msgstr ""
+msgstr "nepodarilo sa pridať zachovanie súboru %s, preskakuje sa"
 
 #: ../src/spacecmd/kickstart.py:2441
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
-msgstr ""
+msgstr "zoznam zachovania súborov %s neexistuje, preskakuje sa"
 
 #: ../src/spacecmd/kickstart.py:2452
 #, python-format
 msgid "Actvationkey %s does not exist on the "
-msgstr ""
+msgstr "Aktivačný kľúč %s neexistuje na "
 
 #: ../src/spacecmd/kickstart.py:2463
 #, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
-msgstr ""
+msgstr "Kľúč GPG/SSL %s na serveri Spacewalk neexistuje, preskakuje sa"
 
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
@@ -3110,70 +3207,74 @@ msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
 msgstr ""
+"Z dôvodu vynechaní API existujú niektoré nastavenia, ktoré nie je možné "
+"importovať, v prípade potreby, prosím, skontrolujte a opravte ručne"
 
 #: ../src/spacecmd/kickstart.py:2474
 msgid " * Details->Preserve ks.cfg"
-msgstr ""
+msgstr " * Podrobnosti->Zachovať ks.cfg"
 
 #: ../src/spacecmd/kickstart.py:2475
 msgid " * Details->Comment"
-msgstr ""
+msgstr " * Podrobnosti->Komentár"
 
 #: ../src/spacecmd/kickstart.py:2479
 msgid " * Details->Organization Default Profile"
-msgstr ""
+msgstr " * Podrobnosti->Predvolený profil organizácie"
 
 #. No way to set the kernel options
 #: ../src/spacecmd/kickstart.py:2481
 msgid " * Details->Kernel Options"
-msgstr ""
+msgstr " * Podrobnosti->Voľby jadra"
 
 #: ../src/spacecmd/kickstart.py:2485
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
-msgstr ""
+msgstr " * Podrobnosti->Voľby jadra po : %s"
 
 #: ../src/spacecmd/kickstart.py:2501
 msgid "no kickstart label given"
-msgstr ""
+msgstr "nie je uvedené označenie kickstart"
 
 #: ../src/spacecmd/kickstart.py:2504
 msgid "invalid kickstart label "
-msgstr ""
+msgstr "neplatné označenie kickstart "
 
 #: ../src/spacecmd/kickstart.py:2521
 msgid "kickstart_diff: diff kickstart files"
-msgstr ""
+msgstr "kickstart_diff: porovnať súbory kickstart"
 
 #: ../src/spacecmd/kickstart.py:2523
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: kickstart_diff ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/kickstart.py:2572
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
 msgstr ""
+"kickstart_getupdatetype: Získať typ aktualizácie pre profil(y) kickstart"
 
 #: ../src/spacecmd/kickstart.py:2573
 msgid "usage: kickstart_getupdatetype PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_getupdatetype PROFIL"
 
 #: ../src/spacecmd/kickstart.py:2574
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
-msgstr ""
+msgstr "použitie: kickstart_getupdatetype PROFIL1 PROFIL2"
 
 #: ../src/spacecmd/kickstart.py:2575
 msgid "usage: kickstart_getupdatetype \"PROF*\""
-msgstr ""
+msgstr "použitie: kickstart_getupdatetype \"PROF*\""
 
 #: ../src/spacecmd/kickstart.py:2604 ../src/spacecmd/kickstart.py:2660
 #: ../src/spacecmd/kickstart.py:2702
 #, python-format
 msgid "kickstart label %s doesn't exist!"
-msgstr ""
+msgstr "označenie kickstart %s neexistuje!"
 
 #: ../src/spacecmd/kickstart.py:2620
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
 msgstr ""
+"kickstart_setupdatetype: Nastaviť typ aktualizácie pre profil(y) kickstart"
 
 #: ../src/spacecmd/kickstart.py:2621
 msgid ""
@@ -3182,74 +3283,83 @@ msgid ""
 "options:\n"
 "    -u UPDATE_TYPE ['red_hat', 'all', 'none']"
 msgstr ""
+"použitie: kickstart_setupdatetype [voľby] OZNAČENIE_KS)\n"
+"\n"
+"voľby:\n"
+"    -u TYP_AKTUALIZÁCIE ['red_hat', 'all', 'none']"
 
 #: ../src/spacecmd/kickstart.py:2635
 msgid "Update Types"
-msgstr ""
+msgstr "Typy aktualizácií"
 
 #: ../src/spacecmd/kickstart.py:2640
 msgid "Update Type [none]:"
-msgstr ""
+msgstr "Typ aktualizácie [none]:"
 
 #: ../src/spacecmd/kickstart.py:2671
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr ""
+"kickstart_getsoftwaredetails: Získa podrobnosti o softvéri profilu kickstart"
 
 #: ../src/spacecmd/kickstart.py:2672
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
-msgstr ""
+msgstr "použitie: kickstart_getsoftwaredetails OZNAČENIE_KS"
 
 #: ../src/spacecmd/kickstart.py:2673
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
-msgstr ""
+msgstr "použitie: kickstart_getsoftwaredetails OZNAČENIE_KS OZNAČENIE_KS2 ..."
 
 #: ../src/spacecmd/kickstart.py:2708
 #, python-format
 msgid "noBase:        %s"
-msgstr ""
+msgstr "noBase:        %s"
 
 #: ../src/spacecmd/kickstart.py:2709
 #, python-format
 msgid "ignoreMissing: %s"
-msgstr ""
+msgstr "ignoreMissing: %s"
 
 #: ../src/spacecmd/kickstart.py:2711
 #, python-format
 msgid "Kickstart Label: %s"
-msgstr ""
+msgstr "Označenie kickstart: %s"
 
 #: ../src/spacecmd/kickstart.py:2712
 #, python-format
 msgid "noBase:          %s"
-msgstr ""
+msgstr "noBase:          %s"
 
 #: ../src/spacecmd/kickstart.py:2713
 #, python-format
 msgid "ignoreMissing:   %s"
-msgstr ""
+msgstr "ignoreMissing:   %s"
 
 #: ../src/spacecmd/kickstart.py:2722
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr ""
+"kickstart_setsoftwaredetails: Nastaví podrobnosti softvéru profilu kickstart."
 
 #: ../src/spacecmd/kickstart.py:2723
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
+"použitie: kickstart_setsoftwaredetails PROFIL INFO_BALÍKOV_KICKSTART HODNOTA"
 
 #: ../src/spacecmd/kickstart.py:2724
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
+"použitie: kickstart_setsoftwaredetails PROFIL INFO_BALÍKOV_KICKSTART HODNOTA "
+"INFO_BALÍKOV_KICKSTART HODNOTA"
 
 #: ../src/spacecmd/kickstart.py:2758
 msgid "Selected profile does not exist"
-msgstr ""
+msgstr "Vybraný profil neexistuje"
 
 #: ../src/spacecmd/kickstart.py:2761 ../src/spacecmd/kickstart.py:2766
 msgid "Enter valid input"
-msgstr ""
+msgstr "Zadajte platný vstup"
 
 #. list of system selection options for the help output
 #: ../src/spacecmd/misc.py:58
@@ -3261,6 +3371,12 @@ msgid ""
 "group:GROUP\n"
 "channel:CHANNEL\n"
 msgstr ""
+"<SYSTEMS> môže byť ktorýkoľvek z nasledujúcich:\n"
+"name\n"
+"ssm (pozri 'help ssm')\n"
+"search:DOPYT (pozri 'help system_search')\n"
+"group:SKUPINA\n"
+"channel:KANÁL\n"
 
 #: ../src/spacecmd/misc.py:66
 msgid ""
@@ -3282,240 +3398,257 @@ msgid ""
 "h -> hours\n"
 "d -> days\n"
 msgstr ""
+"Dátumy môžu byť ktorékoľvek z nasledujúcich:\n"
+"Explicitné dátumy:\n"
+"Dátumy možno vyjadriť ako explicitné dátumové reťazce vo formáte\n"
+"RRRRMMDD[HHMMSS].  Rok, mesiac a deň sú povinné, zatiaľ čo hodiny\n"
+"a minúty nie sú; ak nie sú zadané žiadne hodnoty, hodiny a minúty\n"
+"sú predvolené na 0000.\n"
+"\n"
+"Hodnoty delta:\n"
+"Dátumy možno vyjadriť ako hodnoty delta.  Napríklad '2h'\n"
+"by v budúcnosti znamenalo 2 hodiny.  Môžete tiež použiť záporné hodnoty\n"
+"na vyjadrenie časov v minulosti (napr. -7d by to bolo pred týždňom).\n"
+"\n"
+"Jednotky:\n"
+"s -> sekundy\n"
+"m -> minúty\n"
+"h -> hodiny\n"
+"d -> dni\n"
 
 #: ../src/spacecmd/misc.py:121
 msgid "clear: clear the screen"
-msgstr ""
+msgstr "clear: vymazať obrazovku"
 
 #: ../src/spacecmd/misc.py:122
 msgid "usage: clear"
-msgstr ""
+msgstr "použitie: clear"
 
 #: ../src/spacecmd/misc.py:133
 msgid "clear_caches: Clear the internal caches kept for systems and packages"
-msgstr ""
+msgstr "clear_caches: Vymazať interné vyrovnávacie pamäte systémov a balíkov"
 
 #: ../src/spacecmd/misc.py:134
 msgid "usage: clear_caches"
-msgstr ""
+msgstr "použitie: clear_caches"
 
 #: ../src/spacecmd/misc.py:147
 msgid "get_apiversion: Display the API version of the server"
-msgstr ""
+msgstr "get_apiversion: Zobraziť verziu API servera"
 
 #: ../src/spacecmd/misc.py:148
 msgid "usage: get_apiversion"
-msgstr ""
+msgstr "použitie: get_apiversion"
 
 #: ../src/spacecmd/misc.py:159
 msgid "get_serverversion: Display the version of the server"
-msgstr ""
+msgstr "get_serverversion: Zobraziť verziu servera"
 
 #: ../src/spacecmd/misc.py:160
 msgid "usage: get_serverversion"
-msgstr ""
+msgstr "použitie: get_serverversion"
 
 #: ../src/spacecmd/misc.py:172
 msgid "list_proxies: List the proxies within the user's organization "
-msgstr ""
+msgstr "list_proxies: Vypísať zoznam proxy v rámci organizácie používateľa "
 
 #: ../src/spacecmd/misc.py:173
 msgid "usage: list_proxies"
-msgstr ""
+msgstr "použitie: list_proxies"
 
 #: ../src/spacecmd/misc.py:185
 msgid "get_session: Show the current session string"
-msgstr ""
+msgstr "get_session: Zobraziť reťazec aktuálneho sedenia"
 
 #: ../src/spacecmd/misc.py:186
 msgid "usage: get_session"
-msgstr ""
+msgstr "použitie: get_session"
 
 #: ../src/spacecmd/misc.py:194
 msgid "No session found"
-msgstr ""
+msgstr "Nebolo nájdené žiadne sedenie"
 
 #: ../src/spacecmd/misc.py:201
 msgid "help: Show help for the given command"
-msgstr ""
+msgstr "help: Zobraziť pomocníka pre daný príkaz"
 
 #: ../src/spacecmd/misc.py:202
 msgid "usage: help COMMAND"
-msgstr ""
+msgstr "použitie: help PRÍKAZ"
 
 #: ../src/spacecmd/misc.py:208
 msgid "history: List your command history"
-msgstr ""
+msgstr "history: Vypísať zoznam histórie príkazov"
 
 #: ../src/spacecmd/misc.py:209
 msgid "usage: history"
-msgstr ""
+msgstr "použitie: history"
 
 #: ../src/spacecmd/misc.py:221
 msgid "toggle_confirmations: Toggle confirmation messages on/off"
-msgstr ""
+msgstr "toggle_confirmations: Zapnúť/Vypnúť potvrdzovacie správy"
 
 #: ../src/spacecmd/misc.py:222
 msgid "usage: toggle_confirmations"
-msgstr ""
+msgstr "použitie: toggle_confirmations"
 
 #: ../src/spacecmd/misc.py:227
 msgid "Confirmation messages are"
-msgstr ""
+msgstr "Potvrdzovacie správy sú"
 
 #: ../src/spacecmd/misc.py:227
 msgid "enabled"
-msgstr ""
+msgstr "povolené"
 
 #: ../src/spacecmd/misc.py:234
 msgid "login: Connect to a Spacewalk server"
-msgstr ""
+msgstr "login: Pripojiť sa k serveru Spacewalk"
 
 #: ../src/spacecmd/misc.py:235
 msgid "usage: login [USERNAME] [SERVER]"
-msgstr ""
+msgstr "použitie: login [POUŽÍVATEĽSKÉ_MENO] [SERVER]"
 
 #: ../src/spacecmd/misc.py:245
 msgid "You are already logged in"
-msgstr ""
+msgstr "Už ste prihlásení"
 
 #: ../src/spacecmd/misc.py:257
 msgid "No server specified"
-msgstr ""
+msgstr "Nie je zadaný žiadny server"
 
 #: ../src/spacecmd/misc.py:302
 #, python-format
 msgid "Failed to connect to %s"
-msgstr ""
+msgstr "Nepodarilo sa pripojiť k %s"
 
 #: ../src/spacecmd/misc.py:310
 #, python-format
 msgid "API (%s) is too old (>= %s required)"
-msgstr ""
+msgstr "API (%s) je príliš staré ( vyžaduje sa >= %s)"
 
 #: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
 #: ../src/spacecmd/utils.py:562
 #, python-format
 msgid "Could not read %s"
-msgstr ""
+msgstr "Nepodarilo sa prečítať %s"
 
 #: ../src/spacecmd/misc.py:349
 msgid "Cached credentials are invalid"
-msgstr ""
+msgstr "Uložené prihlasovacie údaje sú neplatné"
 
 #: ../src/spacecmd/misc.py:356
 #, python-format
 msgid "Spacewalk Username: %s"
-msgstr ""
+msgstr "Používateľské meno Spacewalk: %s"
 
 #: ../src/spacecmd/misc.py:358
 msgid "Spacewalk Username:"
-msgstr ""
+msgstr "Používateľské meno Spacewalk:"
 
 #: ../src/spacecmd/misc.py:369
 msgid "Spacewalk Password: "
-msgstr ""
+msgstr "Heslo Spacewalk: "
 
 #: ../src/spacecmd/misc.py:375
 msgid "Invalid credentials"
-msgstr ""
+msgstr "Neplatné prihlasovanie údaje"
 
 #: ../src/spacecmd/misc.py:393
 #, python-format
 msgid "Could not write session file: %s"
-msgstr ""
+msgstr "Nepodarilo sa zapísať súbor sedenia: %s"
 
 #: ../src/spacecmd/misc.py:402
 #, python-format
 msgid "Connected to %s as %s"
-msgstr ""
+msgstr "Pripojené k %s ako %s"
 
 #: ../src/spacecmd/misc.py:410
 msgid "logout: Disconnect from the server"
-msgstr ""
+msgstr "logout: Odpojiť sa od servera"
 
 #: ../src/spacecmd/misc.py:411
 msgid "usage: logout"
-msgstr ""
+msgstr "použitie: logout"
 
 #: ../src/spacecmd/misc.py:428
 msgid "whoami: Print the name of the currently logged in user"
-msgstr ""
+msgstr "whoami: Vypísať meno aktuálne prihláseného používateľa"
 
 #: ../src/spacecmd/misc.py:429
 msgid "usage: whoami"
-msgstr ""
+msgstr "použitie: whoami"
 
 #: ../src/spacecmd/misc.py:437
 msgid "You are not logged in"
-msgstr ""
+msgstr "Nie ste prihlásený"
 
 #: ../src/spacecmd/misc.py:444
 msgid "whoamitalkingto: Print the name of the server"
-msgstr ""
+msgstr "whoamitalkingto: Vypísať názov servera"
 
 #: ../src/spacecmd/misc.py:445
 msgid "usage: whoamitalkingto"
-msgstr ""
+msgstr "použitie: whoamitalkingto"
 
 #: ../src/spacecmd/misc.py:453
 msgid "Yourself"
-msgstr ""
+msgstr "Vy sami"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:525
 msgid "** Generating errata cache **"
-msgstr ""
+msgstr "** Generovanie vyrovnávacej pamäte opráv chýb **"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:575
 msgid "** Generating package cache **"
-msgstr ""
+msgstr "** Generovanie vyrovnávacej pamäte balíkov **"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:682
 msgid "** Generating system cache **"
-msgstr ""
+msgstr "** Generovanie systémovej vyrovnávacej pamäte **"
 
 #: ../src/spacecmd/misc.py:717
 #, python-format
 msgid "Could not create directory %s"
-msgstr ""
+msgstr "Nepodarilo sa vytvoriť adresár %s"
 
 #: ../src/spacecmd/misc.py:789
 #, python-format
 msgid "Can't find system ID for %s"
-msgstr ""
+msgstr "Nie je možné nájsť ID systému pre %s"
 
 #: ../src/spacecmd/misc.py:794
 msgid "Duplicate system profile names found!"
-msgstr ""
+msgstr "Boli nájdené duplicitné názvy systémových profilov!"
 
 #: ../src/spacecmd/misc.py:795
 msgid "Please reference systems by ID or resolve the"
-msgstr ""
+msgstr "Prosím, odkážte sa na systémy podľa ID alebo vyriešte"
 
 #: ../src/spacecmd/misc.py:796
 msgid "underlying issue with 'system_delete' or 'system_rename'"
-msgstr ""
+msgstr "základný problém pomocou 'system_delete' alebo 'system_rename'"
 
 #: ../src/spacecmd/misc.py:862
 #, python-format
 msgid "No systems in group %s"
-msgstr ""
+msgstr "Žiadne systémy v skupine %s"
 
 #: ../src/spacecmd/misc.py:876
 #, python-format
 msgid "No systems subscribed to %s"
-msgstr ""
+msgstr "Nie sú prihlásené žiadne systémy k %s"
 
 #: ../src/spacecmd/misc.py:936
 msgid "Is this ok [y/N]:"
-msgstr ""
+msgstr "Je to v poriadku [a/N]:"
 
 #: ../src/spacecmd/org.py:48
 msgid "org_create: Create an organization"
-msgstr ""
+msgstr "org_create: Vytvoriť organizáciu"
 
 #: ../src/spacecmd/org.py:49
 #, python-format
@@ -3532,129 +3665,140 @@ msgid ""
 "  -p PASSWORD\n"
 "  --pam enable PAM authentication"
 msgstr ""
+"použitie: org_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV_ORG\n"
+"  -u POUŽÍVATEĽSKÉ_MENO\n"
+"  -P PREDPONA (%s)\n"
+"  -f KRSTNÉ_MENO\n"
+"  -l PRIEZVISKO\n"
+"  -e EMAIL\n"
+"  -p HESLO\n"
+"  --pam povolí overenie PAM"
 
 #: ../src/spacecmd/org.py:76
 msgid "Organization Name:"
-msgstr ""
+msgstr "Názov organizácie:"
 
 #: ../src/spacecmd/org.py:77 ../src/spacecmd/user.py:74
 msgid "Username:"
-msgstr ""
+msgstr "Používateľské meno:"
 
 #: ../src/spacecmd/org.py:78
 #, python-format
 msgid "Prefix (%s):"
-msgstr ""
+msgstr "Predpona (%s):"
 
 #: ../src/spacecmd/org.py:80 ../src/spacecmd/user.py:75
 msgid "First Name:"
-msgstr ""
+msgstr "Krstné meno:"
 
 #: ../src/spacecmd/org.py:81 ../src/spacecmd/user.py:76
 msgid "Last Name:"
-msgstr ""
+msgstr "Priezvisko:"
 
 #: ../src/spacecmd/org.py:82 ../src/spacecmd/user.py:77
 msgid "Email:"
-msgstr ""
+msgstr "Email:"
 
 #: ../src/spacecmd/org.py:83 ../src/spacecmd/user.py:78
 msgid "PAM Authentication [y/N]:"
-msgstr ""
+msgstr "Overenie PAM [a/N]:"
 
 #: ../src/spacecmd/org.py:90 ../src/spacecmd/user.py:85
 msgid "Password: "
-msgstr ""
+msgstr "Heslo: "
 
 #: ../src/spacecmd/org.py:101
 msgid "An organization name is required"
-msgstr ""
+msgstr "Vyžaduje sa názov organizácie"
 
 #: ../src/spacecmd/org.py:105 ../src/spacecmd/user.py:96
 msgid "A username is required"
-msgstr ""
+msgstr "Vyžaduje sa používateľské meno"
 
 #: ../src/spacecmd/org.py:109 ../src/spacecmd/user.py:100
 msgid "A first name is required"
-msgstr ""
+msgstr "Vyžaduje sa krstné meno"
 
 #: ../src/spacecmd/org.py:113 ../src/spacecmd/user.py:104
 msgid "A last name is required"
-msgstr ""
+msgstr "Vyžaduje sa priezvisko"
 
 #: ../src/spacecmd/org.py:117 ../src/spacecmd/user.py:108
 msgid "An email address is required"
-msgstr ""
+msgstr "Vyžaduje sa emailová adresa"
 
 #: ../src/spacecmd/org.py:121 ../src/spacecmd/user.py:112
 msgid "A password is required"
-msgstr ""
+msgstr "Vyžaduje sa heslo"
 
 #: ../src/spacecmd/org.py:128
 msgid "Dr."
-msgstr ""
+msgstr "Dr."
 
 #: ../src/spacecmd/org.py:130
 msgid "Miss"
-msgstr ""
+msgstr "Slečna"
 
 #: ../src/spacecmd/org.py:149
 msgid "org_delete: Delete an organization"
-msgstr ""
+msgstr "org_delete: Vymazať organizáciu"
 
 #: ../src/spacecmd/org.py:150
 msgid "usage: org_delete NAME"
-msgstr ""
+msgstr "použitie: org_delete NÁZOV"
 
 #: ../src/spacecmd/org.py:169 ../src/spacecmd/org.py:200
 #: ../src/spacecmd/org.py:234 ../src/spacecmd/org.py:270
 #: ../src/spacecmd/org.py:378 ../src/spacecmd/org.py:414
 #, python-format
 msgid "No organisation found for the name %s"
-msgstr ""
+msgstr "Pre názov %s nebola nájdená žiadna organizácia"
 
 #: ../src/spacecmd/org.py:170 ../src/spacecmd/org.py:201
 #: ../src/spacecmd/org.py:235 ../src/spacecmd/org.py:271
 #: ../src/spacecmd/org.py:379 ../src/spacecmd/org.py:415
 msgid "Organisation '{}' was not found"
-msgstr ""
+msgstr "Organizácia '{}' nebola nájdená"
 
 #: ../src/spacecmd/org.py:172
 msgid "Delete this organization [y/N]:"
-msgstr ""
+msgstr "Vymazať túto organizáciu [a/N]:"
 
 #: ../src/spacecmd/org.py:180
 msgid "org_rename: Rename an organization"
-msgstr ""
+msgstr "org_rename: Premenovať organizáciu"
 
 #: ../src/spacecmd/org.py:181
 msgid "usage: org_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: org_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/org.py:212
 msgid "org_addtrust: Add a trust between two organizations"
-msgstr ""
+msgstr "org_addtrust: Pridať dôveru medzi dvoma organizáciami"
 
 #: ../src/spacecmd/org.py:213
 msgid "usage: org_addtrust YOUR_ORG ORG_TO_TRUST"
-msgstr ""
+msgstr "použitie: org_addtrust VAŠA_ORG DÔVERYHODNÁ_ORG"
 
 #: ../src/spacecmd/org.py:238 ../src/spacecmd/org.py:274
 #, python-format
 msgid "No trust organisation found for the name %s"
-msgstr ""
+msgstr "Pre názov %s nebola nájdená žiadna dôveryhodná organizácia"
 
 #: ../src/spacecmd/org.py:239 ../src/spacecmd/org.py:275
 msgid "Organisation '{}' to trust for, was not found"
-msgstr ""
+msgstr "Organizácia '{}', ktorej možno dôverovať, nebola nájdená"
 
 #: ../src/spacecmd/org.py:249
 msgid "org_removetrust: Remove a trust between two organizations"
-msgstr ""
+msgstr "org_removetrust: Odstrániť dôveru medzi dvoma organizáciami"
 
 #: ../src/spacecmd/org.py:250
 msgid "usage: org_removetrust YOUR_ORG TRUSTED_ORG"
-msgstr ""
+msgstr "použitie: org_removetrust VAŠA_ORG DÔVERYHODNÁ_ORG"
 
 #: ../src/spacecmd/org.py:285
 msgid "None"
@@ -3662,108 +3806,108 @@ msgstr "Žiadny"
 
 #: ../src/spacecmd/org.py:287
 msgid "Remove this trust [y/N]:"
-msgstr ""
+msgstr "Odstrániť túto dôveru [a/N]:"
 
 #: ../src/spacecmd/org.py:293
 msgid "org_trustdetails: Show the details of an organizational trust"
-msgstr ""
+msgstr "org_trustdetails: Zobraziť podrobnosti o organizačnej dôvere"
 
 #: ../src/spacecmd/org.py:294
 msgid "usage: org_trustdetails TRUSTED_ORG"
-msgstr ""
+msgstr "použitie: org_trustdetails DÔVERYHODNÁ_ORG"
 
 #: ../src/spacecmd/org.py:313
 #, python-format
 msgid "No trusted organisation found for the name %s"
-msgstr ""
+msgstr "Pre názov %s nebola nájdená žiadna dôveryhodná organizácia"
 
 #: ../src/spacecmd/org.py:314
 msgid "Trusted organisation '{}' was not found"
-msgstr ""
+msgstr "Dôveryhodná organizácia '{}' nebola nájdená"
 
 #: ../src/spacecmd/org.py:321
 #, python-format
 msgid "Trusted Organization:   %s"
-msgstr ""
+msgstr "Dôveryhodná organizácia:   %s"
 
 #: ../src/spacecmd/org.py:322
 #, python-format
 msgid "Trusted Since:          %s"
-msgstr ""
+msgstr "Dôveryhodná od:          %s"
 
 #: ../src/spacecmd/org.py:323
 #, python-format
 msgid "Systems Transferred From:  %i"
-msgstr ""
+msgstr "Systémy prenesené z:  %i"
 
 #: ../src/spacecmd/org.py:324
 #, python-format
 msgid "Systems Transferred To:    %i"
-msgstr ""
+msgstr "Systémy prevedené na:    %i"
 
 #: ../src/spacecmd/org.py:326
 msgid "Channels Consumed"
-msgstr ""
+msgstr "Použité kanály"
 
 #: ../src/spacecmd/org.py:333
 msgid "Channels Provided"
-msgstr ""
+msgstr "Poskytnuté kanály"
 
 #: ../src/spacecmd/org.py:341
 msgid "org_list: List all organizations"
-msgstr ""
+msgstr "org_list: Vypísať zoznam všetkých organizácií"
 
 #: ../src/spacecmd/org.py:342
 msgid "usage: org_list"
-msgstr ""
+msgstr "použitie: org_list"
 
 #: ../src/spacecmd/org.py:359
 msgid "org_listtrusts: List an organization's trusts"
-msgstr ""
+msgstr "org_listtrusts: Vypísať zoznam dôver organizácie"
 
 #: ../src/spacecmd/org.py:360
 msgid "usage: org_listtrusts NAME"
-msgstr ""
+msgstr "použitie: org_listtrusts NÁZOV"
 
 #: ../src/spacecmd/org.py:384 ../src/spacecmd/org.py:385
 msgid "No trust organisation has been found"
-msgstr ""
+msgstr "Nebola nájdená žiadna dôveryhodná organizácia"
 
 #: ../src/spacecmd/org.py:395
 msgid "org_listusers: List an organization's users"
-msgstr ""
+msgstr "org_listusers: Vypísať zoznam používateľov organizácie"
 
 #: ../src/spacecmd/org.py:396
 msgid "usage: org_listusers NAME"
-msgstr ""
+msgstr "použitie: org_listusers NÁZOV"
 
 #: ../src/spacecmd/org.py:426
 msgid "org_details: Show the details of an organization"
-msgstr ""
+msgstr "org_details: Zobraziť podrobnosti o organizácii"
 
 #: ../src/spacecmd/org.py:427
 msgid "usage: org_details NAME"
-msgstr ""
+msgstr "použitie: org_details NÁZOV"
 
 #: ../src/spacecmd/org.py:447
 #, python-format
 msgid "Name:                   %s"
-msgstr ""
+msgstr "Názov:                   %s"
 
 #: ../src/spacecmd/org.py:448
 #, python-format
 msgid "Active Users:           %i"
-msgstr ""
+msgstr "Aktívni používatelia:           %i"
 
 #: ../src/spacecmd/org.py:449
 #, python-format
 msgid "Systems:                %i"
-msgstr ""
+msgstr "Systémy:                %i"
 
 #: ../src/spacecmd/org.py:453 ../src/spacecmd/org.py:455
 #, python-format
 msgid "Trusts:                 %i"
-msgstr ""
+msgstr "Dôvery:                 %i"
 
 #: ../src/spacecmd/org.py:457
 #, python-format
@@ -3778,56 +3922,56 @@ msgstr "Aktivačné kľúče:        %i"
 #: ../src/spacecmd/org.py:459
 #, python-format
 msgid "Kickstart Profiles:     %i"
-msgstr ""
+msgstr "Profily Kickstart:     %i"
 
 #: ../src/spacecmd/org.py:460
 #, python-format
 msgid "Configuration Channels: %i"
-msgstr ""
+msgstr "Konfiguračné kanály: %i"
 
 #: ../src/spacecmd/package.py:48
 msgid "Show the details of a software package"
-msgstr ""
+msgstr "Zobraziť podrobnosti o softvérovom balíku"
 
 #: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:303
 #: ../src/spacecmd/package.py:350 ../src/spacecmd/package.py:392
 msgid "No packages found"
-msgstr ""
+msgstr "Nenašli sa žiadne balíky"
 
 #: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:403
 #, python-format
 msgid "%s is not a valid package"
-msgstr ""
+msgstr "%s nie je platný balík"
 
 #: ../src/spacecmd/package.py:92
 #, fuzzy, python-format
 msgid "Name:      %s"
-msgstr "Názov:        %s"
+msgstr "Názov:       %s"
 
 #: ../src/spacecmd/package.py:93
 #, fuzzy, python-format
 msgid "Version:   %s"
-msgstr "Revízia: %s"
+msgstr "Verzia: %s"
 
 #: ../src/spacecmd/package.py:94
 #, fuzzy, python-format
 msgid "Release:   %s"
-msgstr "Vytvorený:  %s"
+msgstr "Vydanie: %s"
 
 #: ../src/spacecmd/package.py:95
 #, fuzzy, python-format
 msgid "Epoch:     %s"
-msgstr "Cesta:     %s"
+msgstr "Obdobie:   %s"
 
 #: ../src/spacecmd/package.py:96
 #, fuzzy, python-format
 msgid "Arch:      %s"
-msgstr "Cesta:     %s"
+msgstr "Arch:    %s"
 
 #: ../src/spacecmd/package.py:98
 #, fuzzy, python-format
 msgid "File:      %s"
-msgstr "Typ:     %s"
+msgstr "Súbor:    %s"
 
 #: ../src/spacecmd/package.py:99
 #, fuzzy, python-format
@@ -3837,7 +3981,7 @@ msgstr "Cesta:     %s"
 #: ../src/spacecmd/package.py:100
 #, fuzzy, python-format
 msgid "Size:      %s"
-msgstr "Typ:     %s"
+msgstr "Veľkosť:    %s"
 
 #: ../src/spacecmd/package.py:101
 msgid "Yes"
@@ -3856,205 +4000,207 @@ msgstr "Vytvorený:  %s"
 #: ../src/spacecmd/package.py:106
 #, python-format
 msgid "Installed Systems: %i"
-msgstr ""
+msgstr "Inštalované systémy: %i"
 
 #: ../src/spacecmd/package.py:112
 msgid "Available From Channels"
-msgstr ""
+msgstr "Dostupné z kanálov"
 
 #: ../src/spacecmd/package.py:126
 #, python-format
 msgid "usage: %s NAME|QUERY"
-msgstr ""
+msgstr "použitie: %s NÁZOV|DOPYT"
 
 #: ../src/spacecmd/package.py:128
 #, python-format
 msgid "Example: %s kernel"
-msgstr ""
+msgstr "Príklad: %s kernel"
 
 #: ../src/spacecmd/package.py:130
 msgid "Advanced Search:"
-msgstr ""
+msgstr "Pokročilé vyhľadávanie:"
 
 #: ../src/spacecmd/package.py:131
 msgid ""
 "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr ""
+"Dostupné polia: name, epoch, version, release, arch, description, summary"
 
 #: ../src/spacecmd/package.py:132
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
-msgstr ""
+msgstr "Príklad: name:kernel AND version:2.6.18 AND -description:devel"
 
 #: ../src/spacecmd/package.py:181
 msgid "package_remove: Remove a package from Spacewalk"
-msgstr ""
+msgstr "package_remove: Odstrániť balík zo Spacewalk"
 
 #: ../src/spacecmd/package.py:182
 msgid "usage: package_remove PACKAGE ..."
-msgstr ""
+msgstr "použitie: package_remove BALÍK ..."
 
 #: ../src/spacecmd/package.py:202
 msgid "No packages found to remove"
-msgstr ""
+msgstr "Nenašli sa žiadne balíky na odstránenie"
 
 #: ../src/spacecmd/package.py:205 ../src/spacecmd/package.py:262
 #: ../src/spacecmd/softwarechannel.py:1546 ../src/spacecmd/system.py:945
 msgid "Remove these packages [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto balíky [a/N]:"
 
 #: ../src/spacecmd/package.py:206
 msgid "No packages has been removed"
-msgstr ""
+msgstr "Žiadne balíky neboli odstránené"
 
 #: ../src/spacecmd/package.py:218 ../src/spacecmd/package.py:274
 #, python-format
 msgid "Failed to remove package ID %i"
-msgstr ""
+msgstr "Nepodarilo sa odstrániť balík ID %i"
 
 #: ../src/spacecmd/package.py:229
 msgid "package_listorphans: List packages that are not in a channel"
-msgstr ""
+msgstr "package_listorphans: Vypísať zoznam balíkov, ktoré nie sú v kanáli"
 
 #: ../src/spacecmd/package.py:230
 msgid "usage: package_listorphans"
-msgstr ""
+msgstr "použitie: package_listorphans"
 
 #: ../src/spacecmd/package.py:249
 msgid "package_removeorphans: Remove packages that are not in a channel"
-msgstr ""
+msgstr "package_removeorphans: Odstrániť balíky, ktoré nie sú v kanáli"
 
 #: ../src/spacecmd/package.py:250
 msgid "usage: package_removeorphans"
-msgstr ""
+msgstr "použitie: package_removeorphans"
 
 #: ../src/spacecmd/package.py:258
 msgid "No orphaned packages has been found"
-msgstr ""
+msgstr "Neboli nájdené žiadne osirelé balíky"
 
 #: ../src/spacecmd/package.py:259
 msgid "No orphaned packages"
-msgstr ""
+msgstr "Žiadne osirelé balíky"
 
 #: ../src/spacecmd/package.py:263
 msgid "No packages were removed"
-msgstr ""
+msgstr "Neboli odstránené žiadne balíky"
 
 #: ../src/spacecmd/package.py:284
 msgid "List the systems with a package installed"
-msgstr ""
+msgstr "Vypísať zoznam systémov s nainštalovaným balíkom"
 
 #: ../src/spacecmd/package.py:331
 msgid "List the errata that provide this package"
-msgstr ""
+msgstr "Vypísať zoznam opráv chýb, ktoré poskytuje tento balík"
 
 #: ../src/spacecmd/package.py:377
 msgid "List the dependencies for a package"
-msgstr ""
+msgstr "Vypísať zoznam závislostí pre balík"
 
 #: ../src/spacecmd/package.py:408
 #, python-format
 msgid "Package Name: %s"
-msgstr ""
+msgstr "Názov balíka: %s"
 
 #: ../src/spacecmd/package.py:410
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
-msgstr ""
+msgstr "Závislosť: %s Typ: %s Modifikátor: %s"
 
 #: ../src/spacecmd/repo.py:48
 msgid "repo_list: List all available user repos"
 msgstr ""
+"repo_list: Vypísať zoznam všetkých dostupných používateľských repozitárov"
 
 #: ../src/spacecmd/repo.py:49
 msgid "usage: repo_list"
-msgstr ""
+msgstr "použitie: repo_list"
 
 #: ../src/spacecmd/repo.py:66
 msgid "repo_details: Show the details of a user repo"
-msgstr ""
+msgstr "repo_details: Zobraziť podrobnosti o používateľskom repozitári"
 
 #: ../src/spacecmd/repo.py:67
 msgid "usage: repo_details <repo ...>"
-msgstr ""
+msgstr "použitie: repo_details <repozitár ...>"
 
 #: ../src/spacecmd/repo.py:95
 #, python-format
 msgid "Repository Label:                  %s"
-msgstr ""
+msgstr "Označenie repozitára:                  %s"
 
 #: ../src/spacecmd/repo.py:96
 #, python-format
 msgid "Repository URL:                    %s"
-msgstr ""
+msgstr "URL repozitára:                    %s"
 
 #: ../src/spacecmd/repo.py:97
 #, python-format
 msgid "Repository Type:                   %s"
-msgstr ""
+msgstr "Typ repozitára:                   %s"
 
 #: ../src/spacecmd/repo.py:98
 #, python-format
 msgid "Repository SSL Ca Certificate:     %s"
-msgstr ""
+msgstr "Certifikát Ca SSL repozitára:     %s"
 
 #: ../src/spacecmd/repo.py:99
 #, python-format
 msgid "Repository SSL Client Certificate: %s"
-msgstr ""
+msgstr "Certifikát klienta SSL repozitára: %s"
 
 #: ../src/spacecmd/repo.py:100
 #, python-format
 msgid "Repository SSL Client Key:         %s"
-msgstr ""
+msgstr "Kľúč klienta SSL repozitára:         %s"
 
 #: ../src/spacecmd/repo.py:102
 msgid "No repositories found for '{}' query"
-msgstr ""
+msgstr "Pre dopyt '{}' neboli nájdené žiadne repozitáre"
 
 #: ../src/spacecmd/repo.py:111
 msgid "repo_listfilters: Show the filters for a user repo"
-msgstr ""
+msgstr "repo_listfilters: Zobraziť filtre pre používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:112
 msgid "usage: repo_listfilters repo"
-msgstr ""
+msgstr "použitie: repo_listfilters repozitár"
 
 #: ../src/spacecmd/repo.py:133
 msgid "No filters found"
-msgstr ""
+msgstr "Nenašli sa žiadne filtre"
 
 #: ../src/spacecmd/repo.py:142
 msgid "repo_addfilters: Add filters for a user repo"
-msgstr ""
+msgstr "repo_addfilters: Pridať filtre pre používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:143
 msgid "usage: repo_addfilters repo <filter ...>"
-msgstr ""
+msgstr "použitie: repo_addfilters repozitár <filter ...>"
 
 #: ../src/spacecmd/repo.py:167 ../src/spacecmd/repo.py:204
 #: ../src/spacecmd/repo.py:243
 msgid "Each filter must start with + or -"
-msgstr ""
+msgstr "Každý filter musí začínať s + alebo -"
 
 #: ../src/spacecmd/repo.py:181
 msgid "repo_removefilters: Remove filters from a user repo"
-msgstr ""
+msgstr "repo_removefilters: Odstrániť filtre z používateľského repozitára"
 
 #: ../src/spacecmd/repo.py:182
 msgid "usage: repo_removefilters repo <filter ...>"
-msgstr ""
+msgstr "použitie: repo_removefilters repozitár <filter ...>"
 
 #: ../src/spacecmd/repo.py:218
 msgid "repo_setfilters: Set the filters for a user repo"
-msgstr ""
+msgstr "repo_setfilters: Nastaviť filtre pre používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:219
 msgid "usage: repo_setfilters repo <filter ...>"
-msgstr ""
+msgstr "použitie: repo_setfilters repozitár <filter ...>"
 
 #: ../src/spacecmd/repo.py:256
 msgid "repo_clearfilters: Clears the filters for a user repo"
-msgstr ""
+msgstr "repo_clearfilters: Vymazať filtre pre používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:257
 msgid ""
@@ -4064,35 +4210,40 @@ msgid ""
 "  -y, --yes   Confirm without prompt\n"
 "\n"
 msgstr ""
+"použitie: repo_clearfilters repozitár <voľby>\n"
+"\n"
+"voľby:\n"
+"  -y, --yes   Potvrdenie bez výzvy\n"
+"\n"
 
 #: ../src/spacecmd/repo.py:279
 msgid "Remove these filters [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto filtre [a/N]:"
 
 #: ../src/spacecmd/repo.py:288
 msgid "repo_delete: Delete a user repo"
-msgstr ""
+msgstr "repo_delete: Vymazať používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:289
 msgid "usage: repo_delete <repo ...>"
-msgstr ""
+msgstr "použitie: repo_delete <repozitár ...>"
 
 #: ../src/spacecmd/repo.py:308 ../src/spacecmd/softwarechannel.py:578
 msgid "Repos"
-msgstr ""
+msgstr "Repozitáre"
 
 #: ../src/spacecmd/repo.py:312
 msgid "Delete these repos [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto repozitáre [a/N]:"
 
 #: ../src/spacecmd/repo.py:317
 #, python-format
 msgid "Failed to remove repo %s"
-msgstr ""
+msgstr "Nepodarilo sa odstrániť repozitár %s"
 
 #: ../src/spacecmd/repo.py:325
 msgid "repo_create: Create a user repository"
-msgstr ""
+msgstr "repo_create: Vytvoriť používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:326
 msgid ""
@@ -4107,55 +4258,65 @@ msgid ""
 "  --cert       SSL Client certificate (not required)\n"
 "  --key        SSL Client key (not required)"
 msgstr ""
+"použitie: repo_create <voľby>)\n"
+"\n"
+"voľby:\n"
+"  -n, --name   názov repozitára\n"
+"  -u, --url    url repozitára\n"
+"  -t, --type   typ repozitára (predvolený je yum)\n"
+"\n"
+"  --ca         Certifikát CA SSL (nevyžaduje sa)\n"
+"  --cert       Certifikát klienta SSL (nevyžaduje sa)\n"
+"  --key        Kľúč klienta SSL (nevyžaduje sa)"
 
 #: ../src/spacecmd/repo.py:351
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../src/spacecmd/repo.py:352
 msgid "Type:"
-msgstr ""
+msgstr "Typ:"
 
 #: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:463
 msgid "SSL CA cert:"
-msgstr ""
+msgstr "Certifikát CA SSL:"
 
 #: ../src/spacecmd/repo.py:354 ../src/spacecmd/repo.py:464
 msgid "SSL Client cert:"
-msgstr ""
+msgstr "Certifikát klienta SSL:"
 
 #: ../src/spacecmd/repo.py:355 ../src/spacecmd/repo.py:465
 msgid "SSL Client key:"
-msgstr ""
+msgstr "Kľúč klienta SSL:"
 
 #: ../src/spacecmd/repo.py:362
 msgid "A URL is required"
-msgstr ""
+msgstr "Vyžaduje sa URL"
 
 #: ../src/spacecmd/repo.py:382
 msgid "repo_rename: Rename a user repository"
-msgstr ""
+msgstr "repo_rename: Premenovať používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:383
 msgid "usage: repo_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: repo_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/repo.py:405
 #, python-format
 msgid "Could not find repo %s"
-msgstr ""
+msgstr "Nepodarilo sa nájsť repozitár %s"
 
 #: ../src/spacecmd/repo.py:418
 msgid "repo_updateurl: Change the URL of a user repository"
-msgstr ""
+msgstr "repo_updateurl: Zmeniť URL používateľského repozitára"
 
 #: ../src/spacecmd/repo.py:419
 msgid "usage: repo_updateurl <repo> <url>"
-msgstr ""
+msgstr "použitie: repo_updateurl <repozitár> <url>"
 
 #: ../src/spacecmd/repo.py:444
 msgid "repo_updatessl: Change the SSL certificates of a user repository"
-msgstr ""
+msgstr "repo_updatessl: Zmeniť certifikáty SSL používateľského repozitára"
 
 #: ../src/spacecmd/repo.py:445
 msgid ""
@@ -4165,59 +4326,70 @@ msgid ""
 "  --cert       SSL Client certificate (not required)\n"
 "  --key        SSL Client key (not required)"
 msgstr ""
+"použitie: repo_updatessl <voľby>)\n"
+"voľby:\n"
+"  --ca         Certifikát CA SSL (nevyžaduje sa)\n"
+"  --cert       Certifikát klienta SSL (nevyžaduje sa)\n"
+"  --key        Kľúč klienta SSL (nevyžaduje sa)"
 
 #: ../src/spacecmd/report.py:44
 msgid "report_inactivesystems: List all inactive systems"
-msgstr ""
+msgstr "report_inactivesystems: Vypísať zoznam všetkých neaktívnych systémov"
 
 #: ../src/spacecmd/report.py:45
 msgid "usage: report_inactivesystems [DAYS]"
-msgstr ""
+msgstr "použitie: report_inactivesystems [DNI]"
 
 #: ../src/spacecmd/report.py:85
 msgid "report_outofdatesystems: List all out-of-date systems"
-msgstr ""
+msgstr "report_outofdatesystems: Vypísať zoznam všetkých zastaraných systémov"
 
 #: ../src/spacecmd/report.py:86
 msgid "usage: report_outofdatesystems"
-msgstr ""
+msgstr "použitie: report_outofdatesystems"
 
 #: ../src/spacecmd/report.py:113
 msgid "report_ungroupedsystems: List all ungrouped systems"
 msgstr ""
+"report_ungroupedsystems: Vypísať zoznam všetkých neskupinových systémov"
 
 #: ../src/spacecmd/report.py:114
 msgid "usage: report_ungroupedsystems"
-msgstr ""
+msgstr "použitie: report_ungroupedsystems"
 
 #: ../src/spacecmd/report.py:131
 msgid "report_errata: List all errata and how many systems they affect"
 msgstr ""
+"report_errata: Vypísať všetkých opráv chýb a počtu systémov, ktorých sa "
+"týkajú"
 
 #: ../src/spacecmd/report.py:132
 msgid "usage: report_errata [ERRATA|search:XXX ...]"
-msgstr ""
+msgstr "použitie: report_errata [OPRAVY_CHÝB|search:XXX ...]"
 
 #: ../src/spacecmd/report.py:144
 msgid "All errata requested - this may take a few minutes, please be patient!"
 msgstr ""
+"Požadované sú všetky opravy chýb - môže to trvať niekoľko minút, buďte, "
+"prosím, trpezliví!"
 
 #: ../src/spacecmd/report.py:167
 #, python-format
 msgid "%s  # Systems"
-msgstr ""
+msgstr "%s  # Systémy"
 
 #: ../src/spacecmd/report.py:174
 msgid "No errata found for '{}'"
-msgstr ""
+msgstr "Nenašli sa žiadne opravy chýb pre '{}'"
 
 #: ../src/spacecmd/report.py:181
 msgid "report_ipaddresses: List the hostname and IP of each system"
 msgstr ""
+"report_ipaddresses: Vypísať zoznam názvov hostiteľov a IP každého systému"
 
 #: ../src/spacecmd/report.py:182
 msgid "usage: report_ipaddresses [<SYSTEMS>]"
-msgstr ""
+msgstr "použitie: report_ipaddresses [<SYSTÉMY>]"
 
 #: ../src/spacecmd/report.py:202 ../src/spacecmd/report.py:266
 #: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:208
@@ -4243,20 +4415,20 @@ msgstr ""
 #: ../src/spacecmd/system.py:4126 ../src/spacecmd/system.py:4184
 #: ../src/spacecmd/system.py:4242
 msgid "No systems selected"
-msgstr ""
+msgstr "Žiadne vybrané systémy"
 
 #: ../src/spacecmd/report.py:245
 msgid "report_kernels: List the running kernel of each system"
-msgstr ""
+msgstr "report_kernels: Vypísať zoznam bežiacich jadier každého systému"
 
 #: ../src/spacecmd/report.py:246
 msgid "usage: report_kernels [<SYSTEMS>]"
-msgstr ""
+msgstr "použitie: report_kernels [<SYSTÉMY>]"
 
 #: ../src/spacecmd/report.py:283
 #, python-format
 msgid "%s  Kernel"
-msgstr ""
+msgstr "%s  Jadro"
 
 #: ../src/spacecmd/report.py:283
 msgid "System"
@@ -4264,26 +4436,28 @@ msgstr "Systém"
 
 #: ../src/spacecmd/report.py:297
 msgid "report_duplicates: List duplicate system profiles"
-msgstr ""
+msgstr "report_duplicates: Vypísať zoznam duplicitných systémových profilov"
 
 #: ../src/spacecmd/report.py:298
 msgid "usage: report_duplicates"
-msgstr ""
+msgstr "použitie: report_duplicates"
 
 #: ../src/spacecmd/report.py:320 ../src/spacecmd/report.py:342
 #: ../src/spacecmd/report.py:360 ../src/spacecmd/report.py:378
 msgid "System ID   Last Checkin"
-msgstr ""
+msgstr "ID systému   Posledné prihlásenie"
 
 #: ../src/spacecmd/scap.py:44
 msgid ""
 "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
 "systems"
 msgstr ""
+"scap_listxccdfscans: Vrátiť zoznam dokončených skenovaní OpenSCAP pre dané "
+"systémy"
 
 #: ../src/spacecmd/scap.py:45
 msgid "usage: scap_listxccdfscans <SYSTEMS>"
-msgstr ""
+msgstr "použitie: scap_listxccdfscans <SYSTÉMY>"
 
 #: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:609
 #: ../src/spacecmd/system.py:1221 ../src/spacecmd/system.py:1273
@@ -4294,328 +4468,337 @@ msgstr ""
 #: ../src/spacecmd/system.py:3313
 #, python-format
 msgid "System: %s"
-msgstr ""
+msgstr "Systém: %s"
 
 #: ../src/spacecmd/scap.py:89
 #, python-format
 msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
-msgstr ""
+msgstr "XID: %d Profil: %s Cesta: (%s) Dokončené: %s"
 
 #: ../src/spacecmd/scap.py:97
 msgid ""
 "scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
 "OpenSCAP XCCDF scan"
 msgstr ""
+"scap_getxccdfscanruleresults: Vrátiť úplný zoznam RuleResults pre dané "
+"skenovanie OpenSCAP XCCDF"
 
 #: ../src/spacecmd/scap.py:98
 msgid "usage: scap_getxccdfscanruleresults <XID>"
-msgstr ""
+msgstr "použitie: scap_getxccdfscanruleresults <XID>"
 
 #: ../src/spacecmd/scap.py:118 ../src/spacecmd/scap.py:154
 #, python-format
 msgid "XID: %s"
-msgstr ""
+msgstr "XID: %s"
 
 #: ../src/spacecmd/scap.py:125
 #, python-format
 msgid "IDref: %s Result: %s Idents: (%s)"
-msgstr ""
+msgstr "IDref: %s Výsledok: %s Identifikátory: (%s)"
 
 #: ../src/spacecmd/scap.py:133
 msgid "scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan"
 msgstr ""
+"scap_getxccdfscandetails: Získať podrobnosti o danom skenovaní OpenSCAP XCCDF"
 
 #: ../src/spacecmd/scap.py:134
 msgid "usage: scap_getxccdfscandetails <XID>"
-msgstr ""
+msgstr "použitie: scap_getxccdfscandetails <XID>"
 
 #: ../src/spacecmd/scap.py:160
 msgid "XID:"
-msgstr ""
+msgstr "XID:"
 
 #: ../src/spacecmd/scap.py:160
 msgid "SID:"
-msgstr ""
+msgstr "SID:"
 
 #: ../src/spacecmd/scap.py:160
 msgid "Action_ID:"
-msgstr ""
+msgstr "ID_Akcie:"
 
 #: ../src/spacecmd/scap.py:162
 msgid "OSCAP_Parameters:"
-msgstr ""
+msgstr "Parametre_OSCAP:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Test_Result:"
-msgstr ""
+msgstr "Výsledok_Testu:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Benchmark:"
-msgstr ""
+msgstr "Porovnávací_Test:"
 
 #: ../src/spacecmd/scap.py:164
 msgid "Benchmark_Version:"
-msgstr ""
+msgstr "Verzia_Porovnávacieho_Testu:"
 
 #: ../src/spacecmd/scap.py:165
 msgid "Profile:"
-msgstr ""
+msgstr "Profil:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Profile_Title:"
-msgstr ""
+msgstr "Názov_Profilu:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Start_Time:"
-msgstr ""
+msgstr "Čas_Spustenia:"
 
 #: ../src/spacecmd/scap.py:167
 msgid "End_Time:"
-msgstr ""
+msgstr "Čas_Skončenia:"
 
 #: ../src/spacecmd/scap.py:168
 msgid "Errors:"
-msgstr ""
+msgstr "Chyby:"
 
 #: ../src/spacecmd/scap.py:176
 msgid "scap_schedulexccdfscan: Schedule Scap XCCDF scan"
-msgstr ""
+msgstr "scap_schedulexccdfscan: Naplánovať skenovanie Scap XCCDF"
 
 #: ../src/spacecmd/scap.py:177
 msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 msgstr ""
+"použitie: scap_schedulexccdfscan CESTA K_SÚBORU_XCCDF VOĽBY_XCCDF SYSTÉMY"
 
 #: ../src/spacecmd/scap.py:178
 msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
-msgstr ""
+msgstr "       scap_schedulexccdfscan ssm CESTA K_SÚBORU_XCCDF VOĽBY_XCCDF"
 
 #: ../src/spacecmd/scap.py:183
 msgid ""
 "\n"
 "To use systems in the ssm, pass the \"ssm\" keyword in front. Example:"
 msgstr ""
+"\n"
+"Ak chcete použiť systémy v ssm, zadajte dopredu kľúčové slovo \"ssm\". "
+"Príklad:"
 
 #: ../src/spacecmd/schedule.py:89
 msgid "ID      Date                 C    F    P     Action"
-msgstr ""
+msgstr "ID      Dátum                 C    F    P     Akcia"
 
 #: ../src/spacecmd/schedule.py:135
 msgid "schedule_cancel: Cancel scheduled actions"
-msgstr ""
+msgstr "schedule_cancel: Zrušiť naplánované akcie"
 
 #: ../src/spacecmd/schedule.py:136
 msgid "usage: schedule_cancel ID|* ..."
-msgstr ""
+msgstr "použitie: schedule_cancel ID|* ..."
 
 #: ../src/spacecmd/schedule.py:158
 msgid "Cancel all pending actions [y/N]:"
-msgstr ""
+msgstr "Zrušiť všetky čakajúce akcie [a/N]:"
 
 #: ../src/spacecmd/schedule.py:159
 msgid "All pending actions left untouched"
-msgstr ""
+msgstr "Všetky čakajúce akcie zostali nedotknuté"
 
 #: ../src/spacecmd/schedule.py:174 ../src/spacecmd/schedule.py:235
 #, python-format
 msgid "\"%s\" is not a valid ID"
-msgstr ""
+msgstr "\"%s\" nie je platné ID"
 
 #: ../src/spacecmd/schedule.py:180
 #, python-format
 msgid "Canceled action: %i"
-msgstr ""
+msgstr "Zrušená akcia: %i"
 
 #: ../src/spacecmd/schedule.py:183
 #, python-format
 msgid "Failed action: %s"
-msgstr ""
+msgstr "Neúspešná akcia: %s"
 
 #: ../src/spacecmd/schedule.py:185
 #, python-format
 msgid "Canceled %i action(s)"
-msgstr ""
+msgstr "Zrušená %i akcia(e)"
 
 #: ../src/spacecmd/schedule.py:193
 msgid "schedule_reschedule: Reschedule failed actions"
-msgstr ""
+msgstr "schedule_reschedule: Znova naplánovať neúspešné akcie"
 
 #: ../src/spacecmd/schedule.py:194
 msgid "usage: schedule_reschedule ID|* ..."
-msgstr ""
+msgstr "použitie: schedule_reschedule ID|* ..."
 
 #: ../src/spacecmd/schedule.py:221
 msgid "Reschedule all failed actions [y/N]:"
-msgstr ""
+msgstr "Znova naplánovať všetky neúspešné akcie [a/N]:"
 
 #: ../src/spacecmd/schedule.py:233
 #, python-format
 msgid "\"%i\" is not a failed action"
-msgstr ""
+msgstr "\"%i\" nie je neúspešná akcia"
 
 #: ../src/spacecmd/schedule.py:239
 msgid "No failed actions to reschedule"
-msgstr ""
+msgstr "Žiadne neúspešné akcie na opätovné naplánovanie"
 
 #: ../src/spacecmd/schedule.py:243
 #, python-format
 msgid "Rescheduled %i action(s)"
-msgstr ""
+msgstr "Znova naplánovaná %i akcia(e)"
 
 #: ../src/spacecmd/schedule.py:251
 msgid "schedule_details: Show the details of a scheduled action"
-msgstr ""
+msgstr "schedule_details: Zobraziť podrobnosti o naplánovanej akcii"
 
 #: ../src/spacecmd/schedule.py:252
 msgid "usage: schedule_details ID"
-msgstr ""
+msgstr "použitie: schedule_details ID"
 
 #: ../src/spacecmd/schedule.py:269
 #, python-format
 msgid "The ID \"%s\" is invalid"
-msgstr ""
+msgstr "ID \"%s\" je neplatné"
 
 #: ../src/spacecmd/schedule.py:278
 #, python-format
 msgid "ID:        %i"
-msgstr ""
+msgstr "ID:        %i"
 
 #: ../src/spacecmd/schedule.py:279
 #, python-format
 msgid "Action:    %s"
-msgstr ""
+msgstr "Akcia:    %s"
 
 #: ../src/spacecmd/schedule.py:280
 #, python-format
 msgid "User:      %s"
-msgstr ""
+msgstr "Používateľ:      %s"
 
 #: ../src/spacecmd/schedule.py:281
 #, python-format
 msgid "Date:      %s"
-msgstr ""
+msgstr "Dátum:      %s"
 
 #: ../src/spacecmd/schedule.py:283 ../src/spacecmd/schedule.py:380
 #: ../src/spacecmd/system.py:3263
 #, python-format
 msgid "Completed: %s"
-msgstr ""
+msgstr "Dokončené: %s"
 
 #: ../src/spacecmd/schedule.py:284
 #, python-format
 msgid "Failed:    %s"
-msgstr ""
+msgstr "Neúspešné:    %s"
 
 #: ../src/spacecmd/schedule.py:285
 #, python-format
 msgid "Pending:   %s"
-msgstr ""
+msgstr "Čakajúce:   %s"
 
 #: ../src/spacecmd/schedule.py:289
 msgid "Completed Systems"
-msgstr ""
+msgstr "Dokončené systémy"
 
 #: ../src/spacecmd/schedule.py:296
 msgid "Failed Systems"
-msgstr ""
+msgstr "Neúspešné systémy"
 
 #: ../src/spacecmd/schedule.py:303
 msgid "Pending Systems"
-msgstr ""
+msgstr "Čakajúce systémy"
 
 #: ../src/spacecmd/schedule.py:308
 #, python-format
 msgid "No action found with the ID \"%s\""
-msgstr ""
+msgstr "Nenájdená žiadna akcia s ID \"%s\""
 
 #: ../src/spacecmd/schedule.py:317
 msgid "schedule_getoutput: Show the output from an action"
-msgstr ""
+msgstr "schedule_getoutput: Ukázať výstup z akcie"
 
 #: ../src/spacecmd/schedule.py:318
 msgid "usage: schedule_getoutput ID"
-msgstr ""
+msgstr "použitie: schedule_getoutput ID"
 
 #: ../src/spacecmd/schedule.py:333
 #, python-format
 msgid "\"%s\" is not a valid action ID"
-msgstr ""
+msgstr "\"%s\" nie je platné ID akcie"
 
 #: ../src/spacecmd/schedule.py:355
 #, python-format
 msgid "System:      %s"
-msgstr ""
+msgstr "Systém:      %s"
 
 #: ../src/spacecmd/schedule.py:356
 #, python-format
 msgid "Start Time:  %s"
-msgstr ""
+msgstr "Čas spustenia:  %s"
 
 #: ../src/spacecmd/schedule.py:357
 #, python-format
 msgid "Stop Time:   %s"
-msgstr ""
+msgstr "Čas zastavenia:   %s"
 
 #: ../src/spacecmd/schedule.py:358
 #, python-format
 msgid "Return Code: %i"
-msgstr ""
+msgstr "Návratový kód: %i"
 
 #: ../src/spacecmd/schedule.py:360 ../src/spacecmd/schedule.py:382
 msgid "Output"
-msgstr ""
+msgstr "Výstup"
 
 #: ../src/spacecmd/schedule.py:379
 #, python-format
 msgid "System:    %s"
-msgstr ""
+msgstr "Systém:    %s"
 
 #: ../src/spacecmd/schedule.py:395
 msgid "schedule_listpending: List pending actions"
-msgstr ""
+msgstr "schedule_listpending: Vypísať zoznam čakajúcich akcií"
 
 #: ../src/spacecmd/schedule.py:396
 msgid "usage: schedule_listpending [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listpending [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:408
 msgid "schedule_listcompleted: List completed actions"
-msgstr ""
+msgstr "schedule_listcompleted: Vypísať zoznam dokončených akcií"
 
 #: ../src/spacecmd/schedule.py:409
 msgid "usage: schedule_listcompleted [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listcompleted [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:421
 msgid "schedule_listfailed: List failed actions"
-msgstr ""
+msgstr "schedule_listfailed: Vypísať zoznam neúspešných akcií"
 
 #: ../src/spacecmd/schedule.py:422
 msgid "usage: schedule_listfailed [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listfailed [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:434
 msgid "schedule_listarchived: List archived actions"
-msgstr ""
+msgstr "schedule_listarchived: Vypísať zoznam archivovaných akcií"
 
 #: ../src/spacecmd/schedule.py:435
 msgid "usage: schedule_listarchived [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listarchived [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:447
 msgid "schedule_list: List all actions"
-msgstr ""
+msgstr "schedule_list: Vypísať zoznam všetkých akcií"
 
 #: ../src/spacecmd/schedule.py:448
 msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_list [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:459
+#, fuzzy
 msgid "schedule_deletearchived: Delete all archived actions"
-msgstr ""
+msgstr "schedule_listarchived: Vypísať zoznam archivovaných akcií"
 
 #: ../src/spacecmd/schedule.py:460
+#, fuzzy
 msgid "usage: schedule_deletearchived"
-msgstr ""
+msgstr "použitie: schedule_details ID"
 
 #: ../src/spacecmd/schedule.py:477
 msgid "Do you want to delete all ({}) archived actions? [y/N]"
@@ -4624,61 +4807,61 @@ msgstr ""
 #: ../src/spacecmd/schedule.py:500
 #, fuzzy
 msgid "No archived actions found."
-msgstr "Nenašli sa žiadne konfiguračné kanály"
+msgstr "Žiadne neúspešné akcie na opätovné naplánovanie"
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
-msgstr ""
+msgstr "Nebolo možné prečítať súbor histórie"
 
 #. pylint: disable=W0702
 #: ../src/spacecmd/shell.py:125
 msgid "Exception occurred: {}"
-msgstr ""
+msgstr "Vyskytla sa výnimka: {}"
 
 #: ../src/spacecmd/shell.py:189 ../src/spacecmd/shell.py:228
 #, python-format
 msgid "%s: event not found"
-msgstr ""
+msgstr "%s: udalosť sa nenašla"
 
 #: ../src/spacecmd/snippet.py:43
 msgid "snippet_list: List the available Kickstart snippets"
-msgstr ""
+msgstr "snippet_list: Vypísať yoznam dostupných úryvkov Kickstart"
 
 #: ../src/spacecmd/snippet.py:44
 msgid "usage: snippet_list"
-msgstr ""
+msgstr "použitie: snippet_list"
 
 #: ../src/spacecmd/snippet.py:61
 msgid "snippet_details: Show the contents of a snippet"
-msgstr ""
+msgstr "snippet_details: Zobraziť obsah úryvku"
 
 #: ../src/spacecmd/snippet.py:62
 msgid "usage: snippet_details SNIPPET ..."
-msgstr ""
+msgstr "použitie: snippet_details ÚRYVOK ..."
 
 #: ../src/spacecmd/snippet.py:91
 #, python-format
 msgid "%s is not a valid snippet"
-msgstr ""
+msgstr "%s nie je platný úryvok"
 
 #: ../src/spacecmd/snippet.py:98
 #, python-format
 msgid "Name:   %s"
-msgstr ""
+msgstr "Názov:   %s"
 
 #: ../src/spacecmd/snippet.py:99
 #, python-format
 msgid "Macro:  %s"
-msgstr ""
+msgstr "Makro:  %s"
 
 #: ../src/spacecmd/snippet.py:100
 #, python-format
 msgid "File:   %s"
-msgstr ""
+msgstr "Súbor:   %s"
 
 #: ../src/spacecmd/snippet.py:111
 msgid "snippet_create: Create a Kickstart snippet"
-msgstr ""
+msgstr "snippet_create: Vytvoriť úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:112
 msgid ""
@@ -4688,43 +4871,49 @@ msgid ""
 "  -n NAME\n"
 "  -f FILE"
 msgstr ""
+"použitie: snippet_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -f SÚBOR"
 
 #: ../src/spacecmd/snippet.py:150
 msgid "A name is required for the snippet"
-msgstr ""
+msgstr "Pre úryvok sa vyžaduje názov"
 
 #: ../src/spacecmd/snippet.py:154
 msgid "A file is required"
-msgstr ""
+msgstr "Vyžaduje sa súbor"
 
 #: ../src/spacecmd/snippet.py:161
 #, python-format
 msgid "Snippet: %s"
-msgstr ""
+msgstr "Úryvok: %s"
 
 #: ../src/spacecmd/snippet.py:177
 msgid "snippet_update: Update a Kickstart snippet"
-msgstr ""
+msgstr "snippet_update: Aktualizovať úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:178
 msgid "usage: snippet_update NAME"
-msgstr ""
+msgstr "použitie: snippet_update NÁZOV"
 
 #: ../src/spacecmd/snippet.py:200
 msgid "snippet_delete: Delete a Kickstart snippet"
-msgstr ""
+msgstr "snippet_delete: Vymazať úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:201
 msgid "usage: snippet_delete NAME"
-msgstr ""
+msgstr "použitie: snippet_delete NÁZOV"
 
 #: ../src/spacecmd/snippet.py:219
 msgid "Remove this snippet [y/N]:"
-msgstr ""
+msgstr "Odstrániť tento úryvok [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:58
 msgid "softwarechannel_list: List all available software channels"
 msgstr ""
+"softwarechannel_list: Vypísať zoznam všetkých dostupných softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:59
 msgid ""
@@ -4733,14 +4922,22 @@ msgid ""
 "  -v verbose (display label and summary)\n"
 "  -t tree view (pretty-print(child-channels))\n"
 msgstr ""
+"použitie: softwarechannel_list [voľby]')\n"
+"voľby:\n"
+"  -v podrobný (zobrazenie označenia a súhrnu)\n"
+"  -t stromové zobrazenie (pekná tlač (kanály potomkov))\n"
 
 #: ../src/spacecmd/softwarechannel.py:110
 msgid "softwarechannel_listmanageablechannels: List all software channels"
 msgstr ""
+"softwarechannel_listmanageablechannels: Vypísať zoznam všetkých softvérových "
+"kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:111
 msgid "                                        manageable by current user"
 msgstr ""
+"                                        spravovateľných aktuálnym "
+"používateľom"
 
 #: ../src/spacecmd/softwarechannel.py:112
 msgid ""
@@ -4748,10 +4945,15 @@ msgid ""
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
+"použitie: softwarechannel_listmanageablechannels [voľby]\n"
+"voľby:\n"
+"  -v podrobný (zobrazenie označenia a súhrnu)"
 
 #: ../src/spacecmd/softwarechannel.py:144
 msgid "softwarechannel_listbasechannels: List all base software channels"
 msgstr ""
+"softwarechannel_listbasechannels: Vypísať zoznam všetkých základných "
+"softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:145
 msgid ""
@@ -4759,81 +4961,95 @@ msgid ""
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
+"použitie: softwarechannel_listbasechannels [voľby])\n"
+"voľby:\n"
+"  -v podrobný (zobrazenie označenia a súhrnu)"
 
 #: ../src/spacecmd/softwarechannel.py:173
 msgid "softwarechannel_listchildchannels: List child software channels"
 msgstr ""
+"softwarechannel_listchildchannels: Vypísať zoznam všetkých softvérových "
+"kanálov potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:174
 #: ../src/spacecmd/softwarechannel.py:2701
 msgid "usage:"
-msgstr ""
+msgstr "použitie:"
 
 #: ../src/spacecmd/softwarechannel.py:175
 msgid "softwarechannel_listchildchannels [options]"
-msgstr ""
+msgstr "softwarechannel_listchildchannels [voľby]"
 
 #: ../src/spacecmd/softwarechannel.py:176
 msgid "softwarechannel_listchildchannels : List all child channels"
 msgstr ""
+"softwarechannel_listchildchannels : Vypísať zoznam všetkých kanálov potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:177
 msgid ""
 "softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
 "channel"
 msgstr ""
+"softwarechannel_listchildchannels KANÁL : Vypísať zoznam potomkov pre "
+"konkrétny základný kanál"
 
 #: ../src/spacecmd/softwarechannel.py:179
 msgid ""
 "options:\n"
 " -v verbose (display label and summary)"
 msgstr ""
+"voľby:\n"
+" -v podrobný (zobrazenie označenia a súhrnu)"
 
 #: ../src/spacecmd/softwarechannel.py:203
 msgid "softwarechannel_listsystems: List all systems subscribed to"
 msgstr ""
+"softwarechannel_listsystems: Vypísať zoznam všetkých systémov prihlásených k"
 
 #: ../src/spacecmd/softwarechannel.py:204
 msgid "                             a software channel"
-msgstr ""
+msgstr "                             softvérovému kanálu"
 
 #: ../src/spacecmd/softwarechannel.py:205
 msgid "usage: softwarechannel_listsystems CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listsystems KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:231
 msgid "softwarechannel_listpackages: List the most recent packages"
-msgstr ""
+msgstr "softwarechannel_listpackages: Vypísať zoznam najnovších balíkov"
 
 #: ../src/spacecmd/softwarechannel.py:232
 msgid "                              available from a software channel"
-msgstr ""
+msgstr "                              dostupných zo softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:233
 msgid "usage: softwarechannel_listpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:264
 msgid "softwarechannel_listallpackages: List all packages in a channel"
 msgstr ""
+"softwarechannel_listallpackages: Vypísať zoznam všetkých balíkov v kanáli"
 
 #: ../src/spacecmd/softwarechannel.py:265
 msgid "usage: softwarechannel_listallpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listallpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:316
 msgid ""
 "softwarechannel_listlatestpackages: List the newest version of all packages "
 "in a channel"
 msgstr ""
+"softwarechannel_listlatestpackages: Vypísať zoznam najnovších verzií "
+"všetkých balíkov v kanáli"
 
 #: ../src/spacecmd/softwarechannel.py:317
 msgid "usage: softwarechannel_listlatestpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listlatestpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:348
 msgid "softwarechannel_setdetails: Modify details of a software channel"
-msgstr ""
+msgstr "softwarechannel_setdetails: Upraviť podrobnosti softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:349
 #, python-format
@@ -4852,139 +5068,152 @@ msgid ""
 "  -i GPG_ID\n"
 "  -f GPG_FINGERPRINT"
 msgstr ""
+"použitie: softwarechannel_setdetails [voľby] <KANÁL ...>)\n"
+"\n"
+"voľby, z ktorých aspoň jedna musí byť zadaná:\n"
+"  -n NÁZOV\n"
+"  -d POPIS\n"
+"  -s SÚHRN\n"
+"  -c KONTROLNÝ_SÚČET %s\n"
+"  -m MENO_SPRÁVCU\n"
+"  -e EMAIL_SPRÁVCU\n"
+"  -p TELEFÓN_SPRÁVCU\n"
+"  -u URL_GPG\n"
+"  -i ID_GPG\n"
+"  -f ODTLAČOK_GPG"
 
 #: ../src/spacecmd/softwarechannel.py:411
 msgid "At least one attribute to set must be given"
-msgstr ""
+msgstr "Musí byť zadaný aspoň jeden atribút na nastavenie"
 
 #: ../src/spacecmd/softwarechannel.py:417
 msgid "No channels matching that label"
-msgstr ""
+msgstr "Žiadne kanály zodpovedajúce tomuto označeniu"
 
 #: ../src/spacecmd/softwarechannel.py:429
 msgid "Setting same name for more than one channel will fail"
-msgstr ""
+msgstr "Nastavenie rovnakého názvu pre viac ako jeden kanál zlyhá"
 
 #: ../src/spacecmd/softwarechannel.py:437
 #, python-format
 msgid "Name \"%s\" already in use by channel %s"
-msgstr ""
+msgstr "Názov \"%s\" už používa kanál %s"
 
 #. get confirmation
 #: ../src/spacecmd/softwarechannel.py:442
 msgid "Setting following attributes..."
-msgstr ""
+msgstr "Nastavovanie nasledujúcich atribútov..."
 
 #: ../src/spacecmd/softwarechannel.py:445
 #, python-format
 msgid "Name:             %s"
-msgstr ""
+msgstr "Názov:             %s"
 
 #: ../src/spacecmd/softwarechannel.py:447
 #, python-format
 msgid "Summary:          %s"
-msgstr ""
+msgstr "Súhrn:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:449
 #, python-format
 msgid "Description:      %s"
-msgstr ""
+msgstr "Popis:      %s"
 
 #: ../src/spacecmd/softwarechannel.py:451
 #, python-format
 msgid "Checksum:         %s"
-msgstr ""
+msgstr "Kontrolný súčet:         %s"
 
 #: ../src/spacecmd/softwarechannel.py:453
 #, python-format
 msgid "Maintainer name:  %s"
-msgstr ""
+msgstr "Meno správcu:  %s"
 
 #: ../src/spacecmd/softwarechannel.py:455
 #, python-format
 msgid "Maintainer email: %s"
-msgstr ""
+msgstr "Email správcu: %s"
 
 #: ../src/spacecmd/softwarechannel.py:457
 #, python-format
 msgid "Maintainer phone: %s"
-msgstr ""
+msgstr "Telefón správcu: %s"
 
 #: ../src/spacecmd/softwarechannel.py:459
 #, python-format
 msgid "GPG Key:          %s"
-msgstr ""
+msgstr "Kľúč GPG:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:461
 #, python-format
 msgid "GPG Fingerprint:  %s"
-msgstr ""
+msgstr "Odtlačok GPG:  %s"
 
 #: ../src/spacecmd/softwarechannel.py:463
 #, python-format
 msgid "GPG URL:          %s"
-msgstr ""
+msgstr "URL GPG:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:465
 msgid "... for the following channels:"
-msgstr ""
+msgstr "... pre nasledujúce kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:468
 msgid "Apply? [y/N]:"
-msgstr ""
+msgstr "Použiť? [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:480
 #, python-format
 msgid "Could not get details for %s"
-msgstr ""
+msgstr "Nepodarilo sa získať podrobnosti o %s"
 
 #: ../src/spacecmd/softwarechannel.py:492
 #, python-format
 msgid "Error while setting details for %s"
-msgstr ""
+msgstr "Chyba pri nastavovaní podrobností pre %s"
 
 #: ../src/spacecmd/softwarechannel.py:495
 #, python-format
 msgid "Channels changed: %d"
-msgstr ""
+msgstr "Zmenené kanály: %d"
 
 #: ../src/spacecmd/softwarechannel.py:503
 msgid "softwarechannel_details: Show the details of a software channel"
-msgstr ""
+msgstr "softwarechannel_details: Zobraziť podrobnosti o softvérovom kanáli"
 
 #: ../src/spacecmd/softwarechannel.py:504
 msgid "usage: softwarechannel_details <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_details <KANÁL ...>"
 
 #: ../src/spacecmd/softwarechannel.py:544
 #, python-format
 msgid "Label:              %s"
-msgstr ""
+msgstr "Označenie:              %s"
 
 #: ../src/spacecmd/softwarechannel.py:545
 #, python-format
 msgid "Name:               %s"
-msgstr ""
+msgstr "Názov:               %s"
 
 #: ../src/spacecmd/softwarechannel.py:546
 #, python-format
 msgid "Architecture:       %s"
-msgstr ""
+msgstr "Architektúra:       %s"
 
 #: ../src/spacecmd/softwarechannel.py:547
 #, python-format
 msgid "Parent:             %s"
-msgstr ""
+msgstr "Rodič:             %s"
 
 #: ../src/spacecmd/softwarechannel.py:548
 #, python-format
 msgid "Systems Subscribed: %s"
-msgstr ""
+msgstr "Prihlásené systémy: %s"
 
 #: ../src/spacecmd/softwarechannel.py:549
 #, python-format
 msgid "Number of Packages: %i"
-msgstr ""
+msgstr "Počet balíkov: %i"
 
 #: ../src/spacecmd/softwarechannel.py:553
 msgid "Summary"
@@ -4993,67 +5222,70 @@ msgstr "Súhrn"
 #: ../src/spacecmd/softwarechannel.py:564
 #, python-format
 msgid "GPG Key:            %s"
-msgstr ""
+msgstr "Kľúč GPG:            %s"
 
 #: ../src/spacecmd/softwarechannel.py:565
 #, python-format
 msgid "GPG Fingerprint:    %s"
-msgstr ""
+msgstr "Odtlačok GPG:    %s"
 
 #: ../src/spacecmd/softwarechannel.py:566
 #, python-format
 msgid "GPG URL:            %s"
-msgstr ""
+msgstr "URL GPG:            %s"
 
 #: ../src/spacecmd/softwarechannel.py:567
 #, python-format
 msgid "GPG CHECK:          %s"
-msgstr ""
+msgstr "OVEROVANIE GPG:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:571
 msgid "Kickstart Trees"
-msgstr ""
+msgstr "Stromy Kickstart"
 
 #: ../src/spacecmd/softwarechannel.py:589
 msgid "softwarechannel_listerrata: List the errata associated with a"
-msgstr ""
+msgstr "softwarechannel_listerrata: Vypísať zoznam opráv chýb spojených so"
 
 #: ../src/spacecmd/softwarechannel.py:590
 msgid "                            software channel"
-msgstr ""
+msgstr "                            softvérovým kanálom"
 
 #: ../src/spacecmd/softwarechannel.py:591
 msgid ""
 "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr ""
+"použitie: softwarechannel_listerrata <KANÁL ...> [from=rrrrmmdd "
+"[to=rrrrmmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:649
 msgid "softwarechannel_listarches: lists the potential software"
-msgstr ""
+msgstr "softwarechannel_listarches: vypíše zoznam potenciálnych architektúr"
 
 #: ../src/spacecmd/softwarechannel.py:650
 msgid "                            channel architectures that can be created"
 msgstr ""
+"                            softvérového kanála, ktoré môžu byť vytvorené"
 
 #: ../src/spacecmd/softwarechannel.py:651
 msgid "usage: softwarechannel_listarches"
-msgstr ""
+msgstr "použitie: softwarechannel_listarches"
 
 #: ../src/spacecmd/softwarechannel.py:652 ../src/spacecmd/system.py:3844
 msgid "options:"
-msgstr ""
+msgstr "voľby:"
 
 #: ../src/spacecmd/softwarechannel.py:653
 msgid "    -v verbose (display label and name)"
-msgstr ""
+msgstr "    -v podrobný (zobrazenie označenia a názvu)"
 
 #: ../src/spacecmd/softwarechannel.py:674
 msgid "softwarechannel_delete: Delete a software channel"
-msgstr ""
+msgstr "softwarechannel_delete: Vymazať softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:675
 msgid "usage: softwarechannel_delete <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_delete <KANÁL ...>"
 
 #: ../src/spacecmd/softwarechannel.py:700
 msgid "Channels"
@@ -5061,7 +5293,7 @@ msgstr "Kanály"
 
 #: ../src/spacecmd/softwarechannel.py:728
 msgid "softwarechannel_update: Update a software channel"
-msgstr ""
+msgstr "softwarechannel_update: Aktualizovať softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:729
 #, python-format
@@ -5078,12 +5310,23 @@ msgid ""
 "  -f GPG-FINGERPRINT\n"
 "  -g DISABLE-GPG-CHECK"
 msgstr ""
+"použitie: softwarechannel_update OZNAČENIE(Na určenie kanála) [voľby]\n"
+"options:\n"
+"  -l OZNAČENIE(Povinné)\n"
+"  -n NÁZOV\n"
+"  -s SÚHRN\n"
+"  -d POPIS\n"
+"  -c KONTROLNÝ-SÚČET %s\n"
+"  -u URL-GPG\n"
+"  -i ID-GPG\n"
+"  -f ODTLAČOK-GPG\n"
+"  -g ZAKÁZANIE-KONTROLY-GPG"
 
 #: ../src/spacecmd/softwarechannel.py:760
 #: ../src/spacecmd/softwarechannel.py:892
 #: ../src/spacecmd/softwarechannel.py:1062
 msgid "Channel Label:"
-msgstr ""
+msgstr "Označenie kanála:"
 
 #: ../src/spacecmd/softwarechannel.py:765
 msgid "New Name (blank to keep unchanged)"
@@ -5285,7 +5528,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1081
 #: ../src/spacecmd/softwarechannel.py:1170
 msgid "Original State (No Errata) [y/N]:"
-msgstr ""
+msgstr "Pôvodný stav (Žiadne opravy chýb) [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1085
 #: ../src/spacecmd/softwarechannel.py:1173
@@ -5380,6 +5623,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1401
 msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
 msgstr ""
+"použitie: softwarechannel_removeerrata KANÁL <OPRAVY_CHÝB:search:XXX ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1454
 msgid "No patches to remove"
@@ -5389,7 +5633,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1794
 #, python-format
 msgid "Total Errata:   %s"
-msgstr ""
+msgstr "Celkový počet opráv chýb:   %s"
 
 #: ../src/spacecmd/softwarechannel.py:1466
 #: ../src/spacecmd/softwarechannel.py:1797
@@ -5418,6 +5662,8 @@ msgid ""
 "softwarechannel_adderratabydate: Add errata from one channel into another "
 "channel based on a date range"
 msgstr ""
+"softwarechannel_adderratabydate: Pridať opravy chýb z jedného kanála do "
+"druhého na základe dátumového rozsahu"
 
 #: ../src/spacecmd/softwarechannel.py:1561
 msgid ""
@@ -5440,7 +5686,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1564
 msgid "        -p/--publish : Publish errata to the channel (don't clone)"
-msgstr ""
+msgstr "        -p/--publish : Publikovať opravy chýb na kanáli (neklonovať)"
 
 #: ../src/spacecmd/softwarechannel.py:1591
 #: ../src/spacecmd/softwarechannel.py:1596
@@ -5457,13 +5703,15 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1616
 #, python-format
 msgid "Publishing errata %s to %s"
-msgstr ""
+msgstr "Publikovanie opráv chýb %s na %s"
 
 #: ../src/spacecmd/softwarechannel.py:1634
 msgid ""
 "softwarechannel_listerratabydate: list errata from channelbased on a date "
 "range"
 msgstr ""
+"softwarechannel_listerratabydate: vypísať zoznam opráv chýb z kanála na "
+"základe dátumového rozsahu"
 
 #: ../src/spacecmd/softwarechannel.py:1636
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
@@ -5471,7 +5719,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1680
 msgid "No errata found between the given dates"
-msgstr ""
+msgstr "Medzi uvedenými dátumami sa nenašli žiadne opravy chýb"
 
 #: ../src/spacecmd/softwarechannel.py:1691
 msgid ""
@@ -6574,6 +6822,31 @@ msgid ""
 "auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
+"použitie: system_addconfigfile [SYSTÉM] [voľby]\n"
+"\n"
+"voľby:\n"
+"  -S/--sandbox : vypísať iba zoznam súborov system-sandbox\n"
+"  -L/--local   : vypísať iba zoznam lokálne spravovaných súborov\n"
+"  -p CESTA\n"
+"  -r REVÍZIA\n"
+"  -o VLASTNÍK [predvolené: root]\n"
+"  -g SKUPINA [predvolené: root]\n"
+"  -m REŽIM [predvolené: 0644]\n"
+"  -x KONTEXT_SELINUX\n"
+"  -d cesta je adresár\n"
+"  -s cesta je symbolický odkaz\n"
+"  -b cesta je binárny (alebo iný súbor, ktorý vyžaduje kódovanie base64)\n"
+"  -t CIEĽ_SYMBOLICKÉHO_ODKAZU\n"
+"  -f lokálna cesta k obsahu súboru\n"
+"\n"
+"  Poznámka vo veci binárny/base64: Niektoré textové súbory, najmä tie, ktoré "
+"obsahujú\n"
+"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII "
+"(alebo iné znaky,\n"
+"  ktoré nie sú v XML povolené) je potrebné poslať ako binárne (-b). Vyvinulo "
+"sa určité úsilie\n"
+"  na automatickú detekciu súborov, ktoré to vyžadujú, ale možno budete "
+"musieť výslovne určiť.\n"
 
 #: ../src/spacecmd/system.py:1488
 #, python-format
@@ -6712,7 +6985,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:1979
 msgid "usage: system_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: system_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/system.py:2024
 msgid "system_listcustomvalues: List the custom values for a system"
@@ -6892,12 +7165,12 @@ msgstr ""
 #: ../src/spacecmd/system.py:2755
 #, python-format
 msgid "This method was removed since API version %s"
-msgstr ""
+msgstr "Táto metóda bola odstránená od verzie API %s"
 
 #: ../src/spacecmd/system.py:2758
 #, python-format
 msgid "This method is deprecated and will be removed in API version %s"
-msgstr ""
+msgstr "Táto metóda je zastaraná a bude odstránená vo verzii API %s"
 
 #: ../src/spacecmd/system.py:2762
 msgid ""
@@ -7289,7 +7562,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:3909
 #, python-format
 msgid "system %s is not subscribed to any channel!"
-msgstr ""
+msgstr "systém %s nie je prihlásený k žiadnemu kanálu!"
 
 #: ../src/spacecmd/system.py:3911
 msgid "Please subscribe to a channel, or specify achannel to compare with"
@@ -7408,10 +7681,12 @@ msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
 msgstr ""
+"Táto metóda je zastaraná a bude odstránená v budúcej verzii API. Namiesto "
+"toho, prosím, použite system_scheduleproductmigration."
 
 #: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
 msgid "This method is deprecated and will be removed in a future API version"
-msgstr ""
+msgstr "Táto metóda je zastaraná a bude odstránená v budúcej verzii API"
 
 #: ../src/spacecmd/system.py:4317
 msgid ""
@@ -7747,7 +8022,7 @@ msgstr ""
 
 #: ../src/spacecmd/utils.py:483
 msgid "Enhancement Errata"
-msgstr ""
+msgstr "Vylepšovacie opravy chýb"
 
 #: ../src/spacecmd/utils.py:493
 msgid "Current Selections"

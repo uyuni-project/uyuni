@@ -296,9 +296,13 @@ while read PKG_NAME; do
         else
           $OSC linkpac -c -f $OBS_PROJ $PKG_NAME $OBS_TEST_PROJECT
           $OSC co $OBS_TEST_PROJECT $PKG_NAME
+          cd $OBS_TEST_PROJECT/$PKG_NAME/
+          $OSC rm *
+          cd -
           cp -v * $OBS_TEST_PROJECT/$PKG_NAME  
           cd $OBS_TEST_PROJECT/$PKG_NAME
-      	  $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+          $OSC add *
+          $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
           cd -
         fi  
       else

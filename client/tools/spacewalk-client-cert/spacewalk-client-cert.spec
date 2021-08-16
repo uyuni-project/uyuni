@@ -22,8 +22,8 @@
 %endif
 
 Name:           spacewalk-client-cert
-Version:        4.3.0
-Release:        0
+Version:        4.3.1
+Release:        1
 Summary:        Package allowing manipulation with Spacewalk client certificates
 License:        GPL-2.0-only
 Group:          Applications/System

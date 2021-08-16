@@ -3,7 +3,7 @@
 {# Prefer venv-salt-minion if installed #}
 {%- if salt['pkg.version']('venv-salt-minion') %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
-{%- set susemanager_minion_config = '/etc/opt/venv-salt-minion/minion.d/susemanager.conf' %}
+{%- set susemanager_minion_config = '/etc/venv-salt-minion/minion.d/susemanager.conf' %}
 {%- endif -%}
 mgr_disable_fqdns_grains:
   file.append:

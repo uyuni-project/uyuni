@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-29 12:44+0000\n"
+"POT-Creation-Date: 2021-08-16 08:38+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -224,8 +224,8 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
+#: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
-#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "取消"
 
@@ -3241,31 +3241,31 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:71
 msgid "Skip to the last maintenance window"
 msgstr "跳到最后一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
 msgid "Skip to the next maintenance window"
 msgstr "跳到下一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
 msgid "There are no more past maintenance windows"
 msgstr "没有更多过去的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
 msgid "There are no more future maintenance windows"
 msgstr "没有更多将来的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
 msgid "Today"
 msgstr "今天"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
 msgid "Month"
 msgstr "月"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
 msgid "Day"
 msgstr "日"
 
@@ -4321,12 +4321,12 @@ msgstr "清理操作超时。请检查计算机是否可访问。"
 msgid "No result found in state apply response."
 msgstr "在状态应用响应中未找到结果。"
 
+#: ../html/src/manager/systems/delete-system.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:69
-#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr "删除配置文件但不清理"
 
-#: ../html/src/manager/systems/delete-system.tsx:90
+#: ../html/src/manager/systems/delete-system.tsx:89
 msgid "An error occurred during cleanup"
 msgstr "清理期间出错"
 
@@ -5198,7 +5198,6 @@ msgid "Untagged"
 msgstr "未标记"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-#, fuzzy
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
