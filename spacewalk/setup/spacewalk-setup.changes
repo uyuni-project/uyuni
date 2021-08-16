@@ -1,3 +1,8 @@
+- cobbler20-setup was removed
+- spacewalk-setup-cobbler was reimplemented in Python
+- Config files for Cobbler don't get edited in place anymore, thus the original
+  ones are saved with a ".backup" suffix
+
 -------------------------------------------------------------------
 Mon Aug 30 11:58:39 CEST 2021 - jmassaguerpla@suse.de
 

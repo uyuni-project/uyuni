@@ -52,6 +52,11 @@ BuildRequires:  perl-interpreter
 BuildRequires:  perl
 %endif
 BuildRequires:  perl(ExtUtils::MakeMaker)
+%if 0%{?suse_version}
+BuildRequires:  python3-Sphinx
+%else
+BuildRequires:  python3-sphinx
+%endif
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
@@ -92,7 +97,7 @@ Requires:       %{sbinpath}/restorecon
 BuildRequires:  spacewalk-%{pythonX}-pylint
 BuildRequires:  %{pythonX}-setuptools
 %endif
-Requires:       cobbler >= 2.0.0
+Requires:       cobbler >= 3.0.0
 Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
@@ -101,9 +106,6 @@ Requires:       spacewalk-certs-tools
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
 Requires:       (python-PyYAML or PyYAML)
-%endif
-%if 0%{?fedora} >= 22
-Recommends:     cobbler20
 %endif
 Requires:       /usr/bin/gpg
 Requires:       curl
@@ -144,6 +146,9 @@ touch Makefile
 sed -i "s/'python'/'python3'/g" lib/Spacewalk/Setup.pm
 %endif
 
+# Build RST manpages
+sphinx-build -b man doc/ out/
+
 %install
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
@@ -178,7 +183,6 @@ install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler
-install -m 0644 share/cobbler/* %{buildroot}/%{_datadir}/spacewalk/setup/cobbler/
 install -m 0644 salt/susemanager.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
 install -m 0644 salt/salt-ssh-logging.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
 
@@ -187,12 +191,14 @@ install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-cobbler | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-tomcat | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-tomcat.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
+# Sphinx built manpage
+%define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
+install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1
 
 # Standalone Salt formulas configuration
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas
@@ -282,7 +288,6 @@ make test
 # check coding style
 pylint --rcfile /etc/spacewalk-python3-pylint.rc \
     $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
-    $RPM_BUILD_ROOT%{_bindir}/cobbler20-setup
 %endif
 
 %files
@@ -299,7 +304,6 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %{_bindir}/spacewalk-setup-sudoers
 %{_bindir}/spacewalk-setup-ipa-authentication
 %{_bindir}/spacewalk-setup-db-ssl-certificates
-%{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
