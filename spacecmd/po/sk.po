@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-16 20:11+0000\n"
+"PO-Revision-Date: 2021-08-17 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6124,45 +6124,48 @@ msgstr ""
 msgid ""
 "note:    Providing only FROM_DATE will merge all errata since that date."
 msgstr ""
+"poznámka:    Pri zadaní iba OD_DÁTUMU sa zlúčia všetky opravy chýb od tohto "
+"dátumu."
 
 #: ../src/spacecmd/softwarechannel.py:2472
 msgid "note:    When no date is provided, all errata will be merged."
 msgstr ""
+"poznámka:    Ak nie je uvedený žiadny dátum, zlúčia sa všetky opravy chýb."
 
 #: ../src/spacecmd/softwarechannel.py:2502
 #: ../src/spacecmd/softwarechannel.py:2509
 msgid "wrong dateformat: "
-msgstr ""
+msgstr "nesprávny formát dátumu: "
 
 #: ../src/spacecmd/softwarechannel.py:2502
 #: ../src/spacecmd/softwarechannel.py:2509
 msgid " please specify as: YYYY-MM-DD"
-msgstr ""
+msgstr " zadajte, prosím, ako: RRRR-MM-DD"
 
 #: ../src/spacecmd/softwarechannel.py:2518
 msgid "merging errata from softwarechannel "
-msgstr ""
+msgstr "zlúčenie opráv chýb zo softvérového kanála "
 
 #: ../src/spacecmd/softwarechannel.py:2555
 msgid "{} contains no errata which is not already present in {}"
-msgstr ""
+msgstr "{} neobsahuje žiadne opravy chýb, ktoré nie sú už prítomné v {}"
 
 #: ../src/spacecmd/softwarechannel.py:2560
 msgid "errata to add to channel {}: "
-msgstr ""
+msgstr "opravy chýb na pridanie do kanála {}: "
 
 #: ../src/spacecmd/softwarechannel.py:2566
 #: ../src/spacecmd/softwarechannel.py:2567
 msgid " errata"
-msgstr ""
+msgstr " opravy chýb"
 
 #: ../src/spacecmd/softwarechannel.py:2569
 msgid " errata to  "
-msgstr ""
+msgstr " opravy chýb do  "
 
 #: ../src/spacecmd/softwarechannel.py:2571
 msgid "Perform these changes to channel {} [y/N]:"
-msgstr ""
+msgstr "Vykonať tieto zmeny v kanáli {} [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:2582
 msgid "softwarechannel_syncrepos: "
