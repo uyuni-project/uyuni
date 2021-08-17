@@ -145,7 +145,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
   }
 }
 
-type ButtonProps = BaseProps & {
+export type ButtonProps = BaseProps & {
   /** Callback function to execute on button click. */
   handler?: (...args: any[]) => any,
 };
@@ -175,10 +175,6 @@ type LinkProps = BaseProps & {
   /** 'href' attribute of the anchor. */
   href?: string;
 
-  /**
-   * TODO: If target is `_blank`, we should add `rel="noopener noreferrer"`
-   * The `target` prop doesn't seem to be used anywhere _at the moment_, but we should add it anyway
-   */
   /** target of the link */
   target?: string,
 
@@ -191,14 +187,20 @@ type LinkProps = BaseProps & {
  */
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
+    const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> = this.props.target === "_blank" ? {
+      target: "_blank",
+      rel: "noopener noreferrer",
+    } : {
+      target : this.props.target,
+    };
     return (
       <a
         id={this.props.id}
         title={this.props.title}
         className={"btn " + this.props.className}
         href={this.props.href}
-        target={this.props.target}
         onClick={this.props.handler}
+        {...targetProps}
       >
         {this.renderIcon()}
         {this.props.text}

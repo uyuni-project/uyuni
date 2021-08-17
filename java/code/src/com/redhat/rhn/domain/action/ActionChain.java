@@ -113,8 +113,10 @@ public class ActionChain extends BaseDomainHelper {
      * (either completed or failed)
      */
     public boolean isDone() {
-        return getEntries().stream()
-                .flatMap(ace -> ace.getAction().getServerActions().stream())
+        // check if all Actions has been executed (there must be an entry in ServerActions)
+        // and all the ServerActions are Done
+        return getEntries().stream().allMatch(ace -> !ace.getAction().getServerActions().isEmpty()) &&
+                getEntries().stream().flatMap(ace -> ace.getAction().getServerActions().stream())
                 .allMatch(sa -> sa.getStatus().isDone());
     }
 

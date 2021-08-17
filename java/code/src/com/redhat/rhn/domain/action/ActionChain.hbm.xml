@@ -89,4 +89,10 @@
         ]]>
     </query>
 
+    <query name="ActionChain.getAllActionChains">
+        <![CDATA[
+            SELECT chain FROM ActionChain chain
+        ]]>
+    </query>
+
 </hibernate-mapping>

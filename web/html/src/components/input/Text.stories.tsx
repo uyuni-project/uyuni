@@ -17,7 +17,6 @@ export const Example = () => (
     model={model}
     onChange={newModel => {model['firstname'] = newModel['firstname']}}
     onSubmit={() => alert(`Hello ${model['firstname']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >
