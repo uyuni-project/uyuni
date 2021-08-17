@@ -579,7 +579,7 @@ class BootstrapMinions extends React.Component<Props, State> {
 export const renderer = (id) => {
   const params = new URLSearchParams(window.location.search);
   const targetHost = params.get("targetHost");
-  const ansibleInventoryId = Number.parseInt(params.get("ansibleInventoryId") || "") || null;
+  const ansibleInventoryId = Number.parseInt(params.get("ansibleInventoryId") || "", 10) || null;
 
   return SpaRenderer.renderNavigationReact(
     <BootstrapMinions
