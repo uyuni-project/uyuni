@@ -120,7 +120,6 @@ export const AsyncExample = () => {
       model={model}
       onChange={setModel}
       onSubmit={() => alert(`Level: ${model["level"]}`)}
-      onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
