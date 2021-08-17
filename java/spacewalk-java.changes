@@ -1,3 +1,4 @@
+- 'AppStreams with defaults' filter template in CLM
 - Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
 - XMLRPC: Add call for listing application monitoring endpoints
 - Bring back Beta product tag
