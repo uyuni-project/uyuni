@@ -250,9 +250,9 @@ public abstract class AbstractMinionBootstrapper {
                     saltApi.callSync(call, minionId).ifPresentOrElse(
                             res -> {
                                 // all results must be successful, otherwise we throw an exception
-                                List<String> failedStates = res.entrySet().stream()
+                                List<Object> failedStates = res.entrySet().stream()
                                         .filter(r -> !r.getValue().isResult())
-                                        .map(r -> r.getKey())
+                                        .map(r -> r.getValue().getChanges())
                                         .collect(Collectors.toList());
 
                                 if (!failedStates.isEmpty()) {
