@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-17 17:12+0000\n"
+"PO-Revision-Date: 2021-08-18 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6169,47 +6169,49 @@ msgstr "Vykonať tieto zmeny v kanáli {} [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:2582
 msgid "softwarechannel_syncrepos: "
-msgstr ""
+msgstr "softwarechannel_syncrepos: "
 
 #: ../src/spacecmd/softwarechannel.py:2583
 msgid "Sync users repos for a software channel"
-msgstr ""
+msgstr "Synchronizovať používateľské repozitáre pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:2585
 msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: softwarechannel_syncrepos <KANÁL ...>"
 
 #: ../src/spacecmd/softwarechannel.py:2587
 #: ../src/spacecmd/softwarechannel.py:2630
 msgid "    -e/--no-errata : Do not sync errata"
-msgstr ""
+msgstr "    -e/--no-errata : Nesynchronizovať opravy chýb"
 
 #: ../src/spacecmd/softwarechannel.py:2588
 #: ../src/spacecmd/softwarechannel.py:2631
 msgid "    -f/--fail : Terminate upon any error"
-msgstr ""
+msgstr "    -f/--fail : Ukončiť pri akejkoľvek chybe"
 
 #: ../src/spacecmd/softwarechannel.py:2589
 #: ../src/spacecmd/softwarechannel.py:2632
 msgid "    -k/--sync-kickstart : Create kickstartable tree"
-msgstr ""
+msgstr "    -k/--sync-kickstart : Vytvoriť strom schopných kickstart"
 
 #: ../src/spacecmd/softwarechannel.py:2590
 #: ../src/spacecmd/softwarechannel.py:2633
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
 msgstr ""
+"    -l/--latest : Pri synchronizácii repozitára sťahovať iba najnovšie "
+"verzie balíkov"
 
 #: ../src/spacecmd/softwarechannel.py:2625
 msgid "softwarechannel_setsyncschedule: "
-msgstr ""
+msgstr "softwarechannel_setsyncschedule: "
 
 #: ../src/spacecmd/softwarechannel.py:2626
 msgid "Sets the repo sync schedule for a software channel"
-msgstr ""
+msgstr "Nastaví plán synchronizácie repozitára pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:2628
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
-msgstr ""
+msgstr "použitie: softwarechannel_setsyncschedule <KANÁL> <PLÁN>"
 
 #: ../src/spacecmd/softwarechannel.py:2635
 msgid ""
