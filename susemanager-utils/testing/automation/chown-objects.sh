@@ -15,3 +15,9 @@ find /manager | sort > /tmp/objects-end.txt
 for LINE in $(diff /tmp/objects-init.txt /tmp/objects-end.txt|grep '^> .*$'|sed -e 's/^> //'); do
   chown ${NEWUID}:${NEWGID} ${LINE}
 done
+
+# Some files are not new but are owned by root. This happens when using yarn to install some sources
+for f in $(find /manager -user root);do
+  chown ${NEWUID}:${NEWGID} $f
+done
+
