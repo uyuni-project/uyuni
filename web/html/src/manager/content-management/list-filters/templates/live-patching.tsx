@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Select, FormContext } from "components/input";
 import Network, { JsonResult } from "utils/network";
 import { showErrorToastr } from "components/toastr/toastr";
@@ -49,16 +49,24 @@ function getKernels(id: number, type: string): Promise<Kernel[]> {
     });
 }
 
+function usePrevious<T>(value: T) {
+  const ref = useRef<T>();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 export default (props: FilterFormProps & { template: Template }) => {
   const template = props.template;
+  const prevTemplate = usePrevious(template);
   if (!template) {
     return null;
   }
 
   const formContext = React.useContext(FormContext);
   const setModelValue = formContext.setModelValue;
-  const systemId = formContext.model.systemId;
-  const productId = formContext.model.productId;
+  const { productId, systemId, systemName, kernelName } = formContext.model;
   const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
@@ -67,6 +75,16 @@ export default (props: FilterFormProps & { template: Template }) => {
       .then(setProducts)
       .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
   }, []);
+
+  useEffect(() => {
+    // If the template changes, reset what we previously had
+    if (prevTemplate) {
+      setModelValue?.("systemId", null);
+      setModelValue?.("productId", null);
+      setModelValue?.("kernelId", null);
+      setKernels([]);
+    }
+  }, [template]);
 
   useEffect(() => {
     if (systemId || productId) {
@@ -85,16 +103,15 @@ export default (props: FilterFormProps & { template: Template }) => {
   }, [
     systemId,
     productId,
-    setModelValue,
   ]);
 
-  useEffect(() => {
-    // If the template changes, reset what we previously had
-    setModelValue?.("systemId", null);
-    setModelValue?.("productId", null);
-    setModelValue?.("kernelId", null);
-    setKernels([]);
-  }, [template, setModelValue]);
+  // Are we using predefined values from the URL params?
+  const hasInitialValues = Boolean(systemId && systemName && kernelName);
+  const defaultValueOption = hasInitialValues ? {
+    id: systemId,
+    name: systemName,
+    kernel: kernelName,
+  } : undefined;
 
   return (
     <>
@@ -121,6 +138,7 @@ export default (props: FilterFormProps & { template: Template }) => {
             divClass="col-md-6"
             getOptionValue={system => system.id}
             getOptionLabel={system => `${system.name} (${system.kernel})`}
+            defaultValueOption={defaultValueOption}
           />
         </>
       )}

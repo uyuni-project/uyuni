@@ -1,16 +1,9 @@
 import * as React from "react";
-import { Button } from "../buttons";
+import { Button, ButtonProps } from "../buttons";
 import { showDialog } from "./util";
 
-// TODO: Extend Button's props here once that branch gets merged
-type Props = {
+type Props = ButtonProps & {
   target: string;
-  id?: string;
-  className?: string;
-  title?: string;
-  text?: React.ReactNode;
-  icon?: string;
-  disabled?: boolean;
   item?: any;
   onClick?: (...args: any[]) => any;
 };

@@ -1,3 +1,5 @@
+import { getUrlParam, urlBounce } from "./url";
+
 // This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
 export class Cancelable<T = any> extends Promise<T> {
   promise!: Promise<T>;
@@ -145,21 +147,6 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
   return result * sortDirection;
 }
 
-function getQueryStringValue(key: string): string {
-  // See for a standard implementation:
-  // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-  return decodeURIComponent(
-    window.location.search.replace(
-      new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"),
-      "$1"
-    )
-  );
-}
-
-function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
-  window.location.href = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
-}
-
 /**
  * Replace all "_" and "-" with spaces and capitalize the first letter of each word
  */
@@ -224,27 +211,28 @@ function getProductName(): string {
 }
 
 const Utils = {
-  cancelable: cancelable,
-  sortById: sortById,
-  sortByText: sortByText,
-  dateWithTimezone: dateWithTimezone,
-  dateWithoutTimezone: dateWithoutTimezone,
-  sortByNumber: sortByNumber,
-  sortByDate: sortByDate,
-  urlBounce: urlBounce,
-  capitalize: capitalize,
-  generatePassword: generatePassword,
-  deepCopy: deepCopy,
-  getProductName: getProductName,
+  cancelable,
+  sortById,
+  sortByText,
+  dateWithTimezone,
+  dateWithoutTimezone,
+  sortByNumber,
+  sortByDate,
+  getUrlParam,
+  urlBounce,
+  capitalize,
+  generatePassword,
+  deepCopy,
+  getProductName,
 };
 
 const Formats = {
-  LocalDateTime: LocalDateTime,
+  LocalDateTime,
 };
 
 const Formulas = {
-  EditGroupSubtype: EditGroupSubtype,
-  getEditGroupSubtype: getEditGroupSubtype,
+  EditGroupSubtype,
+  getEditGroupSubtype,
 };
 
 export { Utils, Formats, Formulas };

@@ -1806,7 +1806,7 @@ https://github.com/remarkablemark/react-dom-core
 MIT
 
 --------------------------------------------------------------------------------
-react-select v4.3.0 - Jed Watson
+react-select v4.3.1 - Jed Watson
 https://github.com/JedWatson/react-select/tree/master/packages/react-select
 --------------------------------------------------------------------------------
 

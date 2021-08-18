@@ -1,5 +1,6 @@
 - Improved and modified files to pass pylint checks.
 - Removed duplicate group in spec file.
+- Remove whoami from the list of unauthenticated commands (bsc#1188977)
 
 -------------------------------------------------------------------
 Mon Aug 09 10:56:30 CEST 2021 - jgonzalez@suse.com

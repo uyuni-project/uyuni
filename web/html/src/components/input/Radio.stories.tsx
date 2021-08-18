@@ -17,7 +17,6 @@ export const Vertical = () => (
     model={model}
     onChange={newModel => {model['level'] = newModel['level']}}
     onSubmit={() => alert(`Level: ${model['level']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >
@@ -46,7 +45,6 @@ export const VerticalWithOpenOption = () => (
     model={model}
     onChange={newModel => {model['level'] = newModel['level']}}
     onSubmit={() => alert(`Level: ${model['level']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >
@@ -76,7 +74,6 @@ export const Horizontal = () => (
     model={model}
     onChange={newModel => {model['level'] = newModel['level']}}
     onSubmit={() => alert(`Level: ${model['level']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >
@@ -106,7 +103,6 @@ export const HorizontalWithOpenOption = () => (
     model={model}
     onChange={newModel => {model['level'] = newModel['level']}}
     onSubmit={() => alert(`Level: ${model['level']}`)}
-    onSubmitInvalid={(data, evt) => alert("Submit clicked, but form invalid")}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >

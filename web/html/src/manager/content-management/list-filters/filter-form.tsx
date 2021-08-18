@@ -25,7 +25,9 @@ export type Props = {
 
 const FilterForm = (props: Props) => {
   const { timezone, localTime } = useUserLocalization();
-  const [filterBy, setFilterBy] = useState(FilterBy.Type);
+
+  const initialFilterBy = props.filter.template ? FilterBy.Template : FilterBy.Type;
+  const [filterBy, setFilterBy] = useState(initialFilterBy);
 
   // If the filter type changes, resets the matcher filter
   const { editing, filter, onChange } = props;
