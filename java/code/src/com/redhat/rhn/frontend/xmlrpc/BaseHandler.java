@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -147,8 +148,17 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         }
         catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
-            log.error("Error calling method: ", e);
-            log.error("Caused by: ", cause);
+
+            if (cause instanceof FaultException) {
+                // FaultExceptions are "bad request" type of exceptions
+                // Normally they should be thrown as response to the client but there's no need to log them as errors.
+                FaultException fault = (FaultException) cause;
+                log.debug("'" + methodCalled + "' returned: [" + fault.getErrorCode() + "] " + fault.getMessage());
+            }
+            else {
+                log.error("Error calling method: ", e);
+                log.error("Caused by: ", cause);
+            }
 
             /*
              * HACK: this should really be handled by SessionFilter.doFilter,
@@ -158,7 +168,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
              * committing changes after an Exception, roll back here.
              */
             try {
-                log.error("Rolling back transaction");
+                log.debug("Rolling back transaction");
                 HibernateFactory.rollbackTransaction();
             }
             catch (HibernateException he) {
