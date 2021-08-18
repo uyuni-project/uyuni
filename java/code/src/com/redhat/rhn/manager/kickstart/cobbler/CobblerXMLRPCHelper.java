@@ -69,7 +69,7 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
             retval = client.invoke(procedureName, args);
         }
         catch (XmlRpcException e) {
-            throw new RuntimeException("XmlRpcException calling cobbler.", e);
+            throw new RuntimeException("XmlRpcException calling cobbler. Cobbler might not be running.", e);
         }
         return retval;
     }

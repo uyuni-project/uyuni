@@ -943,6 +943,12 @@
           <context context-type="sourcefile">500 error page</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="500.jsp.details" xml:space="preserve">
+        <source>Details: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">500 error page</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
         <context-group name="ctx">

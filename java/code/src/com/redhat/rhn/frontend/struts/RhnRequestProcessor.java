@@ -104,15 +104,18 @@ public class RhnRequestProcessor extends RequestProcessor {
             super.process(request, response);
         }
         catch (IOException se) {
+            request.setAttribute("exceptionDetails", se.getMessage());
             sendErrorEmail(request, se);
             throw se;
         }
         catch (ServletException se) {
             fixCause(se);
+            request.setAttribute("exceptionDetails", se.getMessage());
             sendErrorEmail(request, se);
             throw se;
         }
         catch (RuntimeException re) {
+            request.setAttribute("exceptionDetails", re.getMessage());
             if (re.getCause() == null) {
                 sendErrorEmail(request, re);
             }

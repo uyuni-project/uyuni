@@ -10,5 +10,9 @@
     </h1>
     <p><bean:message key="500.jsp.summary"/></p>
     <p><bean:message key="500.jsp.message"/></p>
+    <c:if test="${not empty exceptionDetails}">
+      <p><bean:message key="500.jsp.details" arg0="${exceptionDetails}"/></p>
+    </c:if>
+
 </body>
 </page:applyDecorator>
