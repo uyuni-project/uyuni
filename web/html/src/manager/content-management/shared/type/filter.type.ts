@@ -36,5 +36,9 @@ export type FilterFormType = {
   moduleName?: string;
   moduleStream?: string;
   labelPrefix?: string;
+  template?: string;
+  systemId?: number;
+  systemName?: string;
   kernelId?: number;
+  kernelName?: string;
 };

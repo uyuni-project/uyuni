@@ -9,7 +9,6 @@ import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import FilterForm from "./filter-form";
 import { showDialog } from "components/dialog/util";
 import { mapFilterFormToRequest } from "./filter.utils";
-import _isEmpty from "lodash/isEmpty";
 import useUserLocalization from "core/user-localization/use-user-localization";
 import { FilterFormType } from "../shared/type/filter.type";
 
@@ -52,8 +51,8 @@ type FilterEditProps = {
   icon: string;
   buttonText: string;
   onChange: Function;
-  openFilterId: number;
-  projectLabel: string;
+  openFilterId?: number;
+  projectLabel?: string;
   editing?: boolean;
 };
 
@@ -87,7 +86,7 @@ const FilterEdit = (props: FilterEditProps) => {
       if (props.editing) {
         onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", itemId)
           .then(updatedListOfFilters => {
-            if (!_isEmpty(props.projectLabel)) {
+            if (props.projectLabel) {
               redirectToProject(props.projectLabel);
             } else {
               closeDialog(modalNameId);
@@ -102,7 +101,7 @@ const FilterEdit = (props: FilterEditProps) => {
       } else {
         onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "create")
           .then(updatedListOfFilters => {
-            if (!_isEmpty(props.projectLabel)) {
+            if (props.projectLabel) {
               redirectToProject(props.projectLabel);
             } else {
               closeDialog(modalNameId);
@@ -182,7 +181,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   text={t("Cancel")}
                   handler={() => {
                     cancelAction();
-                    if (!_isEmpty(props.projectLabel)) {
+                    if (props.projectLabel) {
                       redirectToProject(props.projectLabel);
                     } else {
                       closeDialog(modalNameId);
