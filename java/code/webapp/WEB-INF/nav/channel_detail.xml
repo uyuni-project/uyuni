@@ -23,5 +23,8 @@
     <rhn-tab-url>/rhn/channels/TargetSystems.do</rhn-tab-url>
     <rhn-tab-url>/rhn/channels/TargetSystemsConfirm.do</rhn-tab-url>
   </rhn-tab>
+  <rhn-tab name="AppStreams">
+    <rhn-tab-url>/rhn/channels/AppStreams.do</rhn-tab-url>
+  </rhn-tab>
 </rhn-navi-tree>
 
