@@ -313,9 +313,9 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                logging.error("GPG verfication failed: {}".format(release_file))
+                logging.error("GPG verification failed: {}".format(release_file))
                 logging.error("Raising GeneralRepoException!")
-                raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
+                raise GeneralRepoException("GPG verification failed: {}".format(release_file))
             try:
                 with open(release_file, "rb") as f:
                     self._release = self._parse_release_index(f.read().decode("utf-8"))
@@ -339,9 +339,9 @@ class DpkgRepo:
                 with open(release_file, "rb") as f:
                     release_file_content = f.read().decode("utf-8")
                     if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                        logging.error("GPG verfication failed: '{}'. \
+                        logging.error("GPG verification failed: '{}'. \
                                            Raising GeneralRepoException.".format(release_file))
-                        raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
+                        raise GeneralRepoException("GPG verification failed: {}".format(release_file))
                     self._release = self._parse_release_index(release_file_content)
             except IOError as ex:
                 logging.exception("IOError while accessing file: '{}'. Raising \
@@ -374,7 +374,7 @@ class DpkgRepo:
 
             if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
                 logging.error("Repo has no valid GPG signature. Raising GeneralRepoException.")
-                raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
+                raise GeneralRepoException("GPG verification failed: {}".format(resp.url))
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
 
@@ -386,7 +386,7 @@ class DpkgRepo:
                 if resp.status_code == http.HTTPStatus.OK:
                     if self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
                         logging.error("Repo has no valid GPG signature. GeneralRepoException will be raised!")
-                        raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
+                        raise GeneralRepoException("GPG verification failed: {}".format(resp.url))
                     self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:
             resp.close()
