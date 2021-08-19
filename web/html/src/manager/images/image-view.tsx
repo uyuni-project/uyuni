@@ -28,6 +28,7 @@ declare global {
     timezone?: any;
     localTime?: any;
     isRuntimeInfoEnabled?: any;
+    osImageStoreUrl?: string;
   }
 }
 
@@ -693,6 +694,14 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             }}
           />
         </Table>
+        {window.osImageStoreUrl &&
+          <div>
+            <a href={window.osImageStoreUrl} target="_blank">
+              <i className="fa fa-folder-open"/>
+              Go to OS image directory listing
+            </a>
+          </div>
+        }
         <DeleteDialog
           id="delete-modal"
           title={t("Delete Image")}
