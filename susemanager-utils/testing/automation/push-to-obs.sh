@@ -63,7 +63,6 @@ if [ ! -f ${CREDENTIALS} ]; then
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
@@ -73,6 +72,8 @@ echo "Starting building and submission at $(date)"
 date
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 for p in ${PACKAGES};do
+    pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
+    CHOWN_CMD="chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
