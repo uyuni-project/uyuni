@@ -127,6 +127,10 @@ function VirtualSystems(props: Props) {
         />
       </Table>
 
+      <div className="spacewalk-csv-download">
+        <a href="/rhn/manager/systems/csv/virtualSystems" className="btn btn-link" data-senna-off="true"><IconTag type="item-download-csv"/>Download CSV</a>
+      </div>
+
     </>
   );
 }
