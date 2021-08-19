@@ -31,6 +31,7 @@ import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.AnsibleController;
+import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -154,6 +155,9 @@ public class Router implements SparkApplication {
 
         // Systems API
         SystemsController.initRoutes(systemsController, jade);
+
+        //CSV API
+        CSVDownloadController.initRoutes();
 
         // Activation Keys API
         ActivationKeysController.initRoutes();

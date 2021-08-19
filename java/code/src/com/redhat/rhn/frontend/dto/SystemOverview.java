@@ -311,7 +311,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the lastCheckin.
      */
     public String getLastCheckin() {
-        return LocalizationService.getInstance().formatDate(lastCheckin);
+        return lastCheckin != null ? LocalizationService.getInstance().formatDate(lastCheckin) : null;
     }
     /**
      * @param lastCheckinIn The lastCheckin to set.
