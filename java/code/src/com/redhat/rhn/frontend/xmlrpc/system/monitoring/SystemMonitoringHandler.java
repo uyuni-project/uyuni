@@ -48,11 +48,12 @@ public class SystemMonitoringHandler extends BaseHandler {
      * @param systemIDs The system IDs
      * @return a list containing endpoint details for all Prometheus exporters on the passed system IDs.
      *
+     * @xmlrpc.doc Get the list of monitoring endpoint details.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "systemID")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     $EndpointInfo
+     *     $EndpointInfoSerializer
      *   #array_end()
      */
     public List<EndpointInfo> listEndpoints(User loggedInUser, List<Long> systemIDs) {
