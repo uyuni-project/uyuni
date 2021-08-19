@@ -1,3 +1,4 @@
+- Support syncing patches with advisory status 'pending'
 - Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
 - XMLRPC: Add call for listing application monitoring endpoints
 - Do not log XMLRPC fault exceptions as errors (bsc#1188853)

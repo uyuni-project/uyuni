@@ -1,3 +1,4 @@
+- Support syncing patches with advisory status 'pending'
 - Fix wrongly assigned entitlements due to system transfer (bsc#1188032)
 
 -------------------------------------------------------------------
