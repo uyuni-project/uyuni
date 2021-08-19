@@ -30,7 +30,7 @@ CREATE TABLE rhnErrata
     advisory_status   VARCHAR(32) NOT NULL DEFAULT('final')
                           CONSTRAINT rhn_errata_adv_status_ck
                               CHECK (advisory_status in ('final', 'stable', 'testing',
-                                                         'retracted')),
+                                                         'pending', 'retracted')),
     product           VARCHAR(64) NOT NULL,
     description       VARCHAR(4000),
     synopsis          VARCHAR(4000) NOT NULL,
