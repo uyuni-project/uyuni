@@ -13,11 +13,11 @@
 -- in this software or its documentation.
 --
 
-CREATE INDEX rhn_pkg_cap_name_version_uq
+CREATE UNIQUE INDEX rhn_pkg_cap_name_version_uq
     ON rhnPackageCapability USING btree (sha512(replace(name, '\', '\\')::bytea), version)
  WHERE version IS NOT NULL;
 
-CREATE INDEX rhn_pkg_cap_name_uq
+CREATE UNIQUE INDEX rhn_pkg_cap_name_uq
     ON rhnPackageCapability USING btree (sha512(replace(name, '\', '\\')::bytea))
  WHERE version IS NULL;
 
