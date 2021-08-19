@@ -65,14 +65,16 @@ Feature: Adding the CentOS 8 distribution custom repositories
     Given I am authorized for the "Admin" section
     When I follow the left menu "Content Lifecycle > Filters"
     And I follow "Create Filter"
-    And I enter "ruby-2.7" as "filter_name"
+    Then I should see a "Create a new filter" text
+    When I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save"
     Then I should see a "ruby-2.7" text
     When I follow "Create Filter"
-    And I enter "python-3.6" as "filter_name"
+    Then I should see a "Create a new filter" text
+    When I enter "python-3.6" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "python36" as "moduleName"
     And I enter "3.6" as "moduleStream"
