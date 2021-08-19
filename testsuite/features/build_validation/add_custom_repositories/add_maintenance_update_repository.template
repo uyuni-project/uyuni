@@ -38,4 +38,4 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled" text
+    Then I should see a "Repository sync scheduled" text or "No repositories are currently associated with this channel" text
