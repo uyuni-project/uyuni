@@ -337,7 +337,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 end
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -H "ERROR:" /var/log/rhn/reposync/*.log', false)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', false)
   raise "Errors during reposync:\n#{result}" if code.zero?
 end
 
