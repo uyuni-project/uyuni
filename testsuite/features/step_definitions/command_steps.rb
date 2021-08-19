@@ -20,7 +20,7 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   result, return_code = node.run("getent hosts #{node.ip}", false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+  raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|

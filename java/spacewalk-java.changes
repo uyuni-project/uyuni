@@ -1,4 +1,5 @@
 - Updated Enterprise Linux servlet requirement.
+- AppStreams tab for modular channels
 - Allow getting all archived actions via XMLRPC without display limit (bsc#1181223)
 - Link to CLM filter creation from system details page
 - Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
