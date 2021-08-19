@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-18 19:11+0000\n"
+"PO-Revision-Date: 2021-08-19 20:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6218,42 +6218,47 @@ msgid ""
 "The schedule is specified in Quartz CronTrigger format without enclosing "
 "quotes."
 msgstr ""
+"Plán sa zadáva vo formáte Quartz CronTrigger bez uzatváracích úvodzoviek."
 
 #: ../src/spacecmd/softwarechannel.py:2636
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
 msgstr ""
+"Ak chcete napríklad nastaviť plán na každý deň o 1 hodine ráno, <PLÁN> by "
+"bol 0 0 1 * * ?"
 
 #: ../src/spacecmd/softwarechannel.py:2637
 msgid "If <SCHEDULE> is left empty, it will be disabled."
-msgstr ""
+msgstr "Ak <PLÁN> zostane prázdny, bude zakázaný."
 
 #: ../src/spacecmd/softwarechannel.py:2672
 msgid "softwarechannel_removesyncschedule: "
-msgstr ""
+msgstr "softwarechannel_removesyncschedule: "
 
 #: ../src/spacecmd/softwarechannel.py:2673
 msgid "Removes the repo sync schedule for a software channel"
-msgstr ""
+msgstr "Odstráni plán synchronizácie repozitára pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:2675
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
-msgstr ""
+msgstr "použitie: softwarechannel_removesyncschedule <KANÁL>"
 
 #: ../src/spacecmd/softwarechannel.py:2700
 msgid ""
 "softwarechannel_listsyncschedule: List sync schedules for all software "
 "channels"
 msgstr ""
+"softwarechannel_listsyncschedule: Vypísať zoznam plánov synchronizácie pre "
+"všetky softvérové kanály"
 
 #: ../src/spacecmd/softwarechannel.py:2702
 msgid "softwarechannel_listsyncschedule : List all channels"
-msgstr ""
+msgstr "softwarechannel_listsyncschedule : Vypísať zoznam všetkých kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:2725
 msgid "key"
-msgstr ""
+msgstr "kľúč"
 
 #: ../src/spacecmd/softwarechannel.py:2725
 msgid "Channel Name"
@@ -6261,7 +6266,7 @@ msgstr "Názov kanála"
 
 #: ../src/spacecmd/softwarechannel.py:2725
 msgid "Update Schedule"
-msgstr ""
+msgstr "Plán aktualizácií"
 
 #: ../src/spacecmd/softwarechannel.py:2737
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
