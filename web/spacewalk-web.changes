@@ -1,3 +1,4 @@
+- 'AppStreams with defaults' filter template in CLM
 - Add a link to OS image store dir in image list page
 - Link to CLM filter creation from system details page
 - Expose UEFI parameters in the VM creation/editing pages

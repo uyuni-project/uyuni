@@ -27,10 +27,13 @@ public class FilterRequest {
     private String criteriaValue;
     private String rule;
 
-    // Live patching template params
+    // Filter template params
     private String template;
     private String prefix;
+    // Live patching
     private Long kernelEvrId;
+    // AppStreams
+    private Long channelId;
 
     public String getProjectLabel() {
         return projectLabel;
@@ -70,5 +73,9 @@ public class FilterRequest {
 
     public Long getKernelEvrId() {
         return kernelEvrId;
+    }
+
+    public Long getChannelId() {
+        return channelId;
     }
 }
