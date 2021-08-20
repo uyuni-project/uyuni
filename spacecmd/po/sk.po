@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-19 20:13+0000\n"
+"PO-Revision-Date: 2021-08-20 20:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6270,43 +6270,44 @@ msgstr "Plán aktualizácií"
 
 #: ../src/spacecmd/softwarechannel.py:2737
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
-msgstr ""
+msgstr "softwarechannel_addrepo: Pridať repozitár do softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:2738
 msgid "usage: softwarechannel_addrepo CHANNEL REPO"
-msgstr ""
+msgstr "použitie: softwarechannel_addrepo KANÁL REPOZITÁR"
 
 #: ../src/spacecmd/softwarechannel.py:2771
 msgid "softwarechannel_removerepo: Remove a repo from a software channel"
-msgstr ""
+msgstr "softwarechannel_removerepo: Odstrániť repozitár zo softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:2772
 msgid "usage: softwarechannel_removerepo CHANNEL REPO"
-msgstr ""
+msgstr "použitie: softwarechannel_removerepo KANÁL REPOZITÁR"
 
 #: ../src/spacecmd/softwarechannel.py:2812
 msgid "softwarechannel_listrepos: List the repos for a software channel"
 msgstr ""
+"softwarechannel_listrepos: Vypísať zoznam repozitárov pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:2813
 msgid "usage: softwarechannel_listrepos CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listrepos KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:2836
 msgid "No repos have been found for this channel."
-msgstr ""
+msgstr "Pre tento kanál neboli nájdené žiadne repozitáre."
 
 #: ../src/spacecmd/softwarechannel.py:2843
 msgid "softwarechannel_mirrorpackages: Download packages of a given channel"
-msgstr ""
+msgstr "softwarechannel_mirrorpackages: Stiahnuť balíky daného kanála"
 
 #: ../src/spacecmd/softwarechannel.py:2844
 msgid "usage: softwarechannel_mirrorpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_mirrorpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:2846
 msgid "    -l/--latest : Only mirror latest package version"
-msgstr ""
+msgstr "    -l/--latest : Iba zrkadlenie najnovšej verzie balíka"
 
 #: ../src/spacecmd/softwarechannel.py:2877
 msgid "Skipping"
