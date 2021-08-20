@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"PO-Revision-Date: 2021-08-20 05:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -351,9 +351,8 @@ msgid "Minimum 2 characters"
 msgstr "最少 2 个字符"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "需要重引导"
+msgstr "必填"
 
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
@@ -1893,22 +1892,21 @@ msgstr "过滤器名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "前缀"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
-msgstr ""
+msgstr "前缀将附加在通过模板创建的每个过滤器名称的前面"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "使用模板"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "创建新过滤器"
+msgstr "使用手动过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2031,29 +2029,26 @@ msgstr "使用中的项目"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
 msgid "Live patching based on a specific system"
-msgstr ""
+msgstr "根据特定系统在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "根据 SUSE 产品在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
-msgstr ""
+msgstr "模板"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
-#, fuzzy
 msgid "Product"
 msgstr "产品"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
-#, fuzzy
 msgid "Kernel"
-msgstr "内核选项"
+msgstr "内核"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
-#, fuzzy
 msgid "latest"
 msgstr "最新"
 
@@ -2288,7 +2283,7 @@ msgstr "已成功删除环境 {0}"
 msgid ""
 "This environment cannot be deleted since it is being used in an {0}"
 "autoinstallation distribution{1}."
-msgstr ""
+msgstr "此环境正被某个{0}自动安装发行套件{1}使用，无法删除。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:22
 msgid "New"
@@ -2457,9 +2452,8 @@ msgid "This channel is recommended"
 msgstr "建议使用此频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
-#, fuzzy
 msgid "This channel is mandatory"
-msgstr "建议使用此频道"
+msgstr "必须使用此频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
@@ -2551,11 +2545,10 @@ msgstr "无效目标类型。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
-msgstr "已保存公式。请编辑配置选项 "
+msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -2681,9 +2674,8 @@ msgid "Config URL"
 msgstr "配置 URL"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:365
-#, fuzzy
 msgid "Kiwi options"
-msgstr "内核选项"
+msgstr "Kiwi 选项"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:409
 msgid "Activation key is required for kiwi images."
@@ -3542,14 +3534,12 @@ msgid "Inventory file empty."
 msgstr "库存文件为空。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "未注册的系统"
+msgstr "已注册的系统"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "节点主机名"
+msgstr "未知主机名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -4849,7 +4839,7 @@ msgstr "清除字段"
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
-msgstr ""
+msgstr "单个虚拟机几乎使用了所有主机资源"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
 msgid "Please install libvirt python module."
@@ -4859,7 +4849,7 @@ msgstr "请安装 libvirt Python 模块。"
 msgid ""
 "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
 "modules are loaded."
-msgstr ""
+msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:164
 msgid "{0} selected"
@@ -5127,9 +5117,8 @@ msgid "Virtual network with no connection to other networks"
 msgstr "不连接其他网络的虚拟网络"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
 msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "网络基于 macvtap 驱动程序使用物理接口池。Guest 与主机之间无法通讯"
+msgstr "网络基于 macvtap 驱动程序使用物理接口池。 "
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
 msgid "SR-IOV pool"
@@ -5244,14 +5233,12 @@ msgid "Create Virtual Storage Pool"
 msgstr "创建虚拟储存池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Pool"
-msgstr "创建虚拟储存池"
+msgstr "虚拟储存池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Volume"
-msgstr "虚拟储存池和卷"
+msgstr "虚拟储存卷"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
@@ -5538,18 +5525,17 @@ msgstr "HTTP 错误代码 "
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:5
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:6
 msgid "undefined"
-msgstr ""
+msgstr "未定义"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:11
 #: ../html/src/utils/test-utils/setup/t.test.ts:12
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
-#, fuzzy
 msgid "foo {0} tea {1}"
-msgstr "第 {0} 页，共 {1} 页"
+msgstr "foo {0} tea {1}"
 
 #~ msgid "Time"
 #~ msgstr "时间"
