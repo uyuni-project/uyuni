@@ -95,6 +95,7 @@ Python 3 specific files for %{name}.
 
 %build
 make -f Makefile.spacewalk-koan all
+touch /tmp/aaaa
 
 %install
 %if 0%{?build_py2}
