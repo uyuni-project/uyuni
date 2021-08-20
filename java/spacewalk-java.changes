@@ -1,3 +1,4 @@
+- Show AppStreams tab just for modular channels
 - 'AppStreams with defaults' filter template in CLM
 - Add a link to OS image store dir in image list page
 - Do not log XMLRPC fault exceptions as errors (bsc#1188853)
