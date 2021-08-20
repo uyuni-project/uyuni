@@ -1,0 +1,13 @@
+<rhn:toolbar
+            base="h1"
+            icon="header-channel"
+            imgAlt="channels.jsp.alt"
+            miscUrl="/rhn/channels/manage/Edit.do?cid=${param.cid}"
+            miscIcon="item-edit"
+            miscText="toolbar.misc.manage_channel"
+            miscAcl="user_is_channel_admin()">
+        <c:out value="${channel_name}" escapeXml="true"/>
+</rhn:toolbar>
+
+<rhn:dialogmenu mindepth="0" maxdepth="1"
+                definition="/WEB-INF/nav/channel_detail.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />

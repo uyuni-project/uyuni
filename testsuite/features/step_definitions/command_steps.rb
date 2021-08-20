@@ -20,7 +20,7 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   result, return_code = node.run("getent hosts #{node.ip}", false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+  raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|
@@ -337,7 +337,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 end
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep "ERROR:" /var/log/rhn/reposync/*.log', false)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', false)
   raise "Errors during reposync:\n#{result}" if code.zero?
 end
 

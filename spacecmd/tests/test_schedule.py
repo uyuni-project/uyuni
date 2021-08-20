@@ -14,6 +14,8 @@ class TestSCSchedule:
     Test suite for "schedule" module.
     """
 
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='y'))
     def test_schedule_deletearchived_without_archived(self, shell):
         """
         Test do_schedule_deletearchived with no archived actions.
@@ -23,13 +25,13 @@ class TestSCSchedule:
         """
 
         shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock(return_value=[])
+        shell.client.schedule.listAllArchivedActions = MagicMock(return_value=[])
         shell.client.schedule.deleteActions = MagicMock()
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
-        assert shell.client.schedule.listArchivedActions.called
+        assert shell.client.schedule.listAllArchivedActions.called
         assert not shell.client.schedule.deleteActions.called
 
     @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
@@ -44,8 +46,8 @@ class TestSCSchedule:
         archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
 
         shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock()
-        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
+        shell.client.schedule.listAllArchivedActions = MagicMock()
+        shell.client.schedule.listAllArchivedActions.side_effect = [archived_dummy_actions] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
         logger = MagicMock()
 
@@ -67,8 +69,8 @@ class TestSCSchedule:
         archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
 
         shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock()
-        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
+        shell.client.schedule.listAllArchivedActions = MagicMock()
+        shell.client.schedule.listAllArchivedActions.side_effect = [archived_dummy_actions] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
         logger = MagicMock()
 
@@ -89,38 +91,14 @@ class TestSCSchedule:
         archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
 
         shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock()
-        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
+        shell.client.schedule.listAllArchivedActions = MagicMock()
+        shell.client.schedule.listAllArchivedActions.side_effect = [archived_dummy_actions] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
         assert shell.client.schedule.deleteActions.call_count == 0
-
-    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
-    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='y'))
-    def test_schedule_deletearchived_with_archived_batched(self, shell):
-        """
-        Test do_schedule_deletearchived with archived actions
-        and in a batched way.
-
-        :param shell:
-        :return:
-        """
-        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
-
-        shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock()
-        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [archived_dummy_actions] + [[]]
-        shell.client.schedule.deleteActions = MagicMock()
-        logger = MagicMock()
-
-        spacecmd.schedule.do_schedule_deletearchived(shell, "")
-
-        assert shell.client.schedule.listArchivedActions.called
-        assert shell.client.schedule.deleteActions.call_count == 2
-        assert shell.client.schedule.deleteActions.call_args[0][1] == [1, 2, 3]
 
     def test_schedule_cancel_noargs(self, shell):
         """

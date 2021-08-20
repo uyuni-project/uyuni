@@ -520,6 +520,7 @@
 "/rhn/channels/ChannelSubscribers.do",
 "/rhn/channels/TargetSystems.do",
 "/rhn/channels/ConfirmTargetSystems.do",
+"/rhn/channels/AppStreams.do"
 "/rhn/systems/customdata/CustomDataList.do",
 "/rhn/systems/customdata/CreateCustomKey.do",
 "/rhn/systems/customdata/DeleteCustomKey.do",
