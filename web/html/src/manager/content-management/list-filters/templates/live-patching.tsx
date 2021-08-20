@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
-import { Select, FormContext } from "components/input";
+import { useState, useEffect } from "react";
 import Network, { JsonResult } from "utils/network";
-import { showErrorToastr } from "components/toastr/toastr";
+import { usePrevious } from "utils/hooks";
+import { Select, FormContext } from "components/input";
 import { Props as FilterFormProps } from "../filter-form";
 
 import { Template } from "./index";
@@ -24,24 +24,19 @@ type Kernel = {
   latest?: boolean;
 };
 
-function handleResponseErrors(res) {
-  Network.responseErrorMessage(res)
-    .map(msg => showErrorToastr(msg.text));
-}
-
 function getProducts(): Promise<Product[]> {
-  return Network.get("/rhn/manager/api/contentmanagement/livepatching/products")
-    .then((res: JsonResult<Product[]>) => res.success ? res.data : Promise.reject(res));
+  return Network.get<JsonResult<Product[]>>("/rhn/manager/api/contentmanagement/livepatching/products")
+    .then(Network.unwrap);
 }
 
 function getSystems(query: string): Promise<System[]> {
-  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/systems?q=${query}`)
-    .then((res: JsonResult<System[]>) => res.success ? res.data : Promise.reject(res));
+  return Network.get<JsonResult<System[]>>(`/rhn/manager/api/contentmanagement/livepatching/systems?q=${query}`)
+    .then(Network.unwrap);
 }
 
 function getKernels(id: number, type: string): Promise<Kernel[]> {
-  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/kernels/${type}/${id}`)
-    .then((res: JsonResult<Kernel[]>) => res.success ? res.data : Promise.reject(res))
+  return Network.get<JsonResult<Kernel[]>>(`/rhn/manager/api/contentmanagement/livepatching/kernels/${type}/${id}`)
+    .then(Network.unwrap)
     .then(res => {
       if (res.length > 0)
         res[0].latest = true;
@@ -49,20 +44,9 @@ function getKernels(id: number, type: string): Promise<Kernel[]> {
     });
 }
 
-function usePrevious<T>(value: T) {
-  const ref = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 export default (props: FilterFormProps & { template: Template }) => {
   const template = props.template;
   const prevTemplate = usePrevious(template);
-  if (!template) {
-    return null;
-  }
 
   const formContext = React.useContext(FormContext);
   const setModelValue = formContext.setModelValue;
@@ -73,7 +57,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   useEffect(() => {
     getProducts()
       .then(setProducts)
-      .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
+      .catch(Network.showResponseErrorToastr);
   }, []);
 
   useEffect(() => {
@@ -95,7 +79,7 @@ export default (props: FilterFormProps & { template: Template }) => {
         const kernelId = latestKernel?.id ?? result[0]?.id ?? null;
         setModelValue?.("kernelId", kernelId);
       })
-        .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
+        .catch(Network.showResponseErrorToastr);
     } else {
       setKernels([]);
       setModelValue?.("kernelId", null);

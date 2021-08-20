@@ -18,6 +18,7 @@ export function mapFilterFormToRequest(
   if (Object.prototype.hasOwnProperty.call(filterForm, "template")) {
     requestForm.prefix = filterForm.labelPrefix;
     requestForm.kernelEvrId = filterForm.kernelId;
+    requestForm.channelId = filterForm.channelId;
     requestForm.template = filterForm['template'];
   }
 
