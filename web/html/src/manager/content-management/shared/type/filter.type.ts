@@ -41,4 +41,5 @@ export type FilterFormType = {
   systemName?: string;
   kernelId?: number;
   kernelName?: string;
+  channelId?: number;
 };
