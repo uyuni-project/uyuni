@@ -58,15 +58,15 @@ function request<Returns>(
     return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post<Payload, Returns = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
+function post<Returns = any, Payload = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
     return request<Returns>(url, "POST", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function del<Payload, Returns = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
+function del<Returns = any, Payload = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
     return request<Returns>(url, "DELETE", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function put<Payload, Returns = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
+function put<Returns = any, Payload = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
     return request<Returns>(url, "PUT", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 

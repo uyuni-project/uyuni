@@ -22,7 +22,6 @@ const networkAction = {
 };
 
 type NetworkActionKey = keyof typeof networkAction;
-type NetworkMethod = typeof networkAction[NetworkActionKey]
 
 const getApiUrl = (resource: string, nestedResource?: string, id?: string) => {
   if (!id) {
@@ -51,7 +50,7 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
 
       const apiUrl = getApiUrl(props.resource, props.nestedResource, id);
 
-      let networkRequest: ReturnType<NetworkMethod>;
+      let networkRequest: Cancelable;
       if (action === "get" || !networkAction[action]) {
         networkRequest = networkAction.get(apiUrl);
       } else {
