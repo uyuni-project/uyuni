@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-20 20:10+0000\n"
+"PO-Revision-Date: 2021-08-21 20:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6311,45 +6311,45 @@ msgstr "    -l/--latest : Iba zrkadlenie najnovšej verzie balíka"
 
 #: ../src/spacecmd/softwarechannel.py:2877
 msgid "Skipping"
-msgstr ""
+msgstr "Preskočenie"
 
 #: ../src/spacecmd/softwarechannel.py:2879
 msgid "Fetching package"
-msgstr ""
+msgstr "Načítanie balíka"
 
 #: ../src/spacecmd/softwarechannel.py:2884
 #, python-format
 msgid "Received package %s from channel %s is broken. Content is too short"
-msgstr ""
+msgstr "Prijatý balík %s z kanála %s je poškodený. Obsah je príliš krátky"
 
 #: ../src/spacecmd/softwarechannel.py:2888
 #, python-format
 msgid "Could not fetch package %s from channel %s"
-msgstr ""
+msgstr "Nepodarilo sa načítať balík %s z kanála %s"
 
 #: ../src/spacecmd/ssm.py:43
 msgid "The System Set Manager (SSM) is a group of systems that you "
-msgstr ""
+msgstr "Správca sady systémov (SSM) je skupina systémov, "
 
 #: ../src/spacecmd/ssm.py:44
 msgid "can perform tasks on as a whole."
-msgstr ""
+msgstr "na ktorých môžete vykonávať úlohy ako na celku."
 
 #: ../src/spacecmd/ssm.py:46
 msgid "Adding Systems:"
-msgstr ""
+msgstr "Pridanie systémov:"
 
 #: ../src/spacecmd/ssm.py:52
 msgid "Intersections:"
-msgstr ""
+msgstr "Priesečníky:"
 
 #: ../src/spacecmd/ssm.py:56
 msgid "Using the SSM:"
-msgstr ""
+msgstr "Použitie SSM:"
 
 #: ../src/spacecmd/ssm.py:64
 msgid "ssm_add: Add systems to the SSM"
-msgstr ""
+msgstr "ssm_add: Pridať systémy do SSM"
 
 #: ../src/spacecmd/ssm.py:65
 msgid "usage: ssm_add <SYSTEMS>"
