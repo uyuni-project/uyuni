@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-21 07:11+0000\n"
+"PO-Revision-Date: 2021-08-21 10:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -3647,9 +3647,8 @@ msgid "Registered Systems"
 msgstr "登録済みシステム"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "ノードのホスト名"
+msgstr "不明ホスト名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -4986,7 +4985,7 @@ msgstr "項目の消去"
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
-msgstr ""
+msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
 msgid "Please install libvirt python module."
@@ -4996,7 +4995,7 @@ msgstr "libvirt python モジュールをインストールしてください。
 msgid ""
 "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
 "modules are loaded."
-msgstr ""
+msgstr "KVMもXenも実行されていません。KVMとXenがインストールされ、カーネルモジュールがロードされていることを確認してください。"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:164
 msgid "{0} selected"
@@ -5271,11 +5270,8 @@ msgid "Virtual network with no connection to other networks"
 msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
 msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
-"ゲストとホストの間では通信できません"
+msgstr "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。 "
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
 msgid "SR-IOV pool"
@@ -5390,14 +5386,12 @@ msgid "Create Virtual Storage Pool"
 msgstr "仮想ストレージプールの作成"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Pool"
-msgstr "仮想ストレージプールの作成"
+msgstr "仮想ストレージプール"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Volume"
-msgstr "仮想ストレージプールとボリューム"
+msgstr "仮想ストレージボリューム"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
@@ -5689,18 +5683,17 @@ msgstr "HTTP エラーコード "
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:5
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:6
 msgid "undefined"
-msgstr ""
+msgstr "未定義"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:11
 #: ../html/src/utils/test-utils/setup/t.test.ts:12
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
-#, fuzzy
 msgid "foo {0} tea {1}"
-msgstr "{0} / {1} ページ"
+msgstr "foo {0} tea {1}"
 
 #~ msgid "Time"
 #~ msgstr "時刻"
