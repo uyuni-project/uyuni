@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-21 20:10+0000\n"
+"PO-Revision-Date: 2021-08-22 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6341,7 +6341,7 @@ msgstr "Pridanie systémov:"
 
 #: ../src/spacecmd/ssm.py:52
 msgid "Intersections:"
-msgstr "Priesečníky:"
+msgstr "Prieniky:"
 
 #: ../src/spacecmd/ssm.py:56
 msgid "Using the SSM:"
@@ -6353,49 +6353,49 @@ msgstr "ssm_add: Pridať systémy do SSM"
 
 #: ../src/spacecmd/ssm.py:65
 msgid "usage: ssm_add <SYSTEMS>"
-msgstr ""
+msgstr "použitie: ssm_add <SYSTÉMY>"
 
 #: ../src/spacecmd/ssm.py:67 ../src/spacecmd/ssm.py:116
 #: ../src/spacecmd/ssm.py:166 ../src/spacecmd/ssm.py:210
 msgid "see 'help ssm' for more details"
-msgstr ""
+msgstr "Viac podrobností nájdete v 'help ssm'"
 
 #: ../src/spacecmd/ssm.py:93
 #, python-format
 msgid "%s is already in the list"
-msgstr ""
+msgstr "%s je už v zozname"
 
 #: ../src/spacecmd/ssm.py:111
 msgid "ssm_intersect: Replace the current SSM with the intersection"
-msgstr ""
+msgstr "ssm_intersect: Nahradiť súčasný SSM prienikom"
 
 #: ../src/spacecmd/ssm.py:112
 msgid "               of the current list of systems and the list of"
-msgstr ""
+msgstr "               aktuálneho zoznamu systémov a zoznamu"
 
 #: ../src/spacecmd/ssm.py:113
 msgid "               systems passed as arguments"
-msgstr "               systémy zadané ako argumenty"
+msgstr "               systémov zadaných ako argumenty"
 
 #: ../src/spacecmd/ssm.py:114
 msgid "usage: ssm_intersect <SYSTEMS>"
-msgstr ""
+msgstr "použitie: ssm_intersect <SYSTÉMY>"
 
 #: ../src/spacecmd/ssm.py:163
 msgid "ssm_remove: Remove systems from the SSM"
-msgstr ""
+msgstr "ssm_remove: Odstrániť systémy zo SSM"
 
 #: ../src/spacecmd/ssm.py:164
 msgid "usage: ssm_remove <SYSTEMS>"
-msgstr ""
+msgstr "použitie: ssm_remove <SYSTÉMY>"
 
 #: ../src/spacecmd/ssm.py:207
 msgid "ssm_list: List the systems currently in the SSM"
-msgstr ""
+msgstr "ssm_list: Vypísať zoznam systémov, ktoré sú v súčasnosti v SSM"
 
 #: ../src/spacecmd/ssm.py:208
 msgid "usage: ssm_list"
-msgstr ""
+msgstr "použitie: ssm_list"
 
 #: ../src/spacecmd/ssm.py:227
 msgid "ssm_clear: Remove all systems from the SSM"
