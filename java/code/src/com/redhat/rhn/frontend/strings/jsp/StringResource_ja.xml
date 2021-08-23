@@ -10304,7 +10304,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve" approved="yes">
         <source>Filter syntax is incorrect!</source>
-        <target>フィルターの構文が間違っています</target>
+        <target>フィルターの構文が間違っています。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channelHeader" xml:space="preserve">
         <source>Channels using {0} repository</source>
@@ -19922,7 +19922,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.widgetsummary" xml:space="preserve" approved="yes">
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
-        <target>以下の時間で設定ファイル処理が動作するようスケジュールすることができます。 &lt;br/&gt; &lt;strong&gt; 注記: 以下の時間が動作を実行できる最も早い時間になります。&lt;/strong&gt;</target>
+        <target>以下の時間で設定ファイル配備処理が動作するようスケジュールすることができます。 &lt;br/&gt; &lt;strong&gt; 注記: 以下の時間が動作を実行できる最も早い時間になります。&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffFiles.do</context>
         </context-group>
