@@ -16,9 +16,6 @@ Feature: PXE boot a SLES 11 SP3 retail terminal
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prepare branch server for SLE11 SP3 terminal deployment
-    When I execute "prepare" for "SLE11 SP3" via semi-xmlrpc-tester    
-
   Scenario: PXE boot the SLES 11 SP3 retail terminal
     When I run "reboot" on "sle11sp3_terminal"
     And I wait at most 180 seconds until Salt master sees "sle11sp3_terminal" as "unaccepted"
