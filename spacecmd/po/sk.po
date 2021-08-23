@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-22 19:11+0000\n"
+"PO-Revision-Date: 2021-08-23 20:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6399,31 +6399,31 @@ msgstr "použitie: ssm_list"
 
 #: ../src/spacecmd/ssm.py:227
 msgid "ssm_clear: Remove all systems from the SSM"
-msgstr ""
+msgstr "ssm_clear: Odstrániť všetky systémy zo SSM"
 
 #: ../src/spacecmd/ssm.py:228
 msgid "usage: ssm_clear"
-msgstr ""
+msgstr "použitie: ssm_clear"
 
 #: ../src/spacecmd/system.py:50
 msgid "Same"
-msgstr ""
+msgstr "Rovnaké"
 
 #: ../src/spacecmd/system.py:51
 msgid "Only here"
-msgstr ""
+msgstr "Iba tu"
 
 #: ../src/spacecmd/system.py:52
 msgid "Newer here"
-msgstr ""
+msgstr "Novšie tu"
 
 #: ../src/spacecmd/system.py:53
 msgid "Only there"
-msgstr ""
+msgstr "Iba tam"
 
 #: ../src/spacecmd/system.py:54
 msgid "Newer there"
-msgstr ""
+msgstr "Novšie tam"
 
 #: ../src/spacecmd/system.py:74 ../src/spacecmd/system.py:3789
 msgid "Package"
@@ -6431,15 +6431,15 @@ msgstr "Balík"
 
 #: ../src/spacecmd/system.py:75
 msgid "This System"
-msgstr ""
+msgstr "Tento systém"
 
 #: ../src/spacecmd/system.py:76
 msgid "Other System"
-msgstr ""
+msgstr "Iný systém"
 
 #: ../src/spacecmd/system.py:77 ../src/spacecmd/system.py:3792
 msgid "Difference"
-msgstr ""
+msgstr "Rozdiel"
 
 #: ../src/spacecmd/system.py:125
 msgid "Removing Channels"
