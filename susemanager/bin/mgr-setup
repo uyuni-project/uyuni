@@ -259,7 +259,7 @@ check_mksubvolume() {
     then
         echo "'mksubvolume' not found. Installing package 'snapper'"
         $(command -v zypper || command -v dnf) --quiet install -y snapper
-        if ! [ $? -eq 0 ]; then
+        if [ $? -ne 0 ]; then
             echo "Please install the package 'snapper' manually."
             exit 1
         fi
