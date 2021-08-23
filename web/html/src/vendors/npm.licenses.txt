@@ -1527,8 +1527,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
 moment-timezone v0.5.33 - Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)
 https://github.com/moment/moment-timezone.git
 --------------------------------------------------------------------------------
@@ -1555,7 +1553,6 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
->>>>>>> Squash frontend timezone work
 node-gettext v3.0.0 - Andris Reinman
 http://github.com/alexanderwallin/node-gettext.git
 --------------------------------------------------------------------------------
