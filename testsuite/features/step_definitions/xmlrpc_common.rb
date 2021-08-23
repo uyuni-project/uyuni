@@ -253,6 +253,7 @@ Then(/^I have to see them by calling activationkey\.get_details\(\) having as de
   raise unless details['description'] == description
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I create an activation key including custom channels for "([^"]*)" via XML-RPC$/) do |client|
   steps %(
     When I am logged in via XML-RPC activationkey as user "admin" and password "admin"
@@ -285,8 +286,13 @@ When(/^I create an activation key including custom channels for "([^"]*)" via XM
     selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
   end
 
-  @activation_key_api.add_child_channels(key, selected_child_channels)
+  begin
+    @activation_key_api.add_child_channels(key, selected_child_channels)
+  rescue XMLRPC::FaultException => err
+    puts "The selected child channels can not be included: #{selected_child_channels}. Error: #{err}"
+  end
 end
+# rubocop:enable Metrics/BlockLength
 
 # actionchain namespace
 
