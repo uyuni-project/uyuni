@@ -1,3 +1,4 @@
+- Add route for virtual systems ReactJS page
 - fix actionchain stuck in pending/picked up (bsc#1189561)
 - provide static configuration key name for SSHMinionActionExecutor
   parallel threads

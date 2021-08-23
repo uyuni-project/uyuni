@@ -1,3 +1,4 @@
+- Button to add selected systems to SSM in virtual systems list
 - Add support for custom SSH port for SSH minions
 - UI for changing proxy
 
