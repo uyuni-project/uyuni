@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-06-17 08:58+0000\n"
+"PO-Revision-Date: 2021-08-23 04:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -1643,7 +1643,6 @@ msgid "distribution_create: Create a Kickstart tree"
 msgstr "distribution_create: 킥스타트 트리 생성"
 
 #: ../src/spacecmd/distribution.py:44
-#, fuzzy
 msgid ""
 "usage: distribution_create [options]\n"
 "\n"
@@ -1660,7 +1659,8 @@ msgstr ""
 "  -n 이름\n"
 "  -p 트리 경로\n"
 "  -b 연결할 기본 채널\n"
-"  -t 설치 유형 [fedora|rhel_4/5/6|generic_rpm]"
+"  -t 설치 유형 [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1763,7 +1763,6 @@ msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update: 킥스타트 트리의 경로 업데이트"
 
 #: ../src/spacecmd/distribution.py:290
-#, fuzzy
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -1778,7 +1777,8 @@ msgstr ""
 "옵션:\n"
 "  -p 트리 경로\n"
 "  -b 연결할 기본 채널\n"
-"  -t 설치 유형 [fedora|rhel_4/5/6|generic_rpm]"
+"  -t 설치 유형 [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -1914,9 +1914,9 @@ msgid "Type:       %s"
 msgstr "유형:       %s"
 
 #: ../src/spacecmd/errata.py:400
-#, fuzzy, python-format
+#, python-format
 msgid "Status:     %s"
-msgstr "OSA 상태:    %s"
+msgstr "상태:     %s"
 
 #: ../src/spacecmd/errata.py:401
 #, python-format
@@ -3870,58 +3870,57 @@ msgid "%s is not a valid package"
 msgstr "%s은(는) 유효한 패키지가 아님"
 
 #: ../src/spacecmd/package.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "Name:      %s"
-msgstr "이름:       %s"
+msgstr "이름:      %s"
 
 #: ../src/spacecmd/package.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "Version:   %s"
-msgstr "버전: %s"
+msgstr "버전:   %s"
 
 #: ../src/spacecmd/package.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "Release:   %s"
-msgstr "릴리스: %s"
+msgstr "릴리스:   %s"
 
 #: ../src/spacecmd/package.py:95
-#, fuzzy, python-format
+#, python-format
 msgid "Epoch:     %s"
-msgstr "에포크:   %s"
+msgstr "에포크:     %s"
 
 #: ../src/spacecmd/package.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Arch:      %s"
-msgstr "아키텍처:     %s"
+msgstr "아카이브:      %s"
 
 #: ../src/spacecmd/package.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "File:      %s"
-msgstr "파일:    %s"
+msgstr "파일:      %s"
 
 #: ../src/spacecmd/package.py:99
-#, fuzzy, python-format
+#, python-format
 msgid "Path:      %s"
-msgstr "경로:     %s"
+msgstr "경로:      %s"
 
 #: ../src/spacecmd/package.py:100
-#, fuzzy, python-format
+#, python-format
 msgid "Size:      %s"
-msgstr "크기:    %s"
+msgstr "크기:      %s"
 
 #: ../src/spacecmd/package.py:101
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: ../src/spacecmd/package.py:102
-#, fuzzy
 msgid "No"
-msgstr "없음"
+msgstr "아니요"
 
 #: ../src/spacecmd/package.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "Retracted: %s"
-msgstr "생성됨:  %s"
+msgstr "철회됨: %s"
 
 #: ../src/spacecmd/package.py:106
 #, python-format
@@ -4708,23 +4707,20 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "사용법: schedule_list [BEGINDATE] [ENDDATE]"
 
 #: ../src/spacecmd/schedule.py:459
-#, fuzzy
 msgid "schedule_deletearchived: Delete all archived actions"
-msgstr "schedule_listarchived: 보관된 작업 나열"
+msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
 
 #: ../src/spacecmd/schedule.py:460
-#, fuzzy
 msgid "usage: schedule_deletearchived"
-msgstr "사용법: schedule_details ID"
+msgstr "사용법: schedule_deletearchived"
 
 #: ../src/spacecmd/schedule.py:477
 msgid "Do you want to delete all ({}) archived actions? [y/N]"
-msgstr ""
+msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
 
 #: ../src/spacecmd/schedule.py:500
-#, fuzzy
 msgid "No archived actions found."
-msgstr "편집기를 찾지 못함"
+msgstr "보관된 작업을 찾을 수 없습니다."
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
