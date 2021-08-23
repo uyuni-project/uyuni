@@ -1,3 +1,4 @@
+- Button to add selected systems to SSM
 - Compare lowercase CPU arch with libvirt domain capabilities
 - Add option to run Ansible playbooks in 'test' mode
 - Add support for Kiwi options
