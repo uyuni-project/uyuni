@@ -1,3 +1,4 @@
+- Improved timezone support
 - implement package locking for salt minions
 - Show AppStreams tab just for modular channels
 - Fix Json null comparison in virtual network info parsing (bsc#1189167)

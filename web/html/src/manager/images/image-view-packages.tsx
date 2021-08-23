@@ -3,7 +3,7 @@ import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Utils } from "utils/functions";
-import { DateTime } from "components/datetime";
+import { FromNow } from "components/datetime";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -51,7 +51,7 @@ class ImageViewPackages extends React.Component<Props> {
           columnKey="installed"
           comparator={Utils.sortByDate}
           header={t("Installed")}
-          cell={row => <DateTime time={row.installed} />}
+          cell={row => <FromNow time={row.installed} />}
         />
       </Table>
     );

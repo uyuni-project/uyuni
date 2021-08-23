@@ -1,4 +1,6 @@
 import * as React from "react";
+// TODO: This should eventually be localizedMoment instead
+import moment from "moment";
 import { useState, useEffect, useRef } from "react";
 
 import moment from "moment";

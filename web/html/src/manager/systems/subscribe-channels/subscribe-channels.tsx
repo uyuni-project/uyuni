@@ -3,7 +3,6 @@ import * as React from "react";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionSchedule } from "components/action-schedule";
 import Network from "utils/network";
-import { Utils, Formats } from "utils/functions";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 import { Toggler } from "components/toggler";
@@ -14,9 +13,8 @@ import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import { JsonResult } from "utils/network";
 import { ActionChain } from "components/action-schedule";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
-declare var localTime: string;
-declare var timezone: string;
 declare var actionChains: Array<ActionChain>;
 
 const msgMap = {
@@ -41,7 +39,7 @@ type SystemChannelsProps = {
 
 type SystemChannelsState = {
   messages: Array<any>;
-  earliest: Date;
+  earliest: moment.Moment;
   originalBase: ChannelDto | null | undefined;
   selectedBase: ChannelDto | null | undefined;
   selectedChildrenIds: Map<number, Set<number>>; // base channel id -> set<child channel id>
@@ -65,7 +63,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     super(props);
     this.state = {
       messages: [],
-      earliest: Utils.dateWithTimezone(localTime),
+      earliest: localizedMoment(),
       originalBase: null,
       selectedBase: null,
       selectedChildrenIds: new Map(),
@@ -351,7 +349,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       {
         base: this.state.selectedBase,
         children: selectedChildrenList,
-        earliest: Formats.LocalDateTime(this.state.earliest),
+        earliest: this.state.earliest,
         actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       }
     )
@@ -388,9 +386,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       .catch(this.handleResponseError);
   };
 
-  onDateTimeChanged = (date: Date) => {
+  onDateTimeChanged = (value: moment.Moment) => {
     this.setState({
-      earliest: date,
+      earliest: value,
       actionChain: null,
     });
   };
@@ -706,8 +704,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           <ActionSchedule
             actionChains={actionChains}
             earliest={this.state.earliest}
-            timezone={timezone}
-            localTime={localTime}
             onActionChainChanged={this.onActionChainChanged}
             onDateTimeChanged={this.onDateTimeChanged}
             systemIds={[this.props.serverId]}
