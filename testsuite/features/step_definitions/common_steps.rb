@@ -511,7 +511,7 @@ When(/^I click the Add Product button$/) do
 end
 
 Then(/^the SLE12 SP5 product should be added$/) do
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', false)
+  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', fatal = false, buffer_size = 1_000_000)
   raise unless output.include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
   if $product != 'Uyuni'
     raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
@@ -520,7 +520,7 @@ Then(/^the SLE12 SP5 product should be added$/) do
 end
 
 Then(/^the SLE15 (SP2|SP3) product should be added$/) do |sp_version|
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', false)
+  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', fatal = false, buffer_size = 1_000_000)
   raise unless output.include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise unless output.include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
   raise unless output.include? "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"

@@ -94,7 +94,7 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
 end
 
 When(/^I add "([^"]*)" channel$/) do |channel|
-  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
+  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size = 1_000_000)
 end
 
 When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
@@ -226,7 +226,7 @@ Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, hos
 end
 
 When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output, _code = $server.run("mgr-sync list products", false)
+  list_output, _code = $server.run("mgr-sync list products", fatal = false, buffer_size = 1_000_000)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -234,14 +234,14 @@ When(/^I enable product "([^"]*)"$/) do |prd|
     linenum += 1
     next unless line.include? prd
     executed = true
-    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product", false)
+    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product", fatal = false, buffer_size = 1_000_000)
     break
   end
   raise $command_output.to_s unless executed
 end
 
 When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output, _code = $server.run("mgr-sync list products", false)
+  list_output, _code = $server.run("mgr-sync list products", fatal = false, buffer_size = 1_000_000)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -249,18 +249,18 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
     linenum += 1
     next unless line.include? prd
     executed = true
-    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product --no-recommends", false)
+    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product --no-recommends", fatal = false, buffer_size = 1_000_000)
     break
   end
   raise $command_output.to_s unless executed
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  $command_output, _code = $server.run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", false)
+  $command_output, _code = $server.run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", fatal = false, buffer_size = 1_000_000)
 end
 
 When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
-  $command_output, _code = $server.run("mgr-sync #{arg1}")
+  $command_output, _code = $server.run("mgr-sync #{arg1}", buffer_size = 1_000_000)
 end
 
 When(/^I remove the mgr\-sync cache file$/) do
