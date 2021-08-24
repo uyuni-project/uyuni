@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-05-17 20:59+0000\n"
+"PO-Revision-Date: 2021-08-09 19:10+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -387,9 +387,8 @@ msgid "Remove"
 msgstr "Odstranit"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "Nutný restart systému"
+msgstr "požadovaný"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -2013,22 +2012,23 @@ msgstr "Název filtru"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "Předpona"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
+"K názvu každého jednotlivého filtru vytvořeného šablonou bude připravena "
+"předpona"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "Použijte šablonu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "Vytvořit nový filtr"
+msgstr "Použijte manuální filtr"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2152,26 +2152,23 @@ msgstr "Používané projekty"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "Aktivní záplatování založené na produktu SUSE"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "Template"
-msgstr ""
+msgstr "Šablona"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
 msgid "Product"
-msgstr "Produkty"
+msgstr "Produkt"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
 msgid "Kernel"
-msgstr "Volby jádra"
+msgstr "Jádro"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
 msgid "latest"
-msgstr "Nejnovější"
+msgstr "nejnovější"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
 msgid "Create a new content lifecycle project"
@@ -3645,14 +3642,12 @@ msgid "Inventory file empty."
 msgstr "Soubor soupisu je prázdný."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "Neregistrovaný systém"
+msgstr "Registrované systémy"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "Název hostitele uzlu"
+msgstr "Neznámé názvy hostitelů"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -5670,6 +5665,59 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "Live patching based on a specific system"
+#~ msgstr "Aktivní záplatování založené na tom kterém systému"
+
+#~ msgid ""
+#~ "This environment cannot be deleted since it is being used in an {0}"
+#~ "autoinstallation distribution{1}."
+#~ msgstr ""
+#~ "Toto prostředí nelze odstranit, protože se používá v {0}autoinstalační "
+#~ "distribuci{1}."
+
+#~ msgid "This channel is mandatory"
+#~ msgstr "Tento kanál je povinný"
+
+#~ msgid ""
+#~ "Formula saved. Edit configuration options in the enabled formulas and "
+#~ "apply the "
+#~ msgstr ""
+#~ "Vzorec uložen. Upravte možnosti konfigurace v povolených vzorcích a "
+#~ "aplikujte "
+
+#~ msgid "Kiwi options"
+#~ msgstr "Volby kiwi"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "Jediný virtuální stroj využívající téměř všechny zdroje hostitele"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM ani Xen neběží. Přesvědčte se, že jsou nainstalovány a moduly jádra "
+#~ "načteny."
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr ""
+#~ "Síť založená na ovladači macvtap k použití fondu fyzických rozhraní. "
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "Fond virtuálních úložišť"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "Svazek virtuálního úložiště"
+
+#~ msgid "foo"
+#~ msgstr "foo"
+
+#~ msgid "undefined"
+#~ msgstr "nedefinováno"
+
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "foo {0} čaj {1}"
 
 #~ msgid "Apply"
 #~ msgstr "Použít"

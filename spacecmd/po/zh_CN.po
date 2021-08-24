@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"PO-Revision-Date: 2021-08-20 05:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8099,6 +8099,90 @@ msgstr "参数 {} 不是字符串类型，而是 {}。"
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "获取 FQDN 时发生未经处理的异常："
+
+#~ msgid ""
+#~ "usage: distribution_create [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -n NAME\n"
+#~ "  -p path to tree\n"
+#~ "  -b base channel to associate with\n"
+#~ "  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+#~ msgstr ""
+#~ "用法：distribution_create [选项]\n"
+#~ "\n"
+#~ "选项：\n"
+#~ "  -n 名称\n"
+#~ "  -p 树的路径\n"
+#~ "  -b 要关联的基础频道\n"
+#~ "  -t 安装类型 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+
+#~ msgid ""
+#~ "usage: distribution_update NAME [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -p path to tree\n"
+#~ "  -b base channel to associate with\n"
+#~ "  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+#~ msgstr ""
+#~ "用法：distribution_update NAME [选项]\n"
+#~ "\n"
+#~ "选项：\n"
+#~ "  -p 树的路径\n"
+#~ "  -b 要关联的基础频道\n"
+#~ "  -t 安装类型 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+
+#~ msgid "Status:     %s"
+#~ msgstr "状态：%s"
+
+#~ msgid "Name:      %s"
+#~ msgstr "名称：%s"
+
+#~ msgid "Version:   %s"
+#~ msgstr "版本：%s"
+
+#~ msgid "Release:   %s"
+#~ msgstr "发行版：%s"
+
+#~ msgid "Epoch:     %s"
+#~ msgstr "纪元：%s"
+
+#~ msgid "Arch:      %s"
+#~ msgstr "体系结构：%s"
+
+#~ msgid "File:      %s"
+#~ msgstr "文件：%s"
+
+#~ msgid "Path:      %s"
+#~ msgstr "路径：%s"
+
+#~ msgid "Size:      %s"
+#~ msgstr "大小：%s"
+
+#~ msgid "Yes"
+#~ msgstr "是"
+
+#~ msgid "No"
+#~ msgstr "否"
+
+#~ msgid "Retracted: %s"
+#~ msgstr "已收回：%s"
+
+#~ msgid "schedule_deletearchived: Delete all archived actions"
+#~ msgstr "schedule_deletearchived：删除所有存档的操作"
+
+#~ msgid "usage: schedule_deletearchived"
+#~ msgstr "用法：schedule_deletearchived"
+
+#~ msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#~ msgstr "您要删除全部 ({}) 个存档的操作吗？[y/N]"
+
+#~ msgid "No archived actions found."
+#~ msgstr "未找到存档的操作。"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search：查找符合给定准则的软件包"

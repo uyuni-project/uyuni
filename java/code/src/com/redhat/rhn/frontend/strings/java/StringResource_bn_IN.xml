@@ -8095,6 +8095,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.channels.edit.base_channel_updated" xml:space="preserve">
         <source>System's Base Channel has been updated.</source>
@@ -9355,6 +9356,7 @@ Please check:
 for more detailed errors.  If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.
         </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
         <source>Successfully deleted {0} patches.</source>
@@ -9497,6 +9499,7 @@ Below are all the channel content ISOs available for use with channel {0}.  If a
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr2" xml:space="preserve">
         <source>
@@ -9574,6 +9577,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
@@ -10323,6 +10327,17 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.guest_migrate" xml:space="preserve">
+        <source>Migrate a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
+        <source>Invalid filter template</source>
       <target state="new" />
   </trans-unit>
       </body>

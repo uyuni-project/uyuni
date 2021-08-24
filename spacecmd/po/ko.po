@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-21 09:57+0000\n"
+"PO-Revision-Date: 2021-08-23 04:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2986,7 +2986,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2114
 msgid "Kickstart Profiles"
-msgstr "킥스타트 프로파일"
+msgstr "Kickstart 프로파일"
 
 #: ../src/spacecmd/kickstart.py:2119
 msgid "Original Profile:"
@@ -8152,3 +8152,87 @@ msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
+
+#~ msgid ""
+#~ "usage: distribution_create [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -n NAME\n"
+#~ "  -p path to tree\n"
+#~ "  -b base channel to associate with\n"
+#~ "  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+#~ msgstr ""
+#~ "사용법: distribution_create [옵션]\n"
+#~ "\n"
+#~ "옵션:\n"
+#~ "  -n 이름\n"
+#~ "  -p 트리 경로\n"
+#~ "  -b 연결할 기본 채널\n"
+#~ "  -t 설치 유형 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+
+#~ msgid ""
+#~ "usage: distribution_update NAME [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -p path to tree\n"
+#~ "  -b base channel to associate with\n"
+#~ "  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+#~ msgstr ""
+#~ "사용법: distribution_update NAME [옵션]\n"
+#~ "\n"
+#~ "옵션:\n"
+#~ "  -p 트리 경로\n"
+#~ "  -b 연결할 기본 채널\n"
+#~ "  -t 설치 유형 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+
+#~ msgid "Status:     %s"
+#~ msgstr "상태:     %s"
+
+#~ msgid "Name:      %s"
+#~ msgstr "이름:      %s"
+
+#~ msgid "Version:   %s"
+#~ msgstr "버전:   %s"
+
+#~ msgid "Release:   %s"
+#~ msgstr "릴리스:   %s"
+
+#~ msgid "Epoch:     %s"
+#~ msgstr "에포크:     %s"
+
+#~ msgid "Arch:      %s"
+#~ msgstr "아카이브:      %s"
+
+#~ msgid "File:      %s"
+#~ msgstr "파일:      %s"
+
+#~ msgid "Path:      %s"
+#~ msgstr "경로:      %s"
+
+#~ msgid "Size:      %s"
+#~ msgstr "크기:      %s"
+
+#~ msgid "Yes"
+#~ msgstr "예"
+
+#~ msgid "No"
+#~ msgstr "아니요"
+
+#~ msgid "Retracted: %s"
+#~ msgstr "철회됨: %s"
+
+#~ msgid "schedule_deletearchived: Delete all archived actions"
+#~ msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
+
+#~ msgid "usage: schedule_deletearchived"
+#~ msgstr "사용법: schedule_deletearchived"
+
+#~ msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#~ msgid "No archived actions found."
+#~ msgstr "보관된 작업을 찾을 수 없습니다."

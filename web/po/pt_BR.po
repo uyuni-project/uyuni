@@ -5562,6 +5562,10 @@ msgstr ""
 msgid "HTTP Error code "
 msgstr ""
 
+#, fuzzy
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "Página {0} de {1}"
+
 #~ msgid "Apply"
 #~ msgstr "Aplicar"
 

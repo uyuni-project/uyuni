@@ -5670,6 +5670,22 @@ msgstr ""
 msgid "HTTP Error code "
 msgstr ""
 
+#, fuzzy
+#~ msgid "This channel is mandatory"
+#~ msgstr "Este canal está recomendado"
+
+#, fuzzy
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "Redes"
+
+#, fuzzy
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "Tipo de fuente"
+
+#, fuzzy
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "Página {0} de {1}"
+
 #~ msgid "Apply"
 #~ msgstr "Aplicar"
 

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-05-21 11:01+0000\n"
+"PO-Revision-Date: 2021-08-21 10:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -391,9 +391,8 @@ msgid "Remove"
 msgstr "削除"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "要再起動"
+msgstr "必要"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -2025,22 +2024,23 @@ msgstr "フィルタ名"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "プレフィックス"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
+"プレフィックスは、テンプレートによって作成されたすべての個々のフィルタの名前"
+"の前に付加されます"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "テンプレートを使用する"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "新しいフィルタの作成"
+msgstr "手動フィルタを使用する"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2165,24 +2165,21 @@ msgstr "使用しているプロジェクト"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "SUSE製品に基づくライブパッチ処理"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "Template"
-msgstr ""
+msgstr "テンプレート"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
 msgid "Product"
 msgstr "製品"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
 msgid "Kernel"
-msgstr "カーネルオプション"
+msgstr "カーネル"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
 msgid "latest"
 msgstr "最新"
 
@@ -3686,14 +3683,12 @@ msgid "Inventory file empty."
 msgstr "インベントリファイルの内容がありません。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "未登録のシステム"
+msgstr "登録済みシステム"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "ノードのホスト名"
+msgstr "不明ホスト名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -5718,6 +5713,60 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "Live patching based on a specific system"
+#~ msgstr "固有のシステムに基づくライブパッチ処理"
+
+#~ msgid ""
+#~ "This environment cannot be deleted since it is being used in an {0}"
+#~ "autoinstallation distribution{1}."
+#~ msgstr ""
+#~ "この環境は {0}自動インストールディストリビューション{1} で使用されているた"
+#~ "め、削除できません。"
+
+#~ msgid "This channel is mandatory"
+#~ msgstr "このチャンネルは必須チャンネルです"
+
+#~ msgid ""
+#~ "Formula saved. Edit configuration options in the enabled formulas and "
+#~ "apply the "
+#~ msgstr ""
+#~ "formula を保存しました。有効化された formula 内で設定オプションを編集し、"
+#~ "下記を適用してください "
+
+#~ msgid "Kiwi options"
+#~ msgstr "Kiwiオプション"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVMもXenも実行されていません。KVMとXenがインストールされ、カーネルモジュー"
+#~ "ルがロードされていることを確認してください。"
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr ""
+#~ "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワー"
+#~ "ク。 "
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "仮想ストレージプール"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "仮想ストレージボリューム"
+
+#~ msgid "foo"
+#~ msgstr "foo"
+
+#~ msgid "undefined"
+#~ msgstr "未定義"
+
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "foo {0} tea {1}"
 
 #~ msgid "Apply"
 #~ msgstr "適用"

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-21 09:57+0000\n"
+"PO-Revision-Date: 2021-08-21 10:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8334,6 +8334,90 @@ msgstr "パラメータ {} は文字列型ではなく {} です。"
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN を取得している際に未処理の例外が発生しました:"
+
+#~ msgid ""
+#~ "usage: distribution_create [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -n NAME\n"
+#~ "  -p path to tree\n"
+#~ "  -b base channel to associate with\n"
+#~ "  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+#~ msgstr ""
+#~ "使用方法: distribution_create [オプション]\n"
+#~ "\n"
+#~ "オプション:\n"
+#~ "  -n 名前\n"
+#~ "  -p ツリーへのパス\n"
+#~ "  -b 関連づけるベースチャンネル\n"
+#~ "  -t インストールタイプ [fedora18|rhel_6/7/8|sles12generic|sles15generic|"
+#~ "suse|generic_rpm|...]"
+
+#~ msgid ""
+#~ "usage: distribution_update NAME [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -p path to tree\n"
+#~ "  -b base channel to associate with\n"
+#~ "  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+#~ "generic_rpm|...]"
+#~ msgstr ""
+#~ "使用方法: distribution_update 名前 [オプション]\n"
+#~ "\n"
+#~ "オプション:\n"
+#~ "  -p ツリーへのパス\n"
+#~ "  -b 関連づけるベースチャンネル\n"
+#~ "  -t インストールタイプ [fedora18|rhel_6/7/8|sles12generic|sles15generic|"
+#~ "suse|generic_rpm|...]"
+
+#~ msgid "Status:     %s"
+#~ msgstr "ステータス:     %s"
+
+#~ msgid "Name:      %s"
+#~ msgstr "名前:       %s"
+
+#~ msgid "Version:   %s"
+#~ msgstr "バージョン:   %s"
+
+#~ msgid "Release:   %s"
+#~ msgstr "リリース:   %s"
+
+#~ msgid "Epoch:     %s"
+#~ msgstr "エポック:     %s"
+
+#~ msgid "Arch:      %s"
+#~ msgstr "アーキテクチャ:      %s"
+
+#~ msgid "File:      %s"
+#~ msgstr "ファイル:      %s"
+
+#~ msgid "Path:      %s"
+#~ msgstr "パス:      %s"
+
+#~ msgid "Size:      %s"
+#~ msgstr "サイズ:      %s"
+
+#~ msgid "Yes"
+#~ msgstr "はい"
+
+#~ msgid "No"
+#~ msgstr "いいえ"
+
+#~ msgid "Retracted: %s"
+#~ msgstr "撤回: %s"
+
+#~ msgid "schedule_deletearchived: Delete all archived actions"
+#~ msgstr "schedule_deletearchived: すべてのアーカイブ済みのアクションを削除"
+
+#~ msgid "usage: schedule_deletearchived"
+#~ msgstr "使用方法: schedule_deletearchived"
+
+#~ msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#~ msgstr "すべての ({}) アーカイブ済みのアクションを削除しますか? [y / N]"
+
+#~ msgid "No archived actions found."
+#~ msgstr "アーカイブ済みのアクションが見つかりません。"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search: 指定した条件に合致するパッケージを検索"

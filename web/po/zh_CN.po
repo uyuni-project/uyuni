@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"PO-Revision-Date: 2021-08-20 05:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -380,9 +380,8 @@ msgid "Remove"
 msgstr "去除"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "需要重引导"
+msgstr "必填"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -1966,22 +1965,21 @@ msgstr "过滤器名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "前缀"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
-msgstr ""
+msgstr "前缀将附加在通过模板创建的每个过滤器名称的前面"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "使用模板"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "创建新过滤器"
+msgstr "使用手动过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2104,24 +2102,21 @@ msgstr "使用中的项目"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "根据 SUSE 产品在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "Template"
-msgstr ""
+msgstr "模板"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
 msgid "Product"
 msgstr "产品"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
 msgid "Kernel"
-msgstr "内核选项"
+msgstr "内核"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
 msgid "latest"
 msgstr "最新"
 
@@ -3575,14 +3570,12 @@ msgid "Inventory file empty."
 msgstr "库存文件为空。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "未注册的系统"
+msgstr "已注册的系统"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "节点主机名"
+msgstr "未知主机名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -5556,6 +5549,52 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Live patching based on a specific system"
+#~ msgstr "根据特定系统在线增补"
+
+#~ msgid ""
+#~ "This environment cannot be deleted since it is being used in an {0}"
+#~ "autoinstallation distribution{1}."
+#~ msgstr "此环境正被某个{0}自动安装发行套件{1}使用，无法删除。"
+
+#~ msgid "This channel is mandatory"
+#~ msgstr "必须使用此频道"
+
+#~ msgid ""
+#~ "Formula saved. Edit configuration options in the enabled formulas and "
+#~ "apply the "
+#~ msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 "
+
+#~ msgid "Kiwi options"
+#~ msgstr "Kiwi 选项"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "单个虚拟机几乎使用了所有主机资源"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr "网络基于 macvtap 驱动程序使用物理接口池。 "
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "虚拟储存池"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "虚拟储存卷"
+
+#~ msgid "foo"
+#~ msgstr "foo"
+
+#~ msgid "undefined"
+#~ msgstr "未定义"
+
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "foo {0} tea {1}"
 
 #~ msgid "Apply"
 #~ msgstr "应用"

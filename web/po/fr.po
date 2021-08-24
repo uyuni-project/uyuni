@@ -17,15 +17,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-03-26 18:56+0000\n"
-"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
-"Language: it\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -115,7 +113,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:185
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Back"
-msgstr "Indietro"
+msgstr ""
 
 #: ../html/src/components/config-channels.tsx:297
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
@@ -197,7 +195,7 @@ msgstr ""
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
 msgid "Cancel"
-msgstr "Annulla"
+msgstr ""
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
@@ -372,7 +370,7 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
-msgstr "Rimuovi"
+msgstr ""
 
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
@@ -383,7 +381,7 @@ msgstr ""
 #: ../html/src/manager/login/login.tsx:137
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
 msgid "Password"
-msgstr "Password"
+msgstr ""
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
@@ -467,7 +465,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1106
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:557
 msgid "Next"
-msgstr "Avanti"
+msgstr ""
 
 #: ../html/src/components/pagination.tsx:33
 msgid "Last"
@@ -720,7 +718,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:92
 msgid "System"
-msgstr "Sistema"
+msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Tomcat (Java JMX)"
@@ -1478,11 +1476,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
 msgid "Subscription Matching"
-msgstr "Abbinamento della sottoscrizione"
+msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
 msgid "Subscriptions"
-msgstr "Sottoscrizioni"
+msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
@@ -1571,7 +1569,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:61
 msgid "Add"
-msgstr "Aggiungi"
+msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:80
 msgid "Name:"
@@ -2277,7 +2275,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:675
 #: ../html/src/manager/images/image-view.tsx:657
 msgid "Build"
-msgstr "Crea"
+msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
@@ -3161,11 +3159,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:387
 msgid "Images"
-msgstr "Immagini"
+msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
-msgstr "Creazione"
+msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
@@ -3190,12 +3188,12 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/images/image-view.tsx:772
 msgid "Patches"
-msgstr "Patch"
+msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:653
 #: ../html/src/manager/images/image-view.tsx:772
 msgid "Packages"
-msgstr "Pacchetti"
+msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:661
 msgid "Last Modified"
@@ -3660,9 +3658,8 @@ msgid "Please save all your changes before applying!"
 msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
 msgid "Apply changes"
-msgstr "Applica lo stato alto"
+msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.tsx:202
 #: ../html/src/manager/minion/packages/package-states.tsx:206
@@ -3715,7 +3712,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:60
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr "Stato"
+msgstr ""
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:40
 msgid "Package states have been saved."
@@ -3909,7 +3906,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:218
 msgid "Remote Commands"
-msgstr "Comandi remoti"
+msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:231
 msgid "Type the command here"
@@ -4060,16 +4057,15 @@ msgid "Show full highstate output"
 msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:132
-#, fuzzy
 msgid "System Group"
-msgstr "Sistema"
+msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
 #: ../html/src/manager/state/recurring-states-details.tsx:18
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:191
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:64
 msgid "Organization"
-msgstr "Organizzazione"
+msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
@@ -4090,7 +4086,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:126
 msgid "Apply Highstate"
-msgstr "Applica lo stato alto"
+msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:135
 msgid "Create Recurring"
@@ -4102,7 +4098,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
-msgstr "Gruppo"
+msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
@@ -4317,7 +4313,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
 msgid "Proxy"
-msgstr "Proxy"
+msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid ""
@@ -4370,12 +4366,12 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:38
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:217
 msgid "No Change"
-msgstr "Nessuna modifica"
+msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:518
 msgid "Subscribe"
-msgstr "Sottoscrivi"
+msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:40
 msgid "Unsubsribe"
@@ -4411,7 +4407,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
 msgid "Systems"
-msgstr "Sistemi"
+msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:198
 msgid "Desired base Channel"
@@ -4639,7 +4635,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
 msgid "Virtual Host Manager"
-msgstr "Gestore dell'host virtuale"
+msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
 msgid "Add a {0}"
@@ -4647,7 +4643,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:164
 msgid "Virtual Host Managers"
-msgstr "Gestori di host virtuali"
+msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:175
 msgid "Add a virtual host manager"
@@ -4848,13 +4844,13 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
-msgstr "Reti"
+msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/nets/network-properties.js:495
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
-msgstr "Cancella i campi"
+msgstr ""
 
 #: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
@@ -5523,7 +5519,3 @@ msgstr ""
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr ""
-
-#, fuzzy
-#~ msgid "Virtual Storage Pool"
-#~ msgstr "Gestore dell'host virtuale"

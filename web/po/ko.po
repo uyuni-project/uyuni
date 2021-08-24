@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-05-21 09:57+0000\n"
+"PO-Revision-Date: 2021-08-23 04:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -385,9 +385,8 @@ msgid "Remove"
 msgstr "제거"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "재부팅 필요"
+msgstr "필수"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -2010,22 +2009,21 @@ msgstr "필터 이름"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "접두사"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
-msgstr ""
+msgstr "접두사는 템플릿에 의해 생성된 모든 개별 필터의 이름 앞에 추가됩니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "템플릿 사용"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "새 필터 만들기"
+msgstr "수동 필터 만들기"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2148,24 +2146,21 @@ msgstr "사용 중 프로젝트"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "SUSE 제품 기반 라이브 패치"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "Template"
-msgstr ""
+msgstr "템플릿"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
 msgid "Product"
 msgstr "제품"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
 msgid "Kernel"
-msgstr "커널 옵션"
+msgstr "커널"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
 msgid "latest"
 msgstr "최신"
 
@@ -3640,14 +3635,12 @@ msgid "Inventory file empty."
 msgstr "인벤토리 파일이 비어 있습니다."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "미등록 시스템"
+msgstr "등록된 시스템"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "노드 호스트 이름"
+msgstr "알 수 없는 호스트 이름"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -5647,6 +5640,56 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Live patching based on a specific system"
+#~ msgstr "특정 시스템 기반 라이브 패치"
+
+#~ msgid ""
+#~ "This environment cannot be deleted since it is being used in an {0}"
+#~ "autoinstallation distribution{1}."
+#~ msgstr ""
+#~ "이 환경은 {0}자동 설치 배포{1}에서 사용 중이므로 삭제할 수 없습니다."
+
+#~ msgid "This channel is mandatory"
+#~ msgstr "이 채널은 필수입니다."
+
+#~ msgid ""
+#~ "Formula saved. Edit configuration options in the enabled formulas and "
+#~ "apply the "
+#~ msgstr ""
+#~ "수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 적용합니다. "
+
+#~ msgid "Kiwi options"
+#~ msgstr "Kiwi 옵션"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 "
+#~ "확인하십시오."
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. "
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "가상 저장소 풀"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "가상 저장소 볼륨"
+
+#~ msgid "foo"
+#~ msgstr "푸"
+
+#~ msgid "undefined"
+#~ msgstr "정의되지 않음"
+
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "푸 {0} 티 {1}"
 
 #~ msgid "Apply"
 #~ msgstr "적용"
