@@ -29780,39 +29780,6 @@ given channel.</source>
         </context-group>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
-        <source>No Modules</source>
-	<context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/SystemList</context>
-          <context context-type="sourcefile">/systems/SystemEntitlements</context>
-	</context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="appstream.jsp.streamname" xml:space="preserve">
-        <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="appstream.jsp.modulename" xml:space="preserve">
-        <source>Module Name</source>
-         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
-        </context-group>
-    <target state="new" />
-  </trans-unit>
-      <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
-        <source>AppStreams</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
-        <source>AppStreams</source>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>
