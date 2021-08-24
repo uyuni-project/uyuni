@@ -1,4 +1,4 @@
-#! /bin/sh -e
+#! /bin/sh -ex
 
 HERE=`dirname $0`
 . $HERE/VERSION
@@ -72,6 +72,7 @@ test -n "$PACKAGES" || {
 echo "Starting building and submission at $(date)"
 date
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
+PACKAGES="spacewalk-koan"
 for p in ${PACKAGES};do
     pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
     CHOWN_CMD="${CHOWN_CMD}; chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
