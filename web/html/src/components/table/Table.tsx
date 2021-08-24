@@ -42,6 +42,9 @@ type TableProps = {
   /** enables item selection */
   selectable: boolean;
 
+  /** tells if a row is selectable */
+  isSelectEnabled?: (row: any) => boolean;
+
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;
 
@@ -88,7 +91,7 @@ export function Table(props: TableProps) {
             .filter(isColumn)
             .map((column) => React.cloneElement(column, { data: datum, criteria: criteria }));
 
-          if (selectable) {
+          if (selectable && (props.isSelectEnabled?.(datum) ?? true)) {
             const checkbox = (
               <Column
                 key="check"
@@ -97,6 +100,20 @@ export function Table(props: TableProps) {
                     type="checkbox"
                     checked={selectedItems.includes(props.identifier(datum))}
                     onChange={(e) => handleSelect(props.identifier(datum), e.target.checked)}
+                  />
+                }
+              />
+            );
+            cells.unshift(checkbox);
+          } else if (selectable && (!props.isSelectEnabled?.(datum) ?? true)) {
+            const checkbox = (
+              <Column
+                key="check"
+                cell={
+                  <input
+                    type="checkbox"
+                    disabled
+                    checked={false}
                   />
                 }
               />
