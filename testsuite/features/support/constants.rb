@@ -191,6 +191,7 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
                            'debian10_ssh_minion' => 'debian-10-pool' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
+                          'SLES11-SP3-Pool' => 'sles11-sp3-pool-i586',
                           'SLES11-SP4-Pool' => 'sles11-sp4-pool-x86_64',
                           'SLES12-SP4-Pool' => 'sles12-sp4-pool-x86_64',
                           'SLES12-SP5-Pool' => 'sles12-sp5-pool-x86_64',
