@@ -1,3 +1,4 @@
+- Fix Json null comparison in virtual network info parsing (bsc#1189167)
 - Update translation strings
 - 'AppStreams with defaults' filter template in CLM
 - Add a link to OS image store dir in image list page
