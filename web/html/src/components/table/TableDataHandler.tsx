@@ -56,6 +56,9 @@ type Props = {
   /** enables item selection */
   selectable: boolean;
 
+  /** tells if a row is selectable */
+  isSelectEnabled?: (row: any) => boolean;
+
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;
 
@@ -273,9 +276,10 @@ export class TableDataHandler extends React.Component<Props, State> {
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const isEmpty = itemCount === 0;
+    const selectEnabledItems = currItems.filter((curr) => this.props.isSelectEnabled?.(curr) ?? true);
 
     if (this.props.selectable) {
-      const currIds = currItems.map((item) => this.props.identifier(item));
+      const currIds = selectEnabledItems.map((item) => this.props.identifier(item));
 
       const handleSelectAll = (sel) => {
         let arr = selectedItems;
