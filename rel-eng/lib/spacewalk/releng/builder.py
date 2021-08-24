@@ -188,10 +188,13 @@ class Builder(object):
             define_dist = "--define 'dist %s'" % self.dist
         elif dist:
             define_dist = "--define 'dist %s'" % dist
-
+        debug("**********DEBUG JORDI ***********")
+        debug("before calling rpmbuild")
         cmd = 'rpmbuild --define "_source_filedigest_algorithm md5"  --define "_binary_filedigest_algorithm md5" %s %s --nodeps -bs %s' % \
                 (self._get_rpmbuild_dir_options(), define_dist, self.spec_file)
         output = run_command(cmd)
+        debug("**********DEBUG JORDI ***********")
+        debug("after calling rpmbuild")
         print(output)
         self.srpm_location = self._find_wrote_in_rpmbuild_output(output)[0]
 
