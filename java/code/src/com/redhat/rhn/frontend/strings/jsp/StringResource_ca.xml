@@ -24443,13 +24443,6 @@ given channel.</source>
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="sdc.details.overview.create_clm_filter" xml:space="preserve">
-        <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/Overview.do</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>
