@@ -2268,12 +2268,12 @@ available for this kickstart profile to function properly.
 &lt;li&gt;
 É o canal de ferramentas do cliente para a base deste perfil de kickstart
 canal disponível para sua organização? Se não estiver, você precisará solicitar
-direitos para o canal de ferramentas do cliente de seu administrador @@ PRODUCT_NAME @@.
+direitos para o canal de ferramentas do cliente de seu administrador @@PRODUCT_NAME@@.
 &lt;/li&gt;
 &lt;li&gt;
 Certifique-se de que o canal de ferramentas do cliente para a base deste perfil de kickstart
-canal está disponível para seu @@ PRODUCT_NAME @@. Se não estiver, entre em contato com o seu
-@@ PRODUCT_NAME @@ administrador e solicite uma inter-sincronização mgr para o canal de ferramentas do cliente
+canal está disponível para seu @@PRODUCT_NAME@@. Se não estiver, entre em contato com o seu
+@@PRODUCT_NAME@@ administrador e solicite uma inter-sincronização mgr para o canal de ferramentas do cliente
 e tente novamente.
 &lt;/li&gt;
 &lt;li&gt;
