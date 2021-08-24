@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-23 20:12+0000\n"
+"PO-Revision-Date: 2021-08-24 20:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6443,23 +6443,23 @@ msgstr "Rozdiel"
 
 #: ../src/spacecmd/system.py:125
 msgid "Removing Channels"
-msgstr ""
+msgstr "Odstránenie kanálov"
 
 #: ../src/spacecmd/system.py:128
 msgid "Adding Channels"
-msgstr ""
+msgstr "Pridanie kanálov"
 
 #: ../src/spacecmd/system.py:164
 msgid "system_list: List all system profiles"
-msgstr ""
+msgstr "system_list: Vypísať zoznam všetkých systémových profilov"
 
 #: ../src/spacecmd/system.py:165
 msgid "usage: system_list"
-msgstr ""
+msgstr "použitie: system_list"
 
 #: ../src/spacecmd/system.py:181
 msgid "system_reboot: Reboot a system"
-msgstr ""
+msgstr "system_reboot: Reštartovať systém"
 
 #: ../src/spacecmd/system.py:182
 msgid ""
@@ -6468,22 +6468,27 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
+"použitie: system_reboot <SYSTÉMY> [voľby])\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:237
 msgid "Reboot these systems [y/N]:"
-msgstr ""
+msgstr "Reštartovať tieto systémy [a/N]:"
 
 #: ../src/spacecmd/system.py:253
 msgid "system_search: List systems that match the given criteria"
 msgstr ""
+"system_search: Vypísať zoznam systémov, ktoré vyhovujú zadaným kritériám"
 
 #: ../src/spacecmd/system.py:254
 msgid "usage: system_search QUERY"
-msgstr ""
+msgstr "použitie: system_search DOPYT"
 
 #: ../src/spacecmd/system.py:256
 msgid "Available Fields:"
-msgstr ""
+msgstr "Dostupné polia:"
 
 #: ../src/spacecmd/system.py:259
 msgid "Examples:"
