@@ -8,7 +8,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:195
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-17 17:24+0000\n"
+"POT-Creation-Date: 2021-08-16 12:04+0000\n"
 "PO-Revision-Date: 2021-05-28 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -219,7 +219,7 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
@@ -236,7 +236,7 @@ msgstr "취소"
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.tsx:92
 #: ../html/src/manager/images/image-profiles.tsx:139
 #: ../html/src/manager/images/image-profiles.tsx:214
@@ -291,7 +291,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -376,10 +376,6 @@ msgstr "입력 시작..."
 #: ../html/src/components/input/Select.stories.tsx:64
 msgid "No flavors"
 msgstr "특징 없음"
-
-#: ../html/src/components/input/Select.stories.tsx:129
-msgid "Level"
-msgstr "레벨"
 
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
@@ -503,7 +499,7 @@ msgid "Edit Configuration Channel"
 msgstr "구성 채널 편집"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Security Advisory"
 msgstr "보안 자문"
 
@@ -671,7 +667,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:79
@@ -921,7 +917,7 @@ msgstr "제품 설명"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:624
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
@@ -1155,7 +1151,7 @@ msgstr "감사 이미지"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
@@ -1901,87 +1897,87 @@ msgstr "채널"
 msgid "Module Name"
 msgstr "모듈 이름"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:34
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
 msgid "Updating the filter..."
 msgstr "필터를 업데이트하는 중..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:84
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
 msgid "Check the required fields below"
 msgstr "아래에서 필수 필드를 확인하십시오."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
 msgid "Filter updated successfully"
 msgstr "필터 업데이트됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
 msgid "Filter created successfully"
 msgstr "필터 생성됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Filter Details"
 msgstr "필터 세부사항"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Create a new filter"
 msgstr "새 필터 만들기"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
 msgid "Filter deleted successfully"
 msgstr "필터 삭제됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:71
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr "필터를 업데이트한 후에는 연결된 모든 프로젝트를 다시 빌드해야 합니다."
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:78
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Filter Name"
 msgstr "필터 이름"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:88
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 #, fuzzy
 msgid "Use a manual filter"
 msgstr "새 필터 만들기"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
 msgstr "필터 유형"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:130
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Matcher"
 msgstr "선택기"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:144
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:234
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "패키지 이름"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 msgid "Epoch"
 msgstr "에포크"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
@@ -1991,89 +1987,89 @@ msgstr "에포크"
 msgid "Version"
 msgstr "버전"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 msgid "Release"
 msgstr "릴리스"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 msgid "Advisory name"
 msgstr "자문 이름"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Bug Fix Advisory"
 msgstr "버그 수정 자문"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Product Enhancement Advisory"
 msgstr "제품 향상 자문"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "자문 유형"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 msgid "Issued"
 msgstr "발급됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:209
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "개요"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:221
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
 msgid "Reboot Required"
 msgstr "재부팅 필요"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:222
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
 msgid "Package Manager Restart Required"
 msgstr "패키지 관리자를 다시 시작해야 함"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:225
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
 msgid "Advisory Keywords"
 msgstr "자문 키워드"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "Deny"
 msgstr "거부"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
 msgid "Allow"
 msgstr "허용"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
 msgid "Rule"
 msgstr "규칙"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:80
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr "선택한 필터 중 일부가 프로젝트에서 사용되며 삭제할 수 없습니다."
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:132
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 msgid "Select unused"
 msgstr "미사용 항목 선택"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:139
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-stores.tsx:140
 #: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr "선택 항목 삭제"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:145
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
 msgid "Content Lifecycle Filters"
 msgstr "컨텐트 라이프싸이클 필터"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:155
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
 msgid "Filter by name or project"
 msgstr "이름 또는 프로젝트를 기준으로 필터링"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "사용 중 프로젝트"
 
@@ -2090,17 +2086,17 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:122
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 #, fuzzy
 msgid "Product"
 msgstr "제품"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:147
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
 #, fuzzy
 msgid "Kernel"
 msgstr "커널 옵션"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:154
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
 #, fuzzy
 msgid "latest"
 msgstr "최신"
@@ -5660,6 +5656,9 @@ msgstr "{0} / {1}페이지"
 
 #~ msgid "Minimum 4 characters"
 #~ msgstr "4자 이상"
+
+#~ msgid "Level"
+#~ msgstr "레벨"
 
 #~ msgid "Beginner"
 #~ msgstr "초급자"

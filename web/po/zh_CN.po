@@ -8,7 +8,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:195
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-17 17:24+0000\n"
+"POT-Creation-Date: 2021-08-16 12:04+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -215,7 +215,7 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
@@ -232,7 +232,7 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.tsx:92
 #: ../html/src/manager/images/image-profiles.tsx:139
 #: ../html/src/manager/images/image-profiles.tsx:214
@@ -286,7 +286,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -371,10 +371,6 @@ msgstr "开始键入..."
 #: ../html/src/components/input/Select.stories.tsx:64
 msgid "No flavors"
 msgstr "无风格"
-
-#: ../html/src/components/input/Select.stories.tsx:129
-msgid "Level"
-msgstr "级别"
 
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
@@ -498,7 +494,7 @@ msgid "Edit Configuration Channel"
 msgstr "编辑配置频道"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Security Advisory"
 msgstr "安全建议"
 
@@ -650,7 +646,7 @@ msgstr "发生了错误。监视状态未知。请刷新页面。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:79
@@ -895,7 +891,7 @@ msgstr "产品说明"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:624
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
@@ -1128,7 +1124,7 @@ msgstr "审计映像"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
@@ -1857,87 +1853,87 @@ msgstr "频道"
 msgid "Module Name"
 msgstr "模块名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:34
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
 msgid "Updating the filter..."
 msgstr "正在更新过滤器..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:84
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
 msgid "Check the required fields below"
 msgstr "检查以下必填字段"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
 msgid "Filter updated successfully"
 msgstr "已成功更新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
 msgid "Filter created successfully"
 msgstr "已成功创建过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Filter Details"
 msgstr "过滤器细节"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Create a new filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
 msgid "Filter deleted successfully"
 msgstr "已成功删除过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:71
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:78
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Filter Name"
 msgstr "过滤器名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:88
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 #, fuzzy
 msgid "Use a manual filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
 msgstr "过滤器类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:130
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Matcher"
 msgstr "匹配器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:144
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:234
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "软件包名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 msgid "Epoch"
 msgstr "纪元"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
@@ -1947,89 +1943,89 @@ msgstr "纪元"
 msgid "Version"
 msgstr "版本"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 msgid "Release"
 msgstr "发行版"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 msgid "Advisory name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Bug Fix Advisory"
 msgstr "Bug 修复建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "建议类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 msgid "Issued"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:209
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:221
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
 msgid "Reboot Required"
 msgstr "需要重引导"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:222
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
 msgid "Package Manager Restart Required"
 msgstr "需要重启动软件包管理器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:225
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
 msgid "Advisory Keywords"
 msgstr "建议关键字"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "Deny"
 msgstr "拒绝"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
 msgid "Allow"
 msgstr "允许"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
 msgid "Rule"
 msgstr "规则"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:80
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr "部分选定过滤器已用于项目中，无法删除。"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:132
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 msgid "Select unused"
 msgstr "选择未使用的项"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:139
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-stores.tsx:140
 #: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr "删除选定项"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:145
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
 msgid "Content Lifecycle Filters"
 msgstr "内容生命周期过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:155
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
 msgid "Filter by name or project"
 msgstr "按名称或项目过滤"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "使用中的项目"
 
@@ -2046,17 +2042,17 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:122
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 #, fuzzy
 msgid "Product"
 msgstr "产品"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:147
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
 #, fuzzy
 msgid "Kernel"
 msgstr "内核选项"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:154
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
 #, fuzzy
 msgid "latest"
 msgstr "最新"
@@ -5569,6 +5565,9 @@ msgstr "第 {0} 页，共 {1} 页"
 
 #~ msgid "Minimum 4 characters"
 #~ msgstr "最少 4 个字符"
+
+#~ msgid "Level"
+#~ msgstr "级别"
 
 #~ msgid "Beginner"
 #~ msgstr "新手"
