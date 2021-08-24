@@ -2,7 +2,7 @@
     "net0": {
         "active": 1,
         "autostart": 1,
-        "bridge": "br0",
+        "bridge": null,
         "leases": [],
         "persistent": 1,
         "uuid": "6682ddbc-e02d-4a13-9c03-f4d4a4924f09"
