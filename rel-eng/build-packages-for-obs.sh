@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -x
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 set -e
 #
@@ -90,6 +90,11 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   mkdir -p "$SRPMBUILD_DIR"
 
   cd "$GIT_DIR/$PKG_DIR"
+  echo "*************DEBUG ********* JORDI ******************"
+  echo "BEFORE CALLING TITO**********************************"
+  echo "*****************************************************"
+  echo ""
+  echo ""
   $TITO build ${VERBOSE:+--debug} ${TEST:+--test} --srpm >"$T_LOG" 2>&1 || {
     cat "$T_LOG"
     test $tries -eq 3 || continue
@@ -98,6 +103,11 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     echo "*** FAILED Building package [$PKG_NAME-$PKG_VER]"
     continue 2
   }
+  echo "*************DEBUG ********* JORDI ******************"
+  echo "AFTER CALLING TITO**********************************"
+  echo "*****************************************************"
+  echo ""
+  echo ""
   ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
