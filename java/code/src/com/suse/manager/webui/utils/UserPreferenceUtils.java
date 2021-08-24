@@ -126,6 +126,8 @@ public class UserPreferenceUtils {
 
     /**
      * Get the current user timezone.
+     * E.g.: CEST
+     *
      * If no user is available, fallback and return the client context timezone from where the request comes from.
      * Double fallback on the server timezone if there is no request context
      *
@@ -147,6 +149,32 @@ public class UserPreferenceUtils {
         DateFormat tzFormat = new SimpleDateFormat("z", locale);
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
+    }
+
+
+    /**
+     * Render the user timezone in the extended/verbose format
+     * E.g.: Europe/Berlin
+     *
+     * If no user is available, fallback and return the client context timezone from where the request comes from.
+     * Double fallback on the server timezone if there is no request context
+     *
+     * @param pageContext the current PageContext
+     * @return server timezone to be displayed as a string
+     */
+    public String getExtendedUserTimeZone(PageContext pageContext) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
+            RhnTimeZone timezone = user.getTimeZone();
+            if (timezone != null) {
+                return timezone.getOlsonName();
+            }
+        }
+
+        Context ctx = Context.getCurrentContext();
+        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
+        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        return timezone.getID();
     }
 
     /**

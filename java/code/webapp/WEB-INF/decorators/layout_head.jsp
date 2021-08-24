@@ -53,8 +53,8 @@
 
     <!-- expose server and user datetime globally to handle localization -->
     <c:set var="serverTime" value="${GlobalInstanceHolder.VIEW_HELPER.getServerTime()}"/>
-    <c:set var="serverTimeZone" value="${GlobalInstanceHolder.VIEW_HELPER.getServerTimeZone()}"/>
-    <c:set var="userTimeZone" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserTimeZone(pageContext)}"/>
+    <c:set var="serverTimeZone" value="${GlobalInstanceHolder.VIEW_HELPER.getExtendedServerTimeZone()}"/>
+    <c:set var="userTimeZone" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getExtendedUserTimeZone(pageContext)}"/>
     <c:set var="userDateFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserDateFormat(pageContext)}"/>
     <c:set var="userTimeFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserTimeFormat(pageContext)}"/>
     <script>

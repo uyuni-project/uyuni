@@ -110,7 +110,7 @@ public enum ViewHelper {
      * TODO -> DROP
      * This is a buggy method, it does not return the "user" timezone but the timezone of the "Context" from where
      * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See UserPreferenceUtils.java > getUserTimeZone
+     * parameter to define it. See layout_head.jsp
      *
      *
      * Render the current user's configured timezone for being displayed (falling back to
@@ -131,7 +131,7 @@ public enum ViewHelper {
      * TODO -> DROP
      * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
      * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See UserPreferenceUtils.java > getUserTimeZone
+     * parameter to define it. See layout_head.jsp
      *
      *
      * Render the time in the current user's configured timezone (falling back to
@@ -147,7 +147,7 @@ public enum ViewHelper {
      * TODO -> DROP
      * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
      * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See UserPreferenceUtils.java > getUserTimeZone
+     * parameter to define it. See layout_head.jsp
      *
      *
      * Render a given time in the current user's configured timezone
@@ -187,6 +187,7 @@ public enum ViewHelper {
 
     /**
      * Render the server timezone
+     * E.g.: CEST
      *
      * @return server timezone to be displayed as a string
      */
@@ -196,6 +197,18 @@ public enum ViewHelper {
         DateFormat tzFormat = new SimpleDateFormat("z", locale);
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
+    }
+
+    /**
+     * Render the server timezone in the extended/verbose format
+     * E.g.: Europe/Berlin
+     *
+     * @return server timezone to be displayed as a string
+     */
+    public String getExtendedServerTimeZone() {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getDefault();
+        return timezone.getID();
     }
 
     /**
