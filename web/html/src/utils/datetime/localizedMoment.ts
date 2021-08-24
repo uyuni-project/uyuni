@@ -47,9 +47,9 @@ const userTimeFormat = window.userTimeFormat || "HH:mm";
 
 // Sanity check, if the server and the browser have wildly differing time zone adjusted time, someone is probably wrong
 if (window.serverTime) {
-  const diff = localizedMomentConstructor(window.serverTime).diff(localizedMomentConstructor(), "minutes");
-  if (Math.abs(diff) > 10) {
-    Loggerhead.error(`Server and browser disagree on what the time is despite accounting for time zones, offset is ${diff} minutes`);
+  const diffMinutes = localizedMomentConstructor(window.serverTime).diff(localizedMomentConstructor(), "minutes");
+  if (Math.abs(diffMinutes) > 10) {
+    Loggerhead.error(`Server and browser disagree on what the time is despite accounting for time zones, server time is ${moment(window.serverTime).toISOString(true)}, browser time is ${moment().toISOString(true)}`);
   }
 } else {
   Loggerhead.error("Server time not available");
