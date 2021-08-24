@@ -103,12 +103,12 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     echo "*** FAILED Building package [$PKG_NAME-$PKG_VER]"
     continue 2
   }
+  ${VERBOSE:+cat "$T_LOG"}
   echo "*************DEBUG ********* JORDI ******************"
   echo "AFTER CALLING TITO**********************************"
   echo "*****************************************************"
   echo ""
   echo ""
-  ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
   if [ "$(head -n1 ${CHANGES}|grep '^- ')" != "" ]; then
@@ -128,7 +128,7 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     continue 2
   fi
 
-  # Convert to obscpio
+  echo "DEBUG: Convert to obscpio"
   SPEC_VER=$(sed -n -e 's/^Version:\s*\(.*\)/\1/p' ${T_DIR}/${PKG_NAME}.spec)
   SOURCE=$(sed -n -e 's/^\(Source\|Source0\):\s*.*[[:space:]\/]\(.*\)/\2/p' ${T_DIR}/${PKG_NAME}.spec|sed -e "s/%{name}/${PKG_NAME}/"|sed -e "s/%{version}/${SPEC_VER}/")
   # If the package does not have sources, we don't need to repackage them
@@ -136,7 +136,7 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     FOLDER=$(tar -tf ${T_DIR}/${SOURCE}|head -1|sed -e 's/\///')
     (cd ${T_DIR}; tar -xf ${SOURCE}; rm ${SOURCE}; mv ${FOLDER} ${PKG_NAME}; find ${PKG_NAME} | cpio --create --format=newc --reproducible > ${FOLDER}.obscpio; rm -rf ${PKG_NAME})
   fi
-  # Move to destination
+  echo "DEBUG: Move to destination"
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
   # If the package does not have sources, we don't need service or .obsinfo file
   if [ "${SOURCE}" != "" ]; then
