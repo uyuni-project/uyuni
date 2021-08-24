@@ -78,6 +78,7 @@ function VirtualSystems(props: Props) {
         identifier={items => items.uuid}
         initialSortColumnKey="vHost"
         selectable
+        isSelectEnabled={items => items.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         initialItemsPerPage={window.userPrefPageSize}
