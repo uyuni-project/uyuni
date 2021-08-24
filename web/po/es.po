@@ -8,7 +8,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:195
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-17 17:24+0000\n"
+"POT-Creation-Date: 2021-08-16 12:04+0000\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -219,7 +219,7 @@ msgstr ""
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
@@ -236,7 +236,7 @@ msgstr "Cancelar"
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.tsx:92
 #: ../html/src/manager/images/image-profiles.tsx:139
 #: ../html/src/manager/images/image-profiles.tsx:214
@@ -288,7 +288,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -373,10 +373,6 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.tsx:64
 msgid "No flavors"
 msgstr ""
-
-#: ../html/src/components/input/Select.stories.tsx:129
-msgid "Level"
-msgstr "Nivel"
 
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
@@ -501,7 +497,7 @@ msgid "Edit Configuration Channel"
 msgstr "Editar canal de configuración"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Security Advisory"
 msgstr "Recomendación de seguridad"
 
@@ -665,7 +661,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:79
@@ -909,7 +905,7 @@ msgstr "Descripción de producto"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:624
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
@@ -1143,7 +1139,7 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
@@ -1885,87 +1881,87 @@ msgstr "Canal"
 msgid "Module Name"
 msgstr "Nombre del filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:34
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
 msgid "Updating the filter..."
 msgstr "Actualizando el filtro…"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:84
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
 msgid "Check the required fields below"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
 msgid "Filter updated successfully"
 msgstr "Se actualizó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
 msgid "Filter created successfully"
 msgstr "Se creó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Filter Details"
 msgstr "Detalles del filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Create a new filter"
 msgstr "Crear un filtro nuevo"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
 msgid "Filter deleted successfully"
 msgstr "Se eliminó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:71
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:78
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Filter Name"
 msgstr "Nombre del filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:88
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 #, fuzzy
 msgid "Use a manual filter"
 msgstr "Crear un filtro nuevo"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
 msgstr "Tipo de filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:130
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Matcher"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:144
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:234
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 msgid "Epoch"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
@@ -1975,91 +1971,91 @@ msgstr ""
 msgid "Version"
 msgstr "Versión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 msgid "Release"
 msgstr "Versión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 msgid "Advisory name"
 msgstr "Nombre de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Bug Fix Advisory"
 msgstr "Recomendación de corrección de error"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Product Enhancement Advisory"
 msgstr "Recomendación de mejoras de productos"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "Tipo de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 msgid "Issued"
 msgstr "Emisión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:209
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "Sinopsis"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:221
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
 msgid "Reboot Required"
 msgstr "Se necesita un reinicio"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:222
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
 msgid "Package Manager Restart Required"
 msgstr "Se necesita reiniciar el gestor de paquetes"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:225
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
 msgid "Advisory Keywords"
 msgstr "Palabras clave de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "Deny"
 msgstr "Denegar"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
 msgid "Allow"
 msgstr "Permitir"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
 msgid "Rule"
 msgstr "Regla"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:80
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:132
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 #, fuzzy
 msgid "Select unused"
 msgstr "Seleccionar"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:139
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-stores.tsx:140
 #: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:145
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
 msgid "Content Lifecycle Filters"
 msgstr "Filtros de ciclo de vida de contenido"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:155
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
 #, fuzzy
 msgid "Filter by name or project"
 msgstr "Filtrar por productos instalados a nivel sistema"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "Proyectos en uso"
 
@@ -2076,16 +2072,16 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:122
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 #, fuzzy
 msgid "Product"
 msgstr "Productos"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:147
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
 msgid "Kernel"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:154
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
 #, fuzzy
 msgid "latest"
 msgstr "Actualizaciones"
@@ -5678,6 +5674,9 @@ msgstr "Página {0} de {1}"
 
 #~ msgid "Minimum 4 characters"
 #~ msgstr "4 caracteres como mínimo"
+
+#~ msgid "Level"
+#~ msgstr "Nivel"
 
 #~ msgid "Beginner"
 #~ msgstr "Principiante"
