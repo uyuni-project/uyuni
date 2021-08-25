@@ -65,7 +65,7 @@ fi
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 REGISTRY="registry.opensuse.org"
-PUSH2OBS_CONTAINER=/home/jordimassaguerpla/branch/sm/u/m/d/add_py2_for_clients/containers/uyuni-push-to-obs:latest"
+PUSH2OBS_CONTAINER="/home/jordimassaguerpla/branch/sm/u/m/d/add_py2_for_clients/containers/uyuni-push-to-obs:latest"
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
