@@ -9,7 +9,7 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run('hostname -f', false)
+  result, return_code = node.run('hostname -f', check_errors: false)
   result.delete!("\n")
   raise 'cannot determine hostname' unless return_code.zero?
   raise 'hostname is not fully qualified' unless result == node.full_hostname
@@ -17,7 +17,7 @@ end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("getent hosts #{node.ip}", false)
+  result, return_code = node.run("getent hosts #{node.ip}", check_errors: false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
   raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
@@ -85,7 +85,7 @@ end
 When(/^I delete these channels with spacewalk\-remove\-channel:$/) do |table|
   channels_cmd = "spacewalk-remove-channel "
   table.raw.each { |x| channels_cmd = channels_cmd + " -c " + x[0] }
-  $command_output, return_code = $server.run(channels_cmd, false)
+  $command_output, return_code = $server.run(channels_cmd, check_errors: false)
 end
 
 When(/^I list channels with spacewalk\-remove\-channel$/) do
@@ -94,7 +94,7 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
 end
 
 When(/^I add "([^"]*)" channel$/) do |channel|
-  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size = 1_000_000)
+  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
 end
 
 When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
@@ -104,7 +104,7 @@ end
 
 Then(/^spacewalk\-channel should fail adding "([^"]*)"$/) do |invalid_channel|
   command = "spacewalk-channel --add -c #{invalid_channel} -u admin -p admin"
-  $command_output, code = $client.run(command, false)
+  $command_output, code = $client.run(command, check_errors: false)
   raise "#{command} should fail, but hasn't" if code.zero?
 end
 
@@ -226,7 +226,7 @@ Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, hos
 end
 
 When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output, _code = $server.run("mgr-sync list products", fatal = false, buffer_size = 1_000_000)
+  list_output, _code = $server.run("mgr-sync list products", check_errors: false, buffer_size: 1_000_000)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -234,14 +234,14 @@ When(/^I enable product "([^"]*)"$/) do |prd|
     linenum += 1
     next unless line.include? prd
     executed = true
-    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product", fatal = false, buffer_size = 1_000_000)
+    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product", check_errors: false, buffer_size: 1_000_000)
     break
   end
   raise $command_output.to_s unless executed
 end
 
 When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output, _code = $server.run("mgr-sync list products", fatal = false, buffer_size = 1_000_000)
+  list_output, _code = $server.run("mgr-sync list products", check_errors: false, buffer_size: 1_000_000)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -249,18 +249,18 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
     linenum += 1
     next unless line.include? prd
     executed = true
-    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product --no-recommends", fatal = false, buffer_size = 1_000_000)
+    $command_output, _code = $server.run("echo '#{linenum}' | mgr-sync add product --no-recommends", check_errors: false, buffer_size: 1_000_000)
     break
   end
   raise $command_output.to_s unless executed
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  $command_output, _code = $server.run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", fatal = false, buffer_size = 1_000_000)
+  $command_output, _code = $server.run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
 end
 
 When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
-  $command_output, _code = $server.run("mgr-sync #{arg1}", buffer_size = 1_000_000)
+  $command_output, _code = $server.run("mgr-sync #{arg1}", buffer_size: 1_000_000)
 end
 
 When(/^I remove the mgr\-sync cache file$/) do
@@ -269,11 +269,11 @@ end
 
 When(/^I refresh SCC$/) do
   refresh_timeout = 600
-  $server.run('echo -e "admin\nadmin\n" | mgr-sync refresh', true, refresh_timeout)
+  $server.run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
 end
 
 When(/^I execute mgr\-sync refresh$/) do
-  $command_output, _code = $server.run('mgr-sync refresh', false)
+  $command_output, _code = $server.run('mgr-sync refresh', check_errors: false)
 end
 
 # This function waits for all the reposyncs to complete.
@@ -284,7 +284,7 @@ When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 30
-    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
       reposync_left_running_streak = 0
@@ -311,7 +311,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
-    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
       reposync_left_running_streak = 0
@@ -331,13 +331,13 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     reposync_left_running_streak = 0
 
     pid = process.split(' ')[0]
-    $server.run("kill #{pid}", false)
+    $server.run("kill #{pid}", check_errors: false)
     STDOUT.puts "Reposync of channel #{channel} killed"
   end
 end
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', false)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?
 end
 
@@ -352,7 +352,7 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", false)
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", check_errors: false)
       break if code.zero?
       sleep 10
     end
@@ -373,7 +373,7 @@ end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
-    output, _code = $server.run("grep #{content} #{file}", false)
+    output, _code = $server.run("grep #{content} #{file}", check_errors: false)
     break if output =~ /#{content}/
     sleep 2
     "\n-----\n#{output}\n-----\n"
@@ -381,13 +381,13 @@ When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, con
 end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
-  output, _code = $server.run("grep -F '#{content}' #{file}", false)
+  output, _code = $server.run("grep -F '#{content}' #{file}", check_errors: false)
   raise "'#{content}' not found in file #{file}" if output !~ /#{content}/
   "\n-----\n#{output}\n-----\n"
 end
 
 Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, content|
-  output, _code = $server.run("grep -F '#{content}' #{file} || echo 'notfound'", false)
+  output, _code = $server.run("grep -F '#{content}' #{file} || echo 'notfound'", check_errors: false)
   raise "'#{content}' found in file #{file}" if output != "notfound\n"
   "\n-----\n#{output}\n-----\n"
 end
@@ -599,7 +599,7 @@ end
 
 Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
   node = get_target(host)
-  output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", false)
+  output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", check_errors: false)
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
@@ -622,7 +622,7 @@ When(/^I start tftp on the proxy$/) do
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
-  output, _code = $server.run("cobbler system report --name #{name}", false)
+  output, _code = $server.run("cobbler system report --name #{name}", check_errors: false)
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
@@ -660,7 +660,7 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
 end
 
 When(/^I clean the search index on the server$/) do
-  output, _code = $server.run('/usr/sbin/rcrhn-search cleanindex', false)
+  output, _code = $server.run('/usr/sbin/rcrhn-search cleanindex', check_errors: false)
   raise 'The output includes an error log' if output.include?('ERROR')
 end
 
@@ -668,7 +668,7 @@ Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
   repeat_until_timeout(timeout: 1800, message: "'mgr-sync refresh' did not finish") do
-    result, code = $server.run(cmd, false)
+    result, code = $server.run(cmd, check_errors: false)
     break if result.include? "SLES"
     sleep 5
   end
@@ -680,46 +680,46 @@ end
 
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
-  output, _code = node.run("systemctl is-enabled '#{service}'", false)
+  output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
-  output, _code = node.run("systemctl is-active '#{service}'", false)
+  output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not active" if output != 'active'
 end
 
 Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
   node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", false)
+  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", check_errors: false)
   output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", false)
+  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", check_errors: false)
   output_socket = output_socket.split(/\n+/)[-1]
   raise if output_service != 'enabled' and output_socket != 'enabled'
 end
 
 Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
   node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-active '#{name}'", false)
+  output_service, _code_service = node.run("systemctl is-active '#{name}'", check_errors: false)
   output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", false)
+  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", check_errors: false)
   output_socket = output_socket.split(/\n+/)[-1]
   raise if output_service != 'active' and output_socket != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
-  output, _code = node.run("systemctl is-enabled '#{service}.socket'", false)
+  output, _code = node.run("systemctl is-enabled '#{service}.socket'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
-  output, _code = node.run("systemctl is-active '#{service}.socket'", false)
+  output, _code = node.run("systemctl is-active '#{service}.socket'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not active" if output != 'active'
 end
@@ -744,7 +744,7 @@ end
 
 When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
   node = get_target(host)
-  _out, $fail_code = node.run(cmd, false)
+  _out, $fail_code = node.run(cmd, check_errors: false)
 end
 
 Then(/^the command should fail$/) do
@@ -778,11 +778,11 @@ Then(/^I wait and check that "([^"]*)" has rebooted$/) do |host|
 end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
-  @command_output, _code = $server.run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", false)
+  @command_output, _code = $server.run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", check_errors: false)
 end
 
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
-  @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", false)
+  @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", check_errors: false)
 end
 
 When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
@@ -829,7 +829,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   # perform the registration
   filename = File.basename(path)
   bootstrap_timeout = 600
-  $server.run("expect #{filename}", true, bootstrap_timeout, 'root')
+  $server.run("expect #{filename}", timeout: bootstrap_timeout)
   # restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
@@ -898,7 +898,7 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
-  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 106])
+  node.run(cmd, successcodes: [0, 100, 101, 102, 103, 106])
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
@@ -908,7 +908,7 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   node.run('zypper ref')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
-  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
+  node.run(cmd, successcodes: [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
@@ -947,7 +947,7 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
     successcodes = [0, 100, 101, 102, 103, 106]
     not_found_msg = 'not found in package names'
   end
-  output, _code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  output, _code = node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)
   raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
@@ -966,7 +966,7 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
     successcodes = [0, 100, 101, 102, 103, 106]
     not_found_msg = 'not found in package names'
   end
-  output, _code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  output, _code = node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)
   raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
@@ -982,7 +982,7 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
     cmd = "zypper --non-interactive remove -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 104, 106]
   end
-  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
@@ -1002,7 +1002,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
-    result, return_code = node.run(cmd, false)
+    result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
     sleep 2
   end
@@ -1035,7 +1035,7 @@ end
 When(/^I install proxy pattern on the proxy$/) do
   pattern = $product == 'Uyuni' ? 'uyuni_proxy' : 'suma_proxy'
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
-  $proxy.run(cmd, true, 600, 'root', [0, 100, 101, 102, 103, 106])
+  $proxy.run(cmd, timeout: 600, successcodes: [0, 100, 101, 102, 103, 106])
 end
 
 When(/^I let squid use avahi on the proxy$/) do
@@ -1115,7 +1115,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   step "I install package \"bind-utils\" on this \"#{host}\""
   # direct name resolution
   ["proxy.example.org", "dns.google.com"].each do |dest|
-    output, return_code = node.run("host #{dest}", fatal = false)
+    output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
   end
@@ -1123,7 +1123,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   client = net_prefix + "2"
   [client, "8.8.8.8"].each do |dest|
-    output, return_code = node.run("host #{dest}", fatal = false)
+    output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
   end
@@ -1156,7 +1156,7 @@ When(/^I configure the proxy$/) do
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
-  $proxy.run(cmd, true, proxy_timeout, 'root')
+  $proxy.run(cmd, timeout: proxy_timeout)
 end
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
@@ -1178,7 +1178,7 @@ end
 
 When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)"$/) do |content, label|
   filepath = "/tmp/#{label}"
-  $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
+  $server.run("echo -e \"#{content}\" > #{filepath}", timeout: 600)
   command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f  #{filepath} -y"
   $server.run(command)
   file_delete($server, filepath)
@@ -1186,7 +1186,7 @@ end
 
 When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)" and revision "([^"]*)"$/) do |content, label, revision|
   filepath = "/tmp/#{label}"
-  $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
+  $server.run("echo -e \"#{content}\" > #{filepath}", timeout: 600)
   command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f #{filepath} -r #{revision} -y"
   $server.run(command)
   file_delete($server, filepath)
@@ -1305,7 +1305,7 @@ end
 When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} OS failed did not come up yet") do
-    _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", fatal = false)
+    _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", check_errors: false)
     break if code.zero?
     sleep 1
   end
@@ -1314,7 +1314,7 @@ end
 Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} still exists") do
-    _output, code = node.run("virsh dominfo #{vm}", fatal = false)
+    _output, code = node.run("virsh dominfo #{vm}", check_errors: false)
     break if code == 1
     sleep 3
   end
@@ -1471,8 +1471,8 @@ end
 
 When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without error control$/) do |volumes, pool, host|
   node = get_target(host)
-  output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", false)
-  output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", false) }
+  output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", check_errors: false)
+  output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", check_errors: false) }
 end
 
 When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
@@ -1483,7 +1483,7 @@ end
 Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
-    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    _output, code = node.run("virsh net-info #{vm}", check_errors: false)
     break if code == 1
     sleep 3
   end
@@ -1492,7 +1492,7 @@ end
 Then(/^I should see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual network on #{host} still doesn't exist") do
-    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    _output, code = node.run("virsh net-info #{vm}", check_errors: false)
     break if code.zero?
     sleep 3
   end
@@ -1531,7 +1531,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
   # Gather all the ids of package refreshes existing at SUMA
-  refreshes, = $server.run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh' | cut -f1 -d' '", false)
+  refreshes, = $server.run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh' | cut -f1 -d' '", check_errors: false)
   node_refreshes = ""
   refreshes.split(' ').each do |refresh_id|
     next unless refresh_id.match('/[0-9]{1,4}/')
@@ -1541,7 +1541,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   end
   cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
   repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
-    result, code = $server.run(cmd, false)
+    result, code = $server.run(cmd, check_errors: false)
     sleep 1
     next if result.include? '0    0    1'
     break if result.include? '1    0    0'
@@ -1553,7 +1553,7 @@ When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |pac
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
-  result, _code = $server.run(command, false)
+  result, _code = $server.run(command, check_errors: false)
   packages.split(' ').each do |package|
     pkg = package.strip
     raise "package #{pkg} is not installed" unless result.include? pkg
@@ -1565,7 +1565,7 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
-    result, _code = $server.run(command, false)
+    result, _code = $server.run(command, check_errors: false)
     break if result.include? pkg
     sleep 1
   end
@@ -1576,7 +1576,7 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is still present") do
-    result, code = $server.run(command, false)
+    result, code = $server.run(command, check_errors: false)
     sleep 1
     break unless result.include? pkg
   end
@@ -1638,7 +1638,7 @@ end
 
 Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   node = get_target(client)
-  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", fatal = false)
+  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", check_errors: false)
   raise if code.zero?
 end
 
