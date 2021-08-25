@@ -205,7 +205,7 @@ Thank you for using @@PRODUCT_NAME@@.
 感谢您使用 @@PRODUCT_NAME@@。
 {2}</target>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve" approved="yes">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -234,10 +234,9 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-        <target state="translated">
+        <target state="final">
 @@PRODUCT_NAME@@ 确定以下建议适用于
-您注册的
-一个或多个系统：
+您注册的一个或多个系统：
 
 可在以下位置找到有关此补丁的完整信息：
      {0}
@@ -255,7 +254,7 @@ Summary:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve" approved="yes">
           <source>
 ---------------------
 Affected Systems List
@@ -266,13 +265,15 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
-        <target state="translated">
+        <target state="final">
 ---------------------
 受影响的系统列表
 ---------------------
-此补丁建议可能适用于下面列出的系统。如果您知道
-此补丁不适用于所列的某个系统，原因可能是该
-服务器的软件包配置文件已过时。在这种情况下，您应该以 root 身份在相关系统上运行 'up2date -p'（RHEL 4 和更低版本）或 'rhn-profile-sync'（SLES、RHEL 5 和更高版本）以刷新软件配置文件。
+此补丁建议可能适用于下面列出的系统。如果您知道此补丁不适用于
+所列的某个系统，原因可能是该服务器的软件包配置文件已过时。
+在这种情况下，您应该以 root 身份在相关系统上运行 'up2date -p'（RHEL 4
+和更低版本）或 'rhn-profile-sync'（SLES、RHEL 5 和更高版本）以
+刷新软件配置文件。
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
@@ -348,7 +349,7 @@ You may address the issues outlined in this advisory in two ways:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve" approved="yes">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -371,7 +372,7 @@ click the "Details" tab.
         {2} - account info
       </context>
           </context-group>
-        <target state="translated">
+        <target state="final">
 更改通知首选项
 ---------------------------------
 要全局启用/禁用补丁警报首选项，请登录到 @@PRODUCT_NAME@@
@@ -382,6 +383,7 @@ click the "Details" tab.
 也可以在 "系统列表" 中选择单个系统，以在每个系统上
 启用/禁用通知。在单个系统视图中
 单击 "细节" 选项卡。
+
 {1}
 {2}
     </target>
@@ -401,7 +403,7 @@ click the "Details" tab.
         </context-group>
         <target state="translated">{0} 的 @@PRODUCT_NAME@@ 每日状态报告</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body" xml:space="preserve">
+      <trans-unit id="dailysummary.email.body" xml:space="preserve" approved="yes">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
@@ -434,7 +436,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="translated">截至 {1}，您帐户 {0} 的 @@PRODUCT_NAME@@ 状态报告。
+        <target state="final">截至 {1}，您帐户 {0} 的 @@PRODUCT_NAME@@ 状态报告。
 
 如果发生下列情况之一，便会发送此电子邮件：
 

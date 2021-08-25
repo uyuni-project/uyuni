@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-18 09:03+0000\n"
-"PO-Revision-Date: 2021-06-14 17:57+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"PO-Revision-Date: 2021-08-21 10:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -1286,12 +1286,9 @@ msgid ""
 msgstr ""
 "使用方法: configchannel_export <チャンネル>... [オプション])\n"
 "オプション:\n"
-"    -f (出力先ファイル) : 出力先のファイル名 (既定値: チャンネルを 1 つだけ指"
-"定した場合は\n"
-"                      <チャンネル>.json に、複数のチャンネルを指定した場合は "
-"ccs.json に、\n"
-"                      チャンネルを指定しない場合 (全てをエクスポートする) は "
-"cc_all.json)\n"
+"    -f (出力先ファイル) : 出力先のファイル名 (既定値: チャンネルを 1 つだけ指定した場合は\n"
+"                      <チャンネル>.json に、複数のチャンネルを指定した場合は ccs.json に、\n"
+"                      チャンネルを指定しない場合 (全てをエクスポートする) は cc_all.json)\n"
 "\n"
 "注意 : <チャンネル> を指定しない場合、全てのチャンネルをエクスポートします"
 
@@ -1686,7 +1683,6 @@ msgid "distribution_create: Create a Kickstart tree"
 msgstr "distribution_create: キックスタートツリーの作成"
 
 #: ../src/spacecmd/distribution.py:44
-#, fuzzy
 msgid ""
 "usage: distribution_create [options]\n"
 "\n"
@@ -1700,10 +1696,11 @@ msgstr ""
 "使用方法: distribution_create [オプション]\n"
 "\n"
 "オプション:\n"
-"  -n (名前)\n"
+"  -n 名前\n"
 "  -p ツリーへのパス\n"
 "  -b 関連づけるベースチャンネル\n"
-"  -t (インストールタイプ) [fedora|rhel_4/5/6|generic_rpm]"
+"  -t インストールタイプ [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1806,7 +1803,6 @@ msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update: キックスタートツリーのパスを更新"
 
 #: ../src/spacecmd/distribution.py:290
-#, fuzzy
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -1819,9 +1815,10 @@ msgstr ""
 "使用方法: distribution_update 名前 [オプション]\n"
 "\n"
 "オプション:\n"
-"  -p (ツリーへのパス)\n"
-"  -b (関連づけるベースチャンネル)\n"
-"  -t インストールタイプ [fedora|rhel_4/5/6|generic_rpm]"
+"  -p ツリーへのパス\n"
+"  -b 関連づけるベースチャンネル\n"
+"  -t インストールタイプ [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -1957,9 +1954,9 @@ msgid "Type:       %s"
 msgstr "タイプ:       %s"
 
 #: ../src/spacecmd/errata.py:400
-#, fuzzy, python-format
+#, python-format
 msgid "Status:     %s"
-msgstr "OSA ステータス:    %s"
+msgstr "ステータス:     %s"
 
 #: ../src/spacecmd/errata.py:401
 #, python-format
@@ -3115,15 +3112,11 @@ msgid ""
 msgstr ""
 "使用方法: kickstart_export <プロファイル>... [オプション])\n"
 "オプション:\n"
-"    -f (出力先ファイル名) : 出力先のファイル名 (既定値: キックスタートが 1 つ"
-"だけの\n"
-"                      場合は <プロファイル>.json, 複数のキックスタートを指定"
-"した場合は profiles.json,\n"
-"                      プロファイルを指定しない (全てをエクスポートする) 場合"
-"は ks_all.json)\n"
+"    -f (出力先ファイル名) : 出力先のファイル名 (既定値: キックスタートが 1 つだけの\n"
+"                      場合は <プロファイル>.json, 複数のキックスタートを指定した場合は profiles.json,\n"
+"                      プロファイルを指定しない (全てをエクスポートする) 場合は ks_all.json)\n"
 "\n"
-"注意 : <プロファイル> を指定しない場合、全てのキックスタートをエクスポートし"
-"ます"
+"注意 : <プロファイル> を指定しない場合、全てのキックスタートをエクスポートします"
 
 #: ../src/spacecmd/kickstart.py:2273
 #, python-format
@@ -3420,8 +3413,7 @@ msgstr ""
 "日付は下記のいずれかを指定できます:\n"
 "明示的な日付指定:\n"
 "YYYYMMDD[HHMMSS] の書式で日付を明示的に指定することができます。\n"
-"年・月・日はいずれも必須ですが、時・分・秒は任意です。時刻を指定しない場合"
-"は\n"
+"年・月・日はいずれも必須ですが、時・分・秒は任意です。時刻を指定しない場合は\n"
 "0000が指定されたものとみなされます。\n"
 "\n"
 "差分:\n"
@@ -3963,58 +3955,57 @@ msgid "%s is not a valid package"
 msgstr "%s は正しいパッケージではありません"
 
 #: ../src/spacecmd/package.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "Name:      %s"
 msgstr "名前:       %s"
 
 #: ../src/spacecmd/package.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "Version:   %s"
-msgstr "バージョン: %s"
+msgstr "バージョン:   %s"
 
 #: ../src/spacecmd/package.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "Release:   %s"
-msgstr "リリース: %s"
+msgstr "リリース:   %s"
 
 #: ../src/spacecmd/package.py:95
-#, fuzzy, python-format
+#, python-format
 msgid "Epoch:     %s"
-msgstr "エポック:   %s"
+msgstr "エポック:     %s"
 
 #: ../src/spacecmd/package.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Arch:      %s"
-msgstr "アーキテクチャ:     %s"
+msgstr "アーキテクチャ:      %s"
 
 #: ../src/spacecmd/package.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "File:      %s"
-msgstr "ファイル:    %s"
+msgstr "ファイル:      %s"
 
 #: ../src/spacecmd/package.py:99
-#, fuzzy, python-format
+#, python-format
 msgid "Path:      %s"
-msgstr "パス:     %s"
+msgstr "パス:      %s"
 
 #: ../src/spacecmd/package.py:100
-#, fuzzy, python-format
+#, python-format
 msgid "Size:      %s"
-msgstr "サイズ:    %s"
+msgstr "サイズ:      %s"
 
 #: ../src/spacecmd/package.py:101
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: ../src/spacecmd/package.py:102
-#, fuzzy
 msgid "No"
-msgstr "なし"
+msgstr "いいえ"
 
 #: ../src/spacecmd/package.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "Retracted: %s"
-msgstr "作成日:  %s"
+msgstr "撤回: %s"
 
 #: ../src/spacecmd/package.py:106
 #, python-format
@@ -4807,29 +4798,20 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "使用方法: schedule_list [開始日] [終了日]"
 
 #: ../src/spacecmd/schedule.py:459
-#, fuzzy
-msgid ""
-"schedule_deletearchived: Delete all archived actions older than given date."
-msgstr "schedule_listarchived: アーカイブ済みのアクションを表示"
+msgid "schedule_deletearchived: Delete all archived actions"
+msgstr "schedule_deletearchived: すべてのアーカイブ済みのアクションを削除"
 
 #: ../src/spacecmd/schedule.py:460
-#, fuzzy
-msgid "usage: schedule_deletearchived [yyyymmdd]"
-msgstr "使用方法: schedule_details ID"
+msgid "usage: schedule_deletearchived"
+msgstr "使用方法: schedule_deletearchived"
 
-#: ../src/spacecmd/schedule.py:462
-#, fuzzy
-msgid "If no date is provided it will delete all archived actions"
-msgstr "schedule_listarchived: アーカイブ済みのアクションを表示"
+#: ../src/spacecmd/schedule.py:477
+msgid "Do you want to delete all ({}) archived actions? [y/N]"
+msgstr "すべての ({}) アーカイブ済みのアクションを削除しますか? [y / N]"
 
-#: ../src/spacecmd/schedule.py:485
-msgid "Do you want to delete ({}) archived actions? [y/N]"
-msgstr ""
-
-#: ../src/spacecmd/schedule.py:505
-#, fuzzy
+#: ../src/spacecmd/schedule.py:500
 msgid "No archived actions found."
-msgstr "エディタが見つかりませんでした"
+msgstr "アーカイブ済みのアクションが見つかりません。"
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
@@ -6262,9 +6244,7 @@ msgstr "スケジュールは引用符無しの Quartz CronTrigger 形式で指�
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
-msgstr ""
-"たとえば毎日 AM1:00 にスケジュールしたい場合、 <スケジュール> は 0 0 1 * * ? "
-"のようになります"
+msgstr "たとえば毎日 AM1:00 にスケジュールしたい場合、 <スケジュール> は 0 0 1 * * ? のようになります"
 
 #: ../src/spacecmd/softwarechannel.py:2637
 msgid "If <SCHEDULE> is left empty, it will be disabled."
