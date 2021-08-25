@@ -28,20 +28,20 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', false) if minion == 'sle_minion'
-  node.run('systemctl stop salt-minion', false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  node.run('rcsalt-minion stop', check_errors: false) if minion == 'sle_minion'
+  node.run('systemctl stop salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
+  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -49,7 +49,7 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
     system_name = get_system_name(minion)
     unless system_name.empty?
-      output, return_code = $server.run(cmd, false)
+      output, return_code = $server.run(cmd, check_errors: false)
       break if return_code.zero? && output.include?(system_name)
     end
     sleep 1
@@ -67,7 +67,7 @@ end
 
 When(/^I delete "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
-  $output, _code = $server.run("salt-key -y -d #{system_name}", false)
+  $output, _code = $server.run("salt-key -y -d #{system_name}", check_errors: false)
 end
 
 When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
@@ -638,22 +638,22 @@ end
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   if %w[sle_minion ssh_minion sle_client].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", check_errors: false)
   elsif %w[ceos_minion].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
+    target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", check_errors: false)
   elsif %w[ubuntu_minion].include?(host)
-    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
+    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", check_errors: false)
   end
 end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   if %w[sle_minion ssh_minion sle_client].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", check_errors: false)
   elsif %w[ceos_minion].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
+    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", check_errors: false)
   elsif %w[ubuntu_minion].include?(host)
-    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)
+    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", check_errors: false)
   end
 end
 
@@ -681,13 +681,13 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if host.include? 'ceos'
-    node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', false)
+    node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
   elsif (host.include? 'ubuntu') || (host.include? 'debian')
-    node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', false)
+    node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
   else
-    node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', false)
+    node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', check_errors: false)
   end
-  node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt /var/tmp/.root*', false)
+  node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 

@@ -99,7 +99,7 @@ class RfSSDPServer():
         logger.info('SSDP Packet received from {}'.format(addr))
         decoded = data.decode().replace('\r', '').split('\n')
         msgtype, decoded = decoded[0], decoded[1:]
-        decodeddict = {x.split(':',  1)[0].upper(): x.split(':', 1)[1].strip(' ') for x in decoded if x != ''}
+        decodeddict = {x.split(':', 1)[0].upper(): x.split(':', 1)[1].strip(' ') for x in decoded if x != ''}
 
         if 'M-SEARCH' in msgtype:
             st = decodeddict.get('ST')

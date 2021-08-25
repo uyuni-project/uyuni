@@ -37,7 +37,7 @@ def check_restart(host, node, time_out)
     sleep 1
   end
   repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
-    _out, code = node.run('ls', false, 10)
+    _out, code = node.run('ls', check_errors: false, timeout: 10)
     if code.zero?
       puts "machine: #{host} ssh is up"
       break
@@ -50,12 +50,12 @@ end
 # We get these data decoding the values in '/etc/os-release'
 # rubocop:disable Metrics/AbcSize
 def get_os_version(node)
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', false)
+  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
   return nil, nil unless code.zero?
   os_family = os_family_raw.strip.split('=')[1]
   return nil, nil if os_family.nil?
   os_family.delete! '"'
-  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', false)
+  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
   return nil, nil unless code.zero?
   os_version = os_version_raw.strip.split('=')[1]
   return nil, nil if os_version.nil?
@@ -75,16 +75,16 @@ def get_gpg_keys(node, target = $server)
     os_version = 12 if os_version =~ /^15/
     # SLE11 key doesn't contain service pack string
     os_version = 11 if os_version =~ /^11/
-    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", false)
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
   elsif os_family =~ /^centos/
-    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", false)
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
   else
-    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}*", false)
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}*", check_errors: false)
   end
   gpg_keys.lines.map(&:strip)
 end
 
 def sle11family?(node)
-  _out, code = node.run('pidof systemd', false)
+  _out, code = node.run('pidof systemd', check_errors: false)
   code.nonzero?
 end
