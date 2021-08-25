@@ -183,7 +183,7 @@ public class HandlerFactory {
         factory.addHandler("system.config", new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper));
         factory.addHandler("system.crash", new CrashHandler(xmlRpcSystemHelper));
         factory.addHandler("system.custominfo", new CustomInfoHandler());
-        factory.addHandler("system.monitoring", new SystemMonitoringHandler(formulaManager));
+        factory.addHandler("system.monitoring", new SystemMonitoringHandler(FormulaManager.getInstance()));
         factory.addHandler("system.provisioning.powermanagement", new PowerManagementHandler());
         factory.addHandler("system.provisioning.snapshot", new SnapshotHandler(xmlRpcSystemHelper));
         factory.addHandler("system.scap", new SystemScapHandler());
