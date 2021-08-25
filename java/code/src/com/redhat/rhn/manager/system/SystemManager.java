@@ -1171,21 +1171,6 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<VirtualSystemOverview> virtualSystemsList(
-            User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "virtual_servers");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m, VirtualSystemOverview.class);
-    }
-
-    /**
-     * Returns list of virtual host systems visible to user.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @return list of SystemOverviews.
-     */
     public static DataResult<VirtualSystemOverview> virtualSystemsListNew(
             User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "virtual_servers_new");
