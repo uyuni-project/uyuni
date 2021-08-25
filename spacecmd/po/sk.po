@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-24 20:12+0000\n"
+"PO-Revision-Date: 2021-08-25 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6492,31 +6492,31 @@ msgstr "Dostupné polia:"
 
 #: ../src/spacecmd/system.py:259
 msgid "Examples:"
-msgstr ""
+msgstr "Príklady:"
 
 #: ../src/spacecmd/system.py:260
 msgid "> system_search device:vmware"
-msgstr ""
+msgstr "> system_search device:vmware"
 
 #: ../src/spacecmd/system.py:261
 msgid "> system_search ip:192.168.82"
-msgstr ""
+msgstr "> system_search ip:192.168.82"
 
 #: ../src/spacecmd/system.py:279 ../src/spacecmd/system.py:286
 msgid "Invalid query"
-msgstr ""
+msgstr "Neplatný dopyt"
 
 #: ../src/spacecmd/system.py:322
 msgid "Invalid search field"
-msgstr ""
+msgstr "Neplatné vyhľadávacie pole"
 
 #: ../src/spacecmd/system.py:352
 msgid "system_runscript: Schedule a script to run on the list of"
-msgstr ""
+msgstr "system_runscript: Naplánovať spustenie skriptu v poskytnutom"
 
 #: ../src/spacecmd/system.py:353
 msgid "                  systems provided"
-msgstr ""
+msgstr "                  zozname systémov"
 
 #: ../src/spacecmd/system.py:354
 msgid ""
@@ -6530,14 +6530,23 @@ msgid ""
 "  -l LABEL\n"
 "  -f FILE"
 msgstr ""
+"použitie: system_runscript <SYSTÉMY> [voľby])\n"
+"\n"
+"voľby:\n"
+"  -u POUŽÍVATEĽ\n"
+"  -g SKUPINA\n"
+"  -t ČASOVÝ_LIMIT\n"
+"  -s ČAS_SPUSTENIA\n"
+"  -l OZNAČENIE\n"
+"  -f SÚBOR"
 
 #: ../src/spacecmd/system.py:399
 msgid "User [root]:"
-msgstr ""
+msgstr "Používateľ [root]:"
 
 #: ../src/spacecmd/system.py:400
 msgid "Group [root]:"
-msgstr ""
+msgstr "Skupina [root]:"
 
 #: ../src/spacecmd/system.py:409
 msgid "Timeout (in seconds) [600]:"
