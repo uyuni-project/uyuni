@@ -878,7 +878,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
                      end
           cmd_list.reduce(:+)
         end
-  node.run(cmd, error_control.empty?)
+  node.run(cmd, check_errors: error_control.empty?)
 end
 
 When(/^I enable source package syncing$/) do
