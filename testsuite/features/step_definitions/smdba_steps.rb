@@ -2,17 +2,17 @@
 # Licensed under the terms of the MIT license.
 
 Given(/^a postgresql database is running$/) do
-  $output, _code = $server.run('file /var/lib/pgsql/data/postgresql.conf', false)
+  $output, _code = $server.run('file /var/lib/pgsql/data/postgresql.conf', check_errors: false)
   unless $output.include? 'ASCII text'
     puts 'Tests require Postgresql database, skipping...'
     pending
   end
-  smdba_db_status, _code = $server.run('smdba db-status', false)
+  smdba_db_status, _code = $server.run('smdba db-status', check_errors: false)
   if smdba_db_status.include? 'online'
     puts 'Database is running'
   else
     $server.run('smdba db-start')
-    smdba_db_status, _code = $server.run('smdba db-status', false)
+    smdba_db_status, _code = $server.run('smdba db-status', check_errors: false)
     assert_includes(smdba_db_status, 'online')
   end
 end
@@ -46,14 +46,14 @@ Then(/^"(.*?)" should be in the output$/) do |status|
 end
 
 When(/^I configure "(.*?)" parameter "(.*?)" to "(.*?)"$/) do |config_file, param, value|
-  $server.run("sed -i '/wal_level/d' #{config_file}", false)
-  $server.run("echo \"#{param} = #{value}\" >> #{config_file}", false)
-  local_output, _code = $server.run("cat #{config_file} | grep #{param}", false)
+  $server.run("sed -i '/wal_level/d' #{config_file}", check_errors: false)
+  $server.run("echo \"#{param} = #{value}\" >> #{config_file}", check_errors: false)
+  local_output, _code = $server.run("cat #{config_file} | grep #{param}", check_errors: false)
   assert_includes(local_output, value)
 end
 
 Then(/^I check internally configuration for "(.*?)" option$/) do |_config_key|
-  $current_checked_config_value, _code = $server.run("cd /;sudo -u postgres psql -c 'show wal_level;'", false)
+  $current_checked_config_value, _code = $server.run("cd /;sudo -u postgres psql -c 'show wal_level;'", check_errors: false)
 end
 
 Then(/^the configuration should be set to "(.*?)"$/) do |value|
@@ -65,7 +65,7 @@ Then(/^the configuration should not be set to "(.*?)"$/) do |value|
 end
 
 Then(/^I issue command "(.*?)"$/) do |command|
-  $output, _code = $server.run(command, false)
+  $output, _code = $server.run(command, check_errors: false)
 end
 
 Then(/^tablespace "([^"]*)" should be listed$/) do |ts|
@@ -85,7 +85,7 @@ end
 #
 Given(/^database "(.*?)" has no table "(.*?)"$/) do |dbname, tbl|
   $db = dbname
-  out, _code = $server.run("sudo -u postgres psql -d #{$db} -c 'drop table dummy'", false)
+  out, _code = $server.run("sudo -u postgres psql -d #{$db} -c 'drop table dummy'", check_errors: false)
   refute_includes(out, 'DROP TABLE')
   assert_includes(out, "table \"#{tbl}\" does not exist")
 end
@@ -94,7 +94,7 @@ When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do 
   $server.run("mkdir /#{bkp_dir};chown #{uid}:#{gid} /#{bkp_dir}")
   bkp_dir.sub!('/', '')
   puts 'Backup directory:'
-  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", false)
+  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)
 end
 
 Then(/^I should see error message that asks "(.*?)" belong to the same UID\/GID as "(.*?)" directory$/) do |bkp_dir, data_dir|
@@ -115,7 +115,7 @@ When(/^I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_d
   bkp_dir.sub!('/', '')
   $server.run("test -d /#{bkp_dir} && chmod #{acl_octal} /#{bkp_dir}")
   puts "Backup directory, ACL to \"#{acl_octal}\":"
-  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", false)
+  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)
   puts "\n*** Taking backup, this might take a while ***\n"
 end
 
@@ -125,11 +125,11 @@ end
 
 Then(/^in "(.*?)" directory there is "(.*?)" file and at least one backup checkpoint file$/) do |bkp_dir, archive_file|
   refute_includes(
-    $server.run("test -f #{bkp_dir}/#{archive_file} && echo \"exists\" || echo \"missing\"", false),
+    $server.run("test -f #{bkp_dir}/#{archive_file} && echo \"exists\" || echo \"missing\"", check_errors: false),
     'missing'
   )
   refute_includes(
-    $server.run("ls #{bkp_dir}/*.backup 1>/dev/null 2>/dev/null && echo \"exists\" || echo \"missing\"", false),
+    $server.run("ls #{bkp_dir}/*.backup 1>/dev/null 2>/dev/null && echo \"exists\" || echo \"missing\"", check_errors: false),
     'missing'
   )
 end
@@ -144,17 +144,17 @@ Then(/^"(.*?)" destination should be set to "(.*?)" in configuration file$/) do 
 end
 
 When(/^I set a checkpoint$/) do
-  $server.run("sudo -u postgres psql -d #{$db} -c 'checkpoint' 2>/dev/null", false)
+  $server.run("sudo -u postgres psql -d #{$db} -c 'checkpoint' 2>/dev/null", check_errors: false)
 end
 
 When(/^in the database I create dummy table "(.*?)" with column "(.*?)" and value "(.*?)"$/) do |tbl, clm, val|
   fn = '/tmp/smdba-data-test.sql'
-  $server.run("echo \"create table #{tbl} (#{clm} varchar);insert into #{tbl} (#{clm}) values (\'#{val}\');\" > #{fn}", ignore_err: false)
-  $server.run("sudo -u postgres psql -d #{$db} -c 'drop table dummy' 2>/dev/null", false)
-  $server.run("sudo -u postgres psql -d #{$db} -af #{fn}", false)
+  $server.run("echo \"create table #{tbl} (#{clm} varchar);insert into #{tbl} (#{clm}) values (\'#{val}\');\" > #{fn}", check_errors: false)
+  $server.run("sudo -u postgres psql -d #{$db} -c 'drop table dummy' 2>/dev/null", check_errors: false)
+  $server.run("sudo -u postgres psql -d #{$db} -af #{fn}", check_errors: false)
   $server.run("file -f #{fn} && rm #{fn}")
   assert_includes(
-    $server.run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", false),
+    $server.run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", check_errors: false),
     val
   )
   puts "Table \"#{tbl}\" has been created with some dummy data inside"
@@ -167,6 +167,6 @@ end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|
   assert_includes(
-    $server.run('smdba backup-hot --enable=off', false), 'Finished'
+    $server.run('smdba backup-hot --enable=off', check_errors: false), 'Finished'
   )
 end
