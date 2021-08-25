@@ -321,6 +321,9 @@ install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/sate
 %if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
 sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
+
+sed -i 's|#HTTPD_CONFIG_DIR#|%{httpd_config_dir}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 sed -i 's/#DOCUMENTROOT#/\/var\/www\/html/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf

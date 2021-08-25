@@ -1,3 +1,4 @@
+- Added RHN config parameter httpd_config_dir.
 - fix typo "verfication" instead of "verification"
 
 -------------------------------------------------------------------
