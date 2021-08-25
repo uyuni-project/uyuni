@@ -97,7 +97,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/systems/Overview.do"))
                 .addChild(new MenuItem("System List").addChild(new MenuItem("All").withPrimaryUrl("/rhn/systems/SystemList.do"))
                     .addChild(new MenuItem("Physical Systems").withPrimaryUrl("/rhn/systems/PhysicalList.do"))
-                    .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/systems/VirtualList.do"))
+                    .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/manager/systems/list/virtual"))
                     .addChild(new MenuItem("Bare Metal Systems").withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
                     .addChild(new MenuItem("Out of Date").withPrimaryUrl("/rhn/systems/OutOfDate.do"))
                     .addChild(new MenuItem("Requiring Reboot").withPrimaryUrl("/rhn/systems/RequiringReboot.do"))
