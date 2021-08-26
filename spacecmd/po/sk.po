@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-25 19:11+0000\n"
+"PO-Revision-Date: 2021-08-26 18:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6550,47 +6550,47 @@ msgstr "Skupina [root]:"
 
 #: ../src/spacecmd/system.py:409
 msgid "Timeout (in seconds) [600]:"
-msgstr ""
+msgstr "Časový limit (v sekundách) [600]:"
 
 #: ../src/spacecmd/system.py:415
 msgid "Invalid timeout"
-msgstr ""
+msgstr "Neplatný časový limit"
 
 #: ../src/spacecmd/system.py:421
 msgid "Label/Short Description [default]:"
-msgstr ""
+msgstr "Označenie/Krátky popis [predvolené]:"
 
 #: ../src/spacecmd/system.py:425
 msgid "Script File [create]:"
-msgstr ""
+msgstr "Súbor so skriptom [vytvoriť]:"
 
 #: ../src/spacecmd/system.py:438
 msgid "No script provided"
-msgstr ""
+msgstr "Nie je poskytnutý žiadny skript"
 
 #: ../src/spacecmd/system.py:457
 msgid "A script file is required"
-msgstr ""
+msgstr "Vyžaduje sa súbor so skriptom"
 
 #: ../src/spacecmd/system.py:465
 #, python-format
 msgid "User:       %s"
-msgstr ""
+msgstr "Používateľ::       %s"
 
 #: ../src/spacecmd/system.py:466
 #, python-format
 msgid "Group:      %s"
-msgstr ""
+msgstr "Skupina:      %s"
 
 #: ../src/spacecmd/system.py:467
 #, python-format
 msgid "Timeout:    %i seconds"
-msgstr ""
+msgstr "Časový limit:    %i sekúnd"
 
 #: ../src/spacecmd/system.py:471
 #, python-format
 msgid "Label:      %s"
-msgstr ""
+msgstr "Označenie:      %s"
 
 #: ../src/spacecmd/system.py:472
 msgid "Script Contents"
