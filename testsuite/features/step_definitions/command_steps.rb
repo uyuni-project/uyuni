@@ -1244,16 +1244,16 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
            "</network>"
 
   # Some networks like the default one may already be defined.
-  _output, code = node.run("virsh net-dumpxml #{net_name}", false)
+  _output, code = node.run("virsh net-dumpxml #{net_name}", check_errors: false)
   node.run("echo -e \"#{netdef}\" >/tmp/#{net_name}.xml && virsh net-define /tmp/#{net_name}.xml") unless code.zero?
 
   # Ensure the network is started
-  node.run("virsh net-start #{net_name}", false)
+  node.run("virsh net-start #{net_name}", check_errors: false)
 end
 
 When(/^I delete ([^ ]*) virtual network on "([^"]*)"((?: without error control)?)$/) do |net_name, host, error_control|
   node = get_target(host)
-  _output, code = node.run("virsh net-dumpxml #{net_name}", false)
+  _output, code = node.run("virsh net-dumpxml #{net_name}", check_errors: false)
   if code.zero?
     steps %(
       When I run "virsh net-destroy #{net_name}" on "#{host}"#{error_control}
@@ -1279,17 +1279,17 @@ When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host
   )
 
   # Some pools like the default one may already be defined.
-  _output, code = node.run("virsh pool-dumpxml #{pool_name}", false)
+  _output, code = node.run("virsh pool-dumpxml #{pool_name}", check_errors: false)
   node.run("echo -e \"#{pool_def}\" >/tmp/#{pool_name}.xml && virsh pool-define /tmp/#{pool_name}.xml") unless code.zero?
   node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
 
   # Ensure the pool is started
-  node.run("virsh pool-start #{pool_name}", false)
+  node.run("virsh pool-start #{pool_name}", check_errors: false)
 end
 
 When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
   node = get_target(host)
-  _output, code = node.run("virsh pool-dumpxml #{pool_name}", false)
+  _output, code = node.run("virsh pool-dumpxml #{pool_name}", check_errors: false)
   if code.zero?
     steps %(
       When I run "virsh pool-destroy #{pool_name}" on "#{host}"#{error_control}
