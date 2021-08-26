@@ -67,6 +67,7 @@ fi
 # Build SRPMS
 echo "*************** BUILDING PACKAGES ***************"
 ./build-packages-for-obs.sh ${PACKAGES}
+echo "************* DEBUG Return code $? for building ${PACKAGES}"
 
 # Submit 
 for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do
