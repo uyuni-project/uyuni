@@ -1,12 +1,5 @@
 import moment from "moment-timezone";
 
-// TODO: Only for testing
-/*
-window.serverTimeZone = "Asia/Tokyo"; // GMT+9
-window.serverTime = "2020-01-31T08:00:00.000+09:00";
-window.userTimeZone = "America/Los_Angeles"; // GMT-7
-*/
-
 declare global {
   interface Window {
     /** The server IANA time zone, e.g. `"Asia/Tokyo"` */
@@ -38,21 +31,43 @@ function validateOrGuessTimeZone(input: string | undefined, errorLabel: string) 
   return input;
 }
 
-const serverTimeZone = validateOrGuessTimeZone(window.serverTimeZone, "Server");
-const userTimeZone = validateOrGuessTimeZone(window.userTimeZone, "User");
+/**
+ * The login page doesn't have user-specific data available, but includes this file via the legacy support module.
+ * To avoid throwing or storing incorrect values, we only initialize config values once actually used.
+ */
+const config = {
+  _serverTimeZone: undefined as string | undefined,
+  get serverTimeZone(): string {
+    return this._serverTimeZone ??= validateOrGuessTimeZone(window.serverTimeZone, "Server");
+  },
 
-// See https://momentjs.com/docs/#/displaying/
-const userDateFormat = window.userDateFormat || "YYYY-MM-DD";
-const userTimeFormat = window.userTimeFormat || "HH:mm";
+  _userTimeZone: undefined as string | undefined,
+  get userTimeZone(): string {
+    return this._userTimeZone ??= validateOrGuessTimeZone(window.userTimeZone, "User");
+  },
+
+  // See https://momentjs.com/docs/#/displaying/
+  _userDateFormat: undefined as string | undefined,
+  get userDateFormat(): string {
+    return this._userDateFormat ??= (window.userDateFormat || "YYYY-MM-DD");
+  },
+
+  _userTimeFormat: undefined as string | undefined,
+  get userTimeFormat(): string {
+    return this._userTimeFormat ??= (window.userTimeFormat || "HH:mm");
+  },
+}
 
 // Sanity check, if the server and the browser have wildly differing time zone adjusted time, someone is probably wrong
 if (window.serverTime) {
   const diffMinutes = localizedMomentConstructor(window.serverTime).diff(localizedMomentConstructor(), "minutes");
   if (Math.abs(diffMinutes) > 10) {
-    Loggerhead.error(`Server and browser disagree on what the time is despite accounting for time zones, server time is ${moment(window.serverTime).toISOString(true)}, browser time is ${moment().toISOString(true)}`);
+    Loggerhead.error(
+      `Server and browser disagree on what the time is despite accounting for time zones, server time is ${moment(
+        window.serverTime
+      ).toISOString(true)}, browser time is ${moment().toISOString(true)}`
+    );
   }
-} else {
-  Loggerhead.error("Server time not available");
 }
 
 declare module "moment" {
@@ -95,60 +110,62 @@ declare module "moment" {
 moment.fn.toServerString = function(this: moment.Moment): string {
   // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
   return moment(this)
-    .tz(serverTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat} [${serverTimeZone}]`);
+    .tz(config.serverTimeZone)
+    .format(`${config.userDateFormat} ${config.userTimeFormat} [${config.serverTimeZone}]`);
 };
 
 moment.fn.toServerDateTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat}`);
+    .tz(config.serverTimeZone)
+    .format(`${config.userDateFormat} ${config.userTimeFormat}`);
 };
 
 moment.fn.toServerDateString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
-    .format(userDateFormat);
+    .tz(config.serverTimeZone)
+    .format(config.userDateFormat);
 };
 
 moment.fn.toServerTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
-    .format(userTimeFormat);
+    .tz(config.serverTimeZone)
+    .format(config.userTimeFormat);
 };
 
 moment.fn.toUserString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat} [${userTimeZone}]`);
+    .tz(config.userTimeZone)
+    .format(`${config.userDateFormat} ${config.userTimeFormat} [${config.userTimeZone}]`);
 };
 
 moment.fn.toUserDateTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat}`);
+    .tz(config.userTimeZone)
+    .format(`${config.userDateFormat} ${config.userTimeFormat}`);
 };
 
 moment.fn.toUserDateString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
-    .format(userDateFormat);
+    .tz(config.userTimeZone)
+    .format(config.userDateFormat);
 };
 
 moment.fn.toUserTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
-    .format(userTimeFormat);
+    .tz(config.userTimeZone)
+    .format(config.userTimeFormat);
 };
 
 Object.defineProperties(moment, {
   serverTimeZone: {
-    value: serverTimeZone as typeof moment["serverTimeZone"],
-    writable: false,
+    get() {
+      return config.serverTimeZone as typeof moment["serverTimeZone"];
+    },
   },
   userTimeZone: {
-    value: userTimeZone as typeof moment["serverTimeZone"],
-    writable: false,
+    get() {
+      return config.userTimeZone as typeof moment["serverTimeZone"];
+    },
   },
 });
 
