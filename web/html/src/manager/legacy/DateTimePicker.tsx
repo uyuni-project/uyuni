@@ -9,7 +9,7 @@ import ReactDOM from "react-dom";
 import { localizedMoment } from "utils";
 import { DateTimePicker } from "components/datetime";
 
-function mountDatePickerTo(mountingPoint: HTMLElement | null) {
+function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
   if (!mountingPoint) {
     Loggerhead.error("Found no mounting point for picker");
     return;
@@ -28,7 +28,7 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
   const isAmPm = mountingPoint.hasAttribute("data-is-am-pm");
 
   // Raw value is an ISO 8601 format date time string with timezone info intact, a-la `"2021-06-08T20:00+0100"`
-  const rawValue = mountingPoint.getAttribute("data-value");
+  const rawValue = mountingPoint.getAttribute("data-value") || mountingPoint.innerText;
   // We store the expected UTC offset separately so we can set it back before setting values for the legacy inputs
   const utcOffset = localizedMoment.parseZone(rawValue).utcOffset();
   const initialValue = localizedMoment(rawValue);
@@ -96,7 +96,7 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
 
 function mountAll() {
   Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time-picker")).forEach(node =>
-    mountDatePickerTo(node)
+    mountDateTimePickerTo(node)
   );
 }
 

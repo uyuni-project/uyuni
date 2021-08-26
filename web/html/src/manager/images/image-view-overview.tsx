@@ -130,7 +130,7 @@ function ActionStatus(props) {
             <tr>
               <td>{t("Picked Up")}:</td>
               <td>
-                <FromNow time={action.pickup_time} />
+                <FromNow value={action.pickup_time} />
               </td>
             </tr>
           )}
@@ -138,7 +138,7 @@ function ActionStatus(props) {
             <tr>
               <td>{t("Completed")}:</td>
               <td>
-                <FromNow time={action.completion_time} />
+                <FromNow value={action.completion_time} />
               </td>
             </tr>
           )}

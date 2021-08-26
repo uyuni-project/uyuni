@@ -659,7 +659,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             columnKey="modified"
             header={t("Last Modified")}
             comparator={Utils.sortByDate}
-            cell={row => <FromNow time={row.modified} />}
+            cell={row => <FromNow value={row.modified} />}
           />
           <Column
             width="10%"

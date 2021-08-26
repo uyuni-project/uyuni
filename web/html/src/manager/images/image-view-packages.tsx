@@ -51,7 +51,7 @@ class ImageViewPackages extends React.Component<Props> {
           columnKey="installed"
           comparator={Utils.sortByDate}
           header={t("Installed")}
-          cell={row => <FromNow time={row.installed} />}
+          cell={row => <FromNow value={row.installed} />}
         />
       </Table>
     );

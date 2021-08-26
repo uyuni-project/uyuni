@@ -6,11 +6,11 @@ type Props = {
   children?: string;
 };
 
-export const FromNow = (props: Props) => {
+export const DateTime = (props: Props) => {
   const rawValue = props.value ?? props.children;
   if (!rawValue) {
     return null;
   }
   const value = localizedMoment(rawValue).tz(localizedMoment.userTimeZone);
-  return <span title={value.toUserString()}>{value.fromNow()}</span>;
+  return <React.Fragment>{value.toUserString()}</React.Fragment>;
 };

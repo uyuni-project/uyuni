@@ -99,7 +99,7 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
           columnKey="update"
           comparator={Utils.sortByDate}
           header={t("Updated")}
-          cell={row => <FromNow time={row.update} />}
+          cell={row => <FromNow value={row.update} />}
         />
       </Table>
     );

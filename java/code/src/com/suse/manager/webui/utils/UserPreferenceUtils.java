@@ -196,6 +196,6 @@ public class UserPreferenceUtils {
      * @return the String format of the Time
      */
     public String getUserTimeFormat(PageContext pageContext) {
-        return "HH:mm:ss";
+        return "HH:mm";
     }
 }
