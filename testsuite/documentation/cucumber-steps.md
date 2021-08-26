@@ -753,10 +753,10 @@ When implementing a step, to run a command on a target, use:
 
 ```ruby
 $server.run("uptime")
-$client.run("uptime", false)
-$minion.run("uptime", true)
-$minion.run("uptime", true, 300)
-$client.run("uptime", false, 500, "root")
+$client.run("uptime", check_errors: false)
+$minion.run("uptime", check_errors: true)
+$minion.run("uptime", check_errors: true, timeout: 300)
+$client.run("uptime", check_errors: false, timeout: 500, user: 'root')
 ```
 
 Arguments taken by method ```run``` are:
