@@ -91,13 +91,17 @@ while read PKG_NAME PKG_VER PKG_DIR; do
 
   cd "$GIT_DIR/$PKG_DIR"
   $TITO build ${VERBOSE:+--debug} ${TEST:+--test} --srpm >"$T_LOG" 2>&1 || {
+    echo "DEBUG: JORDI ******************* AFTER TITO BUILD 1  ****"
     cat "$T_LOG"
+    echo "DEBUG: JORDI ******************* AFTER TITO BUILD 2  ****"
     test $tries -eq 3 || continue
+    echo "DEBUG: JORDI ******************* AFTER TITO BUILD 3  ****"
     FAILED_CNT=$(($FAILED_CNT+1))
     FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $PKG_NAME-$PKG_VER")"
     echo "*** FAILED Building package [$PKG_NAME-$PKG_VER]"
     continue 2
   }
+    echo "DEBUG: JORDI ******************* AFTER TITO BUILD 4  ****"
   ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
