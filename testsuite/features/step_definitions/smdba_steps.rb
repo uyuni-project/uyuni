@@ -18,7 +18,7 @@ Given(/^a postgresql database is running$/) do
 end
 
 Given(/^there is no such "(.*?)" directory$/) do |bkp_dir|
-  $server.run("test -d #{bkp_dir} && rm -rf #{bkp_dir}")
+  $server.run("test -d #{bkp_dir} && rm -rf #{bkp_dir}", check_errors: false)
 end
 
 When(/^I start database with the command "(.*?)"$/) do |start_command|
@@ -85,9 +85,9 @@ end
 #
 Given(/^database "(.*?)" has no table "(.*?)"$/) do |dbname, tbl|
   $db = dbname
-  out, _code = $server.run("sudo -u postgres psql -d #{$db} -c 'drop table dummy'", check_errors: false)
+  out, err, _code = $server.run("sudo -u postgres psql -d #{$db} -c 'drop table dummy'", separated_results: true, check_errors: false)
   refute_includes(out, 'DROP TABLE')
-  assert_includes(out, "table \"#{tbl}\" does not exist")
+  assert_includes(err, "table \"#{tbl}\" does not exist")
 end
 
 When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do |bkp_dir, uid, gid|
@@ -154,7 +154,7 @@ When(/^in the database I create dummy table "(.*?)" with column "(.*?)" and valu
   $server.run("sudo -u postgres psql -d #{$db} -af #{fn}", check_errors: false)
   $server.run("file -f #{fn} && rm #{fn}")
   assert_includes(
-    $server.run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", check_errors: false),
+    $server.run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", check_errors: false)[0],
     val
   )
   puts "Table \"#{tbl}\" has been created with some dummy data inside"
