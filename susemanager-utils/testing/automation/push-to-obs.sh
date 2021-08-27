@@ -81,10 +81,10 @@ for p in ${PACKAGES};do
     # This way, we can add tee at the end but be sure the result would be non zero if the command before has failed.
     set -o pipefail
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap EXIT_CODE=\$?;\"${CHOWN_CMD};exit \$EXITCODE \" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
         PIDS="$PIDS $!"
     else
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};echo DEBUG1;exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && echo DEBUG2\${RET} &&  exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap EXIT_CODE=\$?;\"${CHOWN_CMD};echo DEBUG1;exit \$EXITCODE\" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && echo DEBUG2\${RET} &&  exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
     set +o pipefail
 done
