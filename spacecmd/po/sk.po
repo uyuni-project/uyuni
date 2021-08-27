@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-26 18:11+0000\n"
+"PO-Revision-Date: 2021-08-27 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6594,32 +6594,32 @@ msgstr "Označenie:      %s"
 
 #: ../src/spacecmd/system.py:472
 msgid "Script Contents"
-msgstr ""
+msgstr "Obsah skriptov"
 
 #: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:836
 #: ../src/spacecmd/system.py:963 ../src/spacecmd/system.py:1097
 #: ../src/spacecmd/system.py:4399
 #, python-format
 msgid "Failed to schedule %s"
-msgstr ""
+msgstr "Nepodarilo sa naplánovať %s"
 
 #: ../src/spacecmd/system.py:537
 #, python-format
 msgid "Scheduled: %i system(s)"
-msgstr ""
+msgstr "Naplánované: %i systém(y)"
 
 #: ../src/spacecmd/system.py:544 ../src/spacecmd/utils.py:246
 #, python-format
 msgid "Could not remove %s"
-msgstr ""
+msgstr "Nepodarilo sa odstrániť %s"
 
 #: ../src/spacecmd/system.py:553
 msgid "system_listhardware: List the hardware details of a system"
-msgstr ""
+msgstr "system_listhardware: Vypísať podrobnosti o hardvéri systému"
 
 #: ../src/spacecmd/system.py:554
 msgid "usage: system_listhardware <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listhardware <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:613
 msgid "Network"
@@ -6628,22 +6628,22 @@ msgstr "Sieť"
 #: ../src/spacecmd/system.py:622
 #, python-format
 msgid "Interface:   %s"
-msgstr ""
+msgstr "Rozhranie:   %s"
 
 #: ../src/spacecmd/system.py:623
 #, python-format
 msgid "MAC Address: %s"
-msgstr ""
+msgstr "MAC adresa: %s"
 
 #: ../src/spacecmd/system.py:624
 #, python-format
 msgid "IP Address:  %s"
-msgstr ""
+msgstr "IP adresa:  %s"
 
 #: ../src/spacecmd/system.py:625
 #, python-format
 msgid "Netmask:     %s"
-msgstr ""
+msgstr "Sieťová maska:     %s"
 
 #: ../src/spacecmd/system.py:626
 #, python-format
