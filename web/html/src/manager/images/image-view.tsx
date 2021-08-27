@@ -696,7 +696,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
         </Table>
         {window.osImageStoreUrl &&
           <div>
-            <a href={window.osImageStoreUrl} target="_blank">
+            <a href={window.osImageStoreUrl} target="_blank" rel="noopener noreferrer">
               <i className="fa fa-folder-open"/>
               Go to OS image directory listing
             </a>
