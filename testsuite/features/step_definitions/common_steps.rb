@@ -932,7 +932,7 @@ def token(secret, claims = {})
 end
 
 def server_secret
-  rhnconf = $server.run('cat /etc/rhn/rhn.conf', check_errors: false)
+  rhnconf, _code = $server.run('cat /etc/rhn/rhn.conf', check_errors: false)
   data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
   data[1].strip
 end

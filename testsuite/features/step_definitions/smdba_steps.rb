@@ -94,7 +94,7 @@ When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do 
   $server.run("mkdir /#{bkp_dir};chown #{uid}:#{gid} /#{bkp_dir}")
   bkp_dir.sub!('/', '')
   puts 'Backup directory:'
-  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)
+  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
 end
 
 Then(/^I should see error message that asks "(.*?)" belong to the same UID\/GID as "(.*?)" directory$/) do |bkp_dir, data_dir|
@@ -115,7 +115,7 @@ When(/^I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_d
   bkp_dir.sub!('/', '')
   $server.run("test -d /#{bkp_dir} && chmod #{acl_octal} /#{bkp_dir}")
   puts "Backup directory, ACL to \"#{acl_octal}\":"
-  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)
+  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
   puts "\n*** Taking backup, this might take a while ***\n"
 end
 
@@ -167,6 +167,6 @@ end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|
   assert_includes(
-    $server.run('smdba backup-hot --enable=off', check_errors: false), 'Finished'
+    $server.run('smdba backup-hot --enable=off', check_errors: false)[0], 'Finished'
   )
 end
