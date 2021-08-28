@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-27 19:11+0000\n"
+"PO-Revision-Date: 2021-08-28 14:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6648,50 +6648,50 @@ msgstr "Sieťová maska:     %s"
 #: ../src/spacecmd/system.py:626
 #, python-format
 msgid "Broadcast:   %s"
-msgstr ""
+msgstr "Broadcast:   %s"
 
 #: ../src/spacecmd/system.py:627
 #, python-format
 msgid "Module:      %s"
-msgstr ""
+msgstr "Modul:      %s"
 
 #: ../src/spacecmd/system.py:631
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: ../src/spacecmd/system.py:633
 #, python-format
 msgid "Count:    %i"
-msgstr ""
+msgstr "Počet:    %i"
 
 #: ../src/spacecmd/system.py:634
 #, python-format
 msgid "Arch:     %s"
-msgstr ""
+msgstr "Arch:     %s"
 
 #: ../src/spacecmd/system.py:635
 #, python-format
 msgid "MHz:      %s"
-msgstr ""
+msgstr "MHz:      %s"
 
 #: ../src/spacecmd/system.py:636
 #, python-format
 msgid "Cache:    %s"
-msgstr ""
+msgstr "Vyrovnávacia pamäť:    %s"
 
 #: ../src/spacecmd/system.py:637
 #, python-format
 msgid "Vendor:   %s"
-msgstr ""
+msgstr "Dodávateľ:   %s"
 
 #: ../src/spacecmd/system.py:638
 #, python-format
 msgid "Model:    %s"
-msgstr ""
+msgstr "Model:    %s"
 
 #: ../src/spacecmd/system.py:641
 msgid "Memory"
-msgstr ""
+msgstr "Pamäť"
 
 #: ../src/spacecmd/system.py:643
 #, python-format
