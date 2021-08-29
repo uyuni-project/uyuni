@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-28 14:12+0000\n"
+"PO-Revision-Date: 2021-08-29 21:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6696,50 +6696,50 @@ msgstr "Pamäť"
 #: ../src/spacecmd/system.py:643
 #, python-format
 msgid "RAM:  %i"
-msgstr ""
+msgstr "RAM:  %i"
 
 #: ../src/spacecmd/system.py:644
 #, python-format
 msgid "Swap: %i"
-msgstr ""
+msgstr "Odkladací priestor: %i"
 
 #: ../src/spacecmd/system.py:648
 msgid "DMI"
-msgstr ""
+msgstr "DMI"
 
 #: ../src/spacecmd/system.py:649
 #, python-format
 msgid "Vendor:       %s"
-msgstr ""
+msgstr "Dodávateľ:       %s"
 
 #: ../src/spacecmd/system.py:650
 #, python-format
 msgid "System:       %s"
-msgstr ""
+msgstr "Systém:       %s"
 
 #: ../src/spacecmd/system.py:651
 #, python-format
 msgid "Product:      %s"
-msgstr ""
+msgstr "Produkt:      %s"
 
 #: ../src/spacecmd/system.py:652
 #, python-format
 msgid "Board:        %s"
-msgstr ""
+msgstr "Doska:        %s"
 
 #: ../src/spacecmd/system.py:655
 msgid "Asset"
-msgstr ""
+msgstr "Majetok"
 
 #: ../src/spacecmd/system.py:661
 #, python-format
 msgid "BIOS Release: %s"
-msgstr ""
+msgstr "Vydanie systému BIOS: %s"
 
 #: ../src/spacecmd/system.py:662
 #, python-format
 msgid "BIOS Vendor:  %s"
-msgstr ""
+msgstr "Dodávateľ systému BIOS:  %s"
 
 #: ../src/spacecmd/system.py:663
 #, python-format
