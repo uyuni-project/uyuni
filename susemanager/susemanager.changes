@@ -1,4 +1,5 @@
-
+- Abort migration if data_directory is defined at the PostgreSQL
+  configuration file
 - Package 'snapper' is now optional.
 
 -------------------------------------------------------------------
