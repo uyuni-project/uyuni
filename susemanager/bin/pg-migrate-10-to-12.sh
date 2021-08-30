@@ -52,6 +52,12 @@ else
     BACKUP_CONFIGURED=0
 fi
 
+if [ $(grep data_directory /var/lib/pgsql/data/postgresql.conf) ]; then
+    echo "$(timestamp) data_directory is configured in /var/lib/pgsql/data/postgresql.conf"
+    echo "$(timestamp) For the migration to work, data_directory should not be defined explicetely"
+    exit 1
+fi
+
 echo "`date +"%H:%M:%S"`   Shut down spacewalk services..."
 spacewalk-service stop
 systemctl stop postgresql
