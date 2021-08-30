@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 30 12:00:00 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.2.22-1
 - Abort migration if data_directory is defined at the PostgreSQL
   configuration file
 - Update translation strings
