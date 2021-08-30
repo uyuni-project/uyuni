@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-29 21:11+0000\n"
+"PO-Revision-Date: 2021-08-30 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6744,7 +6744,7 @@ msgstr "Dodávateľ systému BIOS:  %s"
 #: ../src/spacecmd/system.py:663
 #, python-format
 msgid "BIOS Version: %s"
-msgstr ""
+msgstr "Verzia systému BIOS: %s"
 
 #: ../src/spacecmd/system.py:667
 msgid "Devices"
@@ -6752,26 +6752,26 @@ msgstr "Zariadenia"
 
 #: ../src/spacecmd/system.py:677
 msgid "Description: None"
-msgstr ""
+msgstr "Popis: Žiadny"
 
 #: ../src/spacecmd/system.py:681
 #, python-format
 msgid "Driver:      %s"
-msgstr ""
+msgstr "Ovládač:      %s"
 
 #: ../src/spacecmd/system.py:682
 #, python-format
 msgid "Class:       %s"
-msgstr ""
+msgstr "Trieda:       %s"
 
 #: ../src/spacecmd/system.py:683
 #, python-format
 msgid "Bus:         %s"
-msgstr ""
+msgstr "Zbernica:         %s"
 
 #: ../src/spacecmd/system.py:691
 msgid "system_installpackage: Install a package on a system"
-msgstr ""
+msgstr "system_installpackage: Nainštalovať balík do systému"
 
 #: ../src/spacecmd/system.py:692
 msgid ""
@@ -6780,19 +6780,23 @@ msgid ""
 "options:\n"
 "    -s START_TIME"
 msgstr ""
+"usage: system_installpackage <SYSTÉMY> <BALÍK ...> [voľby])\n"
+"\n"
+"voľby:\n"
+"    -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:793
 msgid "No packages to install"
-msgstr ""
+msgstr "Žiadne balíky na inštaláciu"
 
 #: ../src/spacecmd/system.py:817
 #, python-format
 msgid "%s does not have access to all requested packages"
-msgstr ""
+msgstr "%s nemá prístup ku všetkým požadovaným balíkom"
 
 #: ../src/spacecmd/system.py:823
 msgid "Install these packages [y/N]:"
-msgstr ""
+msgstr "Nainštalovať tieto balíky [a/N]:"
 
 #: ../src/spacecmd/system.py:838 ../src/spacecmd/system.py:965
 #: ../src/spacecmd/system.py:1099
