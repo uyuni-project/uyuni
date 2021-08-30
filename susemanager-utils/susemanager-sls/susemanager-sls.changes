@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 30 12:05:54 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.2.16-1
 - Add Rocky Linux 8 support
 - Enable logrotate configuration for Salt SSH minion logs
 - Add UEFI support for VM creation
