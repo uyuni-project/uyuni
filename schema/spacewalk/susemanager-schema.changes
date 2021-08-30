@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 30 12:05:11 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.2.17-1
 - Add Rocky Linux 8 key and vendor
 - Fix wrongly assigned entitlements due to system transfer (bsc#1188032)
 - Force a one-off VACUUM ANALYZE
