@@ -45,7 +45,7 @@ def features():
         try:
             libvirt_version = cnx.getLibVersion()
         except libvirt.libvirtError:
-            log.warn("Failed to get libvirt version")
+            log.warning("Failed to get libvirt version")
         finally:
             cnx.close()
 
