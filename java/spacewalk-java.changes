@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 30 11:57:33 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.2.28-1
 - Show AppStreams tab just for modular channels
 - Fix Json null comparison in virtual network info parsing (bsc#1189167)
 - Update translation strings
