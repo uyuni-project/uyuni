@@ -1,3 +1,5 @@
+- Abort migration if data_directory is defined at the PostgreSQL
+  configuration file
 - Update translation strings
 - Add bootstrap repository definitions for Rocky Linux 8
 
