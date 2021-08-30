@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Aug 30 12:04:20 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.2.14-1
 - Upgrade react-select to 4.3.1
 - Add d3 version 4.5.0
 - Add ip-regex for improved IP validation
