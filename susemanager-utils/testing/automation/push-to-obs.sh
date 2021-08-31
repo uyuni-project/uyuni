@@ -62,31 +62,30 @@ if [ ! -f ${CREDENTIALS} ]; then
   exit 1
 fi
 
-INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
     PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
 }
+
+
 echo "Starting building and submission at $(date)"
 date
 PIDS=""
+user=$(id -u)
+group=$(id -g)
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 for p in ${PACKAGES};do
-    pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
-    CHOWN_CMD="${CHOWN_CMD}; chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
-    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     # Set pipefail so the result of a pipe is different to zero if one of the commands fail.
     # This way, we can add tee at the end but be sure the result would be non zero if the command before has failed.
-    set -o pipefail
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"EXIT_CODE=\$?;${CHOWN_CMD};exit \$EXITCODE \" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "set -o pipefail;/manager/susemanager-utils/testing/docker/scripts/push-to-obs-wrapper.sh ${p} ${user} ${group} ${CMD} | tee /manager/logs/${p}.log" &
         PIDS="$PIDS $!"
     else
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"EXIT_CODE=\$?;${CHOWN_CMD};exit \$EXITCODE\" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} &&  exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "set -o pipefail;/manager/susemanager-utils/testing/docker/scripts/push-to-obs-wrapper.sh ${p} ${user} ${group} ${CMD} | tee /manager/logs/${p}.log"
+        cat ${GITROOT}/logs/{p}.log
     fi
-    set +o pipefail
 done
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
 
@@ -105,8 +104,15 @@ for i in $PIDS;do
     fi
 done
 
+if [ "$PARALLEL_BUILD" == "TRUE" ];then
+    for p in ${PACKAGES};do
+        cat ${GITROOT}/logs/${p}.log
+    done
+fi
+
 if [ $PRET -ne 0 ];then
     echo "Review the logs."
+    exit $PRET
 fi
 
 set -e
