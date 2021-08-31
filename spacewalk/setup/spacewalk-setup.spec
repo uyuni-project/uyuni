@@ -286,8 +286,7 @@ exit 0
 make test
 %if 0%{?pylint_check}
 # check coding style
-spacewalk-python3-pylint \
-    $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
+spacewalk-python3-pylint $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py ||:
 %endif
 
 %files

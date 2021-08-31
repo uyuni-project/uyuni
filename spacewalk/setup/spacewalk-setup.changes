@@ -1,6 +1,6 @@
 - Simplified perl module dependency.
 - Fixed com.sun.bind issue on package update.
-- Enabled pylint for all builds.
+- Enabled pylint for all builds but don't stop on error.
 - cobbler20-setup was removed
 - spacewalk-setup-cobbler was reimplemented in Python
 - Config files for Cobbler don't get edited in place anymore, thus the original
