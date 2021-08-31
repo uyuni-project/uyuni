@@ -1,4 +1,5 @@
 - Java enablement for Debian 11
+- implement package locking for salt minions
 - Show AppStreams tab just for modular channels
 - Fix Json null comparison in virtual network info parsing (bsc#1189167)
 - 'AppStreams with defaults' filter template in CLM

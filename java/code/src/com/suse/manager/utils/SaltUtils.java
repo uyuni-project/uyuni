@@ -89,6 +89,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -636,6 +637,9 @@ public class SaltUtils {
                         PkgProfileUpdateSlsResult.class));
             });
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
+            handlePackageLockData(serverAction, jsonResult, action);
+        }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 serverAction.setResultMsg("Failure");
@@ -734,6 +738,37 @@ public class SaltUtils {
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+        }
+    }
+
+    private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            String msg = "Error while changing the lock status";
+            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> {
+                        if (r.containsKey("pkg_|-pkg_locked_|-pkg_locked_|-held")) {
+                            serverAction.setResultMsg(msg + ":\n" +
+                                    r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment());
+                        }
+                        else {
+                            serverAction.setResultMsg(msg);
+                        }
+                    },
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.syncLockedPackages(minionServer.getId(), action.getId());
+            });
+        }
+        else {
+            String msg = "Successfully changed lock status";
+            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> serverAction.setResultMsg(msg + ":\n" +
+                            r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.updateLockedPackages(minionServer.getId(), action.getId());
+                PackageManager.updateUnlockedPackages(minionServer.getId(), action.getId());
+            });
         }
     }
 
