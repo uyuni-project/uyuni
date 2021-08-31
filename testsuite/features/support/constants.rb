@@ -141,7 +141,9 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian9_minion' => 'bison',
                       'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
-                      'debian10_ssh_minion' => 'bison' }.freeze
+                      'debian10_ssh_minion' => 'bison',
+                      'debian11_minion' => 'bison',
+                      'debian11_ssh_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'sle_client' => 'SLES12-SP4-Pool',
@@ -188,7 +190,9 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'debian9_minion' => 'debian-9-pool',
                            'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
-                           'debian10_ssh_minion' => 'debian-10-pool' }.freeze
+                           'debian10_ssh_minion' => 'debian-10-pool',
+                           'debian11_minion' => 'debian-11-pool',
+                           'debian11_ssh_minion' => 'debian-11-pool' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
                           'SLES11-SP3-Pool' => 'sles11-sp3-pool-i586',
@@ -204,7 +208,8 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-prod
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
-                          'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
+                          'debian-10-pool' => 'debian-10-pool-amd64',
+                          'debian-11-pool' => 'debian-11-pool-amd64' }.freeze
 
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'SUMA-42-PROXY-x86_64',
                                     'SLES11-SP3-Pool' => 'SLE-11-SP3-i586',
@@ -220,7 +225,8 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' =>
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'debian-9-pool' => 'debian9-amd64',
-                                    'debian-10-pool' => 'debian10-amd64' }.freeze
+                                    'debian-10-pool' => 'debian10-amd64',
+                                    'debian-11-pool' => 'debian11-amd64' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
                                            'SLES11-SP3-Pool' => nil,
@@ -236,7 +242,8 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-P
                                            'ubuntu-18.04-pool' => nil,
                                            'ubuntu-2004-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
-                                           'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
+                                           'debian-10-pool' => 'debian-10-pool-amd64',
+                                           'debian-11-pool' => 'debian-11-pool-amd64' }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
@@ -277,7 +284,9 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian9_minion' => 'amd64',
                       'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
-                      'debian10_ssh_minion' => 'amd64' }.freeze
+                      'debian10_ssh_minion' => 'amd64',
+                      'debian11_minion' => 'amd64',
+                      'debian11_ssh_minion' => 'amd64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.
