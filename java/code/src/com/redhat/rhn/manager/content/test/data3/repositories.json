@@ -9520,16 +9520,6 @@
         "enabled": false
     },
     {
-        "id": 15001,
-        "name": "SLE-Module-Basesystem15-SP2-PTFs-Debuginfo",
-        "installer_updates": false,
-        "url": "https://updates.suse.com/PTF/Release/A123456/sle-module-basesystem/15.2/x86_64/ptf_debug/?my-fake-token",
-        "autorefresh": true,
-        "description": "SLE-Module-Basesystem15-SP2-PTFs-Debuginfo for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": false
-    },
-    {
         "name": "SLE-Manager-Tools15-PTFs",
         "id": 15002,
         "autorefresh": true,
@@ -9537,16 +9527,6 @@
         "url": "https://updates.suse.com/PTF/Release/A123456/sle-manager-tools/15/x86_64/ptf/?my-fake-token",
         "enabled": false,
         "description": "SLE-Manager-Tools15-PTFs for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64"
-    },
-    {
-        "name": "SLE-Manager-Tools15-PTFs-Debuginfo",
-        "id": 15003,
-        "autorefresh": true,
-        "installer_updates": false,
-        "url": "https://updates.suse.com/PTF/Release/A123456/sle-manager-tools/15/x86_64/ptf_debug/?my-fake-token",
-        "enabled": false,
-        "description": "SLE-Manager-Tools15-PTFs-Debuginfo for sle-15-x86_64",
         "distro_target": "sle-15-x86_64"
     },
     {
@@ -9560,32 +9540,12 @@
         "autorefresh": true
     },
     {
-        "distro_target": "amd64",
-        "description": "Ubuntu-20.04-SUSE-Manager-Tools-PTFs-Debuginfo for amd64",
-        "enabled": false,
-        "id": 15005,
-        "name": "Ubuntu-20.04-SUSE-Manager-Tools-PTFs-Debuginfo",
-        "installer_updates": false,
-        "url": "https://updates.suse.com/PTF/Release/A123456/ubuntu-manager-client/2004/amd64/ptf_debug/?my-fake-token",
-        "autorefresh": true
-    },
-    {
         "distro_target": "x86_64",
         "description": "RES8-Manager-Tools-PTFs for x86_64",
         "enabled": false,
         "id": 15006,
         "name": "RES8-Manager-Tools-PTFs",
         "url": "https://updates.suse.com/PTF/Release/A123456/res-managertools/8/x86_64/ptf/?my-fake-token",
-        "installer_updates": false,
-        "autorefresh": true
-    },
-    {
-        "distro_target": "x86_64",
-        "description": "RES8-Manager-Tools-PTFs-Debuginfo for x86_64",
-        "enabled": false,
-        "id": 15007,
-        "name": "RES8-Manager-Tools-PTFs-Debuginfo",
-        "url": "https://updates.suse.com/PTF/Release/A123456/res-managertools/8/x86_64/ptf_debug/?my-fake-token",
         "installer_updates": false,
         "autorefresh": true
     },
@@ -9597,16 +9557,6 @@
         "name": "RES-7-SUSE-Manager-Tools-PTFs",
         "installer_updates": false,
         "url": "https://updates.suse.com/PTF/Release/A123456/res-manager-client/7/x86_64/ptf/?my-fake-token",
-        "autorefresh": true
-    },
-    {
-        "description": "RES-7-SUSE-Manager-Tools-PTFs-Debuginfo for x86_64",
-        "distro_target": "x86_64",
-        "enabled": true,
-        "id": 15009,
-        "name": "RES-7-SUSE-Manager-Tools-PTFs-Debuginfo",
-        "installer_updates": false,
-        "url": "https://updates.suse.com/PTF/Release/A123456/res-manager-client/7/x86_64/ptf_debug/?my-fake-token",
         "autorefresh": true
     }
 ]
