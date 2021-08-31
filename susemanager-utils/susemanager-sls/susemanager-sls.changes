@@ -1,3 +1,4 @@
+- don't use libvirt API to get its version for the virt features grain
 - implement package locking for salt minions
 
 -------------------------------------------------------------------
