@@ -3,14 +3,10 @@ Grains for virtualization hosts
 """
 
 import logging
+import re
 import subprocess
 from xml.etree import ElementTree
 import salt.modules.virt
-
-try:
-    import libvirt
-except ModuleNotFoundError:
-    libvirt = None
 
 log = logging.getLogger(__name__)
 
@@ -40,14 +36,15 @@ def features():
         start_resources_ra = False
 
     libvirt_version = -1
-    if libvirt is not None:
-        cnx = libvirt.open()
-        try:
-            libvirt_version = cnx.getLibVersion()
-        except libvirt.libvirtError:
-            log.warn("Failed to get libvirt version")
-        finally:
-            cnx.close()
+    try:
+        version_out = subprocess.Popen(["libvirtd", "-V"], stdout=subprocess.PIPE).communicate()[0]
+        matcher = re.search(rb'(\d+)\.(\d+)\.(\d+)', version_out)
+        if matcher:
+            libvirt_version = 0
+            for idx in range(len(matcher.groups())):
+                libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (len(matcher.groups()) - idx - 1)
+    except FileNotFoundError:
+        log.error("libvirtd is not installed or is not in the PATH")
 
     return {
         "virt_features": {
