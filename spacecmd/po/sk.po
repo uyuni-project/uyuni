@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-30 20:11+0000\n"
+"PO-Revision-Date: 2021-08-31 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6780,7 +6780,7 @@ msgid ""
 "options:\n"
 "    -s START_TIME"
 msgstr ""
-"usage: system_installpackage <SYSTÉMY> <BALÍK ...> [voľby])\n"
+"použitie: system_installpackage <SYSTÉMY> <BALÍK ...> [voľby])\n"
 "\n"
 "voľby:\n"
 "    -s ČAS_SPUSTENIA"
@@ -6802,11 +6802,11 @@ msgstr "Nainštalovať tieto balíky [a/N]:"
 #: ../src/spacecmd/system.py:1099
 #, python-format
 msgid "Scheduled %i system(s)"
-msgstr ""
+msgstr "Naplánované %i systém(y)"
 
 #: ../src/spacecmd/system.py:846
 msgid "system_removepackage: Remove a package from a system"
-msgstr ""
+msgstr "system_removepackage: Odstrániť balík zo systému"
 
 #: ../src/spacecmd/system.py:847
 msgid ""
@@ -6815,10 +6815,14 @@ msgid ""
 "options:\n"
 "    -s START_TIME"
 msgstr ""
+"použitie: system_removepackage <SYSTÉMY> <BALÍK ...> [voľby])\n"
+"\n"
+"voľby:\n"
+"    -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:973
 msgid "system_upgradepackage: Upgrade a package on a system"
-msgstr ""
+msgstr "system_upgradepackage: Aktualizovať balík v systéme"
 
 #: ../src/spacecmd/system.py:974
 msgid ""
@@ -6827,28 +6831,32 @@ msgid ""
 "options:\n"
 "    -s START_TIME"
 msgstr ""
+"použitie: system_upgradepackage <SYSTÉMY> <BALÍK ...>|* [voľby]')\n"
+"\n"
+"voľby:\n"
+"    -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:1052 ../src/spacecmd/system.py:1148
 #, python-format
 msgid "No upgrades available for %s"
-msgstr ""
+msgstr "Nie sú k dispozícii žiadne aktualizácie pre %s"
 
 #: ../src/spacecmd/system.py:1075
 #, python-format
 msgid "Couldn't get name for package %i"
-msgstr ""
+msgstr "Nepodarilo sa získať názov balíka %i"
 
 #: ../src/spacecmd/system.py:1082
 msgid "Upgrade these packages [y/N]:"
-msgstr ""
+msgstr "Aktualizovať tieto balíky [a/N]:"
 
 #: ../src/spacecmd/system.py:1107
 msgid "system_listupgrades: List the available upgrades for a system"
-msgstr ""
+msgstr "system_listupgrades: Vypísať zoznam dostupných aktualizácií pre systém"
 
 #: ../src/spacecmd/system.py:1108
 msgid "usage: system_listupgrades <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listupgrades <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1176
 msgid "system_listinstalledpackages: List the installed packages on a"
