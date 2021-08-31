@@ -1,3 +1,4 @@
+- Java enablement for Debian 11
 - Show AppStreams tab just for modular channels
 - Fix Json null comparison in virtual network info parsing (bsc#1189167)
 - 'AppStreams with defaults' filter template in CLM

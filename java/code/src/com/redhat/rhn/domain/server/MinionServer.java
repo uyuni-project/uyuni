@@ -212,6 +212,18 @@ public class MinionServer extends Server implements SaltConfigurable {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("20.04");
     }
 
+    private boolean isDebian9() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("9");
+    }
+
+    private boolean isDebian10() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    }
+
+    private boolean isDebian11() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
+    }
+
     /**
      * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
      */
