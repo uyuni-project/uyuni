@@ -984,11 +984,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 // The PTF repo
                 if (pr.getRepository().getSccId().equals(15000L)) {
                     assertEquals("a123456-sle-module-basesystem-15.2-ptfs-x86_64", pr.getChannelLabel());
-                    assertEquals("a123456 sle-module-basesystem 15.2 ptfs x86_64", pr.getChannelName());
-                }
-                else if(pr.getRepository().getSccId().equals(15001L)) {
-                    assertEquals("a123456-sle-module-basesystem-15.2-ptfs-debuginfo-x86_64", pr.getChannelLabel());
-                    assertEquals("a123456 sle-module-basesystem 15.2 ptfs debuginfo x86_64", pr.getChannelName());
+                    assertEquals("A123456 sle-module-basesystem 15.2 PTFs x86_64", pr.getChannelName());
                 }
                 else {
                     fail("Unexpected repository " + pr);
@@ -1009,11 +1005,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // The PTF repo
             if (pr.getRepository().getSccId().equals(15000L)) {
                 assertEquals("a123456-sle-module-basesystem-15.2-ptfs-x86_64-sap", pr.getChannelLabel());
-                assertEquals("a123456 sle-module-basesystem 15.2 ptfs x86_64 sap", pr.getChannelName());
-            }
-            else if(pr.getRepository().getSccId().equals(15001L)) {
-                assertEquals("a123456-sle-module-basesystem-15.2-ptfs-debuginfo-x86_64-sap", pr.getChannelLabel());
-                assertEquals("a123456 sle-module-basesystem 15.2 ptfs debuginfo x86_64 sap", pr.getChannelName());
+                assertEquals("A123456 sle-module-basesystem 15.2 PTFs x86_64 SAP", pr.getChannelName());
             }
             else {
                 fail("Unexpected repository " + pr);
@@ -1035,11 +1027,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 // The PTF repo
                 if (pr.getRepository().getSccId().equals(15002L)) {
                     assertEquals("a123456-sle-manager-tools-15-ptfs-x86_64-sp2", pr.getChannelLabel());
-                    assertEquals("a123456 sle-manager-tools 15 ptfs x86_64 sp2", pr.getChannelName());
-                }
-                else if(pr.getRepository().getSccId().equals(15003L)) {
-                    assertEquals("a123456-sle-manager-tools-15-ptfs-debuginfo-x86_64-sp2", pr.getChannelLabel());
-                    assertEquals("a123456 sle-manager-tools 15 ptfs debuginfo x86_64 sp2", pr.getChannelName());
+                    assertEquals("A123456 sle-manager-tools 15 PTFs x86_64 SP2", pr.getChannelName());
                 }
                 else {
                     fail("Unexpected repository " + pr);
@@ -1060,11 +1048,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 // The PTF repo
                 if (pr.getRepository().getSccId().equals(15002L)) {
                     assertEquals("a123456-sle-manager-tools-15-ptfs-x86_64-sap-sp2", pr.getChannelLabel());
-                    assertEquals("a123456 sle-manager-tools 15 ptfs x86_64 sap sp2", pr.getChannelName());
-                }
-                else if(pr.getRepository().getSccId().equals(15003L)) {
-                    assertEquals("a123456-sle-manager-tools-15-ptfs-debuginfo-x86_64-sap-sp2", pr.getChannelLabel());
-                    assertEquals("a123456 sle-manager-tools 15 ptfs debuginfo x86_64 sap sp2", pr.getChannelName());
+                    assertEquals("A123456 sle-manager-tools 15 PTFs x86_64 SAP SP2", pr.getChannelName());
                 }
                 else {
                     fail("Unexpected repository " + pr);
@@ -1120,11 +1104,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 // The PTF repo
                 if (pr.getRepository().getSccId().equals(15004L)) {
                     assertEquals("a123456-ubuntu-manager-client-2004-ptfs-amd64", pr.getChannelLabel());
-                    assertEquals("a123456 ubuntu-manager-client 2004 ptfs amd64", pr.getChannelName());
-                }
-                else if(pr.getRepository().getSccId().equals(15005L)) {
-                    assertEquals("a123456-ubuntu-manager-client-2004-ptfs-debuginfo-amd64", pr.getChannelLabel());
-                    assertEquals("a123456 ubuntu-manager-client 2004 ptfs debuginfo amd64", pr.getChannelName());
+                    assertEquals("A123456 ubuntu-manager-client 2004 PTFs amd64", pr.getChannelName());
                 }
                 else {
                     fail("Unexpected repository " + pr);
