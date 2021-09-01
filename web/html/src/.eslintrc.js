@@ -24,6 +24,7 @@ module.exports = {
 
   rules: {
     "jsx-a11y/anchor-is-valid": "error",
+    "react/jsx-no-target-blank": "error",
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
     "radix": ["error", "always"],
