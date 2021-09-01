@@ -39,13 +39,14 @@ def test_features_cluster(cluster, start_resources):
     check_call_mock = MagicMock(side_effect=FileNotFoundError())
     if cluster:
         popen_mock = MagicMock()
-        popen_mock.return_value.communicate.return_value = (crm_resources, None)
+        popen_mock.return_value.communicate.side_effect = [(crm_resources, None), (b"libvirtd (libvirt) 5.1.0\n", None)]
         check_call_mock = MagicMock(return_value = 0)
 
     with patch.object(virt.subprocess, "check_call", check_call_mock):
         with patch.object(virt.subprocess, "Popen", popen_mock):
-            assert virt.features()["virt_features"]["cluster"] == cluster
-            assert virt.features()["virt_features"]["resource_agent_start_resources"] == start_resources
+            actual = virt.features()["virt_features"]
+            assert actual["cluster"] == cluster
+            assert actual["resource_agent_start_resources"] == start_resources
 
 
 @pytest.mark.parametrize("version, expected", [("5.1.0", False), ("7.3.0", True)])
