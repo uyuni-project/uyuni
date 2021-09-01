@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-08-31 19:11+0000\n"
+"PO-Revision-Date: 2021-09-01 13:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6860,32 +6860,35 @@ msgstr "použitie: system_listupgrades <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1176
 msgid "system_listinstalledpackages: List the installed packages on a"
-msgstr ""
+msgstr "system_listinstalledpackages: Vypísať zoznam nainštalovaných balíkov"
 
 #: ../src/spacecmd/system.py:1177
 msgid "                              system"
-msgstr ""
+msgstr "                              v systéme"
 
 #: ../src/spacecmd/system.py:1178
 msgid "usage: system_listinstalledpackages <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listinstalledpackages <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1232
 msgid "system_listconfigchannels: List the config channels of a system"
 msgstr ""
+"system_listconfigchannels: Vypísať zoznam konfiguračných kanálov systému"
 
 #: ../src/spacecmd/system.py:1233
 msgid "usage: system_listconfigchannels <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listconfigchannels <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1279 ../src/spacecmd/system.py:1382
 #, python-format
 msgid "%s does not support configuration channels"
-msgstr ""
+msgstr "%s nepodporuje konfiguračné kanály"
 
 #: ../src/spacecmd/system.py:1316
 msgid "system_listconfigfiles: List the managed config files of a system"
 msgstr ""
+"system_listconfigfiles: Vypísať zoznam spravovaných konfiguračných súborov "
+"systému"
 
 #: ../src/spacecmd/system.py:1317
 msgid ""
@@ -6896,15 +6899,21 @@ msgid ""
 "  -c/--central : list only centrally managed files\n"
 "  -q/--quiet   : quiet mode (omits the header)"
 msgstr ""
+"použitie: system_listconfigfiles <SYSTÉMY>')\n"
+"voľby:\n"
+"  -s/--sandbox : vypísať iba zoznam súborov system-sandbox\n"
+"  -l/--local   : vypísať iba zoznam lokálne spravovaných súborov\n"
+"  -c/--central : vypísať len centrálne spravované súbory\n"
+"  -q/--quiet   : tichý režim (vynechá hlavičku)"
 
 #: ../src/spacecmd/system.py:1405
 #, python-format
 msgid "Error, unexpected channel type label %s"
-msgstr ""
+msgstr "Chyba, neočakávané označenie typu kanála %s"
 
 #: ../src/spacecmd/system.py:1417
 msgid "system_addconfigfile: Create a configuration file"
-msgstr ""
+msgstr "system_addconfigfile: Vytvoriť konfiguračný súbor"
 
 #: ../src/spacecmd/system.py:1418
 msgid "Note this is only for system sandbox or locally-managed files"
