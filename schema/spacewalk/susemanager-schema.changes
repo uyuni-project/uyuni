@@ -1,3 +1,4 @@
+- allow Ansible Control Node entitlement for aarch64, ppc64le and s390x(bsc#1189799)
 - implement package locking for salt minions
 
 -------------------------------------------------------------------
