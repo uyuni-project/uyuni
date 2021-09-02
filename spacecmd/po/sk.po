@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-01 13:11+0000\n"
+"PO-Revision-Date: 2021-09-02 13:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -6901,7 +6901,7 @@ msgid ""
 msgstr ""
 "použitie: system_listconfigfiles <SYSTÉMY>')\n"
 "voľby:\n"
-"  -s/--sandbox : vypísať iba zoznam súborov system-sandbox\n"
+"  -s/--sandbox : vypísať iba zoznam súborov systémového sandboxu\n"
 "  -l/--local   : vypísať iba zoznam lokálne spravovaných súborov\n"
 "  -c/--central : vypísať len centrálne spravované súbory\n"
 "  -q/--quiet   : tichý režim (vynechá hlavičku)"
@@ -6918,10 +6918,13 @@ msgstr "system_addconfigfile: Vytvoriť konfiguračný súbor"
 #: ../src/spacecmd/system.py:1418
 msgid "Note this is only for system sandbox or locally-managed files"
 msgstr ""
+"Poznámka: toto platí len pre systémový sandbox alebo lokálne spravované "
+"súbory"
 
 #: ../src/spacecmd/system.py:1419
 msgid "Centrally managed files should be created via configchannel_addfile"
 msgstr ""
+"Centrálne spravované súbory by sa mali vytvoriť pomocou configchannel_addfile"
 
 #: ../src/spacecmd/system.py:1420
 msgid ""
@@ -6952,7 +6955,7 @@ msgstr ""
 "použitie: system_addconfigfile [SYSTÉM] [voľby]\n"
 "\n"
 "voľby:\n"
-"  -S/--sandbox : vypísať iba zoznam súborov system-sandbox\n"
+"  -S/--sandbox : vypísať iba zoznam súborov systémového sandboxu\n"
 "  -L/--local   : vypísať iba zoznam lokálne spravovaných súborov\n"
 "  -p CESTA\n"
 "  -r REVÍZIA\n"
@@ -6968,8 +6971,8 @@ msgstr ""
 "\n"
 "  Poznámka vo veci binárny/base64: Niektoré textové súbory, najmä tie, ktoré "
 "obsahujú\n"
-"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII "
-"(alebo iné znaky,\n"
+"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII ("
+"alebo iné znaky,\n"
 "  ktoré nie sú v XML povolené) je potrebné poslať ako binárne (-b). Vyvinulo "
 "sa určité úsilie\n"
 "  na automatickú detekciu súborov, ktoré to vyžadujú, ale možno budete "
@@ -6978,23 +6981,23 @@ msgstr ""
 #: ../src/spacecmd/system.py:1488
 #, python-format
 msgid "%s is not a valid system"
-msgstr ""
+msgstr "%s nie je platný systém"
 
 #: ../src/spacecmd/system.py:1498
 msgid "System-Sandbox or Locally-Managed? [S/L]:"
-msgstr ""
+msgstr "Systémový sandbox alebo Lokálne spravované? [S/L]:"
 
 #: ../src/spacecmd/system.py:1514
 msgid "Must choose system-sandbox or locally-managed option"
-msgstr ""
+msgstr "Musíte si zvoliť možnosť systémový sandbox alebo lokálne spravované"
 
 #: ../src/spacecmd/system.py:1519
 msgid "Must provide system"
-msgstr ""
+msgstr "Musíte poskytnúť systém"
 
 #: ../src/spacecmd/system.py:1553
 msgid "system_addconfigchannels: Add config channels to a system"
-msgstr ""
+msgstr "system_addconfigchannels: Pridať konfiguračné kanály do systému"
 
 #: ../src/spacecmd/system.py:1554
 msgid ""
@@ -7004,14 +7007,19 @@ msgid ""
 "  -t add channels to the top of the list\n"
 "  -b add channels to the bottom of the list"
 msgstr ""
+"použitie: system_addconfigchannels <SYSTÉMY> <KANÁL ...> [voľby]\n"
+"\n"
+"voľby:\n"
+"  -t pridá kanály na začiatok zoznamu\n"
+"  -b pridá kanály na koniec zoznamu"
 
 #: ../src/spacecmd/system.py:1598
 msgid "Add to top or bottom? [T/b]:"
-msgstr ""
+msgstr "Pridať na začiatok alebo na koniec? [Z/k]:"
 
 #: ../src/spacecmd/system.py:1622
 msgid "system_removeconfigchannels: Remove config channels from a system"
-msgstr ""
+msgstr "system_removeconfigchannels: Odstrániť konfiguračné kanály zo systému"
 
 #: ../src/spacecmd/system.py:1623
 msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
