@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-02 13:12+0000\n"
+"PO-Revision-Date: 2021-09-03 18:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -190,7 +190,7 @@ msgid ""
 "activationkey_setconfigchannelorder: Set the ranked order of configuration "
 "channels"
 msgstr ""
-"activationkey_setconfigchannelorder: Nastavte poradie podľa hodnotenia "
+"activationkey_setconfigchannelorder: Nastaviť poradie podľa hodnotenia "
 "konfiguračných kanálov"
 
 #: ../src/spacecmd/activationkey.py:669
@@ -7023,24 +7023,26 @@ msgstr "system_removeconfigchannels: Odstrániť konfiguračné kanály zo syst�
 
 #: ../src/spacecmd/system.py:1623
 msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: system_removeconfigchannels <SYSTÉMY> <KANÁL ...>"
 
 #: ../src/spacecmd/system.py:1672
 msgid ""
 "system_setconfigchannelorder: Set the ranked order of configuration channels"
 msgstr ""
+"system_setconfigchannelorder: Nastaviť poradie podľa hodnotenia "
+"konfiguračných kanálov"
 
 #: ../src/spacecmd/system.py:1673
 msgid "usage: system_setconfigchannelorder <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_setconfigchannelorder <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1713
 msgid "New Configuration Channels"
-msgstr ""
+msgstr "Nové konfiguračné kanály"
 
 #: ../src/spacecmd/system.py:1733
 msgid "system_deployconfigfiles: Deploy all configuration files for a system"
-msgstr ""
+msgstr "system_deployconfigfiles: Nasadiť všetky konfiguračné súbory pre systém"
 
 #: ../src/spacecmd/system.py:1734
 msgid ""
@@ -7049,19 +7051,23 @@ msgid ""
 "options:\n"
 "    -s START_TIME"
 msgstr ""
+"použitie: system_deployconfigfiles <SYSTÉMY> [voľby]\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:1788
 msgid "Deploy ALL configuration files to these systems [y/N]:"
-msgstr ""
+msgstr "Nasadiť VŠETKY konfiguračné súbory do týchto systémov [a/N]:"
 
 #: ../src/spacecmd/system.py:1798
 #, python-format
 msgid "Scheduled deployment for %i system(s)"
-msgstr ""
+msgstr "Naplánované nasadenie pre %i systém(y)"
 
 #: ../src/spacecmd/system.py:1806
 msgid "system_delete: Delete a system profile"
-msgstr ""
+msgstr "system_delete: Vymazať systémový profil"
 
 #: ../src/spacecmd/system.py:1807
 msgid ""
@@ -7078,7 +7084,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:1851
 msgid "No systems to delete"
-msgstr ""
+msgstr "Žiadne systémy na vymazanie"
 
 #: ../src/spacecmd/system.py:1859
 #, python-format
