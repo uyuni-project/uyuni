@@ -81,6 +81,8 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Create"
     Then I should see a "Autoinstallation: 15-sp2-cobbler" text
     And I should see a "Autoinstallation Details" text
+
+  Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
