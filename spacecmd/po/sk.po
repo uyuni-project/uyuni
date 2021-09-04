@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-03 18:11+0000\n"
+"PO-Revision-Date: 2021-09-04 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7081,6 +7081,15 @@ msgid ""
 "in case of error\n"
 "    "
 msgstr ""
+"použitie: system_delete [voľby] <SYSTÉMY>\n"
+"\n"
+"    voľby:\n"
+"          -c TYP - Možné hodnoty:\n"
+"             *  'FAIL_ON_CLEANUP_ERR' - zlyhať v prípade chyby čistenia,\n"
+"             *  'NO_CLEANUP' - nečistiť, len vymazať,\n"
+"             *  'FORCE_DELETE' - skúsiť najprv vyčistiť, ale aj tak vymazať "
+"server v prípade chyby\n"
+"    "
 
 #: ../src/spacecmd/system.py:1851
 msgid "No systems to delete"
@@ -7089,40 +7098,40 @@ msgstr "Žiadne systémy na vymazanie"
 #: ../src/spacecmd/system.py:1859
 #, python-format
 msgid "%s  System ID"
-msgstr ""
+msgstr "%s  ID systému"
 
 #: ../src/spacecmd/system.py:1859
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: ../src/spacecmd/system.py:1867
 msgid "Delete these systems [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto systémy [a/N]:"
 
 #: ../src/spacecmd/system.py:1874
 #, python-format
 msgid "%i system(s) scheduled for removal"
-msgstr ""
+msgstr "%i systém(y) naplánovaný(é) na odstránenie"
 
 #: ../src/spacecmd/system.py:1894
 msgid "system_lock: Lock a system"
-msgstr ""
+msgstr "system_lock: Uzamknúť systém"
 
 #: ../src/spacecmd/system.py:1895
 msgid "usage: system_lock <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_lock <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1936
 msgid "system_unlock: Unlock a system"
-msgstr ""
+msgstr "system_unlock: Odomknúť systém"
 
 #: ../src/spacecmd/system.py:1937
 msgid "usage: system_unlock <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_unlock <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:1978
 msgid "system_rename: Rename a system profile"
-msgstr ""
+msgstr "system_rename: Premenovať systémový profil"
 
 #: ../src/spacecmd/system.py:1979
 msgid "usage: system_rename OLDNAME NEWNAME"
