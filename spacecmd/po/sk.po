@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-04 20:11+0000\n"
+"PO-Revision-Date: 2021-09-05 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7139,43 +7139,43 @@ msgstr "použitie: system_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/system.py:2024
 msgid "system_listcustomvalues: List the custom values for a system"
-msgstr ""
+msgstr "system_listcustomvalues: Vypísať zoznam vlastných hodnôt pre systém"
 
 #: ../src/spacecmd/system.py:2025
 msgid "usage: system_listcustomvalues <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listcustomvalues <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2080
 msgid "system_addcustomvalue: Set a custom value for a system"
-msgstr ""
+msgstr "system_addcustomvalue: Nastaviť vlastnú hodnotu pre systém"
 
 #: ../src/spacecmd/system.py:2081
 msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_addcustomvalue KĽÚČ HODNOTA <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2135
 msgid "system_updatecustomvalue: Update a custom value for a system"
-msgstr ""
+msgstr "system_updatecustomvalue: Aktualizovať vlastnú hodnotu pre systém"
 
 #: ../src/spacecmd/system.py:2136
 msgid "usage: system_updatecustomvalue KEY VALUE <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_updatecustomvalue KĽÚČ HODNOTA <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2167
 msgid "system_removecustomvalues: Remove a custom value for a system"
-msgstr ""
+msgstr "system_removecustomvalues: Odstrániť vlastnú hodnotu pre systém"
 
 #: ../src/spacecmd/system.py:2168
 msgid "usage: system_removecustomvalues <SYSTEMS> <KEY ...>"
-msgstr ""
+msgstr "použitie: system_removecustomvalues <SYSTÉMY> <KĽÚČ ...>"
 
 #: ../src/spacecmd/system.py:2204
 msgid "Delete these values [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto hodnoty [a/N]:"
 
 #: ../src/spacecmd/system.py:2222
 msgid "system_addnote: Set a note for a system"
-msgstr ""
+msgstr "system_addnote: Nastaviť poznámku pre systém"
 
 #: ../src/spacecmd/system.py:2223
 msgid ""
