@@ -1,15 +1,23 @@
 <datasource_modes>
 
-<mode name="auto_errata_candidates">
+<mode name="auto_errata_systems">
   <query>
+select s.id
+ from rhnServer s
+ join rhnServerFeaturesView sfv
+ on s.id = sfv.server_id
+ where upper(s.auto_update) = 'Y'
+   and sfv.label = 'ftr_auto_errata_updates'
+   </query>
+ </mode>
+
+ <mode name="auto_errata_candidates">
+   <query>
 select distinct s.id as server_id, s.org_id, snc.errata_id
   from rhnServer s,
-       rhnServerFeaturesView sfv,
        rhnServerNeededCache snc
- where upper(s.auto_update) = 'Y'
-   and s.id = sfv.server_id
-   and sfv.label = 'ftr_auto_errata_updates'
-   and s.id = snc.server_id
+   where s.id = snc.server_id
+   and s.id in (%s)
    and snc.errata_id IS NOT NULL
    and not exists ( -- not regenerating channel metadata where this errata exists
        select 1
