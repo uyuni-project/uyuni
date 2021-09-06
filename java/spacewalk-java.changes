@@ -1,3 +1,4 @@
+- Adapt auto errata update to skip during CLM build (bsc#1189609)
 - Update kernel live patch version on minion startup (bsc#1190276)
 
 -------------------------------------------------------------------
