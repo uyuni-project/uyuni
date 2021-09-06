@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-05 19:12+0000\n"
+"PO-Revision-Date: 2021-09-06 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7185,43 +7185,48 @@ msgid ""
 "  -s SUBJECT\n"
 "  -b BODY"
 msgstr ""
+"použitie: system_addnote <SYSTÉM> [voľby]\n"
+"\n"
+"voľby:\n"
+"  -s PREDMET\n"
+"  -b TELO"
 
 #: ../src/spacecmd/system.py:2258
 msgid "Subject of the Note:"
-msgstr ""
+msgstr "Predmet poznámky:"
 
 #: ../src/spacecmd/system.py:2260
 msgid "Note Body (ctrl-D to finish):"
-msgstr ""
+msgstr "Telo poznámky (ctrl-D na dokončenie):"
 
 #: ../src/spacecmd/system.py:2264
 msgid "A subject is required"
-msgstr ""
+msgstr "Vyžaduje sa predmet"
 
 #: ../src/spacecmd/system.py:2268
 msgid "A body is required"
-msgstr ""
+msgstr "Vyžaduje sa telo"
 
 #: ../src/spacecmd/system.py:2287
 msgid "system_deletenotes: Delete notes from a system"
-msgstr ""
+msgstr "system_deletenotes: Vymazať poznámky zo systému"
 
 #: ../src/spacecmd/system.py:2288
 msgid "usage: system_deletenotes <SYSTEM> <ID|*>"
-msgstr ""
+msgstr "použitie: system_deletenotes <SYSTÉM> <ID|*>"
 
 #: ../src/spacecmd/system.py:2320
 msgid "No notes to delete"
-msgstr ""
+msgstr "Žiadne poznámky na vymazanie"
 
 #: ../src/spacecmd/system.py:2335
 #, python-format
 msgid "%s is not a valid note ID"
-msgstr ""
+msgstr "%s nie je platné ID poznámky"
 
 #: ../src/spacecmd/system.py:2347
 msgid "system_listnotes: List the available notes for a system"
-msgstr ""
+msgstr "system_listnotes: Vypísať zoznam dostupných poznámok pre systém"
 
 #: ../src/spacecmd/system.py:2348
 msgid "usage: system_listnotes <SYSTEM>"
