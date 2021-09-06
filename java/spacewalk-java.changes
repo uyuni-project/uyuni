@@ -1,3 +1,4 @@
+- Adapt auto errata update to respect maintenance windows
 - fix ISE in SSM when scheduling patches on multiple systems (bsc#1190396, bsc#1190275)
 - Add new endpoints to saltkeys API: acceptedList, pendingList, rejectedList, deniedList, accept and reject
 - add centos 7/8 aarch64
