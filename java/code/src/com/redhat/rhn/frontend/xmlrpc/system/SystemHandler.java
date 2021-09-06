@@ -4875,16 +4875,6 @@ public class SystemHandler extends BaseHandler {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
             if (autoUpdate.booleanValue()) {
-                if (server.getAutoUpdate().equals("N")) {
-                    // schedule errata update only it if the value has changed
-                    try {
-                        ActionManager.scheduleAllErrataUpdate(loggedInUser, server,
-                                new Date());
-                    }
-                    catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-                        throw new TaskomaticApiException(e.getMessage());
-                    }
-                }
                 server.setAutoUpdate("Y");
             }
             else {

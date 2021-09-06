@@ -703,7 +703,7 @@ public class MaintenanceManager {
      * @param server the server to check
      * @return true when the action is inside of a maintenance window, otherwise falsegg
      */
-    public boolean isSystemInMaintenanceMode(MinionServer server) {
+    public boolean isSystemInMaintenanceMode(Server server) {
         return server.getMaintenanceScheduleOpt()
                 .map(schedule -> !getCalendarForNow(schedule).isEmpty())
                 .orElse(true);

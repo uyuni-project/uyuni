@@ -30,17 +30,14 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -51,7 +48,6 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -188,18 +184,6 @@ public class SystemDetailsEditAction extends RhnAction {
                 s.getAutoUpdate().equals("N")) {
                 // only set it if it has changed
                 s.setAutoUpdate("Y");
-
-                try {
-                    ActionManager.scheduleAllErrataUpdate(user, s, new Date());
-                    createSuccessMessage(request,
-                            "sdc.details.edit.propertieschangedupdate", s.getName());
-                }
-                catch (TaskomaticApiException e) {
-                    log.error("Could not schedule errata update:");
-                    log.error(e);
-                    getStrutsDelegate().addError("taskscheduler.down", errors);
-                    success = false;
-                }
             }
             else if (daForm.get(AUTO_UPDATE) == null) {
                 s.setAutoUpdate("N");
