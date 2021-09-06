@@ -3,18 +3,17 @@ import { useState } from "react";
 import { Panel } from "components/panels/Panel";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionSchedule } from "components/action-schedule";
-import { Utils } from "utils/functions";
 import { withErrorMessages } from "../api/use-clusters-api";
-import useUserLocalization from "core/user-localization/use-user-localization";
 
 import { ActionChain } from "components/action-schedule";
 import { ErrorMessagesType } from "../api/use-clusters-api";
 import { MessageType } from "components/messages";
+import { localizedMoment } from "utils";
 
 type Props = {
   title: string;
   panel: React.ReactNode;
-  schedule: (earliest: Date, actionChain: string | null) => Promise<any>;
+  schedule: (earliest: moment.Moment, actionChain: string | null) => Promise<any>;
   onPrev?: () => void;
   setMessages: (arg0: Array<MessageType>) => void;
   scheduleButtonLabel: string;
@@ -22,10 +21,9 @@ type Props = {
 };
 
 const ScheduleClusterAction = (props: Props) => {
-  const { timezone, localTime } = useUserLocalization();
 
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
-  const [earliest, setEarliest] = useState(Utils.dateWithTimezone(localTime || ""));
+  const [earliest, setEarliest] = useState(localizedMoment());
   const [disableSchedule, setDisableSchedule] = useState(false);
 
   const onSchedule = (): Promise<any> => {
@@ -68,8 +66,6 @@ const ScheduleClusterAction = (props: Props) => {
       {props.panel}
 
       <ActionSchedule
-        timezone={timezone}
-        localTime={localTime}
         earliest={earliest}
         actionType={props.actionType}
         onDateTimeChanged={date => {

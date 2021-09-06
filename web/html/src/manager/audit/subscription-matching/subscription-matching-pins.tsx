@@ -9,6 +9,7 @@ import { WarningIcon } from "./subscription-matching-util";
 import Network from "utils/network";
 import { Utils } from "utils/functions";
 import isNil from "lodash/isNil";
+import { localizedMoment } from "utils";
 
 type PinsProps = {
   pinnedMatches: any[];
@@ -129,12 +130,10 @@ class Pins extends React.Component<PinsProps> {
               columnKey="subscriptionEndDate"
               comparator={Utils.sortByText}
               header={t("End date")}
-              cell={p => (
-                <ToolTip
-                  content={moment(p.subscriptionEndDate).fromNow()}
-                  title={moment(p.subscriptionEndDate).format("LL")}
-                />
-              )}
+              cell={p => {
+                const endDate = localizedMoment(p.subscriptionEndDate);
+                return <ToolTip content={endDate.fromNow()} title={endDate.toUserDateString()} />;
+              }}
             />
             <Column
               columnKey="subscriptionPartNumber"
@@ -376,7 +375,10 @@ class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorPro
           <Column
             columnKey="endDate"
             header={t("End date")}
-            cell={s => <ToolTip content={moment(s.endDate).fromNow()} title={moment(s.endDate).format("LL")} />}
+            cell={s => {
+              const endDate = localizedMoment(s.endDate);
+              return <ToolTip content={endDate.fromNow()} title={endDate.toUserDateString()} />;
+            }}
           />
           <Column
             columnKey="actions"

@@ -1,3 +1,4 @@
+- Improved timezone support
 - Enhance the default base channel help message (bsc#1171520)
 - Don't capitalize acronyms
 - 'AppStreams with defaults' filter template in CLM
