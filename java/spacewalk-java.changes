@@ -1,3 +1,4 @@
+- Adapt auto errata update to skip during CLM build (bsc#1189609)
 - add centos 7/8 aarch64
 - add oraclelinux 7/8 aarch64
 - add rockylinux 8 aarch64

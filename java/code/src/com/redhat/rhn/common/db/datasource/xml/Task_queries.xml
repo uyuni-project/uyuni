@@ -18,8 +18,12 @@ select distinct s.id as server_id, s.org_id, snc.errata_id
                   select c.label
                     from rhnChannel c
                     join rhnChannelErrata ce ON c.id = ce.channel_id
-                   where ce.errata_id = snc.errata_id)
-        )
+                   where ce.errata_id = snc.errata_id))
+   and not exists ( -- no CLM build in process where this errata exists
+        select 1
+         from susecontentenvironmenttarget cet
+        where cet.channel_id = snc.channel_id
+          and (cet.status = 'BUILDING' or cet.status = 'GENERATING_REPODATA'))
    and not exists ( -- haven't already scheduled action
        select 1
          from rhnServerAction sa,

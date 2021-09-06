@@ -112,7 +112,8 @@ public class AutoErrataTask extends RhnJavaJob {
     protected List<Map<String, Long>> getErrataToProcess() {
         /*
          * Additional check might be needed. Do not schedule anything
-         * if a task with bunch name "repo-sync-bunch" is ready or running.
+         * if a task with bunch name "repo-sync-bunch" is ready or running
+         * or a CLM build is in process.
          *
          * select 1
          *  from rhnTaskoSchedule rts
