@@ -149,10 +149,7 @@ const useClustersApi = () => {
     formula: string,
     context?: FormulaContextType | null
   ): Promise<any> => {
-    return Network.post(
-      `/rhn/manager/api/cluster/provider/${provider}/formula/${formula}/form`,
-      context
-    )
+    return Network.post(`/rhn/manager/api/cluster/provider/${provider}/formula/${formula}/form`, context)
       .then((data: JsonResult<any>) => {
         return Promise.resolve({
           formula_name: provider,
@@ -194,17 +191,14 @@ const useClustersApi = () => {
     managementNodeId: number,
     managementSettings: FormulaValuesType
   ): Promise<number> => {
-    return Network.post(
-      "/rhn/manager/api/cluster/new/add",
-      {
-        name: name,
-        label: label,
-        description: description,
-        managementNodeId: managementNodeId,
-        provider: providerLabel,
-        managementSettings: managementSettings,
-      }
-    )
+    return Network.post("/rhn/manager/api/cluster/new/add", {
+      name: name,
+      label: label,
+      description: description,
+      managementNodeId: managementNodeId,
+      provider: providerLabel,
+      managementSettings: managementSettings,
+    })
       .then((data: JsonResult<number>) => {
         return data.data;
       })
@@ -215,17 +209,14 @@ const useClustersApi = () => {
     clusterId: number,
     serverIds: Array<number>,
     joinFormula: FormulaValuesType,
-    earliest: Date,
+    earliest: moment.Moment,
     actionChain?: string | null
   ): Promise<number> => {
-    return Network.post(
-      `/rhn/manager/api/cluster/${clusterId}/join`,
-      {
-        earliest: earliest,
-        serverIds: serverIds,
-        formula: joinFormula,
-      }
-    )
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}/join`, {
+      earliest,
+      serverIds,
+      formula: joinFormula,
+    })
       .then((data: JsonResult<number>) => {
         return data.data;
       })
@@ -236,30 +227,28 @@ const useClustersApi = () => {
     clusterId: number,
     serverIds: Array<number>,
     removeFormula: FormulaValuesType,
-    earliest: Date,
+    earliest: moment.Moment,
     actionChain?: string | null
   ): Promise<number> => {
-    return Network.post(
-      `/rhn/manager/api/cluster/${clusterId}/remove-node`,
-      {
-        earliest: earliest,
-        serverIds: serverIds,
-        formula: removeFormula,
-      }
-    )
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}/remove-node`, {
+      earliest,
+      serverIds,
+      formula: removeFormula,
+    })
       .then((data: JsonResult<number>) => {
         return data.data;
       })
       .catch(handleResponseError);
   };
 
-  const scheduleUpgradeCluster = (clusterId: number, earliest: Date, actionChain?: string | null): Promise<number> => {
-    return Network.post(
-      `/rhn/manager/api/cluster/${clusterId}/upgrade`,
-      {
-        earliest: earliest,
-      }
-    )
+  const scheduleUpgradeCluster = (
+    clusterId: number,
+    earliest: moment.Moment,
+    actionChain?: string | null
+  ): Promise<number> => {
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}/upgrade`, {
+      earliest,
+    })
       .then((data: JsonResult<number>) => {
         return data.data;
       })

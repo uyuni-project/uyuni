@@ -8,9 +8,9 @@ import { AsyncButton } from "components/buttons";
 import { Toggler } from "components/toggler";
 import Network from "utils/network";
 import { InnerPanel } from "components/panels/InnerPanel";
-import { Utils, Formats } from "utils/functions";
 import { ActionLink, ActionChainLink } from "components/links";
 import SpaRenderer from "core/spa/spa-renderer";
+import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/groups/highstate.jade
 declare global {
@@ -30,7 +30,7 @@ type HighstateProps = {};
 
 type HighstateState = {
   messages: any[];
-  earliest: Date;
+  earliest: moment.Moment;
   test: boolean;
   actionChain?: any;
 };
@@ -40,7 +40,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     super(props);
     var state = {
       messages: [],
-      earliest: Utils.dateWithTimezone(window.localTime),
+      earliest: localizedMoment(),
       test: false,
     };
     this.state = state;
@@ -51,7 +51,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
       "/rhn/manager/api/states/applyall",
       {
         ids: window.minions?.map(m => m.id),
-        earliest: Formats.LocalDateTime(this.state.earliest),
+        earliest: this.state.earliest,
         actionChain: this.state.actionChain ? this.state.actionChain.text : null,
         test: this.state.test,
       }
@@ -148,8 +148,6 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
           </div>
           <div className="panel-body">
             <ActionSchedule
-              timezone={window.timezone}
-              localTime={localTime}
               earliest={this.state.earliest}
               actionChains={window.actionChains}
               onActionChainChanged={this.onActionChainChanged}

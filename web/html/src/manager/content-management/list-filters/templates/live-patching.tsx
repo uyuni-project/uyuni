@@ -105,7 +105,7 @@ export default (props: FilterFormProps & { template: Template }) => {
             name="productId"
             label={t("Product")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             options={products}
             getOptionValue={product => product.id}
             getOptionLabel={product => product.label}
@@ -119,7 +119,7 @@ export default (props: FilterFormProps & { template: Template }) => {
             name="systemId"
             label={t("System")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             getOptionValue={system => system.id}
             getOptionLabel={system => `${system.name} (${system.kernel})`}
             defaultValueOption={defaultValueOption}
@@ -130,7 +130,7 @@ export default (props: FilterFormProps & { template: Template }) => {
         name="kernelId"
         label={t("Kernel")}
         labelClass="col-md-3"
-        divClass="col-md-6"
+        divClass="col-md-8"
         required={!!(systemId || productId)}
         disabled={!systemId && !productId}
         options={kernels}

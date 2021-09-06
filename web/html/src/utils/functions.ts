@@ -35,33 +35,6 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
   return castRace;
 }
 
-function dateWithTimezone(dateString: string): Date {
-  const offsetNum =
-    dateString[dateString.length - 1].toUpperCase() === "Z"
-      ? 0
-      : parseInt(dateString.substring(dateString.length - 6).replace(":", ""), 10);
-  const serverOffset = Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
-  const orig = new Date(dateString);
-  const clientOffset = -orig.getTimezoneOffset();
-
-  const final = new Date(orig.getTime() + (serverOffset - clientOffset) * 60000);
-  return final;
-}
-
-// it does the opposite of dateWithTimezone: transforms its result on the original date
-function dateWithoutTimezone(dateStringToTransform: string, originalDateString: string): Date {
-  const offsetNum =
-    originalDateString[originalDateString.length - 1].toUpperCase() === "Z"
-      ? 0
-      : parseInt(originalDateString.substring(originalDateString.length - 6).replace(":", ""), 10);
-  const serverOffset = Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
-  const dateToTransform = new Date(dateStringToTransform);
-  const clientOffset = -dateToTransform.getTimezoneOffset();
-
-  const final = new Date(dateToTransform.getTime() - (serverOffset - clientOffset) * 60000);
-  return final;
-}
-
 function LocalDateTime(date: Date): string {
   const padTo = v => {
     v = v.toString();
@@ -219,8 +192,6 @@ const Utils = {
   cancelable,
   sortById,
   sortByText,
-  dateWithTimezone,
-  dateWithoutTimezone,
   sortByNumber,
   sortByDate,
   getUrlParam,
