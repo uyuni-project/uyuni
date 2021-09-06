@@ -104,10 +104,12 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
@@ -1961,6 +1963,42 @@ public class SaltUtils {
         });
     }
 
+
+    /**
+     * Update the minion connection path according to master/proxy hostname
+     * @param minion the minion
+     * @param master master/proxy hostname
+     * @return true if the path has changed
+     */
+    public boolean updateMinionConnectionPath(MinionServer minion, String master) {
+        boolean changed = minion.updateServerPaths(master);
+
+        if (changed) {
+            ServerFactory.save(minion);
+
+            // Regenerate the pillar data
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+
+            // push the changed pillar data to the minion
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+
+            ApplyStatesAction action = ActionManager.scheduleApplyStates(minion.getCreator(),
+                    Collections.singletonList(minion.getId()),
+                    Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                    new Date());
+            try {
+                TASKOMATIC_API.scheduleActionExecution(action, false);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule channels state application");
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion " +
+                          minion.getMinionId());
+            }
+
+        }
+        return changed;
+    }
+
     /**
      * Update the system info of the minion
      * @param systemInfo response from salt master against util.systeminfo state
@@ -1970,6 +2008,12 @@ public class SaltUtils {
         systemInfo.getKerneRelese().ifPresent(minion::setRunningKernel);
         systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
         ServerFactory.save(minion);
+
+        if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
+            systemInfo.getMaster().ifPresent(master -> {
+                updateMinionConnectionPath(minion, master);
+            });
+        }
 
         //Update the uptime
         systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));

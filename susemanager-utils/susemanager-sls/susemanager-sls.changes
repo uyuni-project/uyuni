@@ -1,3 +1,4 @@
+- Update proxy path on minion connection
 - deploy certificate on SLE Micro 5.1
 - Fix cpuinfo grain and virt_utils state python2 compatibility
   (bsc#1191139, bsc#1191123)
