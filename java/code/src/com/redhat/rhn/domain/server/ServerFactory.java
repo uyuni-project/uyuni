@@ -338,7 +338,13 @@ public class ServerFactory extends HibernateFactory {
         return paths;
     }
 
-    private static Optional<ServerPath> findServerPath(Server server, Server proxyServer) {
+    /**
+     * Finds a Server Path identified by proxyServer
+     * @param server the server
+     * @param proxyServer the proxy server to which <code>server</code> connects directly
+     * @return the ServerPath if found
+     */
+    public static Optional<ServerPath> findServerPath(Server server, Server proxyServer) {
         if (server.getId() == null) {
             // not yet persisted, return empty to avoid Hibernate error
             // on query with a transient object

@@ -74,4 +74,12 @@ public class SystemInfo {
         return Optional.ofNullable(kernelLiveVersion.getChanges().getRet())
                 .map(KernelLiveVersionInfo::getKernelLiveVersion);
     }
+
+    /**
+     * Get the master grain
+     * @return master grain
+     */
+    public Optional<String> getMaster() {
+       return getGrains().getOptionalAsString("master");
+    }
 }
