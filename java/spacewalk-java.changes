@@ -1,3 +1,4 @@
+- Add XMLRPC API to force refreshing pillar data (bsc#1190123)
 - Add missing string on XCCDF scan results (bsc#1190164)
 - Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
 - Improved timezone support
