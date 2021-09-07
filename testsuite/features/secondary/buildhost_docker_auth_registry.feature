@@ -14,6 +14,7 @@ Feature: Build image with authenticated registry
     And I check "useCredentials"
     And I enter URI, username and password for portus
     And I click on "create-btn"
+    Then I wait until I see "portus" text
 
   Scenario: Create a profile for the authenticated image store as Docker admin
     When I follow the left menu "Images > Profiles"
@@ -23,6 +24,7 @@ Feature: Build image with authenticated registry
     And I select "1-DOCKER-TEST" from "activationKey"
     And I enter "Docker/authprofile" relative to profiles as "path"
     And I click on "create-btn"
+    Then I wait until I see "portus_profile" text
 
   Scenario: Build an image in the authenticated image store
     When I follow the left menu "Images > Build"
@@ -33,6 +35,8 @@ Feature: Build image with authenticated registry
     Then I wait until I see "portus_profile" text
     # Verify the status of images in the authenticated image store
     When I wait at most 600 seconds until container "portus_profile" is built successfully
+    And I refresh the page
+    Then table row for "portus_profile" should contain "1"
 
   Scenario: Cleanup: remove Docker profile for the authenticated image store
     When I follow the left menu "Images > Profiles"
