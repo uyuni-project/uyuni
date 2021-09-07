@@ -1,3 +1,4 @@
+- Postgres exporter package was renamed
 - fix deprecation warnings
 
 -------------------------------------------------------------------
