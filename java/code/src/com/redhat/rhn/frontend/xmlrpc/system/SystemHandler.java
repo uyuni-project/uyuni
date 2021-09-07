@@ -170,6 +170,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import org.apache.commons.lang3.StringUtils;
@@ -7518,6 +7519,41 @@ public class SystemHandler extends BaseHandler {
      */
     public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
         return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
+    }
+
+    /**
+     * Refresh all the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh all the pillar data of a list of systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, List<Integer> systemIds) {
+        List<Integer> skipped = new ArrayList<>();
+        for (Integer sysId : systemIds) {
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
+                Server system = SystemManager.lookupByIdAndUser(Long.valueOf(sysId), loggedInUser);
+                system.asMinionServer().ifPresentOrElse(
+                    minionServer -> {
+                        MinionPillarManager.INSTANCE.generatePillar(minionServer);
+                    },
+                    () -> {
+                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        skipped.add(sysId);
+                    }
+                );
+            }
+            else {
+                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                skipped.add(sysId);
+            }
+        }
+        return skipped;
     }
 
     /**
