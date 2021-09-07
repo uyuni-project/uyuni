@@ -1,3 +1,4 @@
+- Postgres exporter package was renamed
 - fix deprecation warnings
 - enforce correct minion configuration similar to bootstrapping
   (bsc#1192510)
