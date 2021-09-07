@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-06 19:12+0000\n"
+"PO-Revision-Date: 2021-09-07 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7230,43 +7230,44 @@ msgstr "system_listnotes: Vypísať zoznam dostupných poznámok pre systém"
 
 #: ../src/spacecmd/system.py:2348
 msgid "usage: system_listnotes <SYSTEM>"
-msgstr ""
+msgstr "použitie: system_listnotes <SYSTÉM>"
 
 #: ../src/spacecmd/system.py:2406
 msgid "system_listfqdns: List the associated FQDNs for a system"
-msgstr ""
+msgstr "system_listfqdns: Vypísať zoznam prislúchajúcich FQDN pre systém"
 
 #: ../src/spacecmd/system.py:2407
 msgid "usage: system_listfqdns <SYSTEM>"
-msgstr ""
+msgstr "použitie: system_listfqdns <SYSTÉM>"
 
 #: ../src/spacecmd/system.py:2459
 msgid "system_setbasechannel: Set a system's base software channel"
-msgstr ""
+msgstr "system_setbasechannel: Nastaviť základný softvérový kanál systému"
 
 #: ../src/spacecmd/system.py:2460
 msgid "usage: system_setbasechannel <SYSTEMS> CHANNEL"
-msgstr ""
+msgstr "použitie: system_setbasechannel <SYSTÉMY> KANÁL"
 
 #: ../src/spacecmd/system.py:2507 ../src/spacecmd/system.py:2594
 #, python-format
 msgid "System:           %s"
-msgstr ""
+msgstr "Systém:           %s"
 
 #: ../src/spacecmd/system.py:2508 ../src/spacecmd/system.py:2595
 #, python-format
 msgid "Old Base Channel: %s"
-msgstr ""
+msgstr "Starý základný kanál: %s"
 
 #: ../src/spacecmd/system.py:2509 ../src/spacecmd/system.py:2597
 #, python-format
 msgid "New Base Channel: %s"
-msgstr ""
+msgstr "Nový základný kanál: %s"
 
 #: ../src/spacecmd/system.py:2528
 msgid ""
 "system_schedulechangechannels: Schedule changing a system's software channels"
 msgstr ""
+"system_schedulechangechannels: Naplánovať zmenu softvérových kanálov systému"
 
 #: ../src/spacecmd/system.py:2529
 msgid ""
@@ -7299,7 +7300,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:2621
 msgid "usage: system_listbasechannel <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listbasechannel <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2675
 msgid "system_listchildchannels: List the child channels for a system"
