@@ -1,4 +1,6 @@
 set -euxo pipefail
+# This is for testing when yarn fails. Do not merge this change ;)
+exit 1
 # This lock is shared with susemanager-frontend/susemanager-nodejs-sdk-devel/setup.sh
 (
     # Only run the below block if we're the first to acquire the lock
