@@ -7772,6 +7772,68 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Refresh all the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh all the pillar data of a list of systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, List<Integer> systemIds) {
+        return refreshPillar(loggedInUser, null, systemIds);
+    }
+
+    /**
+     * Refresh the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param subset the string representation of the pillar subset
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh the pillar data of a list of systems. The subset value represents the pillar to be refreshed
+     * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "subset", "subset of the pillar to refresh.")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> systemIds) {
+        List<Integer> skipped = new ArrayList<>();
+        MinionPillarManager.PillarSubset subsetValue = subset != null ?
+                MinionPillarManager.PillarSubset.valueOf(subset.toUpperCase()) :
+                null;
+        for (Integer sysId : systemIds) {
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
+                Server system = SystemManager.lookupByIdAndUser(Long.valueOf(sysId), loggedInUser);
+                system.asMinionServer().ifPresentOrElse(
+                    minionServer -> {
+                        if (subsetValue != null) {
+                            MinionPillarManager.INSTANCE.generatePillar(minionServer, true, subsetValue);
+                        }
+                        else {
+                            MinionPillarManager.INSTANCE.generatePillar(minionServer);
+                        }
+                    },
+                    () -> {
+                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        skipped.add(sysId);
+                    }
+                );
+            }
+            else {
+                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                skipped.add(sysId);
+            }
+        }
+        return skipped;
+    }
+
+    /**
      * Only needed for unit tests.
      * @return the {@link TaskomaticApi} instance used by this class
      * @xmlrpc.ignore
