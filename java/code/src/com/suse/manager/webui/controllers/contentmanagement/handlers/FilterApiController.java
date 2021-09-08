@@ -14,15 +14,10 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
-
+import com.google.gson.Gson;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -31,17 +26,17 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
-
-import com.google.gson.Gson;
 import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import spark.Request;
+import spark.Response;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,8 +45,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import spark.Request;
-import spark.Response;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
 
 /**
  * Spark controller ContentManagement Filter Api.
@@ -148,22 +147,33 @@ public class FilterApiController {
     private static String createFromTemplate(Request req, Response res, User user) {
         FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
 
-        List<ContentFilter> createdFilters;
-        PackageEvr kernelEvr = PackageEvrFactory.lookupPackageEvrById(createFilterRequest.getKernelEvrId());
-
         String prefix = createFilterRequest.getPrefix();
         if (!StringUtils.endsWithAny(prefix, "-", "_")) {
             prefix += "-";
         }
 
+        List<ContentFilter> createdFilters;
         try {
-            createdFilters = TEMPLATE_MGR.createLivePatchFilters(prefix, kernelEvr, user);
+            switch (createFilterRequest.getTemplate()) {
+            case "LivePatchingSystem":
+            case "LivePatchingProduct":
+                PackageEvr kernelEvr = PackageEvrFactory.lookupPackageEvrById(createFilterRequest.getKernelEvrId());
+                createdFilters = TEMPLATE_MGR.createLivePatchFilters(prefix, kernelEvr, user);
+                break;
+            case "AppStreamsWithDefaults":
+                Channel channel = ChannelManager.lookupByIdAndUser(createFilterRequest.getChannelId(), user);
+                createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
+                break;
+            default:
+                return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Collections.emptyList(),
+                        Collections.singletonMap("invalid_template",
+                                Collections.singletonList(LOC.getMessage("contentmanagement.invalid_template")))));
+            }
         }
         catch (EntityExistsException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(
-                    new LinkedList<>(),
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Collections.emptyList(),
                     Collections.singletonMap("filter_name",
-                            Arrays.asList(LOC.getMessage("contentmanagement.filter_exists")))
+                            Collections.singletonList(LOC.getMessage("contentmanagement.filter_exists")))
             ));
         }
 
@@ -192,7 +202,7 @@ public class FilterApiController {
     public static String createContentFilter(Request req, Response res, User user) {
         FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
 
-        if (StringUtils.isNotEmpty(createFilterRequest.getPrefix())) {
+        if (StringUtils.isNotEmpty(createFilterRequest.getTemplate())) {
             return createFromTemplate(req, res, user);
         }
 

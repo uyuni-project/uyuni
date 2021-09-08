@@ -17,7 +17,7 @@ import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewRuntime } from "./image-view-runtime";
-import { DateTime } from "components/datetime";
+import { FromNow } from "components/datetime";
 import SpaRenderer from "core/spa/spa-renderer";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
@@ -28,6 +28,7 @@ declare global {
     timezone?: any;
     localTime?: any;
     isRuntimeInfoEnabled?: any;
+    osImageStoreUrl?: string;
   }
 }
 
@@ -57,7 +58,7 @@ function getHashTab() {
 
 type ImageViewProps = {
   runtimeInfoEnabled: any;
-}
+};
 
 type ImageViewState = {
   messages: any;
@@ -313,11 +314,8 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
       .catch(this.handleResponseError);
   }
 
-  inspectImage(id, earliest) {
-    return Network.post(
-      "/rhn/manager/api/cm/images/inspect/" + id,
-      { imageId: id, earliest: earliest }
-    )
+  inspectImage(id: unknown, earliest: moment.Moment) {
+    return Network.post("/rhn/manager/api/cm/images/inspect/" + id, { imageId: id, earliest })
       .then(() => {
         this.reloadData();
         this.setState({
@@ -328,10 +326,11 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   buildImage(profile, version, host, earliest) {
-    return Network.post(
-      "/rhn/manager/api/cm/build/" + profile,
-      { version: version, buildHostId: host, earliest: earliest }
-    )
+    return Network.post("/rhn/manager/api/cm/build/" + profile, {
+      version: version,
+      buildHostId: host,
+      earliest: earliest,
+    })
       .then(() => {
         //The image id is changed so this page is not available anymore.
         this.handleBackAction();
@@ -660,7 +659,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             columnKey="modified"
             header={t("Last Modified")}
             comparator={Utils.sortByDate}
-            cell={row => <DateTime time={row.modified} />}
+            cell={row => <FromNow value={row.modified} />}
           />
           <Column
             width="10%"
@@ -693,6 +692,14 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             }}
           />
         </Table>
+        {window.osImageStoreUrl &&
+          <div>
+            <a href={window.osImageStoreUrl} target="_blank" rel="noopener noreferrer">
+              <i className="fa fa-folder-open"/>
+              Go to OS image directory listing
+            </a>
+          </div>
+        }
         <DeleteDialog
           id="delete-modal"
           title={t("Delete Image")}
@@ -739,7 +746,7 @@ type ImageViewDetailsProps = {
   runtimeInfoEnabled: any;
   gotRuntimeInfo: any;
   onBuild?: (...args: any[]) => any;
-  onInspect: (...args: any[]) => any;
+  onInspect?: (id: string, earliest: moment.Moment) => void;
   onTabChange?: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
   onCancel: (...args: any[]) => any;

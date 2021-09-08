@@ -16,16 +16,21 @@
 package com.redhat.rhn.manager.contentmgmt;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
+import spark.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
@@ -34,8 +39,21 @@ import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
  */
 public class FilterTemplateManager {
 
+    private ModulemdApi modulemdApi;
+
     /**
-     * Create a new {@link ContentFilter}
+     * Create an instance with default values
+     */
+    public FilterTemplateManager() {
+        this(new ModulemdApi());
+    }
+
+    private FilterTemplateManager(ModulemdApi modulemdApiIn) {
+        this.modulemdApi = modulemdApiIn;
+    }
+
+    /**
+     * Create new {@link ContentFilter}s for a live patching application
      *
      * @param prefix the filter name prefix
      * @param kernelEvr the kernel EVR to base the filters on
@@ -52,16 +70,45 @@ public class FilterTemplateManager {
                 "keyword", "reboot_suggested"));
 
         // Make sure none of the filters exist
-        criteria.keySet().forEach(name ->
-                ContentManager.lookupFilterByNameAndOrg(prefix + name, user).ifPresent(cp -> {
-                    throw new EntityExistsException(cp);
-                }));
+        ensureNoFiltersExist(criteria.keySet(), prefix, user);
 
         List<ContentFilter> createdFilters = new ArrayList<>(2);
 
         criteria.forEach((name, crit) -> createdFilters.add(
                 ContentProjectFactory.createFilter(prefix + name, ContentFilter.Rule.DENY,
                         ContentFilter.EntityType.ERRATUM, crit, user)
+        ));
+
+        return createdFilters;
+    }
+
+    /**
+     * Create new {@link ContentFilter}s for all AppStream modules with default streams
+     *
+     * @param prefix the filter name prefix
+     * @param channel the modular channel with modules to be created
+     * @param user the user
+     * @return the list of created filters
+     */
+    public List<ContentFilter> createAppStreamFilters(String prefix, Channel channel, User user) {
+        ensureOrgAdmin(user);
+
+        // Create an AppStream filter for every module that has a default stream
+        Map<String, FilterCriteria> criteria = modulemdApi.getAllModulesInChannel(channel).entrySet().stream()
+                .filter(e -> StringUtils.isNotEmpty(e.getValue().getDefaultStream()))
+                .collect(Collectors.toMap(
+                        e -> "module-" + e.getKey(),
+                        e -> new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream",
+                                e.getKey() + ":" + e.getValue().getDefaultStream())));
+
+        // Make sure none of the filters exist
+        ensureNoFiltersExist(criteria.keySet(), prefix, user);
+
+        List<ContentFilter> createdFilters = new ArrayList<>(criteria.size());
+
+        criteria.forEach((name, crit) -> createdFilters.add(
+                ContentProjectFactory.createFilter(prefix + name, ContentFilter.Rule.DENY,
+                        ContentFilter.EntityType.MODULE, crit, user)
         ));
 
         return createdFilters;
@@ -77,5 +124,11 @@ public class FilterTemplateManager {
         if (!user.hasRole(ORG_ADMIN)) {
             throw new PermissionException(ORG_ADMIN);
         }
+    }
+
+    private static void ensureNoFiltersExist(Collection<String> filterNames, String prefix, User user) {
+        filterNames.forEach(name -> ContentManager.lookupFilterByNameAndOrg(prefix + name, user).ifPresent(cp -> {
+            throw new EntityExistsException(cp);
+        }));
     }
 }

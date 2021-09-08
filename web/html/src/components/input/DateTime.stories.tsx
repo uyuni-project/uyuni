@@ -22,7 +22,6 @@ export const Example = () => (
   >
     <DateTime
       name="time"
-      timezone="CEST"
       label={t('Time')}
       required
       labelClass="col-md-3"

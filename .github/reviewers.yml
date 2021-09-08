@@ -8,6 +8,7 @@ reviewers:
       - srbarrios
       - Bischoff
       - calancha
+      - nodeg
 
 files:
   # Keys are glob expressions.

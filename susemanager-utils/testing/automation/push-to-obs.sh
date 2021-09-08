@@ -71,16 +71,42 @@ test -n "$PACKAGES" || {
 }
 echo "Starting building and submission at $(date)"
 date
+PIDS=""
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 for p in ${PACKAGES};do
     pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
     CHOWN_CMD="${CHOWN_CMD}; chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    # Set pipefail so the result of a pipe is different to zero if one of the commands fail.
+    # This way, we can add tee at the end but be sure the result would be non zero if the command before has failed.
+    set -o pipefail
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"EXIT_CODE=\$?;${CHOWN_CMD};exit \$EXITCODE \" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+        PIDS="$PIDS $!"
     else
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"EXIT_CODE=\$?;${CHOWN_CMD};exit \$EXITCODE\" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} &&  exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
+    set +o pipefail
 done
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
-wait
+
+# Turn off exiting on error because we want to wait for all subprocesses
+set +e
+
+PRET=0
+for i in $PIDS;do
+    echo "Waiting for pid $i"
+    wait $i
+    result=$?
+    echo "$i finished, result is $result"
+    if [ $result -ne 0 ];then
+        echo "Seems there was an error with pid $i"
+        PRET=-1
+    fi
+done
+
+if [ $PRET -ne 0 ];then
+    echo "Review the logs."
+fi
+
+set -e

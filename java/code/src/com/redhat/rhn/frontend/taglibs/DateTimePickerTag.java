@@ -17,12 +17,9 @@ package com.redhat.rhn.frontend.taglibs;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
@@ -44,8 +41,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *
  */
 public class DateTimePickerTag extends TagSupport {
-
-    private static final String JS_INCLUDE_GUARD_ATTR = "__spacewalk_datepicker_included";
 
     private DatePicker data;
 
@@ -81,7 +76,6 @@ public class DateTimePickerTag extends TagSupport {
     public int doEndTag() throws JspException {
        try {
           writePickerHtml(pageContext.getOut());
-          writePickerJavascript(pageContext.getOut());
        }
        catch (IOException e) {
            throw new JspException(e);
@@ -176,77 +170,24 @@ public class DateTimePickerTag extends TagSupport {
 
     private void writePickerHtml(Writer out) throws IOException {
 
+        // This is a mounting point for the React-based picker
         HtmlTag group = new HtmlTag("div");
-        group.setAttribute("class", "input-group");
         group.setAttribute("id", data.getName() + "_datepicker_widget");
+        group.setAttribute("class", "legacy-date-time-picker");
 
+        group.setAttribute("data-name", data.getName());
         if (!data.getDisableDate()) {
-            HtmlTag dateAddon = createInputAddonTag("date", "header-calendar");
-            group.addBody(dateAddon);
-
-            SimpleDateFormat dateFmt = (SimpleDateFormat)
-                    DateFormat.getDateInstance(DateFormat.SHORT, data.getLocale());
-
-            HtmlTag dateInput = new HtmlTag("input");
-            dateInput.setAttribute("id", data.getName() + "_datepicker_widget_input");
-            dateInput.setAttribute("data-provide", "date-picker");
-            dateInput.setAttribute("data-date-today-highlight", "true");
-            dateInput.setAttribute("data-date-orientation", "top auto");
-            dateInput.setAttribute("data-date-autoclose", "true");
-            dateInput.setAttribute("data-date-language", data.getLocale().toString());
-            dateInput.setAttribute("data-date-format",
-                    toDatepickerFormat(dateFmt.toPattern()));
-            dateInput.setAttribute("type", "text");
-            dateInput.setAttribute("class", "form-control");
-            dateInput.setAttribute("id", data.getName() + "_datepicker_widget_input");
-            dateInput.setAttribute("size", "15");
-
-            dateInput.setAttribute("data-picker-name", data.getName());
-            dateInput.setAttribute("data-initial-year", String.valueOf(data.getYear()));
-            dateInput.setAttribute("data-initial-month", String.valueOf(data.getMonth()));
-            dateInput.setAttribute("data-initial-day", String.valueOf(data.getDay()));
-
-            String firstDay = getJavascriptPickerDayIndex(
-                    data.getCalendar().getFirstDayOfWeek());
-            dateInput.setAttribute("data-date-week-start", firstDay);
-
-            group.addBody(dateInput);
+            group.setAttribute("data-has-date", "");
         }
-
         if (!data.getDisableTime()) {
-            HtmlTag timeAddon = createInputAddonTag("time", "header-clock");
-            group.addBody(timeAddon);
-
-            SimpleDateFormat timeFmt = (SimpleDateFormat)
-                    DateFormat.getTimeInstance(DateFormat.SHORT, data.getLocale());
-
-            HtmlTag timeInput = new HtmlTag("input");
-            timeInput.setAttribute("type", "text");
-            timeInput.setAttribute("data-provide", "time-picker");
-            timeInput.setAttribute("class", "form-control");
-            timeInput.setAttribute("data-time-format",
-                                         toPhpTimeFormat(timeFmt.toPattern()));
-            timeInput.setAttribute("id", data.getName() + "_timepicker_widget_input");
-            timeInput.setAttribute("size", "10");
-
-            timeInput.setAttribute("data-picker-name", data.getName());
-            timeInput.setAttribute("data-initial-hour",
-                    String.valueOf(data.getHourOfDay()));
-            timeInput.setAttribute("data-initial-minute", String.valueOf(data.getMinute()));
-
-            group.addBody(timeInput);
+            group.setAttribute("data-has-time", "");
         }
+        if (data.isLatin()) {
+            group.setAttribute("data-is-am-pm", "");
+        }
+        DateFormat isoFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        group.setAttribute("data-value", isoFmt.format(data.getDate()));
 
-        HtmlTag tzAddon = new HtmlTag("span");
-        tzAddon.setAttribute("id", data.getName() + "_tz_input_addon");
-        tzAddon.setAttribute("data-picker-name", data.getName());
-        tzAddon.setAttribute("class", "input-group-addon text tz_input_addon");
-
-        DateFormat tzFmt = new SimpleDateFormat("z", data.getLocale());
-        tzFmt.setTimeZone(data.getCalendar().getTimeZone());
-        tzAddon.addBody(tzFmt.format(data.getDate()));
-
-        group.addBody(tzAddon);
         out.append(group.render());
 
         // compatibility with the old struts form
@@ -264,7 +205,7 @@ public class DateTimePickerTag extends TagSupport {
         out.append(createHiddenInput("minute", String.valueOf(data.getMinute())).render());
         if (data.isLatin()) {
             out.append(createHiddenInput("am_pm",
-                    String.valueOf((data.getHour() > 12) ? 1 : 0)).render());
+                    String.valueOf((data.getHourOfDay() > 12) ? 1 : 0)).render());
         }
     }
 
@@ -275,50 +216,5 @@ public class DateTimePickerTag extends TagSupport {
         input.setAttribute("type", "hidden");
         input.setAttribute("value", value);
         return input;
-    }
-
-    private void writePickerJavascript(Writer out) throws IOException {
-        if (pageContext.getRequest().getAttribute(JS_INCLUDE_GUARD_ATTR) == null) {
-            writeJavascriptIncludes(out);
-            out.append("<script type='text/javascript'>\n");
-            writeI18NMap(out);
-            pageContext.getRequest().setAttribute(JS_INCLUDE_GUARD_ATTR, true);
-            out.append("</script>\n");
-        }
-    }
-
-    private void writeJavascriptIncludes(Writer out) throws IOException {
-        out.append("<script type='text/javascript' " +
-                    "src='/javascript/spacewalk-datetimepicker.js'></script>\n");
-    }
-
-    private void writeI18NMap(Writer out) throws IOException {
-        // generate i18n for the picker here
-        DateFormatSymbols syms = data.getDateFormatSymbols();
-        out.append("$.fn.datepicker.dates['" + data.getLocale() + "'] = {\n");
-
-        Writer names = new StringWriter();
-        Writer shortNames = new StringWriter();
-        String[] nameStrings = syms.getWeekdays();
-        String[] shortNameStrings = syms.getShortWeekdays();
-        for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
-            names.append(String.format(" '%s',", nameStrings[i]));
-            shortNames.append(String.format(" '%s',", shortNameStrings[i]));
-        }
-        out.append("days:      [" + names.toString() + "],\n");
-        out.append("daysShort: [" + shortNames.toString() + "],\n");
-        out.append("daysMin:   [" + shortNames.toString() + "],\n");
-
-        names = new StringWriter();
-        shortNames = new StringWriter();
-        nameStrings = syms.getMonths();
-        shortNameStrings = syms.getShortMonths();
-        for (int i = Calendar.JANUARY; i <= Calendar.DECEMBER; i++) {
-            names.append(String.format(" '%s',", nameStrings[i]));
-            shortNames.append(String.format(" '%s',", shortNameStrings[i]));
-        }
-        out.append("months:      [" + names.toString() + "],\n");
-        out.append("monthsShort: [" + shortNames.toString() + "],\n");
-        out.append("};\n");
     }
 }
