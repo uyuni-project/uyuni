@@ -114,7 +114,9 @@ for i in $PIDS;do
 done
 
 if [ $PRET -ne 0 ];then
-    echo "$Fail to build packages ${PKG_FAILED}"
+    echo "The following packages failed to build:"
+    for p in ${PKG_FAILED}; do echo "- ${p}"; done
+    echo "Please review the logs at ${GITROOT}/logs/"
     echo "Review the logs."
     exit ${PRET}
 fi
