@@ -29,7 +29,7 @@ my @options = ();
 my @removals = ();
 my $help = '';
 # bsc#1190040
-my @allowed_target_files = qw(/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf );
+my @allowed_target_files = qw(/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf);
 
 GetOptions("target=s" => \$target, "option=s" => \@options, "remove=s" => \@removals, "help" => \$help) or die $usage;
 
