@@ -1,4 +1,5 @@
 #! /bin/sh -e
+set -o pipefail
 
 HERE=`dirname $0`
 . $HERE/VERSION
@@ -79,14 +80,16 @@ for p in ${PACKAGES};do
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     # Set pipefail so the result of a pipe is different to zero if one of the commands fail.
     # This way, we can add tee at the end but be sure the result would be non zero if the command before has failed.
-    set -o pipefail
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"EXIT_CODE=\$?;${CHOWN_CMD};exit \$EXITCODE \" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
-        PIDS="$PIDS $!"
+        echo "Building ${p} in parallel"
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        pid=${!}
+        PIDS="${PIDS} ${pid}"
+        ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"EXIT_CODE=\$?;${CHOWN_CMD};exit \$EXITCODE\" EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} &&  exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        echo "Building ${p}"
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
-    set +o pipefail
 done
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
 
@@ -99,6 +102,7 @@ for i in $PIDS;do
     wait $i
     result=$?
     echo "$i finished, result is $result"
+    cat ${GITROOT}/logs/${i}.log
     if [ $result -ne 0 ];then
         echo "Seems there was an error with pid $i"
         PRET=-1
@@ -107,6 +111,7 @@ done
 
 if [ $PRET -ne 0 ];then
     echo "Review the logs."
+    exit ${PRET}
 fi
 
 set -e
