@@ -5622,6 +5622,29 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Method to list systems having a given entitlement
+     *
+     * @param loggedInUser the current user
+     * @param entitlementName the entitlement name to look for
+     * @return an array of systemOverview objects
+     *
+     * @xmlrpc.doc Lists the systems that have the given entitlement
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("string", "entitlementName", "the entitlement name")
+     * @xmlrpc.returntype
+     *              #array_begin()
+     *                  $SystemOverviewSerializer
+     *              #array_end()
+     */
+    public List<SystemOverview> listSystemsWithEntitlement(User loggedInUser, String entitlementName) {
+        Entitlement entitlement = EntitlementManager.getByName(entitlementName);
+        if (entitlement == null) {
+            throw new InvalidEntitlementException(entitlementName);
+        }
+        return SystemManager.listSystemsWithEntitlement(loggedInUser, entitlement);
+    }
+
+    /**
      * Gets a list of all Physical systems visible to user
      * @param loggedInUser The current user
      * @return Returns an array of maps representing all systems visible to user
