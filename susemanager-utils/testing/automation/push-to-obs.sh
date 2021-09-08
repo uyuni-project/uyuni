@@ -1,4 +1,5 @@
 #! /bin/sh -e
+set -o pipefail
 
 HERE=`dirname $0`
 . $HERE/VERSION
@@ -77,7 +78,7 @@ for p in ${PACKAGES};do
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
     else
-        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
