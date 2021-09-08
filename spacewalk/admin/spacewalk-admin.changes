@@ -1,3 +1,4 @@
+- Fix setup with rhn-config-satellite (bsc#1190300)
 - Allow admins to modify only spacewalk config files with
   rhn-config-satellite.pl (bsc#1190040) (CVE-2021-40348)
 
