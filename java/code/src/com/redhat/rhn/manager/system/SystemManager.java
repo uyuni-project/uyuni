@@ -2587,6 +2587,24 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * List all systems with the given entitlement
+     *
+     * @param user the user doing the search
+     * @param entitlement the entitlement to match
+     * @return list of SystemOverview objects
+     */
+    public static List<SystemOverview> listSystemsWithEntitlement(User user, Entitlement entitlement) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "systems_with_entitlement");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("entitlement_label", entitlement.getLabel());
+        DataResult<SystemOverview> toReturn = m.execute(params);
+        toReturn.elaborate();
+        return toReturn;
+    }
+
+    /**
      * Returns the number of systems subscribed to the channel that are
      * <strong>not</strong> in the given org.
      *

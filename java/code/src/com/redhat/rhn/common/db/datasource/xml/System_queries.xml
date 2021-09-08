@@ -438,6 +438,18 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="system_overview" />
 </mode>
 
+<mode name="systems_with_entitlement" class="com.redhat.rhn.frontend.dto.SystemOverview">
+  <query params="user_id, entitlement_label">
+SELECT  S.id, S.name
+  FROM  rhnServer S, rhnServerEntitlementView E
+ WHERE  S.id = E.server_id
+   AND  E.label = :entitlement_label
+   AND  EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
+  </query>
+  <elaborator name="system_overview" />
+</mode>
+
 <mode name="target_systems_for_channel" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, cid, user_id">
 SELECT ES.id, S.name, 1 as selectable
