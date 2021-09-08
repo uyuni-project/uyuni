@@ -1,3 +1,4 @@
+- Updated Enterprise Linux servlet requirement.
 - Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
 - Improved timezone support
 - implement package locking for salt minions
