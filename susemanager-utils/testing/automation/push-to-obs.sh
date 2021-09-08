@@ -100,7 +100,7 @@ PRET=0
 PKG_FAILED=""
 for i in $PIDS;do
     package_name=$(basename $(readlink ${GITROOT}/logs/${i}.log) | cut -d"." -f1 )
-    echo "Waiting for process with pid $i, building package ${package_name}"
+    echo "Waiting for process with pid ${i}, building package ${package_name}"
     wait $i
     result=$?
     echo "$i finished, result is $result"
