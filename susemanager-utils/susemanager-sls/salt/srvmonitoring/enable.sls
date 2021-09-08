@@ -17,7 +17,7 @@ node_exporter_service:
 {% if global.has_pillar_data %}
 postgres_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info prometheus-postgres_exporter
+    - name: /usr/bin/rpm --query --info prometheus-postgres_exporter || /usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter
 
 postgres_exporter_configuration:
   file.managed:
