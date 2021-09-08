@@ -6,6 +6,7 @@ import { RecurringStatesList } from "./recurring-states-list";
 import { RecurringStatesEdit } from "./recurring-states-edit";
 import { Utils as MessagesUtils } from "components/messages";
 import SpaRenderer from "core/spa/spa-renderer";
+import { localizedMoment } from "utils";
 
 /**
  * See:
@@ -52,9 +53,7 @@ function inferEntityParams() {
   return "";
 }
 
-type Props = {
-
-};
+type Props = {};
 
 type State = {
   messages: any[];
@@ -80,7 +79,10 @@ class RecurringStates extends React.Component<Props, State> {
     this.state = {
       messages: [],
       schedules: [],
-      minionIds: (window.minions?.length ?? 0) > 0 && window.minions?.[0].id ? window.minions?.map(minion => minion.id) : undefined,
+      minionIds:
+        (window.minions?.length ?? 0) > 0 && window.minions?.[0].id
+          ? window.minions?.map(minion => minion.id)
+          : undefined,
     };
   }
 
@@ -204,17 +206,22 @@ class RecurringStates extends React.Component<Props, State> {
   };
 
   render() {
-    const messages = this.state.messages ? <Messages items={this.state.messages} /> : null;
-    const notification = (
-      <Messages
-        items={[
-          {
-            severity: "warning",
-            text: "The timezone displayed is the server timezone. The scheduled time will be the server time.",
-          },
-        ]}
-      />
-    );
+    const messages = this.state.messages ? <Messages key="state-messages" items={this.state.messages} /> : null;
+    const notification =
+      localizedMoment.userTimeZone !== localizedMoment.serverTimeZone ? (
+        <Messages
+          key="notification-messages"
+          items={[
+            {
+              severity: "warning",
+              text: t(
+                "The below times are displayed is the server time zone {0}. The scheduled time will be the server time.",
+                localizedMoment.serverTimeZone
+              ),
+            },
+          ]}
+        />
+      ) : null;
     return (
       <div>
         {messages}
@@ -227,14 +234,15 @@ class RecurringStates extends React.Component<Props, State> {
           />
         ) : (this.state.action === "edit" && this.state.selected) ||
           (this.state.action === "create" && this.isFilteredList()) ? (
-          [
-            notification,
+          <>
+            {notification}
             <RecurringStatesEdit
+              key="edit"
               schedule={this.state.selected}
               onEdit={this.updateSchedule}
               onActionChanged={this.handleForwardAction}
-            />,
-          ]
+            />
+          </>
         ) : (
           <RecurringStatesList
             data={this.state.schedules}
