@@ -237,6 +237,8 @@ type DateTimePickerProps = {
   onChange: (value: moment.Moment) => void;
   hideDatePicker?: boolean;
   hideTimePicker?: boolean;
+  // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
+  serverTimeZone?: boolean;
 };
 
 type DateTimePickerState = {
@@ -255,8 +257,8 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       timeOpen: false,
       hideDate: props.hideDatePicker || false,
       hideTime: props.hideTimePicker || false,
-      // Use the user's configured time zone by default
-      timeZone: localizedMoment.userTimeZone,
+      // Use the user's configured time zone by default, but allow overrides
+      timeZone: props.serverTimeZone ? localizedMoment.serverTimeZone : localizedMoment.userTimeZone,
     };
   }
 
