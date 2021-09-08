@@ -1,3 +1,6 @@
+- When renaming: don't regenerate CA, allow using third-party
+  certificate and trigger pillar refresh (bsc#1190123)
+
 -------------------------------------------------------------------
 Mon Aug 09 11:07:38 CEST 2021 - jgonzalez@suse.com
 
