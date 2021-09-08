@@ -51,6 +51,7 @@ tar xfv %{S:1}
 
 %build
 find . -type f -exec sed -i -e 's/#!\/usr\/bin\/env node/#!\/usr\/bin\/node/g' {} \;
+echo "TEST"
 
 %install
 mkdir -p %{buildroot}%{nodejs_sitelib}
