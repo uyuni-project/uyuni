@@ -1,4 +1,7 @@
 - Java enablement for Debian 11
+- Updated Enterprise Linux servlet requirement.
+- Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
+- Improved timezone support
 - implement package locking for salt minions
 - Show AppStreams tab just for modular channels
 - Fix Json null comparison in virtual network info parsing (bsc#1189167)

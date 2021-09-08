@@ -13,6 +13,14 @@ function isLoginPage(pathName) {
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
+// Navigation hook for standalone renderers to detect navigation
+const onSpaEndNavigationCallbacks: Function[] = [];
+window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: Function) {
+  if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
+    onSpaEndNavigationCallbacks.push(callback);
+  }
+}
+
 window.pageRenderers.spaengine.init = function init(timeout = 30) {
   // We need this until the login page refactor using a different layout template is completed
   if (!isLoginPage(window.location.pathname)) {
@@ -98,6 +106,7 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
       Loggerhead.info("[" + new Date().toUTCString() + "] - Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();
+      onSpaEndNavigationCallbacks.forEach(callback => callback());
     });
 
     return appInstance;

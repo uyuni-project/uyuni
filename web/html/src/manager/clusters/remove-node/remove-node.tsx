@@ -24,7 +24,7 @@ const RemoveNode = (props: Props) => {
   const [removeConfig, setRemoveConfig] = useState<FormulaValuesType | null | undefined>(null);
   const { scheduleRemoveNode } = useClustersApi();
 
-  const scheduleRemove = (earliest: Date, actionChain: string | null | undefined): Promise<any> => {
+  const scheduleRemove = (earliest: moment.Moment, actionChain: string | null | undefined): Promise<any> => {
     if (removeConfig) {
       return scheduleRemoveNode(
         props.cluster.id,

@@ -395,11 +395,10 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
+            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
-                .collect(Collectors.toMap(
-                    info -> packageToKey(name, info),
-                    Function.identity()
-                ));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
 
             change.getOldValue().stream().forEach(info -> {
                 String key = packageToKey(name, info);
@@ -417,7 +416,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> name, info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);

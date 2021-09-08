@@ -958,7 +958,7 @@ end
 
 # Wait until a modal window with a specific content is shown
 When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
-  path = "//*[contains(@class, \"modal-body\") and contains(., \"#{title}\")]" \
+  path = "//*[contains(@class, \"modal-content\") and contains(., \"#{title}\")]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   dialog = find(:xpath, path, wait: timeout.to_i)
