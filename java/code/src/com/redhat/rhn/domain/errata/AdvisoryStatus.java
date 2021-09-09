@@ -24,6 +24,7 @@ public enum AdvisoryStatus {
     FINAL("final"),
     STABLE("stable"),
     TESTING("testing"),
+    PENDING("pending"),
     RETRACTED("retracted");
 
     private final String metadataValue;
