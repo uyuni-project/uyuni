@@ -507,3 +507,59 @@ def do_schedule_deletearchived(self, args):
                 print("Deleted {} actions of {}".format(processed, len(action_ids)))
     else:
         print(_("No archived actions found."))
+
+####################
+
+
+def help_schedule_archivecompleted(self):
+    print(_('schedule_archivecompleted: Archive all completed actions older than given date.'))
+    print(_('usage: schedule_archivecompleted [yyyymmdd]'))
+    print('')
+    print(_('If no date is provided it will archive all completed actions'))
+
+def do_schedule_archivecompleted(self, args):
+    """
+    This method removes all of the completed actions older than provided date.
+    If no date is provided it will archive all completed actions.
+    """
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-y', '--yes', default=False, action="store_true")
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    if args:
+        date_limit = parse_time_input(args[0])
+        logging.debug('Date limit: %s' % date_limit)
+    else:
+        date_limit = None
+
+    actions = self.client.schedule.listAllCompletedActions(self.session)
+
+    # Filter out actions by date if limit is set
+    if date_limit:
+        actions = [action for action in actions if action.get('earliest') < date_limit]
+
+    logging.debug("actions: {}".format(actions))
+    if actions:
+        if not _options.yes:
+            user_answer = prompt_user(_("Do you want to archive ({}) completed actions? [y/N]").format(len(actions)))
+            if user_answer not in ("y", "Y", "yes", "Yes", "YES"):
+                return
+
+        # Collect IDs of actions that should be archived
+        action_ids = [action.get('id') for action in actions]
+
+        # Remove duplicates if any
+        # set needs to be cast to list, since set cannot be marshalled
+        action_ids = list(set(action_ids))
+
+        if action_ids:
+            # Process archiving in batches
+            BATCH_SIZE = 500
+            for i in range(0, len(action_ids), BATCH_SIZE):
+                # Pass list of actions that should be archived
+                self.client.schedule.archiveActions(self.session, action_ids[i:i + BATCH_SIZE])
+                processed = i + BATCH_SIZE if i + BATCH_SIZE <= len(action_ids) else len(action_ids)
+                print("Archived {} actions of {}".format(processed, len(action_ids)))
+    else:
+        print(_("No completed actions found."))
