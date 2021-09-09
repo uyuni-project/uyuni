@@ -1,3 +1,6 @@
+- Add SLE 15 SAP Product ID to SLE15 bootstrap repositories, as
+  it is required to get python3-M2Crypto (bsc#1189422)
+
 -------------------------------------------------------------------
 Mon Aug 30 12:00:00 CEST 2021 - jmassaguerpla@suse.de
 
