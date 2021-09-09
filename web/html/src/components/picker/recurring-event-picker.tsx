@@ -97,7 +97,6 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   }
 
   initialize = () => {
-    // Select weekly schedule by default
     // TODO: This logic needs to be lifted up since this internally calls `setState()` which is not valid while mounting
     this.onSelectWeekly();
   };
