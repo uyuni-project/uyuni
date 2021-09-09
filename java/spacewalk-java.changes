@@ -1,3 +1,4 @@
+- Add missing string on XCCDF scan results (bsc#1190164)
 - Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
 - Improved timezone support
 - implement package locking for salt minions
