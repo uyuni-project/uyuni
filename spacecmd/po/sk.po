@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-07 19:12+0000\n"
+"PO-Revision-Date: 2021-09-09 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7278,25 +7278,32 @@ msgid ""
 "  -c CHILD_CHANNEL child channel labels (allowed multiple times)\n"
 "  -s START_TIME time defaults to now"
 msgstr ""
+"použitie: system_setbasechannel <SYSTÉMY> [voľby]\n"
+"\n"
+"voľby:\n"
+"  -b ZÁKLADNÝ_KANÁL označenie základného kanála\n"
+"  -c KANÁL_POTOMKA označenia kanálov potomkov (povolené viacnásobné použitie)"
+"\n"
+"  -s ČAS_SPUSTENIA predvolený čas je teraz"
 
 #: ../src/spacecmd/system.py:2596
 #, python-format
 msgid "Old Child Channels: %s"
-msgstr ""
+msgstr "Staré kanály potomkov: %s"
 
 #: ../src/spacecmd/system.py:2598
 #, python-format
 msgid "New Child channels %s"
-msgstr ""
+msgstr "Nové kanály potomkov %s"
 
 #: ../src/spacecmd/system.py:2613 ../src/spacecmd/system.py:4261
 #, python-format
 msgid "Scheduled action id: %s"
-msgstr ""
+msgstr "Id naplánovanej akcie: %s"
 
 #: ../src/spacecmd/system.py:2620
 msgid "system_listbasechannel: List the base channel for a system"
-msgstr ""
+msgstr "system_listbasechannel: Vypísať zoznam základných kanálov pre systém"
 
 #: ../src/spacecmd/system.py:2621
 msgid "usage: system_listbasechannel <SYSTEMS>"
@@ -7304,19 +7311,19 @@ msgstr "použitie: system_listbasechannel <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2675
 msgid "system_listchildchannels: List the child channels for a system"
-msgstr ""
+msgstr "system_listchildchannels: Vypísať zoznam kanálov potomkov pre systém"
 
 #: ../src/spacecmd/system.py:2676
 msgid "usage: system_listchildchannels <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listchildchannels <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2730
 msgid "system_addchildchannels: Add child channels to a system"
-msgstr ""
+msgstr "system_addchildchannels: Pridať kanály potomkov do systému"
 
 #: ../src/spacecmd/system.py:2731
 msgid "usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: system_addchildchannels <SYSTÉMY> <KANÁL ...>"
 
 #: ../src/spacecmd/system.py:2755
 #, python-format
@@ -7333,6 +7340,8 @@ msgid ""
 "system_listcrashedsystems: List all systems that have experienced a crash "
 "and reported by spacewalk-abrt"
 msgstr ""
+"system_listcrashedsystems: Vypísať zoznam všetkých systémov, ktoré "
+"zaznamenali zlyhanie a boli nahlásené spacewalk-abrt"
 
 #: ../src/spacecmd/system.py:2763
 msgid "usage: system_listcrashedsystems"
