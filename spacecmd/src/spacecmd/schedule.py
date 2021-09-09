@@ -495,7 +495,7 @@ def do_schedule_deletearchived(self, args):
 
         if action_ids:
             # Process deletion in batches
-            BATCH_SIZE = 50
+            BATCH_SIZE = 500
             for i in range(0, len(action_ids), BATCH_SIZE):
                 # Pass list of actions that should be deleted
                 self.client.schedule.deleteActions(self.session, action_ids[i:i + BATCH_SIZE])
