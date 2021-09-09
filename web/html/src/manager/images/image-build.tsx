@@ -4,7 +4,6 @@ import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
 import { SubmitButton, LinkButton } from "components/buttons";
-import { Utils } from "utils/functions";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Select } from "components/input/Select";
@@ -13,6 +12,7 @@ import { ActionLink, ActionChainLink } from "components/links";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
@@ -44,7 +44,7 @@ type Props = {};
 type State = {
   model: {
     version: string;
-    earliest: any;
+    earliest: moment.Moment;
     profileId?: any;
     buildHostId?: any;
     actionChain?: any;
@@ -63,7 +63,7 @@ class BuildImage extends React.Component<Props, State> {
     this.state = {
       model: {
         version: window.version || "",
-        earliest: Utils.dateWithTimezone(window.localTime),
+        earliest: localizedMoment(),
       },
       profile: {},
       profiles: [],
@@ -181,9 +181,9 @@ class BuildImage extends React.Component<Props, State> {
     });
   }
 
-  onDateTimeChanged(date: Date) {
+  onDateTimeChanged(value: moment.Moment) {
      const model: State['model'] = Object.assign({}, this.state.model, {
-      earliest: date,
+      earliest: value,
       actionChain: null,
      });
     this.setState({
@@ -395,8 +395,6 @@ class BuildImage extends React.Component<Props, State> {
           />
 
           <ActionSchedule
-            timezone={window.timezone}
-            localTime={localTime}
             earliest={this.state.model.earliest}
             actionChains={window.actionChains}
             actionType="image.build"

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
-
+// TODO: This should eventually be localizedMoment instead
 import moment from "moment";
+import { useState, useEffect, useRef } from "react";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";

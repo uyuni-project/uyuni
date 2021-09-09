@@ -16,7 +16,7 @@ end
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
   iso_path = "/tmp/#{name}.iso"
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", true, 500, 'root')
+  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
   $server.run("mkdir -p #{mount_point}")
   $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
@@ -78,7 +78,11 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     now = Time.now
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
-    break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
+    begin
+      break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
+    rescue Capybara::ElementNotFound
+      # ignored - pending actions cannot be found
+    end
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -156,7 +160,7 @@ end
 
 Then(/^I should see the power is "([^"]*)"$/) do |status|
   within(:xpath, "//*[@for='powerStatus']/..") do
-    repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "power is not #{status}") do
+    repeat_until_timeout(message: "power is not #{status}") do
       break if has_content?(status)
       find(:xpath, '//button[@value="Get status"]').click
     end
@@ -257,7 +261,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
   elsif os_family =~ /^centos/
-    node.run('yum clean all && yum makecache', true, 600, 'root')
+    node.run('yum clean all && yum makecache', timeout: 600)
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')
   else
@@ -272,7 +276,7 @@ end
 
 Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | grep '#{channel}'", false)
+  _out, code = node.run("zypper lr -E | grep '#{channel}'", check_errors: false)
   raise "'#{channel}' was not expected but was found." if code.to_i.zero?
 end
 
@@ -296,7 +300,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
-  target.run(cmd, true, 500, 'root')
+  target.run(cmd, timeout: 500)
 end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
@@ -305,7 +309,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
-  target.run(cmd, true, 500, 'root')
+  target.run(cmd, timeout: 500)
 end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
@@ -321,7 +325,7 @@ Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
   arch, _code = $client.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/updateinfo.xml.gz"
-  $client.run(cmd, true, 500, 'root')
+  $client.run(cmd, timeout: 500)
 end
 
 # package steps
@@ -336,8 +340,8 @@ end
 And(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
-  $server.run(command, true, 500, 'root')
-  $server.run('ls -lR /var/spacewalk/packages', true, 500, 'root')
+  $server.run(command, timeout: 500)
+  $server.run('ls -lR /var/spacewalk/packages', timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
@@ -511,7 +515,7 @@ When(/^I click the Add Product button$/) do
 end
 
 Then(/^the SLE12 SP5 product should be added$/) do
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', fatal = false, buffer_size = 1_000_000)
+  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   raise unless output.include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
   if $product != 'Uyuni'
     raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
@@ -520,7 +524,7 @@ Then(/^the SLE12 SP5 product should be added$/) do
 end
 
 Then(/^the SLE15 (SP2|SP3) product should be added$/) do |sp_version|
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', fatal = false, buffer_size = 1_000_000)
+  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   raise unless output.include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise unless output.include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
   raise unless output.include? "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
@@ -575,12 +579,12 @@ end
 
 Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  node.run("test -f #{filename}", true)
+  node.run("test -f #{filename}")
 end
 
 Then(/^file "([^"]*)" should have ([0-9]+) permissions on "([^"]*)"$/) do |filename, permissions, host|
   node = get_target(host)
-  node.run("test \"`stat -c '%a' #{filename}`\" = \"#{permissions}\"", true)
+  node.run("test \"`stat -c '%a' #{filename}`\" = \"#{permissions}\"")
 end
 
 Then(/^file "([^"]*)" should not exist on server$/) do |filename|
@@ -594,7 +598,7 @@ end
 
 When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filename, host|
   node = get_target(host)
-  node.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
+  node.run("echo \"#{content}\" > #{filename}", timeout: 600)
 end
 
 When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
@@ -834,7 +838,7 @@ end
 
 Given(/^I update the profile of "([^"]*)"$/) do |client|
   node = get_target(client)
-  node.run('rhn-profile-sync', true, 500, 'root')
+  node.run('rhn-profile-sync', timeout: 500)
 end
 
 When(/^I register using "([^"]*)" key$/) do |key|
@@ -848,15 +852,15 @@ end
 And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
   node = get_target(client)
   if client.include? 'sle'
-    node.run('zypper --non-interactive install wget', true, 500, 'root')
+    node.run('zypper --non-interactive install wget', timeout: 500)
   else # As Ubuntu has no support, must be CentOS/SLES_ES
-    node.run('yum install wget', true, 600, 'root')
+    node.run('yum install wget', timeout: 600)
   end
   command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
-  puts node.run(command1, true, 500, 'root').to_s.gsub(/(\\x\h+){1,}/, '?')
+  puts node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  puts node.run(command2, true, 500, 'root').to_s.gsub(/(\\x\h+){1,}/, '?')
+  puts node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
@@ -879,9 +883,9 @@ end
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
   command = "spacecmd -u admin -p admin system_list"
   system_name = get_system_name(host)
-  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "system #{system_name} is not in the list yet") do
+  repeat_until_timeout(message: "system #{system_name} is not in the list yet") do
     $server.run("spacecmd -u admin -p admin clear_caches")
-    result, code = $server.run(command, false)
+    result, code = $server.run(command, check_errors: false)
     break if result.include? system_name
     sleep 1
   end
@@ -932,7 +936,7 @@ def token(secret, claims = {})
 end
 
 def server_secret
-  rhnconf = $server.run('cat /etc/rhn/rhn.conf', false)
+  rhnconf, _code = $server.run('cat /etc/rhn/rhn.conf', check_errors: false)
   data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
   data[1].strip
 end
@@ -1250,7 +1254,7 @@ And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/
     File.dirname(__FILE__) + '/../upload_files/ssh_keypair/' + key_filename,
     '/tmp/' + key_filename
   )
-  target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", true, 500, 'root')
+  target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", timeout: 500)
   raise 'Error copying ssh pubkey to host' if ret_code.nonzero?
 end
 

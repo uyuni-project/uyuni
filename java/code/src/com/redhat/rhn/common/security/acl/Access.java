@@ -454,6 +454,21 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Returns true if it is a modular channel
+     * @param ctx acl context (includes the channel cid and the user name)
+     * @param params parameters for acl (ignored)
+     * @return true if the user is channel admin of the corresponding channel.
+     */
+    public boolean aclIsModularChannel(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long cid = getAsLong(map.get("cid"));
+        User user = (User) map.get("user");
+        Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
+
+        return chan.isModular();
+    }
+
+    /**
      * Returns true if the user is channel admin of the corresponding channel.
      * If the channel is a vendor channel, the return value is false.
      * @param ctx acl context (includes the channel cid and the user name)

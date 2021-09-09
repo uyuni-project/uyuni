@@ -18,6 +18,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -38,14 +39,15 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -321,6 +323,34 @@ public class AccessTest extends BaseTestCaseWithUser {
         catch (Exception e) {
             fail("channel validation failed");
         }
+    }
+
+    public void testIsModularChannel() {
+        Map context = new HashMap();
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+        context.put("user", user);
+
+        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        Channel chan = null;
+
+        try {
+            chan = ChannelFactoryTest.createTestChannel(user);
+        }
+        catch (Exception e) {
+            fail("channel validation failed");
+        }
+
+        context.put("cid", chan.getId());
+
+        assertFalse(acl.evalAcl(context, "is_modular_channel()"));
+
+        Modules mod = new Modules();
+        mod.setRelativeFilename("filename");
+        chan.setModules(mod);
+        mod.setChannel(chan);
+
+        assertTrue(acl.evalAcl(context, "is_modular_channel()"));
+
     }
 
     public void testFormvarExists() {

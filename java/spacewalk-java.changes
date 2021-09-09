@@ -1,3 +1,9 @@
+- Support syncing patches with advisory status 'pending'
+- Updated Enterprise Linux servlet requirement.
+- Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
+- Improved timezone support
+- implement package locking for salt minions
+- Show AppStreams tab just for modular channels
 - Fix Json null comparison in virtual network info parsing (bsc#1189167)
 - 'AppStreams with defaults' filter template in CLM
 - Add a link to OS image store dir in image list page

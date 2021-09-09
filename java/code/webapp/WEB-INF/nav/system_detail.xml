@@ -54,7 +54,7 @@
         <rhn-tab-url>/rhn/systems/details/packages/VerifyPackages.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/VerifyConfirm.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="pkg.lock.menu" acl="system_feature(ftr_package_updates); not system_has_salt_entitlement()">
+      <rhn-tab name="pkg.lock.menu" acl="system_feature(ftr_package_lock)">
         <rhn-tab-url>/rhn/systems/details/packages/LockPackages.do</rhn-tab-url>
       </rhn-tab>
       <rhn-tab name="Profiles" acl="system_feature(ftr_profile_compare)">
