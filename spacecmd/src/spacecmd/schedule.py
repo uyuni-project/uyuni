@@ -466,7 +466,10 @@ def do_schedule_deletearchived(self, args):
     This method removes all of the archived actions older than provided date.
     If no date is provided it will delete all archived actions.
     """
-    args = args.split() or []
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-y', '--yes', default=False, action="store_true")
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
         date_limit = parse_time_input(args[0])
@@ -482,9 +485,10 @@ def do_schedule_deletearchived(self, args):
 
     logging.debug("actions: {}".format(actions))
     if actions:
-        user_answer = prompt_user(_("Do you want to delete ({}) archived actions? [y/N]").format(len(actions)))
-        if user_answer not in ("y", "Y", "yes", "Yes", "YES"):
-            return
+        if not _options.yes:
+            user_answer = prompt_user(_("Do you want to delete ({}) archived actions? [y/N]").format(len(actions)))
+            if user_answer not in ("y", "Y", "yes", "Yes", "YES"):
+                return
 
         # Collect IDs of actions that should be deleted
         action_ids = [action.get('id') for action in actions]
