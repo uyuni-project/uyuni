@@ -250,6 +250,40 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > apiActionsLimitted.length);
     }
 
+    public void testListAllCompletedActions() throws Exception {
+        //obtain number of actions from action manager
+        DataResult actions = ActionManager.allCompletedActions(admin, null);
+        int numActions = actions.size();
+
+        //compare against number retrieved from api... should be the same
+        Object[] apiActions = handler.listAllCompletedActions(admin);
+        assertEquals(numActions, apiActions.length);
+
+        //add a new action and verify that the value returned by the api
+        //has increased
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Action a = ActionFactoryTest.createAction(admin,
+                ActionFactory.TYPE_PACKAGES_UPDATE);
+        ServerAction saction = ServerActionTest.createServerAction(server, a);
+        saction.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        Action a2 = ActionFactoryTest.createAction(admin,
+                ActionFactory.TYPE_PACKAGES_UPDATE);
+        ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
+        saction2.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        apiActions = handler.listAllCompletedActions(admin);
+        assertTrue(apiActions.length > numActions);
+
+        int oldLimit = ConfigDefaults.get().getActionsDisplayLimit();
+        Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, "1");
+        Object[] apiActionsLimitted = handler.listCompletedActions(admin);
+        Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, String.valueOf(oldLimit));
+
+        assertEquals(apiActionsLimitted.length, 1);
+        assertTrue(apiActions.length > apiActionsLimitted.length);
+    }
+
     public void testListCompletedSystems() throws Exception {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);
