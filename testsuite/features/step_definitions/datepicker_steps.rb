@@ -24,7 +24,7 @@ end
 
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   value = Date.parse(desired_date)
-  date_input = find('input[data-provide="date-picker"]')
+  date_input = find('input[data-testid="date-picker"]')
   date_input.click
   picker = find(:xpath, '//body').find('.datepicker')
   picker_years = picker.find('.datepicker-years', visible: false)
@@ -62,7 +62,7 @@ Then(/^the date field is set to "([^"]*)"$/) do |arg1|
 end
 
 Given(/^I open the date picker$/) do
-  find('input[data-provide="date-picker"]').click
+  find('input[data-testid="date-picker"]').click
 end
 
 Then(/^the date picker is closed$/) do
