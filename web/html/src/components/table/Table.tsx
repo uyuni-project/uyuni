@@ -133,8 +133,13 @@ export function Table(props: TableProps) {
 
           const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
           const evenOddClass = index % 2 === 0 ? "list-row-odd" : "list-row-even";
+          let key = props.identifier(datum);
+          if (!key) {
+            Loggerhead.error(`Could not identify table row with identifier: ${props.identifier}`);
+            key = index;
+          }
           return (
-            <tr className={rowClass + " " + evenOddClass} key={props.identifier(datum)}>
+            <tr className={rowClass + " " + evenOddClass} key={key}>
               {cells}
             </tr>
           );
