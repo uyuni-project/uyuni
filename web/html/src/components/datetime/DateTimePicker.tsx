@@ -127,6 +127,8 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
         data-date-language="en_US"
         data-date-format="yyyy-mm-dd"
         data-date-week-start="0"
+        // This is used by Cucumber to interact with the component
+        data-testid="date-picker"
         className="form-control"
         size={15}
         ref={c => (this._input = jQuery(c!))}
@@ -222,6 +224,8 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
         type="text"
         id={this.props.id}
         data-time-format="H:i"
+        // This is used by Cucumber to interact with the component
+        data-testid="time-picker"
         className="form-control"
         size={10}
         ref={c => (this._input = jQuery(c!))}
@@ -237,6 +241,8 @@ type DateTimePickerProps = {
   onChange: (value: moment.Moment) => void;
   hideDatePicker?: boolean;
   hideTimePicker?: boolean;
+  // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
+  serverTimeZone?: boolean;
 };
 
 type DateTimePickerState = {
@@ -255,8 +261,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       timeOpen: false,
       hideDate: props.hideDatePicker || false,
       hideTime: props.hideTimePicker || false,
-      // Use the user's configured time zone by default
-      timeZone: localizedMoment.userTimeZone,
+      timeZone: props.serverTimeZone ? localizedMoment.serverTimeZone : localizedMoment.userTimeZone,
     };
   }
 

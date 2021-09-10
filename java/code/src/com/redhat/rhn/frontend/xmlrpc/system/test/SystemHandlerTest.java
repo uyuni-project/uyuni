@@ -3032,6 +3032,22 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(VersionConstraints.LATEST.id() == packageStates.iterator().next().getVersionConstraintId());
     }
 
+    /**
+     * Test the SystemHandler.refreshPillar method
+     * @throws Exception if anything failed
+     */
+    public void testRefreshPillar() throws Exception {
+        MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(admin);
+        Server server3 = ServerFactoryTest.createTestServer(admin);
+
+        SystemHandler systemHandler = getMockedHandler();
+        List<Integer> skipped = systemHandler.refreshPillar(admin, "General",
+                List.of(server1.getId().intValue(), server2.getId().intValue(), server3.getId().intValue()));
+        assertEquals(1, skipped.size());
+        assertEquals(Integer.valueOf(server3.getId().intValue()), skipped.get(0));
+    }
+
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
