@@ -215,7 +215,7 @@ class RecurringStates extends React.Component<Props, State> {
             {
               severity: "warning",
               text: t(
-                "The below times are displayed is the server time zone {0}. The scheduled time will be the server time.",
+                "The below times are displayed in the server time zone {0}. The scheduled time will be the server time.",
                 localizedMoment.serverTimeZone
               ),
             },
