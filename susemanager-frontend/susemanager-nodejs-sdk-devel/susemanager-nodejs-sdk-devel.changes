@@ -1,3 +1,4 @@
+- Upgrade immer to 9.0.6 to fix CVE-2021-23436
 - Add moment and moment-timezone
 - Upgrade react-select to 4.3.1
 
