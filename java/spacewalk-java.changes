@@ -1,4 +1,5 @@
 - Java enablement for Debian 11
+- Add missing string on XCCDF scan results (bsc#1190164)
 - Support syncing patches with advisory status 'pending'
 - Updated Enterprise Linux servlet requirement.
 - Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)

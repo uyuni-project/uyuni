@@ -1118,6 +1118,14 @@ DATA = {
         'PDID' : [1576, 2056, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
+    'SLES4SAP-15-ppc64le' : {
+        'PDID' : [1588, 1613, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+    },
+    'SLES4SAP-15-x86_64' : {
+        'PDID' : [1576, 1612, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+    },
     'SLE-15-SP1-aarch64' : {
         'PDID' : [1769, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'

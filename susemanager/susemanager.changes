@@ -1,3 +1,5 @@
+- Add SLE 15 SAP Product ID to SLE15 bootstrap repositories, as
+  it is required to get python3-M2Crypto (bsc#1189422)
 - Abort migration if data_directory is defined at the PostgreSQL
   configuration file
 - Package 'snapper' is now optional.
