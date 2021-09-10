@@ -54,7 +54,7 @@
     "@spice-project/spice-html5": "^0.2.1",
     "gettext-parser": "^4.0.4",
     "html-react-parser": "^0.10.0",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "jexl": "2.2.2",
     "lodash": "4.17.21",
     "node-gettext": "^3.0.0",

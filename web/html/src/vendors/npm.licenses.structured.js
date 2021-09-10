@@ -25,7 +25,7 @@ const npmDependencies = [
   { name: "hoist-non-react-statics", license: "BSD-3-Clause",  version: "3.3.2" }, 
   { name: "html-dom-parser", license: "MIT",  version: "0.2.3" }, 
   { name: "html-react-parser", license: "MIT",  version: "0.10.0" }, 
-  { name: "immer", license: "MIT",  version: "8.0.1" }, 
+  { name: "immer", license: "MIT",  version: "9.0.6" }, 
   { name: "inline-style-parser", license: "MIT",  version: "0.1.1" }, 
   { name: "jexl", license: "MIT",  version: "2.2.2" }, 
   { name: "lodash", license: "MIT",  version: "4.17.21" }, 
