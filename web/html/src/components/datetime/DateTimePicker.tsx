@@ -128,7 +128,7 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
         data-date-format="yyyy-mm-dd"
         data-date-week-start="0"
         // This is used by Cucumber to interact with the component
-        data-provide="date-picker"
+        data-testid="date-picker"
         className="form-control"
         size={15}
         ref={c => (this._input = jQuery(c!))}
@@ -225,7 +225,7 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
         id={this.props.id}
         data-time-format="H:i"
         // This is used by Cucumber to interact with the component
-        data-provide="time-picker"
+        data-testid="time-picker"
         className="form-control"
         size={10}
         ref={c => (this._input = jQuery(c!))}
