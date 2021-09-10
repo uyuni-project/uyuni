@@ -53,6 +53,7 @@ export default function HighstateSummary({ minionId }) {
   }
 
   return (
+    // TODO: This identifier seems wrong, what's the correct identifier here?
     <>
       <Table identifier={state => state.state} data={summary} initialItemsPerPage={0}>
         <Column header={t("State Source")} comparator={Utils.sortByText} columnKey="name" cell={source => <State minionId={minionId} state={source} />} />
