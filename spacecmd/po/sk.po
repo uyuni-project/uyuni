@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-09 19:12+0000\n"
+"PO-Revision-Date: 2021-09-10 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7345,53 +7345,59 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:2763
 msgid "usage: system_listcrashedsystems"
-msgstr ""
+msgstr "použitie: system_listcrashedsystems"
 
 #: ../src/spacecmd/system.py:2771
 msgid "Count | System ID | Profile Name"
-msgstr ""
+msgstr "Počet | ID systému | Názov profilu"
 
 #: ../src/spacecmd/system.py:2785
 msgid "system_deletecrashes: Delete crashes reported by spacewalk-abrt."
-msgstr ""
+msgstr "system_deletecrashes: Vymazať zlyhania hlásené spacewalk-abrt."
 
 #: ../src/spacecmd/system.py:2786
 msgid ""
 "usage: Delete all crashes for all systems    : system_deletecrashes [--"
 "verbose]"
 msgstr ""
+"použitie: Vymazať všetky zlyhania pre všetky systémy    : "
+"system_deletecrashes [--verbose]"
 
 #: ../src/spacecmd/system.py:2787
 msgid ""
 "usage: Delete all crashes for a single system: system_deletecrashes -i "
 "sys_id [--verbose]"
 msgstr ""
+"použitie: Vymazať všetky zlyhania pre jednotlivý systém: "
+"system_deletecrashes -i sys_id [--verbose]"
 
 #: ../src/spacecmd/system.py:2788
 msgid ""
 "usage: Delete a single crash record          : system_deletecrashes -c "
 "crash_id [--verbose]"
 msgstr ""
+"použitie: Vymazať jeden záznam o zlyhaní          : system_deletecrashes -c "
+"zlyhanie_id [--verbose]"
 
 #: ../src/spacecmd/system.py:2808
 #, python-format
 msgid "Deleting crash with id %s."
-msgstr ""
+msgstr "Vymazanie zlyhania s id %s."
 
 #: ../src/spacecmd/system.py:2815
 #, python-format
 msgid "Deleting all crashes from system with systemid %s [y/N]:"
-msgstr ""
+msgstr "Vymazanie všetkých zlyhaní zo systému so systemid %s [a/N]:"
 
 #. all systems
 #: ../src/spacecmd/system.py:2817
 msgid "Deleting all crashes from all systems [y/N]:"
-msgstr ""
+msgstr "Vymazanie všetkých zlyhaní zo všetkých systémov [a/N]:"
 
 #: ../src/spacecmd/system.py:2829
 #, python-format
 msgid "Deleting crash with id %s from system %s."
-msgstr ""
+msgstr "Vymazanie zlyhania s id %s zo systému %s."
 
 #: ../src/spacecmd/system.py:2838
 msgid "system_listcrashesbysystem: List all reported crashes for a system."
