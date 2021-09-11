@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-10 19:11+0000\n"
+"PO-Revision-Date: 2021-09-11 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7402,45 +7402,49 @@ msgstr "Vymazanie zlyhania s id %s zo systému %s."
 #: ../src/spacecmd/system.py:2838
 msgid "system_listcrashesbysystem: List all reported crashes for a system."
 msgstr ""
+"system_listcrashesbysystem: Vypísať zoznam všetkých nahlásených zlyhaní "
+"systému."
 
 #: ../src/spacecmd/system.py:2839 ../src/spacecmd/system.py:2853
 msgid "usage: system_listcrashesbysystem -i sys_id"
-msgstr ""
+msgstr "použitie: system_listcrashesbysystem -i sys_id"
 
 #: ../src/spacecmd/system.py:2852
 msgid "# System id must be provided."
-msgstr ""
+msgstr "# Musí byť zadané id systému."
 
 #: ../src/spacecmd/system.py:2858
 msgid "Crash ID | Crash Name"
-msgstr ""
+msgstr "ID zlyhania | Názov zlyhania"
 
 #: ../src/spacecmd/system.py:2869
 msgid "system_getcrashfiles: Download all files for a crash record."
-msgstr ""
+msgstr "system_getcrashfiles: Stiahnuť všetky súbory pre záznam o zlyhaní."
 
 #: ../src/spacecmd/system.py:2870
 msgid "usage: system_getcrashfiles -c crash_id [--verbose]"
-msgstr ""
+msgstr "použitie: system_getcrashfiles -c zlyhanie_id [--verbose]"
 
 #: ../src/spacecmd/system.py:2871 ../src/spacecmd/system.py:2887
 msgid ""
 "usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
 "verbose]"
 msgstr ""
+"použitie: system_getcrashfiles -c zlyhania_id [--dest_folder=/tmp/"
+"crash_files] [--verbose]"
 
 #: ../src/spacecmd/system.py:2886
 msgid "# Crash id must be provided."
-msgstr ""
+msgstr "# Musí byť zadané id zlyhania."
 
 #: ../src/spacecmd/system.py:2913
 #, python-format
 msgid "# All files we downloaded to %s."
-msgstr ""
+msgstr "# Všetky súbory sme stiahli do %s."
 
 #: ../src/spacecmd/system.py:2922
 msgid "system_removechildchannels: Remove child channels from a system"
-msgstr ""
+msgstr "system_removechildchannels: Odstrániť kanály potomkov zo systému"
 
 #: ../src/spacecmd/system.py:2923
 msgid "usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
