@@ -1,3 +1,5 @@
+- detect broken symlinks in tomcat, taskomatic and search daemon
+
 -------------------------------------------------------------------
 Mon Nov 23 15:16:42 CET 2020 - jgonzalez@suse.com
 
