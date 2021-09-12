@@ -1897,6 +1897,7 @@ public class ContentSyncManager {
         SUSEProductFactory.removeAllExcept(processed.values());
 
         updateUpgradePaths(products, upgradePathJsons);
+        HibernateFactory.getSession().flush();
         log.info("ContentSyncManager.updateSUSEProducts finished");
     }
 
