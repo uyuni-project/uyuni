@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-11 19:11+0000\n"
+"PO-Revision-Date: 2021-09-12 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7448,50 +7448,50 @@ msgstr "system_removechildchannels: Odstrániť kanály potomkov zo systému"
 
 #: ../src/spacecmd/system.py:2923
 msgid "usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: system_removechildchannels <SYSTÉMY> <KANÁL ...>"
 
 #: ../src/spacecmd/system.py:2945
 msgid "system_details: Show the details of a system profile"
-msgstr ""
+msgstr "system_details: Zobraziť podrobnosti o systémovom profile"
 
 #: ../src/spacecmd/system.py:2946
 msgid "usage: system_details <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_details <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:2999
 #, python-format
 msgid "Name:          %s"
-msgstr ""
+msgstr "Názov:          %s"
 
 #: ../src/spacecmd/system.py:3000
 #, python-format
 msgid "System ID:     %i"
-msgstr ""
+msgstr "ID systému:     %i"
 
 #: ../src/spacecmd/system.py:3003
 #, python-format
 msgid "UUID:          %s"
-msgstr ""
+msgstr "UUID:          %s"
 
 #: ../src/spacecmd/system.py:3005
 #, python-format
 msgid "Locked:        %s"
-msgstr ""
+msgstr "Uzamknutý:        %s"
 
 #: ../src/spacecmd/system.py:3006
 #, python-format
 msgid "Registered:    %s"
-msgstr ""
+msgstr "Registrovaný:    %s"
 
 #: ../src/spacecmd/system.py:3007
 #, python-format
 msgid "Last Checkin:  %s"
-msgstr ""
+msgstr "Posledné prihlásenie:  %s"
 
 #: ../src/spacecmd/system.py:3008
 #, python-format
 msgid "OSA Status:    %s"
-msgstr ""
+msgstr "Stav OSA:    %s"
 
 #: ../src/spacecmd/system.py:3009
 #, python-format
