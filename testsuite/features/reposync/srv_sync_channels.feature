@@ -53,7 +53,7 @@ Feature: Be able to list available channels and enable them
     And I execute mgr-sync "list channels"
     Then I should get "[I] SLES12-SP4-Pool for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-pool-x86_64]"
     And I should get "    [I] SLES12-SP4-Updates for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-updates-x86_64]"
-    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp4]"
+    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 SP4 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp4]"
 
 @susemanager
   Scenario: Enable RHEL 8 channels for Rocky 8
@@ -87,7 +87,7 @@ Feature: Be able to list available channels and enable them
     And I execute mgr-sync "list channels"
     Then I should get "[I] SLES12-SP4-Pool for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-pool-x86_64]"
     And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp4]"
-    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp4]"
+    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 SP4 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp4]"
 
   Scenario: Let mgr-sync time out
     When I remove the mgr-sync cache file
