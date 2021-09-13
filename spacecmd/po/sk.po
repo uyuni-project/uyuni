@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-12 19:11+0000\n"
+"PO-Revision-Date: 2021-09-13 12:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7496,7 +7496,7 @@ msgstr "Stav OSA:    %s"
 #: ../src/spacecmd/system.py:3009
 #, python-format
 msgid "Last Boot:     %s"
-msgstr ""
+msgstr "Posledný štart systému:     %s"
 
 #: ../src/spacecmd/system.py:3011
 #, python-format
@@ -7506,29 +7506,29 @@ msgstr "Kontaktná metóda:%s"
 #: ../src/spacecmd/system.py:3055
 #, python-format
 msgid "Hostname:      %s"
-msgstr ""
+msgstr "Názov hostiteľa:      %s"
 
 #: ../src/spacecmd/system.py:3056
 #, python-format
 msgid "IP Address:    %s"
-msgstr ""
+msgstr "IP adresa:    %s"
 
 #: ../src/spacecmd/system.py:3057
 #, python-format
 msgid "Kernel:        %s"
-msgstr ""
+msgstr "Jadro:        %s"
 
 #: ../src/spacecmd/system.py:3098
 msgid "system_listerrata: List available errata for a system"
-msgstr ""
+msgstr "system_listerrata: Vypísať zoznam dostupných opráv chýb pre systém"
 
 #: ../src/spacecmd/system.py:3099
 msgid "usage: system_listerrata <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listerrata <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:3153
 msgid "system_applyerrata: Apply errata to a system"
-msgstr ""
+msgstr "system_applyerrata: Použiť opravy chýb na systém"
 
 #: ../src/spacecmd/system.py:3154
 msgid ""
@@ -7538,14 +7538,19 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
+"použitie: system_applyerrata [voľby] <SYSTÉMY>\n"
+"[ERRATA|search:XXX ...]\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:3215
 msgid "system_listevents: List the event history for a system"
-msgstr ""
+msgstr "system_listevents: Vypísať históriu udalostí pre systém"
 
 #: ../src/spacecmd/system.py:3216
 msgid "usage: system_listevents <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listevents <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:3262
 #, python-format
