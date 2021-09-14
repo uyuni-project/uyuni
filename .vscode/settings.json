@@ -1,3 +1,5 @@
 {
-    "typescript.tsdk": "./web/html/src/node_modules/typescript/lib"
+    "typescript.tsdk": "./web/html/src/node_modules/typescript/lib",
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true
 }

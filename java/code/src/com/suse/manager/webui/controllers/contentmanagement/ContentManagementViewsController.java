@@ -168,13 +168,6 @@ public class ContentManagementViewsController {
 
         data.put("flashMessage", FlashScopeHelper.flash(req));
         data.put("contentFilters", GSON.toJson(filterResponse));
-        if (req.queryParams("openFilterId") != null) {
-            data.put("openFilterId", req.queryParams("openFilterId"));
-        }
-        if (req.queryParams("projectLabel") != null) {
-            data.put("projectLabel", req.queryParams("projectLabel"));
-        }
-
 
         return new ModelAndView(data, "controllers/contentmanagement/templates/list-filters.jade");
     }

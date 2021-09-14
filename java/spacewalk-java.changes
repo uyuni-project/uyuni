@@ -1,3 +1,19 @@
+- Add XMLRPC API to force refreshing pillar data (bsc#1190123)
+- Add missing string on XCCDF scan results (bsc#1190164)
+- Support syncing patches with advisory status 'pending' (bsc#1190455)
+- Updated Enterprise Linux servlet requirement.
+- Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
+- Improved timezone support
+- implement package locking for salt minions
+- Show AppStreams tab just for modular channels
+- Fix Json null comparison in virtual network info parsing (bsc#1189167)
+- 'AppStreams with defaults' filter template in CLM
+- Add a link to OS image store dir in image list page
+- Do not log XMLRPC fault exceptions as errors (bsc#1188853)
+- AppStreams tab for modular channels
+- Allow getting all archived actions via XMLRPC without display limit (bsc#1181223)
+- Link to CLM filter creation from system details page
+- Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
 - XMLRPC: Add call for listing application monitoring endpoints
 - Bring back Beta product tag
 - fix NPE when no redhat info could be fetched

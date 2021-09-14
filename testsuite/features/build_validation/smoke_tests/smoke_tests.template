@@ -112,7 +112,7 @@ Feature: Smoke tests for <client>
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-  Scenario: Deploy the file to all subscribed systems
+  Scenario: Deploy the configuration file to <client>
     And I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to selected subscribed systems"

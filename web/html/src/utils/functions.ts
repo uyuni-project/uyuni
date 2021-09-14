@@ -1,3 +1,5 @@
+import { getUrlParam, urlBounce } from "./url";
+
 // This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
 export class Cancelable<T = any> extends Promise<T> {
   promise!: Promise<T>;
@@ -31,33 +33,6 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
     rejectFn(reason);
   };
   return castRace;
-}
-
-function dateWithTimezone(dateString: string): Date {
-  const offsetNum =
-    dateString[dateString.length - 1].toUpperCase() === "Z"
-      ? 0
-      : parseInt(dateString.substring(dateString.length - 6).replace(":", ""), 10);
-  const serverOffset = Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
-  const orig = new Date(dateString);
-  const clientOffset = -orig.getTimezoneOffset();
-
-  const final = new Date(orig.getTime() + (serverOffset - clientOffset) * 60000);
-  return final;
-}
-
-// it does the opposite of dateWithTimezone: transforms its result on the original date
-function dateWithoutTimezone(dateStringToTransform: string, originalDateString: string): Date {
-  const offsetNum =
-    originalDateString[originalDateString.length - 1].toUpperCase() === "Z"
-      ? 0
-      : parseInt(originalDateString.substring(originalDateString.length - 6).replace(":", ""), 10);
-  const serverOffset = Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
-  const dateToTransform = new Date(dateStringToTransform);
-  const clientOffset = -dateToTransform.getTimezoneOffset();
-
-  const final = new Date(dateToTransform.getTime() - (serverOffset - clientOffset) * 60000);
-  return final;
 }
 
 function LocalDateTime(date: Date): string {
@@ -145,25 +120,15 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
   return result * sortDirection;
 }
 
-function getQueryStringValue(key: string): string {
-  // See for a standard implementation:
-  // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-  return decodeURIComponent(
-    window.location.search.replace(
-      new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"),
-      "$1"
-    )
-  );
-}
-
-function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
-  window.location.href = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
-}
-
 /**
  * Replace all "_" and "-" with spaces and capitalize the first letter of each word
  */
 function capitalize(str: string): string {
+  // Don't capitalize a string that is only caps and dashes since that it probably an acronym
+  if (str.match(/^[A-Z_-]+$/g)) {
+    return str;
+  }
+
   return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
@@ -224,27 +189,26 @@ function getProductName(): string {
 }
 
 const Utils = {
-  cancelable: cancelable,
-  sortById: sortById,
-  sortByText: sortByText,
-  dateWithTimezone: dateWithTimezone,
-  dateWithoutTimezone: dateWithoutTimezone,
-  sortByNumber: sortByNumber,
-  sortByDate: sortByDate,
-  urlBounce: urlBounce,
-  capitalize: capitalize,
-  generatePassword: generatePassword,
-  deepCopy: deepCopy,
-  getProductName: getProductName,
+  cancelable,
+  sortById,
+  sortByText,
+  sortByNumber,
+  sortByDate,
+  getUrlParam,
+  urlBounce,
+  capitalize,
+  generatePassword,
+  deepCopy,
+  getProductName,
 };
 
 const Formats = {
-  LocalDateTime: LocalDateTime,
+  LocalDateTime,
 };
 
 const Formulas = {
-  EditGroupSubtype: EditGroupSubtype,
-  getEditGroupSubtype: getEditGroupSubtype,
+  EditGroupSubtype,
+  getEditGroupSubtype,
 };
 
 export { Utils, Formats, Formulas };

@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-16 08:38+0000\n"
-"PO-Revision-Date: 2021-05-28 09:57+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"PO-Revision-Date: 2021-08-23 04:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -41,30 +41,6 @@ msgid ""
 msgstr ""
 "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 "
 "사용하십시오."
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "필수 필드 입력: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "잘못된 필드 유형: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
-"니다."
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -228,8 +204,8 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
-#: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
+#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "취소"
 
@@ -273,6 +249,34 @@ msgstr "프로젝트 삭제"
 msgid "Are you sure you want to delete project "
 msgstr "프로젝트를 삭제하시겠습니까 "
 
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "필수 필드 입력: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "잘못된 필드 유형: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
+"니다."
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
+
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr " 그룹 없음"
@@ -299,14 +303,10 @@ msgid "Save"
 msgstr "저장"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
 msgstr "수식"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
@@ -331,6 +331,7 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:134
 #: ../html/src/components/input/FormMultiInput.stories.tsx:183
 #: ../html/src/components/input/FormMultiInput.stories.tsx:264
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:69
@@ -339,7 +340,6 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/input/Range.stories.tsx:50
 #: ../html/src/components/input/Select.stories.tsx:36
 #: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "제출"
@@ -356,9 +356,8 @@ msgid "Minimum 2 characters"
 msgstr "2자 이상"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "재부팅 필요"
+msgstr "필수"
 
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
@@ -527,8 +526,8 @@ msgstr "모두 선택"
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -1453,6 +1452,31 @@ msgstr "구독을 찾을 수 없습니다."
 msgid "Your subscriptions"
 msgstr "구독"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
+msgid "Edit Virtual Host Managers"
+msgstr "가상 호스트 관리자 편집"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Subscription Matching"
+msgstr "구독 일치"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+msgid "Subscriptions"
+msgstr "구독"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "일치하지 않는 제품"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+msgid "Pins "
+msgstr "핀 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Messages "
+msgstr "메시지 "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "제품 이름"
@@ -1469,11 +1493,6 @@ msgstr "시스템 목록 표시"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "일치하는 제품을 찾지 못했습니다."
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
-msgid "Unmatched Products"
-msgstr "일치하지 않는 제품"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1502,26 +1521,6 @@ msgstr "1-2 소켓 또는 1-2 가상 머신"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "인스턴스별"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
-msgid "Edit Virtual Host Managers"
-msgstr "가상 호스트 관리자 편집"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Subscription Matching"
-msgstr "구독 일치"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
-msgid "Subscriptions"
-msgstr "구독"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
-msgid "Pins "
-msgstr "핀 "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-msgid "Messages "
-msgstr "메시지 "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -1937,22 +1936,21 @@ msgstr "필터 이름"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "접두사"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
-msgstr ""
+msgstr "접두사는 템플릿에 의해 생성된 모든 개별 필터의 이름 앞에 추가됩니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "템플릿 사용"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "새 필터 만들기"
+msgstr "수동 필터 만들기"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2075,29 +2073,26 @@ msgstr "사용 중 프로젝트"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
 msgid "Live patching based on a specific system"
-msgstr ""
+msgstr "특정 시스템 기반 라이브 패치"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "SUSE 제품 기반 라이브 패치"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
-msgstr ""
+msgstr "템플릿"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
-#, fuzzy
 msgid "Product"
 msgstr "제품"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
-#, fuzzy
 msgid "Kernel"
-msgstr "커널 옵션"
+msgstr "커널"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
-#, fuzzy
 msgid "latest"
 msgstr "최신"
 
@@ -2336,7 +2331,7 @@ msgstr "{0} 환경 삭제됨"
 msgid ""
 "This environment cannot be deleted since it is being used in an {0}"
 "autoinstallation distribution{1}."
-msgstr ""
+msgstr "이 환경은 {0}자동 설치 배포{1}에서 사용 중이므로 삭제할 수 없습니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:22
 msgid "New"
@@ -2505,9 +2500,8 @@ msgid "This channel is recommended"
 msgstr "이 채널이 권장됩니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
-#, fuzzy
 msgid "This channel is mandatory"
-msgstr "이 채널이 권장됩니다."
+msgstr "이 채널은 필수입니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
@@ -2578,40 +2572,39 @@ msgid ""
 "this group"
 msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
-msgstr "수식이 저장되었습니다. 변경 사항을 적용하려면 "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:138
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr " 구성 옵션을 편집하십시오."
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
-msgid "Invalid target type."
-msgstr "잘못된 대상 유형입니다."
-
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "수식이 저장되었습니다. 다음을 적용: "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/state/highstate.tsx:138
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+msgid " for the changes to take effect."
+msgstr " 구성 옵션을 편집하십시오."
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+msgid "Invalid target type."
+msgstr "잘못된 대상 유형입니다."
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
+msgstr "수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 적용합니다. "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -2739,9 +2732,8 @@ msgid "Config URL"
 msgstr "구성 URL"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:365
-#, fuzzy
 msgid "Kiwi options"
-msgstr "커널 옵션"
+msgstr "Kiwi 옵션"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:409
 msgid "Activation key is required for kiwi images."
@@ -3607,14 +3599,12 @@ msgid "Inventory file empty."
 msgstr "인벤토리 파일이 비어 있습니다."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "미등록 시스템"
+msgstr "등록된 시스템"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "노드 호스트 이름"
+msgstr "알 수 없는 호스트 이름"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -3712,8 +3702,8 @@ msgstr "플레이븍 실행이"
 msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 msgid "Configuration"
 msgstr "구성"
 
@@ -4399,12 +4389,12 @@ msgstr "정리 시간이 초과되었습니다. 머신에 연결할 수 있는�
 msgid "No result found in state apply response."
 msgstr "상태 적용 응답에서 결과를 찾을 수 없습니다."
 
-#: ../html/src/manager/systems/delete-system.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:69
+#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr "정리하지 않고 프로파일 삭제"
 
-#: ../html/src/manager/systems/delete-system.tsx:89
+#: ../html/src/manager/systems/delete-system.tsx:90
 msgid "An error occurred during cleanup"
 msgstr "정리 중 오류 발생"
 
@@ -4734,23 +4724,25 @@ msgstr "가상 호스트 관리자"
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "libvirt python 모듈을 설치하십시오."
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Disconnected"
+msgstr "연결 끊김"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Failed to connect"
+msgstr "연결 실패"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:164
-msgid "{0} selected"
-msgstr "{0}개 선택됨"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
+msgid "Toggle full size"
+msgstr "전체 크기 전환"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:243
-msgid "Action Status"
-msgstr "작업 상태"
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
+msgid "Something went wrong, connection is closed"
+msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
+msgid "Create Virtual Machine"
+msgstr "가상 머신 생성"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
@@ -4794,26 +4786,6 @@ msgstr "커널 옵션"
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr "그래픽"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Disconnected"
-msgstr "연결 끊김"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Failed to connect"
-msgstr "연결 실패"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
-msgid "Toggle full size"
-msgstr "전체 크기 전환"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
-msgid "Something went wrong, connection is closed"
-msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
-msgid "Create Virtual Machine"
-msgstr "가상 머신 생성"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:32
 msgid "Start / Resume"
@@ -4908,6 +4880,10 @@ msgstr "파일"
 msgid "Format"
 msgstr "형식"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+msgid "Disks"
+msgstr "디스크"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
 msgid "Source storage pool"
 msgstr "소스 저장소 풀"
@@ -4923,10 +4899,6 @@ msgstr "디스크 크기(GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
 msgid "Source template image URL"
 msgstr "소스 템플릿 이미지 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
-msgid "Disks"
-msgstr "디스크"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
@@ -4953,7 +4925,25 @@ msgstr "필드 지우기"
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
-msgstr ""
+msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
+msgstr "libvirt python 모듈을 설치하십시오."
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 확인하십시오."
+
+#: ../html/src/manager/virtualization/ListTab.tsx:164
+msgid "{0} selected"
+msgstr "{0}개 선택됨"
+
+#: ../html/src/manager/virtualization/ListTab.tsx:243
+msgid "Action Status"
+msgstr "작업 상태"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"
@@ -5188,6 +5178,44 @@ msgstr "TXT 레코드"
 msgid "Value"
 msgstr "값"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
+"DNS 서비스가 추가되지 않았습니다."
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. "
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr "SR-IOV 풀"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
 msgid "Network address"
 msgstr "네트워크 주소"
@@ -5284,47 +5312,6 @@ msgstr "태그됨"
 msgid "Untagged"
 msgstr "태그되지 않음"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
-"DNS 서비스가 추가되지 않았습니다."
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-"물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. 게스트와 호스"
-"트 간의 통신이 불가능합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV 풀"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
-
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."
 msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
@@ -5334,14 +5321,12 @@ msgid "Create Virtual Storage Pool"
 msgstr "가상 저장소 풀 생성"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Pool"
-msgstr "가상 저장소 풀 생성"
+msgstr "가상 저장소 풀"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Volume"
-msgstr "가상 저장소 풀 및 볼륨"
+msgstr "가상 저장소 볼륨"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
@@ -5629,18 +5614,17 @@ msgstr "HTTP 오류 코드 "
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:5
 msgid "foo"
-msgstr ""
+msgstr "푸"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:6
 msgid "undefined"
-msgstr ""
+msgstr "정의되지 않음"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:11
 #: ../html/src/utils/test-utils/setup/t.test.ts:12
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
-#, fuzzy
 msgid "foo {0} tea {1}"
-msgstr "{0} / {1}페이지"
+msgstr "푸 {0} 티 {1}"
 
 #~ msgid "Time"
 #~ msgstr "시간"

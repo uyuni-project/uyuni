@@ -293,6 +293,24 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, minion.getPackages().size());
     }
 
+    public void testApplyPackageDeltaWithDuplicates() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
+                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.duplicates.json")),
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+
+        SaltUtils.applyChangesFromStateModule(install, minion);
+
+        // The duplicate should be ignored (bsc#1187572)
+        assertEquals(1, minion.getPackages().size());
+        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
+        assertEquals("vim", packages.get(0).getName().getName());
+        assertEquals("x86_64", packages.get(0).getArch().getLabel());
+        assertEquals("1.42.11", packages.get(0).getEvr().getVersion());
+        assertEquals("7.1", packages.get(0).getEvr().getRelease());
+    }
+
     public void testsPackageDeltaFromStateApply() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         assertEquals(0, minion.getPackages().size());

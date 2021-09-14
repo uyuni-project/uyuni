@@ -75,12 +75,6 @@ if $build_validation
   $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
-  # As we share core features for all the environments, we share also those vm twopence objects
-  $client = $sle12sp5_client
-  $minion = $sle12sp5_minion
-  $ssh_minion = $sle12sp5_ssh_minion
-  $ceos_minion = $ceos8_ssh_minion
-  $ubuntu_minion = $ubuntu2004_minion
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
@@ -96,8 +90,7 @@ if $build_validation
              $debian10_minion, $debian10_ssh_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp5_buildhost, $sle12sp5_terminal,
-             $sle15sp3_buildhost, $sle15sp3_terminal,
-             $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
+             $sle15sp3_buildhost, $sle15sp3_terminal]
 else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']

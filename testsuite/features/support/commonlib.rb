@@ -107,9 +107,9 @@ def count_table_items
 end
 
 def product
-  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', false)
+  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', check_errors: false)
   return 'Uyuni' if code.zero?
-  _product_raw, code = $server.run('rpm -q patterns-suma_server', false)
+  _product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
   return 'SUSE Manager' if code.zero?
   raise 'Could not determine product'
 end
@@ -241,7 +241,7 @@ def extract_logs_from_node(node)
     node.run('zypper --non-interactive install tar')
     node.run('zypper mr --disable os_pool_repo os_update_repo') unless $build_validation
   end
-  node.run('journalctl > /var/log/messages', false) # Some clients might not support systemd
+  node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")

@@ -109,9 +109,9 @@ Requires(pre):  uyuni-base-server
 Requires:       firewalld
 %endif
 Requires:       postfix
-# mgr-setup want to call mksubvolume
 Requires:       reprepro
-Requires:       snapper
+# mgr-setup want to call mksubvolume for btrfs filesystems
+Recommends:     snapper
 # mgr-setup calls dig
 Requires:       bind-utils
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")

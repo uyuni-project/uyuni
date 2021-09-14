@@ -47,18 +47,26 @@ module LavandaBasic
   end
 
   # run functions
-  def run(cmd, fatal = true, timeout = DEFAULT_TIMEOUT, user = 'root', successcodes = [0])
-    out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout)
-    if fatal
+  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536)
+    if separated_results
+      out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
+    else
+      out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
+    end
+    if check_errors
       raise "FAIL: #{cmd} returned #{code}. output : #{out}" unless successcodes.include?(code)
     end
-    [out, code]
+    if separated_results
+      [out, err, code]
+    else
+      [out, code]
+    end
   end
 
   def run_until_ok(cmd)
     result = nil
     repeat_until_timeout(report_result: true) do
-      result, code = run(cmd, false)
+      result, code = run(cmd, check_errors: false)
       break if code.zero?
       sleep 2
       result
@@ -68,7 +76,7 @@ module LavandaBasic
   def run_until_fail(cmd)
     result = nil
     repeat_until_timeout(report_result: true) do
-      result, code = run(cmd, false)
+      result, code = run(cmd, check_errors: false)
       break if code.nonzero?
       sleep 2
       result
@@ -78,7 +86,7 @@ module LavandaBasic
   def wait_while_process_running(process)
     result = nil
     repeat_until_timeout(report_result: true) do
-      result, code = run("pgrep -x #{process} >/dev/null", false)
+      result, code = run("pgrep -x #{process} >/dev/null", check_errors: false)
       break if code.nonzero?
       sleep 2
       result

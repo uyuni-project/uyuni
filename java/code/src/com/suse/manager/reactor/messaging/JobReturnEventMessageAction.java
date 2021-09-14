@@ -216,6 +216,27 @@ public class JobReturnEventMessageAction implements MessageAction {
                                 SystemInfo systemInfo = Json.GSON.fromJson(result, SystemInfo.class);
                                 saltUtils.updateSystemInfo(systemInfo, minion);
                             }));
+
+            /* Check in case any Action update it could complete any ActionChain that is still pending on that action.
+             *
+             * Scenario: when an ActionChain ends with a Reboot Action, before deleting the ActionChain we need to wait
+             * until the target minion is rebooted and restarted. But even when the minion gets back with the
+             * "mgractionchains.resume" it is not yet the time to delete the ActionChain. We still wait for
+             * the "minion startup" tasks; indeed the Reboot Action is not yet marked as Completed until that task
+             * is executed. At some point the Reboot Action is eventually set to Completed triggered by
+             * the JobReturnEventMessageAction of the "minion startup" job, which is not part of the ActionChain.
+             * The root of the problem is that the ActionChain has to wait until another Action is Completed,
+             * but the return message of that Action does know nothing about the ActionChain who triggered it.
+             *
+             *
+             * The following will check if, for all the existing ActionChain, there are any completely done.
+             * If so, just remove it. (bsc#1188163)
+             */
+            ActionChainFactory.getAllActionChains().forEach(ac -> {
+                if (ac.isDone()) {
+                    ActionChainFactory.delete(ac);
+                }
+            });
         }
       // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
