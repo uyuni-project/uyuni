@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
@@ -45,6 +46,7 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,6 +67,7 @@ public class FilterApiController {
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
     private static final FilterTemplateManager TEMPLATE_MGR = ControllerApiUtils.TEMPLATE_MGR;
     private static final LocalizationService LOC = LocalizationService.getInstance();
+    private static final Logger LOG = Logger.getLogger(FilterApiController.class);
 
     private FilterApiController() {
     }
@@ -166,7 +169,13 @@ public class FilterApiController {
                 break;
             case "AppStreamsWithDefaults":
                 Channel channel = ChannelManager.lookupByIdAndUser(createFilterRequest.getChannelId(), user);
-                createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
+                try {
+                    createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
+                }
+                catch (ModulemdApiException e) {
+                    LOG.error(e);
+                    return json(GSON, res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
+                }
                 break;
             default:
                 return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Collections.emptyList(),
