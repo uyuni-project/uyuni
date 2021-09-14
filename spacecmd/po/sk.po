@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-13 12:11+0000\n"
+"PO-Revision-Date: 2021-09-14 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7555,44 +7555,44 @@ msgstr "použitie: system_listevents <SYSTÉMY>"
 #: ../src/spacecmd/system.py:3262
 #, python-format
 msgid "Summary:   %s"
-msgstr ""
+msgstr "Súhrn:   %s"
 
 #: ../src/spacecmd/system.py:3264
 #, python-format
 msgid "Details:   %s"
-msgstr ""
+msgstr "Podrobnosti:   %s"
 
 #: ../src/spacecmd/system.py:3272
 msgid "system_listentitlements: List the entitlements for a system"
-msgstr ""
+msgstr "system_listentitlements: Vypísať zoznam oprávnení pre systém"
 
 #: ../src/spacecmd/system.py:3273
 msgid "usage: system_listentitlements <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listentitlements <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:3326
 msgid "system_addentitlements: Add entitlements to a system"
-msgstr ""
+msgstr "system_addentitlements: Pridať oprávnenia do systému"
 
 #: ../src/spacecmd/system.py:3327
 msgid "usage: system_addentitlements <SYSTEMS> ENTITLEMENT"
-msgstr ""
+msgstr "použitie: system_addentitlements <SYSTÉMY> OPRÁVNENIE"
 
 #: ../src/spacecmd/system.py:3382
 msgid "system_removeentitlement: Remove an entitlement from a system"
-msgstr ""
+msgstr "system_removeentitlement: Odstrániť oprávnenie zo systému"
 
 #: ../src/spacecmd/system.py:3383
 msgid "usage: system_removeentitlement <SYSTEMS> ENTITLEMENT"
-msgstr ""
+msgstr "použitie: system_removeentitlement <SYSTÉMY> OPRÁVNENIE"
 
 #: ../src/spacecmd/system.py:3438
 msgid "system_listpackageprofiles: List all package profiles"
-msgstr ""
+msgstr "system_listpackageprofiles: Vypísať zoznam všetkých profilov balíkov"
 
 #: ../src/spacecmd/system.py:3439
 msgid "usage: system_listpackageprofiles"
-msgstr ""
+msgstr "použitie: system_listpackageprofiles"
 
 #: ../src/spacecmd/system.py:3458
 msgid "system_deletepackageprofile: Delete a package profile"
