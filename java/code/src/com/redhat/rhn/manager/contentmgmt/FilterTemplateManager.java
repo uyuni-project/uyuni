@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
@@ -90,7 +91,8 @@ public class FilterTemplateManager {
      * @param user the user
      * @return the list of created filters
      */
-    public List<ContentFilter> createAppStreamFilters(String prefix, Channel channel, User user) {
+    public List<ContentFilter> createAppStreamFilters(String prefix, Channel channel, User user)
+            throws ModulemdApiException {
         ensureOrgAdmin(user);
 
         // Create an AppStream filter for every module that has a default stream

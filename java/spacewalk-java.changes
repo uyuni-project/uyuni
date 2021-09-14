@@ -1,3 +1,4 @@
+- Improve exception handling and logging for mgr-libmod calls
 - Add checksums to repository metadata filenames (bsc#1188315)
 - Fix ISE in product migration if base product is missing (bsc#1190151)
 - use TLSv1.3 if it is a supported Protocol

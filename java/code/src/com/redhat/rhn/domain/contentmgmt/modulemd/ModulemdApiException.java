@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,25 +15,31 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
-import java.util.List;
-
 /**
- * Exception thrown when a selected module is not found
+ * General exception class thrown when an unknown error occurs on a Modulemd API call
  */
-public class ModuleNotFoundException extends ModulemdApiException {
-
-    private List<Module> modules;
+public class ModulemdApiException extends Exception {
 
     /**
-     * Initialize a new instance
-     *
-     * @param modulesIn the missing modules
+     * Initialize a new exception
      */
-    public ModuleNotFoundException(List<Module> modulesIn) {
-        this.modules = modulesIn;
+    public ModulemdApiException() {
+        super();
     }
 
-    public List<Module> getModules() {
-        return modules;
+    /**
+     * Initialize a new exception
+     * @param message the exception message
+     */
+    public ModulemdApiException(String message) {
+        super(message);
+    }
+
+    /**
+     * Initialize a new exception
+     * @param cause the causing throwable
+     */
+    public ModulemdApiException(Throwable cause) {
+        super(cause);
     }
 }
