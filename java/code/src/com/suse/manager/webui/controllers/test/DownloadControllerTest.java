@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -104,6 +105,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public static Test suite() {
         TestSuite suite = new TestSuite(DownloadControllerTest.class);
         TestSetup wrapper = new TestSetup(suite) {
+            @Override
             protected void setUp() throws Exception {
                 // Config class keeps the config files sorted by a TreeSet with a File
                 // comparator, which makes it sometimes override the test rhn.conf with
@@ -121,6 +123,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
@@ -162,6 +165,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tearDown() throws Exception {
         super.tearDown();
         if (originalMountPoint != null) {
@@ -682,6 +686,57 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
         finally {
             FileUtils.deleteDirectory(modulesDir);
+        }
+    }
+
+    /**
+     * Test if media.1/products file is served correctly.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDownloadMediaProducts() throws Exception {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenOrg, "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/media.1/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "products");
+
+        String productsRelativeDirPath = "suse/media.1/" + channel.getName() + "/";
+        String productsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" + productsRelativeDirPath;
+        String productsName = productsRelativeDirPath + "products";
+        File productsDir = new File(productsDirPath);
+        try {
+            assertTrue(productsDir.mkdirs());
+            File productsFile = File.createTempFile(productsDirPath + "/" + productsName, "", productsDir);
+            Files.write(productsFile.getAbsoluteFile().toPath(),
+                    "/ Basesystem-Module 15.3-0".getBytes());
+
+            // create modules object
+            MediaProducts prd = new MediaProducts();
+            prd.setChannel(channel);
+            prd.setRelativeFilename(productsRelativeDirPath + "/" + productsFile.getName());
+            channel.setMediaProducts(prd);
+
+            try {
+                assertNotNull(DownloadController.downloadMediaFiles(request, response));
+
+                assertEquals(productsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+                assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+                assertEquals("attachment; filename=" + productsFile.getName(),
+                        response.raw().getHeader("Content-Disposition"));
+            }
+            catch (spark.HaltException e) {
+                fail("No HaltException should be thrown with a valid token!");
+            }
+        }
+        finally {
+            FileUtils.deleteDirectory(productsDir);
         }
     }
 
