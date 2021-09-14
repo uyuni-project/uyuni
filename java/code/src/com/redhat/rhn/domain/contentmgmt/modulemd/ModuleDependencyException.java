@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,22 +15,23 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Exception thrown when a selected module is not found
+ * Exception thrown when modular dependencies cannot be determined
  */
-public class ModuleNotFoundException extends ModulemdApiException {
+public class ModuleDependencyException extends ModulemdApiException {
 
     private List<Module> modules;
 
     /**
      * Initialize a new instance
      *
-     * @param modulesIn the missing modules
+     * @param modulesIn the modules with dependency errors
      */
-    public ModuleNotFoundException(List<Module> modulesIn) {
-        this.modules = modulesIn;
+    public ModuleDependencyException(List<Module> modulesIn) {
+        this.modules = modulesIn != null ? modulesIn : new ArrayList<>();
     }
 
     public List<Module> getModules() {

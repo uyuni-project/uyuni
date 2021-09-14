@@ -25,11 +25,10 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,7 +129,7 @@ public class DependencyResolver {
         try {
             modPkgList = modulemdApi.getPackagesForModules(sources, modules);
         }
-        catch (ConflictingStreamsException | ModuleNotFoundException e) {
+        catch (ModulemdApiException e) {
             throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
         }
 
