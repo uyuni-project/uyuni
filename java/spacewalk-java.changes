@@ -1,6 +1,6 @@
 - Add XMLRPC API to force refreshing pillar data (bsc#1190123)
 - Add missing string on XCCDF scan results (bsc#1190164)
-- Support syncing patches with advisory status 'pending'
+- Support syncing patches with advisory status 'pending' (bsc#1190455)
 - Updated Enterprise Linux servlet requirement.
 - Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
 - Improved timezone support
