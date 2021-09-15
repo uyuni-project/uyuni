@@ -10,6 +10,15 @@ usage_and_exit() {
     exit -1
 }
 
+update_project() {
+    tproject=${1}
+    pproject=${2}
+    for i in $(diff <( osc ls ${tproject} ) <( osc ls ${pproject} ) | grep ">" | cut -d" " -f2);do
+        echo "Found new package ${i} in ${pproject}. Creating a link to ${tproject}"
+        osc linkpac ${pproject} ${i} ${tproject}
+    done
+}
+
 if [ $# -lt 1 ];then
     usage_and_exit
 fi
@@ -29,8 +38,5 @@ if [ ${?} -ne 0 ];then
     exit -1
 fi
 
-for i in $(diff <( osc ls ${test_parent_project} ) <( osc ls ${parent_project} ) | grep ">" | cut -d" " -f2);do
-    echo "Found new package $i in ${parent_project}. Creating a link to ${test_parent_project}"
-    osc linkpac ${parent_project} $i ${test_parent_project}
-done
+update_project ${test_parent_project} ${parent_project} ${parent_repo_name}
     
