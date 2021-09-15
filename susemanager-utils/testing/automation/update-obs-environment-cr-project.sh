@@ -25,8 +25,8 @@ update_project() {
        osc meta prj --file=${OUT} -m "Created by ${0}" ${tproject}
     fi
     for i in $(diff <( osc ls ${tproject} ) <( osc ls ${pproject} ) | grep ">" | cut -d" " -f2);do
-        echo "Found new package ${i} in ${pproject}. Creating a link to ${tproject}"
-        osc linkpac ${pproject} ${i} ${tproject}
+        echo "Found new package ${i} in ${pproject}. Copying the RPMs to ${tproject}"
+        osc aggregatepac ${pproject} ${i} ${tproject}
     done
 }
 
