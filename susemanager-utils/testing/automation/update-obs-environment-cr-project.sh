@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 parent_project="systemsmanagement:Uyuni:Master"
 
@@ -15,8 +15,10 @@ update_project() {
     pproject=${2}
     rname=${3}
     echo "Updating ${tproject} from ${pproject} with repo ${rname}"
+    set +e
     osc ls ${tproject} > /dev/null
     if [ ${?} -ne 0 ];then
+        set -e
         echo "Project ${tproject} does not exists. Creating ..."
         echo ${new_project_config} |\
             sed -e "s/__TEST_PROJECT_NAME__/${tproject}/g" |\
@@ -24,6 +26,7 @@ update_project() {
             sed -e "s/__REPO_NAME__/${rname}/g" > ${OUT}
        osc meta prj --file=${OUT} -m "Created by ${0}" ${tproject}
     fi
+    set -e
     for i in $(diff <( osc ls ${tproject} ) <( osc ls ${pproject} ) | grep ">" | cut -d" " -f2);do
         echo "Found new package ${i} in ${pproject}. Copying the RPMs to ${tproject}"
         osc aggregatepac ${pproject} ${i} ${tproject}
@@ -75,11 +78,13 @@ new_project_config="
 </project>
 "
 
+set +e
 osc ls ${parent_project} > /dev/null
 if [ ${?} -ne 0 ];then
     echo "Error. Does ${parent_project} exists?"
     exit -1
 fi
+set -e
 
 OUT="$(mktemp)"
 
