@@ -23,6 +23,12 @@ if [ $# -eq 2 ];then
     test_parent_project=${2}
 fi
 
+osc ls ${parent_project} > /dev/null
+if [ ${?} -ne 0 ];then
+    echo "Error. Does ${parent_project} exists?"
+    exit -1
+fi
+
 for i in $(diff <( osc ls ${test_parent_project} ) <( osc ls ${parent_project} ) | grep ">" | cut -d" " -f2);do
     echo "Found new package $i in ${parent_project}. Creating a link to ${test_parent_project}"
     osc linkpac ${parent_project} $i ${test_parent_project}
