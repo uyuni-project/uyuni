@@ -457,7 +457,10 @@ def do_schedule_list(self, args):
 
 def help_schedule_deletearchived(self):
     print(_('schedule_deletearchived: Delete all archived actions older than given date.'))
-    print(_('usage: schedule_deletearchived [yyyymmdd]'))
+    print(_('usage: schedule_deletearchived [yyyymmdd] [options]'))
+    print(_('''
+options:
+  -y, --yes   Confirm without prompt'''))
     print('')
     print(_('If no date is provided it will delete all archived actions'))
 
@@ -513,7 +516,10 @@ def do_schedule_deletearchived(self, args):
 
 def help_schedule_archivecompleted(self):
     print(_('schedule_archivecompleted: Archive all completed actions older than given date.'))
-    print(_('usage: schedule_archivecompleted [yyyymmdd]'))
+    print(_('usage: schedule_archivecompleted [yyyymmdd] [options]'))
+    print(_('''
+options:
+  -y, --yes   Confirm without prompt'''))
     print('')
     print(_('If no date is provided it will archive all completed actions'))
 
