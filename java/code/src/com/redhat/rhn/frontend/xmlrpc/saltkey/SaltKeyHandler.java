@@ -18,8 +18,11 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 
 import com.suse.manager.utils.SaltKeyUtils;
+
+import java.util.List;
 
 /**
  * SaltKeyHandler
@@ -38,23 +41,118 @@ public class SaltKeyHandler extends BaseHandler {
     }
 
     /**
+     * API endpoint to list accepted salt keys
+     * @param loggedInUser the user
+     * @return 1 on success
+     *
+     * @xmlrpc.doc List accepted salt keys
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.returntype #array_single("string", "Accepted salt key list")
+     */
+    public List<String> acceptedList(User loggedInUser) {
+        try {
+            ensureOrgAdmin(loggedInUser);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        return saltKeyUtils.acceptedSaltKeyList(loggedInUser);
+
+    }
+
+
+    /**
+     * API endpoint to list pending salt keys
+     * @param loggedInUser the user
+     * @return 1 on success
+     *
+     * @xmlrpc.doc List pending salt keys
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.returntype #array_single("string", "Pending salt key list")
+     */
+    public List<String> pendingList(User loggedInUser) {
+        try {
+            ensureOrgAdmin(loggedInUser);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        return saltKeyUtils.unacceptedSaltKeyList(loggedInUser);
+    }
+
+    /**
+     * API endpoint to accept minion keys
+     * @param loggedInUser the user
+     * @param minionId the key identifier (minionId)
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Accept a minion key
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int accept(User loggedInUser, String minionId) {
+        try {
+            ensureOrgAdmin(loggedInUser);
+            saltKeyUtils.acceptSaltKey(loggedInUser, minionId);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
+        return 1;
+    }
+
+
+    /**
+     * API endpoint to generate and accept minion keys
+     * @param loggedInUser the user
+     * @param minionId the key identifier (minionId)
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Generate and accept a minion key
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int genAccept(User loggedInUser, String minionId) {
+        try {
+            ensureOrgAdmin(loggedInUser);
+            saltKeyUtils.genAcceptSaltKey(loggedInUser, minionId);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
+        return 1;
+    }
+
+    /**
      * API endpoint to delete minion keys
      * @param loggedInUser the user
      * @param minionId the key identifier (minionId)
      * @return 1 on success
      *
      * @xmlrpc.doc Delete a minion key
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "loggedInUser")
      * @xmlrpc.param #param("string", "minionId")
      * @xmlrpc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String minionId) {
-        ensureOrgAdmin(loggedInUser);
         try {
+            ensureOrgAdmin(loggedInUser);
             saltKeyUtils.deleteSaltKey(loggedInUser, minionId);
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e.getMessage());
         }
         return 1;
     }
