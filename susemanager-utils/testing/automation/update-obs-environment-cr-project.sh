@@ -44,6 +44,22 @@ if [ $# -eq 2 ];then
 fi
 
 parent_repo_name="openSUSE_Leap_15.3"
+clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
+    Ubuntu1804-Uyuni-Client-Tools;xUbuntu_18.04 \
+    Ubuntu2004-Uyuni-Client-Tools;xUbuntu_20.04 \
+    openSUSE_Leap_15-Uyuni-Client-Tools;openSUSE_Leap_15.0 \
+    openSUSE_Leap_42-Uyuni-Client-Tools;openSUSE_Leap_42.3 \
+    SLE15-Uyuni-Client-Tools;SLE_15 \
+    SLE12-Uyuni-Client-Tools;SLE_12 \
+    EL8-Uyuni-Client-Tools;EL_8 \
+    Debian9-Uyuni-Client-Tools;Debian_9 \
+    Debian11-Uyuni-Client-Tools;Debian_11 \
+    Debian10-Uyuni-Client-Tools;Debian_10 \
+    CentOS8-Uyuni-Client-Tools;CentOS_8 \
+    CentOS7-Uyuni-Client-Tools;CentOS_7 \
+    CentOS6-Uyuni-Client-Tools;CentOS_6 \
+    Fedora30-Uyuni-Client-Tools;Fedora_30 \
+    Fedora31-Uyuni-Client-Tools;Fedora_31"
 
 new_project_config="
     <project name=\"__TEST_PROJECT_NAME__\">
@@ -68,4 +84,8 @@ fi
 OUT="$(mktemp)"
 
 update_project ${test_parent_project} ${parent_project} ${parent_repo_name}
-    
+for client in ${clients};do
+    sub_project=$(echo ${client} | cut -d";" -f1)
+    test_repo_name=$(echo ${client} | cut -d";" -f2)
+    update_project ${test_parent_project}:${sub_project} ${parent_project}:${sub_project} ${test_repo_name}
+done
