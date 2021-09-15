@@ -3,7 +3,7 @@
 parent_project="systemsmanagement:Uyuni:Master"
 
 usage_and_exit() {
-    echo "usage: $0 N [test_project]"
+    echo "usage: ${0} N [test_project]"
     echo "where N is the environment"
     echo "and project is the test_project, which by default is ${parent_project}:N:CR" 
     echo "$0 will add new packages from ${parent_project} to test_project"
@@ -16,7 +16,7 @@ update_project() {
     rname=${3}
     echo "Updating ${tproject} from ${pproject} with repo ${rname}"
     set +e
-    osc ls ${tproject} > /dev/null
+    osc ls ${tproject} &> /dev/null
     if [ ${?} -ne 0 ];then
         set -e
         echo "Project ${tproject} does not exists. Creating ..."
