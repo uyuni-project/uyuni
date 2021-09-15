@@ -1,3 +1,5 @@
+- Improved the diskcheck script to return an exit value and to
+  allow performing the check without sending notification
 - handle download of metadata filesnames with checksums (bsc#1188315)
 - Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
 
