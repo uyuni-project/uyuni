@@ -15,7 +15,7 @@ update_project() {
     pproject=${2}
     rname=${3}
     echo "Updating ${tproject} from ${pproject} with repo ${rname}"
-    osc ls ${tproject} > /dev/null
+    osc ls ${tproject} &> /dev/null
     if [ ${?} -ne 0 ];then
         echo "Project ${tproject} does not exists. Creating ..."
         echo ${new_project_config} |\
