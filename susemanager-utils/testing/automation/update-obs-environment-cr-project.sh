@@ -89,3 +89,5 @@ for client in ${clients};do
     test_repo_name=$(echo ${client} | cut -d";" -f2)
     update_project ${test_parent_project}:${sub_project} ${parent_project}:${sub_project} ${test_repo_name}
 done
+rm -rf ${OUT}
+echo "Done."
