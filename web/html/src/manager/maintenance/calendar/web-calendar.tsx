@@ -1,5 +1,6 @@
 import * as React from "react";
 // TODO: This should eventually be localizedMoment instead
+/* eslint-disable local-rules/no-raw-date */
 import moment from "moment";
 import { useState, useEffect, useRef } from "react";
 

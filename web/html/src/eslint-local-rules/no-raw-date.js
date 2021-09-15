@@ -20,9 +20,25 @@ module.exports = {
             message: "Don't use raw Javascript Date instances",
             suggest: [
               {
-                desc: "Use `moment()` instead",
+                desc: "Use `localizedMoment()` instead",
                 fix: function(fixer) {
                   return fixer.replaceText(node.parent, `moment(${args.join(", ")})`);
+                },
+              },
+            ],
+          });
+        } else if (
+          node.name === "moment" &&
+          (node.parent.type === "CallExpression" || node.parent.type === "MemberExpression")
+        ) {
+          context.report({
+            node: node,
+            message: "Prefer `localizedMoment()` over `moment()`",
+            suggest: [
+              {
+                desc: "Use `localizedMoment()` instead",
+                fix: function(fixer) {
+                  return fixer.replaceText(node, "localizedMoment");
                 },
               },
             ],
