@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-16 07:11+0000\n"
+"PO-Revision-Date: 2021-09-16 15:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7649,23 +7649,23 @@ msgstr "Vytvorený profil balíka '%s'"
 #: ../src/spacecmd/system.py:3560
 msgid ""
 "system_comparepackageprofile: Compare a system against a package profile"
-msgstr ""
+msgstr "system_comparepackageprofile: Porovnať systém s profilom balíka"
 
 #: ../src/spacecmd/system.py:3561
 msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
-msgstr ""
+msgstr "použitie: system_comparepackageprofile <SYSTÉMY> PROFIL"
 
 #: ../src/spacecmd/system.py:3624
 msgid "system_comparepackages: Compare the packages between two systems"
-msgstr ""
+msgstr "system_comparepackages: Porovnať balíky medzi dvoma systémami"
 
 #: ../src/spacecmd/system.py:3625
 msgid "usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
-msgstr ""
+msgstr "použitie: system_comparepackages NEJAKÝ_SYSTÉM INÝ_SYSTÉM"
 
 #: ../src/spacecmd/system.py:3656
 msgid "system_syncpackages: Sync packages between two systems"
-msgstr ""
+msgstr "system_syncpackages: Synchronizovať balíky medzi dvoma systémami"
 
 #: ../src/spacecmd/system.py:3657
 msgid ""
@@ -7674,23 +7674,27 @@ msgid ""
 "options:\n"
 "    -s START_TIME"
 msgstr ""
+"použitie: system_syncpackages ZDROJ CIEĽ [voľby]\n"
+"\n"
+"voľby:\n"
+"    -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:3705
 msgid "Sync packages [y/N]:"
-msgstr ""
+msgstr "Synchronizovať balíky [a/N]:"
 
 #: ../src/spacecmd/system.py:3747
 #, python-format
 msgid "Failed to filter package list, package %s"
-msgstr ""
+msgstr "Zlyhalo filtrovanie zoznamu balíkov, balík %s"
 
 #: ../src/spacecmd/system.py:3748
 msgid "found with no arch or arch_label"
-msgstr ""
+msgstr "nájdený bez arch alebo označenia_arch"
 
 #: ../src/spacecmd/system.py:3790
 msgid "System Version"
-msgstr ""
+msgstr "Verzia systému"
 
 #: ../src/spacecmd/system.py:3791
 msgid "Channel Version"
