@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-14 19:11+0000\n"
+"PO-Revision-Date: 2021-09-16 07:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7596,24 +7596,24 @@ msgstr "použitie: system_listpackageprofiles"
 
 #: ../src/spacecmd/system.py:3458
 msgid "system_deletepackageprofile: Delete a package profile"
-msgstr ""
+msgstr "system_deletepackageprofile: Vymazať profil balíka"
 
 #: ../src/spacecmd/system.py:3459
 msgid "usage: system_deletepackageprofile PROFILE"
-msgstr ""
+msgstr "použitie: system_deletepackageprofile PROFIL"
 
 #: ../src/spacecmd/system.py:3483
 msgid "Delete this profile [y/N]:"
-msgstr ""
+msgstr "Vymazať tento profil [a/N]:"
 
 #: ../src/spacecmd/system.py:3494
 #, python-format
 msgid "%s is not a valid profile"
-msgstr ""
+msgstr "%s nie je platný profil"
 
 #: ../src/spacecmd/system.py:3505
 msgid "system_createpackageprofile: Create a package profile"
-msgstr ""
+msgstr "system_createpackageprofile: Vytvoriť profil balíka"
 
 #: ../src/spacecmd/system.py:3506
 msgid ""
@@ -7623,23 +7623,28 @@ msgid ""
 "  -n NAME\n"
 "  -d DESCRIPTION"
 msgstr ""
+"použitie: system_createpackageprofile SYSTÉM [voľby]\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -d POPIS"
 
 #: ../src/spacecmd/system.py:3536
 msgid "Profile Label:"
-msgstr ""
+msgstr "Označenie profilu:"
 
 #: ../src/spacecmd/system.py:3540
 msgid "A profile name is required"
-msgstr ""
+msgstr "Vyžaduje sa názov profilu"
 
 #: ../src/spacecmd/system.py:3544
 msgid "A profile description is required"
-msgstr ""
+msgstr "Vyžaduje sa popis profilu"
 
 #: ../src/spacecmd/system.py:3552
 #, python-format
 msgid "Created package profile '%s'"
-msgstr ""
+msgstr "Vytvorený profil balíka '%s'"
 
 #: ../src/spacecmd/system.py:3560
 msgid ""
