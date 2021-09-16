@@ -76,6 +76,12 @@ fi
 
 DIR=/var/lib/pgsql
 
+if [ $(grep data_directory ${DIR}/data/postgresql.conf) ]; then
+    echo "$(timestamp) data_directory is configured in ${DIR}/data/postgresql.conf"
+    echo "$(timestamp) For the migration to work, data_directory should not be defined explicetely"
+    exit 1
+fi
+
 if [ "$FAST_UPGRADE" !=  "" ]; then
     echo "$(timestamp)   Performing fast upgrade..."
 else

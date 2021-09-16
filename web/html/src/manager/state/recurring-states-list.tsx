@@ -52,7 +52,6 @@ class RecurringStatesList extends React.Component<Props, State> {
     ];
 
     return (
-      <div>
         <InnerPanel
           title={t("Recurring States")}
           icon="spacewalk-icon-salt"
@@ -146,7 +145,6 @@ class RecurringStatesList extends React.Component<Props, State> {
             </div>
           </div>
         </InnerPanel>
-      </div>
     );
   }
 }

@@ -8,7 +8,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:195
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-17 17:24+0000\n"
-"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"PO-Revision-Date: 2021-08-20 05:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -40,28 +40,6 @@ msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "公式已保存。无需对此公式应用 highstate。"
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "请输入必填字段：{0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "无效的字段格式：{0}"
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -136,8 +114,8 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
-#: ../html/src/manager/state/recurring-states-details.tsx:142
-#: ../html/src/manager/state/recurring-states-details.tsx:144
+#: ../html/src/manager/state/recurring-states-details.tsx:154
+#: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:119
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
@@ -215,7 +193,7 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
@@ -224,15 +202,15 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
-#: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
+#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "取消"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.tsx:92
 #: ../html/src/manager/images/image-profiles.tsx:139
 #: ../html/src/manager/images/image-profiles.tsx:214
@@ -247,9 +225,9 @@ msgstr "取消"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:31
 #: ../html/src/manager/salt/keys/key-management.tsx:51
-#: ../html/src/manager/state/recurring-states-details.tsx:156
-#: ../html/src/manager/state/recurring-states-details.tsx:158
-#: ../html/src/manager/state/recurring-states-list.tsx:129
+#: ../html/src/manager/state/recurring-states-details.tsx:168
+#: ../html/src/manager/state/recurring-states-details.tsx:170
+#: ../html/src/manager/state/recurring-states-list.tsx:141
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:140
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
@@ -269,6 +247,32 @@ msgstr "删除项目"
 msgid "Are you sure you want to delete project "
 msgstr "您确定要删除项目吗 "
 
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "公式已保存。无需对此公式应用 highstate。"
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "请输入必填字段：{0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "无效的字段格式：{0}"
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
+
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr " 无组"
@@ -286,7 +290,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -294,14 +298,10 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
 msgstr "公式"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
@@ -321,20 +321,20 @@ msgid "Toggle section visibility"
 msgstr "切换部分可见性"
 
 #: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:34
-#: ../html/src/components/input/FormMultiInput.stories.tsx:76
-#: ../html/src/components/input/FormMultiInput.stories.tsx:132
-#: ../html/src/components/input/FormMultiInput.stories.tsx:180
-#: ../html/src/components/input/FormMultiInput.stories.tsx:260
-#: ../html/src/components/input/Password.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:38
-#: ../html/src/components/input/Radio.stories.tsx:67
-#: ../html/src/components/input/Radio.stories.tsx:96
-#: ../html/src/components/input/Radio.stories.tsx:126
+#: ../html/src/components/input/DateTime.stories.tsx:35
+#: ../html/src/components/input/FormMultiInput.stories.tsx:77
+#: ../html/src/components/input/FormMultiInput.stories.tsx:134
+#: ../html/src/components/input/FormMultiInput.stories.tsx:183
+#: ../html/src/components/input/FormMultiInput.stories.tsx:264
+#: ../html/src/components/input/form.stories.tsx:36
+#: ../html/src/components/input/Password.stories.tsx:36
+#: ../html/src/components/input/Radio.stories.tsx:39
+#: ../html/src/components/input/Radio.stories.tsx:69
+#: ../html/src/components/input/Radio.stories.tsx:99
+#: ../html/src/components/input/Radio.stories.tsx:130
 #: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:35
-#: ../html/src/components/input/Text.stories.tsx:43
-#: ../html/src/components/input/form.stories.tsx:35
+#: ../html/src/components/input/Select.stories.tsx:36
+#: ../html/src/components/input/Text.stories.tsx:44
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "提交"
@@ -351,30 +351,25 @@ msgid "Minimum 2 characters"
 msgstr "最少 2 个字符"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "需要重引导"
+msgstr "必填"
 
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr "两个值都必须为正整数"
 
-#: ../html/src/components/input/Select.stories.tsx:61
+#: ../html/src/components/input/Select.stories.tsx:62
 msgid "Flavor"
 msgstr "风格"
 
-#: ../html/src/components/input/Select.stories.tsx:63
+#: ../html/src/components/input/Select.stories.tsx:64
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "开始键入..."
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.tsx:65
 msgid "No flavors"
 msgstr "无风格"
-
-#: ../html/src/components/input/Select.stories.tsx:129
-msgid "Level"
-msgstr "级别"
 
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
@@ -426,7 +421,7 @@ msgstr "第 {0} 页，共 {1} 页"
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:88
+#: ../html/src/manager/state/recurring-states-list.tsx:100
 msgid "Schedule Name"
 msgstr "日程安排名称"
 
@@ -482,9 +477,9 @@ msgstr "配置频道：{0}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:149
-#: ../html/src/manager/state/recurring-states-details.tsx:151
-#: ../html/src/manager/state/recurring-states-list.tsx:121
+#: ../html/src/manager/state/recurring-states-details.tsx:161
+#: ../html/src/manager/state/recurring-states-details.tsx:163
+#: ../html/src/manager/state/recurring-states-list.tsx:133
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:133
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
@@ -498,7 +493,7 @@ msgid "Edit Configuration Channel"
 msgstr "编辑配置频道"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Security Advisory"
 msgstr "安全建议"
 
@@ -526,8 +521,8 @@ msgstr "全选"
 #: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:92
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
@@ -650,7 +645,7 @@ msgstr "发生了错误。监视状态未知。请刷新页面。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:79
@@ -812,7 +807,7 @@ msgstr "操作不成功：服务器返回了空答复"
 #: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:113
+#: ../html/src/manager/state/recurring-states-list.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "细节"
@@ -895,7 +890,7 @@ msgstr "产品说明"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:624
 #: ../html/src/manager/admin/setup/products/products.tsx:1002
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:183
 msgid "Architecture"
@@ -1128,7 +1123,7 @@ msgstr "审计映像"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
@@ -1154,7 +1149,7 @@ msgstr "名称"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.tsx:108
+#: ../html/src/manager/state/recurring-states-list.tsx:120
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
@@ -1418,6 +1413,31 @@ msgstr "找不到订阅。"
 msgid "Your subscriptions"
 msgstr "您的订阅"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
+msgid "Edit Virtual Host Managers"
+msgstr "编辑虚拟主机管理器"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Subscription Matching"
+msgstr "订阅匹配"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+msgid "Subscriptions"
+msgstr "订阅"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "不匹配的产品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+msgid "Pins "
+msgstr "关联 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Messages "
+msgstr "消息 "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "产品名称"
@@ -1434,11 +1454,6 @@ msgstr "显示系统列表"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "找不到不匹配的产品。"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
-msgid "Unmatched Products"
-msgstr "不匹配的产品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1467,26 +1482,6 @@ msgstr "1-2 个插槽或 1-2 台虚拟机"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "每个实例"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
-msgid "Edit Virtual Host Managers"
-msgstr "编辑虚拟主机管理器"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Subscription Matching"
-msgstr "订阅匹配"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
-msgid "Subscriptions"
-msgstr "订阅"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
-msgid "Pins "
-msgstr "关联 "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-msgid "Messages "
-msgstr "消息 "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -1812,7 +1807,7 @@ msgstr "创建项目"
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.tsx:47
+#: ../html/src/manager/state/recurring-states-list.tsx:59
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:212
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:81
@@ -1857,87 +1852,86 @@ msgstr "频道"
 msgid "Module Name"
 msgstr "模块名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:34
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
 msgid "Updating the filter..."
 msgstr "正在更新过滤器..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:84
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
 msgid "Check the required fields below"
 msgstr "检查以下必填字段"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
 msgid "Filter updated successfully"
 msgstr "已成功更新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
 msgid "Filter created successfully"
 msgstr "已成功创建过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Filter Details"
 msgstr "过滤器细节"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
 msgid "Create a new filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
 msgid "Filter deleted successfully"
 msgstr "已成功删除过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:71
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:78
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Filter Name"
 msgstr "过滤器名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:88
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "前缀"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
-msgstr ""
+msgstr "前缀将附加在通过模板创建的每个过滤器名称的前面"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "使用模板"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
-#, fuzzy
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 msgid "Use a manual filter"
-msgstr "创建新过滤器"
+msgstr "使用手动过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
 msgstr "过滤器类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:130
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Matcher"
 msgstr "匹配器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:144
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:234
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "软件包名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 msgid "Epoch"
 msgstr "纪元"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
@@ -1947,117 +1941,114 @@ msgstr "纪元"
 msgid "Version"
 msgstr "版本"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 msgid "Release"
 msgstr "发行版"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 msgid "Advisory name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Bug Fix Advisory"
 msgstr "Bug 修复建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "建议类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 msgid "Issued"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:209
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:221
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
 msgid "Reboot Required"
 msgstr "需要重引导"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:222
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
 msgid "Package Manager Restart Required"
 msgstr "需要重启动软件包管理器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:225
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
 msgid "Advisory Keywords"
 msgstr "建议关键字"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "Deny"
 msgstr "拒绝"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
 msgid "Allow"
 msgstr "允许"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
 msgid "Rule"
 msgstr "规则"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:80
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr "部分选定过滤器已用于项目中，无法删除。"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:132
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 msgid "Select unused"
 msgstr "选择未使用的项"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:139
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-stores.tsx:140
 #: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr "删除选定项"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:145
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
 msgid "Content Lifecycle Filters"
 msgstr "内容生命周期过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:155
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
 msgid "Filter by name or project"
 msgstr "按名称或项目过滤"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "使用中的项目"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
 msgid "Live patching based on a specific system"
-msgstr ""
+msgstr "根据特定系统在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "根据 SUSE 产品在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
 msgid "Template"
-msgstr ""
+msgstr "模板"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:122
-#, fuzzy
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 msgid "Product"
 msgstr "产品"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:147
-#, fuzzy
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
 msgid "Kernel"
-msgstr "内核选项"
+msgstr "内核"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:154
-#, fuzzy
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
 msgid "latest"
 msgstr "最新"
 
@@ -2292,7 +2283,7 @@ msgstr "已成功删除环境 {0}"
 msgid ""
 "This environment cannot be deleted since it is being used in an {0}"
 "autoinstallation distribution{1}."
-msgstr ""
+msgstr "此环境正被某个{0}自动安装发行套件{1}使用，无法删除。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:22
 msgid "New"
@@ -2461,9 +2452,8 @@ msgid "This channel is recommended"
 msgstr "建议使用此频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
-#, fuzzy
 msgid "This channel is mandatory"
-msgstr "建议使用此频道"
+msgstr "必须使用此频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
@@ -2526,40 +2516,39 @@ msgid ""
 "this group"
 msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
-msgstr "已保存公式。请编辑配置选项 "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:138
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr " 以使更改生效。"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
-msgid "Invalid target type."
-msgstr "无效目标类型。"
-
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "已保存公式。请应用 "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/state/highstate.tsx:138
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+msgid " for the changes to take effect."
+msgstr " 以使更改生效。"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+msgid "Invalid target type."
+msgstr "无效目标类型。"
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
+msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -2685,9 +2674,8 @@ msgid "Config URL"
 msgstr "配置 URL"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:365
-#, fuzzy
 msgid "Kiwi options"
-msgstr "内核选项"
+msgstr "Kiwi 选项"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:409
 msgid "Activation key is required for kiwi images."
@@ -3282,7 +3270,7 @@ msgstr "删除维护日历"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:142
+#: ../html/src/manager/state/recurring-states-list.tsx:154
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
@@ -3351,7 +3339,7 @@ msgid "Multi"
 msgstr "多个"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/state/recurring-states-details.tsx:92
+#: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
@@ -3546,14 +3534,12 @@ msgid "Inventory file empty."
 msgstr "库存文件为空。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "未注册的系统"
+msgstr "已注册的系统"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "节点主机名"
+msgstr "未知主机名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
@@ -3649,8 +3635,8 @@ msgstr "剧本的执行已"
 msgid "Applying the config channels has been "
 msgstr "应用配置频道 "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 msgid "Configuration"
 msgstr "配置"
 
@@ -4062,7 +4048,7 @@ msgid "System Group"
 msgstr "系统组"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
-#: ../html/src/manager/state/recurring-states-utils.tsx:8
+#: ../html/src/manager/state/recurring-states-details.tsx:18
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:189
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
@@ -4088,57 +4074,65 @@ msgstr "应用 Highstate"
 msgid "Create Recurring"
 msgstr "创建重复性"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:40
+#: ../html/src/manager/state/recurring-states-details.tsx:14
+msgid "Minion"
+msgstr "受控端"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:16
+msgid "Group"
+msgstr "组"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
 msgstr "执行时间"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:97
+#: ../html/src/manager/state/recurring-states-details.tsx:109
 msgid "State:"
 msgstr "状态："
 
-#: ../html/src/manager/state/recurring-states-details.tsx:98
-#: ../html/src/manager/state/recurring-states-list.tsx:79
+#: ../html/src/manager/state/recurring-states-details.tsx:110
+#: ../html/src/manager/state/recurring-states-list.tsx:91
 msgid "Active"
 msgstr "活动"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:98
+#: ../html/src/manager/state/recurring-states-details.tsx:110
 msgid "Inactive"
 msgstr "非活动"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:102
+#: ../html/src/manager/state/recurring-states-details.tsx:114
 msgid "Test"
 msgstr "测试"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:103
+#: ../html/src/manager/state/recurring-states-details.tsx:115
 msgid "True"
 msgstr "True"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:107
+#: ../html/src/manager/state/recurring-states-details.tsx:119
 msgid "Target type"
 msgstr "目标类型"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:112
+#: ../html/src/manager/state/recurring-states-details.tsx:124
 msgid "Organization name"
 msgstr "组织名称"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:117
+#: ../html/src/manager/state/recurring-states-details.tsx:129
 msgid "Created by"
 msgstr "创建者"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:122
+#: ../html/src/manager/state/recurring-states-details.tsx:134
 msgid "Created at"
 msgstr "创建时间"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:128
+#: ../html/src/manager/state/recurring-states-details.tsx:140
 msgid "Quartz format string"
 msgstr "Quartz 格式字符串"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:171
-#: ../html/src/manager/state/recurring-states-list.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:183
+#: ../html/src/manager/state/recurring-states-list.tsx:153
 msgid "Delete Recurring State Schedule"
 msgstr "删除重复性状态日程安排"
 
-#: ../html/src/manager/state/recurring-states-details.tsx:172
+#: ../html/src/manager/state/recurring-states-details.tsx:184
 msgid "Are you sure you want to delete this schedule?"
 msgstr "您确定要删除此日程安排吗？"
 
@@ -4158,29 +4152,21 @@ msgstr "返回列表"
 msgid "Schedule Recurring Highstate"
 msgstr "安排重复 Highstate"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:57
+#: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid "Recurring States"
 msgstr "重复性状态"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:74
+#: ../html/src/manager/state/recurring-states-list.tsx:86
 msgid "No schedules created."
 msgstr "未创建日程安排。"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:95
+#: ../html/src/manager/state/recurring-states-list.tsx:107
 msgid "Frequency"
 msgstr "频率"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:102
+#: ../html/src/manager/state/recurring-states-list.tsx:114
 msgid "Target Type"
 msgstr "目标类型"
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:4
-msgid "Minion"
-msgstr "受控端"
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:6
-msgid "Group"
-msgstr "组"
 
 #: ../html/src/manager/state/recurring-states.tsx:146
 msgid "Schedule successfully"
@@ -4325,12 +4311,12 @@ msgstr "清理操作超时。请检查计算机是否可访问。"
 msgid "No result found in state apply response."
 msgstr "在状态应用响应中未找到结果。"
 
-#: ../html/src/manager/systems/delete-system.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:69
+#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr "删除配置文件但不清理"
 
-#: ../html/src/manager/systems/delete-system.tsx:89
+#: ../html/src/manager/systems/delete-system.tsx:90
 msgid "An error occurred during cleanup"
 msgstr "清理期间出错"
 
@@ -4652,23 +4638,25 @@ msgstr "虚拟主机管理器"
 msgid "Add a virtual host manager"
 msgstr "添加虚拟主机管理器"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "请安装 libvirt Python 模块。"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Disconnected"
+msgstr "已断开连接"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+msgid "Failed to connect"
+msgstr "无法连接"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:164
-msgid "{0} selected"
-msgstr "已选择 {0}"
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
+msgid "Toggle full size"
+msgstr "切换完整大小"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:243
-msgid "Action Status"
-msgstr "操作状态"
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
+msgid "Something went wrong, connection is closed"
+msgstr "出现了问题，已关闭连接"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
+msgid "Create Virtual Machine"
+msgstr "创建虚拟机"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:130
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
@@ -4712,26 +4700,6 @@ msgstr "内核选项"
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
 msgid "Graphics"
 msgstr "显卡"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Disconnected"
-msgstr "已断开连接"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
-msgid "Failed to connect"
-msgstr "无法连接"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
-msgid "Toggle full size"
-msgstr "切换完整大小"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
-msgid "Something went wrong, connection is closed"
-msgstr "出现了问题，已关闭连接"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
-msgid "Create Virtual Machine"
-msgstr "创建虚拟机"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:32
 msgid "Start / Resume"
@@ -4826,6 +4794,10 @@ msgstr "文件"
 msgid "Format"
 msgstr "格式"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+msgid "Disks"
+msgstr "磁盘"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
 msgid "Source storage pool"
 msgstr "源储存池"
@@ -4841,10 +4813,6 @@ msgstr "磁盘大小 (GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
 msgid "Source template image URL"
 msgstr "源模板映像 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
-msgid "Disks"
-msgstr "磁盘"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
@@ -4871,7 +4839,25 @@ msgstr "清除字段"
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
-msgstr ""
+msgstr "单个虚拟机几乎使用了所有主机资源"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
+msgstr "请安装 libvirt Python 模块。"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
+
+#: ../html/src/manager/virtualization/ListTab.tsx:164
+msgid "{0} selected"
+msgstr "已选择 {0}"
+
+#: ../html/src/manager/virtualization/ListTab.tsx:243
+msgid "Action Status"
+msgstr "操作状态"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"
@@ -5105,6 +5091,43 @@ msgstr "TXT 记录"
 msgid "Value"
 msgstr "值"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr "不连接其他网络的虚拟网络"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr "网络基于 macvtap 驱动程序使用物理接口池。 "
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr "SR-IOV 池"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
 msgid "Network address"
 msgstr "网络地址"
@@ -5201,44 +5224,6 @@ msgstr "已标记"
 msgid "Untagged"
 msgstr "未标记"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "不连接其他网络的虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "网络基于 macvtap 驱动程序使用物理接口池。Guest 与主机之间无法通讯"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV 池"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
-
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."
 msgstr "无法从服务器获取网络设备。请重试。"
@@ -5248,14 +5233,12 @@ msgid "Create Virtual Storage Pool"
 msgstr "创建虚拟储存池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Pool"
-msgstr "创建虚拟储存池"
+msgstr "虚拟储存池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Volume"
-msgstr "虚拟储存池和卷"
+msgstr "虚拟储存卷"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
@@ -5542,18 +5525,17 @@ msgstr "HTTP 错误代码 "
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:5
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:6
 msgid "undefined"
-msgstr ""
+msgstr "未定义"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:11
 #: ../html/src/utils/test-utils/setup/t.test.ts:12
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
-#, fuzzy
 msgid "foo {0} tea {1}"
-msgstr "第 {0} 页，共 {1} 页"
+msgstr "foo {0} tea {1}"
 
 #~ msgid "Time"
 #~ msgstr "时间"
@@ -5569,6 +5551,9 @@ msgstr "第 {0} 页，共 {1} 页"
 
 #~ msgid "Minimum 4 characters"
 #~ msgstr "最少 4 个字符"
+
+#~ msgid "Level"
+#~ msgstr "级别"
 
 #~ msgid "Beginner"
 #~ msgstr "新手"

@@ -13,8 +13,11 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP3
     When I add server record into hosts file on "sle15sp3_buildhost" if avahi is used
     And I add proxy record into hosts file on "sle15sp3_buildhost" if avahi is used
 
+  Scenario: Clean up sumaform leftovers on a SLES 15 SP3 build host
+    When I perform a full salt minion cleanup on "sle15sp3_buildhost"
+
   Scenario: Bootstrap a SLES 15 SP3 build host
-    When I bootstrap minion client "sle15sp3_buildhost" using bootstrap script with activation key "1-sle15sp3_buildhost_key" from the server
+    When I bootstrap minion client "sle15sp3_buildhost" using bootstrap script with activation key "1-sle15sp3_buildhost_key" from the proxy
     And I wait until onboarding is completed for "sle15sp3_buildhost"
 
   Scenario: Turn SLE15 SP3 system into buildhost, prepare profile and build kiwi image

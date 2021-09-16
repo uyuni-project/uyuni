@@ -1,4 +1,5 @@
 import {MessageType, Utils as MessagesUtils} from "components/messages";
+import { showErrorToastr } from "components/toastr";
 import {Utils} from "utils/functions";
 import {Cancelable} from "utils/functions";
 
@@ -26,14 +27,14 @@ export type JsonResult<T> = {
 type CommonMimeTypes = "application/json" | "application/xml" | "application/x-www-form-urlencoded";
 type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 
-function request(
+function request<Returns>(
     url: string,
     type: "GET" | "POST" | "DELETE" | "PUT",
     headers: Record<string, string>,
     data: any,
     contentType: string,
     processData: boolean = true
-): Cancelable {
+): Cancelable<Returns> {
     const isRegularObject = typeof data === "object" && !(data instanceof FormData);
     const isNumber = typeof data === 'number';
     if ((isRegularObject || isNumber) && processData === true) {
@@ -57,20 +58,20 @@ function request(
     return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post<T>(url: string, data?: DataType<T>, contentType: string = "application/json", processData: boolean = true): Cancelable {
-    return request(url, "POST", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
+function post<Returns = any, Payload = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
+    return request<Returns>(url, "POST", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function del<T>(url: string, data?: DataType<T>, contentType: string = "application/json", processData: boolean = true): Cancelable {
-    return request(url, "DELETE", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
+function del<Returns = any, Payload = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
+    return request<Returns>(url, "DELETE", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function put<T>(url: string, data?: DataType<T>, contentType: string = "application/json", processData: boolean = true): Cancelable {
-    return request(url, "PUT", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
+function put<Returns = any, Payload = any>(url: string, data?: DataType<Payload>, contentType: string = "application/json", processData: boolean = true): Cancelable<Returns> {
+    return request<Returns>(url, "PUT", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function get(url: string, contentType: string = "application/json"): Cancelable {
-    return request(url, "GET", {}, {}, contentType);
+function get<Returns = any>(url: string, contentType: string = "application/json"): Cancelable<Returns> {
+    return request<Returns>(url, "GET", {}, {}, contentType);
 }
 
 function errorMessageByStatus(status: number): Array<string> {
@@ -126,6 +127,24 @@ function responseErrorMessage(
     }
 }
 
+function hasMessages(input: any): input is JsonResult<never> {
+    return input && Object.prototype.hasOwnProperty.call(input, "messages") && Array.isArray(input.messages);
+}
+
+function showResponseErrorToastr(responseOrError: Error | JQueryXHR | JsonResult<never>) {
+    if (hasMessages(responseOrError)) {
+        responseOrError.messages.flatMap(msg => showErrorToastr(msg));
+    } else {
+        responseErrorMessage(responseOrError).map(msg => showErrorToastr(msg.text));
+    }
+}
+
+// TODO: Make this globally automatic and update relevant calls in a follow-up PR
+/** Unwrap the data from a `JsonResult` if the request is a success */
+function unwrap<T>(response: JsonResult<T>) {
+    return response.success ? response.data : Promise.reject(response);
+}
+
 export default {
     get,
     post,
@@ -133,4 +152,6 @@ export default {
     del,
     errorMessageByStatus,
     responseErrorMessage,
+    showResponseErrorToastr,
+    unwrap,
 };

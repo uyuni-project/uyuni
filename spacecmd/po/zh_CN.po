@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-18 09:03+0000\n"
-"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"PO-Revision-Date: 2021-08-20 05:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -1642,7 +1642,6 @@ msgid "distribution_create: Create a Kickstart tree"
 msgstr "distribution_create：创建 Kickstart 树"
 
 #: ../src/spacecmd/distribution.py:44
-#, fuzzy
 msgid ""
 "usage: distribution_create [options]\n"
 "\n"
@@ -1659,7 +1658,8 @@ msgstr ""
 "  -n 名称\n"
 "  -p 树的路径\n"
 "  -b 要关联的基础频道\n"
-"  -t 安装类型 [fedora|rhel_4/5/6|generic_rpm]"
+"  -t 安装类型 [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1762,7 +1762,6 @@ msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update：更新 Kickstart 树的路径"
 
 #: ../src/spacecmd/distribution.py:290
-#, fuzzy
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -1777,7 +1776,8 @@ msgstr ""
 "选项：\n"
 "  -p 树的路径\n"
 "  -b 要关联的基础频道\n"
-"  -t 安装类型 [fedora|rhel_4/5/6|generic_rpm]"
+"  -t 安装类型 [fedora18|rhel_6/7/"
+"8|sles12generic|sles15generic|suse|generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -1913,9 +1913,9 @@ msgid "Type:       %s"
 msgstr "类型：%s"
 
 #: ../src/spacecmd/errata.py:400
-#, fuzzy, python-format
+#, python-format
 msgid "Status:     %s"
-msgstr "OSA 状态：%s"
+msgstr "状态：%s"
 
 #: ../src/spacecmd/errata.py:401
 #, python-format
@@ -3857,58 +3857,57 @@ msgid "%s is not a valid package"
 msgstr "%s 不是有效软件包"
 
 #: ../src/spacecmd/package.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "Name:      %s"
 msgstr "名称：%s"
 
 #: ../src/spacecmd/package.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "Version:   %s"
 msgstr "版本：%s"
 
 #: ../src/spacecmd/package.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "Release:   %s"
 msgstr "发行版：%s"
 
 #: ../src/spacecmd/package.py:95
-#, fuzzy, python-format
+#, python-format
 msgid "Epoch:     %s"
 msgstr "纪元：%s"
 
 #: ../src/spacecmd/package.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Arch:      %s"
 msgstr "体系结构：%s"
 
 #: ../src/spacecmd/package.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "File:      %s"
 msgstr "文件：%s"
 
 #: ../src/spacecmd/package.py:99
-#, fuzzy, python-format
+#, python-format
 msgid "Path:      %s"
 msgstr "路径：%s"
 
 #: ../src/spacecmd/package.py:100
-#, fuzzy, python-format
+#, python-format
 msgid "Size:      %s"
 msgstr "大小：%s"
 
 #: ../src/spacecmd/package.py:101
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: ../src/spacecmd/package.py:102
-#, fuzzy
 msgid "No"
-msgstr "无"
+msgstr "否"
 
 #: ../src/spacecmd/package.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "Retracted: %s"
-msgstr "创建时间：%s"
+msgstr "已收回：%s"
 
 #: ../src/spacecmd/package.py:106
 #, python-format
@@ -4691,29 +4690,20 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "用法：schedule_list [开始日期] [结束日期]"
 
 #: ../src/spacecmd/schedule.py:459
-#, fuzzy
-msgid ""
-"schedule_deletearchived: Delete all archived actions older than given date."
-msgstr "schedule_listarchived：列出存档的操作"
+msgid "schedule_deletearchived: Delete all archived actions"
+msgstr "schedule_deletearchived：删除所有存档的操作"
 
 #: ../src/spacecmd/schedule.py:460
-#, fuzzy
-msgid "usage: schedule_deletearchived [yyyymmdd]"
-msgstr "用法：schedule_details ID"
+msgid "usage: schedule_deletearchived"
+msgstr "用法：schedule_deletearchived"
 
-#: ../src/spacecmd/schedule.py:462
-#, fuzzy
-msgid "If no date is provided it will delete all archived actions"
-msgstr "schedule_listarchived：列出存档的操作"
+#: ../src/spacecmd/schedule.py:477
+msgid "Do you want to delete all ({}) archived actions? [y/N]"
+msgstr "您要删除全部 ({}) 个存档的操作吗？[y/N]"
 
-#: ../src/spacecmd/schedule.py:485
-msgid "Do you want to delete ({}) archived actions? [y/N]"
-msgstr ""
-
-#: ../src/spacecmd/schedule.py:505
-#, fuzzy
+#: ../src/spacecmd/schedule.py:500
 msgid "No archived actions found."
-msgstr "未找到编辑器"
+msgstr "未找到存档的操作。"
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"

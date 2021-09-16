@@ -53,8 +53,8 @@ class CobblerTest
       raise 'creating profile failed.' + $ERROR_INFO.to_s
     end
     begin
-      @server.call('modify_profile', profile_id, 'name',      name,     @token)
-      @server.call('modify_profile', profile_id, 'distro',    distro,   @token)
+      @server.call('modify_profile', profile_id, 'name', name, @token)
+      @server.call('modify_profile', profile_id, 'distro', distro, @token)
       @server.call('modify_profile', profile_id, 'kickstart', location, @token)
     rescue
       raise 'modify profile failed.' + $ERROR_INFO.to_s
@@ -82,11 +82,11 @@ class CobblerTest
   def distro_create(name, kernel, initrd, breed = 'suse')
     begin
       distro_id = @server.call('new_distro', @token)
-      @server.call('modify_distro', distro_id, 'name',   name,   @token)
+      @server.call('modify_distro', distro_id, 'name', name, @token)
       @server.call('modify_distro', distro_id, 'kernel', kernel, @token)
       @server.call('modify_distro', distro_id, 'initrd', initrd, @token)
-      @server.call('modify_distro', distro_id, 'breed',  breed,  @token)
-      @server.call('save_distro', distro_id,                     @token)
+      @server.call('modify_distro', distro_id, 'breed', breed, @token)
+      @server.call('save_distro', distro_id, @token)
     rescue
       raise 'creating distribution failed.' + $ERROR_INFO.to_s
     end

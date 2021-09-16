@@ -9,7 +9,6 @@ import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import FilterForm from "./filter-form";
 import { showDialog } from "components/dialog/util";
 import { mapFilterFormToRequest } from "./filter.utils";
-import useUserLocalization from "core/user-localization/use-user-localization";
 import { FilterFormType } from "../shared/type/filter.type";
 
 type FilterEditModalContentProps = React.ComponentProps<typeof FilterForm> & {
@@ -65,7 +64,6 @@ const FilterEdit = (props: FilterEditProps) => {
   const [item, setFormData] = useState(props.initialFilterForm);
   const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
-  const { localTime } = useUserLocalization();
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
 
   const itemId = item.id?.toString() ?? undefined;
@@ -84,7 +82,7 @@ const FilterEdit = (props: FilterEditProps) => {
       showErrorToastr(t("Check the required fields below"), { autoHide: false });
     } else {
       if (props.editing) {
-        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", itemId)
+        onAction(mapFilterFormToRequest(item, props.projectLabel), "update", itemId)
           .then(updatedListOfFilters => {
             if (props.projectLabel) {
               redirectToProject(props.projectLabel);
@@ -99,7 +97,7 @@ const FilterEdit = (props: FilterEditProps) => {
             showErrorToastr(error.messages, { autoHide: false });
           });
       } else {
-        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "create")
+        onAction(mapFilterFormToRequest(item, props.projectLabel), "create")
           .then(updatedListOfFilters => {
             if (props.projectLabel) {
               redirectToProject(props.projectLabel);
@@ -160,7 +158,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   text={t("Delete")}
                   disabled={isLoading}
                   handler={() => {
-                    onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "delete", itemId)
+                    onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
                       .then(updatedListOfFilters => {
                         closeDialog(modalNameId);
                         showSuccessToastr(t("Filter deleted successfully"));

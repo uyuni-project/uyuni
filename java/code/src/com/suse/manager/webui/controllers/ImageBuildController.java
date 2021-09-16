@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -71,6 +72,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
@@ -270,6 +272,10 @@ public class ImageBuildController {
         }
         else {
             model.put("id", null);
+        }
+
+        if (new File(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg())).exists()) {
+            model.put("osImageStoreUrl", OSImageStoreUtils.getOSImageStoreRelativeURI(user.getOrg()));
         }
 
         model.put("isAdmin", user.hasRole(ADMIN_ROLE));

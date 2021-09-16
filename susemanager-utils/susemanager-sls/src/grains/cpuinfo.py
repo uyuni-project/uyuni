@@ -103,7 +103,7 @@ def cpusockets():
     feedback = list()
     grains = _lscpu_count_sockets(feedback) or _cpuinfo_count_sockets(feedback) or _dmidecode_count_sockets(feedback)
     if not grains:
-        log.warn("Could not determine CPU socket count: {0}".format(' '.join(feedback)))
+        log.warning("Could not determine CPU socket count: {0}".format(' '.join(feedback)))
 
     return grains
 
@@ -142,6 +142,6 @@ def cpu_data():
                 log.debug(values)
                 return values
             else:
-                log.warn("lscpu does not support -J option")
+                log.warning("lscpu does not support -J option")
         except (CommandExecutionError, ValueError) as error:
-            log.warn("lscpu: {0}".format(str(error)))
+            log.warning("lscpu: {0}".format(str(error)))

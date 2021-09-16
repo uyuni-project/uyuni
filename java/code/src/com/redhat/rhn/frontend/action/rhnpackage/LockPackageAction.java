@@ -18,6 +18,8 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,8 +64,18 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
     @Override
     protected DataResult getDataResult(Server server) {
-        DataResult result = PackageManager.systemTotalPackages(server.getId(), null);
-        return result;
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
+        // Check if this server is a minion
+        boolean isMinion = minion.isPresent();
+        LOG.debug(server.getId() + "is a minion system? " + isMinion);
+        // Check if this is a SUSE system (for minions only)
+        boolean isSUSEMinion = isMinion && minion.get().getOsFamily().equals("Suse");
+        LOG.debug(server.getId() + "is a SUSE system? " + isSUSEMinion);
+
+        if (isSUSEMinion || !isMinion) {
+            return PackageManager.systemTotalPackages(server.getId(), null);
+        }
+        return PackageManager.nonSUSEsystemLockingPackages(server.getId(), null);
     }
 
     /**
