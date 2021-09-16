@@ -1,6 +1,23 @@
 #!/bin/bash -e
 
 parent_project="systemsmanagement:Uyuni:Master"
+parent_repo_name="openSUSE_Leap_15.3"
+clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
+    Ubuntu1804-Uyuni-Client-Tools;xUbuntu_18.04 \
+    Ubuntu2004-Uyuni-Client-Tools;xUbuntu_20.04 \
+    openSUSE_Leap_15-Uyuni-Client-Tools;openSUSE_Leap_15.0 \
+    openSUSE_Leap_42-Uyuni-Client-Tools;openSUSE_Leap_42.3 \
+    SLE15-Uyuni-Client-Tools;SLE_15 \
+    SLE12-Uyuni-Client-Tools;SLE_12 \
+    EL8-Uyuni-Client-Tools;EL_8 \
+    Debian9-Uyuni-Client-Tools;Debian_9 \
+    Debian11-Uyuni-Client-Tools;Debian_11 \
+    Debian10-Uyuni-Client-Tools;Debian_10 \
+    CentOS8-Uyuni-Client-Tools;CentOS_8 \
+    CentOS7-Uyuni-Client-Tools;CentOS_7 \
+    CentOS6-Uyuni-Client-Tools;CentOS_6 \
+    Fedora30-Uyuni-Client-Tools;Fedora_30 \
+    Fedora31-Uyuni-Client-Tools;Fedora_31"
 
 usage_and_exit() {
     echo "usage: ${0} N [test_project]"
@@ -45,24 +62,6 @@ test_parent_project="${parent_project}:TEST:${1}:CR"
 if [ $# -eq 2 ];then
     test_parent_project=${2}
 fi
-
-parent_repo_name="openSUSE_Leap_15.3"
-clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
-    Ubuntu1804-Uyuni-Client-Tools;xUbuntu_18.04 \
-    Ubuntu2004-Uyuni-Client-Tools;xUbuntu_20.04 \
-    openSUSE_Leap_15-Uyuni-Client-Tools;openSUSE_Leap_15.0 \
-    openSUSE_Leap_42-Uyuni-Client-Tools;openSUSE_Leap_42.3 \
-    SLE15-Uyuni-Client-Tools;SLE_15 \
-    SLE12-Uyuni-Client-Tools;SLE_12 \
-    EL8-Uyuni-Client-Tools;EL_8 \
-    Debian9-Uyuni-Client-Tools;Debian_9 \
-    Debian11-Uyuni-Client-Tools;Debian_11 \
-    Debian10-Uyuni-Client-Tools;Debian_10 \
-    CentOS8-Uyuni-Client-Tools;CentOS_8 \
-    CentOS7-Uyuni-Client-Tools;CentOS_7 \
-    CentOS6-Uyuni-Client-Tools;CentOS_6 \
-    Fedora30-Uyuni-Client-Tools;Fedora_30 \
-    Fedora31-Uyuni-Client-Tools;Fedora_31"
 
 new_project_config="
     <project name=\"__TEST_PROJECT_NAME__\">
