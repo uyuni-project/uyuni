@@ -1,3 +1,4 @@
+- Execute the diskcheck script at login to validate the available space
 - trigger reboot needed message also when installhint is available
   on package level
 - add Content Lifecycle Management filter for package provides and

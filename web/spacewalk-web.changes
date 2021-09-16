@@ -1,3 +1,5 @@
+- Display a warning in the login page if the available disk space
+  on the server is running out
 - add Content Lifecycle Management filter for package provides
 
 -------------------------------------------------------------------
