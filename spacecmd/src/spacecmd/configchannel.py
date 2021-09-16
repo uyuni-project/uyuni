@@ -815,7 +815,7 @@ def do_configchannel_addfile(self, args, update_path=''):
                     failures = 0
                     break
                 print('')
-                logging.warning(_N('%s is not a valid channel') %
+                logging.warning(_N('%s is not a valid channel'),
                                 options.channel)
                 print('')
                 failures += 1
@@ -920,7 +920,7 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
                 if options.channel in self.do_configchannel_list('', True):
                     break
                 print('')
-                logging.warning(_N('%s is not a valid channel') %
+                logging.warning(_N('%s is not a valid channel'),
                                 options.channel)
                 print('')
         # check if this file already exists

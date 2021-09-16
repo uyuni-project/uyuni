@@ -2769,8 +2769,8 @@ def _crashes_api_removed(check_api_version):
         logging.error(_("This method was removed since API version %s") % crashes_api_removed_version)
         return True
     else:
-        logging.warning(_("This method is deprecated and will be removed in API version %s")
-                        % crashes_api_removed_version)
+        logging.warning(_("This method is deprecated and will be removed in API version %s"),
+                        crashes_api_removed_version)
     return False
 
 def help_system_listcrashedsystems(self):
