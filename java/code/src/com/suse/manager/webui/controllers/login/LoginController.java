@@ -123,6 +123,7 @@ public class LoginController {
         model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
+        model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
 
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }

@@ -42,6 +42,9 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.utils.DiskCheckHelper;
+import com.suse.manager.utils.DiskCheckSeverity;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
@@ -452,5 +455,16 @@ public class LoginHelper {
             errors.add(e.getMessage());
         }
         return user;
+    }
+
+    /**
+     * Validate the available disk space using an external script.
+     * @return a string representing the severity level.
+     */
+    public static String validateDiskSpaceAvailability() {
+        final DiskCheckHelper diskCheck = new DiskCheckHelper();
+
+        final DiskCheckSeverity diskCheckSeverity = diskCheck.executeDiskCheck();
+        return diskCheckSeverity.name().toLowerCase();
     }
 }
