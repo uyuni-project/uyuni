@@ -6,11 +6,17 @@
 
 ## Core - Initialize clients BEGIN ##
 
-- features/init_clients/sle_client.feature
-- features/init_clients/sle_minion.feature
-- features/init_clients/sle_ssh_minion.feature
-- features/init_clients/min_centos_salt.feature
-- features/init_clients/min_ubuntu_salt.feature
-- features/init_clients/buildhost_bootstrap.feature
+- features/init_clients/sle_client_start.feature
+- features/init_clients/sle_minion_start.feature
+- features/init_clients/sle_ssh_minion_start.feature
+- features/init_clients/min_centos_salt_start.feature
+- features/init_clients/min_ubuntu_salt_start.feature
+- features/init_clients/buildhost_bootstrap_start.feature
+- features/init_clients/sle_client_end.feature
+- features/init_clients/sle_minion_end.feature
+- features/init_clients/sle_ssh_minion_end.feature
+- features/init_clients/min_centos_salt_end.feature
+- features/init_clients/min_ubuntu_salt_end.feature
+- features/init_clients/buildhost_bootstrap_end.feature
 
 ## Post run Core - Initialize clients END ##

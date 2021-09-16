@@ -5,23 +5,13 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu_minion
-Feature: Bootstrap an Ubuntu minion and do some basic operations on it
+Feature: Bootstrap an Ubuntu minion and do some basic operations on it end
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap an Ubuntu minion
-    When I follow the left menu "Systems > Bootstrapping"
-    Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "ubuntu_minion" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
-    And I enter "linux" as "password"
-    And I select "1-UBUNTU-KEY" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
-    And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Systems > Overview"
+  Scenario: Bootstrap an Ubuntu minion ends
+    When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "ubuntu_minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu_minion"
     And I query latest Salt changes on ubuntu system "ubuntu_minion"
