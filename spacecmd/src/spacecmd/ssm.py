@@ -93,7 +93,7 @@ def do_ssm_add(self, args):
             logging.warning(_N('%s is already in the list') % system)
             continue
         self.ssm[system] = self.get_system_id(system)
-        logging.debug('Added %s' % system)
+        logging.debug('Added %s', system)
 
     if self.ssm:
         logging.debug('Systems Selected: %i' % len(self.ssm))
