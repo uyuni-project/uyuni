@@ -37,6 +37,8 @@ Tracks # **add downstream PR, if any**
 
 ## Changelogs
 
+Make sure the changelogs entries you are adding are compliant with https://github.com/uyuni-project/uyuni/wiki/Contributing#changelogs and https://github.com/uyuni-project/uyuni/wiki/Contributing#uyuni-projectuyuni-repository
+
 If you don't need a changelog check, please mark this checkbox:
 
 - [ ] No changelog needed
