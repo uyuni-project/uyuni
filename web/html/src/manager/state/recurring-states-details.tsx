@@ -6,19 +6,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Messages } from "components/messages";
 import { DisplayHighstate } from "./display-highstate";
-
-// todo extract to utils
-const targetTypeToString = targetType => {
-  switch (targetType) {
-    case "MINION":
-      return t("Minion");
-    case "GROUP":
-      return t("Group");
-    case "ORG":
-      return t("Organization");
-  }
-  return null;
-};
+import { targetTypeToString } from "./recurring-states-utils";
 
 type RecurringStatesDetailsProps = {
   data?: any;

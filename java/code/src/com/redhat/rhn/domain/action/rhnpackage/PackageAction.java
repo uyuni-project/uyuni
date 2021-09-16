@@ -75,6 +75,9 @@ public class PackageAction extends Action {
      */
     @Override
     public String getHistoryDetails(Server server, User currentUser) {
+        if (this.getClass().equals(PackageLockAction.class)) {
+            return "";
+        }
         LocalizationService ls = LocalizationService.getInstance();
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
@@ -84,7 +87,7 @@ public class PackageAction extends Action {
         else if (this.getClass().equals(PackageVerifyAction.class)) {
             retval.append(ls.getMessage("system.event.packagesVerify"));
         }
-        if (this.getClass().equals(PackageRemoveAction.class)) {
+        else if (this.getClass().equals(PackageRemoveAction.class)) {
             retval.append(ls.getMessage("system.event.packagesRemove"));
         }
         retval.append("</br><ul>");

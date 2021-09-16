@@ -32,6 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
+%global documentroot /var/www/html 
 %global m2crypto python3-m2crypto
 %endif
 
@@ -40,6 +41,7 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
+%global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
 %endif
 
@@ -321,13 +323,15 @@ install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/sate
 %if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
 sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
+
+sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-sed -i 's/#DOCUMENTROOT#/\/var\/www\/html/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
 %if 0%{?suse_version}
 sed -i 's/#LOGROTATE-3.8#.*/    su root www/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %fdupes %{buildroot}/%{python3rhnroot}

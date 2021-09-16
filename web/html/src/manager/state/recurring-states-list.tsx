@@ -6,19 +6,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
-
-// todo extract to utils
-const targetTypeToString = targetType => {
-  switch (targetType) {
-    case "MINION":
-      return "Minion";
-    case "GROUP":
-      return "Group";
-    case "ORG":
-      return "Organization";
-  }
-  return null;
-};
+import { targetTypeToString } from "./recurring-states-utils";
 
 type Props = {
   data?: any;
@@ -64,7 +52,6 @@ class RecurringStatesList extends React.Component<Props, State> {
     ];
 
     return (
-      <div>
         <InnerPanel
           title={t("Recurring States")}
           icon="spacewalk-icon-salt"
@@ -158,7 +145,6 @@ class RecurringStatesList extends React.Component<Props, State> {
             </div>
           </div>
         </InnerPanel>
-      </div>
     );
   }
 }

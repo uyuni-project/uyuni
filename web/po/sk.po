@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-07-14 20:10+0000\n"
+"PO-Revision-Date: 2021-08-03 19:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2093,9 +2093,8 @@ msgid "Projects in use"
 msgstr "Používané projekty"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
-#, fuzzy
 msgid "Live patching based on a specific system"
-msgstr "Opravy za chodu na základe produktu SUSE"
+msgstr "Opravy za chodu na základe konkrétneho systému"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
@@ -2354,6 +2353,8 @@ msgid ""
 "This environment cannot be deleted since it is being used in an {0}"
 "autoinstallation distribution{1}."
 msgstr ""
+"Toto prostredie nemožno odstrániť, pretože sa používa v {0}distribúcii s "
+"automatickou inštaláciou{1}."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:22
 msgid "New"
@@ -2523,9 +2524,8 @@ msgid "This channel is recommended"
 msgstr "Tento kanál je odporúčaný"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
-#, fuzzy
 msgid "This channel is mandatory"
-msgstr "Tento kanál je odporúčaný"
+msgstr "Tento kanál je povinný"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
@@ -2627,11 +2627,12 @@ msgstr "Neplatný typ cieľa."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
-msgstr "Vzorec bol uložený. Upraviť možnosti konfigurácie "
+msgstr ""
+"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
+"použiť "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -2759,9 +2760,8 @@ msgid "Config URL"
 msgstr "URL konfigurácie"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:365
-#, fuzzy
 msgid "Kiwi options"
-msgstr "Voľby jadra"
+msgstr "Voľby kiwi"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:409
 msgid "Activation key is required for kiwi images."
@@ -4970,7 +4970,7 @@ msgstr "Vymazať polia"
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
-msgstr ""
+msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
 msgid "Please install libvirt python module."
@@ -4981,6 +4981,8 @@ msgid ""
 "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
 "modules are loaded."
 msgstr ""
+"KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly jadra "
+"sú načítané."
 
 #: ../html/src/manager/virtualization/ListTab.tsx:164
 msgid "{0} selected"
@@ -5254,11 +5256,9 @@ msgid "Virtual network with no connection to other networks"
 msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-#, fuzzy
 msgid "Network based on macvtap driver to use a pool of physical interfaces. "
 msgstr ""
 "Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
-"Žiadna možná komunikácia medzi hosťom a hostiteľom"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
 msgid "SR-IOV pool"
@@ -5374,14 +5374,12 @@ msgid "Create Virtual Storage Pool"
 msgstr "Vytvoriť virtuálny úložný fond"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Pool"
-msgstr "Vytvoriť virtuálny úložný fond"
+msgstr "Virtuálny úložný fond"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#, fuzzy
 msgid "Virtual Storage Volume"
-msgstr "Virtuálne úložné fondy a zväzky"
+msgstr "Virtuálny úložný zväzok"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
@@ -5674,18 +5672,17 @@ msgstr "Kód chyby HTTP "
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:5
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:6
 msgid "undefined"
-msgstr ""
+msgstr "nedefinované"
 
 #: ../html/src/utils/test-utils/setup/t.test.ts:11
 #: ../html/src/utils/test-utils/setup/t.test.ts:12
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
-#, fuzzy
 msgid "foo {0} tea {1}"
-msgstr "Stránka {0} z {1}"
+msgstr "foo {0} tea {1}"
 
 #~ msgid "Time"
 #~ msgstr "Čas"

@@ -89,6 +89,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -394,11 +395,10 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
+            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
-                .collect(Collectors.toMap(
-                    info -> packageToKey(name, info),
-                    Function.identity()
-                ));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
 
             change.getOldValue().stream().forEach(info -> {
                 String key = packageToKey(name, info);
@@ -416,7 +416,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> name, info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -636,6 +636,9 @@ public class SaltUtils {
                         PkgProfileUpdateSlsResult.class));
             });
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
+            handlePackageLockData(serverAction, jsonResult, action);
+        }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 serverAction.setResultMsg("Failure");
@@ -734,6 +737,37 @@ public class SaltUtils {
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+        }
+    }
+
+    private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            String msg = "Error while changing the lock status";
+            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> {
+                        if (r.containsKey("pkg_|-pkg_locked_|-pkg_locked_|-held")) {
+                            serverAction.setResultMsg(msg + ":\n" +
+                                    r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment());
+                        }
+                        else {
+                            serverAction.setResultMsg(msg);
+                        }
+                    },
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.syncLockedPackages(minionServer.getId(), action.getId());
+            });
+        }
+        else {
+            String msg = "Successfully changed lock status";
+            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> serverAction.setResultMsg(msg + ":\n" +
+                            r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.updateLockedPackages(minionServer.getId(), action.getId());
+                PackageManager.updateUnlockedPackages(minionServer.getId(), action.getId());
+            });
         }
     }
 

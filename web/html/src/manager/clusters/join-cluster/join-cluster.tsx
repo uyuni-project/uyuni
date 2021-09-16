@@ -26,7 +26,7 @@ const JoinCluster = (props: Props) => {
 
   const { fetchNodesToJoin, scheduleJoinNode } = useClustersApi();
 
-  const scheduleJoin = (earliest: Date, actionChain: string | null): Promise<any> => {
+  const scheduleJoin = (earliest: moment.Moment, actionChain: string | null): Promise<any> => {
     if (nodesToJoin && joinConfig) {
       return scheduleJoinNode(
         props.cluster.id,

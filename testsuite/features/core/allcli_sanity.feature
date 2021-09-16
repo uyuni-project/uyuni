@@ -30,6 +30,13 @@ Feature: Sanity checks
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 
+@proxy
+  Scenario: The proxy is healthy
+    Then "proxy" should have a FQDN
+    And reverse resolution should work for "proxy"
+    And "proxy" should communicate with the server
+    And the clock from "proxy" should be exact
+
 @sle_client
   Scenario: The traditional client is healthy
     Then "sle_client" should have a FQDN
@@ -57,13 +64,6 @@ Feature: Sanity checks
     And reverse resolution should work for "ssh_minion"
     And "ssh_minion" should communicate with the server
     And the clock from "ssh_minion" should be exact
-
-@proxy
-  Scenario: The proxy is healthy
-    Then "proxy" should have a FQDN
-    And reverse resolution should work for "proxy"
-    And "proxy" should communicate with the server
-    And the clock from "proxy" should be exact
 
 @centos_minion
   Scenario: The CentOS minion is healthy

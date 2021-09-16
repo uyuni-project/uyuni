@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
 import { InputBase, InputBaseProps } from "./InputBase";
@@ -55,6 +56,9 @@ type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
   // 'value' and 'defaultValue' are not currently supported with the async Select
   // because string => Object value conversion is not possible with dynamic options
 
+  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
+  defaultValueOption?: Object;
+
   /**
    * Function that returns a promise, which is the set of options to be used once the promise resolves.
    */
@@ -108,6 +112,18 @@ export function Select(props: SelectProps | AsyncSelectProps) {
     }),
   };
 
+  let defaultValueOption;
+  if (isAsync(props)) {
+    defaultValueOption = props.defaultValueOption;
+  }
+  useEffect(() => {
+    const value = (formContext.model || {})[props.name || ""];
+    // Since defaultValueOption is not bound to the model, ensure sanity
+    if (isAsync(props) && typeof defaultValueOption !== 'undefined' && getOptionValue(defaultValueOption) !== value) {
+      console.error(`Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(defaultValueOption)}, got ${value}`);
+    }
+  }, []);
+
   // TODO: This `any` should be inferred based on the props instead, currently the props expose the right interfaces but we don't have strict checks here
   return (
     <InputBase<any> {...propsToPass}>
@@ -146,6 +162,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
               cacheOptions={props.cacheOptions}
               defaultOptions
               aria-label={props.title}
+              defaultValue={defaultValueOption}
               {...commonProps}
             />);
         }

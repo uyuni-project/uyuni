@@ -26,14 +26,11 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-  Scenario: Configure PXE part of DNS on the proxy
+  # Note: Avahi does not cross networks, so we need to cheat by serving tf.local
+  Scenario: Configure avahi info for PXE part of DNS on the proxy
     When I follow first "Bind" in the content area
-    # general information:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
-    # direct zone tf.local:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
     And I scroll to the top of the page
     And I press "Add Item" in available zones section
     And I enter "tf.local" in third available zone name field
@@ -48,7 +45,6 @@ Feature: PXE boot a terminal with Cobbler
     And I enter the IP address of "server" in sixth A address field
     And I press "Add Item" in third NS section
     And I enter the hostname of "proxy" in third NS field
-    # end
     And I scroll to the top of the page
     And I should see a "Bind" text
     And I click on "Save Formula"
@@ -85,6 +81,8 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Create"
     Then I should see a "Autoinstallation: 15-sp2-cobbler" text
     And I should see a "Autoinstallation Details" text
+
+  Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
@@ -150,7 +148,7 @@ Feature: PXE boot a terminal with Cobbler
     Then "pxeboot_minion" should not be registered
     And I stop salt-minion on the PXE boot minion
 
-  Scenario: Cleanup: remove DNS records added by mass import
+  Scenario: Cleanup: remove avahi info from DNS records
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area

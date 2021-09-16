@@ -14,8 +14,7 @@
  */
 package com.redhat.rhn.manager.formula;
 
-import static com.redhat.rhn.domain.formula.FormulaFactory.getGroupFormulaValuesByNameAndGroupId;
-
+import com.redhat.rhn.domain.dto.EndpointInfo;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -362,12 +361,40 @@ public class FormulaManager {
         return new FormulaData(minionID.getServerId(), minionID.getMinionId(), combinedFormulaData);
     }
 
+    private FormulaData getCombinedFormulaDataForSystemAndFormula(MinionIds minionID,
+            Optional<List<SystemGroupID>> managedSystemGroups,
+            Map<Long, Map<String, Map<String, Object>>> groupsFormulaData, String formulaName) {
+        Map<String, Object> combinedFormulaData = new HashMap<>();
+
+        managedSystemGroups.ifPresent(groups -> groups.forEach(group -> combinedFormulaData
+                .putAll(groupsFormulaData.getOrDefault(group.getGroupID(), Collections.emptyMap())
+                        .getOrDefault(formulaName, Collections.emptyMap()))));
+
+        combinedFormulaData.putAll(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionID.getMinionId())
+                .orElse(Collections.emptyMap()));
+
+        return new FormulaData(minionID.getServerId(), minionID.getMinionId(), combinedFormulaData);
+    }
+
     private Map<Long, Map<String, Object>> getGroupsFormulaData(Set<Long> groupIDs, String formulaName) {
         Map<Long, Map<String, Object>> response = new HashMap<>();
 
         for (Long groupID : groupIDs) {
             response.put(groupID, FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupID)
                     .orElse(Collections.emptyMap()));
+        }
+        return response;
+    }
+
+    private Map<Long, Map<String, Map<String, Object>>> getGroupsFormulaData(Set<Long> groupIDs) {
+        Map<Long, Map<String, Map<String, Object>>> response = new HashMap<>();
+        for (Long groupID : groupIDs) {
+            Map<String, Map<String, Object>> responseEntry = new HashMap<>();
+            for (String formula : FormulaFactory.getFormulasByGroupId(groupID)) {
+                responseEntry.put(formula, FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formula, groupID)
+                        .orElse(Collections.emptyMap()));
+            }
+            response.put(groupID, responseEntry);
         }
         return response;
     }
@@ -381,6 +408,32 @@ public class FormulaManager {
     public Optional<Map<String, Object>> getClusterFormulaData(Cluster cluster, String formulaKey) {
         Optional<String> formulaName = FormulaFactory.getClusterProviderFormulaName(cluster.getProvider(), formulaKey);
         return formulaName
-                .flatMap(name -> getGroupFormulaValuesByNameAndGroupId(name, cluster.getGroup().getId()));
+                .flatMap(name -> FormulaFactory.getGroupFormulaValuesByNameAndGroupId(name,
+                        cluster.getGroup().getId()));
+    }
+
+    /**
+     * Gets all endpoints details for given systems
+     * @param systemIDs list of system IDs
+     * @return list of endpoint information objects
+     */
+    public List<EndpointInfo> listEndpoints(List<Long> systemIDs) {
+        List<MinionIds> minionIDs = MinionServerFactory.findMinionIdsByServerIds(systemIDs);
+
+        Map<Long, List<SystemGroupID>> managedGroupsPerServer =
+                this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
+
+        Set<Long> groupIDs = managedGroupsPerServer.values().stream()
+                .flatMap(groupList -> groupList.stream().map(SystemGroupID::getGroupID)).collect(Collectors.toSet());
+
+        Map<Long, Map<String, Map<String, Object>>> groupsFormulaData = getGroupsFormulaData(groupIDs);
+
+        return minionIDs.stream().flatMap(mID -> FormulaFactory.getCombinedFormulasByServerId(mID.getServerId())
+                .stream()
+                .flatMap(formulaName -> FormulaFactory.getEndpointsFromFormulaData(formulaName,
+                        getCombinedFormulaDataForSystemAndFormula(mID,
+                                Optional.ofNullable(managedGroupsPerServer.get(mID.getServerId())),
+                                groupsFormulaData, formulaName)).stream())
+        ).collect(Collectors.toList());
     }
 }

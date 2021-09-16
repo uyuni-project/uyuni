@@ -126,6 +126,9 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertFalse(net1.isAutostart());
         assertTrue(net1.isPersistent());
         assertEquals("860e49a3-d227-4105-95ca-d19dc8f0c8b6", net1.getUuid());
+
+        VirtualNetworkInfoJson net0 = nets.stream().filter(net -> net.getName().equals("net0")).findFirst().get();
+        assertNull(net0.getBridge());
     }
 
     public void testDevices() throws Exception {

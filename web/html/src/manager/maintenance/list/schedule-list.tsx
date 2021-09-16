@@ -22,7 +22,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
   const [scheduleToDelete, setScheduleToDelete] = useState({});
 
   return (
-    <div>
+    <>
       <Table
         data={props.data}
         identifier={row => row.id}
@@ -91,7 +91,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
         onConfirm={() => props.onDelete(scheduleToDelete)}
         onClosePopUp={() => setScheduleToDelete({})}
       />
-    </div>
+    </>
   );
 };
 

@@ -15,7 +15,6 @@ import { unflattenModel, flattenModel, stripBlankValues, convertNumbers } from "
 import { SubmitButton, Button } from "components/buttons";
 import { Messages } from "components/messages";
 import { ActionSchedule } from "components/action-schedule";
-import { Utils } from "utils/functions";
 import { VirtualizationNetworkDevsApi } from "./virtualization-network-devs-api";
 import { VirtualPortFields } from "./properties/VirtualPortFields";
 import { Interface } from "./properties/Interface";
@@ -26,6 +25,7 @@ import * as FieldsData from "./properties/fields-data";
 import * as utils from "./properties/utils";
 
 import { MessageType } from "components/messages";
+import { localizedMoment } from "utils";
 
 type Props = {
   serverId: string;
@@ -115,7 +115,7 @@ export function NetworkProperties(props: Props) {
   const [model, setModel] = React.useState(props.initialModel ? flattenModel(props.initialModel) : {});
   const [invalid, setInvalid] = React.useState(false);
   const [actionChain, setActionChain] = React.useState<ActionChain | null | undefined>(null);
-  const [earliest, setEarliest] = React.useState(Utils.dateWithTimezone(props.localTime));
+  const [earliest, setEarliest] = React.useState(localizedMoment());
 
   React.useEffect(() => {
     clearFields(props.initialModel, setModel);
@@ -163,8 +163,8 @@ export function NetworkProperties(props: Props) {
     });
   };
 
-  const onDateTimeChanged = (date: Date) => {
-    setEarliest(date);
+  const onDateTimeChanged = (value: moment.Moment) => {
+    setEarliest(value);
   };
 
   const onActionChainChanged = (newActionChain: ActionChain | null | undefined) => {
@@ -439,8 +439,6 @@ export function NetworkProperties(props: Props) {
 
               <Panel key="schedule" title={t("Schedule")} headingLevel="h2">
                 <ActionSchedule
-                  timezone={props.timezone}
-                  localTime={props.localTime}
                   earliest={earliest}
                   actionChains={props.actionChains}
                   onActionChainChanged={onActionChainChanged}

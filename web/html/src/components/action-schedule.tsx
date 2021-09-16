@@ -1,11 +1,11 @@
 import * as React from "react";
-import { DateTimePicker } from "./datetimepicker";
+import { DateTimePicker } from "components/datetime";
 import { Combobox } from "./combobox";
 import { ComboboxItem } from "./combobox";
-import { Utils } from "../utils/functions";
 import Network from "utils/network";
 import { Loading } from "components/utils/Loading";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 export type MaintenanceWindow = {
   id: number;
@@ -20,11 +20,9 @@ export type ActionChain = {
 };
 
 type ActionScheduleProps = {
-  earliest: Date;
-  timezone?: string;
-  localTime?: string;
+  earliest: moment.Moment;
   actionChains?: Array<ActionChain>;
-  onDateTimeChanged: (date: Date) => void;
+  onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
   systemIds?: Array<string | number>;
   actionType?: string;
@@ -33,7 +31,7 @@ type ActionScheduleProps = {
 type ActionScheduleState = {
   loading: boolean;
   type: "earliest" | "actionChain";
-  earliest: Date;
+  earliest: moment.Moment;
   actionChain?: ActionChain;
   actionChains?: Array<ActionChain>;
   isMaintenanceModeEnabled: boolean;
@@ -117,12 +115,12 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     this.setState({ loading: false });
   };
 
-  onDateTimeChanged = (date: Date) => {
+  onDateTimeChanged = (value: moment.Moment) => {
     this.setState({
       type: "earliest",
-      earliest: date,
+      earliest: value,
     });
-    this.props.onDateTimeChanged(date);
+    this.props.onDateTimeChanged(value);
 
     if (this.props.onActionChainChanged) {
       this.props.onActionChainChanged(null);
@@ -135,7 +133,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
   onMaintenanceWindowChanged = (selectedItem: MaintenanceWindow) => {
     const startDateStr = selectedItem.fromLocalDate;
-    this.onDateTimeChanged(Utils.dateWithTimezone(startDateStr));
+    this.onDateTimeChanged(localizedMoment(startDateStr));
   };
 
   onSelectMaintenanceWindow = (event: any) => {
@@ -200,7 +198,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
   renderDatePicker = () => {
     return (
-      <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
+      <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} />
     );
   };
 
