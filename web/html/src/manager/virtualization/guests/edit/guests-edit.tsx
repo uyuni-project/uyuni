@@ -70,10 +70,10 @@ class GuestsEdit extends React.Component<Props> {
       ),
       {
         memory: model.memory,
+        earliest: model.earliest,
       },
       nicsParams,
       disksParams,
-      { earliest: Formats.LocalDateTime(model.earliest) }
     );
   }
 

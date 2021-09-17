@@ -44,10 +44,10 @@ class GuestsCreate extends React.Component<Props, State> {
       {
         type: model.vmType,
         memory: model.memory,
+        earliest: model.earliest,
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
       disks.length !== 0 ? { disks } : undefined,
-      { earliest: Formats.LocalDateTime(model.earliest) }
     );
   }
 
