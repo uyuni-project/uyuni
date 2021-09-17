@@ -1,9 +1,13 @@
-- Improved timezone support
-- Enhance the default base channel help message (bsc#1171520)
-- Don't capitalize acronyms
-- 'AppStreams with defaults' filter template in CLM
-- Add a link to OS image store dir in image list page
-- Link to CLM filter creation from system details page
+-------------------------------------------------------------------
+Fri Sep 17 12:12:54 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Improved timezone support
+  * Enhance the default base channel help message (bsc#1171520)
+  * Don't capitalize acronyms
+  * 'AppStreams with defaults' filter template in CLM
+  * Add a link to OS image store dir in image list page
+  * Link to CLM filter creation from system details page
 
 -------------------------------------------------------------------
 Mon Aug 09 11:08:35 CEST 2021 - jgonzalez@suse.com
