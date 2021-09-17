@@ -1,4 +1,8 @@
-- Fix the VM creation and editing submit button action (bsc#1190602)
+-------------------------------------------------------------------
+Fri Sep 17 14:58:41 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Fix the VM creation and editing submit button action (bsc#1190602)
 
 -------------------------------------------------------------------
 Fri Sep 17 12:12:54 CEST 2021 - jgonzalez@suse.com
