@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-16 15:11+0000\n"
+"PO-Revision-Date: 2021-09-17 11:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7698,39 +7698,41 @@ msgstr "Verzia systému"
 
 #: ../src/spacecmd/system.py:3791
 msgid "Channel Version"
-msgstr ""
+msgstr "Verzia kanála"
 
 #: ../src/spacecmd/system.py:3813
 msgid "Channel_newer_than_system"
-msgstr ""
+msgstr "Kanál_novší_ako_systém"
 
 #: ../src/spacecmd/system.py:3826
 msgid "System_newer_than_channel"
-msgstr ""
+msgstr "Systém_novší_ako_kanál"
 
 #: ../src/spacecmd/system.py:3835
 msgid "Missing_in_channel"
-msgstr ""
+msgstr "Chýbajúce_v_kanáli"
 
 #: ../src/spacecmd/system.py:3839
 msgid "system_comparewithchannel: Compare the installed packages on a"
-msgstr ""
+msgstr "system_comparewithchannel: Porovnať nainštalované balíky"
 
 #: ../src/spacecmd/system.py:3840
 msgid "                           system with those in the channels it is"
-msgstr ""
+msgstr "                           v systéme s balíkmi v kanáloch,"
 
 #: ../src/spacecmd/system.py:3841
 msgid "                           registerd to, or optionally some other"
 msgstr ""
+"                           do ktorých je systém zaregistrovaný, alebo "
+"voliteľne v niektorom inom"
 
 #: ../src/spacecmd/system.py:3842
 msgid "                           channel"
-msgstr ""
+msgstr "                           kanáli"
 
 #: ../src/spacecmd/system.py:3843
 msgid "usage: system_comparewithchannel <SYSTEMS> [options]"
-msgstr ""
+msgstr "použitie: system_comparewithchannel <SYSTÉMY> [voľby]"
 
 #: ../src/spacecmd/system.py:3845
 msgid "         -c/--channel : Specific channel to compare against,"
@@ -7746,7 +7748,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:3898
 msgid "Specified channel does not exist"
-msgstr ""
+msgstr "Určený kanál neexistuje"
 
 #: ../src/spacecmd/system.py:3909
 #, python-format
