@@ -10,7 +10,6 @@ import * as GuestNicsPanel from "../properties/guest-nics-panel";
 import * as DiskUtils from "../properties/disk-utils";
 import { SimpleActionApi } from "../../SimpleActionApi";
 import { VirtualizationGuestDefinitionApi } from "../virtualization-guest-definition-api";
-import { Formats } from "utils/functions";
 
 type Props = {
   host: any;

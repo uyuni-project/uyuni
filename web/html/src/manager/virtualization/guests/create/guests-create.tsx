@@ -8,7 +8,6 @@ import { GuestProperties } from "../GuestProperties";
 import { SimpleActionApi } from "../../SimpleActionApi";
 import * as GuestNicsPanel from "../properties/guest-nics-panel";
 import * as DiskUtils from "../properties/disk-utils";
-import { Formats } from "utils/functions";
 
 type Props = {
   host: any;
