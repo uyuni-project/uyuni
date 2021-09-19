@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-17 11:11+0000\n"
+"PO-Revision-Date: 2021-09-19 13:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7736,15 +7736,16 @@ msgstr "použitie: system_comparewithchannel <SYSTÉMY> [voľby]"
 
 #: ../src/spacecmd/system.py:3845
 msgid "         -c/--channel : Specific channel to compare against,"
-msgstr ""
+msgstr "         -c/--channel : Konkrétny kanál na porovnanie,"
 
 #: ../src/spacecmd/system.py:3846
 msgid "                        default is those subscribed to, including"
 msgstr ""
+"                        predvolené sú tie, ku ktorým je prihlásený, vrátane"
 
 #: ../src/spacecmd/system.py:3847
 msgid "                        child channels"
-msgstr ""
+msgstr "                        kanálov potomkov"
 
 #: ../src/spacecmd/system.py:3898
 msgid "Specified channel does not exist"
@@ -7758,6 +7759,8 @@ msgstr "systém %s nie je prihlásený k žiadnemu kanálu!"
 #: ../src/spacecmd/system.py:3911
 msgid "Please subscribe to a channel, or specify achannel to compare with"
 msgstr ""
+"Prosím, prihláste sa ku kanálu alebo zadajte kanál, s ktorým chcete "
+"porovnávať"
 
 #: ../src/spacecmd/system.py:3945
 #, python-format
@@ -7765,11 +7768,13 @@ msgid ""
 "\n"
 "System: %s"
 msgstr ""
+"\n"
+"Systém: %s"
 
 #: ../src/spacecmd/system.py:3971
 msgid ""
 "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
-msgstr ""
+msgstr "system_schedulehardwarerefresh: Naplánovať obnovu hardvéru pre systém"
 
 #: ../src/spacecmd/system.py:3972
 msgid ""
@@ -7778,12 +7783,18 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
+"použitie: system_schedulehardwarerefresh <SYSTÉMY> [voľby]\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:4034
 msgid ""
 "system_schedulepackagerefresh: Schedule a software package refresh for a "
 "system"
 msgstr ""
+"system_schedulepackagerefresh: Naplánovať obnovu softvérových balíkov pre "
+"systém"
 
 #: ../src/spacecmd/system.py:4035
 msgid ""
@@ -7792,20 +7803,26 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
+"usage: system_schedulepackagerefresh <SYSTÉMY> [voľby])\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:4096
 msgid ""
 "system_show_packageversion: Shows version of installed package on given "
 "system(s)"
 msgstr ""
+"system_show_packageversion: Zobrazí verziu nainštalovaného balíka v danom "
+"systéme(och)"
 
 #: ../src/spacecmd/system.py:4097
 msgid "usage: system_show_packageversion <SYSTEM> <PACKAGE>"
-msgstr ""
+msgstr "použitie: system_show_packageversion <SYSTÉM> <BALÍK>"
 
 #: ../src/spacecmd/system.py:4129
 msgid "Package\tVersion\tRelease\tEpoch\tArch\tSystem"
-msgstr ""
+msgstr "Balík\tVerzia\tVydanie\tObdobie\tArch\tSystém"
 
 #: ../src/spacecmd/system.py:4149
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
@@ -7813,13 +7830,15 @@ msgstr "system_setcontactmethod: Nastaviť kontaktnú metódu pre dané systém(
 
 #: ../src/spacecmd/system.py:4151
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
-msgstr ""
+msgstr "použitie: system_setcontactmethod <SYSTÉMY> <KONTAKTNÁ_METÓDA>"
 
 #: ../src/spacecmd/system.py:4200
 msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
 msgstr ""
+"system_scheduleapplyconfigchannels: Naplánovať použitie priradených "
+"konfiguračných kanálov do systému (Iba minion)"
 
 #: ../src/spacecmd/system.py:4201
 msgid ""
@@ -7828,28 +7847,34 @@ msgid ""
 "    options:\n"
 "        -s START_TIME"
 msgstr ""
+"použitie: scheduleapplyconfigchannels <SYSTÉMY> [voľby]\n"
+"\n"
+"    voľby:\n"
+"        -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:4252
 msgid "Schedule applying config channels to these systems [y/N]:"
-msgstr ""
+msgstr "Naplánovať použitie konfiguračných kanálov do týchto systémov [a/N]:"
 
 #: ../src/spacecmd/system.py:4269
 msgid ""
 "system_listmigrationtargets: List possible migration targets for given "
 "systems."
 msgstr ""
+"system_listmigrationtargets: Vypísať zoznam možných cieľov migrácie pre dané "
+"systémy."
 
 #: ../src/spacecmd/system.py:4270
 msgid "usage: system_listmigrationtargets <SYSTEMS>"
-msgstr ""
+msgstr "použitie: system_listmigrationtargets <SYSTÉMY>"
 
 #: ../src/spacecmd/system.py:4297
 msgid "WARN: Cannot find system "
-msgstr ""
+msgstr "POZOR: Nemožno nájsť systém "
 
 #: ../src/spacecmd/system.py:4300
 msgid "System "
-msgstr ""
+msgstr "Systém "
 
 #: ../src/spacecmd/system.py:4304
 msgid "  No migration targets"
