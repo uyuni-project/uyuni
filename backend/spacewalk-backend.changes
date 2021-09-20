@@ -1,6 +1,9 @@
-- Minor spec update.
-- Added RHN config parameter httpd_config_dir.
-- fix typo "verfication" instead of "verification"
+-------------------------------------------------------------------
+Fri Sep 17 12:02:04 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Added RHN config parameter httpd_config_dir.
+  * fix typo "verfication" instead of "verification"
 
 -------------------------------------------------------------------
 Mon Aug 09 10:57:52 CEST 2021 - jgonzalez@suse.com

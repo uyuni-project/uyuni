@@ -1,6 +1,11 @@
-- Support syncing patches with advisory status 'pending' (bsc#1190455)
-- allow Ansible Control Node entitlement for aarch64, ppc64le and s390x(bsc#1189799)
-- implement package locking for salt minions
+-------------------------------------------------------------------
+Fri Sep 17 12:16:58 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Support syncing patches with advisory status 'pending' (bsc#1190455)
+  * allow Ansible Control Node entitlement for aarch64, ppc64le
+    and s390x (bsc#1189799)
+  * implement package locking for salt minions
 
 -------------------------------------------------------------------
 Mon Aug 09 11:10:15 CEST 2021 - jgonzalez@suse.com

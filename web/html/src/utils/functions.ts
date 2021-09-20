@@ -35,34 +35,6 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
   return castRace;
 }
 
-function LocalDateTime(date: Date): string {
-  const padTo = v => {
-    v = v.toString();
-    if (v.length >= 2) return v;
-    else return padTo("0" + v);
-  };
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const days = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  return (
-    "" +
-    year +
-    "-" +
-    padTo(month + 1) +
-    "-" +
-    padTo(days) +
-    "T" +
-    padTo(hours) +
-    ":" +
-    padTo(minutes) +
-    ":" +
-    padTo(seconds)
-  );
-}
-
 function sortById(aRaw: any, bRaw: any): number {
   const aId = aRaw["id"];
   const bId = bRaw["id"];
@@ -202,13 +174,9 @@ const Utils = {
   getProductName,
 };
 
-const Formats = {
-  LocalDateTime,
-};
-
 const Formulas = {
   EditGroupSubtype,
   getEditGroupSubtype,
 };
 
-export { Utils, Formats, Formulas };
+export { Utils, Formulas };

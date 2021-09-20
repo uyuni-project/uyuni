@@ -8,7 +8,6 @@ import { GuestProperties } from "../GuestProperties";
 import { SimpleActionApi } from "../../SimpleActionApi";
 import * as GuestNicsPanel from "../properties/guest-nics-panel";
 import * as DiskUtils from "../properties/disk-utils";
-import { Formats } from "utils/functions";
 
 type Props = {
   host: any;
@@ -44,10 +43,10 @@ class GuestsCreate extends React.Component<Props, State> {
       {
         type: model.vmType,
         memory: model.memory,
+        earliest: model.earliest,
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
       disks.length !== 0 ? { disks } : undefined,
-      { earliest: Formats.LocalDateTime(model.earliest) }
     );
   }
 
