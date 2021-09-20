@@ -1,3 +1,4 @@
+- Update kernel live patch version on minion startup (bsc#1190276)
 - use TLSv1.3 if it is a supported Protocol
 - Adapt auto errata update to skip during CLM build (bsc#1189609)
 - Adapt auto errata update to respect maintenance windows
