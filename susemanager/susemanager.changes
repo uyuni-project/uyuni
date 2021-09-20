@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Mon Sep 20 12:18:14 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.29-1
 - Abort migration if data_directory is defined at the PostgreSQL
+
 -------------------------------------------------------------------
 Mon Aug 02 10:23:44 CEST 2021 - jmassaguerpla@suse.de
 
