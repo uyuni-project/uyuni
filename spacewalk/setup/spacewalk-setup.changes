@@ -9,6 +9,17 @@
   ones are saved with a ".backup" suffix
 
 -------------------------------------------------------------------
+Fri Sep 17 12:11:36 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Don't delete cobbler.conf contents.
+  * Fixed FileNotFoundError on cobbler setup.
+  * cobbler20-setup was removed
+  * spacewalk-setup-cobbler was reimplemented in Python
+  * Config files for Cobbler don't get edited in place anymore, thus the original
+    ones are saved with a ".backup" suffix
+
+-------------------------------------------------------------------
 Mon Aug 09 11:05:32 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

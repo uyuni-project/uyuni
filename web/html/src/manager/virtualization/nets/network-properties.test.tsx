@@ -258,7 +258,7 @@ describe("Rendering", () => {
 
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
-  }, 10000);
+  });
 
   test("Create openVSwitch bridge network", async done => {
     onSubmit = ({ definition }) => {

@@ -1,5 +1,9 @@
-- support Rocky Linux 8 x86_64
-- support MicroOS for Z-series
+-------------------------------------------------------------------
+Fri Sep 17 12:18:10 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * support Rocky Linux 8 x86_64
+  * support MicroOS for Z-series
 
 -------------------------------------------------------------------
 Mon Aug 09 10:44:52 CEST 2021 - jgonzalez@suse.com
