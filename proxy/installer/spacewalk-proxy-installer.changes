@@ -1,3 +1,5 @@
+- use system default for SSLProtocol
+
 -------------------------------------------------------------------
 Mon Aug 02 10:21:27 CEST 2021 - jmassaguerpla@suse.de
 
