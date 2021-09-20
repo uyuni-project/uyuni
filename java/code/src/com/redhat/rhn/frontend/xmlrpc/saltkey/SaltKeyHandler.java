@@ -84,6 +84,20 @@ public class SaltKeyHandler extends BaseHandler {
     }
 
     /**
+     * API endpoint to list denied salt keys
+     * @param loggedInUser the user
+     * @return 1 on success
+     *
+     * @xmlrpc.doc List of denied salt keys
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.returntype #array_single("string", "Denied salt key list")
+     */
+    public List<String> deniedList(User loggedInUser) {
+        ensureOrgAdmin(loggedInUser);
+        return saltKeyUtils.deniedSaltKeyList(loggedInUser);
+    }
+    
+    /**
      * API endpoint to accept minion keys
      * @param loggedInUser the user
      * @param minionId the key identifier (minionId)
@@ -133,7 +147,6 @@ public class SaltKeyHandler extends BaseHandler {
         return 1;
     }
 
-
     /**
      * API endpoint to delete minion keys
      * @param loggedInUser the user
@@ -147,14 +160,15 @@ public class SaltKeyHandler extends BaseHandler {
      */
     public int delete(User loggedInUser, String minionId) {
         ensureOrgAdmin(loggedInUser);
+        boolean success = false;
         try {
-            saltKeyUtils.deleteSaltKey(loggedInUser, minionId);
+            success = saltKeyUtils.deleteSaltKey(loggedInUser, minionId);
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
         }
-        catch (IllegalArgumentException e) {
-            throw new UnsupportedOperationException(e.getMessage());
+        if (!success) {
+            throw new UnsupportedOperationException("No key found for minionID [" + minionId + "]");
         }
         return 1;
     }

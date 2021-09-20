@@ -80,6 +80,18 @@ public class SaltKeyUtils {
     }
 
     /**
+     * List of denied salt keys
+     * @param user the user
+     * @return List of denied salt keys
+     * @throws PermissionException requires org admin privileges
+     * or management privileges for the server
+     */
+    public List<String> deniedSaltKeyList(User user) {
+
+        return saltApi.getKeys().getDeniedMinions();
+    }
+
+    /**
      * Accept a salt key
      * @param user the user
      * @param minionId the key identifier (minion id)
@@ -98,22 +110,11 @@ public class SaltKeyUtils {
             throw new IllegalArgumentException("Key for minionID [" + minionId + "] is not pending");
         }
 
-        return MinionServerFactory.findByMinionId(minionId).map(minionServer -> {
-            if (user.getServers().contains(minionServer)) {
-                saltApi.acceptKey(minionId);
-                return true;
-            }
-            else {
-                throw new PermissionException("You do not have permissions to " +
-                        "perform this action for system id[" + minionServer.getId() + "]");
-            }
-        }).orElseGet(() -> {
-            if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-                throw new PermissionException(RoleFactory.ORG_ADMIN);
-            }
-            saltApi.acceptKey(minionId);
-            return true;
-        });
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionException(RoleFactory.ORG_ADMIN);
+        }
+        saltApi.acceptKey(minionId);
+        return true;
     }
 
     /**
@@ -134,25 +135,14 @@ public class SaltKeyUtils {
         if (!unaccepted) {
             throw new IllegalArgumentException("Key for minionID [" + minionId + "] is not pending");
         }
-
-        return MinionServerFactory.findByMinionId(minionId).map(minionServer -> {
-            if (user.getServers().contains(minionServer)) {
-                saltApi.rejectKey(minionId);
-                return true;
-            }
-            else {
-                throw new PermissionException("You do not have permissions to " +
-                        "perform this action for system id[" + minionServer.getId() + "]");
-            }
-        }).orElseGet(() -> {
-            if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-                throw new PermissionException(RoleFactory.ORG_ADMIN);
-            }
-            saltApi.rejectKey(minionId);
-            return true;
-        });
+        
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionException(RoleFactory.ORG_ADMIN);
+        }
+        saltApi.rejectKey(minionId);
+        return true;
     }
-    
+
     /**
      * Delete a salt key
      * @param user the user
@@ -161,7 +151,7 @@ public class SaltKeyUtils {
      * @throws PermissionException requires org admin privileges
      * or management privileges for the server
      */
-    public boolean deleteSaltKey(User user, String minionId) throws PermissionException, IllegalArgumentException {
+    public boolean deleteSaltKey(User user, String minionId) throws PermissionException {
 
         //Note: since salt only allows globs we have to do our own strict matching
         Key.Names keys = saltApi.getKeys();
@@ -193,7 +183,8 @@ public class SaltKeyUtils {
             });
         }
         else {
-            throw new IllegalArgumentException("No key found for minionID [" + minionId + "]");
+            LOG.info(String.format("No key found for minionID [%s]", minionId));
+            return false;
         }
     }
 }
