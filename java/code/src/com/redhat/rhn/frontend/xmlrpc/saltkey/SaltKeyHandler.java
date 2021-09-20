@@ -95,32 +95,6 @@ public class SaltKeyHandler extends BaseHandler {
         return 1;
     }
 
-
-    /**
-     * API endpoint to generate and accept minion keys
-     * @param loggedInUser the user
-     * @param minionId the key identifier (minionId)
-     * @return 1 on success
-     *
-     * @xmlrpc.doc Generate and accept a minion key
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.param #param("string", "minionId")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    public int genAccept(User loggedInUser, String minionId) {
-        ensureOrgAdmin(loggedInUser);
-        try {
-            saltKeyUtils.genAcceptSaltKey(loggedInUser, minionId);
-        }
-        catch (PermissionException e) {
-            throw new PermissionCheckFailureException(e);
-        }
-        catch (IllegalArgumentException e) {
-            throw new UnsupportedOperationException(e.getMessage());
-        }
-        return 1;
-    }
-
     /**
      * API endpoint to delete minion keys
      * @param loggedInUser the user

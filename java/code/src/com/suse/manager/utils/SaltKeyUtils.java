@@ -105,42 +105,6 @@ public class SaltKeyUtils {
     }
 
     /**
-     * Generate and accept a salt key
-     * @param user the user
-     * @param minionId the key identifier (minion id)
-     * @return true on success otherwise false
-     * @throws PermissionException requires org admin privileges
-     * or management privileges for the server
-     */
-    public boolean genAcceptSaltKey(User user, String minionId) throws PermissionException {
-
-        //Note: since salt only allows globs we have to do our own strict matching
-        Key.Names keys = saltApi.getKeys();
-        boolean exists = keys.getMinions().stream().anyMatch(minionId::equals);
-
-        if (exists) {
-            throw new IllegalArgumentException("Key for minionID [" + minionId + "] already exists");
-        }
-
-        return MinionServerFactory.findByMinionId(minionId).map(minionServer -> {
-            if (user.getServers().contains(minionServer)) {
-                saltApi.generateKeysAndAccept(minionId, false);
-                return true;
-            }
-            else {
-                throw new PermissionException("You do not have permissions to " +
-                        "perform this action for system id[" + minionServer.getId() + "]");
-            }
-        }).orElseGet(() -> {
-            if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-                throw new PermissionException(RoleFactory.ORG_ADMIN);
-            }
-            saltApi.generateKeysAndAccept(minionId, false);
-            return true;
-        });
-    }
-
-    /**
      * Delete a salt key
      * @param user the user
      * @param minionId the key identifier (minion id)
