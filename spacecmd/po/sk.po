@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-19 13:11+0000\n"
+"PO-Revision-Date: 2021-09-20 19:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7878,19 +7878,19 @@ msgstr "Systém "
 
 #: ../src/spacecmd/system.py:4304
 msgid "  No migration targets"
-msgstr ""
+msgstr "  Žiadne ciele migrácie"
 
 #: ../src/spacecmd/system.py:4307
 msgid "  Target #"
-msgstr ""
+msgstr "  Cieľ #"
 
 #: ../src/spacecmd/system.py:4308
 msgid "    IDs: "
-msgstr ""
+msgstr "    ID: "
 
 #: ../src/spacecmd/system.py:4309
 msgid "    Friendly names: "
-msgstr ""
+msgstr "    Priateľské názvy: "
 
 #: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
 msgid ""
@@ -7908,6 +7908,7 @@ msgstr "Táto metóda je zastaraná a bude odstránená v budúcej verzii API"
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
+"system_schedulespmigration: Naplánovať migráciu opravného balíka pre systémy."
 
 #: ../src/spacecmd/system.py:4318
 msgid ""
@@ -7922,11 +7923,22 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
+"použitie: system_schedulespmigration <SYSTÉM> <OZNAČENIE_ZÁKLADNÉHO_KANÁLA> "
+"<CIEĽ_MIGRÁCIE> [voľby] \n"
+"    Pre parameter CIEĽ_MIGRÁCIE si pozrite system_listmigrationtargets. \n"
+"    Parameter CIEĽ_MIGRÁCIE sa musí zadať v tomto formáte: "
+"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    Voľby: \n"
+"        -s ČAS_SPUSTENIA \n"
+"        -d zadajte tento príznak, ak chcete vykonať skúšobné spustenie \n"
+"        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami ("
+"bez medzier))"
 
 #: ../src/spacecmd/system.py:4338
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
 msgstr ""
+"system_scheduleproductmigration: Naplánovať migráciu produktu pre systémy."
 
 #: ../src/spacecmd/system.py:4339
 msgid ""
@@ -7941,14 +7953,24 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
+"použitie: system_scheduleproductmigration <SYSTÉM> "
+"<OZNAČENIE_ZÁKLADNÉHO_KANÁLA> <CIEĽ_MIGRÁCIE> [voľby] \n"
+"    Pre parameter CIEĽ_MIGRÁCIE si pozrite system_listmigrationtargets. \n"
+"    Parameter CIEĽ_MIGRÁCIE sa musí zadať v tomto formáte: "
+"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    Voľby: \n"
+"        -s ČAS_SPUSTENIA \n"
+"        -d zadajte tento príznak, ak chcete vykonať skúšobné spustenie \n"
+"        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami ("
+"bez medzier))"
 
 #: ../src/spacecmd/system.py:4389
 msgid "Cannot find system "
-msgstr ""
+msgstr "Nemožno nájsť systém "
 
 #: ../src/spacecmd/system.py:4389
 msgid ". Skipping it."
-msgstr ""
+msgstr ". Preskakuje sa."
 
 #: ../src/spacecmd/system.py:4392
 msgid "Scheduling Product migration for system "
