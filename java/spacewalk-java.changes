@@ -1,3 +1,4 @@
+- Update kernel live patch version on minion startup (bsc#1190276)
 - Allow getting all completed actions via XMLRPC without display limit (bsc#1181223)
 - Support syncing patches with advisory status 'pending' (bsc#1190455)
 - Add XMLRPC API to force refreshing pillar data (bsc#1190123)
