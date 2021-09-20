@@ -50,12 +50,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "Accepted salt key list")
      */
     public List<String> acceptedList(User loggedInUser) {
-        try {
-            ensureOrgAdmin(loggedInUser);
-        }
-        catch (PermissionException e) {
-            throw new PermissionCheckFailureException(e);
-        }
+        ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.acceptedSaltKeyList(loggedInUser);
 
     }
@@ -71,12 +66,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "Pending salt key list")
      */
     public List<String> pendingList(User loggedInUser) {
-        try {
-            ensureOrgAdmin(loggedInUser);
-        }
-        catch (PermissionException e) {
-            throw new PermissionCheckFailureException(e);
-        }
+        ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.unacceptedSaltKeyList(loggedInUser);
     }
 
@@ -92,8 +82,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int accept(User loggedInUser, String minionId) {
+        ensureOrgAdmin(loggedInUser);
         try {
-            ensureOrgAdmin(loggedInUser);
             saltKeyUtils.acceptSaltKey(loggedInUser, minionId);
         }
         catch (PermissionException e) {
@@ -118,8 +108,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int genAccept(User loggedInUser, String minionId) {
+        ensureOrgAdmin(loggedInUser);
         try {
-            ensureOrgAdmin(loggedInUser);
             saltKeyUtils.genAcceptSaltKey(loggedInUser, minionId);
         }
         catch (PermissionException e) {
@@ -143,8 +133,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String minionId) {
+        ensureOrgAdmin(loggedInUser);
         try {
-            ensureOrgAdmin(loggedInUser);
             saltKeyUtils.deleteSaltKey(loggedInUser, minionId);
         }
         catch (PermissionException e) {
