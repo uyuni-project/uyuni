@@ -55,7 +55,6 @@ public class SaltKeyHandler extends BaseHandler {
 
     }
 
-
     /**
      * API endpoint to list pending salt keys
      * @param loggedInUser the user
@@ -68,6 +67,20 @@ public class SaltKeyHandler extends BaseHandler {
     public List<String> pendingList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.unacceptedSaltKeyList(loggedInUser);
+    }
+
+    /**
+     * API endpoint to list rejected salt keys
+     * @param loggedInUser the user
+     * @return 1 on success
+     *
+     * @xmlrpc.doc List of rejected salt keys
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.returntype #array_single("string", "Rejected salt key list")
+     */
+    public List<String> rejectedList(User loggedInUser) {
+        ensureOrgAdmin(loggedInUser);
+        return saltKeyUtils.rejectedSaltKeyList(loggedInUser);
     }
 
     /**
@@ -94,6 +107,32 @@ public class SaltKeyHandler extends BaseHandler {
         }
         return 1;
     }
+
+    /**
+     * API endpoint to reject minion keys
+     * @param loggedInUser the user
+     * @param minionId the key identifier (minionId)
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Reject a minion key
+     * @xmlrpc.param #param("string", "loggedInUser")
+     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int reject(User loggedInUser, String minionId) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            saltKeyUtils.rejectSaltKey(loggedInUser, minionId);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
+        return 1;
+    }
+
 
     /**
      * API endpoint to delete minion keys
