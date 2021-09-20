@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Sep 20 12:09:29 CEST 2021 - jmassaguerpla@suse.de
+
+- version 4.1.14-1
 - Add schedule_archivecompleted to mass archive actions (bsc#1181223)
 - Use proper ordering when listing activationkey
 - Remove whoami from the list of unauthenticated commands (bsc#1188977)
