@@ -488,7 +488,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         // Verify live patching version
-        assertEquals("kgraft_patch_2_2_1", minion.getKernelLiveVersion());
+        assertEquals("livepatch_2_2_1", minion.getKernelLiveVersion());
 
         //Switch back from live patching
         message = new JobReturnEventMessage(JobReturnEvent
@@ -2178,6 +2178,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testMinionStartupResponse() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String runningKernel = minion.getRunningKernel();
+        assertNull(minion.getKernelLiveVersion());
         Long lastBoot = minion.getLastBoot();
         String name = minion.getName();
         Map<String, String> placeholders = new HashMap<>();
@@ -2192,6 +2193,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
         assertEquals(name, minion.getName());
         assertNotSame(runningKernel, minion.getRunningKernel());
+        assertEquals("livepatch_2_2_3", minion.getKernelLiveVersion());
         assertNotSame(lastBoot, minion.getLastBoot());
     }
 

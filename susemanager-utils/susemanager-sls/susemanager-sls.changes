@@ -1,3 +1,5 @@
+- Update kernel live patch version on minion startup (bsc#1190276)
+
 -------------------------------------------------------------------
 Mon Aug 02 10:25:51 CEST 2021 - jmassaguerpla@suse.de
 

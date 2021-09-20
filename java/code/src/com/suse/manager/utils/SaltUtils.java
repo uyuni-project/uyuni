@@ -1853,10 +1853,10 @@ public class SaltUtils {
      * @param minion  minion for which information should be updated
      */
     public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
-        systemInfo.getKerneRelese().ifPresent(kerneRelese -> {
-            minion.setRunningKernel(kerneRelese);
-            ServerFactory.save(minion);
-        });
+        systemInfo.getKerneRelese().ifPresent(minion::setRunningKernel);
+        systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
+        ServerFactory.save(minion);
+
         //Update the uptime
         systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));
     }
