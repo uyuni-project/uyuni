@@ -47,7 +47,6 @@ public class SaltKeyHandler extends BaseHandler {
      *
      * @xmlrpc.doc List accepted salt keys
      * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.param #param("string", "minionId")
      * @xmlrpc.returntype #array_single("string", "Accepted salt key list")
      */
     public List<String> acceptedList(User loggedInUser) {
