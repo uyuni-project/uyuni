@@ -33,7 +33,7 @@ Add more tasks if needed.
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Check all the tests: everything should be green, or otherwise submission must be approved by QA
 
-# ToDo during the ssubmission window
+# ToDo during the submission window
 
 Add more tasks if needed (for example, asking Maintenace to change the channel definitions).
 
@@ -44,5 +44,5 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
 - [ ] Check if `golang-github-prometheus-node_exporter` is included in the SLE12 client tools submission, and if so, ping @witekest so he can prepare a submission for `SUSE:SLE-15-SP1:Update` (other codestreams will inherit, `SUSE:SLE-15:Update` is not needed because it's LTSS and soon EoL, and this package comes from Basesystem)
 - [ ] Check if `grafana` is included in the SLE15 client tools submission, and if so, ping @witekest so he can prepare a submission for `SUSE:SLE-15:Update` (other codestreams will inherit)
 - [ ] Create the JIRA ticket with all the submissions and ping the Maintenace Team
-- [ ] Send and email with the links for the patchinfos for the Server and the Proxy, and a link to this card to PO, so the release notes are generated and later submitted by the PO
+- [ ] Send an email with the links for the patchinfos for the Server and the Proxy, and a link to this card to PO, so the release notes are generated and later submitted by the PO
 - [ ] Submit the release notes
