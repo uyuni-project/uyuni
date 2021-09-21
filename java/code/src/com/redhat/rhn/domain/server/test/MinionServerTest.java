@@ -50,10 +50,7 @@ public class MinionServerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(minionServer);
         minionServer = reload(minionServer);
 
-        Pillar actual = minionServer.getPillars().stream()
-                .filter(item -> "category1".equals(item.getCategory()))
-                .findFirst()
-                .get();
+        Pillar actual = minionServer.getPillarByCategory("category1").get();
         assertNotNull(actual);
         assertEquals(123, actual.getPillar().get("data2"));
         assertTrue(actual.isMinionPillar());

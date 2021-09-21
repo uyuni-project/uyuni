@@ -336,12 +336,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if (!minionId.equals(oldMinionId)) {
             LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                     "profile to '" + minionId + "' [" + registeredMinion.getMachineId() + "]");
+            MinionPillarManager.INSTANCE.removePillar(registeredMinion);
             registeredMinion.setName(minionId);
             registeredMinion.setMinionId(minionId);
             ServerFactory.save(registeredMinion);
 
             MinionPillarManager.INSTANCE.generatePillar(registeredMinion);
-            MinionPillarManager.INSTANCE.removePillar(oldMinionId);
 
             migrateMinionFormula(minionId, Optional.of(oldMinionId));
 

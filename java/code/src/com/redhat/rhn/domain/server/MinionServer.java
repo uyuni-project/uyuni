@@ -256,6 +256,16 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * Get the pillar corresponding to a category.
+     *
+     * @param category the category of the pillar to look for
+     * @return the pillar if found
+     */
+    public Optional<Pillar> getPillarByCategory(String category) {
+        return pillars.stream().filter(pillar -> pillar.getCategory().equals(category)).findFirst();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

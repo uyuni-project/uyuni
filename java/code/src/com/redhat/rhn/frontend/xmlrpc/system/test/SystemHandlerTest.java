@@ -68,6 +68,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Note;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -149,6 +150,7 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.pillar.MinionCustomInfoPillarGenerator;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
@@ -158,9 +160,7 @@ import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -1086,17 +1086,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     private Map<String, Object> readCustomInfoPillar(MinionServer minion) throws Exception {
-        Path filePath = tmpPillarRoot.resolve(
-                PILLAR_DATA_FILE_PREFIX + "_" +
-                minion.getMinionId() + "_custom_info." +
-                PILLAR_DATA_FILE_EXT);
+        Pillar pillar = minion.getPillarByCategory(MinionCustomInfoPillarGenerator.CATEGORY).orElseThrow();
 
-        assertTrue(Files.exists(filePath));
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
+        Map<String, Object> map = pillar.getPillar();
 
         assertTrue(map.containsKey("custom_info"));
         map = (Map<String, Object>)map.get("custom_info");

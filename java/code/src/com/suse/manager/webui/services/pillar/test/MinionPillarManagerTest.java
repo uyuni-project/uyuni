@@ -14,14 +14,12 @@
  */
 package com.suse.manager.webui.services.pillar.test;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -33,14 +31,11 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
 
@@ -73,20 +68,11 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         ServerFactory.save(minion);
         MinionPillarManager.INSTANCE.generatePillar(minion);
 
-        Path filePath = tmpPillarRoot.resolve(
-                PILLAR_DATA_FILE_PREFIX + "_" +
-                minion.getMinionId() + "." +
-                PILLAR_DATA_FILE_EXT);
-
-        assertTrue(Files.exists(filePath));
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
+        Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
+        Map<String, Object> map = pillar.getPillar();
 
         assertTrue(map.containsKey("org_id"));
-        assertEquals(minion.getOrg().getId(), Long.valueOf((int) map.get("org_id")));
+        assertEquals(minion.getOrg().getId(), map.get("org_id"));
         assertTrue(map.containsKey("mgr_server"));
         assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_server"));
         assertTrue(map.containsKey("mgr_origin_server"));
@@ -141,15 +127,8 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
         MinionPillarManager.INSTANCE.generatePillar(minion);
 
-        Path filePath = tmpPillarRoot
-                .resolve(PILLAR_DATA_FILE_PREFIX + "_" + minion.getMinionId() + "." + PILLAR_DATA_FILE_EXT);
-
-        assertTrue(Files.exists(filePath));
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
+        Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
+        Map<String, Object> map = pillar.getPillar();
 
         Map<String, Object> channels = (Map<String, Object>) map.get("channels");
         assertEquals(1, channels.size());
@@ -170,17 +149,8 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
         MinionPillarManager.INSTANCE.generatePillar(minion);
 
-        Path filePath = tmpPillarRoot.resolve(
-            PILLAR_DATA_FILE_PREFIX + "_" +
-            minion.getMinionId() + "." +
-            PILLAR_DATA_FILE_EXT);
-
-        assertTrue(Files.exists(filePath));
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
+        Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
+        Map<String, Object> map = pillar.getPillar();
 
         Map<String, Object> channels = (Map<String, Object>) map.get("channels");
         assertEquals(1, channels.size());
@@ -226,15 +196,8 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
         MinionPillarManager.INSTANCE.generatePillar(minion);
 
-        Path filePath = tmpPillarRoot.resolve(
-                PILLAR_DATA_FILE_PREFIX + "_" +
-                minion.getMinionId() + "." +
-                PILLAR_DATA_FILE_EXT);
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
+        Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
+        Map<String, Object> map = pillar.getPillar();
 
         assertTrue(map.containsKey("mgr_server"));
         assertEquals(proxyHostname, map.get("mgr_server"));

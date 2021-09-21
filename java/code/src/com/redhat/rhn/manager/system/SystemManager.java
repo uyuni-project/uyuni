@@ -747,15 +747,15 @@ public class SystemManager extends BaseManager {
             removeSaltSSHKnownHosts(server);
         }
 
-        // remove server itself
-        ServerFactory.delete(server);
-
         server.asMinionServer().ifPresent(minion -> {
-            SaltStateGeneratorService.INSTANCE.removeServer(minion.getMinionId(), minion.getMachineId());
+            SaltStateGeneratorService.INSTANCE.removeServer(minion);
             if (deleteSaltKey) {
                 saltApi.deleteKey(minion.getMinionId());
             }
         });
+
+        // remove server itself
+        ServerFactory.delete(server);
     }
 
     private static void removeSaltSSHKnownHosts(Server server) {
