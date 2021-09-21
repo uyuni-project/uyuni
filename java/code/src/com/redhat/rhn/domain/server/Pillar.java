@@ -257,6 +257,16 @@ public class Pillar implements Identifiable {
     }
 
     /**
+     * Add an entry at the pillar root level.
+     *
+     * @param key the pillar name
+     * @param value the pillar value
+     */
+    public void add(String key, Object value) {
+        getPillar().put(key, value);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
