@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-20 19:13+0000\n"
+"PO-Revision-Date: 2021-09-21 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -7974,15 +7974,15 @@ msgstr ". Preskakuje sa."
 
 #: ../src/spacecmd/system.py:4392
 msgid "Scheduling Product migration for system "
-msgstr ""
+msgstr "Plánovanie migrácie produktu pre systém "
 
 #: ../src/spacecmd/system.py:4397
 msgid "Scheduled action ID: "
-msgstr ""
+msgstr "ID plánovanej akcie: "
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
-msgstr ""
+msgstr "user_create: Vytvoriť používateľa"
 
 #: ../src/spacecmd/user.py:51
 msgid ""
@@ -7996,30 +7996,39 @@ msgid ""
 "  -p PASSWORD\n"
 "  --pam enable PAM authentication"
 msgstr ""
+"použitie: user_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -u POUŽÍVATEĽSKÉ_MENO\n"
+"  -f KRSTNÉ_MENO\n"
+"  -l PRIEZVISKO\n"
+"  -e EMAIL\n"
+"  -p HESLO\n"
+"  --pam povoliť overenie PAM"
 
 #: ../src/spacecmd/user.py:120
 msgid "Note: password was ignored due to PAM mode"
-msgstr ""
+msgstr "Poznámka: heslo bolo ignorované kvôli režimu PAM"
 
 #: ../src/spacecmd/user.py:139
 msgid "user_delete: Delete an user"
-msgstr ""
+msgstr "user_delete: Vymazať používateľa"
 
 #: ../src/spacecmd/user.py:140
 msgid "usage: user_delete NAME"
-msgstr ""
+msgstr "použitie: user_delete MENO"
 
 #: ../src/spacecmd/user.py:168
 msgid "user_disable: Disable an user account"
-msgstr ""
+msgstr "user_disable: Zakázať používateľský účet"
 
 #: ../src/spacecmd/user.py:169
 msgid "usage: user_disable NAME"
-msgstr ""
+msgstr "použitie: user_disable MENO"
 
 #: ../src/spacecmd/user.py:195
 msgid "user_enable: Enable an user account"
-msgstr ""
+msgstr "user_disable: Povoliť používateľský účet"
 
 #: ../src/spacecmd/user.py:196
 msgid "usage: user_enable NAME"
