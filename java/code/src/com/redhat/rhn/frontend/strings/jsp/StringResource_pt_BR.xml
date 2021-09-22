@@ -82,12 +82,14 @@
       </trans-unit>
       <trans-unit id="column.tagged-systems" xml:space="preserve">
           <source>Tagged Systems</source>
+        <target>Sistemas Marcados</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tag-created" xml:space="preserve">
           <source>Tag Created</source>
+        <target>Etiqueta criada</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
