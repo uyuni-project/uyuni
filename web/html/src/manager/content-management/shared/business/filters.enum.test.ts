@@ -35,6 +35,25 @@ describe("Testing filters enum and descriptions", () => {
     expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package equal asd-123-123 (nevr)");
   });
 
+  test("test filter package provides description", () => {
+    const filter = {
+      name: "filter by provides name",
+      criteriaKey: "provides_name",
+      criteriaValue: "installhint(reboot-needed)",
+      entityType: "package",
+      rule: "deny",
+      matcher: "provides_name",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by provides name: deny package provides name equal installhint(reboot-needed) (provides_name)"
+    );
+    filter.criteriaKey = "provides_name";
+    filter.criteriaValue = "installhint(reboot-needed)";
+    filter.rule = "deny";
+    expect(getClmFilterDescription(filter)).toEqual("filter by provides name: deny package provides name equal installhint(reboot-needed) (provides_name)");
+  });
+
   test("test filter advisory name description", () => {
     const filter = {
       name: "filter by advisory name",
