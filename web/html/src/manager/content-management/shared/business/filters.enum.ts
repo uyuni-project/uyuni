@@ -99,7 +99,7 @@ const filterMatchers: FilterMatcherEnumType = {
   PROVIDES_NAME: {
     key: "provides_name",
     text: t("provides name"),
-    longDescription: t("provides given name"),
+    longDescription: t("provides name equal"),
   },
 };
 
