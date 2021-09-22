@@ -91,6 +91,11 @@ const filterMatchers: FilterMatcherEnumType = {
     text: t("matches"),
     longDescription: t("matches regular expression"),
   },
+  PROVIDES_NAME: {
+    key: "provides_name",
+    text: t("provides name"),
+    longDescription: t("provides given name"),
+  },
 };
 
 export const clmFilterOptions: ClmFilterOptionsEnumType = {
@@ -105,6 +110,12 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     text: t("NEVRA"),
     entityType: filterEntity.PACKAGE,
     matchers: [filterMatchers.EQUALS],
+  },
+  PROVIDES_NAME: {
+    key: "provides_name",
+    text: t("Contains Package Provides Name"),
+    entityType: filterEntity.PACKAGE,
+    matchers: [filterMatchers.PROVIDES_NAME],
   },
   ADVISORY_NAME: {
     key: "advisory_name",
