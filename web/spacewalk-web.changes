@@ -1,3 +1,5 @@
+- Add 'Flush cache' checkbox to Ansible playbook execution page
+  (bsc#1190405)
 - Fix 'Type' input in CLM source edit form (bsc#1190820)
 
 -------------------------------------------------------------------

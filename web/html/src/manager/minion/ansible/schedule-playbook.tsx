@@ -13,10 +13,15 @@ import { ActionChainLink, ActionLink } from "components/links";
 import { Toggler } from "components/toggler";
 import { Loading } from "components/utils/Loading";
 import { localizedMoment } from "utils";
+import { Check, Form } from "components/input";
 
 interface SchedulePlaybookProps {
   playbook: PlaybookDetails;
   onBack: () => void;
+}
+
+interface PlaybookArgs {
+  flushCache: Boolean
 }
 
 export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookProps) {
@@ -26,6 +31,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
+  const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [datetime, setDatetime] = useState(localizedMoment());
 
@@ -60,6 +66,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
       inventoryPath: inventoryPath?.text,
       controlNodeId: playbook.path.minionServerId,
       testMode: isTestMode,
+      flushCache: playbookArgs.flushCache,
       actionChainLabel: actionChain?.text || null,
       earliest: datetime,
     })
@@ -110,7 +117,11 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
               systemIds={[playbook.path.minionServerId]}
               actionType="ansible.playbook"
             />
-            <div className="form-horizontal">
+            <Form
+              model={playbookArgs}
+              onChange={setPlaybookArgs}
+              formDirection="form-horizontal"
+            >
               <div className="form-group">
                 <div className="col-sm-3 control-label">
                   <label>{t("Inventory Path")}:</label>
@@ -125,7 +136,10 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
                   />
                 </div>
               </div>
-            </div>
+              <div className="col-sm-offset-3 col-sm-6">
+                <Check name="flushCache" label={t("Flush Ansible fact cache")} title={t("Clear the fact cache for every host in inventory")}/>
+              </div>
+            </Form>
           </div>
         </div>
 
