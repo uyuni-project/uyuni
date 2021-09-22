@@ -264,7 +264,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     public void testSchedulePlaybookBlankPath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
-            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), false, new Date(),
+            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), false, false, new Date(),
                     Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
@@ -280,7 +280,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testSchedulePlaybookNonexistingMinion() throws Exception {
         try {
-            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, new Date(),
+            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, false, new Date(),
                     Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
