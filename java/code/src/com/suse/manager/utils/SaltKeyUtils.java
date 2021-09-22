@@ -135,7 +135,7 @@ public class SaltKeyUtils {
         if (!unaccepted) {
             throw new IllegalArgumentException("Key for minionID [" + minionId + "] is not pending");
         }
-        
+
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw new PermissionException(RoleFactory.ORG_ADMIN);
         }

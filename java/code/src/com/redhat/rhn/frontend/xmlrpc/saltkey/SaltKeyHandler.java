@@ -46,13 +46,12 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List accepted salt keys
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.returntype #array_single("string", "Accepted salt key list")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.returntype #array_single(" string ", " Accepted salt key list ")
      */
     public List<String> acceptedList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.acceptedSaltKeyList(loggedInUser);
-
     }
 
     /**
@@ -61,8 +60,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List pending salt keys
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.returntype #array_single("string", "Pending salt key list")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.returntype #array_single(" string ", " Pending salt key list ")
      */
     public List<String> pendingList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
@@ -75,8 +74,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List of rejected salt keys
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.returntype #array_single("string", "Rejected salt key list")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.returntype #array_single(" string ", " Rejected salt key list ")
      */
     public List<String> rejectedList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
@@ -89,14 +88,14 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List of denied salt keys
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.returntype #array_single("string", "Denied salt key list")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.returntype #array_single(" string ", " Denied salt key list ")
      */
     public List<String> deniedList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.deniedSaltKeyList(loggedInUser);
     }
-    
+
     /**
      * API endpoint to accept minion keys
      * @param loggedInUser the user
@@ -104,8 +103,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Accept a minion key
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.param #param(" string ", " minionId ")
      * @xmlrpc.returntype #return_int_success()
      */
     public int accept(User loggedInUser, String minionId) {
@@ -129,8 +128,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Reject a minion key
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.param #param(" string ", " minionId ")
      * @xmlrpc.returntype #return_int_success()
      */
     public int reject(User loggedInUser, String minionId) {
@@ -154,8 +153,8 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Delete a minion key
-     * @xmlrpc.param #param("string", "loggedInUser")
-     * @xmlrpc.param #param("string", "minionId")
+     * @xmlrpc.param #param(" string ", " loggedInUser ")
+     * @xmlrpc.param #param(" string ", " minionId ")
      * @xmlrpc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String minionId) {
