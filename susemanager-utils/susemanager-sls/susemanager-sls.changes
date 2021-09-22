@@ -1,3 +1,4 @@
+- Add 'flush_cache' flag to 'ansible.playbooks' call (bsc#1190405)
 - Update kernel live patch version on minion startup (bsc#1190276)
 - Fix virt grain python2 compatibility
 - disable unaccessible local repos before bootstrapping (bsc#1186405)
