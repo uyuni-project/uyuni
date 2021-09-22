@@ -1,3 +1,5 @@
+- Add 'Flush cache' checkbox to Ansible playbook execution page
+  (bsc#1190405)
 - Fix the VM creation and editing submit button action (bsc#1190602)
 - Improved timezone support
 - Enhance the default base channel help message (bsc#1171520)
