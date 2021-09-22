@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-21 19:11+0000\n"
+"PO-Revision-Date: 2021-09-22 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -8032,43 +8032,45 @@ msgstr "user_disable: Povoliť používateľský účet"
 
 #: ../src/spacecmd/user.py:196
 msgid "usage: user_enable NAME"
-msgstr ""
+msgstr "použitie: user_enable MENO"
 
 #: ../src/spacecmd/user.py:222
 msgid "user_list: List all users"
-msgstr ""
+msgstr "user_list: Vypísať zoznam všetkých používateľov"
 
 #: ../src/spacecmd/user.py:223
 msgid "usage: user_list"
-msgstr ""
+msgstr "použitie: user_list"
 
 #: ../src/spacecmd/user.py:240
 msgid "user_listavailableroles: List all available roles for users"
 msgstr ""
+"user_listavailableroles: Vypísať zoznam všetkých dostupných rolí pre "
+"používateľov"
 
 #: ../src/spacecmd/user.py:241
 msgid "usage: user_listavailableroles"
-msgstr ""
+msgstr "použitie: user_listavailableroles"
 
 #: ../src/spacecmd/user.py:253
 msgid "No roles has been found"
-msgstr ""
+msgstr "Neboli nájdené žiadne roly"
 
 #: ../src/spacecmd/user.py:259
 msgid "user_addrole: Add a role to an user account"
-msgstr ""
+msgstr "user_addrole: Pridať rolu do používateľského účtu"
 
 #: ../src/spacecmd/user.py:260
 msgid "usage: user_addrole USER ROLE"
-msgstr ""
+msgstr "použitie: user_addrole POUŽÍVATEĽ ROLA"
 
 #: ../src/spacecmd/user.py:293
 msgid "user_removerole: Remove a role from an user account"
-msgstr ""
+msgstr "user_removerole: Odstrániť rolu z používateľského účtu"
 
 #: ../src/spacecmd/user.py:294
 msgid "usage: user_removerole USER ROLE"
-msgstr ""
+msgstr "použitie: user_removerole POUŽÍVATEĽ ROLA"
 
 #: ../src/spacecmd/user.py:328
 msgid "user_details: Show the details of an user"
