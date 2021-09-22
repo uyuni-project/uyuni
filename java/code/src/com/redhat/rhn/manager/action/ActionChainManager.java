@@ -794,10 +794,11 @@ public class ActionChainManager {
      * @param actionChain the action chain to add to or null
      * @param earliest action will not be executed before this date
      * @param testMode true if the playbook shall be executed in test mode
+     * @param flushCache true if --flush-cache flag is to be set
      * @return the action object
      */
     public static PlaybookAction scheduleExecutePlaybook(User scheduler, Long controlNodeId, String playbookPath,
-            String inventoryPath, ActionChain actionChain, Date earliest, boolean testMode)
+            String inventoryPath, ActionChain actionChain, Date earliest, boolean testMode, boolean flushCache)
             throws TaskomaticApiException {
         String playbookName = FileUtils.getFile(playbookPath).getName();
 
@@ -810,6 +811,7 @@ public class ActionChainManager {
         details.setPlaybookPath(playbookPath);
         details.setInventoryPath(inventoryPath);
         details.setTestMode(testMode);
+        details.setFlushCache(flushCache);
         action.setDetails(details);
         ActionFactory.save(action);
 
