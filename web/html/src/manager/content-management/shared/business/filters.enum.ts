@@ -114,7 +114,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     key: "nevra",
     text: t("NEVRA"),
     entityType: filterEntity.PACKAGE,
-    matchers: [filterMatchers.EQUALS],
+    matchers: [filterMatchers.EQUALS, filterMatchers.GREATEREQ],
   },
   PROVIDES_NAME: {
     key: "provides_name",
