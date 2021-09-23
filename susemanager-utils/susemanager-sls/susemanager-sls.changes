@@ -1,3 +1,5 @@
+- Fix mgrcompat state module to work with Salt 3003 and 3004
+
 -------------------------------------------------------------------
 Fri Sep 17 12:17:49 CEST 2021 - jgonzalez@suse.com
 
