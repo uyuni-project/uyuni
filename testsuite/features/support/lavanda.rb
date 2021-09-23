@@ -2,11 +2,13 @@
 # Licensed under the terms of the MIT license.
 require 'twopence'
 require 'timeout'
+require_relative 'timeout_lib'
 
 # Extend the objects node VMs with useful methods needed for testsuite.
 # All function added here will be available like $server.run
 #  or $minion.run_until_ok etc.
 module LavandaBasic
+  extend TimeoutLib
   extend self
 
   # Hostname
