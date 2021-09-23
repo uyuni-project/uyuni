@@ -21,7 +21,7 @@ Feature: Pick dates
     And I follow "Remote Command" in the content area
     And I enter "ls" as "Script"
     And I pick "2016-08-27" as date
-    And I pick "5:30 pm" as time
+    And I pick "17h30" as time
     Then the date field is set to "2016-08-27"
     And the time field is set to "17:30"
     And the date picker is closed
