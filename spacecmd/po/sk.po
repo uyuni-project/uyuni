@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-22 20:11+0000\n"
+"PO-Revision-Date: 2021-09-23 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -8074,51 +8074,51 @@ msgstr "použitie: user_removerole POUŽÍVATEĽ ROLA"
 
 #: ../src/spacecmd/user.py:328
 msgid "user_details: Show the details of an user"
-msgstr ""
+msgstr "user_details: Zobraziť podrobnosti o používateľovi"
 
 #: ../src/spacecmd/user.py:329
 msgid "usage: user_details USER ..."
-msgstr ""
+msgstr "použitie: user_details POUŽÍVATEĽ ..."
 
 #: ../src/spacecmd/user.py:361
 #, python-format
 msgid "%s is not a valid user"
-msgstr ""
+msgstr "%s nie je platný používateľ"
 
 #: ../src/spacecmd/user.py:372
 #, python-format
 msgid "Username:      %s"
-msgstr ""
+msgstr "Používateľské meno:      %s"
 
 #: ../src/spacecmd/user.py:373
 #, python-format
 msgid "First Name:    %s"
-msgstr ""
+msgstr "Krstné meno:    %s"
 
 #: ../src/spacecmd/user.py:374
 #, python-format
 msgid "Last Name:     %s"
-msgstr ""
+msgstr "Priezvisko:     %s"
 
 #: ../src/spacecmd/user.py:375
 #, python-format
 msgid "Email Address: %s"
-msgstr ""
+msgstr "Emailová adresa: %s"
 
 #: ../src/spacecmd/user.py:376
 #, python-format
 msgid "Organisation:  %s"
-msgstr ""
+msgstr "Organizácia:  %s"
 
 #: ../src/spacecmd/user.py:377
 #, python-format
 msgid "Last Login:    %s"
-msgstr ""
+msgstr "Posledné prihlásenie:    %s"
 
 #: ../src/spacecmd/user.py:378
 #, python-format
 msgid "Created:       %s"
-msgstr ""
+msgstr "Vytvorený:       %s"
 
 #: ../src/spacecmd/user.py:379
 #, python-format
