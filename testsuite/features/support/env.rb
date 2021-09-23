@@ -19,7 +19,6 @@ require_relative 'twopence_init'
 require_relative 'navigation_lib'
 require_relative 'client_stack'
 require_relative 'retail_lib'
-require_relative 'timeout_lib'
 require_relative 'xmlrpc/xmlrpc_test'
 require_relative 'xmlrpc/xmlrpc_image'
 require_relative 'custom_formatter'
@@ -60,7 +59,7 @@ end
 # Fix a problem with minitest and cucumber options passed through rake
 MultiTest.disable_autorun
 
-World(MiniTest::Assertions, TimeoutLib, CommonLib, LavandaBasic, TwoPenceLib, NavigationLib, ClientStack, RetailLib)
+World(MiniTest::Assertions, CommonLib, LavandaBasic, TwoPenceLib, NavigationLib, ClientStack, RetailLib)
 World(CustomFormatter, PrettyFormatterExtended)
 
 # Initialize Twopence Nodes
