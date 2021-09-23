@@ -1,3 +1,4 @@
+- Add greater equals matcher to package (nevra) filter
 - UI and API call for changing proxy
 - Use an 'allow' filter for the kernel packages with live patching
   filter templates (bsc#1191460)

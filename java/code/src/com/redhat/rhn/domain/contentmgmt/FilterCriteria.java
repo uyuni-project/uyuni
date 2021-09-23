@@ -71,7 +71,9 @@ public class FilterCriteria {
     static {
         validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevra"));
         validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));

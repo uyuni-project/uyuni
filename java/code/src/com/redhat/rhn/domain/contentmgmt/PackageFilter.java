@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,6 +47,9 @@ public class PackageFilter extends ContentFilter<Package> {
                 return getField(pack, field, String.class).contains(value);
             case EQUALS:
                 return getField(pack, field, String.class).equals(value);
+            case GREATEREQ:
+                return pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) >= 0;
             case MATCHES:
                 if (pattern == null) {
                     pattern = Pattern.compile(value);
@@ -76,6 +80,18 @@ public class PackageFilter extends ContentFilter<Package> {
                 return type.cast(pack.getExtraTag("modularitylabel"));
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
+        }
+    }
+
+    private static String getEvr(String field, String value) {
+        if (field.equals("nevr")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$2$3-$4");
+        }
+        else if (field.equals("nevra")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$2$3-$4");
+        }
+        else {
+            throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");
         }
     }
 
