@@ -1,3 +1,5 @@
+- Fix 'Type' input in CLM source edit form (bsc#1190820)
+
 -------------------------------------------------------------------
 Fri Sep 17 14:58:41 CEST 2021 - jgonzalez@suse.com
 

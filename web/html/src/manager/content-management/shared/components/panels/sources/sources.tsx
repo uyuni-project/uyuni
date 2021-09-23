@@ -29,6 +29,7 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
           label={t("Type")}
           labelClass="col-md-3"
           divClass="col-md-8"
+          defaultValue="software"
           options={[{ value: "software", label: t("Channel") }]}
         />
       </div>
