@@ -1,7 +1,5 @@
 #! /usr/bin/ruby
-# Copyright (c) 2017-2021 SUSE LLC.
-# Licensed under the terms of the MIT license.
-
+# this run on travis
 duplicata = `cat features/*.feature | grep Scenario | sort | uniq -cd`.strip
 if duplicata.to_s.empty?
   puts 'no duplicata great job'
