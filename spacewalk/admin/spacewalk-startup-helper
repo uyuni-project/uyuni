@@ -115,7 +115,7 @@ ensure_httpd_down() {
     COUNT=0
     LIMIT=10
 
-    while [ "$(pidof -c httpd | wc -w)" -gt 0 ] && [ "$COUNT" -lt "$LIMIT" ]
+    while [ "$(pgrep -c httpd)" -gt 0 ] && [ "$COUNT" -lt "$LIMIT" ]
     do
        sleep 1
        ((COUNT++))

@@ -1,3 +1,5 @@
+- replaced pidof with pgrep and removed sysvinit-tools dependency
+
 -------------------------------------------------------------------
 Mon Aug 09 10:57:26 CEST 2021 - jgonzalez@suse.com
 
