@@ -269,6 +269,7 @@ public class AnsibleManager extends BaseManager {
      * @param inventoryPath inventory path
      * @param controlNodeId control node id
      * @param testMode true if the playbook should be executed as test mode
+     * @param flushCache true if --flush-cache flag is to be set
      * @param earliestOccurrence earliestOccurrence
      * @param actionChainLabel the action chain label
      * @param user the user
@@ -277,7 +278,8 @@ public class AnsibleManager extends BaseManager {
      * @throws IllegalArgumentException if playbook path is empty
      */
     public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId, boolean testMode,
-            Date earliestOccurrence, Optional<String> actionChainLabel, User user) throws TaskomaticApiException {
+            boolean flushCache, Date earliestOccurrence, Optional<String> actionChainLabel, User user)
+            throws TaskomaticApiException {
         if (StringUtils.isBlank(playbookPath)) {
             throw new IllegalArgumentException("Playbook path cannot be empty.");
         }
@@ -289,7 +291,7 @@ public class AnsibleManager extends BaseManager {
                 .orElse(null);
 
         return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
-                inventoryPath, actionChain, earliestOccurrence, testMode).getId();
+                inventoryPath, actionChain, earliestOccurrence, testMode, flushCache).getId();
     }
 
     /**

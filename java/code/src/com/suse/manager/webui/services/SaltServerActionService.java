@@ -2373,6 +2373,7 @@ public class SaltServerActionService {
         pillarData.put("playbook_path", playbookPath);
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
+        pillarData.put("flush_cache", details.isFlushCache());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
     }
