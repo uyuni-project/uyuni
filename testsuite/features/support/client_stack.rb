@@ -4,10 +4,12 @@
 require 'nokogiri'
 require 'timeout'
 require_relative 'lavanda'
+require_relative 'timeout_lib'
 
 # Client stack module interacts with the default client
 module ClientStack
   extend LavandaBasic
+  extend TimeoutLib
   extend self
 
   # Returns the path for the repodata of a channel
