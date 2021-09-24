@@ -23,9 +23,39 @@ mgrcompat.__grains__ = {}
 def test_module_run_on_phosphorous():
     mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
     mgrcompat.module.run = mock
-    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3003, None, None, None]}):
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3005, None, None, None]}):
         mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
         mock.assert_called_once_with(**TAILORED_MODULE_RUN_KWARGS)
+
+def test_module_run_on_silicon():
+    mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
+    mgrcompat.module.run = mock
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3004, None, None, None]}):
+        mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
+        mock.assert_called_once_with(**MGRCOMPAT_MODULE_RUN_KWARGS)
+
+def test_module_run_on_silicon_use_superseded():
+    mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
+    mgrcompat.module.run = mock
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3004, None, None, None]}):
+        with patch.dict(mgrcompat.__opts__, {'use_superseded': ['module.run']}):
+            mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
+            mock.assert_called_once_with(**TAILORED_MODULE_RUN_KWARGS)
+
+def test_module_run_on_aluminum():
+    mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
+    mgrcompat.module.run = mock
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3003, None, None, None]}):
+        mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
+        mock.assert_called_once_with(**MGRCOMPAT_MODULE_RUN_KWARGS)
+
+def test_module_run_on_aluminum_use_superseded():
+    mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
+    mgrcompat.module.run = mock
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3003, None, None, None]}):
+        with patch.dict(mgrcompat.__opts__, {'use_superseded': ['module.run']}):
+            mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
+            mock.assert_called_once_with(**TAILORED_MODULE_RUN_KWARGS)
 
 def test_module_run_on_magnesium():
     mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
