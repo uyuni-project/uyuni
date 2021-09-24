@@ -141,28 +141,52 @@ base:
 EOF
     fi
 fi
-# Restrict Java RMI to localhost (bsc#1184617)
-restrict_to_localhost()
+# Run JMX exporter as Java Agent (bsc#1184617)
+set_up_java_agent()
 {
-  JMXREMOTE_HOST='-Dcom.sun.management.jmxremote.host='
-  JMXREMOTE_PORT='-Dcom.sun.management.jmxremote.port='
-  RMI_SERVER_HOSTNAME='-Djava.rmi.server.hostname='
-  systemctl is-enabled ${1} > /dev/null 2>&1
+  JMXREMOTE_OPT='-Dcom\.sun\.management\.jmxremote\.'
+  RMI_SERVER_HOSTNAME='-Djava\.rmi\.server\.hostname='
+  JMX_EXPORTER_JAVA_AGENT='jmx_prometheus_javaagent.jar'
+  service_name='prometheus-jmx_exporter@'${1}'.service'
+  systemctl is-enabled $service_name > /dev/null 2>&1
   jmx_exporter_enabled=$?
-  grep -q -- $JMXREMOTE_HOST ${2}
-  jmxremote_host_configured=$?
-  if [ $jmx_exporter_enabled -eq 0 ] && [ $jmxremote_host_configured -eq 1 ]; then
-    sed -ri "s/JAVA_OPTS=\"(.*)${JMXREMOTE_PORT}(.*)\"/JAVA_OPTS=\"\1${JMXREMOTE_HOST}localhost\ ${JMXREMOTE_PORT}\2\"/" ${2}
-    sed -ri "s/JAVA_OPTS=\"(.*)${RMI_SERVER_HOSTNAME}\S*(.*)\"/JAVA_OPTS=\"\1${RMI_SERVER_HOSTNAME}localhost\2\"/" ${2}
+  grep -q -- $JMXREMOTE_OPT ${2}
+  jmxremote_opt_configured=$?
+  grep -q -- $JMX_EXPORTER_JAVA_AGENT ${2}
+  jmx_exporter_java_agent_configured=$?
+  if [ $jmx_exporter_enabled -eq 0 ]; then
+    systemctl disable $service_name
+    if [ $jmxremote_opt_configured -eq 0 ]; then
+      sed -ri "s/[[:blank:]]*${JMXREMOTE_OPT}[[:alpha:]]+=[[:alnum:]]+//g" ${2}
+      sed -ri "s/[[:blank:]]*${RMI_SERVER_HOSTNAME}[[:alpha:]]+//g" ${2}
+    fi
+    if [ ! -f /etc/prometheus-jmx_exporter/${1}/uyuni.yml ]; then
+      cat > /etc/prometheus-jmx_exporter/${1}/uyuni.yml << EOF
+whitelistObjectNames:
+  - java.lang:type=Threading,*
+  - java.lang:type=Memory,*
+  - Catalina:type=ThreadPool,name=*
+rules:
+  - pattern: ".*"
+EOF
+    fi
+    if [ $jmx_exporter_java_agent_configured -eq 1 ]; then
+      sed -ri "s/JAVA_OPTS=\"(.*)\"/JAVA_OPTS=\"\1\ -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=${3}:\/etc\/prometheus-jmx_exporter\/${1}\/uyuni.yml\"/" ${2}
+    fi
+  fi
+  if [ ${1} == 'taskomatic' ]; then
+    sed -ri "s/JAVA_OPTS/export\ JAVA_OPTS/" ${2}
   fi
 }
 tomcat_config=/etc/sysconfig/tomcat
+tomcat_jmx_exporter_port=5556
 taskomatic_config=/etc/rhn/taskomatic.conf
+taskomatic_jmx_exporter_port=5557
 if [ $1 -gt 1 ] && [ -e $tomcat_config ]; then
-  restrict_to_localhost prometheus-jmx_exporter@tomcat.service $tomcat_config
+  set_up_java_agent tomcat $tomcat_config $tomcat_jmx_exporter_port
 fi
 if [ $1 -gt 1 ] && [ -e $taskomatic_config ]; then
-  restrict_to_localhost prometheus-jmx_exporter@taskomatic.service $taskomatic_config
+  set_up_java_agent taskomatic $taskomatic_config $taskomatic_jmx_exporter_port
 fi
 
 %files

@@ -46,54 +46,17 @@ jmx_exporter:
   cmd.run:
     - name: /usr/bin/rpm --query --info prometheus-jmx_exporter prometheus-jmx_exporter-tomcat
 
-{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
-{%- include 'srvmonitoring/removejmxprops.sls' %}
+{% set remove_javaagent_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
+{%- include 'srvmonitoring/removejavaagentprops.sls' %}
 
-jmx_tomcat_config:
-  cmd.run:
-    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=localhost"/' /etc/sysconfig/tomcat
-    - require:
-      - cmd: remove_tomcat_jmx_*
-
-jmx_exporter_tomcat_service:
-  service.running:
-    - name: prometheus-jmx_exporter@tomcat
-    - enable: True
-    - require:
-      - cmd: jmx_exporter
-      - cmd: jmx_tomcat_config
-
-jmx_exporter_taskomatic_systemd_config:
+jmx_exporter_tomcat_yaml_config:
   file.managed:
-    - name: /etc/prometheus-jmx_exporter/taskomatic/environment
+    - name: /etc/prometheus-jmx_exporter/tomcat/uyuni.yml
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - contents: |
-        PORT="5557"
-        EXP_PARAMS=""
-
-{% set remove_jmx_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
-{%- include 'srvmonitoring/removejmxprops.sls' %}
-
-jmx_taskomatic_config:
-  cmd.run:
-    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=localhost"/' /etc/rhn/taskomatic.conf
-    - require:
-      - cmd: remove_taskomatic_jmx_*
-
-jmx_exporter_taskomatic_yaml_config:
-  file.managed:
-    - name: /etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml
-    - makedirs: True
-    - user: root
-    - group: root
-    - mode: 644
-    - contents: |
-        hostPort: localhost:3334
-        username:
-        password:
         whitelistObjectNames:
           - java.lang:type=Threading,*
           - java.lang:type=Memory,*
@@ -101,15 +64,35 @@ jmx_exporter_taskomatic_yaml_config:
         rules:
         - pattern: ".*"
 
-jmx_exporter_taskomatic_service:
-  service.running:
-    - name: prometheus-jmx_exporter@taskomatic
-    - enable: True
+jmx_tomcat_config:
+  cmd.run:
+    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=5556:\/etc\/prometheus-jmx_exporter\/tomcat\/uyuni.yml"/' /etc/sysconfig/tomcat
     - require:
-      - cmd: jmx_exporter
-      - cmd: jmx_taskomatic_config
-      - file: jmx_exporter_taskomatic_systemd_config
-      - file: jmx_exporter_taskomatic_yaml_config
+      - cmd: remove_tomcat_javaagent
+
+{% set remove_javaagent_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
+{%- include 'srvmonitoring/removejavaagentprops.sls' %}
+
+jmx_exporter_taskomatic_yaml_config:
+  file.managed:
+    - name: /etc/prometheus-jmx_exporter/taskomatic/uyuni.yml
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: 644
+    - contents: |
+        whitelistObjectNames:
+          - java.lang:type=Threading,*
+          - java.lang:type=Memory,*
+          - Catalina:type=ThreadPool,name=*
+        rules:
+        - pattern: ".*"
+
+jmx_taskomatic_config:
+  cmd.run:
+    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=5557:\/etc\/prometheus-jmx_exporter\/taskomatic\/prometheus-jmx_exporter.yml"/' /etc/rhn/taskomatic.conf
+    - require:
+      - cmd: remove_taskomatic_javaagent
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

@@ -644,7 +644,6 @@ public class TaskoXmlRpcHandler {
      * @return true if JMX system props props
      */
     public boolean isJmxEnabled() {
-        return StringUtils.isNotEmpty(System.getProperty("com.sun.management.jmxremote.port")) &&
-                StringUtils.isNotEmpty(System.getProperty("java.rmi.server.hostname"));
+        return StringUtils.contains(System.getenv("JAVA_OPTS"), "jmx_prometheus_javaagent.jar");
     }
 }
