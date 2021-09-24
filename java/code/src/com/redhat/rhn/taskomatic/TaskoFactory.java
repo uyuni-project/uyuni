@@ -16,12 +16,12 @@ package com.redhat.rhn.taskomatic;
 
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;

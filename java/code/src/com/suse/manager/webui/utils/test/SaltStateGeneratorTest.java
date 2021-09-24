@@ -17,13 +17,16 @@ package com.suse.manager.webui.utils.test;
 
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltStateGenerator;
+
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import junit.framework.TestCase;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Test for SparkTestUtils.

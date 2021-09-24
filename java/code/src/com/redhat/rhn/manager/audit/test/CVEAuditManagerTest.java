@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEUpgradePath;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.getAllRelevantChannels;
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.getRelevantChannels;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
@@ -30,14 +34,8 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEUpgradePath;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
-
-import java.util.*;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -55,10 +53,30 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.manager.audit.*;
+import com.redhat.rhn.manager.audit.CVEAuditImage;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
+import com.redhat.rhn.manager.audit.CVEAuditSystem;
+import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
+import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
+import com.redhat.rhn.manager.audit.PatchStatus;
+import com.redhat.rhn.manager.audit.RankedChannel;
+import com.redhat.rhn.manager.audit.ServerChannelIdPair;
+import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Unit tests for {@link CVEAuditManager}.

@@ -15,14 +15,14 @@
 
 package com.redhat.rhn.frontend.nav;
 
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.stream.Collectors;
+import com.redhat.rhn.frontend.html.HtmlTag;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
-import com.redhat.rhn.frontend.html.HtmlTag;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 /**
  * DialognavRenderer - renders a navigation bar

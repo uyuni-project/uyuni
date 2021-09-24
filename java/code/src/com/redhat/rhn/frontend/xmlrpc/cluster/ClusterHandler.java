@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchClusterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.clusters.ClusterFactory;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.clusters.ClusterNode;

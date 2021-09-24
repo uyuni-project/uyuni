@@ -15,6 +15,14 @@
 
 package com.redhat.rhn.manager.ssm.test;
 
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
@@ -34,13 +42,15 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.ChannelChangeDto;
 import com.redhat.rhn.manager.ssm.ScheduleChannelChangesResultDto;
+import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -49,14 +59,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
 
 /**
  * Test for {@link SsmManager}.

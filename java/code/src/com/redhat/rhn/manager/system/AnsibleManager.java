@@ -36,11 +36,12 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.utils.Xor;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 

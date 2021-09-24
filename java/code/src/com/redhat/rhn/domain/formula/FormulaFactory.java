@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+
 import com.suse.manager.clusters.ClusterFactory;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -40,6 +41,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

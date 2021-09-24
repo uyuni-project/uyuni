@@ -85,6 +85,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 

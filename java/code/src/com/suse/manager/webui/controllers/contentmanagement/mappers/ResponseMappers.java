@@ -18,7 +18,6 @@ package com.suse.manager.webui.controllers.contentmanagement.mappers;
 import static com.suse.utils.Opt.stream;
 
 import com.redhat.rhn.domain.channel.Channel;
-
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -30,6 +29,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
+
 import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectFilterResponse;

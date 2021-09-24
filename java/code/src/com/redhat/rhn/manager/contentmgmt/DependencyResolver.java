@@ -15,18 +15,21 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import static com.suse.utils.Opt.stream;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
-import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,9 +38,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.suse.utils.Opt.stream;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Resolves dependencies in a content management project

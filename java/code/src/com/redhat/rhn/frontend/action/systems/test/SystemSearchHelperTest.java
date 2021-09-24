@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 
 import junit.framework.TestCase;
 

@@ -20,10 +20,11 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.utils.Json;
+
+import com.google.gson.reflect.TypeToken;
 
 import junit.framework.TestCase;
 

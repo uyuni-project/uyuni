@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -40,10 +44,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 

@@ -16,6 +16,14 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -46,14 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}

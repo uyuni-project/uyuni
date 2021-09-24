@@ -4,6 +4,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroEditCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 

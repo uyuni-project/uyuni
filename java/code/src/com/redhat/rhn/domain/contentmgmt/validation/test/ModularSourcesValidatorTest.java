@@ -1,9 +1,9 @@
 package com.redhat.rhn.domain.contentmgmt.validation.test;
 
-import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
-
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_WARN;
+
+import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
 
 public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
 

@@ -26,9 +26,9 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.org.MigrationManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;

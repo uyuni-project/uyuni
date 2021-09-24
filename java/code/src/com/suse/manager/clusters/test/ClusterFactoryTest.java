@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.clusters.ClusterFactory;
 import com.suse.manager.model.clusters.Cluster;
 

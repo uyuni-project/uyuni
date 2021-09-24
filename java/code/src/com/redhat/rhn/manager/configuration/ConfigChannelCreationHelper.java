@@ -23,9 +23,9 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
+
 import org.apache.struts.action.DynaActionForm;
 
 import java.io.IOException;

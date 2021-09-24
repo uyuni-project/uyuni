@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

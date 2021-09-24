@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.repomd.RpmRepositoryWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

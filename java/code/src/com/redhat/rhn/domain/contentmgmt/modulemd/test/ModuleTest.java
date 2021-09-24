@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt.modulemd.test;
 
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+
 import junit.framework.TestCase;
 
 public class ModuleTest extends TestCase {

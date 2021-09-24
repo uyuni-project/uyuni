@@ -30,10 +30,10 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
-
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 

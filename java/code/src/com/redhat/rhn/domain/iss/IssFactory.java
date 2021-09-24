@@ -15,14 +15,14 @@
 
 package com.redhat.rhn.domain.iss;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.org.Org;
 
 import org.apache.log4j.Logger;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.org.Org;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IssSlaveFactory - the singleton class used to fetch and store

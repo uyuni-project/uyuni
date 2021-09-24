@@ -2,12 +2,13 @@ package com.suse.manager.reactor.messaging.test;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.salt.netapi.calls.LocalCall;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matcher;
@@ -15,7 +16,6 @@ import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;

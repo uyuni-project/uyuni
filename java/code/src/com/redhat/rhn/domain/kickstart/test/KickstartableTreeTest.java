@@ -14,11 +14,6 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -43,9 +38,13 @@ import org.cobbler.Distro;
 import org.hibernate.Session;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * KickstartableTreeTest

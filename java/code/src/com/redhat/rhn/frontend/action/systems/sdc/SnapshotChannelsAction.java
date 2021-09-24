@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.frontend.struts.RequestContext;
-
 import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.List;

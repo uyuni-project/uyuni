@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+
 import com.suse.manager.model.clusters.Cluster;
 
 import org.apache.log4j.Logger;

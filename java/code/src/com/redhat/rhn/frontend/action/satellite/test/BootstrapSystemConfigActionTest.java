@@ -19,9 +19,9 @@ import com.redhat.rhn.frontend.action.satellite.BootstrapSystemConfigAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
-import servletunit.HttpServletRequestSimulator;
-
 import javax.servlet.http.HttpServletRequest;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests BootstrapSystemConfigAction.

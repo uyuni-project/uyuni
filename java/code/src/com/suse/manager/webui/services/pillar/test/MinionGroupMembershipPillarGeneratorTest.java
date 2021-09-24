@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services.pillar.test;
 
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -23,6 +26,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 
@@ -35,9 +39,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 
 /**
  * Tests for {@link MinionGroupMembershipPillarGenerator}

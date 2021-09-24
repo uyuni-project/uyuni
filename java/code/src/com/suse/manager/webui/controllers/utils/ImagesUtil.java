@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers.utils;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 

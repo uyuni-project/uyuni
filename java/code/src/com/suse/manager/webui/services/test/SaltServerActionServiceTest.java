@@ -86,11 +86,11 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.Target;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import com.suse.salt.netapi.datatypes.target.Target;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 

@@ -14,21 +14,21 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**

@@ -14,21 +14,21 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.frontend.html.HtmlTag;
+import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.html.HtmlTag;
-import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
 /**
  * PageSizeDecorator

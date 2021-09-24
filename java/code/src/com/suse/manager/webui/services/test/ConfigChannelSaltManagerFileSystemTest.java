@@ -17,7 +17,9 @@ package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
+
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
 

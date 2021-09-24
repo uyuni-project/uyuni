@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.manager.audit.scap;
 
+import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
+import com.redhat.rhn.manager.audit.ScapManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
-import com.redhat.rhn.manager.audit.ScapManager;
 
 /**
  * RuleResultDiffer - Facility for comparison of xccdf:rule-result-s

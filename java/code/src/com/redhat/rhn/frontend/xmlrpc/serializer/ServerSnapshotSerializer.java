@@ -14,14 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashSet;
-import java.util.Set;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -29,6 +21,14 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashSet;
+import java.util.Set;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**

@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import static com.suse.utils.Opt.consume;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Optional.empty;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -36,10 +40,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import static com.suse.utils.Opt.consume;
-import static java.util.Collections.unmodifiableList;
-import static java.util.Optional.empty;
 
 /**
  *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.

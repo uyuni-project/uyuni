@@ -15,11 +15,12 @@
 package com.suse.utils.test;
 
 import com.suse.utils.Lists;
-import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import junit.framework.TestCase;
 
 public class ListsTest extends TestCase {
 

@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.CommonConstants;
 import com.redhat.rhn.common.conf.Config;
@@ -25,6 +29,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -44,8 +49,8 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.datatypes.AuthMethod;
 import com.suse.salt.netapi.datatypes.PasswordAuth;
 import com.suse.salt.netapi.datatypes.target.Glob;
@@ -56,9 +61,10 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.utils.Xor;
+
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -69,10 +75,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -91,10 +97,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static java.util.Collections.singletonList;
 
 /**
  * Code for calling salt-ssh functions.

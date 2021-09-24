@@ -29,7 +29,9 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.common.UninitializedCommandException;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.model.clusters.Cluster;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collections;

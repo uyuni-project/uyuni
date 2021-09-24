@@ -20,8 +20,8 @@ import com.redhat.rhn.testing.httpservermock.Responder;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
-import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemJson;
 

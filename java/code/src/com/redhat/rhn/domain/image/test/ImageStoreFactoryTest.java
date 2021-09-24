@@ -1,5 +1,8 @@
 package com.redhat.rhn.domain.image.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createCredentials;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
@@ -12,9 +15,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.redhat.rhn.testing.ImageTestUtils.createCredentials;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 

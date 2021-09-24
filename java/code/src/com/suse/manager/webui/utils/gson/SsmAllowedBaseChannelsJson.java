@@ -15,8 +15,8 @@
 
 package com.suse.manager.webui.utils.gson;
 
-import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
+import com.redhat.rhn.manager.ssm.SsmServerDto;
 
 import java.util.List;
 

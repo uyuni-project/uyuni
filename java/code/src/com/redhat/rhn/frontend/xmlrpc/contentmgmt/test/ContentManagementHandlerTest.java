@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt.test;
 
+import static java.util.Optional.empty;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -34,8 +36,6 @@ import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Optional.empty;
 
 public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 

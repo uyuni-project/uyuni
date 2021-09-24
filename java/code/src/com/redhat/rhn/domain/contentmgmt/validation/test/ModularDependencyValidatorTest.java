@@ -15,11 +15,11 @@
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
 
-import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
-import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
-
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
+
+import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
+import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 
 public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 

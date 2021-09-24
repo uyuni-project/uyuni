@@ -1,5 +1,8 @@
 package com.suse.manager.reactor.messaging.test;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -9,12 +12,13 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BatchStartedEvent;
 import com.suse.salt.netapi.parser.JsonParser;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,9 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.joining;
 
 /**
  * Test for {@link BatchStartedEventMessageAction}

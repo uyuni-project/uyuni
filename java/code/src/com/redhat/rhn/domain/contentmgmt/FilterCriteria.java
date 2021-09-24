@@ -15,6 +15,23 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EXISTS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -30,23 +47,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EXISTS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR;
 
 
 /**

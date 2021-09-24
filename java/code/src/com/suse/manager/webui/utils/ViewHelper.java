@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;

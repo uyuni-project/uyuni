@@ -4,7 +4,6 @@ import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;

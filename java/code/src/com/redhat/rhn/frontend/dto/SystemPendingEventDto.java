@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * DTO for a com.redhat.rhn.frontend.action..systems.sdc.SystemPendingEventsAction

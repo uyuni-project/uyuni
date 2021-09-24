@@ -33,8 +33,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 
 /**

@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.frontend.struts.Selectable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.redhat.rhn.frontend.struts.Selectable;
 
 /**
  * Wrapper class to enable Channels to be used and be selectable

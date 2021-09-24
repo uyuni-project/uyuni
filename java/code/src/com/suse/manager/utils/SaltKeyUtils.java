@@ -24,8 +24,8 @@ import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.apache.log4j.Logger;
 
-import java.util.stream.Stream;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * SaltKeyUtils

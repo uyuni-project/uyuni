@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-
 import java.util.Optional;
 
 /**

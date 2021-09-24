@@ -27,6 +27,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;

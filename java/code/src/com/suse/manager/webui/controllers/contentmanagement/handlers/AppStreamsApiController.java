@@ -14,19 +14,22 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
+
 import com.suse.manager.webui.utils.gson.ResultJson;
+
 import org.apache.http.HttpStatus;
+
 import spark.Request;
 import spark.Response;
 import spark.Spark;
-
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.get;
 
 /**
  * Spark controller ContentManagement AppStreams API

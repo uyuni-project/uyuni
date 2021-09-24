@@ -14,6 +14,11 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.head;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
@@ -38,8 +43,6 @@ import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import spark.Request;
-import spark.Response;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -51,10 +54,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static spark.Spark.get;
-import static spark.Spark.halt;
-import static spark.Spark.head;
+import spark.Request;
+import spark.Response;
 
 
 /**

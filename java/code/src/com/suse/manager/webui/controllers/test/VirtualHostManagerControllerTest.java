@@ -15,8 +15,8 @@
 
 package com.suse.manager.webui.controllers.test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import static com.suse.manager.webui.utils.SparkTestUtils.createMockRequestWithParams;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
@@ -26,14 +26,15 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.utils.SparkTestUtils;
-import spark.Request;
-import spark.RequestResponseFactory;
-import spark.Response;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -41,7 +42,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.suse.manager.webui.utils.SparkTestUtils.createMockRequestWithParams;
+import spark.Request;
+import spark.RequestResponseFactory;
+import spark.Response;
 
 /**
  * Test for basic scenarios in VirtualHostManagerController.

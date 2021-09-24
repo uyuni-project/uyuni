@@ -14,9 +14,6 @@
  */
 package com.suse.manager.webui.utils.test;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -26,6 +23,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -35,6 +33,9 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.MinionActionUtils;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Tests for MinionActionUtils.
