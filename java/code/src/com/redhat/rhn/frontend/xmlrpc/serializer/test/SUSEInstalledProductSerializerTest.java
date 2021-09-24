@@ -16,11 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.SUSEInstalledProductSerializer;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
-import junit.framework.TestCase;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.StringWriter;
 import java.io.Writer;
+
+import junit.framework.TestCase;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 public class SUSEInstalledProductSerializerTest extends TestCase {
 

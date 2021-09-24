@@ -15,18 +15,19 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

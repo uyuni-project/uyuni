@@ -57,9 +57,13 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsMapContaining;
 import org.hamcrest.core.AllOf;

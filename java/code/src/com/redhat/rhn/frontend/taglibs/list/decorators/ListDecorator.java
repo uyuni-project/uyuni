@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 
 /**
  * Decorator for a given list

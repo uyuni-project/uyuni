@@ -63,13 +63,14 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;

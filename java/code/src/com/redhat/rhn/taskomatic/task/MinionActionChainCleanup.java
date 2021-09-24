@@ -15,7 +15,9 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+
 import com.suse.manager.webui.utils.MinionActionUtils;
+
 import org.quartz.JobExecutionContext;
 
 

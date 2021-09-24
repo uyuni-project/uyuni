@@ -26,11 +26,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.utils.LoginHelper;
+import com.suse.utils.Json;
+
 import com.google.gson.Gson;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
-import com.suse.manager.webui.utils.LoginHelper;
-import com.suse.utils.Json;
 
 import org.apache.log4j.Logger;
 

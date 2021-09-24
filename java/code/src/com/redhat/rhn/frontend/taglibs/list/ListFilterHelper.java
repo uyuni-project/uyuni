@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
+import com.redhat.rhn.frontend.struts.Expandable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.redhat.rhn.frontend.struts.Expandable;
 
 /**
  * ListFilterHelper

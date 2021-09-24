@@ -25,16 +25,13 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
-import com.redhat.rhn.frontend.xmlrpc.UserNeverLoggedInException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

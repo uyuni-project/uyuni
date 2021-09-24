@@ -2,6 +2,7 @@ package com.suse.manager.webui.controllers.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.manager.webui.controllers.SSOController;
 
 import com.onelogin.saml2.settings.Saml2Settings;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 import spark.Request;
 
 public class SSOControllerTest extends BaseControllerTestCase {

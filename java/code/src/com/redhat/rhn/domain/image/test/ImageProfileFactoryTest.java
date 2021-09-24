@@ -1,5 +1,9 @@
 package com.redhat.rhn.domain.image.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
+
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -15,10 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
-import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
 
 public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 

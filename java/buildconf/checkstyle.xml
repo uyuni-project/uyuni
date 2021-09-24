@@ -54,6 +54,14 @@
 
     <module name="TreeWalker">
 
+        <module name="ImportOrder">
+            <property name="groups" value="/^com.redhat.rhn\./,/^com.suse\./,com,org,/^java\./,javax,*" />
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="top"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
+
         <module name="SuppressionCommentFilter"/>
 
         <!-- ************************************************************** -->

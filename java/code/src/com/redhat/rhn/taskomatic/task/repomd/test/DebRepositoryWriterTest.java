@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.FileInputStream;

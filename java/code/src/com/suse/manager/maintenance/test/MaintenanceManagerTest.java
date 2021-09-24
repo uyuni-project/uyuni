@@ -45,6 +45,7 @@ import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 

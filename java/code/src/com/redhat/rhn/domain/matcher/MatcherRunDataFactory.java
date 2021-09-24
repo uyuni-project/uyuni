@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.matcher;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+
 import org.apache.log4j.Logger;
 
 /**

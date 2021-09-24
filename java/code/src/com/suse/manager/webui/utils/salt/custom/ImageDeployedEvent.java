@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.salt.netapi.datatypes.Event;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 

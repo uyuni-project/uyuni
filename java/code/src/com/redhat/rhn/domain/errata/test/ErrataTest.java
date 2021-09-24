@@ -16,10 +16,10 @@ package com.redhat.rhn.domain.errata.test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;

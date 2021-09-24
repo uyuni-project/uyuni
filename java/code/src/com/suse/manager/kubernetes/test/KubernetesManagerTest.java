@@ -24,12 +24,14 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.salt.netapi.parser.JsonParser;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 

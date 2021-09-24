@@ -16,9 +16,9 @@ import com.suse.manager.webui.utils.salt.custom.GuestProperties;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * VirtualInstanceManagerTest

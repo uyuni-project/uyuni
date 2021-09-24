@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.Optional;
 
 /**

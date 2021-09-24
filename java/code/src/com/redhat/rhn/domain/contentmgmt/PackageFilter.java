@@ -16,13 +16,15 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
+
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * Package Filter

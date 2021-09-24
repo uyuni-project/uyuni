@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

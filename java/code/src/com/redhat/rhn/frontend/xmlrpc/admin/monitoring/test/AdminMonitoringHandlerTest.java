@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.xmlrpc.admin.monitoring.test;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import java.io.InputStream;

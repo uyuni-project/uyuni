@@ -16,22 +16,6 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_VERIFY;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -60,6 +44,21 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles the display and capturing of scheduling package verifications for systems in

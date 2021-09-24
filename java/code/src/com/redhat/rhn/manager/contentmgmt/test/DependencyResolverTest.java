@@ -15,12 +15,21 @@
 
 package com.redhat.rhn.manager.contentmgmt.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
@@ -34,15 +43,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 
 public class DependencyResolverTest extends BaseTestCaseWithUser {
 

@@ -16,6 +16,7 @@
 package com.suse.manager.webui.utils.test;
 
 import com.suse.manager.webui.utils.SparkTestUtils;
+
 import junit.framework.TestCase;
 
 /**

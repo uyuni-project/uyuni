@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.action;
 
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -47,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.commons.io.FileUtils;
 
 import java.util.ArrayList;
@@ -61,9 +65,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.Collections.singleton;
-import static java.util.Collections.singletonList;
 
 /**
  * An ActionManager companion to deal with Action Chains.

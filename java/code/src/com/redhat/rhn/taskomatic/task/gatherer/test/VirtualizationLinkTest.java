@@ -9,6 +9,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.HostJson;
 

@@ -16,8 +16,8 @@ package com.redhat.rhn.frontend.action.errata.test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ClonedErrata;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;

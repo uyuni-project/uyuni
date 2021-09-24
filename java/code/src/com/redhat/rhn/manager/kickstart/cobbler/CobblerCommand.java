@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
+import org.cobbler.SystemRecord;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.cobbler.SystemRecord;
 import redstone.xmlrpc.XmlRpcFault;
 
 /**

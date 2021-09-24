@@ -29,12 +29,12 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.product.Tuple3;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -44,10 +44,11 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.mockobjects.servlet.MockHttpServletResponse;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SparkTestUtils;
+
+import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;

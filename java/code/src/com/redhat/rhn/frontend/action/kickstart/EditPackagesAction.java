@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.kickstart;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
-import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.frontend.struts.RequestContext;

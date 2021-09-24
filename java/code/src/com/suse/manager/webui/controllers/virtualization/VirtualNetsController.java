@@ -30,8 +30,8 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateCha
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.HostInfo;
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkCreateActionJson;

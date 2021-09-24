@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

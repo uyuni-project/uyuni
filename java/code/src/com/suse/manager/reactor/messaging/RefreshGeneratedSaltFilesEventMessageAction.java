@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 

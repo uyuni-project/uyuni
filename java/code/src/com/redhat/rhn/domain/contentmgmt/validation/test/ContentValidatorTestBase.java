@@ -15,6 +15,15 @@
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static java.util.Optional.empty;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -30,15 +39,6 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static java.util.Optional.empty;
 
 public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
 

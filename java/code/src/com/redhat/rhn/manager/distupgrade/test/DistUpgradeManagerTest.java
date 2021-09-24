@@ -35,9 +35,7 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
@@ -65,7 +63,14 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Tests for {@link DistUpgradeManager} methods.

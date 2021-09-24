@@ -14,19 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.audit.scap;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
-
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.user.User;
@@ -41,6 +28,19 @@ import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.RuleResultComparator;
 import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
 import com.redhat.rhn.manager.audit.scap.TestResultDiffer;
+
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Static action page.

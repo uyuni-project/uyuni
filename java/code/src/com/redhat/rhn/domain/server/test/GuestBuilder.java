@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import org.hibernate.Session;
 
 /**

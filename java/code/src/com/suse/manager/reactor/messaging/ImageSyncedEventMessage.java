@@ -16,7 +16,9 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+
 import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

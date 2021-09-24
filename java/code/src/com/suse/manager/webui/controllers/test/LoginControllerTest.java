@@ -8,6 +8,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.utils.LoginHelper;
 import com.suse.manager.webui.utils.SparkTestUtils;

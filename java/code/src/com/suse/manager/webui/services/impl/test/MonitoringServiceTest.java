@@ -16,6 +16,7 @@
 package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import java.io.InputStream;

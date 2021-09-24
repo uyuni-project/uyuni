@@ -1,10 +1,12 @@
 package com.suse.manager.webui.utils.salt.test;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.utils.Json;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
 import java.util.Optional;

@@ -16,12 +16,13 @@
 package com.redhat.rhn.domain.formula.test;
 
 import com.redhat.rhn.domain.formula.FormulaFactory;
-import junit.framework.TestCase;
+
 import org.yaml.snakeyaml.Yaml;
 
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+
+import junit.framework.TestCase;
 
 public class FormulaFactoryTest extends TestCase {
 

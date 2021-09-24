@@ -14,6 +14,8 @@
  */
 package com.suse.manager.xmlrpc.maintenance.test;
 
+import static java.util.Collections.emptyList;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -39,8 +41,6 @@ import java.util.List;
 import java.util.Map;
 
 import redstone.xmlrpc.XmlRpcSerializer;
-
-import static java.util.Collections.emptyList;
 
 public class MaintenanceHandlerTest extends BaseHandlerTestCase {
 

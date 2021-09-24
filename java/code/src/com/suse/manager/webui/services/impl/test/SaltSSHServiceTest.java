@@ -2,6 +2,7 @@ package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.webui.services.impl.SaltSSHService;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;

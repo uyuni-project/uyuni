@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import java.util.function.Function;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;

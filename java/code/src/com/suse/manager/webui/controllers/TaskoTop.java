@@ -22,9 +22,10 @@ import static spark.Spark.get;
 
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.services.TaskoTopCollector;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.manager.webui.services.TaskoTopCollector;
 
 import java.util.Date;
 import java.util.HashMap;

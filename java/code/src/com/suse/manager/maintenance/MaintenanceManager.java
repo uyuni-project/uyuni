@@ -53,6 +53,7 @@ import com.suse.manager.model.maintenance.ScheduleFactory;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

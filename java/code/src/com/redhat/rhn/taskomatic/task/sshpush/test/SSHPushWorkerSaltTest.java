@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush.test;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -29,16 +35,17 @@ import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
-import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -46,6 +53,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
+
 import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -59,13 +67,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 /**
  * SSHPushWorkerSaltTest

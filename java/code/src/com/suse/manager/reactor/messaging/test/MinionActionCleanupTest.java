@@ -14,7 +14,6 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -34,7 +33,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
@@ -50,6 +48,9 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
+
+import com.google.gson.reflect.TypeToken;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 

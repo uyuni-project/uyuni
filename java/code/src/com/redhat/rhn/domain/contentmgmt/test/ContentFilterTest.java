@@ -15,6 +15,13 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
@@ -33,13 +40,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 /**
  * Tests for {@link ContentFilter}

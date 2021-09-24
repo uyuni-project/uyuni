@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services.pillar.test;
 
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -31,18 +34,15 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 
 /**
  * Tests for {@link MinionPillarManager}

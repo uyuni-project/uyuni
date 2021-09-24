@@ -34,7 +34,6 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;

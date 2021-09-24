@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.config;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.BaseDomainHelper;
+
 import org.apache.log4j.Logger;
 
 /**

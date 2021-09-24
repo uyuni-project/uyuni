@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushDriver;
+
+import org.apache.log4j.Logger;
 
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.

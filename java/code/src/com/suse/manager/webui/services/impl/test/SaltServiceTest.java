@@ -6,8 +6,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;

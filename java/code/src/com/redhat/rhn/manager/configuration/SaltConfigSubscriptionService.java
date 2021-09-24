@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;

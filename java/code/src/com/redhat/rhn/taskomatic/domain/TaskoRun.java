@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.taskomatic.TaskoFactory;
+
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;

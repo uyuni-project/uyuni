@@ -33,9 +33,11 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;

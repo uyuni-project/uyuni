@@ -14,11 +14,12 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.virtualization.PoolSource;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.virtualization.PoolSource;
 
 /**
  * Represents the virtual storage source parameters for the storage pool creation action.

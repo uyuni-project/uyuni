@@ -17,14 +17,13 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
-
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
-import java.util.List;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;

@@ -22,11 +22,13 @@ import com.redhat.rhn.frontend.taglibs.ListTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.Writer;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;

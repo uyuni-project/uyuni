@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -24,7 +26,6 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
-import spark.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import spark.utils.StringUtils;
 
 /**
  * Filter templates functionality

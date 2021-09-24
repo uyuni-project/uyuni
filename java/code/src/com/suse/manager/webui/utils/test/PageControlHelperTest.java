@@ -2,15 +2,17 @@ package com.suse.manager.webui.utils.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.listview.PageControl;
+
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.SparkTestUtils;
-import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import junit.framework.TestCase;
 
 public class PageControlHelperTest extends TestCase {
 

@@ -14,7 +14,13 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import com.google.gson.Gson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -29,14 +35,16 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
+
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.Gson;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import spark.Request;
-import spark.Response;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,12 +53,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
+import spark.Request;
+import spark.Response;
 
 /**
  * Spark controller ContentManagement Filter Api.

@@ -17,10 +17,12 @@ package com.suse.manager.reactor.test;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
