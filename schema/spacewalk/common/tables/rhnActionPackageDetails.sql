@@ -32,7 +32,7 @@ CREATE TABLE rhnActionPackageDetails
 );
 
 
-CREATE INDEX rhn_act_eud_aid_idx
+CREATE UNIQUE INDEX rhn_act_eud_aid_uq
     ON rhnActionPackageDetails (action_id);
 
 CREATE SEQUENCE rhn_actiondpd_id_seq;
