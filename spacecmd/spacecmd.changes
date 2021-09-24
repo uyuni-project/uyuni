@@ -1,3 +1,5 @@
+- configchannel_updatefile handles directory properly (bsc#1190512)
+
 -------------------------------------------------------------------
 Fri Sep 17 12:00:28 CEST 2021 - jgonzalez@suse.com
 

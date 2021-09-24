@@ -866,12 +866,20 @@ def do_configchannel_addfile(self, args, update_path=''):
             if options.directory:
                 if 'contents' in file_info:
                     del file_info['contents']
+                if 'contents_enc64' in file_info:
+                    del file_info['contents_enc64']
+                if 'binary' in file_info:
+                    del file_info['binary']
 
-            self.client.configchannel.createOrUpdatePath(self.session,
-                                                         options.channel,
-                                                         options.path,
-                                                         options.directory,
-                                                         file_info)
+            try:
+                self.client.configchannel.createOrUpdatePath(self.session,
+                                                             options.channel,
+                                                             options.path,
+                                                             options.directory,
+                                                             file_info)
+            except xmlrpclib.Fault as exc:
+                logging.error(exc)
+                return 1
 
     return 0
 
