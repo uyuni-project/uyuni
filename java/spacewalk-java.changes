@@ -1,3 +1,4 @@
+- use TLSv1.3 if it is a supported Protocol
 - Adapt auto errata update to respect maintenance windows
 - Adapt auto errata update to skip during CLM build (bsc#1189609)
 - add CentOS 7/8 aarch64
