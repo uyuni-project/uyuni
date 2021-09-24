@@ -36,4 +36,13 @@ fi
 repo_dir=$repo_dir/$obs_project/$obs_repo/$obs_arch
 
 osc getbinaries $obs_project $obs_repo $obs_arch -d $repo_dir
-cd $repo_dir && createrepo .
+cd $repo_dir
+echo ${obs_repo} | grep "Ubuntu" -i
+if [  ${?} -eq 0 ];then
+    dpkg-scanpackages -m . /dev/null > Packages
+    gzip Packages
+else
+     createrepo .
+fi
+
+echo "Publishing done."
