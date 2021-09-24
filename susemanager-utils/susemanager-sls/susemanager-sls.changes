@@ -1,3 +1,4 @@
+- Fix mgrcompat state module to work with Salt 3003 and 3004
 - Add 'flush_cache' flag to 'ansible.playbooks' call (bsc#1190405)
 - Update kernel live patch version on minion startup (bsc#1190276)
 - don't use libvirt API to get its version for the virt features grain
