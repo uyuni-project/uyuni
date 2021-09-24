@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-23 19:12+0000\n"
+"PO-Revision-Date: 2021-09-24 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -8123,43 +8123,43 @@ msgstr "Vytvorený:       %s"
 #: ../src/spacecmd/user.py:379
 #, python-format
 msgid "Enabled:       %s"
-msgstr ""
+msgstr "Povolený:       %s"
 
 #: ../src/spacecmd/user.py:383
 msgid "Roles"
-msgstr ""
+msgstr "Roly"
 
 #: ../src/spacecmd/user.py:389
 msgid "Assigned Groups"
-msgstr ""
+msgstr "Priradené skupiny"
 
 #: ../src/spacecmd/user.py:395
 msgid "Default Groups"
-msgstr ""
+msgstr "Predvolené skupiny"
 
 #: ../src/spacecmd/user.py:405
 msgid "user_addgroup: Add a group to an user account"
-msgstr ""
+msgstr "user_addgroup: Pridať skupinu do používateľského účtu"
 
 #: ../src/spacecmd/user.py:406
 msgid "usage: user_addgroup USER <GROUP ...>"
-msgstr ""
+msgstr "použitie: user_addgroup POUŽÍVATEĽ <SKUPINA ...>"
 
 #: ../src/spacecmd/user.py:443
 msgid "user_adddefaultgroup: Add a default group to an user account"
-msgstr ""
+msgstr "user_adddefaultgroup: Pridať predvolenú skupinu do používateľského účtu"
 
 #: ../src/spacecmd/user.py:444
 msgid "usage: user_adddefaultgroup USER <GROUP ...>"
-msgstr ""
+msgstr "použitie: user_adddefaultgroup POUŽÍVATEĽ <SKUPINA ...>"
 
 #: ../src/spacecmd/user.py:480
 msgid "user_removegroup: Remove a group to an user account"
-msgstr ""
+msgstr "user_removegroup: Odstrániť skupinu z používateľského účtu"
 
 #: ../src/spacecmd/user.py:481
 msgid "usage: user_removegroup USER <GROUP ...>"
-msgstr ""
+msgstr "použitie: user_removegroup POUŽÍVATEĽ <SKUPINA ...>"
 
 #: ../src/spacecmd/user.py:521
 msgid "user_removedefaultgroup: Remove a default group from an user account"
