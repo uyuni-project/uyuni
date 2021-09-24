@@ -29,6 +29,8 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PROVIDES_NAME;
@@ -69,10 +71,16 @@ public class FilterCriteria {
 
     static {
         validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
+        validCombinations.add(Triple.of(PACKAGE, LOWER, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, LOWEREQ, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, GREATER, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, LOWER, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, LOWEREQ, "nevra"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
         validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, GREATER, "nevra"));
         validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));
@@ -107,6 +115,8 @@ public class FilterCriteria {
         CONTAINS_PKG_EQ_EVR("contains_pkg_eq_evr"), // ==
         CONTAINS_PKG_GE_EVR("contains_pkg_ge_evr"), // >=
         CONTAINS_PKG_GT_EVR("contains_pkg_gt_evr"), // >
+        LOWER("lower"),
+        LOWEREQ("lowereq"),
         EQUALS("equals"),
         GREATER("greater"),
         GREATEREQ("greatereq"),

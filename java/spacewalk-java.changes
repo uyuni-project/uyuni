@@ -1,3 +1,4 @@
+- Add additional matchers to package (nevra) filter
 - Add greater equals matcher to package (nevra) filter
 - fix XML syntax in cobbler snippets (bsc#1193694)
 - Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus

@@ -43,11 +43,20 @@ public class PackageFilter extends ContentFilter<Package> {
         switch (matcher) {
             case CONTAINS:
                 return getField(pack, field, String.class).contains(value);
+            case LOWER:
+                return pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) < 0;
+            case LOWEREQ:
+                return pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) <= 0;
             case EQUALS:
                 return getField(pack, field, String.class).equals(value);
             case GREATEREQ:
                 return pack.getPackageEvr().compareTo(
                         PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) >= 0;
+            case GREATER:
+                return pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) > 0;
             case MATCHES:
                 if (pattern == null) {
                     pattern = Pattern.compile(value);
