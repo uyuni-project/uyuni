@@ -1,3 +1,13 @@
+- Simplified perl module dependency.
+- Fixed com.sun.bind issue on package update.
+- Enabled pylint for all builds but don't stop on error.
+- Don't delete cobbler.conf contents.
+- Fixed FileNotFoundError on cobbler setup.
+- cobbler20-setup was removed
+- spacewalk-setup-cobbler was reimplemented in Python
+- Config files for Cobbler don't get edited in place anymore, thus the original
+  ones are saved with a ".backup" suffix
+
 -------------------------------------------------------------------
 Fri Sep 17 12:11:36 CEST 2021 - jgonzalez@suse.com
 

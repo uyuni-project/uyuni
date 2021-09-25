@@ -23,8 +23,8 @@
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
+%global pylint_check 1
 %if 0%{?suse_version}
-%{!?pylint_check: %global pylint_check 0}
 %define apache_user wwwrun
 %define apache_group www
 %define misc_path /srv/
@@ -73,7 +73,6 @@ Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-DateTime
 Requires:       perl-Frontier-RPC
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
@@ -109,7 +108,6 @@ Requires:       (python-PyYAML or PyYAML)
 %endif
 Requires:       /usr/bin/gpg
 Requires:       curl
-Requires:       perl-DateTime
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
 Requires:       spacewalk-base-minimal
@@ -248,9 +246,11 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
     fi
 fi
 
+%if 0%{?suse_version}
 if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
      sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' /etc/sysconfig/tomcat
 fi
+%endif
 
 if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/NCCcredentials
@@ -286,8 +286,7 @@ exit 0
 make test
 %if 0%{?pylint_check}
 # check coding style
-pylint --rcfile /etc/spacewalk-python3-pylint.rc \
-    $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
+spacewalk-python3-pylint $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py ||:
 %endif
 
 %files
