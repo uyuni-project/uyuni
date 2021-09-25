@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.maintenance.MaintenanceManager;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
