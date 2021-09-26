@@ -28,6 +28,8 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageCapability;
+import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.ErrataTestUtils;
@@ -111,6 +113,29 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
         filter = contentManager.createFilter(packageName + "nevra3-filter", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
+    }
+
+    public void testPackageProvidesNameFilter() throws Exception {
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+
+        PackageCapability capability = new PackageCapability();
+        capability.setName("installhint(reboot-needed)");
+        capability = TestUtils.saveAndReload(capability);
+
+        PackageProvides packageProvides = new PackageProvides();
+        packageProvides.setCapability(capability);
+        packageProvides.setPack(pack);
+        packageProvides.setSense(0L);
+        TestUtils.saveAndFlush(packageProvides);
+
+        pack = TestUtils.saveAndReload(pack);
+        String packageName = pack.getPackageName().getName();
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.PROVIDES_NAME, "provides_name",
+                "installhint(reboot-needed)");
+        ContentFilter filter = contentManager.createFilter(packageName + "-provides-filter", DENY, PACKAGE,
+                criteria, user);
+        assertTrue(filter.test(pack));
     }
 
     /**
