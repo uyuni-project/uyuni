@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-24 19:12+0000\n"
+"PO-Revision-Date: 2021-09-26 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -8164,42 +8164,43 @@ msgstr "použitie: user_removegroup POUŽÍVATEĽ <SKUPINA ...>"
 #: ../src/spacecmd/user.py:521
 msgid "user_removedefaultgroup: Remove a default group from an user account"
 msgstr ""
+"user_removedefaultgroup: Odstrániť predvolenú skupinu z používateľského účtu"
 
 #: ../src/spacecmd/user.py:523
 msgid "usage: user_removedefaultgroup USER <GROUP ...>"
-msgstr ""
+msgstr "použitie: user_removedefaultgroup POUŽÍVATEĽ <SKUPINA ...>"
 
 #: ../src/spacecmd/user.py:562
 msgid "user_setfirstname: Set an user accounts first name field"
-msgstr ""
+msgstr "user_setfirstname: Nastaviť pole krstného mena používateľských účtov"
 
 #: ../src/spacecmd/user.py:563
 msgid "usage: user_setfirstname USER FIRST_NAME"
-msgstr ""
+msgstr "použitie: user_setfirstname POUŽÍVATEĽ KRSTNÉ_MENO"
 
 #: ../src/spacecmd/user.py:597
 msgid "user_setlastname: Set an user accounts last name field"
-msgstr ""
+msgstr "user_setlastnam: Nastaviť pole priezviska používateľských účtov"
 
 #: ../src/spacecmd/user.py:598
 msgid "usage: user_setlastname USER LAST_NAME"
-msgstr ""
+msgstr "použitie: user_setlastname POUŽÍVATEĽ PRIEZVISKO"
 
 #: ../src/spacecmd/user.py:632
 msgid "user_setemail: Set an user accounts email field"
-msgstr ""
+msgstr "user_setemail: Nastaviť pole emailu používateľských účtov"
 
 #: ../src/spacecmd/user.py:633
 msgid "usage: user_setemail USER EMAIL"
-msgstr ""
+msgstr "použitie: user_setemail POUŽÍVATEĽ EMAIL"
 
 #: ../src/spacecmd/user.py:667
 msgid "user_setprefix: Set an user accounts name prefix field"
-msgstr ""
+msgstr "user_setprefix: Nastaviť pole predpony mena používateľských účtov"
 
 #: ../src/spacecmd/user.py:668
 msgid "usage: user_setprefix USER PREFIX"
-msgstr ""
+msgstr "použitie: user_setprefix POUŽÍVATEĽ PREDPONA"
 
 #: ../src/spacecmd/user.py:707
 msgid "user_setpassword: Set an user accounts name prefix field"
