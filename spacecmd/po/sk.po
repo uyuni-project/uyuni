@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-09-26 20:11+0000\n"
+"PO-Revision-Date: 2021-09-27 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -8204,11 +8204,11 @@ msgstr "použitie: user_setprefix POUŽÍVATEĽ PREDPONA"
 
 #: ../src/spacecmd/user.py:707
 msgid "user_setpassword: Set an user accounts name prefix field"
-msgstr ""
+msgstr "user_setpassword: Nastaviť pole hesla používateľských účtov"
 
 #: ../src/spacecmd/user.py:708
 msgid "usage: user_setpassword USER PASSWORD"
-msgstr ""
+msgstr "použitie: user_setpassword POUŽÍVATEĽ HESLO"
 
 #. If cache generation is interrupted (e.g by ctrl-c) you can end up
 #. with an EOFError exception due to the partial picked file
@@ -8218,40 +8218,42 @@ msgstr ""
 #: ../src/spacecmd/utils.py:134
 #, python-format
 msgid "Loading cache file %s failed"
-msgstr ""
+msgstr "Načítanie súboru vyrovnávacej pamäte %s zlyhalo"
 
 #: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
+"Generovanie vyrovnávacej pamäte bolo pravdepodobne prerušené, odstránenie "
+"poškodeného %s"
 
 #: ../src/spacecmd/utils.py:140
 #, python-format
 msgid "Couldn't load cache from %s"
-msgstr ""
+msgstr "Nepodarilo sa načítať vyrovnávaciu pamäť z %s"
 
 #: ../src/spacecmd/utils.py:161
 #, python-format
 msgid "Couldn't write to %s"
-msgstr ""
+msgstr "Nepodarilo sa zapísať do %s"
 
 #: ../src/spacecmd/utils.py:206
 msgid "Could not open the temporary file"
-msgstr ""
+msgstr "Dočasný súbor sa nepodarilo otvoriť"
 
 #: ../src/spacecmd/utils.py:226
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
-msgstr ""
+msgstr "Editor \"%s\" skončil s kódom %i"
 
 #: ../src/spacecmd/utils.py:228
 #, python-format
 msgid "General failure running editor: %s"
-msgstr ""
+msgstr "Celkové zlyhanie bežiaceho editora: %s"
 
 #: ../src/spacecmd/utils.py:231
 msgid "No editors found"
-msgstr ""
+msgstr "Nenašli sa žiadne editory"
 
 #: ../src/spacecmd/utils.py:368
 msgid "Invalid time provided"
