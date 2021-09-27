@@ -13,26 +13,36 @@ mgr_server_localhost_alias_absent:
 # disable all unaccessible local repos
 {%- include 'channels/disablelocalbrokenrepos.sls' %}
 
+# SUSE OS Family
+{%- if grains['os_family'] == 'Suse' %}
+#set os_base
 {% set os_base = 'sle' %}
-# CentOS6 oscodename is bogus
+{%- elif "opensuse" in grains['oscodename']|lower %}
+{% set os_base = 'opensuse' %}
+{%- endif %}
+#set osrelease and osrelease_minor
+{% set osrelease = grains['osrelease_info[0]'] %}
+{%- if grains['osrelease_info'].lenght < 2}
+{% set osrelease_minor = 0}
+{%- else %}
+{% set osrelease_minor = grains['osrelease_info[1]']}
+{%- endif %}
+#set bootstrap_repo_url
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ osrelease_minon ~ '/bootstrap/' %}
+
+# RedHat OS Family
+{%- elif grains['os_family'] == 'RedHat' %}
+#set os_base
 {%- if "centos" in grains['os']|lower %}
 {% set os_base = 'centos' %}
 {%- elif "redhat" in grains['os']|lower %}
 {% set os_base = 'res' %}
 {%- elif "alibaba" in grains['os']|lower %}
 {% set os_base = 'alibaba' %}
-{%- elif "opensuse" in grains['oscodename']|lower %}
-{% set os_base = 'opensuse' %}
 {%- endif %}
 
-{%- if grains['os_family'] == 'Suse' %}
-{%- if "." in grains['osrelease'] %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osrelease'].replace('.', '/') ~ '/bootstrap/' %}
-{%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osrelease'] ~ '/0/bootstrap/' %}
-{%- endif %}
 
-{%- elif grains['os_family'] == 'RedHat' %}
+
 {%- if salt['file.file_exists']('/etc/oracle-release') %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/oracle/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 
@@ -70,6 +80,7 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
 
+# Debian OS Family
 {%- elif grains['os_family'] == 'Debian' %}
 {%- set osrelease = grains['osrelease'].split('.') %}
 {%- if grains['os'] == 'Ubuntu' %}
