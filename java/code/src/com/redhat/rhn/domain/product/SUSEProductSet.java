@@ -253,7 +253,9 @@ public class SUSEProductSet {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("[base: ");
-        builder.append(baseProduct.getFriendlyName());
+        if (baseProduct != null) {
+            builder.append(baseProduct.getFriendlyName());
+        }
         if (!addonProducts.isEmpty()) {
             builder.append(", addon: ");
             int i = 0;
