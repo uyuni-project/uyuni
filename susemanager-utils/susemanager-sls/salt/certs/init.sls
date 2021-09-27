@@ -1,3 +1,6 @@
+{% macro includesls(os_family, osrelease) -%}
+{% include 'certs/{0}.sls'.format(os_family + osrelease.replace('.', '_')) ignore missing -%}
+{%- endmacro %}
 {% if grains['os_family'] == 'Suse' %}
 {% set sls = includesls(grains['os_family'], '') -%}
 {% elif grains['os_family'] == 'RedHat' %}
