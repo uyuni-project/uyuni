@@ -18,7 +18,7 @@ disable_repo_{{ repos_disabled.count }}:
 {% endif %}
 {% endfor %}
 {% else %}
-{% if data.get('enabled', '1') == '1' %}
+{% if data.get('enabled', True) in [True, '1'] %}
 {% set url = data.get('baseurl', 'file://').replace('$basearch', grains['osarch']).replace('$releasever', grains['osmajorrelease']|string) -%}
 {%- set repo_exists = (0 < salt['http.query'](url + '/repodata/repomd.xml', status=True, verify_ssl=True).get('status', 0) < 300) %}
 {% if not repo_exists %}
