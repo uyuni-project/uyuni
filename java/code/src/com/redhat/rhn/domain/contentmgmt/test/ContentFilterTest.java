@@ -100,7 +100,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         String packageName = pack.getPackageName().getName();
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
-        ContentFilter filter = contentManager.createFilter(packageName + "-nevra-filter", DENY, PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter(packageName + "-nevra-filter",
+                DENY, PACKAGE, criteria, user);
         assertTrue(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
@@ -119,9 +120,11 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataAdvisoryFilter() throws Exception {
         String cveName = TestUtils.randomString().substring(0, 13);
-        Errata erratum = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
+        Errata erratum = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS,
+                "advisory_name", erratum.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum));
 
@@ -132,13 +135,16 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     public void testErrataAdvisoryMatchesFilter() throws Exception {
         String cveName = TestUtils.randomString().substring(0, 13);
-        Errata erratum = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
+        Errata erratum = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
         erratum.setAdvisoryName("SUSE-SLE-SERVER-2019-1123");
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name", "^SUSE-SLE-\\w+-\\d+-\\d+$");
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name",
+                "^SUSE-SLE-\\w+-\\d+-\\d+$");
         ContentFilter filter = contentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum));
 
-        criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name", "^SUSE-SLE-\\d+-\\d+$");
+        criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name",
+                "^SUSE-SLE-\\d+-\\d+$");
         filter = contentManager.createFilter(cveName + "-filter-2", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum));
     }
@@ -150,16 +156,20 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByDateFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setIssueDate(new Date(1556604000000L));
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setIssueDate(new Date(1556694000000L));
         String cveName3 = TestUtils.randomString().substring(0, 13);
-        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
         erratum3.setIssueDate(new Date(1556668800000L)); // "2019-05-01 00:00:00 +0000"
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "issue_date", "2019-05-01T00:00:00+00:00");
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "issue_date",
+                "2019-05-01T00:00:00+00:00");
         ContentFilter filter = contentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
         assertTrue(filter.test(erratum2));
@@ -173,23 +183,28 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByDate2Filter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setIssueDate(new Date(1556604000000L));
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setIssueDate(new Date(1556694000000L));
         String cveName3 = TestUtils.randomString().substring(0, 13);
-        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
         erratum3.setIssueDate(new Date(1556668800000L)); // "2019-05-01 00:00:00 +0000"
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date", "2019-05-01T00:00:00+00:00");
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date",
+                "2019-05-01T00:00:00+00:00");
         ContentFilter filter = contentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
         assertTrue(filter.test(erratum2));
 
-        ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        assertTrue(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString()
-                + " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
+        ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00",
+                DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        assertTrue(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString() +
+                " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
     }
 
     /**
@@ -199,13 +214,16 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByEqualSynopsisFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("recommended update: " + cveName2);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "synopsis", erratum1.getSynopsis());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "synopsis",
+                erratum1.getSynopsis());
         ContentFilter filter = contentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
@@ -218,23 +236,28 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByContainsSynopsisFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("recommended update: " + cveName2);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", erratum1.getSynopsis());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis",
+                erratum1.getSynopsis());
         ContentFilter filter = contentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
 
-        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", "recommended update:");
+        FilterCriteria criteria2 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "synopsis", "recommended update:");
         ContentFilter filter2 = contentManager.createFilter("synopsis-filter2", DENY, ERRATUM, criteria2, user);
         assertTrue(filter2.test(erratum1));
         assertTrue(filter2.test(erratum2));
 
-        FilterCriteria criteria3 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", "imsurethisdoesntexist");
+        FilterCriteria criteria3 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "synopsis", "imsurethisdoesntexist");
         ContentFilter filter3 = contentManager.createFilter("synopsis-filter3", DENY, ERRATUM, criteria3, user);
         assertFalse(filter3.test(erratum1));
         assertFalse(filter3.test(erratum2));
@@ -247,16 +270,20 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByMatchesSynopsisFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("security update: " + cveName2);
         String cveName3 = TestUtils.randomString().substring(0, 13);
-        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
         erratum3.setSynopsis("update: " + cveName3);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "synopsis", ".+update:.+");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.MATCHES, "synopsis", ".+update:.+");
         ContentFilter filter = contentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertTrue(filter.test(erratum2));
@@ -270,10 +297,12 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataTypeFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_type", "Security Advisory");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_type", "Security Advisory");
         ContentFilter filter = contentManager.createFilter("sec-type-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
 
@@ -284,24 +313,30 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     public void testErrataContainsPackageName() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         String pkgName = erratum1.getPackages().iterator().next().getPackageName().getName();
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName);
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName);
         ContentFilter filter = contentManager.createFilter("contains-name-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
 
-        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName + "noFound");
+        criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName + "noFound");
         filter = contentManager.createFilter("contains-name-filter2", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
     }
 
     public void testErrataMatchesPackageName() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(
+                user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "\\d+JavaTest.*");
-        ContentFilter filter = contentManager.createFilter("matches-name-filter", DENY, ERRATUM, criteria, user);
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "\\d+JavaTest.*");
+        ContentFilter filter = contentManager.createFilter(
+                "matches-name-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "JavaTest.*");
@@ -311,7 +346,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     public void testErrataContainsPackageEvr() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         Package pkg1 = erratum1.getPackages().iterator().next();
         String pkgName = pkg1.getPackageName().getName();
         String equalEvrString = "1:1.0.0-1"; // PackageEvrFactoryTest.createTestPackageEvr()
@@ -374,20 +410,24 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataContainsKeywordFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         erratum1.addKeyword("reboot_suggested");
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("recommended update: " + cveName2);
         erratum2.addKeyword("restart_suggested");
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "keyword", "reboot_suggested");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "keyword", "reboot_suggested");
         ContentFilter filter = contentManager.createFilter("reboot-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
 
-        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "keyword", "restart_suggested");
+        FilterCriteria criteria2 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "keyword", "restart_suggested");
         ContentFilter filter2 = contentManager.createFilter("restart-filter2", DENY, ERRATUM, criteria2, user);
         assertFalse(filter2.test(erratum1));
         assertTrue(filter2.test(erratum2));
@@ -402,7 +442,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         Module module3 = new Module("mymodule2", "mystream2");
 
         // Filter by module name only
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1");
         ContentFilter filter = contentManager.createFilter("mymodule-filter-1", ALLOW, MODULE, criteria, user);
         assertTrue(filter.test(module1));
         assertTrue(filter.test(module2));

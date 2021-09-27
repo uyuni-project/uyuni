@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2020--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.utils.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -37,7 +51,7 @@ public class PageControlHelperTest extends TestCase {
         queryParams.put("ps", "10");
 
         PageControlHelper helper = new PageControlHelper(SparkTestUtils.createMockRequestWithParams(REQUEST_URL,
-                queryParams),"mydefaultproperty");
+                queryParams), "mydefaultproperty");
 
         assertEquals(5, helper.getStart());
         assertEquals(10, helper.getPageSize());
@@ -142,7 +156,7 @@ public class PageControlHelperTest extends TestCase {
         queryParams.put("ps", "10");
 
         PageControlHelper helper = new PageControlHelper(SparkTestUtils.createMockRequestWithParams(REQUEST_URL,
-                queryParams),"mydefaultproperty");
+                queryParams), "mydefaultproperty");
         PageControl pc = helper.getPageControl();
 
         assertEquals(5, pc.getStart());
@@ -176,9 +190,9 @@ public class PageControlHelperTest extends TestCase {
         private int firstProperty;
         private String secondProperty;
 
-        PagedDataItem(int firstProperty, String secondProperty) {
-            this.firstProperty = firstProperty;
-            this.secondProperty = secondProperty;
+        PagedDataItem(int firstPropertyIn, String secondPropertyIn) {
+            this.firstProperty = firstPropertyIn;
+            this.secondProperty = secondPropertyIn;
         }
 
         public int getFirstProperty() {

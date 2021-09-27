@@ -170,17 +170,17 @@ public class SaltStateGeneratorTest extends TestCase {
 
         List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("emacs.x86_64", "24.5.1");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("jed.x86_64", "1.2.3");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("mutt.x86_64", "5.0.5");
             }
@@ -204,17 +204,17 @@ public class SaltStateGeneratorTest extends TestCase {
 
         List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("emacs.x86_64", ">24.5.1");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("jed.x86_64", ">1.2.3");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("mutt.x86_64", ">5.0.5");
             }

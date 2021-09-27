@@ -223,7 +223,8 @@ public class SCCClientTest extends TestCase {
             assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
             assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586", r.getUrl());
             assertEquals(true, r.isAutorefresh());
-        } finally {
+        }
+        finally {
             this.removeTempDir(tmpDir);
         }
     }

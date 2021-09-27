@@ -51,10 +51,11 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     }
 
     public void testGetStatusWithSelfMonitoringRestartNeeded() {
+        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json"));
+                            .getResourceAsStream(jsonFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
@@ -75,10 +76,11 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     }
 
     public void testGetStatusWithTaskomaticRestartNeeded() {
+        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json"));
+                            .getResourceAsStream(jsonFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
@@ -98,10 +100,11 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     }
 
     public void testGetStatusNoMessage() {
+        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json"));
+                            .getResourceAsStream(jsonFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);

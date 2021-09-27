@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2020--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.messaging.test;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
@@ -51,7 +65,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      * (based on its product) assigned.
      */
     public void testImageSyncedPillarCreated() throws Exception {
-        JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<Event>() {});
+        JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<Event>() { });
         Event event = jsonParser.parse(
         "{                                                       " +
         "    'tag': 'suse/manager/image_synced',                 " +
@@ -74,7 +88,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
         EventMessage message = new ImageSyncedEventMessage(imageSyncedEventOpt.get());
         ImageSyncedEventMessageAction action = new ImageSyncedEventMessageAction();
         action.execute(message);
-        
+
         Path filePath = tmpSaltRoot.resolve(SUMA_PILLAR_IMAGES_DATA_PATH)
             .resolve("group" + testGroup1.getId().toString())
             .resolve("ImageTest-7.0.0." + PILLAR_IMAGE_DATA_FILE_EXT);

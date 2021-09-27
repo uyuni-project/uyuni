@@ -41,11 +41,11 @@ public class SUSEInstalledProductSerializerTest extends TestCase {
         assertTrue(finalOutput
                 .contains("<name>arch</name><value><string>x86_64</string></value>"));
         assertTrue(finalOutput
-                .contains("<name>friendlyName</name><value><string>SUSE Linux Enterprise "
-                        + "Server 12</string></value>"));
+                .contains("<name>friendlyName</name><value><string>SUSE Linux Enterprise " +
+                        "Server 12</string></value>"));
         assertTrue(finalOutput
-                .contains("<name>isBaseProduct</name><value><boolean>1</boolean>"
-                        + "</value>"));
+                .contains("<name>isBaseProduct</name><value><boolean>1</boolean>" +
+                        "</value>"));
         assertFalse(finalOutput.contains("release"));
     }
 

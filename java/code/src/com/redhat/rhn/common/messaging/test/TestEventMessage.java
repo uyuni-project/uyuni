@@ -22,8 +22,9 @@ public class TestEventMessage implements EventMessage {
     private boolean msgReceived = false;
 
     /**
-     * Perform the action on the EventMessage
+     * {@inheritDoc}
      */
+    @Override
     public String toText() {
         return "This is a test";
     }

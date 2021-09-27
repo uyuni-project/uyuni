@@ -114,8 +114,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
-    private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    new ServerGroupManager());
+    private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+            systemManager, new ServerGroupManager());
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper,
             systemHandler);
     private ErrataHandler errataHandler = new ErrataHandler();
@@ -299,7 +299,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelFactory.save(child2);
         assertFalse(child2.isBaseChannel());
 
-        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                 serverGroupManager);
 
         int sid = server.getId().intValue();
@@ -327,7 +327,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testSetBaseChannel() throws Exception {
-        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                 serverGroupManager);
 
 
@@ -572,17 +572,17 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         Map<String, String> details = new HashMap<>();
         details.put("checksum_label", "sha256");
-        details.put("name","new-name");
+        details.put("name", "new-name");
         details.put("summary", "new-summary");
         details.put("description", "new-dsc");
-        details.put("maintainer_name","foo");
-        details.put("maintainer_email","foo@bar.com");
-        details.put("maintainer_phone","+18098098");
-        details.put("gpg_key_url","http://gpg.url");
-        details.put("gpg_key_id","AE1234BC");
-        details.put("gpg_key_fp"," CA20 8686 2BD6 9DFC 65F6 ECC4 2191 80CD DB42 A60E");
+        details.put("maintainer_name", "foo");
+        details.put("maintainer_email", "foo@bar.com");
+        details.put("maintainer_phone", "+18098098");
+        details.put("gpg_key_url", "http://gpg.url");
+        details.put("gpg_key_id", "AE1234BC");
+        details.put("gpg_key_fp", " CA20 8686 2BD6 9DFC 65F6 ECC4 2191 80CD DB42 A60E");
         details.put("gpg_check", "True");
-        csh.setDetails(admin,c.getLabel(),details);
+        csh.setDetails(admin, c.getLabel(), details);
 
         channelDetailsEquality(c, result);
 
@@ -651,7 +651,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
-                "apiTestChanName", "apiTestSummary", "channel-x86_64", null, "sha1", new HashMap<String, String>(),false);
+                "apiTestChanName", "apiTestSummary", "channel-x86_64", null,
+                "sha1", new HashMap<String, String>(), false);
         assertEquals(1, i);
         Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), "api-test-chan-label");
         assertNotNull(c);
@@ -852,7 +853,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel childChan = ChannelFactoryTest.createTestChannel(admin);
         childChan.setParentChannel(baseChan);
 
-        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                 serverGroupManager);
 
         int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());

@@ -49,7 +49,6 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
@@ -79,7 +78,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SystemSummary sshPushSystemMock;
     private SaltSSHService saltSSHServiceMock;
     private SystemInfo sampleSystemInfo;
-    
+
 
     @Override
     public void setUp() throws Exception {
@@ -121,7 +120,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         SSHPushWorkerSalt worker = successWorker(new TestSystemQuery(), saltApi);
 
         context().checking(new Expectations() {{
-           
+
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
@@ -133,8 +132,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
                     with(any(MinionList.class)));
             will(returnValue(systemInfoMap));
-            
-            
         }});
 
         worker.setParentQueue(mockQueue());
@@ -237,7 +234,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             }
 
             @Override
-            public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
+            public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) {
                 Map<String, Result<Map<String, String>>> result = new HashMap<>();
                 Map<String, String> values = new HashMap<>();
                 values.put("ssh_extra_filerefs", "salt://foobar");
@@ -264,7 +261,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
                     with(any(MinionList.class)));
             will(returnValue(systemInfoMap));
-            
         }});
 
         worker.setParentQueue(mockQueue());

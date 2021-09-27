@@ -60,7 +60,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    public void testSubscribeChannels_minions() throws Exception {
+    public void testSubscribeChannelsMinions() throws Exception {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch1.setParentChannel(base);
@@ -70,53 +70,52 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(ch2);
         ServerAction serverAction;
         long serverId = 0;
-        {
-            final MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-            serverId = server.getId();
-            SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
-                    .createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
-            serverAction = createChildServerAction(action, server, STATUS_QUEUED);
 
-            SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
-            details.setBaseChannel(base);
-            details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
-            action.setDetails(details);
-            details.setParentAction(action);
-            HibernateFactory.getSession().save(details);
+        final MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        serverId = server.getId();
+        SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
+                .createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+        serverAction = createChildServerAction(action, server, STATUS_QUEUED);
 
-            SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
-            JobExecutionContext ctx = mock(JobExecutionContext.class);
-            JobDetail jobDetail = mock(JobDetail.class);
-            context().checking(new Expectations() {{
-                oneOf(saltServerActionService).execute(with(any(Action.class)), with(false), with(false), with(Optional.empty()));
+        SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
+        details.setBaseChannel(base);
+        details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
+        action.setDetails(details);
+        details.setParentAction(action);
+        HibernateFactory.getSession().save(details);
 
-                allowing(ctx).getJobDetail();
-                will(returnValue(jobDetail));
+        SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
+        JobExecutionContext ctx = mock(JobExecutionContext.class);
+        JobDetail jobDetail = mock(JobDetail.class);
+        context().checking(new Expectations() {{
+            oneOf(saltServerActionService)
+                    .execute(with(any(Action.class)), with(false), with(false), with(Optional.empty()));
 
-                JobDataMap dataMap = new JobDataMap();
-                dataMap.putAsString("action_id", action.getId());
-                dataMap.putAsString("user_id", user.getId());
+            allowing(ctx).getJobDetail();
+            will(returnValue(jobDetail));
 
-                allowing(jobDetail).getJobDataMap();
-                will(returnValue(dataMap));
-            }});
+            JobDataMap dataMap = new JobDataMap();
+            dataMap.putAsString("action_id", action.getId());
+            dataMap.putAsString("user_id", user.getId());
 
-            MinionActionExecutor executor = new MinionActionExecutor();
-            executor.setSaltServerActionService(saltServerActionService);
-            executor.execute(ctx);
+            allowing(jobDetail).getJobDataMap();
+            will(returnValue(dataMap));
+        }});
 
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().clear();
-        }
-        {
-            MinionServer server = MinionServerFactory.lookupById(serverId).get();
-            assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
-            assertNull(serverAction.getResultCode());
-            assertEquals(server, serverAction.getServer());
+        MinionActionExecutor executor = new MinionActionExecutor();
+        executor.setSaltServerActionService(saltServerActionService);
+        executor.execute(ctx);
 
-            assertNull(server.getBaseChannel());
-            assertTrue(server.getChannels().isEmpty());
-        }
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        MinionServer server2 = MinionServerFactory.lookupById(serverId).get();
+        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertNull(serverAction.getResultCode());
+        assertEquals(server2, serverAction.getServer());
+
+        assertNull(server2.getBaseChannel());
+        assertTrue(server2.getChannels().isEmpty());
     }
 
     private ServerAction createChildServerAction(Action action, Server server, ActionStatus status)

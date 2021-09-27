@@ -314,7 +314,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String formulaName = "test-formula";
         File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
         FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
-        try (FileChannel outChan = new FileOutputStream(new File(FormulaFactory.getServerDataFile()), true).getChannel()) {
+        try (FileChannel outChan = new FileOutputStream(
+                new File(FormulaFactory.getServerDataFile()), true).getChannel()) {
             outChan.truncate(0);
         }
 
@@ -1295,27 +1296,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
 
-        ch1_1.setParentChannel(base1);
+        ch11.setParentChannel(base1);
 
         server.addChannel(base1);
-        server.addChannel(ch1_1);
+        server.addChannel(ch11);
 
         Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        ch2_1.setParentChannel(base2);
-        ch2_2.setParentChannel(base2);
+        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch21.setParentChannel(base2);
+        ch22.setParentChannel(base2);
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch2_1, ch2_2), null);
+        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22), null);
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(2, server.getChildChannels().size());
-        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2_1.getId())));
-        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2_2.getId())));
+        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch21.getId())));
+        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch22.getId())));
     }
 
     public void testUpdateServerChannelsNoChildren() throws Exception {
@@ -1324,18 +1325,18 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
 
-        ch1_1.setParentChannel(base1);
+        ch11.setParentChannel(base1);
 
         server.addChannel(base1);
-        server.addChannel(ch1_1);
+        server.addChannel(ch11);
 
         Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        ch2_1.setParentChannel(base2);
-        ch2_2.setParentChannel(base2);
+        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch21.setParentChannel(base2);
+        ch22.setParentChannel(base2);
 
         HibernateFactory.getSession().flush();
 
@@ -1351,22 +1352,22 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
 
-        ch1_1.setParentChannel(base1);
+        ch11.setParentChannel(base1);
 
         server.addChannel(base1);
-        server.addChannel(ch1_1);
+        server.addChannel(ch11);
 
         Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        ch2_1.setParentChannel(base2);
-        ch2_2.setParentChannel(base2);
+        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch21.setParentChannel(base2);
+        ch22.setParentChannel(base2);
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch2_1, ch2_2), null);
+        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22), null);
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
@@ -1473,7 +1474,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         try {
             SystemManager.createSystemProfile(user, "test system 2", data);
             fail("System creation should have failed!");
-        } catch (SystemsExistException e) {
+        }
+        catch (SystemsExistException e) {
             assertEquals(singletonList(profile.getId()), e.getSystemIds());
         }
     }
@@ -1496,7 +1498,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(minion, fromDb.get(0));
 
         // minion with a HW address will also match
-        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("myhost"), singleton("11:22:33:44:55:66"));
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("myhost"),
+                singleton("11:22:33:44:55:66"));
         assertEquals(1, fromDb2.size());
         assertEquals(minion, fromDb2.get(0));
     }
@@ -1686,7 +1689,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // installed on server but unknown to Uyuni (no package id)
         InstalledPackage unknownPackage = new InstalledPackage();
-        unknownPackage.setArch(PackageFactory.lookupPackageArchByLabel("ia32e")); // for this one, name differs from label
+        // for this one, name differs from label
+        unknownPackage.setArch(PackageFactory.lookupPackageArchByLabel("ia32e"));
         unknownPackage.setName(PackageFactory.lookupOrCreatePackageByName("testpak-123"));
         unknownPackage.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
         unknownPackage.setServer(server);
@@ -1703,13 +1707,15 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(knownPackage.getEvr().getEpoch(), known.get("epoch"));
         assertEquals(knownPackage.getEvr().getVersion(), known.get("version"));
         assertEquals(knownPackage.getEvr().getRelease(), known.get("release"));
-        assertEquals(archAsLabel ? knownPackage.getArch().getLabel() : knownPackage.getArch().getName(), known.get("arch"));
+        assertEquals(archAsLabel ? knownPackage.getArch().getLabel() : knownPackage.getArch().getName(),
+                known.get("arch"));
 
         assertEquals(unknownPackage.getName().getName(), unknown.get("name"));
         assertEquals(unknownPackage.getEvr().getEpoch(), unknown.get("epoch"));
         assertEquals(unknownPackage.getEvr().getVersion(), unknown.get("version"));
         assertEquals(unknownPackage.getEvr().getRelease(), unknown.get("release"));
-        assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(), unknown.get("arch"));
+        assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(),
+                unknown.get("arch"));
     }
 
     public void testListDupesByIp() throws Exception {

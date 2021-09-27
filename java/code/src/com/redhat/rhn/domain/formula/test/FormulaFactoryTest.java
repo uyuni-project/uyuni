@@ -27,15 +27,15 @@ import junit.framework.TestCase;
 public class FormulaFactoryTest extends TestCase {
 
     public void testGetValueByPath() {
-        Map<String, Object> map = (Map<String, Object>)new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
+        Map<String, Object> map = new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 
         Optional<Object> val = FormulaFactory.getValueByPath(map, "cluster:management_node:match");
         assertTrue(val.isPresent());
         assertEquals("I@caasp:management_node:true", val.get());
     }
 
-    public void testGetValueByPath_WrongPath() {
-        Map<String, Object> map = (Map<String, Object>)new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
+    public void testGetValueByPathWrongPath() {
+        Map<String, Object> map = new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 
         Optional<Object> val = FormulaFactory.getValueByPath(map, "cluster:foo:bar");
         assertTrue(val.isEmpty());

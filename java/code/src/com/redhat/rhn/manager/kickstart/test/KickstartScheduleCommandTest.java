@@ -235,7 +235,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
 
-        assertContains(ksdata.getKickstartPackageNames(),"spacewalk-koan");
+        assertContains(ksdata.getKickstartPackageNames(), "spacewalk-koan");
 
     }
 

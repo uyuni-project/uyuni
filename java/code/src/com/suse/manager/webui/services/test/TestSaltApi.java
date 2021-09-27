@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2020--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -87,7 +101,9 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts, String clientKey, String proxyKey, String user, Map<String, String> options, String command, String outputfile) {
+    public Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts, String clientKey, String proxyKey,
+                                                              String user, Map<String, String> options, String command,
+                                                              String outputfile) {
         throw new UnsupportedOperationException();
     }
 
@@ -187,7 +203,10 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(BootstrapParameters parameters, List<String> bootstrapMods, Map<String, Object> pillarData) throws SaltException {
+    public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(BootstrapParameters parameters,
+                                                                             List<String> bootstrapMods,
+                                                                             Map<String, Object> pillarData)
+            throws SaltException {
         throw new UnsupportedOperationException();
     }
 
@@ -197,7 +216,8 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(MinionList target, String cmd, CompletableFuture<GenericError> cancel) {
+    public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(MinionList target, String cmd,
+                                                                              CompletableFuture<GenericError> cancel) {
         throw new UnsupportedOperationException();
     }
 
@@ -212,7 +232,8 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(String target, CompletableFuture<GenericError> cancel) {
+    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(String target,
+                                                                    CompletableFuture<GenericError> cancel) {
         throw new UnsupportedOperationException();
     }
 
@@ -222,17 +243,20 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata, LocalDateTime startTime, LocalDateTime endTime) {
+    public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata, LocalDateTime startTime,
+                                                                    LocalDateTime endTime) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(String target, CompletableFuture<GenericError> cancel) {
+    public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
+            String target, CompletableFuture<GenericError> cancel) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target, Optional<ScheduleMetadata> metadataIn) throws SaltException {
+    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
+                                                       Optional<ScheduleMetadata> metadataIn) throws SaltException {
         return Optional.empty();
     }
 

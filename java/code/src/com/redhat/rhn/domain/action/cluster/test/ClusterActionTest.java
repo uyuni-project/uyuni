@@ -39,8 +39,8 @@ public class ClusterActionTest extends JMockBaseTestCaseWithUser {
 
         Cluster cluster = createTestCluster(user, minion);
 
-        ClusterGroupRefreshNodesAction testAction = (ClusterGroupRefreshNodesAction) ActionFactoryTest.createNewAction(user,
-                ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES);
+        ClusterGroupRefreshNodesAction testAction = (ClusterGroupRefreshNodesAction) ActionFactoryTest
+                .createNewAction(user, ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES);
         testAction.setCluster(cluster);
 
         saveAction(testAction);

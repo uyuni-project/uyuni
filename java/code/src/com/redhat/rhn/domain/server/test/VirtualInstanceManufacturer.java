@@ -68,9 +68,9 @@ public class VirtualInstanceManufacturer {
     public VirtualInstance newRegisteredGuestWithoutHost(boolean salt) throws Exception {
         VirtualInstance guest = createVirtualInstance(
                 VirtualInstanceFactory.getInstance().getRunningState());
-        Server server = salt
-                ? MinionServerFactoryTest.createTestMinionServer(user)
-                : ServerFactoryTest.createTestServer(user);
+        Server server = salt ?
+                MinionServerFactoryTest.createTestMinionServer(user) :
+                ServerFactoryTest.createTestServer(user);
         guest.setGuestSystem(server);
         return guest;
     }
