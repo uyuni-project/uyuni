@@ -151,6 +151,15 @@ install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/ser
 spacewalk-%{pythonX}-pylint .
 %endif
 
+%post
+if [ $1 -eq 2 ]
+then
+  if [ -e /etc/apache2/vhosts.d/ssl.conf ]
+  then
+    sed 's/^SSLProtocol all.*$//g' /etc/apache2/vhosts.d/ssl.conf
+  fi
+fi
+
 %files
 %defattr(-,root,root,-)
 %dir %{defaultdir}
