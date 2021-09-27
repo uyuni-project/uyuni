@@ -1,3 +1,5 @@
+- Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
+
 -------------------------------------------------------------------
 Mon Aug 30 11:54:50 CEST 2021 - jmassaguerpla@suse.de
 
