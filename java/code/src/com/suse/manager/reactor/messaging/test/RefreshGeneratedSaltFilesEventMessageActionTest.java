@@ -97,7 +97,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
             assertTrue(Files.exists(customPath.resolve(
                     "org_" + user.getOrg().getId() + ".sls")));
 
-            for(ServerGroup group : ServerGroupFactory.listManagedGroups(org)) {
+            for (ServerGroup group : ServerGroupFactory.listManagedGroups(org)) {
                 assertTrue(Files.exists(customPath.resolve(
                         "group_" + group.getId() + ".sls")));
             }

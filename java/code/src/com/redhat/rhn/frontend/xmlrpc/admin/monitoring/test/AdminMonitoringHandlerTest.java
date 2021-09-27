@@ -29,10 +29,11 @@ import java.util.function.BiFunction;
 public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
 
     public void testGetStatus() {
+        String monitoringRestartFile =
+                "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json"));
+                    return Optional.of(this.getClass().getResourceAsStream(monitoringRestartFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
@@ -100,13 +101,15 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         try {
             Map<String, String> res = handler.enable(regular);
             fail("PermissionCheckFailureException should be thrown");
-        } catch (PermissionCheckFailureException e) {
+        }
+        catch (PermissionCheckFailureException e) {
         }
 
         try {
             Map<String, String> res = handler.enable(admin);
             fail("PermissionCheckFailureException should be thrown");
-        } catch (PermissionCheckFailureException e) {
+        }
+        catch (PermissionCheckFailureException e) {
         }
     }
 }

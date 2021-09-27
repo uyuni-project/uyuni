@@ -216,7 +216,8 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         // Since "perl" is not served as a modular package, there shouldn't be any deny filters for name "perl"
         assertTrue(result.stream().noneMatch(f -> isDenyNameMatches(f, "perl")));
         // No override should exist for perl-5.26
-        assertTrue(result.stream().noneMatch(f -> ALLOW.equals(f.getRule()) && f.getCriteria().getValue().startsWith("perl-5.26")));
+        assertTrue(result.stream()
+                .noneMatch(f -> ALLOW.equals(f.getRule()) && f.getCriteria().getValue().startsWith("perl-5.26")));
         // As a result, "perl-5.26" will be served from any source if available, whether the module is selected or not.
         // This matches the DNF behavior.
     }
@@ -235,9 +236,11 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         // Filter out every "perl" in all sources (including perl-5.26)
         assertTrue(result.stream().anyMatch(f -> isDenyNameMatches(f, "perl")));
         // Override perl-5.24 to be in the target
-        assertTrue(result.stream().anyMatch(f -> ALLOW.equals(f.getRule()) && f.getCriteria().getValue().startsWith("perl-0:5.24")));
+        assertTrue(result.stream()
+                .anyMatch(f -> ALLOW.equals(f.getRule()) && f.getCriteria().getValue().startsWith("perl-0:5.24")));
         // No override can exist for perl-5.26 because the package is not defined in the module metadata
-        assertTrue(result.stream().noneMatch(f -> ALLOW.equals(f.getRule()) && f.getCriteria().getValue().startsWith("perl-5.26")));
+        assertTrue(result.stream()
+                .noneMatch(f -> ALLOW.equals(f.getRule()) && f.getCriteria().getValue().startsWith("perl-5.26")));
         // As a result, "perl" will be exclusively served from the "perl:5.24" module.
     }
 

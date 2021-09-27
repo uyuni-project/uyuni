@@ -306,7 +306,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         }});
         AnsibleManager.setSaltApi(saltApi);
 
-        Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> result = AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
+        Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> result =
+                AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
         assertEquals(Optional.of(expected), result);
     }
 
@@ -357,7 +358,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testDiscoverPlaybooksInInventory() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
+        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
+                "inventory", controlNode.getId(), "/tmp/test/hosts", user);
         try {
             AnsibleManager.discoverPlaybooks(inventoryPath.getId(), user);
             fail("An exception should have been thrown.");
@@ -372,7 +374,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testIntrospectInventory() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
+        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
+                "inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
         Map<String, Map<String, Map<String, List<String>>>> expected =
                 Map.of("minion",  Map.of("all", Map.of("children", List.of("host1", "host2"))));
@@ -384,7 +387,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         }});
         AnsibleManager.setSaltApi(saltApi);
 
-        Optional<Map<String, Map<String, Object>>> result = AnsibleManager.introspectInventory(inventoryPath.getId(), user);
+        Optional<Map<String, Map<String, Object>>> result =
+                AnsibleManager.introspectInventory(inventoryPath.getId(), user);
         assertEquals(Optional.of(expected), result);
     }
 
@@ -393,7 +397,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testIntrospectInventorySaltError() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
+        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
+                "inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{

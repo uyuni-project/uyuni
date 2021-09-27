@@ -108,22 +108,24 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
     public void testCreatedBinaryFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigFile fl = ConfigTestUtils.createConfigFile(channel);
-        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(fl,ConfigFileType.file());
+        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(fl, ConfigFileType.file());
 
         byte [] randomData = new byte[1000];
         new Random().nextBytes(randomData);
         ConfigContent configContent = ConfigTestUtils.createConfigContent(1000L, true);
         configContent.setContents(randomData);
-        Checksum contentsChecksum = ChecksumFactory.safeCreate(SHA256Crypt.sha256Hex(randomData),"sha256");
+        Checksum contentsChecksum = ChecksumFactory.safeCreate(SHA256Crypt.sha256Hex(randomData), "sha256");
         configContent.setChecksum(contentsChecksum);
         configRevision.setConfigContent(configContent);
 
         ConfigurationManager.getInstance().save(channel, empty());
         File createdFile = getGeneratedFile(channel, fl.getConfigFileName().getPath());
         Checksum fileChecksum =  ChecksumFactory.
-                safeCreate(SHA256Crypt.sha256Hex(IOUtils.toByteArray(new FileInputStream(createdFile))),"sha256");
+                safeCreate(SHA256Crypt.sha256Hex(
+                        IOUtils.toByteArray(new FileInputStream(createdFile))),
+                        "sha256");
         assertEquals(contentsChecksum, fileChecksum);
-        
+
         ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
         assertFalse(createdFile.getParentFile().exists());
     }

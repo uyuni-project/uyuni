@@ -34,7 +34,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
 
     private static final String MINION_ID = "suma3pg.vagrant.local";
     private SaltService saltServiceMock;
-   
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -43,16 +43,16 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
     }
 
-   
+
     public void testStarupEventFired() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId(MINION_ID);
         // Verify the resulting system entry
-        context().checking(new Expectations(){{
+        context().checking(new Expectations() {{
             allowing(saltServiceMock).updateSystemInfo(with(any(MinionList.class)));
         }});
         // On minion start up apply state via mocked SaltService
         MinionStartEventMessageAction action = new MinionStartEventMessageAction(saltServiceMock);
         action.execute(new MinionStartEventMessage(MINION_ID));
-    }   
+    }
 }

@@ -42,9 +42,9 @@ import java.util.List;
 
 public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
 
-    final LocalizationService loc;
+    private final LocalizationService loc;
 
-    ContentProject project;
+    private ContentProject project;
 
     private ContentManager manager;
 
@@ -120,5 +120,19 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(EQUALS, "module_stream", value);
         ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
         manager.attachFilter("cplabel", filter.getId(), user);
+    }
+
+    /**
+     * @return localization service
+     */
+    public LocalizationService getLoc() {
+        return loc;
+    }
+
+    /**
+     * @return content project
+     */
+    public ContentProject getProject() {
+        return project;
     }
 }

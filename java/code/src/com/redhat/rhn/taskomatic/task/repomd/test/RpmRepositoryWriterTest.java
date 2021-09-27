@@ -101,6 +101,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
 
         writer.writeRepomdFiles(channel);
 
+        // CHECKSTYLE:OFF
         String repomdExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<repomd xmlns=\"http://linux.duke.edu/metadata/repo\"><data type=\"primary\"><location href=\"repodata/primary.xml.gz\"/>" +
                 "<checksum type=\"sha256\">61d08b336c520bdfade052b808616e5a80e5eec29d82c2e7dbbd58bc7ee93864</checksum>" +
@@ -129,6 +130,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
                 "<rpm:entry name=\"capProv1\" flags=\"GE\" epoch=\"0\" ver=\"\" rel=\"1.0\"/></rpm:provides><rpm:requires>" +
                 "<rpm:entry name=\"capReq1\" flags=\"GE\" epoch=\"0\" ver=\"\" rel=\"1.0\"/></rpm:requires><rpm:conflicts/>" +
                 "<rpm:obsoletes/><rpm:recommends/><rpm:suggests/><rpm:supplements/><rpm:enhances/></format></package></metadata>";
+        // CHECKSTYLE:ON
 
         primaryXmlExpected = cleanupPrimaryXml(primaryXmlExpected);
         Path channelDir = mountPointDir.resolve("rhn").resolve("repodata").resolve(channel.getLabel());
@@ -148,7 +150,8 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
 
         File primaryXmlGz = channelDir.resolve("primary.xml.gz").toFile();
 
-        try (FileInputStream fin = new FileInputStream(primaryXmlGz); InputStream gzipStream = new GZIPInputStream(fin)) {
+        try (FileInputStream fin = new FileInputStream(primaryXmlGz);
+                InputStream gzipStream = new GZIPInputStream(fin)) {
             String primaryXmlStr = TestUtils.readAll(gzipStream);
 
             primaryXmlStr = cleanupPrimaryXml(primaryXmlStr);
@@ -162,8 +165,11 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     }
 
     private String cleanupRepomd(String str) {
-        String ret = str.trim().replaceFirst("<checksum type=\"sha256\">.*</checksum>", "<checksum type=\"sha256\">xxx</checksum>");
-        ret = ret.replaceFirst("<open-checksum type=\"sha256\">.*</open-checksum>", "<open-checksum type=\"sha256\">xxx</open-checksum>");
+        String ret = str.trim().replaceFirst(
+                "<checksum type=\"sha256\">.*</checksum>", "<checksum type=\"sha256\">xxx</checksum>");
+        ret = ret.replaceFirst(
+                "<open-checksum type=\"sha256\">.*</open-checksum>",
+                "<open-checksum type=\"sha256\">xxx</open-checksum>");
         ret = ret.replaceFirst("<timestamp>.*</timestamp>", "<timestamp>123</timestamp>");
         return ret;
     }

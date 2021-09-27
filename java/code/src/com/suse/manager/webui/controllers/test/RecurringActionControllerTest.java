@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.test ;
+package com.suse.manager.webui.controllers.test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -132,7 +132,8 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         assertEquals("new-name-123", updated.getName());
     }
 
-    private static String createActionJsonString(Optional<Long> actionId, String scheduleName, Optional<Long> targetId) {
+    private static String createActionJsonString(Optional<Long> actionId, String scheduleName,
+                                                 Optional<Long> targetId) {
         return "{" +
                 actionId.map(id -> "'recurringActionId': " + id + ",").orElse("") +
                 "'scheduleName': '" + scheduleName + "'," +

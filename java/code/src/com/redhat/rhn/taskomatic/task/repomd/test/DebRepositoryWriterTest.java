@@ -72,10 +72,12 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         assertTrue(fileNames.contains("Packages"));
         assertTrue(fileNames.contains("Packages.gz"));
 
-        String packagesContent = FileUtils.readFileToString(tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages").toFile());
+        String packagesContent = FileUtils.readFileToString(
+                tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages").toFile());
         packagesContent = DebPackageWriterTest.cleanupContent(packagesContent);
 
-        try (FileInputStream fin = new FileInputStream(tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages.gz").toFile());
+        try (FileInputStream fin = new FileInputStream(
+                tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages.gz").toFile());
              InputStream gzipStream = new GZIPInputStream(fin)) {
 
             String packagesGzContent = TestUtils.readAll(gzipStream);

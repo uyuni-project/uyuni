@@ -612,8 +612,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testScheduleChangeChannels() throws Exception {
-        SystemHandler handler = getMockedHandler();
-        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
 
         Server server1 = ServerFactoryTest.createTestServer(admin, true);
         Server server2 = ServerFactoryTest.createTestServer(admin, true);
@@ -640,7 +640,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         child3.setParentChannel(base1);
         Date earliest = new Date();
         var sids = List.of(sid1, sid2);
-        List<Long> actionIds = handler.scheduleChangeChannels(admin, sids, base1.getLabel(),
+        List<Long> actionIds = mockedHandler.scheduleChangeChannels(admin, sids, base1.getLabel(),
                     Arrays.asList(child3.getLabel()), earliest);
 
         assertEquals(1, actionIds.size());
@@ -660,8 +660,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testScheduleChangeChannelsNoChildren() throws Exception {
-        SystemHandler handler = getMockedHandler();
-        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
@@ -679,7 +679,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Channel base1 = ChannelFactoryTest.createTestChannel(admin);
         base1.setParentChannel(null);
         Date earliest = new Date();
-        long actionId = handler.scheduleChangeChannels(admin, sid, base1.getLabel(),
+        long actionId = mockedHandler.scheduleChangeChannels(admin, sid, base1.getLabel(),
                 Collections.emptyList(), earliest);
 
         Action action = ActionFactory.lookupById(actionId);
@@ -1010,7 +1010,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testListAllEvents() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
-        List<Map<String, Object>>results = handler.listSystemEvents(admin,
+        List<Map<String, Object>> results = handler.listSystemEvents(admin,
                 server.getId().intValue());
         assertEquals(0, results.size());
 
@@ -2473,8 +2473,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         try {
             handler.listMigrationTargets(admin, server.getId().intValue());
         }
-        catch(FaultException e) {
-            if(e.getMessage().contains("Server has no Products installed")) {
+        catch (FaultException e) {
+            if (e.getMessage().contains("Server has no Products installed")) {
                 thrown = true;
             }
         }
@@ -2527,7 +2527,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
 
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Performance Computing 12 SP2");
+        assertContains(result.get(1).get("friendly").toString(),
+                "SUSE Linux Enterprise High Performance Computing 12 SP2");
         assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
     }
 
@@ -2584,9 +2585,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
 
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP2");
+        assertContains(result.get(0).get("friendly").toString(),
+                "SUSE Linux Enterprise High Availability Extension 12 SP2");
         assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+        assertContains(result.get(1).get("friendly").toString(),
+                "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
     public void testListMigrationTargetExtensionNotSynced() throws Exception {
@@ -2647,7 +2650,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
         assertEquals(1, result.size());
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+        assertContains(result.get(0).get("friendly").toString(),
+                "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
     public void testGetInstalledProducts() throws Exception {
@@ -2806,7 +2810,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         try {
             getMockedHandler().createSystemProfile(admin, "test system", Collections.emptyMap());
             fail("An exception should have been thrown.");
-        } catch (InvalidParameterException e) {
+        }
+        catch (InvalidParameterException e) {
             // no-op
         }
     }
@@ -2867,8 +2872,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler systemHandler = getMockedHandler();
 
         // Installed 'Latest'(state = 0 & versionConstraint = 0)
-        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
-        assertEquals(1,result);
+        int  result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
+        assertEquals(1, result);
         Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
         Set<PackageState> pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2883,8 +2889,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
 
         // Installed 'Any'(state =0 versionConstraint = 1)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 1);
-        assertEquals(1,result);
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2898,9 +2905,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             }
         }
 
-        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
-        assertEquals(1,result);
+        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2913,9 +2922,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             }
         }
 
-        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
-        assertEquals(1,result);
+        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(0, pstates.size());
@@ -2946,9 +2957,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             assertContains(e.getMessage(), "not available in assigned channels");
         }
 
-        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        int result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
-        assertEquals(1,result);
+        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        int result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        assertEquals(1, result);
         Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
         Set<PackageState>  pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2961,9 +2974,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             }
         }
 
-        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
-        assertEquals(1,result);
+        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(0, pstates.size());
@@ -2989,7 +3004,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // IllegalArgumentException in case of invalid state
         try {
-            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "test-package", 3, 1);
+            int actionId = systemHandler.updatePackageState(
+                    admin, minionServer.getId().intValue(), "test-package", 3, 1);
             fail("Should throw IllegalArgumentException");
         }
         catch (IllegalArgumentException e) {
@@ -2997,7 +3013,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
         // IllegalArgumentException in case of invalid version constraint
         try {
-            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "test-package", 2, 4);
+            int actionId = systemHandler.updatePackageState(
+                    admin, minionServer.getId().intValue(), "test-package", 2, 4);
             fail("Should throw IllegalArgumentException");
         }
         catch (IllegalArgumentException e) {
@@ -3018,13 +3035,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
      * @throws Exception
      */
     public void testListPackageState() throws Exception {
-        MinionServer server =MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
 
         SystemHandler systemHandler = getMockedHandler();
 
-        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
-        assertEquals(1,result);
+        int  result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
+        assertEquals(1, result);
         Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
         assertNotEmpty(packageStates);
         assertEquals(1, packageStates.size());

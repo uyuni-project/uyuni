@@ -54,7 +54,7 @@ public class SaltUtilsTest extends TestCase {
             "\"release\": \"0.1\"," +
             "\"arch\": \"x86_64\"" +
         "}";
-        Pkg.Info atomInfo = Json.GSON.fromJson(atomJson, new TypeToken<Pkg.Info>(){}.getType());
+        Pkg.Info atomInfo = Json.GSON.fromJson(atomJson, new TypeToken<Pkg.Info>() { }.getType());
         assertEquals("atom-1.42.0-0.1.x86_64", SaltUtils.packageToKey("atom", atomInfo));
 
 
@@ -80,7 +80,8 @@ public class SaltUtilsTest extends TestCase {
             "\"version\": \"0.130ubuntu3.8\"," +
             "\"arch\": \"all\"" +
         "}";
-        Pkg.Info initramfsToolsInfo = Json.GSON.fromJson(initramfsToolsJson, new TypeToken<Pkg.Info>(){}.getType());
-        assertEquals("initramfs-tools-0.130ubuntu3.8.all", SaltUtils.packageToKey("initramfs-tools", initramfsToolsInfo));
+        Pkg.Info initramfsToolsInfo = Json.GSON.fromJson(initramfsToolsJson, new TypeToken<Pkg.Info>() { }.getType());
+        assertEquals("initramfs-tools-0.130ubuntu3.8.all",
+                SaltUtils.packageToKey("initramfs-tools", initramfsToolsInfo));
     }
 }

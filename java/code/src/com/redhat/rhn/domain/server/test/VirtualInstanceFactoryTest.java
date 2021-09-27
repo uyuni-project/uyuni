@@ -49,7 +49,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private VirtualInstanceFactory virtualInstanceDAO;
     private User user;
     private GuestBuilder builder;
-    SystemEntitlementManager systemEntitlementManager;
+    private SystemEntitlementManager systemEntitlementManager;
 
     protected void setUp() throws Exception {
         super.setUp();

@@ -91,6 +91,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Create a {@link MinionServer} for testing.
      *
+     * @param owner the user owning the server
      * @return the MinionServer object
      * @throws Exception in case of an error
      */

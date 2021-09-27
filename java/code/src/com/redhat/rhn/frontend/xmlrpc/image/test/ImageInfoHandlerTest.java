@@ -175,12 +175,12 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 will(returnValue(Optional.of(mockResult)));
         }});
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupMgr = new ServerGroupManager();
         SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
-                        serverGroupManager),
+                        serverGroupMgr),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                        new FormulaMonitoringManager(), serverGroupMgr)
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);

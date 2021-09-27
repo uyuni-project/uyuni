@@ -35,8 +35,9 @@ public class TestExceptionAction implements MessageAction  {
     }
 
     /**
-     * Perform the action on the EventMessage
+     * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msg) {
         TestEventMessage tm = (TestEventMessage) msg;
         tm.setMessageReceived(true);

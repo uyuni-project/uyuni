@@ -126,8 +126,10 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
-        ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager);
+        ClusterManager clusterManager = new ClusterManager(
+                saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock,
+                clusterManager, formulaManager, serverGroupManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
                 clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
@@ -156,11 +158,12 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<Jobs.Info>() {});
+        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<Jobs.Info>() { });
         return jsonParser.parse(eventString);
     }
 
-    private Jobs.Info listJob(String filename, String minion1Id, List<String> actions1, String minion2Id, List<String> actions2) throws Exception {
+    private Jobs.Info listJob(String filename, String minion1Id, List<String> actions1,
+                              String minion2Id, List<String> actions2) throws Exception {
         Path path = new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
         String eventString = Files.lines(path)
@@ -172,7 +175,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 .replaceAll("\\$action_2_1", actions2.get(0))
                 .replaceAll("\\$action_2_2", actions2.get(1));
 
-        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<Jobs.Info>() {});
+        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<>() { });
         return jsonParser.parse(eventString);
     }
 
@@ -182,7 +185,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        JsonParser<Map<String, Jobs.ListJobsEntry>> jsonParser = new JsonParser<>(new TypeToken<Map<String, Jobs.ListJobsEntry>>() {});
+        JsonParser<Map<String, Jobs.ListJobsEntry>> jsonParser = new JsonParser<>(new TypeToken<>() { });
         return jsonParser.parse(eventString);
     }
 
@@ -209,7 +212,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         ActionChain actionChain = ActionChainFactory.getOrCreateActionChain(label, user);
 
         Set<Action> applyStates = ActionChainManager
-                .scheduleApplyStates(user, Arrays.asList(minion1.getId(), minion2.getId()), Optional.of(false), earliest, actionChain);
+                .scheduleApplyStates(user, Arrays.asList(minion1.getId(), minion2.getId()),
+                        Optional.of(false), earliest, actionChain);
         assertEquals(2, applyStates.size());
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
@@ -220,22 +224,22 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        Action action1_1 = actionChain.getEntries().stream()
+        Action action11 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion1))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
                 .map(e -> e.getAction())
                 .findFirst().get();
-        Action action1_2 = actionChain.getEntries().stream()
+        Action action12 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion1))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
                 .map(e -> e.getAction())
                 .findFirst().get();
-        Action action2_1 = actionChain.getEntries().stream()
+        Action action21 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion2))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
                 .map(e -> e.getAction())
                 .findFirst().get();
-        Action action2_2 = actionChain.getEntries().stream()
+        Action action22 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion2))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
                 .map(e -> e.getAction())
@@ -246,7 +250,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
                 allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
 
-                allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)), with(any(LocalDateTime.class)), with(any(LocalDateTime.class)));
+                allowing(saltServiceMock).jobsByMetadata(
+                        with(any(Object.class)), with(any(LocalDateTime.class)), with(any(LocalDateTime.class)));
                 will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.actionchains.json", 0))));
 
                 mockListJob("20180316234939446951");
@@ -263,10 +268,9 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 else {
                     atLeast(1).of(saltServiceMock).listJob(jid);
                     will(returnValue(Optional.of(listJob("jobs.list_jobs." + jid + ".json",
-                            minion1.getMinionId(), Arrays.asList(action1_1.getId() + "", action1_2.getId() + ""),
-                            minion2.getMinionId(), Arrays.asList(action2_1.getId() + "", action2_2.getId() + "")))));
+                            minion1.getMinionId(), Arrays.asList(action11.getId() + "", action12.getId() + ""),
+                            minion2.getMinionId(), Arrays.asList(action21.getId() + "", action22.getId() + "")))));
                 }
-               
             }
         });
 
@@ -278,18 +282,19 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager =  new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
                 formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager,
+                formulaManager, serverGroupManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
                 clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
         minionActionUtils.cleanupMinionActionChains();
-        
+
         if (!MinionActionUtils.POSTGRES) {
-            assertActionCompleted(action1_1);
-            assertActionCompleted(action1_2);
-            assertActionCompleted(action2_1);
-            assertActionCompleted(action2_2);
+            assertActionCompleted(action11);
+            assertActionCompleted(action12);
+            assertActionCompleted(action21);
+            assertActionCompleted(action22);
         }
     }
 
@@ -297,5 +302,4 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, action.getServerActions().size());
         assertEquals(ActionFactory.STATUS_COMPLETED, action.getServerActions().stream().findFirst().get().getStatus());
     }
-
 }

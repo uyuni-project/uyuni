@@ -187,7 +187,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     private void setSubscriptionPolicy(Long subId, String policy) {
-        Map<Long,String> mapping = new HashMap<>();
+        Map<Long, String> mapping = new HashMap<>();
         mapping.put(subId, policy);
         output.setSubscriptionPolicies(mapping);
     }

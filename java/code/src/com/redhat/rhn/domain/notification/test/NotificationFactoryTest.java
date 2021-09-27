@@ -47,7 +47,8 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testVisibilityForWrongRoles() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+        UserNotificationFactory.storeNotificationMessageFor(
+                msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
@@ -87,7 +88,8 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // Create a notification
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+        UserNotificationFactory.storeNotificationMessageFor(
+                msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
 
         // Should not be deleted
         int result = UserNotificationFactory.deleteNotificationMessagesBefore(msg.getCreated());

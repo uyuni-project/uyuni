@@ -145,8 +145,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                 user.getOrg());
 
         assertEquals(erratas.size(), 2);
-        assertTrue(erratas.stream().allMatch(e -> e.getId().equals(vendorErrata.getId())
-                || e.getId().equals(userErrata.getId())));
+        assertTrue(erratas.stream().allMatch(e -> e.getId().equals(vendorErrata.getId()) ||
+                e.getId().equals(userErrata.getId())));
         assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userErrata.getAdvisory())));
         assertTrue(erratas.stream().allMatch(e -> e instanceof Errata));
     }
@@ -396,7 +396,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception when anything goes wrong
      */
-    private void updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus) throws Exception {
+    private void updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus)
+            throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Errata originalErratum = ErrataFactoryTest.createTestErrata(null);
@@ -415,7 +416,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Package pkg = clonedErratum.getPackages().iterator().next();
         InstalledPackage installedPackage = PackageTestUtils.createInstalledPackage(pkg);
         PackageEvr evr = pkg.getPackageEvr();
-        installedPackage.setEvr((PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "0.1.0", evr.getRelease(), pkg.getPackageType()))); // older version
+        installedPackage.setEvr((PackageEvrFactory.lookupOrCreatePackageEvr(
+                evr.getEpoch(), "0.1.0", evr.getRelease(), pkg.getPackageType()))); // older version
         // assumption
         assertTrue(pkg.getPackageEvr().compareTo(installedPackage.getEvr()) > 0);
         installedPackage.setServer(server);
@@ -428,7 +430,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         ErrataFactory.syncErrataDetails(clonedErratum);
         Set<ErrataCacheDto> needingUpdates = intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
         regenerateNeededUpdatesCache(server);
-        Set<ErrataCacheDto> regeneratedNeedingUpdates = intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        Set<ErrataCacheDto> regeneratedNeedingUpdates =
+                intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
         assertEquals(regeneratedNeedingUpdates, needingUpdates);
     }
 
@@ -446,7 +449,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests that listErrata honors the subclass mapping (e.g. returns ClonedErrata instance in case the erratum is cloned)
+     * Tests that listErrata honors the subclass mapping
+     * (e.g. returns ClonedErrata instance in case the erratum is cloned)
      *
      * @throws Exception if anything goes wrong
      */
@@ -455,13 +459,15 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Errata original = ErrataTestUtils.createTestErrata(user, Set.of(cveOriginal));
 
         Cve cveClone = ErrataTestUtils.createTestCve("testcveclone-1");
-        Errata clone = ErrataTestUtils.createTestClonedErrata(user, original, Set.of(cveClone), original.getPackages().iterator().next());
+        Errata clone = ErrataTestUtils.createTestClonedErrata(
+                user, original, Set.of(cveClone), original.getPackages().iterator().next());
 
         // let's evict from the cache, otherwise hibernate does not refresh the class
         HibernateFactory.getSession().evict(original);
         HibernateFactory.getSession().evict(clone);
 
-        assertFalse(ErrataFactory.listErrata(Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());
+        assertFalse(ErrataFactory.listErrata(
+                Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());
         assertTrue(ErrataFactory.listErrata(Set.of(clone.getId()), user.getOrg().getId()).iterator().next().isCloned());
     }
 }

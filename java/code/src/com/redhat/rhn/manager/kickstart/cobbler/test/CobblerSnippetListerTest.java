@@ -41,7 +41,7 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
     public void testList() throws Exception {
         user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
         CobblerSnippet snip = CobblerSnippetTest.readOnly();
-        List <CobblerSnippet> snips =
+        List<CobblerSnippet> snips =
             CobblerSnippetLister.getInstance().list(user);
         assertTrue(snips.contains(snip));
         snips =

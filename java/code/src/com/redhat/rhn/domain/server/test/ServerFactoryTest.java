@@ -135,25 +135,27 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
 
-    private static final SystemQuery systemQuery = new TestSystemQuery();
-    private static final SaltApi saltApi = new TestSaltApi();
-    private static final ServerGroupManager serverGroupManager = new ServerGroupManager();
-    private static final FormulaManager formulaManager = new FormulaManager(saltApi);
-    private static final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-    private static final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
-    private static final SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
-    private static final SaltServerActionService saltServerActionService = new SaltServerActionService(
-            saltApi,
-            saltUtils,
-            clusterManager,
-            formulaManager,
-            saltKeyUtils
+    private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
+    private static final SaltApi SALT_API = new TestSaltApi();
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager();
+    private static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
+    private static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
+            SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER);
+    private static final SaltUtils SALT_UTILS = new SaltUtils(
+            SYSTEM_QUERY, SALT_API, CLUSTER_MANAGER, FORMULA_MANAGER, SERVER_GROUP_MANAGER);
+    private static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SALT_API);
+    private static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
+            SALT_API,
+            SALT_UTILS,
+            CLUSTER_MANAGER,
+            FORMULA_MANAGER,
+            SALT_KEY_UTILS
     );
-    private static final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private static final MonitoringManager monitoringManager = new FormulaMonitoringManager();
-    private static final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+    private static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
+    private static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
+    private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
+            new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
+            new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER)
     );
 
     @Override
@@ -295,8 +297,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Collection servers = new ArrayList();
         servers.add(server);
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
-        ManagedServerGroup sg1 = serverGroupManager.create(user, "FooFooFOO", "Foo Description");
-        serverGroupManager.addServers(sg1, servers, user);
+        ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
+        SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 
         server = reload(server);
         assertTrue(server.getEntitledGroupTypes().size() == 1);
@@ -572,7 +574,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public void aTestServerHasSpecificEntitlement() throws Exception {
         Server s = createTestServer(user);
-        systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
+        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
         assertTrue(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
@@ -629,14 +631,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             }
             assertNotNull(mgmt);
             assertNotNull(mgmt.getGroupType().getAssociatedEntitlement());
-            systemEntitlementManager.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
+            SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
 
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(),
                                                                         type);
 
-        systemEntitlementManager.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
+        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
         return TestUtils.saveAndReload(newS);
     }
 
@@ -871,13 +873,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(serverToSearch);
-        serverGroupManager.addServers(group, servers, admin);
+        SERVER_GROUP_MANAGER.addServers(group, servers, admin);
         assertTrue(group.getServers().size() > 0);
         //create admins set and add it to the grup
         Set admins = new HashSet();
         admins.add(regular);
-        serverGroupManager.associateAdmins(group, admins, admin);
-        assertTrue(serverGroupManager.canAccess(regular, group));
+        SERVER_GROUP_MANAGER.associateAdmins(group, admins, admin);
+        assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
         ServerGroupFactory.save(group);
         group = reload(group);
         UserFactory.save(admin);
@@ -887,7 +889,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         UserFactory.save(nonGroupAdminUser);
         nonGroupAdminUser = reload(nonGroupAdminUser);
 
-        List <User> users = ServerFactory.listAdministrators(serverToSearch);
+        List<User> users = ServerFactory.listAdministrators(serverToSearch);
         System.out.println(users);
         System.out.println("regular->" + regular);
         System.out.println("Admins->" + admins);
@@ -1142,7 +1144,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
 
         Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
-                saltServerActionService.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
+                SALT_SERVER_ACTION_SERVICE.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {
@@ -1164,7 +1166,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testlistNewestPkgsForServerErrata() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server srv = ServerFactoryTest.createTestServer(user, true);
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
         PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
 
@@ -1173,16 +1175,16 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
-                PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", server.getPackageType()), parch1);
+                PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", srv.getPackageType()), parch1);
         TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
         PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
-                PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", server.getPackageType()), parch1);
+                PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", srv.getPackageType()), parch1);
         TestUtils.saveAndFlush(p1v2);
 
         PackageEvr v3 = PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
-                server.getPackageType());
+                srv.getPackageType());
 
         Package p1v3 = new Package();
         PackageTest.populateTestPackage(p1v3, user.getOrg(), p1Name, v3, parch1);
@@ -1191,7 +1193,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Package p1v4 = new Package();
         PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
-                        server.getPackageType()), parch1);
+                        srv.getPackageType()), parch1);
         TestUtils.saveAndFlush(p1v4);
 
         Package p1v3arch2 = new Package();
@@ -1201,7 +1203,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Package p2v4 = new Package();
         PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1",
-                        server.getPackageType()), parch1);
+                        srv.getPackageType()), parch1);
         TestUtils.saveAndFlush(p2v4);
 
 
@@ -1213,11 +1215,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> serverIds = new HashSet<>();
         Set<Long> errataIds = new HashSet<>();
 
-        serverIds.add(server.getId());
+        serverIds.add(srv.getId());
         Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
-        server.addChannel(baseChan);
-        p1v1In.setServer(server);
-        server.getPackages().add(p1v1In);
+        srv.addChannel(baseChan);
+        p1v1In.setServer(srv);
+        srv.getPackages().add(p1v1In);
 
         Channel childChan = ChannelFactoryTest.createTestChannel(user);
         childChan.setParentChannel(baseChan);
@@ -1257,7 +1259,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e5);
 
         Map<Long, Map<String, String>> out = ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
-        Map<String, String> packages = out.get(server.getId());
+        Map<String, String> packages = out.get(srv.getId());
         assertEquals(1, packages.size());
         assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()));
     }
@@ -1266,11 +1268,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> serverIds = new HashSet<Long>();
         Set<Long> errataIds = new HashSet<Long>();
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        serverIds.add(server.getId());
+        Server srv = ServerFactoryTest.createTestServer(user, true);
+        serverIds.add(srv.getId());
         Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
         baseChan.setUpdateTag("SLE-SERVER");
-        server.addChannel(baseChan);
+        srv.addChannel(baseChan);
 
         Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e.getId());
@@ -1288,10 +1290,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
-        Set<ErrataInfo> errataName = out.get(server.getId()).get(e.getId());
+        Set<ErrataInfo> errataName = out.get(srv.getId()).get(e.getId());
         assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false, false));
 
-        errataName = out.get(server.getId()).get(ce.getId());
+        errataName = out.get(srv.getId()).get(ce.getId());
         assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
     }
 
@@ -1299,11 +1301,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> serverIds = new HashSet<Long>();
         Set<Long> errataIds = new HashSet<Long>();
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        serverIds.add(server.getId());
+        Server srv = ServerFactoryTest.createTestServer(user, true);
+        serverIds.add(srv.getId());
         Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
         baseChan.setUpdateTag("slessp4");
-        server.addChannel(baseChan);
+        srv.addChannel(baseChan);
 
         Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e.getId());
@@ -1321,10 +1323,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
-        Set<ErrataInfo> errataName = out.get(server.getId()).get(e.getId());
+        Set<ErrataInfo> errataName = out.get(srv.getId()).get(e.getId());
         assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false, false));
 
-        errataName = out.get(server.getId()).get(ce.getId());
+        errataName = out.get(srv.getId()).get(ce.getId());
         assertContains(errataName,
                 new ErrataInfo("slessp4-CL-ecryptfs-utils-12379", false, false));
     }
@@ -1488,26 +1490,26 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testFindServersInSetByChannel() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server srv = ServerFactoryTest.createTestServer(user, true);
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
 
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
 
-        server.addChannel(parent);
-        server.addChannel(child);
+        srv.addChannel(parent);
+        srv.addChannel(child);
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
-        set.addElement(server.getId() + "");
+        set.addElement(srv.getId() + "");
         RhnSetManager.store(set);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        List<Long> servers = ServerFactory.findServersInSetByChannel(user, server.getBaseChannel().getId());
+        List<Long> servers = ServerFactory.findServersInSetByChannel(user, srv.getBaseChannel().getId());
         assertEquals(1, servers.size());
-        assertEquals(server.getId(), servers.stream().findFirst().get());
+        assertEquals(srv.getId(), servers.stream().findFirst().get());
 
     }
 
@@ -1592,7 +1594,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testGetInstalledKernelVersions() throws Exception {
-        Server server = createTestServer(user);
+        Server srv = createTestServer(user);
         PackageArch pkgArch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
 
         Package pkg1 = PackageTest.createTestPackage(null);
@@ -1610,14 +1612,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageName pkgName3 = PackageNameTest.createTestPackageName("kernel-default");
         PackageTest.populateTestPackage(pkg3, null, pkgName3, pkgEvr3, pkgArch);
 
-        PackageTestUtils.installPackageOnServer(pkg1, server);
-        PackageTestUtils.installPackageOnServer(pkg2, server);
-        PackageTestUtils.installPackageOnServer(pkg3, server);
+        PackageTestUtils.installPackageOnServer(pkg1, srv);
+        PackageTestUtils.installPackageOnServer(pkg2, srv);
+        PackageTestUtils.installPackageOnServer(pkg3, srv);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(server).collect(Collectors.toList());
+        List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(srv).collect(Collectors.toList());
 
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(pkgEvr1::equals));

@@ -233,7 +233,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     fail();
                 }
             }
-            SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test", false);
+            SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                    user, "/com/redhat/rhn/manager/content/test", false);
             HibernateFactory.getSession().flush();
             HibernateFactory.getSession().clear();
             subtempFile.delete();
@@ -262,8 +263,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
-        InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
-        List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader3, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+        InputStreamReader inputStreamReader3 = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
+        List<SCCRepositoryJson> repositories = gson.fromJson(
+                inputStreamReader3, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         Credentials credentials = CredentialsFactory.lookupSCCCredentials()
                 .stream()
@@ -297,7 +300,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         InputStreamReader inputStreamReader = new InputStreamReader(
                 ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
         List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader,
-                new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+                new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         // Create Repositories
         SCCRepository repo = new SCCRepository();
@@ -341,15 +344,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
                 testDataPath + (rhel6first ? "products_6_first.json" : "products_7_first.json")
         ));
-        List<SCCProductJson> products = gson.fromJson(inputStreamReader, new TypeToken<List<SCCProductJson>>() {}.getType());
+        List<SCCProductJson> products = gson.fromJson(
+                inputStreamReader, new TypeToken<List<SCCProductJson>>() { }.getType());
         InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
                 "/com/redhat/rhn/manager/content/test/smallBase/channel_families.json"
         ));
-        List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+        List<ChannelFamilyJson> channelFamilies = gson.fromJson(
+                inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
         InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
                 testDataPath + "product_tree.json"
         ));
-        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(
+                inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() { }.getType());
 
         List<SCCRepositoryJson> additionalRepos = ContentSyncManager.collectRepos(products);
 
@@ -438,15 +444,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         String testDataPath = "/com/redhat/rhn/manager/content/test/dupidfix/";
         InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
                 testDataPath + "products_7_first.json"));
-        List<SCCProductJson> products = gson.fromJson(inputStreamReader, new TypeToken<List<SCCProductJson>>() {}.getType());
+        List<SCCProductJson> products = gson.fromJson(
+                inputStreamReader, new TypeToken<List<SCCProductJson>>() { }.getType());
         InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
                 "/com/redhat/rhn/manager/content/test/smallBase/channel_families.json"
         ));
-        List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+        List<ChannelFamilyJson> channelFamilies = gson.fromJson(
+                inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
         InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(
                 testDataPath + "product_tree.json"
         ));
-        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(
+                inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() { }.getType());
 
         List<SCCProductJson> fixedAdditionalProducts = ContentSyncManager.fixAdditionalProducts(products);
         List<SCCRepositoryJson> fixedAdditionalRepos = ContentSyncManager.collectRepos(fixedAdditionalProducts);
@@ -465,7 +474,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
         csm.updateChannelFamilies(channelFamilies);
-        csm.updateSUSEProducts(fixedAdditionalProducts, Collections.emptyList(), csm.productTreeFix(staticTree), fixedAdditionalRepos);
+        csm.updateSUSEProducts(
+                fixedAdditionalProducts, Collections.emptyList(), csm.productTreeFix(staticTree), fixedAdditionalRepos);
         csm.refreshRepositoriesAuthentication(fixedAdditionalRepos, credentials, null);
 
         ManagerInfoFactory.setLastMgrSyncRefresh();
@@ -528,7 +538,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testReleaseStageOverride() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
         SUSEProduct product = SUSEProductFactory.lookupByProductId(1150);
@@ -540,7 +551,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateChannels() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -570,12 +582,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
-        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
-        List<SCCProductJson> productsChanged = gson.fromJson(inReaderProducts, new TypeToken<List<SCCProductJson>>() {}.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() {}.getType());
-        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
-        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<ProductTreeEntry>>() {}.getType());
+        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
+        List<SCCProductJson> productsChanged = gson.fromJson(
+                inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
+        List<UpgradePathJson> upgradePaths = gson.fromJson(
+                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
+        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
 
@@ -598,19 +616,21 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Channel changedUpdate = ChannelFactory.lookupByLabel("sles12-updates-x86_64");
         assertEquals("SLES12-Pool for x86_64 UPDATED", changedPool.getName());
         assertEquals("SUSE Linux Enterprise Server 12 x86_64 UPDATED", changedPool.getSummary());
-        assertEquals("UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
-                "The platform addresses business needs from the smallest thin-client devices to the world's most " +
-                "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
-                "management tools and technology certifications across the platform, and each product is " +
-                "enterprise-class.", changedPool.getDescription());
+        assertEquals(
+            "UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
+            "The platform addresses business needs from the smallest thin-client devices to the world's most " +
+            "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
+            "management tools and technology certifications across the platform, and each product is " +
+            "enterprise-class.", changedPool.getDescription());
         assertEquals(false, changedPool.getSuseProductChannels().stream().findFirst().get().isMandatory());
         assertEquals("SLES12-Updates for x86_64 UPDATED", changedUpdate.getName());
         assertEquals("SUSE Linux Enterprise Server 12 x86_64 UPDATED", changedUpdate.getSummary());
-        assertEquals("UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
-                "The platform addresses business needs from the smallest thin-client devices to the world's most " +
-                "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
-                "management tools and technology certifications across the platform, and each product is " +
-                "enterprise-class.", changedUpdate.getDescription());
+        assertEquals(
+            "UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
+            "The platform addresses business needs from the smallest thin-client devices to the world's most " +
+            "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
+            "management tools and technology certifications across the platform, and each product is " +
+            "enterprise-class.", changedUpdate.getDescription());
     }
 
     /**
@@ -618,7 +638,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateChannelsWithSimilarPath() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -646,14 +667,22 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
-        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
-        List<SCCProductJson> productsChanged = gson.fromJson(inReaderProducts, new TypeToken<List<SCCProductJson>>() {}.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() {}.getType());
-        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
-        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<ProductTreeEntry>>() {}.getType());
-        InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
-        List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
+        List<SCCProductJson> productsChanged = gson.fromJson(
+                inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
+        List<UpgradePathJson> upgradePaths = gson.fromJson(
+                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
+        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+        InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
+        List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         Credentials sccCreds = CredentialsFactory.lookupByUserAndType(user, Credentials.TYPE_SCC);
 
@@ -785,7 +814,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testGetAvailableChannels() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -803,7 +833,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Installer Updates is optional and not in repositories.json
         assertFalse("unexpected optional channel found", avChanLanbels.contains("sles12-installer-updates-x86_64"));
         // Storage 2 is not in repositories.json to emulate no subscription
-        assertFalse("Storage should not be avaliable", avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"));
+        assertFalse("Storage should not be avaliable",
+                avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"));
     }
 
     /**
@@ -883,7 +914,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 "suse-caasp-all-pool-x86_64",
                 "suse-caasp-all-updates-x86_64");
         duplicates.removeAll(dupExceptions);
-        assertTrue(duplicates.size() + " Duplicate labels found: " + String.join("\n", duplicates), duplicates.isEmpty());
+        assertTrue(duplicates.size() + " Duplicate labels found: " +
+                String.join("\n", duplicates), duplicates.isEmpty());
     }
 
     /**
@@ -1050,7 +1082,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Setup a 2nd product as it comes from SCC
             SCCProductJson prd2 = new SCCProductJson(productId, name, identifier, version, releaseType, "i686",
                     friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(), Collections.singletonList(10012345L), Collections.emptyList(),
+                    Collections.emptyList(), Collections.emptyList(),
+                    Collections.singletonList(10012345L), Collections.emptyList(),
                     null, false);
             products.add(prd2);
 
@@ -1129,7 +1162,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             SCCProductJson product2 = new SCCProductJson(product2Id, name, identifier, version, releaseType, "i686",
                     friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(), Collections.singletonList(product1Id), Collections.emptyList(),
+                    Collections.emptyList(), Collections.emptyList(),
+                    Collections.singletonList(product1Id), Collections.emptyList(),
                     null, false);
             products.add(product2);
 
@@ -1145,7 +1179,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Remove the first product
             products.remove(product1);
-            csm.updateSUSEProducts(Collections.singletonList(product2.copy().setOnlinePredecessorIds(Collections.emptyList()).build()));
+            csm.updateSUSEProducts(Collections.singletonList(
+                    product2.copy().setOnlinePredecessorIds(Collections.emptyList()).build()));
             HibernateFactory.getSession().flush();
 
             // There should be no upgrade paths
@@ -1194,7 +1229,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             SCCProductJson product2 = new SCCProductJson(product2Id, name, identifier, version, releaseType, "i686",
                     friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(), Collections.singletonList(product1Id), Collections.emptyList(),
+                    Collections.emptyList(), Collections.emptyList(),
+                    Collections.singletonList(product1Id), Collections.emptyList(),
                     null, false);
             products.add(product2);
 
@@ -1224,7 +1260,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testListChannels() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1245,7 +1282,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 foundPool = true;
             }
             else if (c.getLabel().equals("sles12-debuginfo-pool-x86_64")) {
-                assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product_debug/", c.getSourceUrl());
+                assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product_debug/",
+                        c.getSourceUrl());
                 assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
                 foundDebugPool = true;
             }
@@ -1258,7 +1296,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
         assertTrue("Pool channel not found", foundPool);
         assertTrue("Debuginfo Pool channel not found", foundDebugPool);
-        Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream().collect(Collectors.groupingBy(c -> c.getStatus()));
+        Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream()
+                .collect(Collectors.groupingBy(c -> c.getStatus()));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
         assertEquals(62, collect.get(MgrSyncStatus.AVAILABLE).size());
     }
@@ -1269,7 +1308,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testListProductsAvailability() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1287,11 +1327,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             if (product.getFriendlyName().equals("SUSE Linux Enterprise Server 12 x86_64")) {
                 assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
                 assertFalse("Unexpected Installer Update Channel found",
-                        product.getChannels().stream().anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")));
+                        product.getChannels().stream()
+                                .anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")));
                 foundSLES = true;
 
                 for (MgrSyncProductDto ext : product.getExtensions()) {
-                    if (ext.getFriendlyName().equals("SUSE Linux Enterprise High Availability GEO Extension 12 x86_64")) {
+                    if (ext.getFriendlyName()
+                            .equals("SUSE Linux Enterprise High Availability GEO Extension 12 x86_64")) {
                         assertEquals(MgrSyncStatus.AVAILABLE, ext.getStatus());
                         foundHAGEO = true;
                     }
@@ -1307,7 +1349,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testIsRefreshNeeded() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1333,7 +1376,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertTrue(csm.isRefreshNeeded("https://mirror.example.com/"));
 
         // if mgr-sync never ran, return true
-        WriteMode clear = ModeFactory.getWriteMode("test_queries","delete_last_mgr_sync_refresh");
+        WriteMode clear = ModeFactory.getWriteMode("test_queries", "delete_last_mgr_sync_refresh");
         clear.executeUpdate(new HashMap<>());
         assertTrue(csm.isRefreshNeeded(null));
     }
@@ -1343,7 +1386,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testIsRefreshNeededFromDir() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1378,7 +1422,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testAddChannel() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -1413,7 +1458,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Channel channel = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
         assertNotNull(channel);
         for (ContentSource cs : channel.getSources()) {
-            assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/?my-fake-token", cs.getSourceUrl());
+            assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/?my-fake-token",
+                    cs.getSourceUrl());
             assertEquals("sles12-pool-x86_64", cs.getLabel());
         }
         for (SUSEProductChannel pc : channel.getSuseProductChannels()) {
@@ -1472,8 +1518,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                     .create();
-            InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(JARPATH + "smallBase/channel_families.json"));
-            List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+            InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class
+                    .getResourceAsStream(JARPATH + "smallBase/channel_families.json"));
+            List<ChannelFamilyJson> channelFamilies = gson.fromJson(
+                    inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.setUpgradePathsJson(upTemp);
@@ -1568,8 +1616,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                     .create();
-            InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(JARPATH + "smallBase/channel_families.json"));
-            List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+            InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class
+                    .getResourceAsStream(JARPATH + "smallBase/channel_families.json"));
+            List<ChannelFamilyJson> channelFamilies = gson.fromJson(
+                    inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.setUpgradePathsJson(upTemp);
@@ -1591,7 +1641,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // remove "fromdir" config
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
-            SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+            SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                    user, "/com/redhat/rhn/manager/content/test/smallBase", true);
             new ContentSyncManager().linkAndRefreshContentSource(null);
             HibernateFactory.getSession().flush();
             HibernateFactory.getSession().clear();
@@ -1737,7 +1788,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // clear existing products
         SUSEProductTestUtils.clearAllProducts();
 
-        InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(JARPATH + PRODUCTS_JSON));
+        InputStreamReader inputStreamReader = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(JARPATH + PRODUCTS_JSON));
         List<SCCProductJson> sccProducts =
                 new Gson().fromJson(inputStreamReader,
                         new TypeToken<List<SCCProductJson>>() { } .getType());

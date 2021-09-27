@@ -175,6 +175,7 @@ public class GuestBuilder {
      * Creates the host with given name and foreign entitlement for the guest under
      * construction.
      *
+     * @param digitalServerId the server ID
      * @return This builder
      *
      * @throws Exception if an error occurs.

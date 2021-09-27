@@ -1175,7 +1175,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         List<ChannelIdNameLabelTriple> channels = new ArrayList<>(results.get(0).getChannels());
         assertEquals(1, channels.size());
-        assertEquals(updateChannelSP2.getId().longValue() ,channels.get(0).getId());
+        assertEquals(updateChannelSP2.getId().longValue(), channels.get(0).getId());
     }
 
     /**

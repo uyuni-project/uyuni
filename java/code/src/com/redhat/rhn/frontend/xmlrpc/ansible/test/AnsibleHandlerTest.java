@@ -188,7 +188,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 ));
 
         handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("path", "/tmp/new-location"));
-        assertEquals("/tmp/new-location", handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()).getPath().toString());
+        assertEquals("/tmp/new-location",
+                handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()).getPath().toString());
     }
 
     public void testUpdateInvalidAnsiblePath() throws Exception {

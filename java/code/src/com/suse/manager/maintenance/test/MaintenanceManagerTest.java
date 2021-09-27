@@ -131,7 +131,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
         MaintenanceManager mm = new MaintenanceManager();
 
-        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        MaintenanceCalendar mc = mm.createCalendar(
+                user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
         mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
 
         List<String> names = mm.listScheduleNamesByUser(user);
@@ -166,7 +167,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        MaintenanceCalendar mc = mm.createCalendar(
+                user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
         mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
 
         Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
@@ -185,7 +187,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         mm.updateCalendar(user, "testcalendar", details, Collections.emptyList());
 
-        dbCal = mm.lookupCalendarByUserAndLabel(user, "testcalendar").orElseThrow(() -> new RuntimeException("Cannot find testcalendar"));
+        dbCal = mm.lookupCalendarByUserAndLabel(
+                user, "testcalendar").orElseThrow(() -> new RuntimeException("Cannot find testcalendar"));
         assertEquals(user.getOrg(), dbCal.getOrg());
         assertEquals("testcalendar", dbCal.getLabel());
         assertEquals(FileUtils.readStringFromFile(icalEx.getAbsolutePath()), dbCal.getIcal());
@@ -275,8 +278,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
 
         // assign an action not tied to maintenance mode
-        Action allowedAction = MaintenanceTestUtils
-                .createActionForServerAt(user, ActionFactory.TYPE_VIRTUALIZATION_START, sys1, "2020-04-13T08:15:00+02:00");
+        Action allowedAction = MaintenanceTestUtils.createActionForServerAt(
+                        user, ActionFactory.TYPE_VIRTUALIZATION_START, sys1, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign maintenance window affected action inside a maintenance window
@@ -346,7 +349,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        MaintenanceCalendar mc = mm.createCalendar(
+                user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
         MaintenanceSchedule ms = mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
 
         Server server = ServerTestUtils.createTestSystem(user);
@@ -392,7 +396,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server coreServer = ServerTestUtils.createTestSystem(user);
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceCalendar mcal = mm.createCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceCalendar mcal = mm.createCalendar(
+                user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
         MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", MULTI, Optional.of(mcal));
         MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", MULTI, Optional.of(mcal));
 
@@ -435,13 +440,16 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, coreActionsAfter.size());
 
         assertEquals(1, sapActionsAfter.stream().filter(a -> a.equals(sapAction2)).count());
-        assertEquals(1, sapActionsAfter.stream().filter(a -> a.equals(sapActionEx)).count()); //Action not tied to maintenance mode
+        assertEquals(1, sapActionsAfter.stream()
+                .filter(a -> a.equals(sapActionEx)).count()); //Action not tied to maintenance mode
 
         assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreAction1)).count());
-        assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreActionEx)).count()); //Action not tied to maintenance mode
+        assertEquals(1, coreActionsAfter.stream()
+                .filter(a -> a.equals(coreActionEx)).count()); //Action not tied to maintenance mode
 
         /* remove the calendar */
-        mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+        mcal = mm.lookupCalendarByUserAndLabel(
+                user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
         List<RescheduleResult> results = mm.remove(user, mcal, false);
         assertEquals(1, results.size());
         assertFalse(results.get(0).isSuccess());
@@ -460,7 +468,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server coreServer = ServerTestUtils.createTestSystem(user);
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceCalendar mcal = mm.createCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceCalendar mcal = mm.createCalendar(
+                user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
         MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", MULTI, Optional.of(mcal));
         MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", MULTI, Optional.of(mcal));
 
@@ -472,7 +481,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_REBOOT, sapServer, "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
+                user, ActionFactory.TYPE_REBOOT, sapServer,
+                "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: Cancel all Actions
@@ -536,7 +546,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         }
 
         /* remove the calendar */
-        mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+        mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar")
+                .orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
         List<RescheduleResult> results = mm.remove(user, mcal, true);
         assertEquals(2, results.size());
         for (RescheduleResult r : results) {
@@ -624,7 +635,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertNotNull(scheduleSingle.orElse(null));
         Long singleId = scheduleSingle.get().getId();
 
-        List<Triple<String, String, String>> singleEvents = mm.preprocessScheduleData(user, "next", singleId, date, true)
+        List<Triple<String, String, String>> singleEvents =
+            mm.preprocessScheduleData(user, "next", singleId, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),

@@ -171,7 +171,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
     }
 
-    public void testRefreshSame() throws Exception{
+    public void testRefreshSame() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
@@ -211,7 +211,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertTrue(oldTokens.stream().allMatch(t -> t.getMinion() == null));
     }
 
-    public void testRefreshNoInitialTokens() throws Exception{
+    public void testRefreshNoInitialTokens() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);

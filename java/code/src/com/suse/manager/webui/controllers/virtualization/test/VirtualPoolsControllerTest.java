@@ -132,10 +132,13 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         String json = virtualPoolsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/pools/:sid/data", host.getId()), response, user, host);
 
-        List<VirtualStoragePoolInfoJson> pools = GSON.fromJson(json, new TypeToken<List<VirtualStoragePoolInfoJson>>() {}.getType());
-        VirtualStoragePoolInfoJson pool0 = pools.stream().filter(pool -> pool.getName().equals("pool0")).findFirst().get();
+        List<VirtualStoragePoolInfoJson> pools = GSON.fromJson(
+                json, new TypeToken<List<VirtualStoragePoolInfoJson>>() { }.getType());
+        VirtualStoragePoolInfoJson pool0 = pools.stream()
+                .filter(pool -> pool.getName().equals("pool0")).findFirst().get();
         assertNull(pool0.getTargetPath());
-        VirtualStoragePoolInfoJson pool1 = pools.stream().filter(pool -> pool.getName().equals("pool1")).findFirst().get();
+        VirtualStoragePoolInfoJson pool1 = pools.stream()
+                .filter(pool -> pool.getName().equals("pool1")).findFirst().get();
         assertFalse(pool1.isAutostart());
         assertTrue(pool1.isPersistent());
         assertEquals("808befba-85b1-40d6-83dc-d248850962e4", pool1.getUuid());
@@ -150,7 +153,8 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
     public void testGetCapabilities() {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.getCapabilities(getRequestWithCsrf(
-                "/manager/api/systems/details/virtualization/pools/:sid/capabilities", host.getId()), response, user, host);
+                "/manager/api/systems/details/virtualization/pools/:sid/capabilities",
+                host.getId()), response, user, host);
         PoolCapabilitiesJson caps = GSON.fromJson(json, new TypeToken<PoolCapabilitiesJson>() { }.getType());
         assertTrue(caps.isComputed());
         PoolType pType = caps.getPoolTypes().stream().filter(type -> type.getName().equals("fs")).findFirst().get();
@@ -190,7 +194,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     return virtAction.getPoolName();
                 },
                 scheduled -> scheduled.getId()));
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("pool0", actionsIds.get("pool0")).matches(model));
         assertTrue(IsMapContaining.hasEntry("pool1", actionsIds.get("pool1")).matches(model));
     }
@@ -213,7 +217,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertEquals("pool0", virtAction.getPoolName());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
@@ -235,7 +239,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertEquals("pool0", virtAction.getPoolName());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
@@ -258,7 +262,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(virtAction.isPurge());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
@@ -293,7 +297,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(vol2.isPresent());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("pool0/vol1", vol1.get().getId()).matches(model));
     }
 }

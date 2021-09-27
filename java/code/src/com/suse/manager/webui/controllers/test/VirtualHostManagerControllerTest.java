@@ -57,29 +57,29 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     private VirtualHostManagerFactory factory;
     private final String baseUri = "http://localhost:8080/rhn";
     private static final Gson GSON = new GsonBuilder().create();
-    private static final String VIRT_HOST_GATHERER_MODULES = "{\n"+
-        "    \"Kubernetes\": {\n"+
-        "        \"module\": \"Kubernetes\",\n"+
-        "        \"url\": \"\",\n"+
-        "        \"username\": \"\",\n"+
-        "        \"password\": \"\",\n"+
-        "        \"client-cert\": \"\",\n"+
-        "        \"client-key\": \"\",\n"+
-        "        \"ca-cert\": \"\",\n"+
-        "        \"kubeconfig\": \"\",\n"+
-        "        \"context\": \"\"\n"+
-        "    },\n"+
-        "    \"File\": {\n"+
-        "        \"module\": \"File\",\n"+
-        "        \"url\": \"\"\n"+
-        "    },\n"+
-        "    \"VMware\": {\n"+
-        "        \"module\": \"VMware\",\n"+
-        "        \"hostname\": \"\",\n"+
-        "        \"port\": 443,\n"+
-        "        \"username\": \"\",\n"+
-        "        \"password\": \"\"\n"+
-        "    }\n"+
+    private static final String VIRT_HOST_GATHERER_MODULES = "{\n" +
+        "    \"Kubernetes\": {\n" +
+        "        \"module\": \"Kubernetes\",\n" +
+        "        \"url\": \"\",\n" +
+        "        \"username\": \"\",\n" +
+        "        \"password\": \"\",\n" +
+        "        \"client-cert\": \"\",\n" +
+        "        \"client-key\": \"\",\n" +
+        "        \"ca-cert\": \"\",\n" +
+        "        \"kubeconfig\": \"\",\n" +
+        "        \"context\": \"\"\n" +
+        "    },\n" +
+        "    \"File\": {\n" +
+        "        \"module\": \"File\",\n" +
+        "        \"url\": \"\"\n" +
+        "    },\n" +
+        "    \"VMware\": {\n" +
+        "        \"module\": \"VMware\",\n" +
+        "        \"hostname\": \"\",\n" +
+        "        \"port\": 443,\n" +
+        "        \"username\": \"\",\n" +
+        "        \"password\": \"\"\n" +
+        "    }\n" +
         "}\n";
 
     /**
@@ -172,7 +172,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test create a VHM with a missing cfg param.
      * Should result in an error.
      */
-    public void testCreate_noCfgParam() {
+    public void testCreateNoCfgParam() {
         String label = "TestVHM_" + TestUtils.randomString(10);
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("module", "file");
@@ -236,14 +236,17 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * @param vars the vars
      * @return the request with csrf
      */
-    private Request getPostRequestWithCsrfAndBody(String uri, String body, Object... vars) throws UnsupportedEncodingException {
+    private Request getPostRequestWithCsrfAndBody(String uri, String body, Object... vars)
+            throws UnsupportedEncodingException {
         Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }
 
-    private Request getDeleteRequestWithCsrfAndBody(String uri, String body, Object... vars) throws UnsupportedEncodingException {
-        Request request = SparkTestUtils.createDeleteMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
+    private Request getDeleteRequestWithCsrfAndBody(String uri, String body, Object... vars)
+            throws UnsupportedEncodingException {
+        Request request = SparkTestUtils.createDeleteMockRequestWithBody(
+                baseUri + uri, Collections.emptyMap(), body, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }
