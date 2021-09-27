@@ -52,6 +52,8 @@ import org.apache.log4j.Logger;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
+import spark.route.HttpMethod;
+
 /**
  * Adapter class holding an {@link HttpClient} object and offering a simple API to execute
  * arbitrary HTTP requests while proxy settings are applied transparently.
@@ -101,9 +103,12 @@ public class HttpClientAdapter {
         Optional<SSLConnectionSocketFactory> sslSocketFactory = Optional.empty();
         try {
             SSLContext sslContext = SSLContext.getDefault();
+            List<String> supportedProtocols = Arrays.asList(sslContext.getSupportedSSLParameters().getProtocols());
+            List<String> wantedProtocols = Arrays.asList("TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3");
+            wantedProtocols.retainAll(supportedProtocols);
             sslSocketFactory = Optional.of(new SSLConnectionSocketFactory(
                     sslContext,
-                    new String[]{"TLSv1", "TLSv1.1", "TLSv1.2"},
+                    wantedProtocols.toArray(new String[0]),
                     null,
                     SSLConnectionSocketFactory.getDefaultHostnameVerifier()));
         }
