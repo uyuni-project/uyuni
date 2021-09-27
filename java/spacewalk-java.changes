@@ -1,3 +1,4 @@
+- Fix ISE in product migration if base product is missing (bsc#1190151)
 - Add 'Flush cache' option to Ansible playbook execution
   (bsc#1190405)
 - Update kernel live patch version on minion startup (bsc#1190276)
