@@ -87,20 +87,6 @@ Run configure-proxy.sh after installation to configure proxy.
 /usr/bin/docbook2man configure-proxy.sh.sgml
 /usr/bin/gzip configure-proxy.sh.8
 
-%post
-%if 0%{?suse_version}
-if [ -f /etc/sysconfig/apache2 ]; then
-    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
-fi
-sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
-if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
-    sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
-fi
-if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
-    sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
-fi
-%endif
-
 %install
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
@@ -135,11 +121,23 @@ spacewalk-python3-pylint .
 %endif
 
 %post
+%if 0%{?suse_version}
+if [ -f /etc/sysconfig/apache2 ]; then
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+fi
+sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
+if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
+    sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
+fi
+if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
+    sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
+fi
+%endif
 if [ $1 -eq 2 ]
 then
-  if [ -e /etc/apache2/vhosts.d/ssl.conf ]
+  if [ -e %{apacheconfdir}/vhosts.d/ssl.conf ]
   then
-    sed 's/^SSLProtocol all.*$//g' /etc/apache2/vhosts.d/ssl.conf
+    sed 's/^SSLProtocol all.*$//g' %{apacheconfdir}/vhosts.d/ssl.conf
   fi
 fi
 
