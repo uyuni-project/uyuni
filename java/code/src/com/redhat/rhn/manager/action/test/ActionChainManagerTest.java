@@ -122,7 +122,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
-                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction, false);
+                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction, false, false);
 
         // Look it up and verify
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
@@ -136,6 +136,8 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
+        assertFalse(details.isTestMode());
+        assertFalse(details.isFlushCache());
     }
 
     /**
@@ -147,7 +149,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
-                "/path/to/myplaybook.yml", null, null, earliestAction, true);
+                "/path/to/myplaybook.yml", null, null, earliestAction, true, true);
 
         // Look it up and verify
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
@@ -162,5 +164,6 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertNull(details.getInventoryPath());
         assertTrue(details.isTestMode());
+        assertTrue(details.isFlushCache());
     }
 }
