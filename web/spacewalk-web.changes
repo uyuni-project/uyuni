@@ -1,3 +1,4 @@
+- add Content Lifecycle Management filter for package provides
 - Fix CLM filter edit modal opening (bsc#1190867)
 - Add 'Last build date' column to CLM project list (jsc#PM-2644)
   (jsc#SUMA-61)
