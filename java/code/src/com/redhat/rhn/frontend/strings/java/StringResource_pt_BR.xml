@@ -8769,7 +8769,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve">
         <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
-        <target state="translated">Não é possível executar esta operação na organização @@ PRODUCT_NAME @@. (Org ID 1)</target>
+        <target state="translated">Não é possível executar esta operação na organização @@PRODUCT_NAME@@. (Org ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata" xml:space="preserve">
         <source>Invalid patch: {0}</source>
@@ -9914,8 +9914,8 @@ Please check:
 for more detailed errors. If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.</source>
         <target state="translated">
-A seguir está uma lista de erros coletados enquanto @@ PRODUCT_NAME @@ tenta
-sincronizar distribuições autoinstaláveis de @@ PRODUCT_NAME @@ para o Cobbler.
+A seguir está uma lista de erros coletados enquanto @@PRODUCT_NAME@@ tenta
+sincronizar distribuições autoinstaláveis de @@PRODUCT_NAME@@ para o Cobbler.
 Esses erros devem ser corrigidos para que as distribuições estejam disponíveis para
 sistemas de instalação automática:
 
@@ -10040,12 +10040,12 @@ Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
         <target state="translated">
-Entre em contato com seu representante de atendimento ao cliente regional @@ VENDOR_NAME @@ para obter informações
-sobre como renovar seu Certificado @@ PRODUCT_NAME @@.
+Entre em contato com seu representante de atendimento ao cliente regional @@VENDOR_NAME@@ para obter informações
+sobre como renovar seu Certificado @@PRODUCT_NAME@@.
 
 
-Obrigado por usar @@ PRODUCT_NAME @@.
-- a equipe @@ PRODUCT_NAME @@
+Obrigado por usar @@PRODUCT_NAME@@.
+- a equipe @@PRODUCT_NAME@@
 </target>
       </trans-unit>
       <trans-unit id="alphabar.label" xml:space="preserve">
