@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"POT-Creation-Date: 2021-09-28 11:27+0200\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -1162,21 +1162,6 @@ msgstr "Penjelasan: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "format dari %s harus setidaknya YYYYMMDD."
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
-#: ../satellite_tools/reposync.py:121
-#, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-#, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
-
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, fuzzy, python-format
 msgid ""
@@ -1463,10 +1448,20 @@ msgstr "Master Manajer SUSE tidak mendukung sinkronisasi data organisasi."
 msgid "Skipping..."
 msgstr "Melewatkan: %s\n"
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
 #: ../satellite_tools/satsync.py:442
 #, fuzzy, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sinkronisasi SUSE Manager Inter Server. laporan dari %s"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
 
 #: ../satellite_tools/satsync.py:520
 #, fuzzy
@@ -2280,6 +2275,11 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
+
+#: ../satellite_tools/reposync.py:121
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
 
 #, fuzzy
 #~ msgid "Crash information is invalid or incomplete"
