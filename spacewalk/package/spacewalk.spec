@@ -24,6 +24,7 @@ Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+Source:         %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -131,7 +132,7 @@ inventory, provision, update and control your Linux machines.
 Version for PostgreSQL database backend.
 
 %prep
-#nothing to do here
+%setup -q
 
 %build
 #nothing to do here
@@ -155,6 +156,8 @@ done
 
 %files common
 %{_sysconfdir}/*-release
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
