@@ -28,6 +28,7 @@ const labelNormalizer = (input: string) => {
     .replace(/ \*$/, ""); // Remove trailing " *"
 };
 
+// Override `screen.getByLabelText`
 const getByLabelText = rawScreen.getByLabelText;
 type GetByLabelTextArgs = Parameters<typeof rawScreen.getByLabelText>;
 Object.assign(rawScreen, {
