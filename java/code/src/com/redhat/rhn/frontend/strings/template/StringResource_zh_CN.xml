@@ -205,7 +205,7 @@ Thank you for using @@PRODUCT_NAME@@.
 感谢您使用 @@PRODUCT_NAME@@。
 {2}</target>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -254,7 +254,7 @@ Summary:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -349,7 +349,7 @@ You may address the issues outlined in this advisory in two ways:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -403,7 +403,7 @@ click the "Details" tab.
         </context-group>
         <target state="translated">{0} 的 @@PRODUCT_NAME@@ 每日状态报告</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
