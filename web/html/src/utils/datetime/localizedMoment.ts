@@ -1,3 +1,4 @@
+/* eslint-disable local-rules/no-raw-date */
 import moment from "moment-timezone";
 
 declare global {

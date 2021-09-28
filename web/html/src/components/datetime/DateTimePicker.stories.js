@@ -38,6 +38,7 @@ storiesOf("DateTimePicker", module).add("basic timezone support", () => {
           .toISOString(true)}
       </p>
       <p>iso time: {value.toISOString()}</p>
+      {/* eslint-disable-next-line local-rules/no-raw-date */}
       <p>browser time: {moment().toISOString(true)}</p>
       <DateTimePicker value={value} onChange={newValue => setValue(newValue)} />
     </div>

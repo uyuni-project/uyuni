@@ -32,7 +32,7 @@ module.exports = {
     "no-redeclare": "off",
     "@typescript-eslint/no-redeclare": ["error"],
     // TODO: Eventually this should be "error"
-    "local-rules/no-raw-date": "off",
+    "local-rules/no-raw-date": "warn",
     // TODO: Eventually we should enforce this as well
     // "no-eq-null": "error",
     // TODO: This needs to be reworked with Typescript support in mind
