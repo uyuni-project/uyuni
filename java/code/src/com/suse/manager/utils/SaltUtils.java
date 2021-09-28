@@ -1145,7 +1145,7 @@ public class SaltUtils {
         serverAction.setResultMsg(json);
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            details.ifPresent(det -> {
+            details.ifPresentOrElse(det -> {
                 Optional<ImageProfile> profileOpt =
                         ImageProfileFactory.lookupById(det.getImageProfileId());
 
@@ -1195,6 +1195,12 @@ public class SaltUtils {
                     info.setInspectAction(iAction);
                     ImageInfoFactory.save(info);
                 });
+            }, () -> {
+                LOG.error("Details not found in ImageBuildAction");
+                LOG.error("Name is: " + action.getName());
+                LOG.error("Action ID is: " + action.getId());
+                LOG.error("Earliest action was: " + action.getEarliestAction());
+                LOG.error("Scheduler User is: " + action.getSchedulerUser());
             });
         }
     }
