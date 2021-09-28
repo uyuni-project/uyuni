@@ -9,4 +9,5 @@ yarn install
 yarn build
 yarn lint
 yarn test
+yarn tsc
 echo "Javascript linting ran successfully"
