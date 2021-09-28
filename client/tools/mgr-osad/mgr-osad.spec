@@ -29,11 +29,9 @@
 %if 0%{?suse_version}
 %global apache_group www
 %global apache_user wwwrun
-%global include_selinux_package 0
 %else
 %global apache_group apache
 %global apache_user apache
-%global include_selinux_package 1
 %endif
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -246,39 +244,6 @@ Requires:       python3-mgr-osa-common = %{version}-%{release}
 Python 3 specific files for osa-dispatcher.
 %endif
 
-%if 0%{?include_selinux_package}
-%package -n mgr-osa-dispatcher-selinux
-%global selinux_variants mls strict targeted
-%global selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
-%global POLICYCOREUTILSVER 1.33.12-1
-
-%global moduletype apps
-%global modulename osa-dispatcher
-
-Summary:        SELinux policy module supporting osa-dispatcher
-Group:          System Environment/Base
-Obsoletes:      osa-dispatcher-selinux < %{oldversion}
-Provides:       osa-dispatcher-selinux = %{oldversion}
-BuildRequires:  checkpolicy
-BuildRequires:  hardlink
-BuildRequires:  policycoreutils >= %{POLICYCOREUTILSVER}
-BuildRequires:  selinux-policy-devel
-Requires:       spacewalk-selinux
-
-%if "%{selinux_policyver}" != ""
-Requires:       selinux-policy >= %{selinux_policyver}
-%endif
-%if 0%{?rhel} == 5
-Requires:       selinux-policy >= 2.4.6-114
-%endif
-Requires(post): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled, /usr/sbin/semanage
-Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage, spacewalk-selinux
-Requires:       mgr-osa-dispatcher
-
-%description -n mgr-osa-dispatcher-selinux
-SELinux policy module supporting osa-dispatcher.
-%endif
-
 %prep
 %setup -q
 %if 0%{?suse_version}
@@ -290,22 +255,6 @@ sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python3 -s@' invocation.py
 
 %build
 make -f Makefile.osad all PYTHONPATH=%{python_sitelib}
-
-%if 0%{?include_selinux_package}
-%{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
-%if 0%{?fedora} || 0%{?rhel} >= 7
-cat osa-dispatcher-selinux/%{modulename}.te.fedora17 >> osa-dispatcher-selinux/%{modulename}.te
-%endif
-%if 0%{?fedora} >= 26
-cat osa-dispatcher-selinux/%{modulename}.te.fedora26 >> osa-dispatcher-selinux/%{modulename}.te
-%endif
-for selinuxvariant in %{selinux_variants}
-do
-    make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
-    mv osa-dispatcher-selinux/%{modulename}.pp osa-dispatcher-selinux/%{modulename}.pp.${selinuxvariant}
-    make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
-done
-%endif
 
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
@@ -337,27 +286,6 @@ rm $RPM_BUILD_ROOT/%{_initrddir}/osa-dispatcher
 mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install -m 0644 osad.service $RPM_BUILD_ROOT/%{_unitdir}/
 install -m 0644 osa-dispatcher.service $RPM_BUILD_ROOT/%{_unitdir}/
-%endif
-
-%if 0%{?include_selinux_package}
-for selinuxvariant in %{selinux_variants}
-  do
-    install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
-    install -p -m 644 osa-dispatcher-selinux/%{modulename}.pp.${selinuxvariant} \
-           %{buildroot}%{_datadir}/selinux/${selinuxvariant}/%{modulename}.pp
-  done
-
-# Install SELinux interfaces
-install -d %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
-install -p -m 644 osa-dispatcher-selinux/%{modulename}.if \
-  %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
-
-# Hardlink identical policy module packages together
-/usr/sbin/hardlink -cv %{buildroot}%{_datadir}/selinux
-
-# Install osa-dispatcher-selinux-enable which will be called in %%post
-install -d %{buildroot}%{_sbindir}
-install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
 %if ! 0%{?build_py2}
@@ -518,33 +446,6 @@ if [ $1 = 0 ]; then
 fi
 %endif
 
-%if 0%{?include_selinux_package}
-%post -n mgr-osa-dispatcher-selinux
-if /usr/sbin/selinuxenabled ; then
-   %{_sbindir}/osa-dispatcher-selinux-enable
-fi
-
-%posttrans -n mgr-osa-dispatcher-selinux
-#this may be safely remove when BZ 505066 is fixed
-if /usr/sbin/selinuxenabled ; then
-  rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
-  /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
-fi
-
-%postun -n mgr-osa-dispatcher-selinux
-# Clean up after package removal
-if [ $1 -eq 0 ]; then
-  for selinuxvariant in %{selinux_variants}
-    do
-      /usr/sbin/semanage module -s ${selinuxvariant} -l > /dev/null 2>&1 \
-        && /usr/sbin/semodule -s ${selinuxvariant} -r %{modulename} || :
-    done
-fi
-
-rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
-/sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
-%endif
-
 %files
 %defattr(-,root,root)
 %{_sbindir}/osad
@@ -650,19 +551,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python3_sitelib}/osad/__pycache__/__init__.*
 %{python3_sitelib}/osad/__pycache__/jabber_lib.*
 %{python3_sitelib}/osad/__pycache__/rhn_log.*
-%endif
-
-%if 0%{?include_selinux_package}
-%files -n mgr-osa-dispatcher-selinux
-%defattr(-,root,root)
-%doc osa-dispatcher-selinux/%{modulename}.fc
-%doc osa-dispatcher-selinux/%{modulename}.if
-%doc osa-dispatcher-selinux/%{modulename}.te
-%{_datadir}/selinux/*/%{modulename}.pp
-%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%attr(0755,root,root) %{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
 %changelog
