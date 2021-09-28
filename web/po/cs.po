@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-28 11:27+0200\n"
-"PO-Revision-Date: 2021-08-09 19:10+0000\n"
+"PO-Revision-Date: 2021-09-28 22:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -431,31 +431,31 @@ msgstr "Strana {0} z {1}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:47
 msgid "Sunday"
-msgstr ""
+msgstr "Neděle"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:48
 msgid "Monday"
-msgstr ""
+msgstr "Pondělí"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Tuesday"
-msgstr ""
+msgstr "Úterý"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:50
 msgid "Wednesday"
-msgstr ""
+msgstr "Středa"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:51
 msgid "Thursday"
-msgstr ""
+msgstr "Čtvrtek"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:52
 msgid "Friday"
-msgstr ""
+msgstr "Pátek"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:53
 msgid "Saturday"
-msgstr ""
+msgstr "Sobota"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:323
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
@@ -2120,7 +2120,7 @@ msgstr "Aktivní záplatování založené na produktu SUSE"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "AppStream modules with defaults"
-msgstr ""
+msgstr "Moduly AppStream s výchozími hodnotami"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:45
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
@@ -3736,11 +3736,11 @@ msgstr "Cesta inventáře"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
 msgid "Flush Ansible fact cache"
-msgstr ""
+msgstr "Vyprázdnění mezipaměti faktů Ansible"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
 msgid "Clear the fact cache for every host in inventory"
-msgstr ""
+msgstr "Vymazání mezipaměti faktů pro každého hostitele v inventáři"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
@@ -4298,6 +4298,8 @@ msgid ""
 "The below times are displayed in the server time zone {0}. The scheduled "
 "time will be the server time."
 msgstr ""
+"Níže uvedené časy jsou zobrazeny v časovém pásmu serveru {0}. Naplánovaný "
+"čas bude časem serveru."
 
 #: ../html/src/manager/state/recurring-states-utils.tsx:4
 msgid "Minion"
@@ -4320,13 +4322,12 @@ msgid "Base Channel:"
 msgstr "Základní kanál:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:123
-#, fuzzy
 msgid "${defaultChannelName}"
-msgstr "Název kanálu"
+msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:130
 msgid "${this.getDefaultBase().name}"
-msgstr ""
+msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:137
 msgid "Child Channels:"
