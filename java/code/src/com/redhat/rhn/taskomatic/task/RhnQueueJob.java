@@ -46,8 +46,7 @@ public abstract class RhnQueueJob implements RhnJob {
      * {@inheritDoc}
      */
     public void appendExceptionToLogError(Exception e) {
-        getLogger().error(e.getMessage());
-        getLogger().error(e.getCause());
+        getLogger().error(e.getMessage(), e);
     }
 
     private void logToNewFile() {
@@ -88,7 +87,7 @@ public abstract class RhnQueueJob implements RhnJob {
                 queue = factory.createQueue(queueName, getDriverClass(), getLogger());
             }
             catch (Exception e) {
-                getLogger().error(e);
+                getLogger().error(e.getMessage(), e);
                 return;
             }
         }
