@@ -277,15 +277,6 @@ public class SaltServerActionService {
         this.saltKeyUtils = saltKeyUtilsIn;
     }
 
-    private Action unproxy(Action entity) {
-        Hibernate.initialize(entity);
-        if (entity instanceof HibernateProxy) {
-            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
-                    .getImplementation();
-        }
-        return entity;
-    }
-
     /**
      * For a given action return the salt call(s) that need to be executed for the minions involved.
      *
@@ -310,7 +301,6 @@ public class SaltServerActionService {
         }
 
         ActionType actionType = actionIn.getActionType();
-        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
