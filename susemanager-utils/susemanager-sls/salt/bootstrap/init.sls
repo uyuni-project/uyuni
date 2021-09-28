@@ -30,6 +30,20 @@ mgr_server_localhost_alias_absent:
         # set bootstrap_repo_url
         {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ osrelease_minor ~ '/bootstrap/' %}
 
+# Debian OS Family
+{%- elif grains['os_family'] == 'Debian' %}
+{%- set osrelease = grains['osrelease'].split('.') %}
+{%- if grains['os'] == 'Ubuntu' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
+{%- elif grains['os'] == 'AstraLinuxCE' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/astra/' ~ grains['oscodename'] ~ '/bootstrap/' %}
+{%- elif grains['os'] == 'Raspbian' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/raspbian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- else %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
+{%- endif %}
+
 # RedHat OS Family
 {%- elif grains['os_family'] == 'RedHat' %}
 # set os_base
@@ -78,20 +92,6 @@ mgr_server_localhost_alias_absent:
 
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
-{%- endif %}
-
-# Debian OS Family
-{%- elif grains['os_family'] == 'Debian' %}
-{%- set osrelease = grains['osrelease'].split('.') %}
-{%- if grains['os'] == 'Ubuntu' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
-{%- elif grains['os'] == 'AstraLinuxCE' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/astra/' ~ grains['oscodename'] ~ '/bootstrap/' %}
-{%- elif grains['os'] == 'Raspbian' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/raspbian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
-{%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
-{%- endif %}
 {%- endif %}
 
 {%- if not grains['os_family'] == 'Debian' %}
