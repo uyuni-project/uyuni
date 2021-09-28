@@ -101,6 +101,7 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
 
   // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: DatePickerProps) {
+    // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setFullYear(props.year);
     date.setMonth(props.month);
