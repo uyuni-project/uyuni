@@ -1165,7 +1165,8 @@ public class SaltUtils {
                         if (collectResult.getReturnCode() != 0) {
                             serverAction.setStatus(ActionFactory.STATUS_FAILED);
                             serverAction.setResultMsg(StringUtils
-                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()), 1024));
+                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                            1024));
                         }
                     });
                 }));
