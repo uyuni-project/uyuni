@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"POT-Creation-Date: 2021-09-28 11:27+0200\n"
 "PO-Revision-Date: 2021-09-27 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
-"\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
+">\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -340,7 +340,7 @@ msgid "Software Channels"
 msgstr "Softvérové kanály"
 
 #: ../src/spacecmd/activationkey.py:961 ../src/spacecmd/configchannel.py:801
-#: ../src/spacecmd/configchannel.py:908 ../src/spacecmd/system.py:3075
+#: ../src/spacecmd/configchannel.py:916 ../src/spacecmd/system.py:3075
 msgid "Configuration Channels"
 msgstr "Konfiguračné kanály"
 
@@ -566,7 +566,7 @@ msgstr "Originálny kľúč:"
 msgid "Cloned Key:"
 msgstr "Klonovaný kľúč:"
 
-#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1425
+#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1433
 msgid "Error - must specify either -c or -x options!"
 msgstr "Chyba - musia sa zadať voľby -c alebo -x!"
 
@@ -609,7 +609,7 @@ msgstr "neexistuje, preskakuje sa!"
 msgid "Cloning key %s as %s"
 msgstr "Klonovanie kľúča %s ako %s"
 
-#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1477
+#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1485
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "Nepodarilo sa klonovať %s do %s"
@@ -884,7 +884,7 @@ msgid "Binary:          %s"
 msgstr "Binárny:          %s"
 
 #: ../src/spacecmd/configchannel.py:299 ../src/spacecmd/configchannel.py:732
-#: ../src/spacecmd/configchannel.py:982 ../src/spacecmd/kickstart.py:1905
+#: ../src/spacecmd/configchannel.py:990 ../src/spacecmd/kickstart.py:1905
 #: ../src/spacecmd/snippet.py:162
 msgid "Contents"
 msgstr "Obsah"
@@ -1067,16 +1067,16 @@ msgstr "Režim [%s]:"
 msgid "SELinux Context [%s]:"
 msgstr "Kontext SELinux [%s]:"
 
-#: ../src/spacecmd/configchannel.py:611 ../src/spacecmd/configchannel.py:947
+#: ../src/spacecmd/configchannel.py:611 ../src/spacecmd/configchannel.py:955
 msgid "Revision [next]:"
 msgstr "Revízia [ďalšia]:"
 
-#: ../src/spacecmd/configchannel.py:629 ../src/spacecmd/configchannel.py:952
+#: ../src/spacecmd/configchannel.py:629 ../src/spacecmd/configchannel.py:960
 msgid "The revision must be an integer"
 msgstr "Revízia musí byť celé číslo"
 
 #. get the contents of the script
-#: ../src/spacecmd/configchannel.py:632 ../src/spacecmd/configchannel.py:934
+#: ../src/spacecmd/configchannel.py:632 ../src/spacecmd/configchannel.py:942
 #: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:1956
 #: ../src/spacecmd/snippet.py:142
 msgid "Read an existing file [y/N]:"
@@ -1090,7 +1090,7 @@ msgstr "Súbor:"
 msgid "The path is required"
 msgstr "Vyžaduje sa cesta"
 
-#: ../src/spacecmd/configchannel.py:666 ../src/spacecmd/configchannel.py:958
+#: ../src/spacecmd/configchannel.py:666 ../src/spacecmd/configchannel.py:966
 msgid "You must provide the file contents"
 msgstr "Musíte poskytnúť obsah súboru"
 
@@ -1183,7 +1183,7 @@ msgstr ""
 msgid "Select:"
 msgstr "Vybrať:"
 
-#: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:920
+#: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:928
 #: ../src/spacecmd/softwarechannel.py:1342
 #, python-format
 msgid "%s is not a valid channel"
@@ -1197,19 +1197,19 @@ msgstr "Nepodarilo sa získať platný kanál. Prerušuje sa."
 msgid "Path:"
 msgstr "Cesta:"
 
-#: ../src/spacecmd/configchannel.py:841 ../src/spacecmd/configchannel.py:971
+#: ../src/spacecmd/configchannel.py:841 ../src/spacecmd/configchannel.py:979
 msgid "No config channel specified!"
 msgstr "Nie je zadaný žiadny konfiguračný kanál!"
 
-#: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:976
+#: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:984
 msgid "Error obtaining file info"
 msgstr "Chyba pri získavaní informácií o súbore"
 
-#: ../src/spacecmd/configchannel.py:881
+#: ../src/spacecmd/configchannel.py:889
 msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls: Aktualizovať súbor init.sls"
 
-#: ../src/spacecmd/configchannel.py:882
+#: ../src/spacecmd/configchannel.py:890
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1228,54 +1228,54 @@ msgstr ""
 "  -f lokálna cesta k obsahu súboru\n"
 "  -y automaticky pokračovať s obsahom súboru\n"
 
-#: ../src/spacecmd/configchannel.py:930
+#: ../src/spacecmd/configchannel.py:938
 #, python-format
 msgid "No existing file information found for %s"
 msgstr "Nenašli sa žiadne informácie o existujúcom súbore pre %s"
 
-#: ../src/spacecmd/configchannel.py:980
+#: ../src/spacecmd/configchannel.py:988
 #, python-format
 msgid "revision:                 %s"
 msgstr "revízia:                 %s"
 
-#: ../src/spacecmd/configchannel.py:981
+#: ../src/spacecmd/configchannel.py:989
 #, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64:           %s"
 
-#: ../src/spacecmd/configchannel.py:1008
+#: ../src/spacecmd/configchannel.py:1016
 msgid "configchannel_removefiles: Remove configuration files"
 msgstr "configchannel_removefiles: Odstrániť konfiguračné súbory"
 
-#: ../src/spacecmd/configchannel.py:1009
+#: ../src/spacecmd/configchannel.py:1017
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
 msgstr "použitie: configchannel_removefiles KANÁL <SÚBOR ...>"
 
-#: ../src/spacecmd/configchannel.py:1046
+#: ../src/spacecmd/configchannel.py:1054
 msgid "configchannel_verifyfile: Verify a configuration file"
 msgstr "configchannel_verifyfile: Overiť konfiguračný súbor"
 
-#: ../src/spacecmd/configchannel.py:1047
+#: ../src/spacecmd/configchannel.py:1055
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 msgstr "použitie: configchannel_verifyfile KANÁL SÚBOR <SYSTÉMY>"
 
-#: ../src/spacecmd/configchannel.py:1086
+#: ../src/spacecmd/configchannel.py:1094
 msgid "No valid system selected"
 msgstr "Nie je vybraný žiadny platný systém"
 
-#: ../src/spacecmd/configchannel.py:1094 ../src/spacecmd/system.py:510
+#: ../src/spacecmd/configchannel.py:1102 ../src/spacecmd/system.py:510
 #: ../src/spacecmd/system.py:530 ../src/spacecmd/system.py:960
 #, python-format
 msgid "Action ID: %i"
 msgstr "ID akcie: %i"
 
-#: ../src/spacecmd/configchannel.py:1102
+#: ../src/spacecmd/configchannel.py:1110
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
 "configchannel_export: exportovať konfiguračný kanál(y) do súboru vo formáte "
 "json"
 
-#: ../src/spacecmd/configchannel.py:1103
+#: ../src/spacecmd/configchannel.py:1111
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
@@ -1299,40 +1299,40 @@ msgstr ""
 "Poznámka : Zoznam KANÁLOV je voliteľný, predvolený je export VŠETKÝCH"
 
 #. Get the cc details
-#: ../src/spacecmd/configchannel.py:1119
+#: ../src/spacecmd/configchannel.py:1127
 #, python-format
 msgid "Getting config channel details for %s"
 msgstr "Získanie podrobností konfiguračného kanála pre %s"
 
-#: ../src/spacecmd/configchannel.py:1139
+#: ../src/spacecmd/configchannel.py:1147
 #, python-format
 msgid "Failed to get details for file %s from %s"
 msgstr "Nepodarilo sa získať podrobnosti pre súbor %s z %s"
 
-#: ../src/spacecmd/configchannel.py:1185
+#: ../src/spacecmd/configchannel.py:1193
 #, python-format
 msgid "File %s could not be exported "
 msgstr "Súbor %s sa nepodarilo exportovať "
 
-#: ../src/spacecmd/configchannel.py:1186
+#: ../src/spacecmd/configchannel.py:1194
 msgid "with this API version(needs base64 encoding)"
 msgstr "s touto verziou API (vyžaduje kódovanie base64)"
 
-#: ../src/spacecmd/configchannel.py:1188
+#: ../src/spacecmd/configchannel.py:1196
 #, python-format
 msgid "File %s could not be exported as"
 msgstr "Súbor %s sa nepodarilo exportovať ako"
 
-#: ../src/spacecmd/configchannel.py:1189
+#: ../src/spacecmd/configchannel.py:1197
 msgid " text...getting base64 encoded version"
 msgstr " text...získanie verzie kódovanej base64"
 
-#: ../src/spacecmd/configchannel.py:1220
+#: ../src/spacecmd/configchannel.py:1228
 #, python-format
 msgid "Exporting ALL config channels to %s"
 msgstr "Exportovanie VŠETKÝCH konfiguračných kanálov do %s"
 
-#: ../src/spacecmd/configchannel.py:1227
+#: ../src/spacecmd/configchannel.py:1235
 msgid ""
 "Error, no valid config channel passed, check name is  correct with spacecmd "
 "configchannel_list"
@@ -1340,77 +1340,77 @@ msgstr ""
 "Chyba, nebol zadaný žiadny platný konfiguračný kanál, skontrolujte, či je "
 "názov  správny so spacecmd configchannel_list"
 
-#: ../src/spacecmd/configchannel.py:1242
+#: ../src/spacecmd/configchannel.py:1250
 #, python-format
 msgid "Exporting cc %s to %s"
 msgstr "Exportovanie cc %s do %s"
 
-#: ../src/spacecmd/configchannel.py:1249
+#: ../src/spacecmd/configchannel.py:1257
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "Súbor '{}' existuje, potvrďte prepísanie súboru? (a/n)"
 
-#: ../src/spacecmd/configchannel.py:1252
+#: ../src/spacecmd/configchannel.py:1260
 #, python-format
 msgid "Error saving exported config channels to file: %s"
 msgstr "Chyba pri ukladaní exportovaných konfiguračných kanálov do súboru: %s"
 
-#: ../src/spacecmd/configchannel.py:1261
+#: ../src/spacecmd/configchannel.py:1269
 msgid "configchannel_import: import config channel(s) from json file"
 msgstr "configchannel_import: importovať konfiguračný kanál(y) zo súboru json"
 
-#: ../src/spacecmd/configchannel.py:1262
+#: ../src/spacecmd/configchannel.py:1270
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "použitie: configchannel_import <SÚBORY_JSON...>"
 
-#: ../src/spacecmd/configchannel.py:1271 ../src/spacecmd/kickstart.py:2332
+#: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2332
 msgid "Error, no filename passed"
 msgstr "Chyba, nebol zadaný žiadny názov súboru"
 
-#: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2340
+#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2340
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "Chyba, nepodarilo sa prečítať dáta json z %s"
 
-#: ../src/spacecmd/configchannel.py:1283
+#: ../src/spacecmd/configchannel.py:1291
 #, python-format
 msgid "Error importing configchannel %s"
 msgstr "Chyba pri importovaní konfiguračného kanála %s"
 
-#: ../src/spacecmd/configchannel.py:1295
+#: ../src/spacecmd/configchannel.py:1303
 #, python-format
 msgid "Config channel %s already exists! Skipping!"
 msgstr "Konfiguračný kanál %s už existuje! Preskakuje sa!"
 
 #. create the cc, we need to drop the org prefix from the cc name
-#: ../src/spacecmd/configchannel.py:1300
+#: ../src/spacecmd/configchannel.py:1308
 #, python-format
 msgid "Importing config channel  %s"
 msgstr "Importovanie konfiguračného kanála  %s"
 
-#: ../src/spacecmd/configchannel.py:1315
+#: ../src/spacecmd/configchannel.py:1323
 #, python-format
 msgid "Found %s %s for cc %s"
 msgstr "Nájdené %s %s pre cc %s"
 
-#: ../src/spacecmd/configchannel.py:1343
+#: ../src/spacecmd/configchannel.py:1351
 #, python-format
 msgid "Failed trying to import file %s (empty content)"
 msgstr "Zlyhal pokus o import súboru %s (prázdny obsah)"
 
-#: ../src/spacecmd/configchannel.py:1345
+#: ../src/spacecmd/configchannel.py:1353
 msgid "Older APIs can't export encoded files"
 msgstr "Staršie rozhrania API nemôžu exportovať kódované súbory"
 
-#: ../src/spacecmd/configchannel.py:1368
+#: ../src/spacecmd/configchannel.py:1376
 #, python-format
 msgid "Error adding file %s to %s"
 msgstr "Chyba pri pridávaní súboru %s do %s"
 
-#: ../src/spacecmd/configchannel.py:1378
+#: ../src/spacecmd/configchannel.py:1386
 msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone: Klonovať konfiguračný kanál(y)"
 
-#: ../src/spacecmd/configchannel.py:1379
+#: ../src/spacecmd/configchannel.py:1387
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1442,101 +1442,101 @@ msgstr ""
 "                   v názve klonu, označení a popise\n"
 "  Note : Ak nie je zadaná voľba -c alebo -x, predpokladá sa interaktívna"
 
-#: ../src/spacecmd/configchannel.py:1408
+#: ../src/spacecmd/configchannel.py:1416
 msgid "No config channels found"
 msgstr "Nenašli sa žiadne konfiguračné kanály"
 
-#: ../src/spacecmd/configchannel.py:1411
+#: ../src/spacecmd/configchannel.py:1419
 msgid "Config Channels"
 msgstr "Konfiguračné kanály"
 
-#: ../src/spacecmd/configchannel.py:1417
+#: ../src/spacecmd/configchannel.py:1425
 #, python-format
 msgid "Channel to clone: %s"
 msgstr "Kanál na klonovanie: %s"
 
-#: ../src/spacecmd/configchannel.py:1421
+#: ../src/spacecmd/configchannel.py:1429
 msgid "Channel to clone:"
 msgstr "Kanál na klonovanie:"
 
-#: ../src/spacecmd/configchannel.py:1422
+#: ../src/spacecmd/configchannel.py:1430
 msgid "Clone label:"
 msgstr "Označenie klonu:"
 
-#: ../src/spacecmd/configchannel.py:1431
+#: ../src/spacecmd/configchannel.py:1439
 msgid "Error no channel label passed!"
 msgstr "Chyba, nezadané žiadne označenie kanála!"
 
-#: ../src/spacecmd/configchannel.py:1440
+#: ../src/spacecmd/configchannel.py:1448
 msgid "No suitable channels to clone has been found."
 msgstr "Neboli nájdené žiadne vhodné kanály na klonovanie."
 
-#: ../src/spacecmd/configchannel.py:1493
+#: ../src/spacecmd/configchannel.py:1501
 msgid "no configchannel given"
 msgstr "nebol zdaný žiadny konfiguračný kanál"
 
-#: ../src/spacecmd/configchannel.py:1496
+#: ../src/spacecmd/configchannel.py:1504
 msgid "invalid configchannel label "
 msgstr "neplatné označenie konfiguračného kanála "
 
-#: ../src/spacecmd/configchannel.py:1522
+#: ../src/spacecmd/configchannel.py:1530
 msgid "configchannel_diff: diff between config channels"
 msgstr "configchannel_diff: rozdiel medzi konfiguračnými kanálmi"
 
-#: ../src/spacecmd/configchannel.py:1524
+#: ../src/spacecmd/configchannel.py:1532
 msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "použitie: configchannel_diff ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
-#: ../src/spacecmd/configchannel.py:1573
+#: ../src/spacecmd/configchannel.py:1581
 msgid "configchannel_sync:"
 msgstr "configchannel_sync:"
 
-#: ../src/spacecmd/configchannel.py:1574
+#: ../src/spacecmd/configchannel.py:1582
 msgid "sync config files between two config channels"
 msgstr "synchronizovať konfiguračné súbory medzi dvoma konfiguračnými kanálmi"
 
-#: ../src/spacecmd/configchannel.py:1576
+#: ../src/spacecmd/configchannel.py:1584
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "použitie: configchannel_sync ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
-#: ../src/spacecmd/configchannel.py:1614
+#: ../src/spacecmd/configchannel.py:1622
 msgid "syncing files from configchannel "
 msgstr "synchronizované súbory z konfiguračného kanála "
 
-#: ../src/spacecmd/configchannel.py:1621
+#: ../src/spacecmd/configchannel.py:1629
 msgid "files common in both channels:"
 msgstr "súbory spoločné v oboch kanáloch:"
 
-#: ../src/spacecmd/configchannel.py:1627
+#: ../src/spacecmd/configchannel.py:1635
 msgid "files only in source "
 msgstr "súbory iba v zdroji "
 
-#: ../src/spacecmd/configchannel.py:1633
+#: ../src/spacecmd/configchannel.py:1641
 msgid "files only in target "
 msgstr "súbory iba v cieli "
 
-#: ../src/spacecmd/configchannel.py:1638
+#: ../src/spacecmd/configchannel.py:1646
 msgid ""
 "files that are in both channels will be overwritten in the target channel"
 msgstr "súbory, ktoré sú v oboch kanáloch, budú prepísané v cieľovom kanáli"
 
-#: ../src/spacecmd/configchannel.py:1640
+#: ../src/spacecmd/configchannel.py:1648
 msgid "files only in the source channel will be added to the target channel"
 msgstr "súbory iba v zdrojovom kanáli budú pridané do cieľového kanála"
 
-#: ../src/spacecmd/configchannel.py:1642
+#: ../src/spacecmd/configchannel.py:1650
 msgid "files only in the target channel will be deleted"
 msgstr "súbory iba v cieľovom kanáli budú vymazané"
 
-#: ../src/spacecmd/configchannel.py:1645
+#: ../src/spacecmd/configchannel.py:1653
 msgid "nothing to do"
 msgstr "niet čo robiť"
 
-#: ../src/spacecmd/configchannel.py:1649
+#: ../src/spacecmd/configchannel.py:1657
 msgid "perform synchronisation [y/N]:"
 msgstr "vykonať synchronizáciu [a/N]:"
 
-#: ../src/spacecmd/configchannel.py:1701
+#: ../src/spacecmd/configchannel.py:1709
 msgid "unknown file type "
 msgstr "neznámy typ súboru "
 
@@ -1702,8 +1702,8 @@ msgstr ""
 "  -n NÁZOV\n"
 "  -p cesta k stromu\n"
 "  -b základný kanál, s ktorým sa má spojiť\n"
-"  -t inštalovaný typ [fedora18|rhel_6/7/"
-"8|sles12generic|sles15generic|suse|generic_rpm|...]"
+"  -t inštalovaný typ [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1821,8 +1821,8 @@ msgstr ""
 "voľby:\n"
 "  -p cesta k stromu\n"
 "  -b základný kanál, s ktorým sa má spojiť\n"
-"  -t inštalovaný typ [fedora18|rhel_6/7/"
-"8|sles12generic|sles15generic|suse|generic_rpm|...]"
+"  -t inštalovaný typ [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -4790,19 +4790,67 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "použitie: schedule_list [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:459
-msgid "schedule_deletearchived: Delete all archived actions"
+#, fuzzy
+msgid ""
+"schedule_deletearchived: Delete all archived actions older than given date."
 msgstr "schedule_deletearchived: Vymazať všetky archivované akcie"
 
 #: ../src/spacecmd/schedule.py:460
-msgid "usage: schedule_deletearchived"
+#, fuzzy
+msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
 msgstr "použitie: schedule_deletearchived"
 
-#: ../src/spacecmd/schedule.py:477
-msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#: ../src/spacecmd/schedule.py:461 ../src/spacecmd/schedule.py:520
+#, fuzzy
+msgid ""
+"\n"
+"options:\n"
+"  -y, --yes   Confirm without prompt"
+msgstr ""
+"použitie: repo_clearfilters repozitár <voľby>\n"
+"\n"
+"voľby:\n"
+"  -y, --yes   Potvrdenie bez výzvy\n"
+"\n"
+
+#: ../src/spacecmd/schedule.py:465
+#, fuzzy
+msgid "If no date is provided it will delete all archived actions"
 msgstr "Chcete vymazať všetky ({}) archivované akcie? [a/N]"
 
-#: ../src/spacecmd/schedule.py:500
+#: ../src/spacecmd/schedule.py:492
+#, fuzzy
+msgid "Do you want to delete ({}) archived actions? [y/N]"
+msgstr "Chcete vymazať všetky ({}) archivované akcie? [a/N]"
+
+#: ../src/spacecmd/schedule.py:512
 msgid "No archived actions found."
+msgstr "Nenašli sa žiadne archivované akcie."
+
+#: ../src/spacecmd/schedule.py:518
+#, fuzzy
+msgid ""
+"schedule_archivecompleted: Archive all completed actions older than given "
+"date."
+msgstr "schedule_listcompleted: Vypísať zoznam dokončených akcií"
+
+#: ../src/spacecmd/schedule.py:519
+#, fuzzy
+msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
+msgstr "použitie: schedule_listcompleted [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
+
+#: ../src/spacecmd/schedule.py:524
+msgid "If no date is provided it will archive all completed actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:551
+#, fuzzy
+msgid "Do you want to archive ({}) completed actions? [y/N]"
+msgstr "Chcete vymazať všetky ({}) archivované akcie? [a/N]"
+
+#: ../src/spacecmd/schedule.py:571
+#, fuzzy
+msgid "No completed actions found."
 msgstr "Nenašli sa žiadne archivované akcie."
 
 #: ../src/spacecmd/shell.py:121
@@ -5592,8 +5640,8 @@ msgid ""
 msgstr ""
 "použitie: softwarechannel_clonetree [voľby])\n"
 "             napr.    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\""
-"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
+"\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "voľby:\n"
@@ -5692,7 +5740,8 @@ msgstr "Odstrániť tieto opravy [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1483
 msgid "softwarechannel_removepackages: Remove packages from a software channel"
-msgstr "softwarechannel_removepackages: Odstrániť balíky zo softvérového kanála"
+msgstr ""
+"softwarechannel_removepackages: Odstrániť balíky zo softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:1485
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
@@ -5831,7 +5880,8 @@ msgstr "použitie: softwarechannel_getorgaccess [KANÁL ...]"
 #: ../src/spacecmd/softwarechannel.py:1866
 msgid ""
 "softwarechannel_setorgaccess: Set the org-access for the software channel"
-msgstr "softwarechannel_setorgaccess: Nastaviť prístup-org pre softvérový kanál"
+msgstr ""
+"softwarechannel_setorgaccess: Nastaviť prístup-org pre softvérový kanál"
 
 #: ../src/spacecmd/softwarechannel.py:1867
 msgid ""
@@ -6971,8 +7021,8 @@ msgstr ""
 "\n"
 "  Poznámka vo veci binárny/base64: Niektoré textové súbory, najmä tie, ktoré "
 "obsahujú\n"
-"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII ("
-"alebo iné znaky,\n"
+"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII "
+"(alebo iné znaky,\n"
 "  ktoré nie sú v XML povolené) je potrebné poslať ako binárne (-b). Vyvinulo "
 "sa určité úsilie\n"
 "  na automatickú detekciu súborov, ktoré to vyžadujú, ale možno budete "
@@ -7042,7 +7092,8 @@ msgstr "Nové konfiguračné kanály"
 
 #: ../src/spacecmd/system.py:1733
 msgid "system_deployconfigfiles: Deploy all configuration files for a system"
-msgstr "system_deployconfigfiles: Nasadiť všetky konfiguračné súbory pre systém"
+msgstr ""
+"system_deployconfigfiles: Nasadiť všetky konfiguračné súbory pre systém"
 
 #: ../src/spacecmd/system.py:1734
 msgid ""
@@ -7282,8 +7333,8 @@ msgstr ""
 "\n"
 "voľby:\n"
 "  -b ZÁKLADNÝ_KANÁL označenie základného kanála\n"
-"  -c KANÁL_POTOMKA označenia kanálov potomkov (povolené viacnásobné použitie)"
-"\n"
+"  -c KANÁL_POTOMKA označenia kanálov potomkov (povolené viacnásobné "
+"použitie)\n"
 "  -s ČAS_SPUSTENIA predvolený čas je teraz"
 
 #: ../src/spacecmd/system.py:2596
@@ -7931,8 +7982,8 @@ msgstr ""
 "    Voľby: \n"
 "        -s ČAS_SPUSTENIA \n"
 "        -d zadajte tento príznak, ak chcete vykonať skúšobné spustenie \n"
-"        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami ("
-"bez medzier))"
+"        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami "
+"(bez medzier))"
 
 #: ../src/spacecmd/system.py:4338
 msgid ""
@@ -7961,8 +8012,8 @@ msgstr ""
 "    Voľby: \n"
 "        -s ČAS_SPUSTENIA \n"
 "        -d zadajte tento príznak, ak chcete vykonať skúšobné spustenie \n"
-"        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami ("
-"bez medzier))"
+"        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami "
+"(bez medzier))"
 
 #: ../src/spacecmd/system.py:4389
 msgid "Cannot find system "
@@ -8147,7 +8198,8 @@ msgstr "použitie: user_addgroup POUŽÍVATEĽ <SKUPINA ...>"
 
 #: ../src/spacecmd/user.py:443
 msgid "user_adddefaultgroup: Add a default group to an user account"
-msgstr "user_adddefaultgroup: Pridať predvolenú skupinu do používateľského účtu"
+msgstr ""
+"user_adddefaultgroup: Pridať predvolenú skupinu do používateľského účtu"
 
 #: ../src/spacecmd/user.py:444
 msgid "usage: user_adddefaultgroup USER <GROUP ...>"
