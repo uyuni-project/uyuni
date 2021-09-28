@@ -85,17 +85,6 @@ Requires:       susemanager-sls
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
-%if 0%{?rhel} || 0%{?fedora}
-# SELinux
-Requires:       mgr-osa-dispatcher-selinux
-Requires:       spacewalk-selinux
-Obsoletes:      spacewalk-monitoring-selinux < 2.3
-%endif
-
-%if 0%{?rhel} == 6
-Requires:       selinux-policy-base >= 3.7.19-93
-%endif
-
 Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
 
