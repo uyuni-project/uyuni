@@ -429,6 +429,41 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Erratum Filter Test: test for errata containing a package which has a special provides
+     *
+     * @throws Exception is anything goes wrong
+     */
+    public void testErrataContainsPackageProvidesName() throws Exception {
+
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+
+        PackageCapability capability = new PackageCapability();
+        capability.setName("installhint(reboot-needed)");
+        capability = TestUtils.saveAndReload(capability);
+
+        PackageProvides packageProvides = new PackageProvides();
+        packageProvides.setCapability(capability);
+        packageProvides.setPack(pack);
+        packageProvides.setSense(0L);
+        TestUtils.saveAndFlush(packageProvides);
+
+        pack = TestUtils.saveAndReload(pack);
+
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME,
+                "package_provides_name", "installhint(reboot-needed)");
+        ContentFilter filter = contentManager.createFilter("contains-prv-name-filter", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+
+        erratum1.addPackage(pack);
+        filter = contentManager.createFilter("contains-prv-name-filter2", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+    }
+
+    /**
      * Test basic Errata filtering: match keywords
      *
      * @throws Exception if anything goes wrong
