@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -46,6 +47,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,10 @@ public class ResponseMappers {
         properties.setLabel(projectDB.getLabel());
         properties.setName(projectDB.getName());
         properties.setDescription(projectDB.getDescription());
+        properties.setLastBuildDate(projectDB.getHistoryEntries().stream()
+                .map(ContentProjectHistoryEntry::getCreated)
+                .max(Comparator.naturalOrder())
+                .orElse(null));
 
         List<ProjectHistoryEntryResponse> historyEntries = projectDB.getHistoryEntries().stream()
                 .map(entry -> {
