@@ -13,6 +13,7 @@ import {
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { SearchField } from "./table/SearchField";
 
 const capitalize = Utils.capitalize;
 
@@ -61,6 +62,7 @@ type State = {
   warnings: string[];
   errors: string[];
   sectionsExpanded: string;
+  searchCriteria: string;
 };
 
 class FormulaForm extends React.Component<Props, State> {
@@ -78,6 +80,7 @@ class FormulaForm extends React.Component<Props, State> {
       warnings: [],
       errors: [],
       sectionsExpanded: "collapsed",
+      searchCriteria: "",
     };
 
     window.addEventListener(
@@ -273,6 +276,7 @@ class FormulaForm extends React.Component<Props, State> {
           scope={this.props.scope}
           sectionsExpanded={this.state.sectionsExpanded}
           setSectionsExpanded={(status) => this.setState({ sectionsExpanded: status })}
+          searchCriteria={this.state.searchCriteria}
         >
           <div>
             {defaultMessage}
@@ -333,6 +337,11 @@ class FormulaForm extends React.Component<Props, State> {
                 }
               >
                 <div className="formula-content">
+                  <SearchField
+                      placeholder={t("Search by formula's group name")}
+                      criteria={this.state.searchCriteria}
+                      onSearch={(v) => this.setState({ searchCriteria: v }) } />
+                  <hr />
                   <p>{text(this.state.formulaMetadata.description)}</p>
                   <hr />
                   <FormulaFormRenderer />
