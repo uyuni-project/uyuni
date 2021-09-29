@@ -560,7 +560,7 @@ def do_group_addconfigchannels(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args,) = parse_command_arguments(args, arg_parser)
+    (args,_) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_addconfigchannels()
@@ -598,7 +598,7 @@ def do_group_removeconfigchannels(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args,) = parse_command_arguments(args, arg_parser)
+    (args,_) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_removeconfigchannels()
