@@ -5,7 +5,7 @@ Tests for usix.
 import sys
 import types
 import pytest
-from common import usix
+from uyuni.common import usix
 
 
 class TestUsixCommon:
