@@ -76,6 +76,11 @@ const filterMatchers: FilterMatcherEnumType = {
     text: "version greater than",
     longDescription: t("contains package with epoch/version/release greater than"),
   },
+  CONTAINS_PROVIDES_NAME: {
+    key: "contains_provides_name",
+    text: "provides name",
+    longDescription: t("contains package which provides name equal"),
+  },
   EQUALS: {
     key: "equals",
     text: t("equals"),
@@ -152,6 +157,12 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     text: t("Contains Package Name"),
     entityType: filterEntity.ERRATUM,
     matchers: [filterMatchers.CONTAINS_PKG_NAME, filterMatchers.MATCHES_PKG_NAME],
+  },
+  PACKAGE_PROVIDES_NAME: {
+    key: "package_provides_name",
+    text: t("Contains Package Provides Name"),
+    entityType: filterEntity.ERRATUM,
+    matchers: [filterMatchers.CONTAINS_PROVIDES_NAME],
   },
   PACKAGE_NEVR: {
     key: "package_nevr",
