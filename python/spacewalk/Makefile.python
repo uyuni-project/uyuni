@@ -1,6 +1,6 @@
 THIS_MAKEFILE := $(realpath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(dir $(THIS_MAKEFILE))
-include $(CURRENT_DIR)../rel-eng/Makefile.python
+include $(CURRENT_DIR)/../../rel-eng/Makefile.python
 
 # Docker tests variables
 DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
