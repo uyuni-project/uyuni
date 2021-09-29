@@ -47,6 +47,7 @@ type Context = {
   validate: any | null;
   sectionsExpanded: any | null;
   setSectionsExpanded: any | null;
+  searchCriteria: any | null;
 };
 
 export const FormulaFormContext = React.createContext<Context>({
@@ -59,6 +60,7 @@ export const FormulaFormContext = React.createContext<Context>({
   validate: null,
   sectionsExpanded: null,
   setSectionsExpanded: null,
+  searchCriteria: null,
 });
 
 export function generateFormulaComponent(
@@ -344,6 +346,18 @@ function checkVisibilityCondition(id, condition, formulaForm) {
   return false;
 }
 
+// return the element content visibility conditionally based on the element name by the criteria
+const collapsedByCriteria = (element, criteria) => {
+  return (
+      criteria ||
+      (
+        element.$name &&
+        criteria.length > 0 &&
+        element.$name.toLowerCase().includes(criteria.toLowerCase())
+      )
+  );
+}
+
 function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
   var child_items: React.ReactNode[] = [];
   for (var child_name in element) {
@@ -437,6 +451,7 @@ type UnwrappedFormulaFormRendererProps = {
   layout?: any;
   onChange?: (id: string, value: string) => any;
   registerValidationTrigger?: (...args: any[]) => any;
+  searchCriteria: string | null;
 };
 
 // layout
@@ -611,6 +626,7 @@ type FormulaFormContextProviderProps = {
   scope?: any;
   sectionsExpanded?: string | undefined;
   setSectionsExpanded?: (status: string) => void | undefined;
+  searchCriteria?: string;
 };
 
 type FormulaFormContextProviderState = {
@@ -624,6 +640,7 @@ type FormulaFormContextProviderState = {
 // systemData
 // groupData
 // scope
+// searchCriteria
 export class FormulaFormContextProvider extends React.Component<
   FormulaFormContextProviderProps,
   FormulaFormContextProviderState
@@ -655,6 +672,7 @@ export class FormulaFormContextProvider extends React.Component<
       registerValidationTrigger: this.registerValidationTrigger,
       sectionsExpanded: this.props.sectionsExpanded,
       setSectionsExpanded: this.props.setSectionsExpanded,
+      searchCriteria: this.props.searchCriteria,
     };
 
     return <FormulaFormContext.Provider value={contextValue}>{this.props.children}</FormulaFormContext.Provider>;
