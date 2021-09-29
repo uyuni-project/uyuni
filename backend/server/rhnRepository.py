@@ -235,22 +235,20 @@ class Repository(rhnRepository.Repository):
 
         content_type = "application/x-gzip"
 
-        if file_name in ["repomd.xml", "comps.xml", "products.xml"]:
+        if file_name.endswith(".xml"):
             content_type = "text/xml"
         elif file_name in ["repomd.xml.asc", "repomd.xml.key"]:
             content_type = "text/plain"
-        elif file_name not in ["primary.xml.gz", "other.xml.gz",
-                               "filelists.xml.gz", "updateinfo.xml.gz", "Packages.gz", "modules.yaml",
-                               "InRelease", "Release", "Release.gpg",
-                               "susedata.xml.gz"]:
+        elif file_name.endswith(".yaml"):
+             content_type = "text/yaml"
+        file_path = "%s/%s/%s" % (CFG.REPOMD_PATH_PREFIX, self.channelName, file_name)
+        if file_name in ["comps.xml", "modules.yaml"]:
+            # without checksum in the filename, they are only available in the old style
+            return self._repodata_python(file_name)
+        elif not os.path.exists(os.path.join(CFG.REPOMD_CACHE_MOUNT_POINT, file_path)):
             log_debug(2, "Unknown repomd file requested: %s" % file_name)
             raise rhnFault(6)
 
-        # XXX this won't be repconned or CDNd
-        if file_name in ["comps.xml", "modules.yaml"]:
-            return self._repodata_python(file_name)
-
-        file_path = "%s/%s/%s" % (CFG.REPOMD_PATH_PREFIX, self.channelName, file_name)
         rhnFlags.set('Content-Type', content_type)
         try:
             rhnFlags.set('Download-Accelerator-Path', file_path)
@@ -258,7 +256,7 @@ class Repository(rhnRepository.Repository):
         except IOError:
             e = sys.exc_info()[1]
             # For file not found, queue up a regen, and return 404
-            if e.errno == 2 and file_name not in ["comps.xml", "modules.yaml"]:
+            if e.errno == 2:
                 if file_name not in ["repomd.xml.key", "repomd.xml.asc"]:
                     taskomatic.add_to_repodata_queue(self.channelName, "repodata request",
                                                      file_name, bypass_filters=True)
