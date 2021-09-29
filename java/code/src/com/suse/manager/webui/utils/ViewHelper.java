@@ -108,17 +108,15 @@ public enum ViewHelper {
     }
 
     /**
-     * TODO -> DROP
-     * This is a buggy method, it does not return the "user" timezone but the timezone of the "Context" from where
-     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See layout_head.jsp
-     *
-     *
      * Render the current user's configured timezone for being displayed (falling back to
      * the system default in case there is currently no user context).
      *
      * @return timezone to be displayed
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderTimezone() {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
@@ -129,32 +127,29 @@ public enum ViewHelper {
     }
 
     /**
-     * TODO -> DROP
-     * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
-     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See layout_head.jsp
-     *
-     *
      * Render the time in the current user's configured timezone (falling back to
      * the system default in case there is currently no user context).
      *
      * @return user's local time
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderLocalTime() {
         return renderDate(new Date());
     }
 
     /**
-     * TODO -> DROP
-     * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
-     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See layout_head.jsp
-     *
-     *
      * Render a given time in the current user's configured timezone
+     *
      * @param date the date
      * @return user's local time
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderDate(Date date) {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
@@ -168,7 +163,11 @@ public enum ViewHelper {
      * Render a given time in the current user's configured timezone
      * @param instant the instant
      * @return user's local time
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderDate(Instant instant) {
         return renderDate(new Date(instant.toEpochMilli()));
     }
