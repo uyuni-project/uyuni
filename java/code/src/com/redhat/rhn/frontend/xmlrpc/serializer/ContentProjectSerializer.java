@@ -16,12 +16,14 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Comparator;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentProject}
@@ -32,6 +34,7 @@ import java.io.Writer;
  *   #prop("string", "label")
  *   #prop("string", "name")
  *   #prop("string", "description")
+ *   #prop("dateTime.iso8601", "lastBuildDate")
  *   #prop("int", "orgId")
  *   #prop("string", "firstEnvironment label")
  * #struct_end()
@@ -58,6 +61,10 @@ public class ContentProjectSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("label", contentProject.getLabel());
         helper.add("name", contentProject.getName());
         helper.add("description", contentProject.getDescription());
+        helper.add("lastBuildDate", contentProject.getHistoryEntries().stream()
+                .map(ContentProjectHistoryEntry::getCreated)
+                .max(Comparator.naturalOrder())
+                .orElse(null));
         helper.add("orgId", contentProject.getOrg().getId());
         helper.add("firstEnvironment", contentProject.getFirstEnvironmentOpt().map(e -> e.getLabel()).orElse(null));
         helper.writeTo(writer);
