@@ -171,4 +171,19 @@ describe("Testing filters enum and descriptions", () => {
       "filter patch contains package name: allow patch containing package name (package_name)"
     );
   });
+
+  test("test Patch (contains Package) - package_provides_name - description", () => {
+    const filter = {
+      name: "filter contains package provides name",
+      criteriaKey: "package_provides_name",
+      criteriaValue: "installhint(reboot-needed)",
+      entityType: "patch",
+      rule: "deny",
+      matcher: "contains_provides_name",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter contains package provides name: deny patch contains package which provides name equal installhint(reboot-needed) (package_provides_name)"
+    );
+  });
 });
