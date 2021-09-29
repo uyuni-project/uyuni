@@ -29,23 +29,28 @@ mgr_server_localhost_alias_absent:
         {%- endif %}
         # set bootstrap_repo_url
         {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ osrelease_minor ~ '/bootstrap/' %}
+{%- endif %}
+
 
 # Debian OS Family
-{%- elif grains['os_family'] == 'Debian' %}
-{%- set osrelease = grains['osrelease'].split('.') %}
+{%- if grains['os_family'] == 'Debian' %}
+{%- set os_base = grains['os_family']|lower %}
+{% set osrelease = grains['osrelease_info'][0] %}
 {%- if grains['os'] == 'Ubuntu' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
-{%- elif grains['os'] == 'AstraLinuxCE' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/astra/' ~ grains['oscodename'] ~ '/bootstrap/' %}
-{%- elif grains['os'] == 'Raspbian' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/raspbian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{% set osrelease_minor = grains['osrelease_info'][1] %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ osrelease_minor ~ '/bootstrap/' %}
 {%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
-{%- endif %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
 {%- endif %}
 
+#AstraLinuxCE is not under Debian Family
+{%- if grains['os'] == 'AstraLinuxCE' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/astra/' ~ grains['oscodename'] ~ '/bootstrap/' %}
+{%- endif %}
+
+
 # RedHat OS Family
-{%- elif grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' %}
 # set os_base
 {%- if "centos" in grains['os']|lower %}
 {% set os_base = 'centos' %}
