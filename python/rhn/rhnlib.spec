@@ -150,6 +150,16 @@ rhnlib is a collection of python modules used by the Spacewalk software.
 %prep
 %setup -q
 
+# Recreate the rhn module
+mkdir rhn
+pushd rhn
+for pyfile in $(ls ../*.py)
+do
+  ln -s $pyfile
+done
+popd
+
+
 if [ ! -e setup.py ]; then
     sed -e 's/@VERSION@/%{version}/' -e 's/@NAME@/%{name}/' setup.py.in > setup.py
 fi
