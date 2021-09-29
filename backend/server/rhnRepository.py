@@ -245,7 +245,7 @@ class Repository(rhnRepository.Repository):
         if file_name in ["comps.xml", "modules.yaml"]:
             # without checksum in the filename, they are only available in the old style
             return self._repodata_python(file_name)
-        elif not os.path.exists(CFG.REPOMD_CACHE_MOUNT_POINT + "/" + file_path):
+        elif not os.path.exists(os.path.join(CFG.REPOMD_CACHE_MOUNT_POINT, file_path)):
             log_debug(2, "Unknown repomd file requested: %s" % file_name)
             raise rhnFault(6)
 
