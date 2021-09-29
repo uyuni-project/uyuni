@@ -83,9 +83,9 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
    */
   const unparsableDateRegex = /(\d{2,4}.\d{2}.\d{2,4}.\d{1,2}.\d{2}.\d{2})( \w+)*/g;
 
-  const aDate =
+  const aDate = aRaw[columnKey] === null ? null :
     aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
-  const bDate =
+  const bDate = bRaw[columnKey] === null ? null :
     bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
