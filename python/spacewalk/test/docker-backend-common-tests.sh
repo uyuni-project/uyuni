@@ -1,5 +1,5 @@
 #! /bin/bash
 
 touch /etc/rhn/rhn.conf
-mkdir -p /manager/backend/reports
-pytest -v --junit-xml /manager/backend/reports/common_tests.xml -s /manager/backend/common/test/unit-test/
+mkdir -p /manager/python/spacewalk/reports
+pytest -v --junit-xml /manager/python/spacewalk/reports/common_tests.xml -s /manager/python/spacewalk/common/test/unit-test/
