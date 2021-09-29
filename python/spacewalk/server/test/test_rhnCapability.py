@@ -12,8 +12,8 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-import rhnSQL
-from rhnCapability import set_client_capabilities, update_client_capabilities
+import spacewalk.server.rhnSQL as rhnSQL
+from spacewalk.server.rhnCapability import set_client_capabilities, update_client_capabilities
 
 if __name__ == '__main__':
     rhnSQL.initDB('rhnuser/rhnuser@webdev')
