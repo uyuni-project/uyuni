@@ -70,7 +70,9 @@ const FilterEdit = (props: FilterEditProps) => {
   const modalNameId = `${props.id}-modal`;
 
   useEffect(() => {
-    if (props.initialFilterForm.id === props.openFilterId || (props.openFilterId === -1 && !props.editing)) {
+    const openWithInitial = props.initialFilterForm.id && props.initialFilterForm.id === props.openFilterId;
+    const openCreateWithParams = props.openFilterId === -1 && !props.editing;
+    if (openWithInitial || openCreateWithParams) {
       showDialog(modalNameId);
       setOpen(true);
       setFormData(props.initialFilterForm);
