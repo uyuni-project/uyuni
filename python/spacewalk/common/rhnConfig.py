@@ -25,9 +25,9 @@ from uyuni.common.usix import raise_with_tb
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
 
-_CONFIG_ROOT = '/etc/rhn'
+_CONFIG_ROOT = os.environ.get('RHN_CONFIG_PATH', '/etc/rhn')
 _CONFIG_FILE = '%s/rhn.conf' % _CONFIG_ROOT
-_CONFIG_DEFAULTS_ROOT = '/usr/share/rhn/config-defaults'
+_CONFIG_DEFAULTS_ROOT = os.environ.get('RHN_CONFIG_DEFAULTS_PATH', '/usr/share/rhn/config-defaults')
 
 
 def warn(*args):
