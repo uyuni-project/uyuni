@@ -7,7 +7,7 @@
 {% set url = entry.get('uri') %}
 {%- set repo_exists = (0 < salt['http.query'](url + '/Release', status=True, verify_ssl=True).get('status', 0) < 300) %}
 {% if not repo_exists %} 
-disable_repo_{{ repos_disabled.count }}:
+disable_broken_repo_{{ repos_disabled.count }}:
   mgrcompat.module_run:
     - name: pkg.mod_repo
     - repo: {{ "'" ~ entry.line ~ "'" }}
@@ -22,7 +22,7 @@ disable_repo_{{ repos_disabled.count }}:
 {% set url = data.get('baseurl', 'file://').replace('$basearch', grains['osarch']).replace('$releasever', grains['osmajorrelease']|string) -%}
 {%- set repo_exists = (0 < salt['http.query'](url + '/repodata/repomd.xml', status=True, verify_ssl=True).get('status', 0) < 300) %}
 {% if not repo_exists %}
-disable_repo_{{ alias }}:
+disable_broken_repo_{{ alias }}:
   mgrcompat.module_run:
     - name: pkg.mod_repo
     - repo: {{ alias }}
