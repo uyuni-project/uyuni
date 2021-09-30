@@ -1,3 +1,5 @@
+- Add 'Last build date' column to CLM project list (jsc#PM-2644)
+  (jsc#SUMA-61)
 - Fix 'Type' input in CLM source edit form (bsc#1190820)
 - Add 'Flush cache' checkbox to Ansible playbook execution page
   (bsc#1190405)

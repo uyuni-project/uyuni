@@ -14,12 +14,14 @@ import withPageWrapper from "components/general/with-page-wrapper";
 import useRoles from "core/auth/use-roles";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import { ServerMessageType } from "components/messages";
+import { localizedMoment } from "utils/datetime";
 
 type ContentProjectOverviewType = {
   properties: {
     label: String;
     name: String;
     description: String;
+    lastBuildDate: Date | null;
   };
   environments: Array<String>;
   needRebuild: Boolean;
@@ -56,6 +58,7 @@ const ListProjects = (props: Props) => {
     label: project.properties.label,
     name: project.properties.name,
     description: project.properties.description,
+    lastBuildDate: project.properties.lastBuildDate,
     environmentLifecycle: project.environments.join(" > "),
   }));
 
@@ -73,6 +76,14 @@ const ListProjects = (props: Props) => {
       )}
     </div>
   );
+
+  const renderDate = (date: Date | null) => {
+    if (date === null) {
+      return <span>{t("never")}</span>
+    }
+    const lmDate = localizedMoment(date);
+    return <span title={lmDate.toUserDateTimeString()}>{lmDate.fromNow()}</span>
+  }
 
   return (
     <TopPanel
@@ -103,6 +114,12 @@ const ListProjects = (props: Props) => {
           comparator={Utils.sortByText}
           header={t("Description")}
           cell={row => _truncate(row.description, { length: 120 })}
+        />
+        <Column
+          columnKey="lastBuildDate"
+          comparator={Utils.sortByDate}
+          header={t("Last Build")}
+          cell={row => renderDate(row.lastBuildDate)}
         />
         <Column
           columnKey="environmentLifecycle"
