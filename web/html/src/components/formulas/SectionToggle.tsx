@@ -11,7 +11,7 @@ const SectionToggle = (props: Props) => {
   const toggleSection = () => {
     let visible = props.isVisible(props.index);
     if (visible === undefined) {
-      visible = true; // initially is open
+      visible = false; // initially is closed
     }
     props.setVisible(props.index, !visible);
   };
