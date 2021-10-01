@@ -17,6 +17,7 @@
 #
 #
 
+import os
 import sys
 import time
 import unittest
@@ -66,6 +67,9 @@ class Tests(unittest.TestCase):
 
     def test_timestamp_3(self):
         t = 57739297
+        # Set the UTC time zone to avoid test flakiness due to the local TZ having DST or not.
+        os.environ['TZ'] = 'UTC'
+        time.tzset()
         dstshift = (time.localtime(t)[8] - time.daylight) * 3600
         is_eq, t1, tstr, t2 = self._test(t, dstshift)
         self.assertTrue(is_eq, "Failed: %s, %s" % (t1, t2))
