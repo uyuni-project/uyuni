@@ -40,6 +40,11 @@ fi
 repo_dir=$repo_dir/$obs_project/$obs_repo/$obs_arch
 
 osc getbinaries $obs_project $obs_repo $obs_arch -d $repo_dir
+
+# Checkout specific packages. For example, multibuild packages won't
+# be downloaded by using "osc getbinaries PROJECT", so we need to
+# be explicit. For example 000product:Uyuni-Server-release
+
 for i in ${packages};do
     osc getbinaries $obs_project $i $obs_repo $obs_arch -d $repo_dir
 done
