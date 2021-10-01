@@ -1,3 +1,4 @@
+- Realign pkgset cookie path for Salt Bundle changes
 - Fix pkgset beacon to work with salt-minion 2016.11.10 (bsc#1189260)
 - Fix virt grain python2 compatibility
 - disable unaccessible local repos before bootstrapping (bsc#1186405)
