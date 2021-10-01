@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
 import { Utils } from "utils/functions";
@@ -62,6 +63,7 @@ type State = {
   messages: string[];
   warnings: string[];
   errors: string[];
+  sectionsExpanded: string;
 };
 
 class FormulaForm extends React.Component<Props, State> {
@@ -78,6 +80,7 @@ class FormulaForm extends React.Component<Props, State> {
       messages: [],
       warnings: [],
       errors: [],
+      sectionsExpanded: "collapsed",
     };
 
     window.addEventListener(
@@ -251,12 +254,28 @@ class FormulaForm extends React.Component<Props, State> {
       }
       const nextHref = this.props.getFormulaUrl(this.props.formulaId + 1);
       const prevHref = this.props.getFormulaUrl(this.props.formulaId - 1);
+      const showAllButton = (
+        <Button
+          handler={() => this.setState({ sectionsExpanded: "expanded" })}
+          text={t("Expand All Sections")}
+          className="btn-link"
+        />
+      );
+      const hideAllButton = (
+        <Button
+          handler={() => this.setState({ sectionsExpanded: "collapsed" })}
+          text={t("Collapse All Sections")}
+          className="btn-link"
+        />
+      );
       return (
         <FormulaFormContextProvider
           layout={this.state.formulaRawLayout}
           systemData={this.state.systemData}
           groupData={this.state.groupData}
           scope={this.props.scope}
+          sectionsExpanded={this.state.sectionsExpanded}
+          setSectionsExpanded={(status) => this.setState({ sectionsExpanded: status })}
         >
           <div>
             {defaultMessage}
@@ -308,18 +327,20 @@ class FormulaForm extends React.Component<Props, State> {
                   </FormulaFormContext.Consumer>
                 </div>
               </SectionToolbar>
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3>{capitalize(get(this.state.formulaName, "Unnamed"))}</h3>
-                </div>
-                <div className="panel-body">
-                  <div className="formula-content">
-                    <p>{text(this.state.formulaMetadata.description)}</p>
-                    <hr />
-                    <FormulaFormRenderer />
+              <BootstrapPanel
+                title={capitalize(get(this.state.formulaName, "Unnamed"))}
+                buttons={
+                  <div>
+                    {showAllButton} | {hideAllButton}
                   </div>
+                }
+              >
+                <div className="formula-content">
+                  <p>{text(this.state.formulaMetadata.description)}</p>
+                  <hr />
+                  <FormulaFormRenderer />
                 </div>
-              </div>
+              </BootstrapPanel>
             </div>
           </div>
         </FormulaFormContextProvider>

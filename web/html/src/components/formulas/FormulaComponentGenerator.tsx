@@ -45,6 +45,8 @@ type Context = {
   getCleanValues?: any | null;
   clearValues: any | null;
   validate: any | null;
+  sectionsExpanded: any | null;
+  setSectionsExpanded: any | null;
 };
 
 export const FormulaFormContext = React.createContext<Context>({
@@ -55,6 +57,8 @@ export const FormulaFormContext = React.createContext<Context>({
   getCleanValues: null,
   clearValues: null,
   validate: null,
+  sectionsExpanded: null,
+  setSectionsExpanded: null,
 });
 
 export function generateFormulaComponent(
@@ -196,7 +200,14 @@ export function generateFormulaComponentForId(
     );
   else if (element.$type === "group") {
     return (
-      <Group id={id} key={id} header={element.$name} help={element.$help}>
+      <Group
+        id={id}
+        key={id}
+        header={element.$name}
+        help={element.$help}
+        sectionsExpanded={formulaForm.props.sectionsExpanded}
+        setSectionsExpanded={formulaForm.props.setSectionsExpanded}
+      >
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
       </Group>
     );
@@ -210,6 +221,8 @@ export function generateFormulaComponentForId(
         value={value}
         formulaForm={formulaForm}
         disabled={isDisabled}
+        sectionsExpanded={formulaForm.props.sectionsExpanded}
+        setSectionsExpanded={formulaForm.props.setSectionsExpanded}
       />
     );
   } else if (element.$type === "select")
@@ -419,6 +432,8 @@ export const FormulaFormRenderer = () => (
 type UnwrappedFormulaFormRendererProps = {
   scope: string | null;
   values: any;
+  sectionsExpanded: string;
+  setSectionsExpanded: (string) => void;
   layout?: any;
   onChange?: (id: string, value: string) => any;
   registerValidationTrigger?: (...args: any[]) => any;
@@ -594,6 +609,8 @@ type FormulaFormContextProviderProps = {
   systemData?: any;
   groupData?: any;
   scope?: any;
+  sectionsExpanded?: string | undefined;
+  setSectionsExpanded?: (status: string) => void | undefined;
 };
 
 type FormulaFormContextProviderState = {
@@ -636,6 +653,8 @@ export class FormulaFormContextProvider extends React.Component<
       clearValues: this.clearValues,
       validate: this.validate,
       registerValidationTrigger: this.registerValidationTrigger,
+      sectionsExpanded: this.props.sectionsExpanded,
+      setSectionsExpanded: this.props.setSectionsExpanded,
     };
 
     return <FormulaFormContext.Provider value={contextValue}>{this.props.children}</FormulaFormContext.Provider>;

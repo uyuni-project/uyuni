@@ -1,3 +1,4 @@
+- Add expand/collapse all button for formula sections
 - Improved large data support in channel selection
 - Provide link for CVEs
 - Improved error handling in the product setup page
