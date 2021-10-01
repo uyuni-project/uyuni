@@ -1,3 +1,6 @@
+- set key format to PEM when generating key for traditional
+  clients push ssh (bsc#1189643)
+
 -------------------------------------------------------------------
 Wed Oct 06 09:32:15 CEST 2021 - jgonzalez@suse.com
 
