@@ -27,24 +27,14 @@ COOKIE_PATH = None
 
 
 def __virtual__():
-    return any(
-               os.path.exists(plug) for plug in PKG_PLUGINS
-           ) and __virtualname__ or False
-
-
-def validate(config):
-    '''
-    Validate the beacon configuration. A "cookie" file path is mandatory.
-    '''
-
     global COOKIE_PATH
 
-    for plug in PKG_PLUGINS:
+    for plug, cookie in PKG_PLUGINS.items():
         if os.path.exists(plug):
-            COOKIE_PATH = PKG_PLUGINS.get(plug)
-            return True, 'Configuration validated'
+            COOKIE_PATH = cookie
+            break
 
-    return False, 'Cookie path has not been set.'
+    return COOKIE_PATH and __virtualname__ or False
 
 
 def beacon(config):

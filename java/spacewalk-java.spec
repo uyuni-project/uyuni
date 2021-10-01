@@ -138,6 +138,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  %{log4j}
+BuildRequires:  slf4j-log4j12
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -235,6 +236,7 @@ Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
+Requires:       slf4j-log4j12
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml

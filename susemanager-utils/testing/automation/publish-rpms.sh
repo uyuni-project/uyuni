@@ -49,4 +49,14 @@ for i in ${packages};do
     osc getbinaries $obs_project $i $obs_repo $obs_arch -d $repo_dir
 done
 
-cd $repo_dir && createrepo .
+cd $repo_dir
+echo ${obs_repo} | grep "Ubuntu" -i
+if [  ${?} -eq 0 ];then
+    dpkg-scanpackages -m . /dev/null > Packages
+    gzip Packages
+else
+     createrepo .
+fi
+
+echo "Publishing done."
+
