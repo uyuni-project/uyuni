@@ -76,6 +76,19 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         assertNotNull(testOrg);
     }
 
+    public void testCreateFirstTwice() throws Exception {
+        try {
+            handler.createFirst(orgName[1], "fakeadmin", "password", "First",
+                    "Admin", "firstadmin@example.com");
+            handler.createFirst(orgName[1], "fakeadmin", "password", "First",
+                    "Admin", "firstadmin@example.com");
+            fail();
+        }
+        catch (ValidationException e) {
+            // expected, initial org/user can only be created once
+        }
+    }
+
     public void testCreate() throws Exception {
         handler.create(admin, orgName[0], "fakeadmin", "password", "Mr.", "Bill",
                 "FakeAdmin", "fakeadmin@example.com", Boolean.FALSE);
