@@ -1,4 +1,4 @@
-{% do repos_disabled.update({'count': 0}) %}
+{% set broken_repos_disabled = {'count': 0} %}
 {% set repos = salt['pkg.list_repos']() %}
 {% for alias, data in repos.items() %}
 {% if grains['os_family'] == 'Debian' %}
@@ -7,13 +7,13 @@
 {% set url = entry.get('uri') %}
 {%- set repo_exists = (0 < salt['http.query'](url + '/Release', status=True, verify_ssl=True).get('status', 0) < 300) %}
 {% if not repo_exists %} 
-disable_broken_repo_{{ repos_disabled.count }}:
+disable_broken_repo_{{ broken_repos_disabled.count }}:
   mgrcompat.module_run:
     - name: pkg.mod_repo
     - repo: {{ "'" ~ entry.line ~ "'" }}
     - kwargs:
         disabled: True
-{% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
+{% do broken_repos_disabled.update({'count': broken_repos_disabled.count + 1}) %}
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -34,7 +34,7 @@ disable_broken_repo_{{ alias }}:
 {%- else %}
       - mgrcompat: sync_states
 {%- endif %}
-{% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
+{% do broken_repos_disabled.update({'count': broken_repos_disabled.count + 1}) %}
 {% endif %}
 {% endif %}
 {% endif %}
