@@ -24,7 +24,6 @@
 # unused argument
 # pylint: disable=W0613
 
-import codecs
 import logging
 import sys
 import gettext
@@ -79,7 +78,7 @@ def do_api(self, args):
         try:
             output = open(options.output, "w")
         except IOError:
-            logging.warning(_N("Could not open to write: ") + options.output)
+            logging.warning(_N("Could not open to write: %s"), options.output)
             logging.info(_N("Fallback output to stdout"))
 
             output = sys.stdout
@@ -89,7 +88,7 @@ def do_api(self, args):
     api = getattr(self.client, api_name, None)
 
     if not callable(api):
-        logging.warning(_N("No such API: ") + api_name)
+        logging.warning(_N("No such API: %s"), api_name)
         return
 
     try:
