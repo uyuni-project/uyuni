@@ -69,6 +69,13 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(admin, true);
     }
 
+    public void testCreateFirst() throws Exception {
+        handler.createFirst(orgName[1], "fakeadmin", "password", "First",
+                "Admin", "firstadmin@example.com");
+        Org testOrg = OrgFactory.lookupByName(orgName[1]);
+        assertNotNull(testOrg);
+    }
+
     public void testCreate() throws Exception {
         handler.create(admin, orgName[0], "fakeadmin", "password", "Mr.", "Bill",
                 "FakeAdmin", "fakeadmin@example.com", Boolean.FALSE);
