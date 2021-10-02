@@ -115,8 +115,8 @@ public class OrgHandler extends BaseHandler {
         cmd.setLastName(lastName);
 
         ValidatorError[] verrors = cmd.store();
-        if (verrors != null) {
-            throw new ValidationException(verrors[0].getMessage());
+        if (verrors != null && verrors[0].getMessage().contains("That organization name is already taken")) {
+            throw new ValidationException("Initial Organization and User already exist");
         }
 
         return OrgManager.toDetailsDto(cmd.getNewOrg());
