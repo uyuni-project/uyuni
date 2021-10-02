@@ -1,4 +1,4 @@
-{% do broken_repos_disabled.update({'count': 0}) %}
+{% set broken_repos_disabled = {'count': 0} %}
 {% set repos = salt['pkg.list_repos']() %}
 {% for alias, data in repos.items() %}
 {% if grains['os_family'] == 'Debian' %}
