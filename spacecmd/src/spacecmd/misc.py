@@ -313,6 +313,11 @@ def do_login(self, args):
         self.client = None
         return False
 
+    # Handle initial org and user creation
+    # Only 'self.client' object required, skip login and session caching
+    if 'org_createfirst' in self.options.command:
+        return True
+
     # store the session file in the server's own directory
     session_file = os.path.join(self.conf_dir, server, 'session')
 
