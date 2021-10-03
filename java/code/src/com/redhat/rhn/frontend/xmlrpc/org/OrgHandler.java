@@ -46,6 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.org.CreateOrgCommand;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.org.OrgManager;
+import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -106,6 +107,10 @@ public class OrgHandler extends BaseHandler {
             String email) {
         log.debug("OrgHandler.createFirst");
 
+        if (UserManager.satelliteHasUsers()) {
+            throw new ValidationException("Initial Organization and User already exist");
+        }
+
         validateCreateOrgData(orgName, adminPassword, firstName, lastName, email,
                 false);
 
@@ -115,11 +120,12 @@ public class OrgHandler extends BaseHandler {
         cmd.setLastName(lastName);
 
         ValidatorError[] verrors = cmd.store();
-        if (verrors != null && verrors[0].getMessage().contains("That organization name is already taken")) {
-            throw new ValidationException("Initial Organization and User already exist");
+        if (verrors != null) {
+            throw new ValidationException(verrors[0].getMessage());
         }
 
         return OrgManager.toDetailsDto(cmd.getNewOrg());
+
     }
 
     /**
