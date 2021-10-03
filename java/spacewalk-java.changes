@@ -1,3 +1,4 @@
+- Updated jakarta-activation reference (jaf).
 - fix logging of the spark framework and map requests to media.1
   directory in the download controller (bsc#1189933)
 - Add 'Last build date' column to CLM project list (jsc#PM-2644)
