@@ -134,7 +134,7 @@ export function Table(props: TableProps) {
           const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
           const evenOddClass = index % 2 === 0 ? "list-row-odd" : "list-row-even";
           let key = props.identifier(datum);
-          if (!key) {
+          if (typeof key === 'undefined') {
             Loggerhead.error(`Could not identify table row with identifier: ${props.identifier}`);
             key = index;
           }
