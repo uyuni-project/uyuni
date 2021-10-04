@@ -1,4 +1,4 @@
-- mgr-sync refresh logs when a vendor channel is expire and shows how to remove it (bsc#1191222)
+- mgr-sync refresh logs when a vendor channel is expired and shows how to remove it (bsc#1191222)
 - Hide link to CLM live patching template in system details for
   products that don't support live patching (bsc#1190866)
 - fix logging of the spark framework and map requests to media.1
