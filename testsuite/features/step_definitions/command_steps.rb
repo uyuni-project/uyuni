@@ -926,7 +926,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   else
-    raise "The node #{node.hostname} has not a supported OS Family"
+    raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
