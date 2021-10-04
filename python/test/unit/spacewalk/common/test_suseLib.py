@@ -10,11 +10,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
-
+import unittest
 import mock
 
 from spacewalk.common import suseLib

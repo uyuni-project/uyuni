@@ -19,16 +19,6 @@ import os
 import sys
 import unittest
 
-# Make paths absolute
-if sys.argv[0] == "/":
-    topdir = sys.argv[0]
-else:
-    topdir = os.path.dirname(os.path.abspath(__file__))
-topdir = os.path.abspath(os.path.dirname(topdir + "/../../../.."))
-
-if topdir not in sys.path:
-    sys.path.append(topdir)
-
 from spacewalk.common import rhnTranslate
 
 
@@ -38,7 +28,7 @@ class Tests(unittest.TestCase):
     @staticmethod
     def _setup(lang):
         domain = "unit-test"
-        localedir = "%s/common/test/unit-test/translations" % topdir
+        localedir = os.path.dirname(os.path.abspath(__file__)) + "/translations"
         rhnTranslate.cat.set(domain=domain, localedir=localedir)
         rhnTranslate.cat.setlangs(lang)
 
