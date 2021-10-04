@@ -295,7 +295,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -304,7 +304,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -320,7 +320,7 @@ end
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
   arch, _code = $client.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/updateinfo.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*updateinfo.xml.gz"
   $client.run(cmd, timeout: 500)
 end
 
@@ -330,7 +330,7 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
+  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
 And(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
