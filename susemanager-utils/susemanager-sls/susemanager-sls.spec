@@ -159,6 +159,9 @@ set_up_java_agent()
     if [ $jmxremote_opt_configured -eq 0 ]; then
       sed -ri "s/[[:blank:]]*${JMXREMOTE_OPT}[[:alpha:]]+=[[:alnum:]]+//g" ${2}
       sed -ri "s/[[:blank:]]*${RMI_SERVER_HOSTNAME}[[:alpha:]]+//g" ${2}
+      if [ $jmx_exporter_java_agent_configured -eq 1 ]; then
+        sed -ri "s/JAVA_OPTS=\"(.*)\"/JAVA_OPTS=\"\1\ -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=${3}:\/etc\/prometheus-jmx_exporter\/${1}\/uyuni.yml\"/" ${2}
+      fi
     fi
     if [ ! -f /etc/prometheus-jmx_exporter/${1}/uyuni.yml ]; then
       cat > /etc/prometheus-jmx_exporter/${1}/uyuni.yml << EOF
@@ -170,12 +173,6 @@ rules:
   - pattern: ".*"
 EOF
     fi
-    if [ $jmx_exporter_java_agent_configured -eq 1 ]; then
-      sed -ri "s/JAVA_OPTS=\"(.*)\"/JAVA_OPTS=\"\1\ -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=${3}:\/etc\/prometheus-jmx_exporter\/${1}\/uyuni.yml\"/" ${2}
-    fi
-  fi
-  if [ ${1} == 'taskomatic' ]; then
-    sed -ri "s/JAVA_OPTS/export\ JAVA_OPTS/" ${2}
   fi
 }
 tomcat_config=/etc/sysconfig/tomcat

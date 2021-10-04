@@ -21,7 +21,6 @@ import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -641,9 +640,15 @@ public class TaskoXmlRpcHandler {
 
     /**
      * Check if JMX is enabled.
-     * @return true if JMX system props props
+     * @return true if JavaAgent class can be found
      */
     public boolean isJmxEnabled() {
-        return StringUtils.contains(System.getenv("JAVA_OPTS"), "jmx_prometheus_javaagent.jar");
+        try {
+            Class.forName("io.prometheus.jmx.shaded.io.prometheus.jmx.JavaAgent");
+        }
+        catch (ClassNotFoundException ex) {
+            return false;
+        }
+        return true;
     }
 }

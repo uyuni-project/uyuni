@@ -30,7 +30,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -134,8 +133,15 @@ public class MonitoringService {
         }
     };
 
-    private static Supplier<Boolean> tomcatJmxStatusSupplier = () ->
-            StringUtils.contains(System.getenv("JAVA_OPTS"), "jmx_prometheus_javaagent.jar");
+    private static Supplier<Boolean> tomcatJmxStatusSupplier = () -> {
+        try {
+            Class.forName("io.prometheus.jmx.shaded.io.prometheus.jmx.JavaAgent");
+        }
+        catch (ClassNotFoundException ex) {
+            return false;
+        }
+        return true;
+    };
 
     private static Supplier<Boolean> taskomaticJmxStatusSupplier = () -> {
         TaskomaticApi taskomatic = new TaskomaticApi();
