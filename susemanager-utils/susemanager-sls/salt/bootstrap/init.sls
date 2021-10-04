@@ -27,18 +27,18 @@ mgr_server_localhost_alias_absent:
     {% set osrelease_minor = grains['osrelease_info'][1] %}
   {%- endif %}
   #end of expections
-  {% set osrelease = osrelease_major + '/' + osrelease_minor %}
+  {% set osrelease = osrelease_major|string + '/' + osrelease_minor|string %}
 {%- endif %}
 
 # Debian OS Family
 {%- if grains['os_family'] == 'Debian' %}
+  ## This common part should cover most of distro e.g. Debian, Raspbian 
   {%- set os_base = grains['os_family']|lower %}
   {% set osrelease = grains['osrelease_info'][0] %}
-
   #exceptions to the family rule
   {%- if 'astraLinuxce' in grains['osfullname']|lower %}
     {%- set os_base = 'astra' %}
-    {% set osrelease = grains['oscodename' %}
+    {% set osrelease = grains['oscodename'] %}
   {%- elif grains['os'] == 'Ubuntu' %}
     {% set osrelease = grains['osrelease_info'][0] + '/' + grains['osrelease_info'][1] %}
   {%- endif %}
@@ -47,7 +47,8 @@ mgr_server_localhost_alias_absent:
 
 # RedHat OS Family
 {%- if grains['os_family'] == 'RedHat' %}
-  {%- set os_base = grains['os']|lower %}
+  ## This common part should cover most of distro e.g. Centos
+  {%- set os_base = grains['os']|lower %} 
   {% set osrelease = grains['osrelease_info'][0] %}
   #exception to the family rule
   {%- if 'redhat' in grains['osfullname']|lower  %}
@@ -57,7 +58,7 @@ mgr_server_localhost_alias_absent:
   {%- elif 'rocky' in grains['osfullname']|lower %}
     {%- set os_base = 'rockylinux' %}
   {%- elif 'amazon' in grains['osfullname']|lower %}
-    {%- set os_base = 'amazn' %}
+    {%- set os_base = 'amzn' %}
   {%- elif 'alibaba' in grains['osfullname']|lower %}
     {%- set os_base = 'alibaba' %}
   {%- endif %}
@@ -68,13 +69,13 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
 {%- if 'status' not in bootstrap_repo_request %}
   {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
-{%- if bootstrap_repo_request['status'] == 901 %}
-  {{ raise(bootstrap_repo_request['error']) }}
 # if bootstrap does not work, try with RedHat
 {%- elif grains['os_family'] == 'RedHat' and not (0 < bootstrap_repo_request['status'] < 300) %}
   {%- set os_base = 'res' %}
   {% set osrelease = grains['osrelease_info'][0] %}
   {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
+{%- elif bootstrap_repo_request['status'] == 901 %}
+  {{ raise(bootstrap_repo_request['error']) }}
 {%- endif %}
 
 {%- set bootstrap_repo_exists = (0 < bootstrap_repo_request['status'] < 300) %}
@@ -85,26 +86,9 @@ bootstrap_repo:
     - name: /etc/zypp/repos.d/susemanager:bootstrap.repo
 {%- elif grains['os_family'] == 'RedHat' %}
     - name: /etc/yum.repos.d/susemanager:bootstrap.repo
-{%- endif %}
-    - source:
-      - salt://bootstrap/bootstrap.repo
-    - template: jinja
-    - context:
-      bootstrap_repo_url: {{bootstrap_repo_url}}
-    - mode: 644
-    - require:
-      - host: mgr_server_localhost_alias_absent
-{%- if repos_disabled.count > 0 %}
-      - mgrcompat: disable_repo_*
-{%- endif %}
-    - onlyif:
-      - ([ {{ bootstrap_repo_exists }} = "True" ])
-
-{%- else %}
-{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'dists/bootstrap/Release', status=True, verify_ssl=False).get('status', 0) < 300) %}
-bootstrap_repo:
-  file.managed:
+{%- elif grains['os_family'] == 'Debian' %}
     - name: /etc/apt/sources.list.d/susemanager_bootstrap.list
+{%- endif %}
     - source:
       - salt://bootstrap/bootstrap.repo
     - template: jinja
@@ -118,7 +102,6 @@ bootstrap_repo:
 {%- endif %}
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
-{%- endif %}
 
 {% include 'channels/gpg-keys.sls' %}
 
