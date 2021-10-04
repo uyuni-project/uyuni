@@ -1953,7 +1953,7 @@ public class ContentSyncManager {
 
         Opt.consume(suseProductSCCRepositories.stream().findFirst(),
                 () -> {
-                    log.warn("Cannot update channel with label " + label + ". Please run: ");
+                    log.warn("Expired Vendor Channel with label '" + label + "' found. To remove it please run: ");
                     log.warn("spacewalk-remove-channel -c " + label);
                 },
                 productrepo -> {
