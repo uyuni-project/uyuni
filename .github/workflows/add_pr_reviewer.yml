@@ -23,28 +23,34 @@ jobs:
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "ktsamis,Bischoff,calancha"
+        reviewers: "ktsamis,Bischoff,orestis87,maximenoel8"
     - name: "Send Review Request to QA Squad"
       if: steps.review_step.outputs.review == 'true' && github.actor == 'Bischoff'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "ktsamis,srbarrios,calancha"
+        reviewers: "srbarrios,ktsamis,orestis87,maximenoel8"
     - name: "Send Review Request to QA Squad"
       if: steps.review_step.outputs.review == 'true' && github.actor == 'ktsamis'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "srbarrios,Bischoff,calancha"
+        reviewers: "srbarrios,Bischoff,orestis87,maximenoel8"
     - name: "Send Review Request to QA Squad"
-      if: steps.review_step.outputs.review == 'true' && github.actor == 'calancha'
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'orestis87'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "srbarrios,Bischoff,ktsamis"
+        reviewers: "srbarrios,Bischoff,ktsamis,maximenoel8"
     - name: "Send Review Request to QA Squad"
-      if: steps.review_step.outputs.review == 'true' && github.actor != 'ktsamis' && github.actor != 'Bischoff' && github.actor != 'srbarrios' && github.actor != 'calancha'
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'maximenoel8'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        reviewers: "srbarrios,Bischoff,ktsamis,calancha"
+        reviewers: "srbarrios,Bischoff,ktsamis,orestis87"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor != 'srbarrios' && github.actor != 'Bischoff' && github.actor != 'ktsamis' && github.actor != 'orestis87' && github.actor != 'maximenoel8'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "srbarrios,Bischoff,ktsamis,orestis87,maximenoel8"
