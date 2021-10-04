@@ -5563,6 +5563,10 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "Nome do Canal"
+
+#, fuzzy
 #~ msgid "foo {0} tea {1}"
 #~ msgstr "Página {0} de {1}"
 

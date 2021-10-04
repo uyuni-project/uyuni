@@ -10054,14 +10054,6 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Select first character</source>
         <target>选择第一个字符</target>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-        <target state="translated">有关 @@PRODUCT_NAME@@ 的细节，请访问我们的网站 &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;。 </target>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
-        <source> </source>
-        <target> </target>
-      </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
         <target>抱歉，找不到自定义键。</target>
@@ -11071,6 +11063,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
     <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
+        <source> </source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
+        <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
       <target state="new" />
   </trans-unit>
       </body>

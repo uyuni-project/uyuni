@@ -1,3 +1,4 @@
+- Update translations strings
 - handle download of metadata filesnames with checksums (bsc#1188315)
 - Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
 

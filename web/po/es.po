@@ -5675,6 +5675,10 @@ msgstr ""
 #~ msgstr "Este canal está recomendado"
 
 #, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "Nombre del canal"
+
+#, fuzzy
 #~ msgid "Virtual Storage Pool"
 #~ msgstr "Redes"
 

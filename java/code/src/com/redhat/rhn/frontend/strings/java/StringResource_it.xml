@@ -10053,14 +10053,6 @@ Grazie per aver utilizzato @@PRODUCT_NAME@@.
         <source>Select first character</source>
         <target>Seleziona il primo carattere</target>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-        <target state="translated">Per i dettagli su @@PRODUCT_NAME@@, visita il nostro sito web &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&lt;i class="fa fa-globe"&lt;/i&gt;. </target>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
-        <source> </source>
-        <target> </target>
-      </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
         <target>Siamo spiacenti, ma non è stato possibile trovare la chiave personalizzata.</target>
@@ -11059,6 +11051,18 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
   </trans-unit>
       <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
+        <source> </source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
+        <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
       <target state="new" />
   </trans-unit>
       </body>

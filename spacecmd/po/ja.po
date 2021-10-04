@@ -8371,30 +8371,39 @@ msgstr "FQDN を取得している際に未処理の例外が発生しました:
 #~ "  -t インストールタイプ [fedora18|rhel_6/7/8|sles12generic|sles15generic|"
 #~ "suse|generic_rpm|...]"
 
+#, python-format
 #~ msgid "Status:     %s"
 #~ msgstr "ステータス:     %s"
 
+#, python-format
 #~ msgid "Name:      %s"
 #~ msgstr "名前:       %s"
 
+#, python-format
 #~ msgid "Version:   %s"
 #~ msgstr "バージョン:   %s"
 
+#, python-format
 #~ msgid "Release:   %s"
 #~ msgstr "リリース:   %s"
 
+#, python-format
 #~ msgid "Epoch:     %s"
 #~ msgstr "エポック:     %s"
 
+#, python-format
 #~ msgid "Arch:      %s"
 #~ msgstr "アーキテクチャ:      %s"
 
+#, python-format
 #~ msgid "File:      %s"
 #~ msgstr "ファイル:      %s"
 
+#, python-format
 #~ msgid "Path:      %s"
 #~ msgstr "パス:      %s"
 
+#, python-format
 #~ msgid "Size:      %s"
 #~ msgstr "サイズ:      %s"
 
@@ -8404,19 +8413,59 @@ msgstr "FQDN を取得している際に未処理の例外が発生しました:
 #~ msgid "No"
 #~ msgstr "いいえ"
 
+#, python-format
 #~ msgid "Retracted: %s"
 #~ msgstr "撤回: %s"
 
-#~ msgid "schedule_deletearchived: Delete all archived actions"
+#, fuzzy
+#~ msgid ""
+#~ "schedule_deletearchived: Delete all archived actions older than given "
+#~ "date."
 #~ msgstr "schedule_deletearchived: すべてのアーカイブ済みのアクションを削除"
 
-#~ msgid "usage: schedule_deletearchived"
+#, fuzzy
+#~ msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
 #~ msgstr "使用方法: schedule_deletearchived"
 
-#~ msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "options:\n"
+#~ "  -y, --yes   Confirm without prompt"
+#~ msgstr ""
+#~ "使用方法: repo_clearfilters リポジトリー <オプション>\n"
+#~ "\n"
+#~ "オプション:\n"
+#~ "  -y, --yes   確認プロンプトを表示しない\n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid "If no date is provided it will delete all archived actions"
+#~ msgstr "すべての ({}) アーカイブ済みのアクションを削除しますか? [y / N]"
+
+#, fuzzy
+#~ msgid "Do you want to delete ({}) archived actions? [y/N]"
 #~ msgstr "すべての ({}) アーカイブ済みのアクションを削除しますか? [y / N]"
 
 #~ msgid "No archived actions found."
+#~ msgstr "アーカイブ済みのアクションが見つかりません。"
+
+#, fuzzy
+#~ msgid ""
+#~ "schedule_archivecompleted: Archive all completed actions older than given "
+#~ "date."
+#~ msgstr "schedule_listcompleted: 完了済みアクションを表示"
+
+#, fuzzy
+#~ msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
+#~ msgstr "使用方法: schedule_listcompleted [開始日] [終了日]"
+
+#, fuzzy
+#~ msgid "Do you want to archive ({}) completed actions? [y/N]"
+#~ msgstr "すべての ({}) アーカイブ済みのアクションを削除しますか? [y / N]"
+
+#, fuzzy
+#~ msgid "No completed actions found."
 #~ msgstr "アーカイブ済みのアクションが見つかりません。"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
@@ -8444,3 +8493,12 @@ msgstr "FQDN を取得している際に未処理の例外が発生しました:
 
 #~ msgid "Type:      s"
 #~ msgstr "タイプ:      s"
+
+#~ msgid "schedule_deletearchived: Delete all archived actions"
+#~ msgstr "schedule_deletearchived: すべてのアーカイブ済みのアクションを削除"
+
+#~ msgid "usage: schedule_deletearchived"
+#~ msgstr "使用方法: schedule_deletearchived"
+
+#~ msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#~ msgstr "すべての ({}) アーカイブ済みのアクションを削除しますか? [y / N]"

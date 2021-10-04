@@ -5569,6 +5569,10 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 选项"
 
+#, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "频道名称"
+
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "单个虚拟机几乎使用了所有主机资源"
 

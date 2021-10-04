@@ -5737,6 +5737,10 @@ msgstr "HTTP エラーコード "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwiオプション"
 
+#, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "チャンネル名"
+
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"
 

@@ -5662,6 +5662,10 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 옵션"
 
+#, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "채널 이름"
+
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
 

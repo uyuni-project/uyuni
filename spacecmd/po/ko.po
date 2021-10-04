@@ -8189,30 +8189,39 @@ msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 #~ "  -t 설치 유형 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
 #~ "generic_rpm|...]"
 
+#, python-format
 #~ msgid "Status:     %s"
 #~ msgstr "상태:     %s"
 
+#, python-format
 #~ msgid "Name:      %s"
 #~ msgstr "이름:      %s"
 
+#, python-format
 #~ msgid "Version:   %s"
 #~ msgstr "버전:   %s"
 
+#, python-format
 #~ msgid "Release:   %s"
 #~ msgstr "릴리스:   %s"
 
+#, python-format
 #~ msgid "Epoch:     %s"
 #~ msgstr "에포크:     %s"
 
+#, python-format
 #~ msgid "Arch:      %s"
 #~ msgstr "아카이브:      %s"
 
+#, python-format
 #~ msgid "File:      %s"
 #~ msgstr "파일:      %s"
 
+#, python-format
 #~ msgid "Path:      %s"
 #~ msgstr "경로:      %s"
 
+#, python-format
 #~ msgid "Size:      %s"
 #~ msgstr "크기:      %s"
 
@@ -8222,8 +8231,60 @@ msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 #~ msgid "No"
 #~ msgstr "아니요"
 
+#, python-format
 #~ msgid "Retracted: %s"
 #~ msgstr "철회됨: %s"
+
+#, fuzzy
+#~ msgid ""
+#~ "schedule_deletearchived: Delete all archived actions older than given "
+#~ "date."
+#~ msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
+
+#, fuzzy
+#~ msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
+#~ msgstr "사용법: schedule_deletearchived"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "options:\n"
+#~ "  -y, --yes   Confirm without prompt"
+#~ msgstr ""
+#~ "사용법: repo_clearfilters repo <options>\n"
+#~ "\n"
+#~ "옵션:\n"
+#~ "  -y, --yes   메시지 없이 확인\n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid "If no date is provided it will delete all archived actions"
+#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#, fuzzy
+#~ msgid "Do you want to delete ({}) archived actions? [y/N]"
+#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#~ msgid "No archived actions found."
+#~ msgstr "보관된 작업을 찾을 수 없습니다."
+
+#, fuzzy
+#~ msgid ""
+#~ "schedule_archivecompleted: Archive all completed actions older than given "
+#~ "date."
+#~ msgstr "schedule_listcompleted: 완료된 작업 나열"
+
+#, fuzzy
+#~ msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
+#~ msgstr "사용법: schedule_listcompleted [BEGINDATE] [ENDDATE]"
+
+#, fuzzy
+#~ msgid "Do you want to archive ({}) completed actions? [y/N]"
+#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#, fuzzy
+#~ msgid "No completed actions found."
+#~ msgstr "보관된 작업을 찾을 수 없습니다."
 
 #~ msgid "schedule_deletearchived: Delete all archived actions"
 #~ msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
@@ -8233,6 +8294,3 @@ msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 
 #~ msgid "Do you want to delete all ({}) archived actions? [y/N]"
 #~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
-
-#~ msgid "No archived actions found."
-#~ msgstr "보관된 작업을 찾을 수 없습니다."

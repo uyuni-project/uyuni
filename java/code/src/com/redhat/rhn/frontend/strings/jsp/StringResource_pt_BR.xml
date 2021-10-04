@@ -82,12 +82,14 @@
       </trans-unit>
       <trans-unit id="column.tagged-systems" xml:space="preserve">
           <source>Tagged Systems</source>
+        <target>Sistemas Marcados</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tag-created" xml:space="preserve">
           <source>Tag Created</source>
+        <target>Etiqueta criada</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
@@ -1026,7 +1028,7 @@
               page may have moved
           </context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -3502,7 +3504,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -4462,14 +4464,14 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.name.jsp" xml:space="preserve">
         <source>Organization Name</source>
@@ -21588,7 +21590,7 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
           <source>Schedule Package Upgrades</source>
-        <target>Programação de Atualizações de Pacote</target>
+        <target>Programa das Atualizações do Pacote</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
@@ -22178,14 +22180,14 @@ a aba &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Chaves de At
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.profile" xml:space="preserve">
           <source>As specified by the Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.custom.tip" xml:space="preserve">
           <source>If you would not like any kernel options, select '{0}' and leave the form field blank.</source>
@@ -24630,7 +24632,7 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id" xml:space="preserve">
         <source>Machine ID:</source>
@@ -28657,7 +28659,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
         <source>Product Migration - Target</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -28671,7 +28673,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Product Migration - Channels</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -28696,15 +28698,15 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
         <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
         <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
         <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -28714,18 +28716,18 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -28735,7 +28737,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -29096,190 +29098,190 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <source>System not found</source>
         <target state="new" />
       </trans-unit>
-    <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
+      <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
         <source>Style Theme</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="preferences.jsp.text.theme" xml:space="preserve">
         <source>Please select your preferred theme style.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
         <source>Documentation Language</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
         <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
         <source>New Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
         <source>Create Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
         <source>Synchronize patches on Content Lifecycle Management build</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
         <source>Final</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
         <source>Forward registrations to SUSE Customer Center</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated action chain data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated token data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
         <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="Product Migration" xml:space="preserve">
         <source>Product Migration</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="lookup.jsp.title.repo" xml:space="preserve">
           <source>We're sorry, but the repository could not be found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve">
           <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve">
           <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
           <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
         <source>Modular Data Cleanup</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
         <source>Forward Registration</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
+        <target state="new" />
+      </trans-unit>
+    <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
 	<context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -29301,7 +29303,14 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         </context-group>
     <target state="new" />
   </trans-unit>
-      <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
+      <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
+          <source>Optional OVAL Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>

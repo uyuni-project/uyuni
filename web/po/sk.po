@@ -5715,6 +5715,10 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Kiwi options"
 #~ msgstr "Voľby kiwi"
 
+#, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "Názov kanála"
+
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"
 
