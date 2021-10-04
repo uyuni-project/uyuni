@@ -15,28 +15,28 @@ mgr_server_localhost_alias_absent:
 
 # SUSE OS Family
 {%- if grains['os_family'] == 'Suse' %}
-        {% set os_base = 'sle' %}
-        {% set osrelease_major = grains['osrelease_info'][0] %}
+  {% set os_base = 'sle' %}
+  {% set osrelease_major = grains['osrelease_info'][0] %}
         
-        #exceptions to the family rule
-        {%- if "opensuse" in grains['oscodename']|lower %}
-          {% set os_base = 'opensuse' %}
-        {%- endif %}
-        {%- if (grains['osrelease_info']| length) < 2 %}
-          {% set osrelease_minor = 0 %}
-        {%- else %}
-          {% set osrelease_minor = grains['osrelease_info'][1] %}
-        {%- endif %}
-        #end of expections
-        {% set osrelease = osrelease_major + '/' + osrelease_minor %}
+      #exceptions to the family rule
+  {%- if "opensuse" in grains['oscodename']|lower %}
+    {% set os_base = 'opensuse' %}
+  {%- endif %}
+  {%- if (grains['osrelease_info']| length) < 2 %}
+    {% set osrelease_minor = 0 %}
+  {%- else %}
+    {% set osrelease_minor = grains['osrelease_info'][1] %}
+  {%- endif %}
+  #end of expections
+  {% set osrelease = osrelease_major + '/' + osrelease_minor %}
 
-        {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~  '/bootstrap/' %}
-        {%- set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
-        {%- if 'status' not in bootstrap_repo_request %}
-          {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
-        {%- elif bootstrap_repo_request['status'] == 901 %}
-          {{ raise(bootstrap_repo_request['error']) }}
-        {%- endif %}
+  {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~  '/bootstrap/' %}
+  {%- set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
+  {%- if 'status' not in bootstrap_repo_request %}
+    {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
+  {%- elif bootstrap_repo_request['status'] == 901 %}
+    {{ raise(bootstrap_repo_request['error']) }}
+  {%- endif %}
 
 {%- endif %}
 
@@ -47,7 +47,7 @@ mgr_server_localhost_alias_absent:
   {% set osrelease = grains['osrelease_info'][0] %}
 
   #exceptions to the family rule
-  {%- if grains['osfullname'] in 'AstraLinuxCE' %}
+  {%- if 'astraLinuxce' in grains['osfullname']|lower %}
     {%- set os_base = 'astra' %}
     {% set osrelease = grains['oscodename' %}
   {%- elif grains['os'] == 'Ubuntu' %}
@@ -65,11 +65,13 @@ mgr_server_localhost_alias_absent:
   {% set osrelease = grains['osrelease_info'][0] %}
   
   #exception to the family rule
-  {%- if grains['osfullname'] in 'RedHat' %}
+  {%- if 'redhat' in grains['osfullname']|lower  %}
     {%- set os_base = 'res' %}
-  {%- elif grains['osfullname'] in 'Rocky' %}
+  {%- elif 'sle' in grains['osfullname']|lower %}
+    {%- set os_base = 'res' %}
+  {%- elif 'rocky' in grains['osfullname']|lower %}
     {%- set os_base = 'rockylinux' %}
-  {%- elif grains['osfullname'] in 'Alibaba' %}
+  {%- elif 'alibaba' in grains['osfullname']|lower %}
     {%- set os_base = 'alibaba' %}
   {%- endif %}
   #end of expections
@@ -88,9 +90,6 @@ mgr_server_localhost_alias_absent:
   {%- endif %}
 
 {%- endif %}
-
-{%- if salt['file.file_exists']('/usr/share/doc/sles_es-release') %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 
 {%- elif salt['file.file_exists']('/etc/system-release') and not salt['file.file_exists']('/etc/centos-release') and not salt['file.file_exists']('/etc/redhat-release') and not salt['file.file_exists']('/etc/almalinux-release')%}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/amzn/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
