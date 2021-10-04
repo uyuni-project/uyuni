@@ -1,3 +1,5 @@
+- Hide link to CLM live patching template in system details for
+  products that don't support live patching (bsc#1190866)
 - fix logging of the spark framework and map requests to media.1
   directory in the download controller (bsc#1189933)
 - Add 'Last build date' column to CLM project list (jsc#PM-2644)

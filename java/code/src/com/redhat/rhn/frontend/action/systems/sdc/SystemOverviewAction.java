@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -43,6 +45,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -155,6 +158,17 @@ public class SystemOverviewAction extends RhnAction {
                 !(s.getLocation() == null || s.getLocation().isEmpty()));
         request.setAttribute("kernelLiveVersion",
                 s.asMinionServer().map(MinionServer::getKernelLiveVersion).orElse(null));
+
+        // Is live patching available for the system?
+        // Check if the base product is a live patch supported one
+        request.setAttribute("isLivePatchingAvailable",
+                s.getInstalledProducts().stream()
+                        .filter(InstalledProduct::isBaseproduct)
+                        .map(InstalledProduct::getSUSEProduct)
+                        .filter(Objects::nonNull)
+                        .findFirst()
+                        .map(p -> SUSEProductFactory.getLivePatchSupportedProducts().anyMatch(p::equals))
+                        .orElse(false));
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
