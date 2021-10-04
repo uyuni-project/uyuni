@@ -1,3 +1,0 @@
-These tests require python-mock and pytest to run.
-
-You can excecute them by just running 'pytest'.
