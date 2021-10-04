@@ -642,7 +642,7 @@ end
 
 When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failt' if out.include? 'Push failed'
+  raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
 When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
