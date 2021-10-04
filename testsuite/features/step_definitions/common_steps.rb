@@ -314,7 +314,8 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   arch, _code = node.run('uname -m')
   arch.chomp!
   dir_file = client_raw_repodata_dir("test-channel-#{arch}")
-  raise "File #{dir_file}/#{file} not exist" unless file_exists?(node, "#{dir_file}/#{file}")
+  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
+  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
