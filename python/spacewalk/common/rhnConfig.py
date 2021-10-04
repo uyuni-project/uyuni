@@ -227,6 +227,10 @@ class RHNOptions:
                cfg = RHNOptions("proxy")
                print cfg.DEBUG ---> yields 5
         """
+        # Consider the special attributes not to be set: this causes issues with python3.8 at least
+        # when looking for __func__ and _is_coroutine in the unittest.mock.patch().
+        if key.startswith("_"):
+            raise AttributeError(key)
         self.__check()
         # For some reason, before the migration to python3, the code
         # used all attribute names in capital letters, and it worked
