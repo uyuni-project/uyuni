@@ -1,3 +1,4 @@
+- Update proxy path on minion connection
 - mgr-sync refresh logs when a vendor channel is expired and shows how to remove it (bsc#1191222)
 - Hide link to CLM live patching template in system details for
   products that don't support live patching (bsc#1190866)
