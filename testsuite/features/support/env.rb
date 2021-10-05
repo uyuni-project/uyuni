@@ -60,7 +60,7 @@ Capybara.register_driver(:headless_chrome) do |app|
         'download.default_directory': '/tmp/downloads'
       }
     },
-    unexpectedAlertBehaviour: 'accept',
+    unexpectedAlertBehaviour: 'ignore',
     unhandledPromptBehavior: 'accept'
   )
 
