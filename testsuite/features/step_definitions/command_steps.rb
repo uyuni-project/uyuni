@@ -604,21 +604,24 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
 end
 
 When(/^I start tftp on the proxy$/) do
-  node = get_target('proxy')
   case $product
   # TODO: Should we handle this in Sumaform?
   when 'Uyuni'
     step %(I enable repositories before installing branch server)
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
           'zypper --non-interactive install tftp && ' \
-          'systemctl enable tftp.socket && ' \
-          'systemctl start tftp.socket'
-    node.run(cmd)
+          'systemctl enable tftp.service && ' \
+          'systemctl start tftp.service'
+    $proxy.run(cmd)
     step %(I disable repositories after installing branch server)
   else
-    cmd = "systemctl enable tftp.socket && systemctl start tftp.socket"
-    node.run(cmd)
+    cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
+    $proxy.run(cmd)
   end
+end
+
+When(/^I stop tftp on the proxy$/) do
+  $proxy.run('systemctl stop tftp.service')
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
@@ -1000,6 +1003,10 @@ When(/^I install package tftpboot-installation on the server$/) do
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
   $server.run("rpm -i #{package}")
+end
+
+When(/^I reset tftp defaults on the proxy$/) do
+  $proxy.run("echo 'TFTP_USER=\"tftp\"\nTFTP_OPTIONS=\"\"\nTFTP_DIRECTORY=\"/srv/tftpboot\"\n' > /etc/sysconfig/tftp")
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
