@@ -811,6 +811,23 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a List of ServerAction objects for a given Server.
+     * @param serverIn you want to limit the list of Actions to
+     * @param actionType you want to limit the list of Actions to
+     * @param date you want to limit the completion date after
+     * @return List of ServerAction objects
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
+        final Map<String, Object> params = new HashMap<>();
+
+        params.put("server", serverIn);
+        params.put("actionType", actionType);
+        params.put("date", date);
+
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
+    }
+    /**
      * Lookup a List of ServerAction objects in the given states for a given Server.
      * @param serverIn you want to limit the list of Actions to
      * @param statusList to filter the ServerActoins by

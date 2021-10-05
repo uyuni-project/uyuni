@@ -2290,15 +2290,16 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * List Events for a given server.
+     * List all the events of a given type for a given server created after the specified date.
      * @param loggedInUser The current user
      * @param sid The id of the server you are wanting to lookup
      * @param actionType type of the action
+     * @param earliestDate the minimum creation date for the events retrieved
      * @return Returns an array of maps representing a system
      * @since 10.8
      *
-     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server.
-     * "actionType" should be exactly the string returned in the action_type field
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server after the
+     * specified date. "actionType" should be exactly the string returned in the action_type field
      * from the listSystemEvents(sessionKey, serverId) method. For example,
      * 'Package Install' or 'Initiate a kickstart for a virtual guest.'
      * Note: see also system.getEventHistory method which returns a history of all events.
@@ -2306,6 +2307,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
      * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
      * @xmlrpc.returntype
      *  #array_begin()
      *      #struct_begin("action")
@@ -2355,19 +2357,19 @@ public class SystemHandler extends BaseHandler {
      *                  no result is included, for a config file event, the result might
      *                  include an error (if one occurred, such as the file was missing)
      *                  or in the case of a config file comparison it might include the
-     *                  differenes found.")
+     *                  differences found.")
      *              #struct_end()
      *          #prop_array_end()
      *      #struct_end()
      *  #array_end()
      */
-    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid,
-            String actionType) {
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType,
+                                                      Date earliestDate) {
 
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
-        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server);
+        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server, actionType, earliestDate);
 
         // In order to support bug 501224, this method is being updated to populate
         // the result vs having the serializer do so.  The reason is that in order to
@@ -2377,25 +2379,13 @@ public class SystemHandler extends BaseHandler {
         // information like, the specific errata applied, pkgs installed/removed/
         // upgraded/verified, config files uploaded, deployed or compared...etc.
 
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-
-        ActionType at = null;
-        if (actionType != null) {
-            at = ActionFactory.lookupActionTypeByName(actionType);
-            if (at == null) {
-                throw new IllegalArgumentException("Action type not found: " + actionType);
-            }
-        }
+        List<Map<String, Object>> results = new ArrayList<>();
 
         for (ServerAction sAction : sActions) {
 
-            Map<String, Object> result = new HashMap<String, Object>();
+            Map<String, Object> result = new HashMap<>();
 
             Action action = sAction.getParentAction();
-
-            if (at != null && !action.getActionType().equals(at)) {
-                continue;
-            }
 
             if (action.getFailedCount() != null) {
                 result.put("failed_count", action.getFailedCount());
@@ -2580,7 +2570,7 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * List Events for a given server.
+     * List all the events for a given server.
      * @param loggedInUser The current user
      * @param sid The id of the server you are wanting to lookup
      * @return Returns an array of maps representing a system
@@ -2642,14 +2632,166 @@ public class SystemHandler extends BaseHandler {
      *                  no result is included, for a config file event, the result might
      *                  include an error (if one occurred, such as the file was missing)
      *                  or in the case of a config file comparison it might include the
-     *                  differenes found.")
+     *                  differences found.")
      *              #struct_end()
      *          #prop_array_end()
      *      #struct_end()
      *  #array_end()
      */
     public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
-        return listSystemEvents(loggedInUser, sid, null);
+        return listSystemEvents(loggedInUser, sid, null, null);
+    }
+
+    /**
+     * List all the events of a given type for a given server.
+     * @param loggedInUser The current user
+     * @param sid The id of the server you are wanting to lookup
+     * @param actionType type of the action
+     * @return Returns an array of maps representing a system
+     * @since 10.8
+     *
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server.
+     * "actionType" should be exactly the string returned in the action_type field
+     * from the listSystemEvents(sessionKey, serverId) method. For example,
+     * 'Package Install' or 'Initiate a kickstart for a virtual guest.'
+     * Note: see also system.getEventHistory method which returns a history of all events.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      #struct_begin("action")
+     *          #prop_desc("int", "failed_count", "Number of times action failed.")
+     *          #prop_desc("string", "modified", "Date modified. (Deprecated by
+     *                     modified_date)")
+     *          #prop_desc($date, "modified_date", "Date modified.")
+     *          #prop_desc("string", "created", "Date created. (Deprecated by
+     *                     created_date)")
+     *          #prop_desc($date, "created_date", "Date created.")
+     *          #prop("string", "action_type")
+     *          #prop_desc("int", "successful_count",
+     *                     "Number of times action was successful.")
+     *          #prop_desc("string", "earliest_action", "Earliest date this action
+     *                     will occur.")
+     *          #prop_desc("int", "archived", "If this action is archived. (1 or 0)")
+     *          #prop_desc("string", "scheduler_user", "available only if concrete user
+     *                     has scheduled the action")
+     *          #prop_desc("string", "prerequisite", "Pre-requisite action. (optional)")
+     *          #prop_desc("string", "name", "Name of this action.")
+     *          #prop_desc("int", "id", "Id of this action.")
+     *          #prop_desc("string", "version", "Version of action.")
+     *          #prop_desc("string", "completion_time", "The date/time the event was
+     *                     completed. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by completed_date)")
+     *          #prop_desc($date, "completed_date", "The date/time the event was completed.
+     *                     (optional)")
+     *          #prop_desc("string", "pickup_time", "The date/time the action was picked
+     *                     up. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by pickup_date)")
+     *          #prop_desc($date, "pickup_date", "The date/time the action was picked up.
+     *                     (optional)")
+     *          #prop_desc("string", "result_msg", "The result string after the action
+     *                     executes at the client machine. (optional)")
+     *          #prop_array_begin_desc("additional_info", "This array contains additional
+     *              information for the event, if available.")
+     *              #struct_begin("info")
+     *                  #prop_desc("string", "detail", "The detail provided depends on the
+     *                  specific event.  For example, for a package event, this will be the
+     *                  package name, for an errata event, this will be the advisory name
+     *                  and synopsis, for a config file event, this will be path and
+     *                  optional revision information...etc.")
+     *                  #prop_desc("string", "result", "The result (if included) depends
+     *                  on the specific event.  For example, for a package or errata event,
+     *                  no result is included, for a config file event, the result might
+     *                  include an error (if one occurred, such as the file was missing)
+     *                  or in the case of a config file comparison it might include the
+     *                  differences found.")
+     *              #struct_end()
+     *          #prop_array_end()
+     *      #struct_end()
+     *  #array_end()
+     */
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType) {
+        return listSystemEvents(loggedInUser, sid, actionType, null);
+    }
+
+    /**
+     * List all the events for a given server created after the specified date.
+     * @param loggedInUser The current user
+     * @param sid The id of the server you are wanting to lookup
+     * @param earliestDate the minimum creation date for the events retrieved
+     * @return Returns an array of maps representing a system
+     * @since 10.8
+     *
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server after the
+     * specified date. This may require the caller to filter the result to fetch actions with a specific action type or
+     * to use the overloaded system.listSystemEvents method with actionType as a parameter.
+     * Note: see also system.getEventHistory method which returns a history of all events.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      #struct_begin("action")
+     *          #prop_desc("int", "failed_count", "Number of times action failed.")
+     *          #prop_desc("string", "modified", "Date modified. (Deprecated by
+     *                     modified_date)")
+     *          #prop_desc($date, "modified_date", "Date modified.")
+     *          #prop_desc("string", "created", "Date created. (Deprecated by
+     *                     created_date)")
+     *          #prop_desc($date, "created_date", "Date created.")
+     *          #prop("string", "action_type")
+     *          #prop_desc("int", "successful_count",
+     *                     "Number of times action was successful.")
+     *          #prop_desc("string", "earliest_action", "Earliest date this action
+     *                     will occur.")
+     *          #prop_desc("int", "archived", "If this action is archived. (1 or 0)")
+     *          #prop_desc("string", "scheduler_user", "available only if concrete user
+     *                     has scheduled the action")
+     *          #prop_desc("string", "prerequisite", "Pre-requisite action. (optional)")
+     *          #prop_desc("string", "name", "Name of this action.")
+     *          #prop_desc("int", "id", "Id of this action.")
+     *          #prop_desc("string", "version", "Version of action.")
+     *          #prop_desc("string", "completion_time", "The date/time the event was
+     *                     completed. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by completed_date)")
+     *          #prop_desc($date, "completed_date", "The date/time the event was completed.
+     *                     (optional)")
+     *          #prop_desc("string", "pickup_time", "The date/time the action was picked
+     *                     up. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by pickup_date)")
+     *          #prop_desc($date, "pickup_date", "The date/time the action was picked up.
+     *                     (optional)")
+     *          #prop_desc("string", "result_msg", "The result string after the action
+     *                     executes at the client machine. (optional)")
+     *          #prop_array_begin_desc("additional_info", "This array contains additional
+     *              information for the event, if available.")
+     *              #struct_begin("info")
+     *                  #prop_desc("string", "detail", "The detail provided depends on the
+     *                  specific event.  For example, for a package event, this will be the
+     *                  package name, for an errata event, this will be the advisory name
+     *                  and synopsis, for a config file event, this will be path and
+     *                  optional revision information...etc.")
+     *                  #prop_desc("string", "result", "The result (if included) depends
+     *                  on the specific event.  For example, for a package or errata event,
+     *                  no result is included, for a config file event, the result might
+     *                  include an error (if one occurred, such as the file was missing)
+     *                  or in the case of a config file comparison it might include the
+     *                  differences found.")
+     *              #struct_end()
+     *          #prop_array_end()
+     *      #struct_end()
+     *  #array_end()
+     */
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, Date earliestDate) {
+        return listSystemEvents(loggedInUser, sid, null, earliestDate);
     }
 
     /**

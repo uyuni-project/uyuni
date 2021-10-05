@@ -1009,19 +1009,37 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListAllEvents() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
-        List<Map<String, Object>> results = handler.listSystemEvents(admin,
-                server.getId().intValue());
+        final Server server = ServerFactoryTest.createTestServer(admin);
+
+        List<Map<String, Object>> results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(0, results.size());
 
-        Action a = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
+        Action action = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
+        ActionFactory.save(action);
 
-        ActionFactory.save(a);
-        a = reload(a);
+        // Ensure the other actions are created later
+        commitAndCloseSession();
+        Thread.sleep(2_000);
+        final Date earliestDate = new Date();
 
-        results = handler.listSystemEvents(admin,
-                server.getId().intValue());
+        action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
+                Arrays.asList("channels", "packages"), new Date());
+        ActionFactory.save(action);
 
+        action = ActionManager.schedulePackageRefresh(admin, server);
+        ActionFactory.save(action);
+        commitAndCloseSession();
+
+        results = handler.listSystemEvents(admin, server.getId().intValue());
+        assertEquals(3, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), "Apply states");
+        assertEquals(1, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), earliestDate);
+        assertEquals(2, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), "Package List Refresh", earliestDate);
         assertEquals(1, results.size());
     }
 
