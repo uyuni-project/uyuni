@@ -5,13 +5,11 @@ on:
     branches:
       - master
     paths:
-      - 'web/html/src/**/*jsx?'
-      - 'web/html/src/**/*tsx?'
+      - 'web/html/src/**'
       - 'susemanager-frontend/**'
   pull_request:
     paths:
-      - 'web/html/src/**/*jsx?'
-      - 'web/html/src/**/*tsx?'
+      - 'web/html/src/**'
       - 'susemanager-frontend/**'
 
 jobs:
@@ -44,5 +42,6 @@ jobs:
     - name: Install dependencies
       run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
 
+    # Run lint without fixes so the lint fails if there are fixes to be applied
     - name: Run lint
-      run: yarn --cwd web/html/src lint
+      run: yarn --cwd web/html/src lint:nofix
