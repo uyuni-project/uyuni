@@ -33,6 +33,9 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -195,6 +198,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2531,22 +2535,42 @@ public class SystemHandler extends BaseHandler {
                     path += " (rev. " + file.get("revision") + ")";
                     info.put("detail", path);
 
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                else {
+                    // if there wasn't an error, check to see if there was a difference
+                    // detected...
+                    String diffString = HibernateFactory.getBlobContents(
+                            file.get("diff"));
+                    if (diffString != null) {
+                        info.put("result", diffString);
                     }
-                    else {
-                        // if there wasn't an error, check to see if there was a difference
-                        // detected...
-                        String diffString = HibernateFactory.getBlobContents(
-                                file.get("diff"));
-                        if (diffString != null) {
-                            info.put("result", diffString);
-                        }
-                    }
-                    additionalInfo.add(info);
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_APPLY_STATES)) {
+            final ApplyStatesActionDetails detail = ActionFactory.lookupApplyStatesActionDetails(action.getId());
+            if (detail != null) {
+                final Optional<ApplyStatesActionResult> serverResult = detail.getResult(serverAction.getServerId());
+
+                final String output = serverResult.flatMap(ApplyStatesActionResult::getResult)
+                                                  .orElse(Collections.emptyList())
+                                                  .stream()
+                                                  .sorted(Comparator.comparing(StateResult::getRunNum))
+                                                  .map(StateResult::toString)
+                                                  .collect(Collectors.joining());
+
+                final String returnCode = serverResult.map(ApplyStatesActionResult::getReturnCode)
+                                                      .map(Object::toString)
+                                                      .orElse("");
+
+                    additionalInfo.add(Map.of("detail", output, "result", returnCode));
                 }
             }
+
             if (additionalInfo.size() > 0) {
                 result.put("additional_info", additionalInfo);
             }
