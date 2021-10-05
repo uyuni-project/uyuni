@@ -225,7 +225,13 @@ public class SPMigrationAction extends RhnAction {
                 logger.debug("Installed products are 'unknown'");
                 return forward;
             }
-            installedProducts.ifPresent(pset -> logger.debug(pset.toString()));
+            installedProducts.ifPresent(pset -> {
+                logger.debug(pset.toString());
+                if (pset.getBaseProduct() == null) {
+                    logger.error("Server: " + server.getId() + " has no base product installed. " +
+                            "Check your servers installed products.");
+                }
+            });
             List<SUSEProductSet> migrationTargets = getMigrationTargets(
                     request,
                     installedProducts,
