@@ -120,6 +120,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
+import com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.ModulesNotAllowedException;
 import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
