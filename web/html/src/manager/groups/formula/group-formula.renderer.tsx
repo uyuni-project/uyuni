@@ -47,7 +47,7 @@ export const renderer = (renderId, { groupId, formulaId }) => {
       addFormulaNavBar={addFormulaNavBar}
       formulaId={formulaId}
       systemId={groupId}
-      getFormulaUrl={function(id) {
+      getFormulaUrl={function (id) {
         return "/rhn/manager/groups/details/formula/" + id + "?sgid=" + groupId;
       }}
       scope="group"

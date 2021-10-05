@@ -1,8 +1,8 @@
 import * as React from "react";
 
-const ToolTip = props => <span title={props.title}>{props.content}</span>;
+const ToolTip = (props) => <span title={props.title}>{props.content}</span>;
 
-const CsvLink = props => (
+const CsvLink = (props) => (
   <div className="spacewalk-csv-download">
     <a className="btn btn-link" href={"/rhn/manager/subscription-matching/" + props.name}>
       <i className="fa spacewalk-icon-download-csv"></i>
@@ -11,7 +11,7 @@ const CsvLink = props => (
   </div>
 );
 
-const SystemLabel = props => {
+const SystemLabel = (props) => {
   var icon;
   if (props.type === "nonVirtual") {
     icon = <i className="fa fa-desktop"></i>;
@@ -51,7 +51,7 @@ function humanReadablePolicy(rawPolicy) {
   return message;
 }
 
-const WarningIcon = props => (
+const WarningIcon = (props) => (
   <i className={"fa fa-exclamation-triangle text-warning" + (props.iconOnRight ? " fa-right" : "")}></i>
 );
 

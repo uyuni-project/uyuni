@@ -6,7 +6,6 @@ import { Button } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 
-
 type Props = {
   data?: any;
   onSelect: (row: any) => any;
@@ -35,7 +34,7 @@ class VirtualHostManagerList extends React.Component<Props, State> {
       <div>
         <Table
           data={this.props.data}
-          identifier={vhm => vhm.id}
+          identifier={(vhm) => vhm.id}
           initialSortColumnKey="label"
           initialItemsPerPage={window.userPrefPageSize}
           emptyText={t("No Virtual Host Managers.")}
@@ -93,7 +92,7 @@ class VirtualHostManagerList extends React.Component<Props, State> {
                     icon="fa-trash"
                     target="delete-modal"
                     item={row}
-                    onClick={i => this.selectToDelete(i)}
+                    onClick={(i) => this.selectToDelete(i)}
                   />
                 </div>
               );

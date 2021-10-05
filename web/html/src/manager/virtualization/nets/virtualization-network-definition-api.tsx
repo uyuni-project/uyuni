@@ -21,13 +21,11 @@ export function VirtualizationNetworkDefinitionApi(props: Props) {
   const [definition, setDefinition] = React.useState(null);
 
   React.useEffect(() => {
-    Network.get(
-      `/rhn/manager/api/systems/details/virtualization/nets/${props.hostid}/net/${props.networkName}`,
-    ).then(
-      response => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/nets/${props.hostid}/net/${props.networkName}`).then(
+      (response) => {
         setDefinition(response);
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? Messages.Utils.error(

@@ -20,7 +20,7 @@ import { ClusterType, ErrorMessagesType } from "../shared/api/use-clusters-api";
 import { ServerMessageType, MessageType } from "components/messages";
 
 const msgMap = {
-  action_scheduled: actionId => (
+  action_scheduled: (actionId) => (
     <>
       {t("Action has been ")}
       <ActionLink id={actionId}>{t("scheduled")}</ActionLink>
@@ -33,7 +33,7 @@ const msgMap = {
       <ActionChainLink id={actionChainId}>{actionChain}</ActionChainLink>.
     </>
   ),
-  cluster_added: name => (
+  cluster_added: (name) => (
     <>
       {t("Cluster ")}
       <strong>{name}</strong>
@@ -60,7 +60,7 @@ const Cluster = (props: Props) => {
 
   const onDelete = () => {
     return deleteCluster(props.cluster.id)
-      .then(_ => {
+      .then((_) => {
         window.location.href = "/rhn/manager/clusters";
       })
       .catch((error: ErrorMessagesType) => {

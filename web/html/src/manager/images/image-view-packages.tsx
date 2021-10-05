@@ -40,18 +40,18 @@ class ImageViewPackages extends React.Component<Props> {
     return (
       <Table
         data={data.packagelist ? data.packagelist : []}
-        identifier={p => p.name + p.arch}
+        identifier={(p) => p.name + p.arch}
         initialSortColumnKey="name"
         initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} />}
       >
-        <Column columnKey="name" comparator={Utils.sortByText} header={t("Package Name")} cell={row => row.name} />
-        <Column columnKey="arch" comparator={Utils.sortByText} header={t("Architecture")} cell={row => row.arch} />
+        <Column columnKey="name" comparator={Utils.sortByText} header={t("Package Name")} cell={(row) => row.name} />
+        <Column columnKey="arch" comparator={Utils.sortByText} header={t("Architecture")} cell={(row) => row.arch} />
         <Column
           columnKey="installed"
           comparator={Utils.sortByDate}
           header={t("Installed")}
-          cell={row => <FromNow value={row.installed} />}
+          cell={(row) => <FromNow value={row.installed} />}
         />
       </Table>
     );

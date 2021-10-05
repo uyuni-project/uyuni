@@ -14,7 +14,7 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
     rejectFn = reject;
   });
 
-  const race = Promise.race([promise, cancelPromise]).catch(error => {
+  const race = Promise.race([promise, cancelPromise]).catch((error) => {
     if (isCancelled) {
       onCancel?.(error);
     }
@@ -83,10 +83,18 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
    */
   const unparsableDateRegex = /(\d{2,4}.\d{2}.\d{2,4}.\d{1,2}.\d{2}.\d{2})( \w+)*/g;
 
-  const aDate = aRaw[columnKey] === null ? null :
-    aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
-  const bDate = bRaw[columnKey] === null ? null :
-    bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
+  const aDate =
+    aRaw[columnKey] === null
+      ? null
+      : aRaw[columnKey] instanceof Date
+      ? aRaw[columnKey]
+      : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+  const bDate =
+    bRaw[columnKey] === null
+      ? null
+      : bRaw[columnKey] instanceof Date
+      ? bRaw[columnKey]
+      : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
   return result * sortDirection;
@@ -101,7 +109,7 @@ function capitalize(str: string): string {
     return str;
   }
 
-  return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function(txt) {
+  return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }

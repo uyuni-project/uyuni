@@ -1,5 +1,5 @@
 import * as React from "react";
-import validator from 'validator';
+import validator from "validator";
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
@@ -38,21 +38,21 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     }
   }, [props.calendar]);
 
-  const onFormChanged = newModel => {
+  const onFormChanged = (newModel) => {
     /* strategy gets initialized as empty string, but we want the initial value to be false.
      * Is equivalent to: if strategy is "" then set it to false */
     newModel.strategy === "" && (newModel.strategy = false);
     setModel({ name: newModel.name, strategy: newModel.strategy });
   };
 
-  const onDataTextChanged = event => {
+  const onDataTextChanged = (event) => {
     setDataText(event.target.value);
   };
 
-  const onIcalFileAttach = event => {
+  const onIcalFileAttach = (event) => {
     props.isLoading(true);
     const reader = new FileReader();
-    reader.onload = e => icalFileLoaded(e.target?.result);
+    reader.onload = (e) => icalFileLoaded(e.target?.result);
     reader.readAsText(event.target.files[0]);
     !props.isEdit && setDataText(event.target.files[0].name);
   };
@@ -73,7 +73,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     }
   };
 
-  const icalFileLoaded = fileString => {
+  const icalFileLoaded = (fileString) => {
     setData(fileString);
     props.isLoading(false);
   };
@@ -90,11 +90,11 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
       .then(() => setIcalLoading(false));
   };
 
-  const validateUrl = urlIn => {
+  const validateUrl = (urlIn) => {
     if (urlIn.trim() === "") {
       return true;
     }
-    return validator.isURL(urlIn, {protocols: ["http", "https"]});
+    return validator.isURL(urlIn, { protocols: ["http", "https"] });
   };
 
   useImperativeHandle(ref, () => ({
@@ -116,7 +116,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
   }));
 
   return (
-    <Form onChange={model => onFormChanged(model)} model={model}>
+    <Form onChange={(model) => onFormChanged(model)} model={model}>
       <Text
         name="name"
         required

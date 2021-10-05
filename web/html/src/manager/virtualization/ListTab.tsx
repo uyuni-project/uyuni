@@ -23,7 +23,7 @@ type ModalDataType = {
   row: boolean;
   canForce?: boolean;
   forceName?: string;
-  modalCreator?: (id: string, selection: any[], onClose: () => void) => React.ReactNode,
+  modalCreator?: (id: string, selection: any[], onClose: () => void) => React.ReactNode;
 };
 
 type CreateModalButtonType = (actionType: string, actionData: Array<ModalDataType>, row: any) => React.ReactNode;
@@ -92,7 +92,7 @@ export function ListTab(props: Props) {
   };
 
   const createModalButton = (actionType: string, actionData: Array<ModalDataType>, row: any) => {
-    const action = actionData.find(item => item.type === actionType);
+    const action = actionData.find((item) => item.type === actionType);
     if (action) {
       return (
         <Button
@@ -110,7 +110,7 @@ export function ListTab(props: Props) {
     return <div />;
   };
 
-  const capsType = props.type.replace(/(?:^[a-z])/, word => word.toUpperCase());
+  const capsType = props.type.replace(/(?:^[a-z])/, (word) => word.toUpperCase());
   const createConfirmModal = (action: ModalDataType, onConfirm: Function) => {
     const defaultModalCreator = (id: string, selection: any[], onClose: () => void) => (
       <ActionConfirm
@@ -124,7 +124,7 @@ export function ListTab(props: Props) {
         onConfirm={(type, items, params) =>
           onConfirm(
             type,
-            items.map(item => item[props.idName]),
+            items.map((item) => item[props.idName]),
             params
           )
         }
@@ -132,47 +132,46 @@ export function ListTab(props: Props) {
         forceName={action.forceName}
         onClose={() => {
           // Mark the corresponding modal hidden
-          setOpenedModals(Object.assign({}, openedModals, {[id]: false}));
+          setOpenedModals(Object.assign({}, openedModals, { [id]: false }));
           onClose();
         }}
         isOpen={openedModals[id] || false}
       />
     );
     const modalCreator = action.modalCreator || defaultModalCreator;
-    return ([
-      action.row && modalCreator(
-        `${action.type}-modal`,
-        [selected].filter(item => item),
-        () => setSelected({}),
-      ),
-      action.bulk && modalCreator(
-        `${action.type}-selected-modal`,
-        selectedItems,
-        () => {},
-      ),
-    ]);
+    return [
+      action.row &&
+        modalCreator(
+          `${action.type}-modal`,
+          [selected].filter((item) => item),
+          () => setSelected({})
+        ),
+      action.bulk && modalCreator(`${action.type}-selected-modal`, selectedItems, () => {}),
+    ];
   };
 
   const createSelectedModalButton = (action: any) => {
-    return action.bulk && (
-      <Button
-        key={`${action.type}-selected-button`}
-        id={`${action.type}-selected`}
-        icon={action.icon}
-        className="btn-default"
-        text={action.name}
-        title={t("{0} selected", action.name)}
-        disabled={selectedItems.length === 0}
-        handler={() => {
-          // Mark the corresponding bulk modal as shown
-          setOpenedModals(Object.assign({}, openedModals, { [`${action.type}-selected-modal`]: true }));
-        }}
-      />
+    return (
+      action.bulk && (
+        <Button
+          key={`${action.type}-selected-button`}
+          id={`${action.type}-selected`}
+          icon={action.icon}
+          className="btn-default"
+          text={action.name}
+          title={t("{0} selected", action.name)}
+          disabled={selectedItems.length === 0}
+          handler={() => {
+            // Mark the corresponding bulk modal as shown
+            setOpenedModals(Object.assign({}, openedModals, { [`${action.type}-selected-modal`]: true }));
+          }}
+        />
+      )
     );
   };
 
   const getCreationActionMessages = (): Array<MessageType> => {
-    return props.getCreateActionsKeys(actionsResults).flatMap(key => {
+    return props.getCreateActionsKeys(actionsResults).flatMap((key) => {
       const action = actionsResults[key];
       const messagesMapper = {
         Failed: MessagesUtils.error,
@@ -204,8 +203,8 @@ export function ListTab(props: Props) {
                 />
               )}
               {props.modalsData
-                .filter(action => props.isActionVisible(action))
-                .map(action => createSelectedModalButton(action))}
+                .filter((action) => props.isActionVisible(action))
+                .map((action) => createSelectedModalButton(action))}
             </div>
           </>
         );
@@ -215,7 +214,7 @@ export function ListTab(props: Props) {
             {({ data, refreshError }) => {
               const { columns, actionsProvider } = props.children(createModalButton, onAction);
               const allMessages = ([] as any[]).concat(
-                errors.map(msg => MessagesUtils.error(msg)[0]),
+                errors.map((msg) => MessagesUtils.error(msg)[0]),
                 getCreationActionMessages(),
                 props.messages,
                 messages
@@ -227,21 +226,21 @@ export function ListTab(props: Props) {
                   <p>{props.description}</p>
                   <Messages items={allMessages} />
                   <Table
-                    data={data != null ? Object.keys(data).map(id => data[id]) : []}
+                    data={data != null ? Object.keys(data).map((id) => data[id]) : []}
                     emptyText={t(`No virtual ${props.type} to show.`)}
-                    identifier={row => row[props.idName]}
+                    identifier={(row) => row[props.idName]}
                     initialSortColumnKey="name"
                     initialItemsPerPage={props.pageSize}
                     selectable
-                    selectedItems={selectedItems.map(item => item[props.idName])}
-                    onSelect={items => setSelectedItems(data.filter(d => items.includes(d[props.idName])))}
+                    selectedItems={selectedItems.map((item) => item[props.idName])}
+                    onSelect={(items) => setSelectedItems(data.filter((d) => items.includes(d[props.idName])))}
                     searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
                   >
                     {columns}
                     {props.saltEntitled && (
                       <Column
                         header={t("Action Status")}
-                        cell={row => {
+                        cell={(row) => {
                           const actionResult = actionsResults[`${props.type}-${row[props.idName]}`];
                           if (actionResult !== undefined) {
                             return (
@@ -267,8 +266,8 @@ export function ListTab(props: Props) {
                   </Table>
 
                   {props.modalsData
-                    .filter(action => props.isActionVisible(action))
-                    .map(action => createConfirmModal(action, onAction).map(modal => modal))}
+                    .filter((action) => props.isActionVisible(action))
+                    .map((action) => createConfirmModal(action, onAction).map((modal) => modal))}
                 </div>
               );
             }}
@@ -283,7 +282,7 @@ ListTab.defaultProps = {
   isActionVisible: () => true,
   canCreate: true,
   saltEntitled: true,
-  getCreateActionsKeys: actions => Object.keys(actions).filter(key => key.startsWith("new-")),
+  getCreateActionsKeys: (actions) => Object.keys(actions).filter((key) => key.startsWith("new-")),
   modalsData: [],
   panelButtons: [],
   messages: [],

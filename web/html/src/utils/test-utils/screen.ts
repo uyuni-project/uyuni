@@ -1,9 +1,12 @@
 import { screen as rawScreen, Screen, getDefaultNormalizer } from "@testing-library/react";
 
 // Utility type, if a function TargetFunction returns a Promise, return an intersection with Promise<T>, otherwise with T
-type ReturnFromWith<TargetFunction extends (...args: any[]) => any, T> = ReturnType<TargetFunction> extends Promise<unknown>
-    ? ReturnType<TargetFunction> & Promise<T>
-    : ReturnType<TargetFunction> & T;
+type ReturnFromWith<
+  TargetFunction extends (...args: any[]) => any,
+  T
+> = ReturnType<TargetFunction> extends Promise<unknown>
+  ? ReturnType<TargetFunction> & Promise<T>
+  : ReturnType<TargetFunction> & T;
 
 /**
  * Testing-library doesn't ship generic versions of queries so sometimes it's a pain to annotate what we know comes out of them.
@@ -11,9 +14,9 @@ type ReturnFromWith<TargetFunction extends (...args: any[]) => any, T> = ReturnT
  * This is still a bit of a hack though, if you have a better solution please feel free to switch this out.
  */
 type GenericScreen = {
-    [Key in keyof Screen]: Screen[Key] extends (...args: any[]) => any
-        ? <T extends unknown>(...args: Parameters<Screen[Key]>) => ReturnFromWith<Screen[Key], T>
-        : Screen[Key];
+  [Key in keyof Screen]: Screen[Key] extends (...args: any[]) => any
+    ? <T extends unknown>(...args: Parameters<Screen[Key]>) => ReturnFromWith<Screen[Key], T>
+    : Screen[Key];
 };
 
 /**
@@ -23,7 +26,7 @@ type GenericScreen = {
  */
 const defaultNormalizer = getDefaultNormalizer();
 const labelNormalizer = (input: string) => {
-    return defaultNormalizer(input)
+  return defaultNormalizer(input)
     .replace(/:$/, "") // Remove trailing ":"
     .replace(/ \*$/, ""); // Remove trailing " *"
 };
@@ -32,11 +35,11 @@ const labelNormalizer = (input: string) => {
 const getByLabelText = rawScreen.getByLabelText;
 type GetByLabelTextArgs = Parameters<typeof rawScreen.getByLabelText>;
 Object.assign(rawScreen, {
-    getByLabelText: (...[text, options, waitForElementOptions]: GetByLabelTextArgs) => {
-        options ??= {};
-        options.normalizer ??= labelNormalizer;
-        return getByLabelText(text, options, waitForElementOptions);
-    },
+  getByLabelText: (...[text, options, waitForElementOptions]: GetByLabelTextArgs) => {
+    options ??= {};
+    options.normalizer ??= labelNormalizer;
+    return getByLabelText(text, options, waitForElementOptions);
+  },
 } as Partial<Screen>);
 
 const screen = rawScreen as GenericScreen;

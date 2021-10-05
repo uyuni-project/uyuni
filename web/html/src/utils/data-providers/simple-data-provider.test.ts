@@ -11,13 +11,13 @@ const TEST_DATA = [
 ];
 
 test("Test filtering", () => {
-  let provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first);
+  let provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first);
 
   // No filter function provided, should not filter
   expect(provider.getFilteredData("ang")).toEqual(TEST_DATA);
 
   const filterFunc = (row, crit) => row.second.includes(crit);
-  provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first, filterFunc);
+  provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc);
 
   const filteredData = provider.getFilteredData("ang");
   expect(filteredData).toHaveLength(3);
@@ -26,25 +26,25 @@ test("Test filtering", () => {
   expect(filteredData).toContainEqual({ first: 4, second: "ranger" });
 });
 
-test("Test getIds", done => {
+test("Test getIds", (done) => {
   const filterFunc = (row, crit) => row.second.includes(crit);
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first, filterFunc);
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc);
 
-  provider.getIds(promise =>
-    promise.then(ids => {
+  provider.getIds((promise) =>
+    promise.then((ids) => {
       expect(ids).toEqual([1, 2, 3, 4, 5]);
       done();
     })
   );
 });
 
-test("Test getIds with filtering", done => {
+test("Test getIds with filtering", (done) => {
   const filterFunc = (row, crit) => row.second.includes(crit);
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first, filterFunc);
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc);
 
   provider.getIds(
-    promise =>
-      promise.then(ids => {
+    (promise) =>
+      promise.then((ids) => {
         expect(ids).toEqual([1, 3, 4]);
         done();
       }),
@@ -52,12 +52,12 @@ test("Test getIds with filtering", done => {
   );
 });
 
-test("Test get", done => {
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first);
+test("Test get", (done) => {
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first);
   const pageControl = new PageControl(1, 3);
 
   provider.get(
-    promise =>
+    (promise) =>
       promise.then(({ items, total }) => {
         expect(items).toHaveLength(3);
         expect(items).toContainEqual({ first: 1, second: "angel" });
@@ -70,12 +70,12 @@ test("Test get", done => {
   );
 });
 
-test("Test get page", done => {
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first);
+test("Test get page", (done) => {
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first);
   const pageControl = new PageControl(4, 3);
 
   provider.get(
-    promise =>
+    (promise) =>
       promise.then(({ items, total }) => {
         expect(items).toHaveLength(2);
         expect(items).toContainEqual({ first: 4, second: "ranger" });
@@ -87,13 +87,13 @@ test("Test get page", done => {
   );
 });
 
-test("Test get with filtering", done => {
+test("Test get with filtering", (done) => {
   const filterFunc = (row, crit) => row.second.includes(crit);
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first, filterFunc);
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc);
   const pageControl = new PageControl(1, 3, "ang");
 
   provider.get(
-    promise =>
+    (promise) =>
       promise.then(({ items, total }) => {
         expect(items).toHaveLength(3);
         expect(items).toContainEqual({ first: 1, second: "angel" });
@@ -106,17 +106,17 @@ test("Test get with filtering", done => {
   );
 });
 
-test("Test get with sorting", done => {
+test("Test get with sorting", (done) => {
   const comparators = {
     first: Utils.sortByNumber,
     second: Utils.sortByText,
   };
   const filterFunc = (row, crit) => row.second.includes(crit);
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first, filterFunc, comparators);
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc, comparators);
   const pageControl = new PageControl(1, 3, "an", "second", 1);
 
   provider.get(
-    promise =>
+    (promise) =>
       promise.then(({ items, total }) => {
         expect(items).toHaveLength(3);
         expect(items).toEqual([
@@ -131,12 +131,12 @@ test("Test get with sorting", done => {
   );
 });
 
-test("Test get all", done => {
+test("Test get all", (done) => {
   const filterFunc = (row, crit) => row.second.includes(crit);
-  const provider = new SimpleDataProvider(Array.from(TEST_DATA), o => o.first, filterFunc);
+  const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc);
 
   // No page control provided
-  provider.get(promise =>
+  provider.get((promise) =>
     promise.then(({ items, total }) => {
       expect(items).toEqual(TEST_DATA);
       expect(total).toBe(5);

@@ -24,7 +24,7 @@ type Model = {
   type?: string;
   calendarName?: string;
   strategy: boolean;
-}
+};
 
 const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
   const [model, setModel] = useState<Model>({
@@ -47,13 +47,13 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
       setCalendarAdded(props.schedule?.calendarName ? true : false);
       setSelectedCalendar(
         props.calendarNames && props.calendarNames.length > 1 && props.schedule?.calendarName
-          ? props.calendarNames.filter(name => name.text === props.schedule?.calendarName)[0].id
+          ? props.calendarNames.filter((name) => name.text === props.schedule?.calendarName)[0].id
           : 0
       );
     }
   }, [props.schedule]);
 
-  const onFormChanged = newModel => {
+  const onFormChanged = (newModel) => {
     /* strategy gets initialized as empty string, but we want the initial value to be false.
      * Is equivalent to: if strategy is "" then set it to false */
     newModel.strategy === "" && (newModel.strategy = false);
@@ -65,7 +65,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
     });
   };
 
-  const onSelectCalendar = item => {
+  const onSelectCalendar = (item) => {
     setSelectedCalendar(item.id);
     setModel({ ...model, calendarName: item.text === "<None>" ? "" : item.text });
   };

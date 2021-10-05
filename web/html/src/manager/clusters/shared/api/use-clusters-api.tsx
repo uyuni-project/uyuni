@@ -67,7 +67,7 @@ export class ErrorMessages extends Error {
   messages: MessageType[];
 
   constructor(messagesIn: MessageType[]) {
-    super(messagesIn.map(msg => msg.text).join(", "));
+    super(messagesIn.map((msg) => msg.text).join(", "));
     this.messages = messagesIn;
   }
 }
@@ -87,7 +87,7 @@ export function withErrorMessages<T extends WithMessages>(
 ) {
   return (props: WrapperProps<T>) => {
     const showMessages = (messages: MessageType[]) => {
-      messages.forEach(msg => {
+      messages.forEach((msg) => {
         switch (msg.severity) {
           case "info":
             showInfoToastr(msg.text);

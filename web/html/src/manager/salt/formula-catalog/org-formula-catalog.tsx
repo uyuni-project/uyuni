@@ -28,7 +28,7 @@ class FormulaCatalog extends React.Component<Props, State> {
   }
 
   refreshServerData = () => {
-    Network.get("/rhn/manager/api/formula-catalog/data").then(data => {
+    Network.get("/rhn/manager/api/formula-catalog/data").then((data) => {
       this.setState({ serverData: data });
     });
   };
@@ -41,7 +41,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
   };
 
-  rowKey = rowData => {
+  rowKey = (rowData) => {
     return rowData;
   };
 
@@ -56,7 +56,11 @@ class FormulaCatalog extends React.Component<Props, State> {
         text: (
           <p>
             The formula catalog page enables viewing of currently installed{" "}
-            <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Salt Formulas
             </a>
             . Apply these formulas to individual systems or server groups. Formulas allow automatic installation and
@@ -68,7 +72,7 @@ class FormulaCatalog extends React.Component<Props, State> {
 
     if (this.state.messages.length > 0) {
       items = items.concat(
-        this.state.messages.map(function(msg) {
+        this.state.messages.map(function (msg) {
           return { severity: "info", text: msg };
         })
       );
@@ -98,7 +102,7 @@ class FormulaCatalog extends React.Component<Props, State> {
               columnKey="name"
               comparator={this.sortByText}
               header={t("Formula")}
-              cell={s => <a href={"/rhn/manager/formula-catalog/formula/" + s}>{s}</a>}
+              cell={(s) => <a href={"/rhn/manager/formula-catalog/formula/" + s}>{s}</a>}
             />
           </Table>
         </div>

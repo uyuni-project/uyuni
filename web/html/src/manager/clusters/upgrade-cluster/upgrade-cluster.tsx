@@ -58,7 +58,7 @@ const UpgradeCluster = (props: Props) => {
                 context={{ cluster: props.cluster.id }}
                 provider={props.cluster.provider.label}
                 onPrev={props.showUpgradePlan ? back : undefined}
-                onNext={formulaValues => {
+                onNext={(formulaValues) => {
                   setUpgradeConfig(formulaValues);
                   goTo("schedule");
                 }}

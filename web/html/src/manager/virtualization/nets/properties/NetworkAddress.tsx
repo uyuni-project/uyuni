@@ -45,7 +45,7 @@ export const NetworkAddress = (props: Props) => {
       name={[`${props.prefix}_address`, `${props.prefix}_prefix`]}
       validators={[
         utils.allOrNone,
-        values => {
+        (values) => {
           const address = values[`${props.prefix}_address`] || "";
           const prefix = values[`${props.prefix}_prefix`] || "";
           return (

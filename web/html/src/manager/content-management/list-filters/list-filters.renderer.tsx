@@ -18,10 +18,7 @@ export const renderer = (id, { filters, flashMessage }) => {
     <RolesProvider>
       <UserLocalizationProvider>
         <MessagesContainer />
-        <ListFilters
-          filters={filtersJson}
-          flashMessage={flashMessage}
-        />
+        <ListFilters filters={filtersJson} flashMessage={flashMessage} />
       </UserLocalizationProvider>
     </RolesProvider>,
     document.getElementById(id)

@@ -40,7 +40,7 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
   constructor(props) {
     super(props);
 
-    ["renderType"].forEach(method => (this[method] = this[method].bind(this)));
+    ["renderType"].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   searchData(row, criteria) {
@@ -72,7 +72,7 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
     return (
       <Table
         data={data.patchlist ? data.patchlist : []}
-        identifier={p => p.id}
+        identifier={(p) => p.id}
         initialSortColumnKey="name"
         initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} />}
@@ -82,24 +82,29 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
           width="10%"
           comparator={Utils.sortByText}
           header={t("Type")}
-          cell={row => this.renderType(row)}
+          cell={(row) => this.renderType(row)}
         />
         <Column
           columnKey="name"
           comparator={Utils.sortByText}
           header={t("Advisory")}
-          cell={row => (
+          cell={(row) => (
             <a href={"/rhn/errata/details/Details.do?eid=" + row.id} title={t("Details")}>
               {row.name}
             </a>
           )}
         />
-        <Column columnKey="synopsis" comparator={Utils.sortByText} header={t("Synopsis")} cell={row => row.synopsis} />
+        <Column
+          columnKey="synopsis"
+          comparator={Utils.sortByText}
+          header={t("Synopsis")}
+          cell={(row) => row.synopsis}
+        />
         <Column
           columnKey="update"
           comparator={Utils.sortByDate}
           header={t("Updated")}
-          cell={row => <FromNow value={row.update} />}
+          cell={(row) => <FromNow value={row.update} />}
         />
       </Table>
     );

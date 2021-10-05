@@ -3,7 +3,7 @@ import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import * as React from "react";
 import { Loading } from "components/utils/Loading";
 import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from 'components/messages';
+import { Utils as MessagesUtils } from "components/messages";
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 import { availableChannelsType, ChannelDto } from "./activation-key-channels-api";
 
@@ -39,9 +39,9 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
   selectChildChannels = (channelIds: Array<number>, selectedFlag: boolean) => {
     var selectedIds = [...this.state.currentChildSelectedIds];
     if (selectedFlag) {
-      selectedIds = [...channelIds.filter(c => !selectedIds.includes(c)), ...selectedIds];
+      selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];
     } else {
-      selectedIds = [...selectedIds.filter(c => !channelIds.includes(c))];
+      selectedIds = [...selectedIds.filter((c) => !channelIds.includes(c))];
     }
     this.setState({ currentChildSelectedIds: selectedIds });
   };
@@ -54,7 +54,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     return loadingChildren ? (
       <Loading text={t("Loading child channels..")} />
     ) : (
-      availableChannels.map(g => {
+      availableChannels.map((g) => {
         const base = g.base;
         const channels = g.children.sort((c1, c2) => c1.name.localeCompare(c2.name));
 
@@ -107,12 +107,14 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                     name="selectedBaseChannel"
                     className="form-control"
                     value={this.state.currentSelectedBaseId}
-                    onChange={event => this.handleBaseChange(event).then(newBaseId => fetchChildChannels(newBaseId))}
+                    onChange={(event) =>
+                      this.handleBaseChange(event).then((newBaseId) => fetchChildChannels(newBaseId))
+                    }
                   >
                     <option value={this.getDefaultBase().id}>{this.getDefaultBase().name}</option>
                     {availableBaseChannels
                       .sort((b1, b2) => (b1.name || "").localeCompare(b2.name || ""))
-                      .map(b => (
+                      .map((b) => (
                         <option key={b.id} value={b.id}>
                           {b.name}
                         </option>
@@ -121,16 +123,20 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   <span className="help-block">
                     {t(
                       `Selecting the "${defaultChannelName}" base channel enables a system to register to the ` +
-                      'correct channel that corresponds to the installed operating system. You can also select ' +
-                      'SUSE provided channels, or use custom base channels but if a system using such a channel ' +
-                      `is not compatible then the fall back will be the "${defaultChannelName}" channel.`
+                        "correct channel that corresponds to the installed operating system. You can also select " +
+                        "SUSE provided channels, or use custom base channels but if a system using such a channel " +
+                        `is not compatible then the fall back will be the "${defaultChannelName}" channel.`
                     )}
                   </span>
-                  <Messages items={
-                      MessagesUtils.warning(t(`When "${this.getDefaultBase().name}" is selected and the installed ` +
-                                              'product is not detected, no channel will be added even if children ' +
-                                              'channels are selected.'))
-                  }/>
+                  <Messages
+                    items={MessagesUtils.warning(
+                      t(
+                        `When "${this.getDefaultBase().name}" is selected and the installed ` +
+                          "product is not detected, no channel will be added even if children " +
+                          "channels are selected."
+                      )
+                    )}
+                  />
                 </div>
               </div>
               <div className="form-group">

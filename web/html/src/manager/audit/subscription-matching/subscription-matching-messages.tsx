@@ -12,7 +12,7 @@ type Props = {
 
 class Messages extends React.Component<Props> {
   buildRows = (rawMessages, systems, subscriptions) => {
-    return rawMessages.map(function(rawMessage, index) {
+    return rawMessages.map(function (rawMessage, index) {
       const data = rawMessage["data"];
       var message: string;
       var additionalInformation: any;
@@ -77,16 +77,21 @@ class Messages extends React.Component<Props> {
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
             data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
-            identifier={row => row.id}
+            identifier={(row) => row.id}
             initialSortColumnKey="message"
             initialItemsPerPage={window.userPrefPageSize}
           >
-            <Column columnKey="message" comparator={Utils.sortByText} header={t("Message")} cell={row => row.message} />
+            <Column
+              columnKey="message"
+              comparator={Utils.sortByText}
+              header={t("Message")}
+              cell={(row) => row.message}
+            />
             <Column
               columnKey="info"
               comparator={Utils.sortByText}
               header={t("Additional information")}
-              cell={row => row.info}
+              cell={(row) => row.info}
             />
           </Table>
 

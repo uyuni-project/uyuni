@@ -52,21 +52,21 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
       dependingChannelIds = this.props.requiredChannelsResult.requiredByChannels.get(channelId) || [];
     }
     return dependingChannelIds
-      ? [channelId, ...Array.from(dependingChannelIds).filter(c => c !== channelId)]
+      ? [channelId, ...Array.from(dependingChannelIds).filter((c) => c !== channelId)]
       : [channelId];
   };
 
   toggleRecommended = () => {
     if (this.areRecommendedChildrenSelected()) {
       this.props.selectChannels(
-        this.props.channels.filter(channel => channel.recommended).map(channel => channel.id),
+        this.props.channels.filter((channel) => channel.recommended).map((channel) => channel.id),
         false
       );
     } else {
       this.props.selectChannels(
         this.props.channels
-          .filter(channel => channel.recommended && !this.props.selectedChannelsIds.includes(channel.id))
-          .map(channel => channel.id),
+          .filter((channel) => channel.recommended && !this.props.selectedChannelsIds.includes(channel.id))
+          .map((channel) => channel.id),
         true
       );
     }
@@ -77,12 +77,12 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   };
 
   areRecommendedChildrenSelected = (): boolean => {
-    const recommendedChildren = this.props.channels.filter(channel => channel.recommended);
-    const selectedRecommendedChildren = recommendedChildren.filter(channel =>
+    const recommendedChildren = this.props.channels.filter((channel) => channel.recommended);
+    const selectedRecommendedChildren = recommendedChildren.filter((channel) =>
       this.props.selectedChannelsIds.includes(channel.id)
     );
     const unselectedRecommendedChildren = recommendedChildren.filter(
-      channel => !this.props.selectedChannelsIds.includes(channel.id)
+      (channel) => !this.props.selectedChannelsIds.includes(channel.id)
     );
 
     return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length === 0;
@@ -95,7 +95,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
       if (this.props.channels.length === 0) {
         return <span>&nbsp;{t("no child channels")}</span>;
       } else {
-        return this.props.channels.map(c => {
+        return this.props.channels.map((c) => {
           const toolTip = this.props.requiredChannelsResult.dependenciesTooltip(c.id, this.props.channels);
           const mandatoryChannelsForBaseId: Set<number> | null | undefined =
             this.props.base && this.props.requiredChannelsResult.requiredChannels.get(this.props.base.id);
@@ -111,19 +111,21 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
                 name="childChannels"
                 checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)}
                 disabled={isDisabled}
-                onChange={event => this.handleChannelChange(event)}
+                onChange={(event) => this.handleChannelChange(event)}
               />
-              {// add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
-              isDisabled ? (
-                <input
-                  type="checkbox"
-                  value={c.id}
-                  name="childChannels"
-                  hidden={true}
-                  checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)}
-                  readOnly={true}
-                />
-              ) : null}
+              {
+                // add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
+                isDisabled ? (
+                  <input
+                    type="checkbox"
+                    value={c.id}
+                    name="childChannels"
+                    hidden={true}
+                    checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)}
+                    readOnly={true}
+                  />
+                ) : null
+              }
               <label title={toolTip} htmlFor={"child_" + c.id}>
                 {c.name}
               </label>
@@ -162,7 +164,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
         </h4>
         {/* keep the block hidden but in the DOM to let the form submit collects checkboxes */}
         <div className={this.state.collapsed ? "hide" : "col-lg-12"}>
-          {this.props.channels.some(channel => channel.recommended) ? (
+          {this.props.channels.some((channel) => channel.recommended) ? (
             <Toggler
               handler={() => this.toggleRecommended()}
               value={this.areRecommendedChildrenSelected()}

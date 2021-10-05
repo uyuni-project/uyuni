@@ -18,7 +18,7 @@ import { ClusterType } from "../shared/api/use-clusters-api";
 import { MessageType } from "components/messages";
 
 const msgMap = {
-  cluster_deleted: name => (
+  cluster_deleted: (name) => (
     <>
       {t("Cluster ")}
       <strong>{name}</strong>
@@ -55,7 +55,7 @@ const ListClusters = (props: Props) => {
     const keysToSearch = ["name", "type"];
     if (criteria) {
       return keysToSearch
-        .map(key => row[key])
+        .map((key) => row[key])
         .join()
         .toLowerCase()
         .includes(criteria.toLowerCase());
@@ -82,7 +82,7 @@ const ListClusters = (props: Props) => {
       >
         <Table
           data={props.clusters}
-          identifier={row => row.id}
+          identifier={(row) => row.id}
           initialSortColumnKey="name"
           searchField={<SearchField filter={filterFunc} placeholder={t("Filter by any value")} />}
         >

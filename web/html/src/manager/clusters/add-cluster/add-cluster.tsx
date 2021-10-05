@@ -56,7 +56,7 @@ const AddCluster = (props: Props) => {
                   title={t("Select management node")}
                   selectedServers={managementNode ? [managementNode] : []}
                   fetchServers={() => fetchManagementNodes(providerLabel)}
-                  onNext={nodes => {
+                  onNext={(nodes) => {
                     setManagementNode(nodes[0]);
                     goTo("provider-settings");
                   }}
@@ -75,7 +75,7 @@ const AddCluster = (props: Props) => {
                   values={providerConfig}
                   provider={providerLabel}
                   formula="settings"
-                  onNext={formulaValues => {
+                  onNext={(formulaValues) => {
                     setProviderConfig(formulaValues);
                     goTo("finish");
                   }}
@@ -88,7 +88,7 @@ const AddCluster = (props: Props) => {
           </Route>
           <Route path="finish">
             {({ goTo, back }) => {
-              const selectedProvider = props.providers.find(p => p.label === providerLabel);
+              const selectedProvider = props.providers.find((p) => p.label === providerLabel);
               return selectedProvider && managementNode ? (
                 <FinishAddCluster
                   panel={

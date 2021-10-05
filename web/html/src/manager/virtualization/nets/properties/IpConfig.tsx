@@ -37,14 +37,14 @@ export function IpConfig(props: Props) {
             id={`${prefix}-dhcp-range`}
             title={t(`DHCP${props.ipv6 ? "v6" : ""} Ranges`)}
             prefix={`${prefix}_dhcpranges`}
-            onAdd={index => {
+            onAdd={(index) => {
               formContext.setModelValue?.(`${prefix}_dhcpranges${index}_start`, "");
               formContext.setModelValue?.(`${prefix}_dhcpranges${index}_end`, "");
             }}
-            onRemove={index => {
+            onRemove={(index) => {
               Object.keys(model)
-                .filter(key => key.startsWith(`${prefix}_dhcpranges${index}_`))
-                .forEach(key => formContext.setModelValue?.(key, undefined));
+                .filter((key) => key.startsWith(`${prefix}_dhcpranges${index}_`))
+                .forEach((key) => formContext.setModelValue?.(key, undefined));
             }}
           >
             {(index: number) => (
@@ -55,8 +55,8 @@ export function IpConfig(props: Props) {
                 required
                 validators={[
                   utils.allOrNone,
-                  value =>
-                    Object.values(value).every(item => {
+                  (value) =>
+                    Object.values(value).every((item) => {
                       return typeof item === "string" && (item === "" || !_isNil(item.match(address_pattern)));
                     }),
                 ]}
@@ -68,13 +68,13 @@ export function IpConfig(props: Props) {
             id={`${prefix}-hosts`}
             title={t(`DHCP${props.ipv6 ? "v6" : ""} Hosts`)}
             prefix={`${prefix}_hosts`}
-            onAdd={index => {
+            onAdd={(index) => {
               formContext.setModelValue?.(`${prefix}_hosts${index}_ip`, "");
             }}
-            onRemove={index => {
+            onRemove={(index) => {
               Object.keys(model)
-                .filter(key => key.startsWith(`${prefix}_hosts${index}_`))
-                .forEach(key => formContext.setModelValue?.(key, undefined));
+                .filter((key) => key.startsWith(`${prefix}_hosts${index}_`))
+                .forEach((key) => formContext.setModelValue?.(key, undefined));
             }}
             header={
               <div className="row multi-input-table-row">
@@ -94,7 +94,7 @@ export function IpConfig(props: Props) {
             }
             rowClass="multi-input-table-row"
           >
-            {index => (
+            {(index) => (
               <>
                 <Text
                   name={`${prefix}_hosts${index}_ip`}

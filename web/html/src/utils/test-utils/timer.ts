@@ -24,8 +24,9 @@ export class Timer {
     }
     const now = new Date();
     console.log(
-      `[timer ${this.id}] ${description}: +${now.getTime() - this.prev.getTime()}ms (total: ${now.getTime() -
-        this.start.getTime()}ms)`
+      `[timer ${this.id}] ${description}: +${now.getTime() - this.prev.getTime()}ms (total: ${
+        now.getTime() - this.start.getTime()
+      }ms)`
     );
     this.prev = now;
   }

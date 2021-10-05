@@ -41,19 +41,19 @@ class GuestsEdit extends React.Component<Props> {
 
   static getRequestParameterFromModel(model: any, initialModel: any) {
     // Diff the model with the initial one to avoid changing nics if user hasn't touched them.
-    const initialNicProps = Object.entries(initialModel).filter(entry => entry[0].startsWith("network"));
-    const newNicProps = Object.entries(model).filter(entry => entry[0].startsWith("network"));
+    const initialNicProps = Object.entries(initialModel).filter((entry) => entry[0].startsWith("network"));
+    const newNicProps = Object.entries(model).filter((entry) => entry[0].startsWith("network"));
     const nics = !_isEqual(initialNicProps, newNicProps)
-      ? getOrderedItemsFromModel(model, "network").map(index => GuestNicsPanel.getRequestParams(model, index))
+      ? getOrderedItemsFromModel(model, "network").map((index) => GuestNicsPanel.getRequestParams(model, index))
       : [];
 
     const nicsParams = nics.length !== 0 ? { interfaces: nics } : undefined;
 
     // Diff the model with the initial one to avoid changing disks if user hasn't touched them.
-    const initialDiskProps = Object.entries(initialModel).filter(entry => entry[0].startsWith("disk"));
-    const newDiskProps = Object.entries(model).filter(entry => entry[0].startsWith("disk"));
+    const initialDiskProps = Object.entries(initialModel).filter((entry) => entry[0].startsWith("disk"));
+    const newDiskProps = Object.entries(model).filter((entry) => entry[0].startsWith("disk"));
     const disks = !_isEqual(initialDiskProps, newDiskProps)
-      ? getOrderedItemsFromModel(model, "disk").map(index => DiskUtils.getRequestParams(model, index))
+      ? getOrderedItemsFromModel(model, "disk").map((index) => DiskUtils.getRequestParams(model, index))
       : [];
 
     const disksParams = disks.length !== 0 ? { disks } : undefined;
@@ -72,7 +72,7 @@ class GuestsEdit extends React.Component<Props> {
         earliest: model.earliest,
       },
       nicsParams,
-      disksParams,
+      disksParams
     );
   }
 
@@ -92,13 +92,13 @@ class GuestsEdit extends React.Component<Props> {
               }
 
               const initialModel = GuestsEdit.getModelFromDefinition(definition);
-              const onSubmit = properties =>
+              const onSubmit = (properties) =>
                 onAction(
                   "update",
                   [this.props.guestUuid],
                   GuestsEdit.getRequestParameterFromModel(properties, initialModel)
                 );
-              const messages = [].concat(definitionMessages, actionMessages).filter(item => item);
+              const messages = [].concat(definitionMessages, actionMessages).filter((item) => item);
               const guestName = definition !== null ? definition.name : "";
               return (
                 <TopPanel title={guestName} icon="fa spacewalk-icon-virtual-guest">

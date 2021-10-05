@@ -95,7 +95,7 @@ function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
 }
 
 function mountAll() {
-  Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time-picker")).forEach(node =>
+  Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time-picker")).forEach((node) =>
     mountDateTimePickerTo(node)
   );
 }

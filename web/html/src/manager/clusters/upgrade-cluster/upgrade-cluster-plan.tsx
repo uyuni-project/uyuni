@@ -23,7 +23,7 @@ const UpgradeClusterPlan = (props: Props) => {
   useEffect(() => {
     setFetching(true);
     fetchClusterUpgradePlan(props.cluster.id)
-      .then(data => {
+      .then((data) => {
         setPlan(data);
       })
       .catch((error: ErrorMessagesType) => {

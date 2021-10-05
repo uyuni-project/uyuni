@@ -37,7 +37,7 @@ export function Radio(props: Props) {
 
         const fieldValue = (formContext.model || {})[props.name || ""] || props.defaultValue || "";
         const isOpenOption =
-          props.openOption && !props.items.some(item => item.value === fieldValue) && (fieldValue || !isPristine);
+          props.openOption && !props.items.some((item) => item.value === fieldValue) && (fieldValue || !isPristine);
 
         const radioClass = props.inline ? "radio-inline" : "radio";
         return (
@@ -52,7 +52,7 @@ export function Radio(props: Props) {
                   checked={fieldValue === value}
                   className={inputClass}
                   onBlur={onBlur}
-                  onChange={event => onChange(event.target.name, event.target.value)}
+                  onChange={(event) => onChange(event.target.name, event.target.value)}
                 />
                 {label}
               </label>
@@ -75,7 +75,7 @@ export function Radio(props: Props) {
                   type="text"
                   disabled={!isOpenOption}
                   value={isOpenOption ? fieldValue : ""}
-                  onChange={event => onChange(event.target.name, event.target.value)}
+                  onChange={(event) => onChange(event.target.name, event.target.value)}
                   title={t(`${props.title} other`)}
                 />
               </div>

@@ -9,7 +9,7 @@ class VncClient implements ConsoleClientType {
   disconnected: Function;
   askPassword: Function;
 
-  disconnectHandler = e => {
+  disconnectHandler = (e) => {
     const error = e.detail.clean ? undefined : t("Something went wrong, connection is closed");
     if (this.disconnected != null) {
       this.disconnected(error);
@@ -31,7 +31,7 @@ class VncClient implements ConsoleClientType {
       rfb.addEventListener("disconnect", this.disconnectHandler);
       rfb.addEventListener("credentialsrequired", () => {
         if (this.askPassword != null) {
-          this.askPassword().then(password => rfb.sendCredentials({ password }));
+          this.askPassword().then((password) => rfb.sendCredentials({ password }));
         }
       });
       rfb.scaleViewport = false;

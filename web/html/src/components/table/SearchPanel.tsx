@@ -37,7 +37,7 @@ type SearchPanelProps = {
 export function SearchPanel(props: SearchPanelProps) {
   return (
     <div className="spacewalk-list-filter table-search-wrapper">
-      {React.Children.toArray(props.children).map(child =>
+      {React.Children.toArray(props.children).map((child) =>
         cloneReactElement(child, { criteria: props.criteria, onSearch: props.onSearch })
       )}
       <div className="d-inline-block">
