@@ -29,6 +29,7 @@ type EditGroupProps = {
   element: ElementDefinition;
   sectionsExpanded: string;
   setSectionsExpanded: (string) => void;
+  isVisibleByCriteria?: any;
 };
 
 type EditGroupState = {
@@ -110,44 +111,46 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     }
 
     return (
-      <div
-        id={this.props.id}
-        className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
-      >
-        <div className="group-heading">
-          <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
-            <h4>{this.props.element.$name}</h4>
-          </SectionToggle>
-          <i
-            className="fa fa-plus"
-            id={this.props.id + "#add_item"}
-            title={
-              this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
-            }
-            onClick={this.handleAddItem}
-            /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
-            disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
-          ></i>
+      this.props.isVisibleByCriteria?.() ?
+        <div
+          id={this.props.id}
+          className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
+        >
+          <div className="group-heading">
+            <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
+              <h4>{this.props.element.$name}</h4>
+            </SectionToggle>
+            <i
+              className="fa fa-plus"
+              id={this.props.id + "#add_item"}
+              title={
+                this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
+              }
+              onClick={this.handleAddItem}
+              /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
+              disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+            ></i>
+          </div>
+          <div>
+            {this.state.visible ? (
+              <React.Fragment>
+                {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
+                <Component
+                  handleRemoveItem={this.handleRemoveItem}
+                  isDisabled={this.isDisabled()}
+                  id={this.props.id}
+                  key={this.props.key}
+                  element={this.props.element}
+                  value={this.props.value}
+                  sectionsExpanded={this.props.sectionsExpanded}
+                  setSectionsExpanded={this.props.setSectionsExpanded}
+                  formulaForm={this.props.formulaForm}
+                />
+              </React.Fragment>
+            ) : null}
+          </div>
         </div>
-        <div>
-          {this.state.visible ? (
-            <React.Fragment>
-              {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
-              <Component
-                handleRemoveItem={this.handleRemoveItem}
-                isDisabled={this.isDisabled()}
-                id={this.props.id}
-                key={this.props.key}
-                element={this.props.element}
-                value={this.props.value}
-                sectionsExpanded={this.props.sectionsExpanded}
-                setSectionsExpanded={this.props.setSectionsExpanded}
-                formulaForm={this.props.formulaForm}
-              />
-            </React.Fragment>
-          ) : null}
-        </div>
-      </div>
+        : null
     );
   }
 }
