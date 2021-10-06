@@ -1,4 +1,8 @@
-- Fix datetime format parsing with moment (bsc#1191348)
+-------------------------------------------------------------------
+Wed Oct 06 16:25:25 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.30-1
+  * Fix datetime format parsing with moment (bsc#1191348)
 
 -------------------------------------------------------------------
 Wed Oct 06 09:33:48 CEST 2021 - jgonzalez@suse.com
