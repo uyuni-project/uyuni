@@ -1,31 +1,36 @@
-- Update translation strings
-- fix logging of the spark framework and map requests to media.1
-  directory in the download controller (bsc#1189933)
-- Add 'Last build date' column to CLM project list (jsc#PM-2644)
-  (jsc#SUMA-61)
-- Improve exception handling and logging for mgr-libmod calls
-- Add checksums to repository metadata filenames (bsc#1188315)
-- Fix ISE in product migration if base product is missing (bsc#1190151)
-- use TLSv1.3 if it is a supported Protocol
-- Adapt auto errata update to respect maintenance windows
-- Adapt auto errata update to skip during CLM build (bsc#1189609)
-- add CentOS 7/8 aarch64
-- add Oracle Linux 7/8 aarch64
-- add Rocky Linux 8 aarch64
-- add AlmaLinux 8 aarch64
-- add Amazon Linux 2 aarch64
-- Add new endpoints to saltkeys API: acceptedList, pendingList, rejectedList, deniedList, accept and reject
-- fix ISE in SSM when scheduling patches on multiple systems (bsc#1190396, bsc#1190275)
-- Add 'Flush cache' option to Ansible playbook execution
-  (bsc#1190405)
-- Update kernel live patch version on minion startup (bsc#1190276)
-- Allow getting all completed actions via XMLRPC without display limit (bsc#1181223)
-- Support syncing patches with advisory status 'pending' (bsc#1190455)
-- Add XMLRPC API to force refreshing pillar data (bsc#1190123)
-- Add missing string on XCCDF scan results (bsc#1190164)
-- Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
-- Improved timezone support
-- implement package locking for salt minions
+-------------------------------------------------------------------
+Wed Oct 06 09:33:48 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.29-1
+  * Update translation strings
+  * fix logging of the spark framework and map requests to media.1
+    directory in the download controller (bsc#1189933)
+  * Add 'Last build date' column to CLM project list (jsc#PM-2644)
+    (jsc#SUMA-61)
+  * Improve exception handling and logging for mgr-libmod calls
+  * Add checksums to repository metadata filenames (bsc#1188315)
+  * Fix ISE in product migration if base product is missing (bsc#1190151)
+  * use TLSv1.3 if it is a supported Protocol
+  * Adapt auto errata update to respect maintenance windows
+  * Adapt auto errata update to skip during CLM build (bsc#1189609)
+  * add CentOS 7/8 aarch64
+  * add Oracle Linux 7/8 aarch64
+  * add Rocky Linux 8 aarch64
+  * add AlmaLinux 8 aarch64
+  * add Amazon Linux 2 aarch64
+  * Add new endpoints to saltkeys API: acceptedList, pendingList, rejectedList,
+    deniedList, accept and reject
+  * fix ISE in SSM when scheduling patches on multiple systems (bsc#1190396, bsc#1190275)
+  * Add 'Flush cache' option to Ansible playbook execution
+    (bsc#1190405)
+  * Update kernel live patch version on minion startup (bsc#1190276)
+  * Allow getting all completed actions via XMLRPC without display limit (bsc#1181223)
+  * Support syncing patches with advisory status 'pending' (bsc#1190455)
+  * Add XMLRPC API to force refreshing pillar data (bsc#1190123)
+  * Add missing string on XCCDF scan results (bsc#1190164)
+  * Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
+  * Improved timezone support
+  * implement package locking for salt minions
 
 -------------------------------------------------------------------
 Mon Aug 30 11:57:33 CEST 2021 - jmassaguerpla@suse.de
