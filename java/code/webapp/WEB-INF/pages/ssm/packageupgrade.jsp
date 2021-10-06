@@ -44,6 +44,9 @@
         <rl:column headerkey="packagelist.jsp.packagename" bound="false"
                    sortattr="nvre" sortable="true" filterattr="name">
             <c:out value="${current.name}" escapeXml="false"/>-<c:out value="${current.version}" escapeXml="false"/>-<c:out value="${current.release}" escapeXml="false"/>
+            <c:if test="${current.pkgReboot}">
+                <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+            </c:if>
         </rl:column>
 
         <rl:column headerkey="packagelist.jsp.packagearch" bound="false"

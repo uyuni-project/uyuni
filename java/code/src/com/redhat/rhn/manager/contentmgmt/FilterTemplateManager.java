@@ -28,13 +28,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import spark.utils.StringUtils;
 
 /**
  * Filter templates functionality
@@ -65,17 +65,18 @@ public class FilterTemplateManager {
     public List<ContentFilter> createLivePatchFilters(String prefix, PackageEvr kernelEvr, User user) {
         ensureOrgAdmin(user);
 
-        Map<String, FilterCriteria> criteria =
-                Map.of("livepatches", new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR,
-                "package_nevr", "kernel-default " + kernelEvr.toString()),
+        Map<String, FilterCriteria> criteria = Map.of(
+                "livepatches", new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR,
+                        "package_nevr", "kernel-default " + kernelEvr.toString()),
                 "noreboot", new FilterCriteria(FilterCriteria.Matcher.CONTAINS,
-                "keyword", "reboot_suggested"));
+                        "keyword", "reboot_suggested"),
+                "noreboot2", new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME,
+                        "package_provides_name", "installhint(reboot-needed)"));
 
         // Make sure none of the filters exist
         ensureNoFiltersExist(criteria.keySet(), prefix, user);
 
-        List<ContentFilter> createdFilters = new ArrayList<>(2);
-
+        List<ContentFilter> createdFilters = new ArrayList<>(3);
         criteria.forEach((name, crit) -> createdFilters.add(
                 ContentProjectFactory.createFilter(prefix + name, ContentFilter.Rule.DENY,
                         ContentFilter.EntityType.ERRATUM, crit, user)

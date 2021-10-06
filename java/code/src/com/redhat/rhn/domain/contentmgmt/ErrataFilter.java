@@ -141,6 +141,16 @@ public class ErrataFilter extends ContentFilter<Errata> {
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
+            case "package_provides_name":
+                switch (matcher) {
+                case CONTAINS_PROVIDES_NAME:
+                    return erratum.getPackages().stream()
+                            .flatMap(pkg -> pkg.getProvides().stream())
+                            .map(p -> p.getCapability().getName())
+                            .anyMatch(n -> n.equals(value));
+                default:
+                    throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }

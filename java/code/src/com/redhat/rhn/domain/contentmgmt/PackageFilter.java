@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -53,6 +53,10 @@ public class PackageFilter extends ContentFilter<Package> {
                 return pattern.matcher(getField(pack, field, String.class)).matches();
             case EXISTS:
                 return StringUtils.isNotEmpty(getField(pack, field, String.class));
+            case PROVIDES_NAME:
+                return pack.getProvides().stream()
+                        .map(p -> p.getCapability().getName())
+                        .anyMatch(n -> n.equals(value));
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
