@@ -23,7 +23,6 @@
 
 %define pythonX %{?build_py3: python3}%{!?build_py3: python}
 
-%global rhnroot /%{_datadir}/rhn
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only
 Group:          Applications/Internet
@@ -95,7 +94,6 @@ fi
 
 %files
 %license LICENSE
-%dir %{rhnroot}
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
