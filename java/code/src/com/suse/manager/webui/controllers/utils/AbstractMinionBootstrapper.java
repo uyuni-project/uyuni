@@ -252,6 +252,7 @@ public abstract class AbstractMinionBootstrapper {
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", SaltSSHService.getSSHUser());
+        input.getReactivationKey().ifPresent(r -> pillarData.put("management_key", r));
         ActivationKeyManager.getInstance().findAll(user)
                 .stream()
                 .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
@@ -304,10 +305,19 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
+        Optional<String> reactivationKeyError = validateReactivationKey(params.getReactivationKey());
+        if (reactivationKeyError.isPresent()) {
+            return Collections.singletonList(reactivationKeyError.get());
+        }
+
         if (saltApi.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + params.getHost() +
                     ") seems to already exist, please check!");
+        }
+
+        if (params.getReactivationKey().isPresent()) {
+            return Collections.emptyList();
         }
 
         return MinionServerFactory.findByMinionId(params.getHost())
@@ -333,6 +343,28 @@ public abstract class AbstractMinionBootstrapper {
         }
 
         return validateContactMethod(activationKey.getContactMethod());
+    }
+
+    /**
+     * Checks whether the reactivation key exists
+     *
+     * @param reactivationKeyLabel desired reactivation key label
+     * @return Optional with error message or empty if validation succeeds
+     */
+    private Optional<String> validateReactivationKey(Optional<String> reactivationKeyLabel) {
+        if (!reactivationKeyLabel.isPresent()) {
+            return Optional.empty();
+        }
+
+        ActivationKey reactivationKey = ActivationKeyFactory.lookupByKey(reactivationKeyLabel.get());
+
+        if (reactivationKey == null) {
+            return Optional.of("Selected reactivation key not found.");
+        }
+        if (reactivationKey.getServer() == null) {
+            return Optional.of("Selected reactivation key has no server set for reactivation.");
+        }
+        return Optional.empty();
     }
 
     protected abstract Optional<String> validateContactMethod(ContactMethod desiredContactMethod);
