@@ -28,6 +28,7 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Collections;
@@ -197,6 +198,31 @@ public enum ViewHelper {
         DateFormat tzFormat = new SimpleDateFormat("z", locale);
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
+    }
+
+    /**
+     * Format a given date time to the ISO FORMAT using the server timezone
+     *
+     * @param dateIn the datetime to render
+     * @return server default time as a string
+     */
+    public static String formatDateTimeToISO(Date dateIn) {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getDefault();
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return isoFormat.format(dateIn);
+    }
+
+    /**
+     * Parse an ISO FORMAT String to a Date
+     *
+     * @param dateIn the given date time as a string
+     * @return the parsed Date
+     * @throws ParseException
+     */
+    public static Date getDateFromISOString(String dateIn) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX").parse(dateIn);
     }
 
     /**
