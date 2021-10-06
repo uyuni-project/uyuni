@@ -1,9 +1,6 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# Please, do not run this feature after the retail one:
-# proxy_retail_pxeboot_and_mass_import.feature
-#
 
 @proxy
 @private_net
@@ -81,6 +78,16 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Create"
     Then I should see a "Autoinstallation: 15-sp2-cobbler" text
     And I should see a "Autoinstallation Details" text
+
+  Scenario: Foobar
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "15-sp2-cobbler"
+    And I follow "Variables"
+    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I click on "Update Variables"
+    And I follow "Autoinstallation File"
+    Then I should see a "SLE-15-SP2-TFTP" text
 
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
