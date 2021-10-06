@@ -1,5 +1,9 @@
-- When renaming: don't regenerate CA, allow using third-party
-  certificate and trigger pillar refresh (bsc#1190123)
+-------------------------------------------------------------------
+Wed Oct 06 09:36:16 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
+  * When renaming: don't regenerate CA, allow using third-party
+    certificate and trigger pillar refresh (bsc#1190123)
 
 -------------------------------------------------------------------
 Mon Aug 30 11:59:05 CEST 2021 - jmassaguerpla@suse.de
