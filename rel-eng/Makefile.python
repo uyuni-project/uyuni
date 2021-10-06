@@ -1,10 +1,12 @@
 .DEFAULT_GOAL  :=  __unspecified
 
+# Update pylint until we get rid of https://github.com/PyCQA/astroid/pull/733
 define update_pip_env
 	rpm -e python3-pylint &>/dev/null || true
+	rpm -e python3-astroid python3-wrapt &>/dev/null || true
 	pip3 install --upgrade pip
-	#pip3 uninstall -y pylint
-	#pip3 install pylint==2.3.1
+	pip3 uninstall -y pylint
+	pip3 install pylint==2.3.1
 	mkdir -p reports
 endef
 

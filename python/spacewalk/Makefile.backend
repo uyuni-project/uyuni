@@ -13,7 +13,7 @@ EXTRA_DIRS = /var/log/rhn /var/log/rhn/reposync /var/cache/rhn /var/cache/rhn/sa
 DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
 DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
-DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
+DOCKER_VOLUMES        = -v "$(CURDIR)/../../:/manager"
 
 
 all :: all-code all-conf
@@ -29,43 +29,27 @@ include Makefile.defs
 
 __pylint ::
 	$(call update_pip_env)
-	pylint --rcfile=pylintrc $(shell find -name '*.py') > reports/pylint.log || true
+	pushd ..; pylint --rcfile=spacewalk/pylintrc spacewalk | tee spacewalk/reports/pylint.log || true ; popd
 
 install :: install-code install-conf
 
 clean :: clean-code clean-conf
 
 test    ::
-	$(MAKE) -C common/test/unit-test PYTHON_BIN=$(PYTHON_BIN)
-	$(MAKE) -C server/test/unit-test PYTHON_BIN=$(PYTHON_BIN)
-
-unittest ::
-	if test -x /usr/bin/unit2 ; then \
-		unit2 discover -s satellite_tools/test/unit; \
-		unit2 discover -s common/test/unit-test; \
-	else \
-		$(PYTHON_BIN) -munittest discover -s satellite_tools/test/unit; \
-		$(PYTHON_BIN) -munittest discover -s common/test/unit-test; \
-	fi
+	pushd ..; $(PYTHON_BIN) -m pytest test/unit; popd
 
 docker_no_db_tests ::
 	mkdir -p $(CURDIR)/reports
-	@echo "Running satellite_tools/test/unit tests inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
-	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/backend/test/docker-backend-tools-tests.sh
-	@echo "Running common/test/unit-test inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
-	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/backend/test/docker-backend-common-tests.sh
+	@echo "Running satellite_tools unit tests inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
+	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/python/test/docker-backend-tools-tests.sh
+	@echo "Running common unit tests inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
+	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/python/test/docker-backend-common-tests.sh
 
 docker_pgsql_tests ::
 	mkdir -p $(CURDIR)/reports
 	@echo "Running Postgresql tests"
-	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/backend/test/docker-backend-pgsql-tests.sh
-
-docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/backend; make -f Makefile.backend __pylint"
+	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/python/test/docker-backend-pgsql-tests.sh
 
 docker_shell ::
 	docker run --rm=true -t -i -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
-
-test ::
-	echo "test"
 

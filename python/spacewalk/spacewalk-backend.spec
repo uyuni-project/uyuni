@@ -350,7 +350,6 @@ install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
 %{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 
 %check
-make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python3_sitelib}:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs PYTHON_BIN=python3 test
 
 %if 0%{?pylint_check}
 # check coding style

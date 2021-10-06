@@ -9,12 +9,6 @@ CONF_DIRS =
 # httpd-conf, logrotate)
 EXTRA_DIRS =
 
-# Docker tests variables
-DOCKER_CONTAINER_BASE = uyuni-master
-DOCKER_REGISTRY       = registry.mgr.suse.de
-DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
-DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
-
 
 all :: all-code all-conf
 
@@ -27,35 +21,10 @@ all :: all-code all-conf
 # now include some Macros
 include Makefile.defs
 
-__pylint ::
-	$(call update_pip_env)
-	pylint --rcfile=pylintrc $(shell find -name '*.py') > reports/pylint.log || true
-
 install :: install-code install-conf
 
 clean :: clean-code clean-conf
 
-test    ::
-	$(MAKE) -C common/test/unit-test PYTHON_BIN=$(PYTHON_BIN)
-
-unittest ::
-	if test -x /usr/bin/unit2 ; then \
-		unit2 discover -s common/test/unit-test; \
-	else \
-		$(PYTHON_BIN) -munittest discover -s common/test/unit-test; \
-	fi
-
-docker_tests ::
-	mkdir -p $(CURDIR)/reports
-	@echo "Running common/test/unit-test inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
-	#docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/backend/test/docker-backend-common-tests.sh
-
-docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/uyuni/common-libs; make -f Makefile.common-libs __pylint"
-
-docker_shell ::
-	docker run --rm=true -t -i -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
-
 test ::
-	echo "test"
-
+	mkdir -p $(CURDIR)/reports
+	cd ..; $(PYTHON_BIN) -m pytest test/unit/uyuni/
