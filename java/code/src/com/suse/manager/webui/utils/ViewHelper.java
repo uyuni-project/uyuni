@@ -180,7 +180,7 @@ public enum ViewHelper {
     public String getServerTime() {
         Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(new Date());
     }
@@ -208,7 +208,7 @@ public enum ViewHelper {
     public static String formatDateTimeToISO(Date dateIn) {
         Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(dateIn);
     }
@@ -221,7 +221,7 @@ public enum ViewHelper {
      * @throws ParseException
      */
     public static Date getDateFromISOString(String dateIn) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX").parse(dateIn);
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(dateIn);
     }
 
     /**
