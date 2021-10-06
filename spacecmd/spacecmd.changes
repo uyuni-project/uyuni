@@ -1,7 +1,11 @@
-- Update translation strings
-- configchannel_updatefile handles directory properly (bsc#1190512)
-- Add schedule_archivecompleted to mass archive actions (bsc#1181223)
-- Remove whoami from the list of unauthenticated commands (bsc#1188977)
+-------------------------------------------------------------------
+Wed Oct 06 09:30:39 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.13-1
+  * Update translation strings
+  * configchannel_updatefile handles directory properly (bsc#1190512)
+  * Add schedule_archivecompleted to mass archive actions (bsc#1181223)
+  * Remove whoami from the list of unauthenticated commands (bsc#1188977)
 
 -------------------------------------------------------------------
 Mon Aug 30 11:51:42 CEST 2021 - jmassaguerpla@suse.de
