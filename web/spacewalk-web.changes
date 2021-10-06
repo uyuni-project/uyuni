@@ -1,3 +1,5 @@
+- Fix datetime format parsing with moment (bsc#1191348)
+
 -------------------------------------------------------------------
 Wed Oct 06 09:37:13 CEST 2021 - jgonzalez@suse.com
 

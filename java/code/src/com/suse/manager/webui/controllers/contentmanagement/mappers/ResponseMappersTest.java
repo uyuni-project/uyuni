@@ -27,6 +27,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
+import com.suse.manager.webui.utils.ViewHelper;
 
 import java.util.Date;
 
@@ -65,14 +66,17 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
         manager.buildProject(cp, empty(), false, user);
 
         props = ResponseMappers.mapProjectPropertiesFromDB(cp);
-        Date firstBuildDate = props.getLastBuildDate();
+        Date firstBuildDate = ViewHelper.getDateFromISOString(props.getLastBuildDate());
         assertNotNull(firstBuildDate);
         assertEquals(1, props.getHistoryEntries().size());
+
+        Thread.sleep(1000); // wait before building again
 
         // Second build
         manager.buildProject(cp, empty(), false, user);
         props = ResponseMappers.mapProjectPropertiesFromDB(cp);
-        assertTrue(props.getLastBuildDate().after(firstBuildDate));
+        Date secondBuildDate = ViewHelper.getDateFromISOString(props.getLastBuildDate());
+        assertTrue(secondBuildDate.after(firstBuildDate));
         assertEquals(2, props.getHistoryEntries().size());
     }
 }
