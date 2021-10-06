@@ -1,8 +1,12 @@
-- add CentOS 7/8 aarch64
-- add Oracle Linux 7/8 aarch64
-- add Rocky Linux 8 aarch64
-- add AlmaLinux 8 aarch64
-- add Amazon Linux 2 aarch64
+-------------------------------------------------------------------
+Wed Oct 06 09:41:53 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+  * add CentOS 7/8 aarch64
+  * add Oracle Linux 7/8 aarch64
+  * add Rocky Linux 8 aarch64
+  * add AlmaLinux 8 aarch64
+  * add Amazon Linux 2 aarch64
 
 -------------------------------------------------------------------
 Mon Aug 30 12:06:32 CEST 2021 - jmassaguerpla@suse.de
