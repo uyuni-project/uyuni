@@ -1,9 +1,6 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# Please, do not run this feature after the retail one:
-# proxy_retail_pxeboot_and_mass_import.feature
-#
 
 @proxy
 @private_net
