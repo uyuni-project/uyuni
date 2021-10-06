@@ -1,12 +1,15 @@
-- Update translation strings
-- Add 'Last build date' column to CLM project list (jsc#PM-2644)
-  (jsc#SUMA-61)
-- Fix 'Type' input in CLM source edit form (bsc#1190820)
-- Add 'Flush cache' checkbox to Ansible playbook execution page
-  (bsc#1190405)
-- Fix the VM creation and editing submit button action (bsc#1190602)
-- Improved timezone support
-- Enhance the default base channel help message (bsc#1171520)
+-------------------------------------------------------------------
+Wed Oct 06 09:37:13 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.22-1
+  * Add 'Last build date' column to CLM project list (jsc#PM-2644)
+    (jsc#SUMA-61)
+  * Fix 'Type' input in CLM source edit form (bsc#1190820)
+  * Add 'Flush cache' checkbox to Ansible playbook execution page
+    (bsc#1190405)
+  * Fix the VM creation and editing submit button action (bsc#1190602)
+  * Improved timezone support
+  * Enhance the default base channel help message (bsc#1171520)
 
 -------------------------------------------------------------------
 Mon Aug 30 11:59:32 CEST 2021 - jmassaguerpla@suse.de
