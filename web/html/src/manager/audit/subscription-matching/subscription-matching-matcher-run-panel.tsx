@@ -1,6 +1,7 @@
 import * as React from "react";
 import { localizedMoment } from "utils";
 import Network from "utils/network";
+import { fromNowStringfied } from "components/datetime/FromNow";
 
 type MatcherRunPanelProps = {
   initialLatestStart?: moment.Moment | null;
@@ -101,7 +102,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
   if (props.latestEnd == null) {
     return (
       <div>
-        {t("Matching data is currently being recomputed, it was started {0}.", props.latestStart.fromNow())}
+        {t("Matching data is currently being recomputed, it was started {0}.", fromNowStringfied(props.latestStart))}
       </div>
     );
   }
@@ -110,7 +111,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     <div>
       {t(
         "Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.",
-        props.latestEnd.fromNow()
+        fromNowStringfied(props.latestEnd)
       )}
     </div>
   );

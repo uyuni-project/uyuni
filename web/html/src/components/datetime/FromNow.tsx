@@ -14,3 +14,7 @@ export const FromNow = (props: Props) => {
   const value = localizedMoment(rawValue).tz(localizedMoment.userTimeZone);
   return <span title={value.toUserString()}>{value.fromNow()}</span>;
 };
+
+export const fromNowStringfied = (value) => {
+  return value ? localizedMoment(value).tz(localizedMoment.userTimeZone).fromNow() : null;
+}
