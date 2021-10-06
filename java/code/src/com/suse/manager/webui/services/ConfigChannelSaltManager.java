@@ -301,6 +301,7 @@ public class ConfigChannelSaltManager {
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("source", getSaltUriForConfigFile(file)));
         fileParams.add(singletonMap("makedirs", true));
+        fileParams.add(singletonMap("template", "jinja"));
         fileParams.addAll(getModeParams(file.getLatestConfigRevision().getConfigInfo()));
         return fileParams;
     }
