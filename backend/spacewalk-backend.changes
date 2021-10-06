@@ -1,6 +1,10 @@
-- Update translations strings
-- handle download of metadata filesnames with checksums (bsc#1188315)
-- Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
+-------------------------------------------------------------------
+Wed Oct 06 09:31:39 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.17-1
+  * Update translations strings
+  * handle download of metadata filesnames with checksums (bsc#1188315)
+  * Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
 
 -------------------------------------------------------------------
 Mon Aug 30 11:54:50 CEST 2021 - jmassaguerpla@suse.de
