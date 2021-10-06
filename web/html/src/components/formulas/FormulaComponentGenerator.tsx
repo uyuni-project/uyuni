@@ -209,6 +209,7 @@ export function generateFormulaComponentForId(
         help={element.$help}
         sectionsExpanded={formulaForm.props.sectionsExpanded}
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
+        isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
       >
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
       </Group>
@@ -225,6 +226,7 @@ export function generateFormulaComponentForId(
         disabled={isDisabled}
         sectionsExpanded={formulaForm.props.sectionsExpanded}
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
+        isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
       />
     );
   } else if (element.$type === "select")
@@ -347,14 +349,21 @@ function checkVisibilityCondition(id, condition, formulaForm) {
 }
 
 // return the element content visibility conditionally based on the element name by the criteria
-const collapsedByCriteria = (element, criteria) => {
+function isVisibleByCriteria(element, criteria) {
+  let visibilityForcedByChildren = false;
+  // check if all children are not visible by criteria so we can hide the parent (this element) as well
+  for (var child_name in element) {
+    if (child_name.startsWith("$")) continue;
+    visibilityForcedByChildren = isVisibleByCriteria(element[child_name], criteria);
+    if (visibilityForcedByChildren) break;
+  }
+
+  // return conditions result whether the element can be hided or not
   return (
-      criteria ||
-      (
-        element.$name &&
-        criteria.length > 0 &&
-        element.$name.toLowerCase().includes(criteria.toLowerCase())
-      )
+      criteria == null ||
+      criteria === "" ||
+      element.$name.toLowerCase().includes(criteria.toLowerCase()) ||
+      visibilityForcedByChildren
   );
 }
 
