@@ -18,6 +18,7 @@
 import sys
 import locale
 import unittest
+from unittest.mock import MagicMock, patch
 import time
 from uyuni.common import rhnLib
 
@@ -31,6 +32,7 @@ class Tests(unittest.TestCase):
     # Tests for rhnLib.rfc822time()
     ###########################################################################
 
+    @patch('uyuni.common.rhnLib.time.gmtime', MagicMock(return_value=(2006, 1, 27, 14, 12, 5, 4, 27, 0)))
     def test_rfc822time_normal_tuple(self):
         "rfc822time: Simple call using a valid tuple argument."
         test_arg = (2006, 1, 27, int(14 - TIMEZONE_SHIFT), 12, 5, 4, 27, -1)
@@ -38,6 +40,7 @@ class Tests(unittest.TestCase):
         result = rhnLib.rfc822time(test_arg)
         self.assertEqual(result, target, result + " != " + target)
 
+    @patch('uyuni.common.rhnLib.time.gmtime', MagicMock(return_value=(2006, 1, 27, 14, 12, 5, 4, 27, 0)))
     def test_rfc822time_normal_list(self):
         "rfc822time: Simple call using a valid list argument."
         test_arg = [2006, 1, 27, int(14 - TIMEZONE_SHIFT), 12, 5, 4, 27, -1]
