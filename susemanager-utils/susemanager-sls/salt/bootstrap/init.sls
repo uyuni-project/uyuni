@@ -66,19 +66,24 @@ mgr_server_localhost_alias_absent:
 {%- endif %}
 
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
-{% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
-{%- if 'status' not in bootstrap_repo_request %}
-  {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
-# if bootstrap does not work, try with RedHat
-{%- elif grains['os_family'] == 'RedHat' and not (0 < bootstrap_repo_request['status'] < 300) %}
-  {%- set os_base = 'res' %}
-  {% set osrelease = grains['osrelease_info'][0] %}
-  {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
-{%- elif bootstrap_repo_request['status'] == 901 %}
-  {{ raise(bootstrap_repo_request['error']) }}
+
+{%- if grains['os_family'] == 'RedHat' or  grains['os_family'] == 'Suse'%}
+  {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
+  {%- if 'status' not in bootstrap_repo_request %}
+    {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
+  # if bootstrap does not work, try with RedHat
+  {%- elif grains['os_family'] == 'RedHat' and not (0 < bootstrap_repo_request['status'] < 300) %}
+    {%- set os_base = 'res' %}
+    {% set osrelease = grains['osrelease_info'][0] %}
+    {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
+  {%- elif bootstrap_repo_request['status'] == 901 %}
+    {{ raise(bootstrap_repo_request['error']) }}
+  {%- endif %}
+  {%- set bootstrap_repo_exists = (0 < bootstrap_repo_request['status'] < 300) %}
+{%- elif grains['os_family'] == 'Debian' %}
+  {%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'dists/bootstrap/Release', status=True, verify_ssl=False).get('status', 0) < 300) %}
 {%- endif %}
 
-{%- set bootstrap_repo_exists = (0 < bootstrap_repo_request['status'] < 300) %}
 
 bootstrap_repo:
   file.managed:
