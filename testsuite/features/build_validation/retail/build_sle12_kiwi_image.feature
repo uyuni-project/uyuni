@@ -1,6 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle12sp5_buildhost
 Feature: Prepare buildhost and build OS image for SLES 12 SP5
 
   Scenario: Log in as admin user

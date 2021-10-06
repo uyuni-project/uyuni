@@ -1,6 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle11sp4_buildhost
 Feature: Prepare buildhost and build OS image for SLES 11 SP3
 
   Scenario: Log in as admin user
