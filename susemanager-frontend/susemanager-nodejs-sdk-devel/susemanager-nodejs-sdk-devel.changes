@@ -1,5 +1,9 @@
-- Upgrade immer to 9.0.6 to fix CVE-2021-23436
-- Add moment and moment-timezone
+-------------------------------------------------------------------
+Wed Oct 06 09:38:44 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.15-1
+  * Upgrade immer to 9.0.6 to fix CVE-2021-23436
+  * Add moment and moment-timezone
 
 -------------------------------------------------------------------
 Mon Aug 30 12:04:20 CEST 2021 - jmassaguerpla@suse.de
