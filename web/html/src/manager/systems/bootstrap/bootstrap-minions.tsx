@@ -28,6 +28,7 @@ type State = {
   privKey: string;
   privKeyPwd: string;
   activationKey: string;
+  reactivationKey: string;
   ignoreHostKeys: boolean;
   manageWithSSH: boolean;
   messages: any[];
@@ -53,6 +54,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       privKey: "",
       privKeyPwd: "",
       activationKey: "",
+      reactivationKey: "",
       ignoreHostKeys: true,
       manageWithSSH: false,
       messages: [],
@@ -76,6 +78,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       "ignoreHostKeysChanged",
       "manageWithSSHChanged",
       "activationKeyChanged",
+      "reactivationKeyChanged",
       "clearFields",
       "proxyChanged",
     ].forEach((method) => (this[method] = this[method].bind(this)));
@@ -153,6 +156,12 @@ class BootstrapMinions extends React.Component<Props, State> {
     });
   }
 
+  reactivationKeyChanged(event) {
+    this.setState({
+      reactivationKey: event.target.value,
+    });
+  }
+
   proxyChanged(event) {
     var proxyId = event.target.value;
     var proxy = this.props.proxies.find((p) => DEPRECATED_unsafeEquals(p.id, proxyId));
@@ -170,6 +179,8 @@ class BootstrapMinions extends React.Component<Props, State> {
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
     formData["user"] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
     formData["activationKeys"] = this.state.activationKey === "" ? [] : [this.state.activationKey];
+    formData["reactivationKey"] =
+      this.state.reactivationKey.trim() === "" ? undefined : this.state.reactivationKey.trim();
     formData["ignoreHostKeys"] = this.state.ignoreHostKeys;
 
     const authMethod = this.state.authMethod;
@@ -444,6 +455,19 @@ class BootstrapMinions extends React.Component<Props, State> {
                     </option>
                   ))}
               </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Reactivation Key")}:</label>
+            <div className="col-md-6">
+              <input
+                name="reactivationKey"
+                className="form-control"
+                type="text"
+                placeholder={t("Leave empty when no reactivation is wanted")}
+                value={this.state.reactivationKey}
+                onChange={this.reactivationKeyChanged}
+              />
             </div>
           </div>
           <div className="form-group">
