@@ -1,9 +1,14 @@
-- create unique index on package details action id (bsc#1190396, bsc#1190275)
-- Add 'flush_cache' flag to Ansible playbook execution action
-  (bsc#1190405)
-- Support syncing patches with advisory status 'pending' (bsc#1190455)
-- allow Ansible Control Node entitlement for aarch64, ppc64le and s390x(bsc#1189799)
-- implement package locking for salt minions
+-------------------------------------------------------------------
+Wed Oct 06 09:40:04 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.18-1
+  * create unique index on package details action id (bsc#1190396, bsc#1190275)
+  * Add 'flush_cache' flag to Ansible playbook execution action
+    (bsc#1190405)
+  * Support syncing patches with advisory status 'pending' (bsc#1190455)
+  * allow Ansible Control Node entitlement for aarch64, ppc64le and
+    s390x (bsc#1189799)
+  * implement package locking for salt minions
 
 -------------------------------------------------------------------
 Mon Aug 30 12:05:11 CEST 2021 - jmassaguerpla@suse.de
