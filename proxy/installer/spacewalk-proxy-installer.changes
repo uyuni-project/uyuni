@@ -1,4 +1,8 @@
-- use system default for SSLProtocol
+-------------------------------------------------------------------
+Wed Oct 06 09:35:51 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+  * use system default for SSLProtocol
 
 -------------------------------------------------------------------
 Mon Aug 30 11:58:06 CEST 2021 - jmassaguerpla@suse.de
