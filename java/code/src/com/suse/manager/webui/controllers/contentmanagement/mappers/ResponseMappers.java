@@ -78,10 +78,15 @@ public class ResponseMappers {
         properties.setLabel(projectDB.getLabel());
         properties.setName(projectDB.getName());
         properties.setDescription(projectDB.getDescription());
-        properties.setLastBuildDate(projectDB.getHistoryEntries().stream()
+        Optional<Date> lastBuildDate = projectDB.getHistoryEntries().stream()
                 .map(ContentProjectHistoryEntry::getCreated)
-                .max(Comparator.naturalOrder())
-                .orElse(null));
+                .max(Comparator.naturalOrder());
+        if (lastBuildDate.isPresent()) {
+            properties.setLastBuildDate(ViewHelper.formatDateTimeToISO(lastBuildDate.get()));
+        }
+        else {
+            properties.setLastBuildDate(null);
+        }
 
         List<ProjectHistoryEntryResponse> historyEntries = projectDB.getHistoryEntries().stream()
                 .map(entry -> {

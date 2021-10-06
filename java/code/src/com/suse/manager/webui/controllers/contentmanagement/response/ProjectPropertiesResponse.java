@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.response;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ public class ProjectPropertiesResponse {
     private String label;
     private String name;
     private String description;
-    private Date lastBuildDate;
+    private String lastBuildDate;
     private List<ProjectHistoryEntryResponse> historyEntries;
 
     public String getLabel() {
@@ -40,7 +39,7 @@ public class ProjectPropertiesResponse {
         return description;
     }
 
-    public Date getLastBuildDate() {
+    public String getLastBuildDate() {
         return lastBuildDate;
     }
 
@@ -60,7 +59,7 @@ public class ProjectPropertiesResponse {
         this.description = descriptionIn;
     }
 
-    public void setLastBuildDate(Date lastBuildDateIn) {
+    public void setLastBuildDate(String lastBuildDateIn) {
         this.lastBuildDate = lastBuildDateIn;
     }
 
