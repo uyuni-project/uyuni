@@ -1,15 +1,19 @@
-- Fix cpuinfo grain and virt_utils state python2 compatibility
-  (bsc#1191139, bsc#1191123)
-- deploy certificate on SLE Micro 5.1
-- Realign pkgset cookie path for Salt Bundle changes
-- Fix pkgset beacon to work with salt-minion 2016.11.10 (bsc#1189260)
-- Fix virt grain python2 compatibility
-- disable unaccessible local repos before bootstrapping (bsc#1186405)
-- Fix mgrcompat state module to work with Salt 3003 and 3004
-- Add 'flush_cache' flag to 'ansible.playbooks' call (bsc#1190405)
-- Update kernel live patch version on minion startup (bsc#1190276)
-- don't use libvirt API to get its version for the virt features grain
-- implement package locking for salt minions
+-------------------------------------------------------------------
+Wed Oct 06 09:40:53 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.17-1
+  * Fix cpuinfo grain and virt_utils state python2 compatibility
+    (bsc#1191139, bsc#1191123)
+  * deploy certificate on SLE Micro 5.1
+  * Realign pkgset cookie path for Salt Bundle changes
+  * Fix pkgset beacon to work with salt-minion 2016.11.10 (bsc#1189260)
+  * Fix virt grain python2 compatibility
+  * disable unaccessible local repos before bootstrapping (bsc#1186405)
+  * Fix mgrcompat state module to work with Salt 3003 and 3004
+  * Add 'flush_cache' flag to 'ansible.playbooks' call (bsc#1190405)
+  * Update kernel live patch version on minion startup (bsc#1190276)
+  * don't use libvirt API to get its version for the virt features grain
+  * implement package locking for salt minions
 
 -------------------------------------------------------------------
 Mon Aug 30 12:05:54 CEST 2021 - jmassaguerpla@suse.de
