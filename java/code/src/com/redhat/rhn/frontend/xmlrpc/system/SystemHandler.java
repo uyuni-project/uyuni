@@ -106,6 +106,7 @@ import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
+import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
@@ -3223,12 +3224,16 @@ public class SystemHandler extends BaseHandler {
      * @return Returns an array of maps representing the server history items
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
+     * @deprecated This version of the method is deprecated and the return value will be changed
+     * in a future API version. Please one of the other overloaded versions of getEventHistory.
      *
      * @xmlrpc.doc Returns a list history items associated with the system, ordered
      *             from newest to oldest. Note that the details may be empty for
      *             events that were scheduled against the system (as compared to instant).
      *             For more information on such events, see the system.listSystemEvents
      *             operation.
+     *             Note: This version of the method is deprecated and the return value will be changed in a
+     *             future API version. Please one of the other overloaded versions of getEventHistory.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
@@ -3236,10 +3241,91 @@ public class SystemHandler extends BaseHandler {
      *           $HistoryEventSerializer
      *      #array_end()
      */
+    @Deprecated
     public Object[] getEventHistory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         List<HistoryEvent> history = ServerFactory.getServerHistory(server);
         return history.toArray();
+    }
+
+    /**
+     * Lists the server history of a system after the date specified. The result list is paged and ordered from oldest
+     * to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param earliestDate the minimum completion date for the events retrieved
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results to return
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
+     *             The list is paged and ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
+     * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate, Integer offset,
+                                                Integer limit) {
+
+        final Server server = lookupServer(loggedInUser, sid);
+        return SystemManager.systemEventHistory(server, loggedInUser.getOrg(), earliestDate, offset, limit);
+    }
+
+    /**
+     * Lists the server history of a system. The result list is paged and ordered from oldest to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results to return
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system.
+     *             The list is paged and ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
+     * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Integer offset, Integer limit) {
+        return getEventHistory(loggedInUser, sid, null, offset, limit);
+    }
+
+    /**
+     * Lists the server history of a system after the date specified. The result list is ordered from oldest
+     * to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param earliestDate the minimum completion date for the events retrieved
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
+     *             The list is ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate) {
+        return getEventHistory(loggedInUser, sid, earliestDate, null, null);
     }
 
     /**

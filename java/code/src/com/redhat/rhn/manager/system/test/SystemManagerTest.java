@@ -35,6 +35,8 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
@@ -85,6 +87,7 @@ import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
+import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -121,6 +124,8 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -139,6 +144,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1770,6 +1776,65 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         createIfaceForServer(server2, "virbr0", "192.168.178.1", "11:22:33:44:55:78");
 
         assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    public void testSystemEventHistory() throws Exception {
+        final Server server = ServerTestUtils.createTestSystem(user);
+
+        createTestAction(server, ActionFactory.TYPE_CONFIGFILES_UPLOAD);
+        createHistoryEntry(server, "Event 1");
+        createTestAction(server, ActionFactory.TYPE_APPLY_STATES);
+        createTestAction(server, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        createTestAction(server, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        createHistoryEntry(server, "Event 2");
+        createTestAction(server, ActionFactory.TYPE_PACKAGES_UPDATE);
+        createHistoryEntry(server, "Event 3");
+
+        final Org org = user.getOrg();
+
+        // Test pagination
+        final List<SystemEventDto> firstPageEvents = SystemManager.systemEventHistory(server, org, null, 0, 5);
+        assertEquals(5, firstPageEvents.size());
+
+        final List<SystemEventDto> secondPageEvents = SystemManager.systemEventHistory(server, org, null, 5, 5);
+        assertEquals(4, secondPageEvents.size());
+        assertTrue(Collections.disjoint(firstPageEvents, secondPageEvents));
+
+        final List<SystemEventDto> noEvents = SystemManager.systemEventHistory(server, org, null, 10, 5);
+        assertEquals(0, noEvents.size());
+
+        // Extract all events
+        final List<SystemEventDto> allEvents = SystemManager.systemEventHistory(server, org, null, null, null);
+        assertEquals(9, allEvents.size());
+        assertTrue(CollectionUtils.isEqualCollection(allEvents, ListUtils.union(firstPageEvents, secondPageEvents)));
+
+        // Reordering by id is needed since all the events and actions have the same creation date
+        allEvents.sort(Comparator.comparingLong(SystemEventDto::getId));
+
+        assertEquals("added system entitlement ", allEvents.get(0).getSummary());
+        assertEquals("Upload config file data to server", allEvents.get(1).getHistoryTypeName());
+        assertEquals("Event 1", allEvents.get(2).getSummary());
+        assertEquals("Apply states", allEvents.get(3).getHistoryTypeName());
+        assertEquals("Hardware List Refresh", allEvents.get(4).getHistoryTypeName());
+        assertEquals("Package List Refresh", allEvents.get(5).getHistoryTypeName());
+        assertEquals("Event 2", allEvents.get(6).getSummary());
+        assertEquals("Package Install", allEvents.get(7).getHistoryTypeName());
+        assertEquals("Event 3", allEvents.get(8).getSummary());
+    }
+
+    private void createHistoryEntry(Server server, String s) {
+        SystemManager.addHistoryEvent(server, s, "Test history event entry");
+        ServerFactory.save(server);
+    }
+
+    private void createTestAction(Server server, ActionType actionType)
+            throws Exception {
+        final Action action = ActionFactoryTest.createAction(user, actionType);
+        final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+
+        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        ActionFactory.save(action);
     }
 
     private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {

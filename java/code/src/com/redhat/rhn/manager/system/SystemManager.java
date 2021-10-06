@@ -127,6 +127,7 @@ import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -3174,17 +3175,45 @@ public class SystemManager extends BaseManager {
      * @param pc pageContext
      * @return Returns history events for a system
      */
-    public static DataResult<SystemEventDto> systemEventHistory(Long sid, Long oid,
-            PageControl pc) {
+    public static DataResult<SystemEventDto> systemEventHistory(Long sid, Long oid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "system_events_history");
-        Map<String, Object> params = new HashMap<String, Object>();
+
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("oid", oid);
+        params.put("date", "1970-01-01 00:00:00");
+        params.put("limit", null);
+        params.put("offset", null);
 
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         return makeDataResult(params, elabParams, pc, m, SystemEventDto.class);
     }
 
+    /**
+     * Returns the list of history events for the specified server
+     * @param server the server
+     * @param org the organization of the user requesting the list
+     * @param earliestDate the earliest completion date of the events returned
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results returned
+     * @return a list of the history event according to the parameters specified
+     */
+    @SuppressWarnings("unchecked")
+    public static DataResult<SystemEventDto> systemEventHistory(Server server, Org org, java.util.Date earliestDate,
+                                                                Integer offset, Integer limit) {
+        final SelectMode m = ModeFactory.getMode("System_queries", "system_events_history");
+
+        final SimpleDateFormat formatter = new SimpleDateFormat(LocalizationService.RHN_DB_DATEFORMAT);
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("sid", server.getId());
+        params.put("oid", org.getId());
+        params.put("date", earliestDate != null ? formatter.format(earliestDate) : "1970-01-01 00:00:00");
+        params.put("limit", limit);
+        params.put("offset", offset);
+
+        return m.execute(params);
+    }
     /**
      * @param sid server id
      * @param pc pageContext

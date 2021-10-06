@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
+import com.suse.manager.xmlrpc.serializer.SystemEventDtoSerializer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -154,6 +155,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(RescheduleResultSerializer.class);
         SERIALIZER_CLASSES.add(AnsiblePathSerializer.class);
         SERIALIZER_CLASSES.add(AnsiblePlaybookSerializer.class);
+        SERIALIZER_CLASSES.add(SystemEventDtoSerializer.class);
     }
 
     /**
