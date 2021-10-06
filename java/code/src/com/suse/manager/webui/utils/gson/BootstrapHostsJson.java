@@ -37,6 +37,7 @@ public class BootstrapHostsJson {
     private String privKey;
     private String privKeyPwd;
     private List<String> activationKeys;
+    private String reactivationKey;
     private boolean ignoreHostKeys;
     private Long proxy;
 
@@ -140,6 +141,13 @@ public class BootstrapHostsJson {
     }
 
     /**
+     * @return value of reactivationKey
+     */
+    public String getReactivationKey() {
+        return reactivationKey;
+    }
+
+    /**
      * @return the id of the proxy
      */
     public Long getProxy() {
@@ -202,6 +210,15 @@ public class BootstrapHostsJson {
      */
     public Optional<String> maybeGetPrivKeyPwd() {
         return maybeGetString(getPrivKeyPwd());
+    }
+
+    /**
+     * Helper method to return the reactivation key as as an Optional&lt;String&gt;.
+     *
+     * @return reactivation key wrapped as Optional, or empty if no reactivation key is provided
+     */
+    public Optional<String> maybeGetReactivationKey() {
+        return maybeGetString(getReactivationKey());
     }
 
     private static Optional<String> maybeGetString(String str) {
