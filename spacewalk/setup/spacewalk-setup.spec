@@ -106,7 +106,6 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 %else
 Requires:       (python-PyYAML or PyYAML)
 %endif
-Requires:       /usr/bin/gpg
 Requires:       curl
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN

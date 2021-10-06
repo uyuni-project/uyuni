@@ -132,7 +132,6 @@ print Spacewalk::Setup::loc("* Setting up users and groups.\n");
 setup_users_and_groups();
 
 setup_services();
-setup_gpg(\%opts);
 
 setup_admin_email(\%opts, \%answers, \%rhnOptions);
 
@@ -964,13 +963,9 @@ sub populate_initial_configs {
      hibernate_driver_proto => $answers->{'hibernate.connection.driver_proto'},
      traceback_mail => $answers->{'admin-email'},
      jabberDOThostname => $answers->{hostname},
-     serverDOTsatelliteDOTca_chain => '/usr/share/rhn/RHNS-CA-CERT',
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},
-     serverDOTsusemanagerDOTmirrcred_email => '',
-     serverDOTsusemanagerDOTmirrcred_user => '',
-     serverDOTsusemanagerDOTmirrcred_pass => '',
      );
 
     for ($config_opts{'db_password'}) {
@@ -979,11 +974,7 @@ sub populate_initial_configs {
 
   my %rhnopt = ();
   if ($answers->{disconnected} || $opts->{disconnected}) {
-    $rhnopt{'server.satellite.rhn_parent'} = '';
     $rhnopt{'disconnected'} = "1";
-  }
-  else {
-    $rhnopt{'server.satellite.rhn_parent'} = $answers->{'rhn-parent'} || 'satellite.rhn.redhat.com';
   }
   for my $key (qw/product_name web.version enable_nvrea web.subscribe_proxy_channel force_package_upload
           web.l10n_resourcebundles web.default_mail_from/) {
@@ -1116,53 +1107,6 @@ sub random_bits {
   }
 
   return $rand_data;
-}
-
-sub setup_gpg {
-  my $opts = shift;
-
-  if ($opts->{"skip-gpg-key-import"}) {
-    print Spacewalk::Setup::loc("** GPG: Skipping gpg key import\n");
-    return 0;
-  }
-
-  print Spacewalk::Setup::loc("** GPG: Initializing GPG and importing key.\n");
-
-  unless (-d '/root/.gnupg') {
-    print Spacewalk::Setup::loc("** GPG: Creating /root/.gnupg directory\n");
-    Spacewalk::Setup::system_or_exit(['mkdir', '-m', '700', '/root/.gnupg'], 12, 'Could not create /root/.gnupg');
-  }
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/gpg', '--list-keys'], 12, 'Could not run gpg.');
-
-  my $key_path = '/usr/share/rhn/RHN-GPG-KEY';
-  if ( ! (-e $key_path) ) {
-    if ( -e '/etc/fedora-release' ) {
-
-      # this is a fedora system
-      $key_path = '/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora';
-
-    } elsif ( -e '/etc/redhat-release' ) {
-
-      # need to read the file to see if it's a Red Hat or CentOS system.
-      # we only want to import the key if it's a Red Hat system because
-      # the file doesn't exist on a CentOS system.
-      open(RELEASE, '/etc/redhat-release') or die "Could not open '/etc/redhat-release': $OS_ERROR\n";
-      my @release = <RELEASE>;
-      close(RELEASE);
-
-      my $rel_str = join('', @release);
-
-      # this is a RHEL system... RHEL 5 path.
-      if ( $rel_str =~ m/^Red Hat/ ) {
-        $key_path = '/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release';
-      }
-    }
-  }
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/gpg', '--import', $key_path], 12, 'Could not import public GPG key.');
-
-  return 1;
 }
 
 # Satellite services are handled by chkconfig now.
