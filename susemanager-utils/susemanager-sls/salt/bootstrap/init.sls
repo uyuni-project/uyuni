@@ -40,7 +40,7 @@ mgr_server_localhost_alias_absent:
     {%- set os_base = 'astra' %}
     {% set osrelease = grains['oscodename'] %}
   {%- elif grains['os'] == 'Ubuntu' %}
-    {% set osrelease = grains['osrelease_info'][0] + '/' + grains['osrelease_info'][1] %}
+    {% set osrelease = grains['osrelease_info'][0]|string + '/' + grains['osrelease_info'][1]|string %}
   {%- endif %}
   #end of expections
 {%- endif %}
