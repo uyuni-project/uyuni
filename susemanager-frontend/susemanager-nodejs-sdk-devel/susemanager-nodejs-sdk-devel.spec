@@ -53,6 +53,7 @@ tar xfv %{S:1}
 find . -type f -exec sed -i -e 's/#!\/usr\/bin\/env node/#!\/usr\/bin\/node/g' {} \;
 
 %install
+exit 0 
 mkdir -p %{buildroot}%{nodejs_sitelib}
 mkdir -p %{buildroot}%{_bindir}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
