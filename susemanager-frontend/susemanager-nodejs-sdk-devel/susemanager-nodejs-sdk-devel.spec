@@ -36,7 +36,7 @@ Group:          Development/Languages/Other
 URL:            https://www.suse.com/products/suse-manager
 
 Source0:        susemanager-nodejs-sdk-devel.tar.gz
-Source1:        susemanager-nodejs-modules.tar.gz
+# Source1:        susemanager-nodejs-modules.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  fdupes
