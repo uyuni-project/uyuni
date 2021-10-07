@@ -357,7 +357,7 @@ are executed only if the HTTP proxy is available.
 
 ## Docker Registry server
 
-Using a Docker Registry server when testing is not mandatory.
+Using a Docker Authenticated Registry server when testing is not mandatory.
 
 If you do not want a Registry server, do not define `AUTH_REGISTRY` nor `AUTH_REGISTRY_CREDENTIALS`
 environment variables before you run the testsuite. That's all.
