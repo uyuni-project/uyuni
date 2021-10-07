@@ -77,7 +77,7 @@ date
 PIDS=""
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 PACKAGES="spacewalk-web susemanager-nodejs-sdk-devel"
-PACKAGES="spacewalk-web"
+# PACKAGES="spacewalk-web"
 # PACKAGES="susemanager-nodejs-sdk-devel"
 PARALLEL_BUILD="TRUE"
 for p in ${PACKAGES};do
