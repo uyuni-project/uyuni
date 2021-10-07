@@ -76,6 +76,9 @@ echo "Starting building and submission at $(date)"
 date
 PIDS=""
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
+# PACKAGES="spacewalk-web susemanager-nodejs-sdk-devel"
+# PACKAGES="spacewalk-web"
+PACKAGES="susemanager-nodejs-sdk-devel"
 for p in ${PACKAGES};do
     pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
     CHOWN_CMD="${CHOWN_CMD}; chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
