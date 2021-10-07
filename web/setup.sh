@@ -5,7 +5,7 @@ set -euxo pipefail
     if flock -x -n 200 ; then
         echo "Web Setup calling yarn...*****DEBUG*****"
         cd susemanager-frontend/susemanager-nodejs-sdk-devel;
-        yarn install --force --ignore-optional --frozen-lockfile;
+        # yarn install --force --ignore-optional --frozen-lockfile;
         # yarn autoclean --force;
     else
         # Wait for the lock to be released and then continue
