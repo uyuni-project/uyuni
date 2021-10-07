@@ -362,7 +362,7 @@ Using a Docker Authenticated Registry server when testing is not mandatory.
 If you do not want a Registry server, do not define `AUTH_REGISTRY` nor `AUTH_REGISTRY_CREDENTIALS`
 environment variables before you run the testsuite. That's all.
 
-If you want to specify a registry server to be used when testing Docker, make the
+If you want to specify an authenticated registry server to be used when testing Docker, make the
 `AUTH_REGISTRY` variable contain the URI of the registry server,
 and place the credentials on that server in the `AUTH_REGISTRY_CREDENTIALS` separated
 by a vertical bar:
