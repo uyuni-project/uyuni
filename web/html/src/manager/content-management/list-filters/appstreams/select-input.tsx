@@ -19,7 +19,7 @@ export default function SelectInput(props: SelectInputProps) {
       setShowInputs(true);
       onAction(null, "get", value)
         .then(setModules)
-        .catch(error => showErrorToastr(error.messages));
+        .catch((error) => showErrorToastr(error.messages));
     } else {
       setModules({});
     }
@@ -34,8 +34,8 @@ export default function SelectInput(props: SelectInputProps) {
         divClass="col-md-6"
         onChange={onChannelChange}
         options={props.channels}
-        getOptionValue={c => c.id}
-        getOptionLabel={c => c.name}
+        getOptionValue={(c) => c.id}
+        getOptionLabel={(c) => c.name}
       />
       {isShowInputs && <ModuleSelector modules={modules} isLoading={isLoading} />}
     </>

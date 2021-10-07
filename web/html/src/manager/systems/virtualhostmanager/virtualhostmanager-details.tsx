@@ -26,7 +26,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    ["onRefresh", "handleResponseError"].forEach(method => (this[method] = this[method].bind(this)));
+    ["onRefresh", "handleResponseError"].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
     };
@@ -40,18 +40,15 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
 
   UNSAFE_componentWillMount() {
     Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
-      .then(data => {
+      .then((data) => {
         this.setState({ nodes: data.data });
       })
       .catch(this.handleResponseError);
   }
 
   onRefresh() {
-    return Network.post(
-      "/rhn/manager/api/vhms/" + this.props.data.id + "/refresh",
-      this.props.data.id
-    )
-      .then(data => {
+    return Network.post("/rhn/manager/api/vhms/" + this.props.data.id + "/refresh", this.props.data.id)
+      .then((data) => {
         if (data.success) {
           this.setState({
             messages: MessagesUtils.info(t("Refreshing the data for this Virtual Host Manager has been triggered.")),
@@ -76,7 +73,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
           <BootstrapPanel title={t("Nodes")}>
             <Table
               data={this.state.nodes}
-              identifier={node => node.type + "_" + node.id}
+              identifier={(node) => node.type + "_" + node.id}
               initialSortColumnKey="name"
               initialItemsPerPage={window.userPrefPageSize}
             >
@@ -163,8 +160,8 @@ function ConfigParams(props) {
   }
 
   const items = Object.keys(data.config)
-    .filter(key => !key.includes("secret"))
-    .map(key => {
+    .filter((key) => !key.includes("secret"))
+    .map((key) => {
       return (
         <tr>
           <td>{Utils.capitalize(key)}:</td>

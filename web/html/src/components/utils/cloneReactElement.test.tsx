@@ -10,7 +10,7 @@ describe("cloneReactElement", () => {
     const { children, ...rest } = props;
     return (
       <div data-testid="wrapper">
-        {React.Children.toArray(props.children).map(child => cloneReactElement(child, rest))}
+        {React.Children.toArray(props.children).map((child) => cloneReactElement(child, rest))}
       </div>
     );
   }

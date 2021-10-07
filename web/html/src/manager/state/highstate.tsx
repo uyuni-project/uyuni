@@ -47,16 +47,13 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   }
 
   applyHighstate = () => {
-    const request = Network.post(
-      "/rhn/manager/api/states/applyall",
-      {
-        ids: window.minions?.map(m => m.id),
-        earliest: this.state.earliest,
-        actionChain: this.state.actionChain ? this.state.actionChain.text : null,
-        test: this.state.test,
-      }
-    )
-      .then(data => {
+    const request = Network.post("/rhn/manager/api/states/applyall", {
+      ids: window.minions?.map((m) => m.id),
+      earliest: this.state.earliest,
+      actionChain: this.state.actionChain ? this.state.actionChain.text : null,
+      test: this.state.test,
+    })
+      .then((data) => {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>
@@ -87,17 +84,17 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     return request;
   };
 
-  handleResponseError = jqXHR => {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
   };
 
-  onDateTimeChanged = date => {
+  onDateTimeChanged = (date) => {
     this.setState({ earliest: date });
   };
 
-  onActionChainChanged = actionChain => {
+  onActionChainChanged = (actionChain) => {
     this.setState({ actionChain: actionChain });
   };
 
@@ -152,7 +149,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
               actionChains={window.actionChains}
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
-              systemIds={window.minions?.map(m => m.id)}
+              systemIds={window.minions?.map((m) => m.id)}
               actionType="states.apply"
             />
           </div>

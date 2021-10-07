@@ -30,7 +30,7 @@ export function GuestDisksPanel(props: Props) {
   const getDiskPanelTitle = (index: number): string => {
     const device = formContext.model[`disk${index}_device`] || "disk";
     const similarDisks = [...Array(index).keys()].filter(
-      i =>
+      (i) =>
         formContext.model[`disk${i}_bus`] === formContext.model[`disk${index}_bus`] &&
         formContext.model[`disk${i}_device`] === formContext.model[`disk${index}_device`]
     );
@@ -40,7 +40,7 @@ export function GuestDisksPanel(props: Props) {
   function addDisk(index: number) {
     const busTypes = props.caps ? props.caps.devices.disk.bus : [];
 
-    const preferredBusses = ["virtio", "xen"].filter(type => busTypes.includes(type));
+    const preferredBusses = ["virtio", "xen"].filter((type) => busTypes.includes(type));
     const first_pool = props.pools.length > 0 ? props.pools[0].name : "";
 
     props.changeModel(
@@ -49,7 +49,7 @@ export function GuestDisksPanel(props: Props) {
         [`disk${index}_type`]: "volume",
         [`disk${index}_device`]: "disk",
         [`disk${index}_bus`]: preferredBusses.length > 0 ? preferredBusses[0] : busTypes[0],
-        [`disk${index}_source_pool`]: props.pools.find(item => item.name === "default") ? "default" : first_pool,
+        [`disk${index}_source_pool`]: props.pools.find((item) => item.name === "default") ? "default" : first_pool,
         [`disk${index}_source_template`]: undefined,
         [`disk${index}_source_size`]: 10,
       })
@@ -66,7 +66,9 @@ export function GuestDisksPanel(props: Props) {
   };
 
   const allDisks = getOrderedItemsFromModel(formContext.model, "disk");
-  const onlyHandledDisks = allDisks.every(index => ["file", "volume"].includes(formContext.model[`disk${index}_type`]));
+  const onlyHandledDisks = allDisks.every((index) =>
+    ["file", "volume"].includes(formContext.model[`disk${index}_type`])
+  );
   return (
     <>
       {!onlyHandledDisks && (
@@ -76,7 +78,7 @@ export function GuestDisksPanel(props: Props) {
         id="disks"
         title={t("Disks")}
         prefix="disk"
-        onAdd={newIndex => addDisk(newIndex)}
+        onAdd={(newIndex) => addDisk(newIndex)}
         onRemove={removeDisk}
         disabled={!onlyHandledDisks}
         panelIcon={getDiskPanelIcon}

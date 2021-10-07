@@ -27,18 +27,13 @@ type PropsType = {
 
 const ChannelsSelection = (props: PropsType) => {
   const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
-  const {
-    fetchMandatoryChannelsByChannelIds,
-    isDependencyDataLoaded,
-    requiredChannelsResult,
-  } = useMandatoryChannelsApi();
-  const [state, dispatchChannelsSelection]: [
-    StateChannelsSelectionType,
-    (arg0: ActionChannelsSelectionType) => void
-  ] = useImmerReducer(
-    (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
-    initialStateChannelsSelection(props.initialSelectedIds)
-  );
+  const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
+    useMandatoryChannelsApi();
+  const [state, dispatchChannelsSelection]: [StateChannelsSelectionType, (arg0: ActionChannelsSelectionType) => void] =
+    useImmerReducer(
+      (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
+      initialStateChannelsSelection(props.initialSelectedIds)
+    );
 
   const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
 
@@ -50,13 +45,13 @@ const ChannelsSelection = (props: PropsType) => {
 
   useEffect(() => {
     // set lead base channel as first and notify
-    const sortedSelectedChannelsId = state.selectedChannelsIds.filter(cId => cId !== state.selectedBaseChannelId);
+    const sortedSelectedChannelsId = state.selectedChannelsIds.filter((cId) => cId !== state.selectedBaseChannelId);
     sortedSelectedChannelsId.unshift(state.selectedBaseChannelId);
     isAllApiDataLoaded &&
       props.onChange(
         sortedSelectedChannelsId
-          .filter(cId => channelsTree.channelsById[cId])
-          .map(cId => channelsTree.channelsById[cId])
+          .filter((cId) => channelsTree.channelsById[cId])
+          .map((cId) => channelsTree.channelsById[cId])
       );
   }, [state.selectedChannelsIds]);
 
@@ -86,8 +81,8 @@ const ChannelsSelection = (props: PropsType) => {
           <Select
             name="selectedBaseChannel"
             id="selectedBaseChannel"
-            value={orderedBaseChannels.find(item => item.id === state.selectedBaseChannelId)}
-            onChange={value => {
+            value={orderedBaseChannels.find((item) => item.id === state.selectedBaseChannelId)}
+            onChange={(value) => {
               if (typeof value === "object" && !Array.isArray(value)) {
                 dispatchChannelsSelection({
                   type: "lead_channel",
@@ -96,8 +91,8 @@ const ChannelsSelection = (props: PropsType) => {
               }
             }}
             options={orderedBaseChannels}
-            getOptionLabel={option => option.name}
-            getOptionValue={option => option.id}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id}
             menuPortalTarget={document.body}
             classNamePrefix={`class-selectedBaseChannel`}
             styles={{
@@ -127,7 +122,7 @@ const ChannelsSelection = (props: PropsType) => {
                   className="form-control"
                   placeholder="Search a channel"
                   value={state.search}
-                  onChange={event => onSearch(event.target.value)}
+                  onChange={(event) => onSearch(event.target.value)}
                 />
                 <span className={`${styles.search_icon_container} clear`}>
                   <i
@@ -145,7 +140,7 @@ const ChannelsSelection = (props: PropsType) => {
                     value={filter.id}
                     checked={state.activeFilters.includes(filter.id)}
                     id={`filter_${filter.id}`}
-                    onChange={event =>
+                    onChange={(event) =>
                       dispatchChannelsSelection({
                         type: "toggle_filter",
                         filter: event.target.value,
@@ -159,7 +154,7 @@ const ChannelsSelection = (props: PropsType) => {
           </label>
           <div className="col-lg-8">
             <div>
-              {orderedBaseChannels.map(baseChannel => {
+              {orderedBaseChannels.map((baseChannel) => {
                 const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(
                   state.selectedChannelsIds,
                   baseChannel
@@ -179,7 +174,7 @@ const ChannelsSelection = (props: PropsType) => {
                 }
 
                 const isOpen = state.openGroupsIds.some(
-                  openId => openId === baseChannel.id || baseChannel.children.includes(openId)
+                  (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
                 );
 
                 return (
@@ -191,21 +186,21 @@ const ChannelsSelection = (props: PropsType) => {
                     selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
                     selectedBaseChannelId={state.selectedBaseChannelId}
                     isOpen={isOpen}
-                    setAllRecommentedChannels={enable => {
+                    setAllRecommentedChannels={(enable) => {
                       dispatchChannelsSelection({
                         type: "set_recommended",
                         baseId: baseChannel.id,
                         enable,
                       });
                     }}
-                    onChannelToggle={channelId =>
+                    onChannelToggle={(channelId) =>
                       dispatchChannelsSelection({
                         type: "toggle_channel",
                         baseId: baseChannel.id,
                         channelId,
                       })
                     }
-                    onOpenGroup={open =>
+                    onOpenGroup={(open) =>
                       dispatchChannelsSelection({
                         type: "open_group",
                         baseId: baseChannel.id,

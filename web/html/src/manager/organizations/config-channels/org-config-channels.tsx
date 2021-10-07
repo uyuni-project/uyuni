@@ -16,14 +16,11 @@ function matchUrl(target?: string) {
 }
 
 function applyRequest(component) {
-  return Network.post(
-    "/rhn/manager/api/states/apply",
-    {
-      id: window.orgId,
-      type: "ORG",
-      states: ["custom_org"],
-    }
-  ).then(data => {
+  return Network.post("/rhn/manager/api/states/apply", {
+    id: window.orgId,
+    type: "ORG",
+    states: ["custom_org"],
+  }).then((data) => {
     console.log("apply action queued:" + data);
     component.setState({
       messages: MessagesUtils.info(
@@ -34,14 +31,11 @@ function applyRequest(component) {
 }
 
 function saveRequest(states) {
-  return Network.post(
-    "/rhn/manager/api/states/save",
-    {
-      id: window.orgId,
-      type: "ORG",
-      channels: states,
-    }
-  );
+  return Network.post("/rhn/manager/api/states/save", {
+    id: window.orgId,
+    type: "ORG",
+    channels: states,
+  });
 }
 
 export const renderer = () =>

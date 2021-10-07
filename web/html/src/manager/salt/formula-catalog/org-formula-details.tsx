@@ -27,7 +27,7 @@ class FormulaDetail extends React.Component<Props, State> {
   }
 
   getServerData = () => {
-    Network.get("/rhn/manager/api/formula-catalog/formula/" + window.formulaName + "/data").then(data => {
+    Network.get("/rhn/manager/api/formula-catalog/formula/" + window.formulaName + "/data").then((data) => {
       this.setState({ metadata: data });
     });
   };
@@ -86,4 +86,4 @@ class FormulaDetail extends React.Component<Props, State> {
   }
 }
 
-export const renderer = id => SpaRenderer.renderNavigationReact(<FormulaDetail />, document.getElementById(id));
+export const renderer = (id) => SpaRenderer.renderNavigationReact(<FormulaDetail />, document.getElementById(id));

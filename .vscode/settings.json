@@ -1,5 +1,9 @@
 {
     "typescript.tsdk": "./web/html/src/node_modules/typescript/lib",
     "editor.tabSize": 2,
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    // Only run Prettier if the configuration is properly resolved
+    "prettier.requireConfig": true
 }

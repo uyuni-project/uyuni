@@ -7,7 +7,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 class TextField extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    ["onKeyPress"].forEach(method => (this[method] = this[method].bind(this)));
+    ["onKeyPress"].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   onKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -26,7 +26,7 @@ class TextField extends React.Component<Props> {
         value={this.props.value}
         placeholder={this.props.placeholder}
         type="text"
-        onChange={e => this.props.onChange?.(e)}
+        onChange={(e) => this.props.onChange?.(e)}
         onKeyPress={this.onKeyPress}
       />
     );

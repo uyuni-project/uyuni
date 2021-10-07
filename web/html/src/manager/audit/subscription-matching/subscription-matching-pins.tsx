@@ -24,10 +24,10 @@ class Pins extends React.Component<PinsProps> {
     showPopUp: false,
   };
 
-  buildRows = props => {
+  buildRows = (props) => {
     const { pinnedMatches, systems, subscriptions } = props;
 
-    return pinnedMatches.map(p => {
+    return pinnedMatches.map((p) => {
       const system = systems[p.systemId];
       const systemName = system == null ? "System " + p.systemId : system.name;
       const systemType = system == null ? null : system.type;
@@ -52,8 +52,8 @@ class Pins extends React.Component<PinsProps> {
     });
   };
 
-  onRemovePin = pinId => {
-    Network.post("/rhn/manager/api/subscription-matching/pins/" + pinId + "/delete").then(data =>
+  onRemovePin = (pinId) => {
+    Network.post("/rhn/manager/api/subscription-matching/pins/" + pinId + "/delete").then((data) =>
       this.props.onPinChanged(data)
     );
   };
@@ -70,7 +70,7 @@ class Pins extends React.Component<PinsProps> {
     Network.post("/rhn/manager/api/subscription-matching/pins", {
       system_id: systemId,
       subscription_id: subscriptionId,
-    }).then(data => this.props.onPinChanged(data));
+    }).then((data) => this.props.onPinChanged(data));
     jQuery("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
   };
@@ -104,7 +104,7 @@ class Pins extends React.Component<PinsProps> {
           <Table
             key="table"
             data={this.buildRows(this.props)}
-            identifier={row => row.id}
+            identifier={(row) => row.id}
             initialItemsPerPage={window.userPrefPageSize}
             initialSortColumnKey="systemName"
           >
@@ -112,25 +112,25 @@ class Pins extends React.Component<PinsProps> {
               columnKey="systemName"
               comparator={Utils.sortByText}
               header={t("Part number")}
-              cell={p => <SystemLabel id={p.systemId} name={p.systemName} type={p.systemType} />}
+              cell={(p) => <SystemLabel id={p.systemId} name={p.systemName} type={p.systemType} />}
             />
             <Column
               columnKey="subscriptionDescription"
               comparator={Utils.sortByText}
               header={t("Subscription")}
-              cell={p => p.subscriptionDescription}
+              cell={(p) => p.subscriptionDescription}
             />
             <Column
               columnKey="subscriptionPolicy"
               comparator={Utils.sortByText}
               header={t("Policy")}
-              cell={p => humanReadablePolicy(p.subscriptionPolicy)}
+              cell={(p) => humanReadablePolicy(p.subscriptionPolicy)}
             />
             <Column
               columnKey="subscriptionEndDate"
               comparator={Utils.sortByText}
               header={t("End date")}
-              cell={p => {
+              cell={(p) => {
                 const endDate = localizedMoment(p.subscriptionEndDate);
                 return <ToolTip content={endDate.fromNow()} title={endDate.toUserDateString()} />;
               }}
@@ -139,17 +139,17 @@ class Pins extends React.Component<PinsProps> {
               columnKey="subscriptionPartNumber"
               comparator={Utils.sortByText}
               header={t("Part number")}
-              cell={p => p.subscriptionPartNumber}
+              cell={(p) => p.subscriptionPartNumber}
             />
             <Column
               columnKey="status"
               comparator={Utils.sortByText}
               header={t("Status")}
-              cell={p => <PinStatus status={p.status} />}
+              cell={(p) => <PinStatus status={p.status} />}
             />
             <Column
               columnKey="actions"
-              cell={p => (
+              cell={(p) => (
                 <PinButton
                   onClick={() => this.onRemovePin(p.id)}
                   content={
@@ -186,7 +186,7 @@ class Pins extends React.Component<PinsProps> {
   }
 }
 
-const PinStatus = props => {
+const PinStatus = (props) => {
   if (props.status === "pending") {
     return (
       <span>
@@ -211,7 +211,7 @@ const PinStatus = props => {
   );
 };
 
-const PinButton = props => (
+const PinButton = (props) => (
   <button className="btn btn-default btn-cell" onClick={props.onClick}>
     {props.content}
   </button>
@@ -235,7 +235,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   };
 
   buildRows = () => {
-    return Object.keys(this.props.systems).map(id => {
+    return Object.keys(this.props.systems).map((id) => {
       return this.props.systems[id];
     });
   };
@@ -244,11 +244,11 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
     this.setState({ systemId: null });
   };
 
-  onSystemSelected = systemId => {
+  onSystemSelected = (systemId) => {
     this.setState({ systemId: systemId });
   };
 
-  onSubscriptionSelected = subscriptionId => {
+  onSubscriptionSelected = (subscriptionId) => {
     this.props.onSavePin(this.state.systemId, subscriptionId);
   };
 
@@ -272,7 +272,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
           <Table
             key="table"
             data={this.buildRows()}
-            identifier={row => row.id}
+            identifier={(row) => row.id}
             initialSortColumnKey="name"
             initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
@@ -281,22 +281,22 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
               columnKey="name"
               comparator={Utils.sortByText}
               header={t("System")}
-              cell={s => <SystemLabel id={s.id} name={s.name} type={s.type} />}
+              cell={(s) => <SystemLabel id={s.id} name={s.name} type={s.type} />}
             />
             <Column
               columnKey="cpuCount"
               comparator={this.sortByCpuCount}
               header={t("Socket/IFL count")}
-              cell={s => s.cpuCount}
+              cell={(s) => s.cpuCount}
             />
             <Column
               columnKey="products"
               header={t("Products")}
-              cell={s => <ProductTableCell key="products" products={this.props.products} productIds={s.productIds} />}
+              cell={(s) => <ProductTableCell key="products" products={this.props.products} productIds={s.productIds} />}
             />
             <Column
               columnKey="actions"
-              cell={s => (
+              cell={(s) => (
                 <PinButton
                   onClick={() => this.onSystemSelected(s.id)}
                   content={
@@ -321,7 +321,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
           </p>
           <PinSubscriptionSelector
             onSubscriptionSelected={this.onSubscriptionSelected}
-            subscriptions={system.possibleSubscriptionIds.map(p => this.props.subscriptions[p])}
+            subscriptions={system.possibleSubscriptionIds.map((p) => this.props.subscriptions[p])}
           />
           <p>
             <button className="btn btn-default" onClick={this.onBackClicked}>
@@ -336,7 +336,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   }
 }
 
-const ProductTableCell = props => {
+const ProductTableCell = (props) => {
   const productLength = props.productIds.length;
 
   if (productLength === 0) {
@@ -349,7 +349,7 @@ const ProductTableCell = props => {
   }
 
   const productNames = props.productIds
-    .map(i => props.products[i].productName)
+    .map((i) => props.products[i].productName)
     .reduce((previousValue, currentValue) => previousValue + ", " + currentValue);
   return <ToolTip content={firstProductName + ", ..."} title={productNames} />;
 };
@@ -366,23 +366,23 @@ class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorPro
         <Table
           key="table"
           data={this.props.subscriptions}
-          identifier={row => row.id}
+          identifier={(row) => row.id}
           initialItemsPerPage={window.userPrefPageSize}
         >
-          <Column columnKey="partNumber" header={t("Part number")} cell={s => s.partNumber} />
-          <Column columnKey="description" header={t("Description")} cell={s => s.description} />
-          <Column columnKey="policy" header={t("Policy")} cell={s => humanReadablePolicy(s.policy)} />
+          <Column columnKey="partNumber" header={t("Part number")} cell={(s) => s.partNumber} />
+          <Column columnKey="description" header={t("Description")} cell={(s) => s.description} />
+          <Column columnKey="policy" header={t("Policy")} cell={(s) => humanReadablePolicy(s.policy)} />
           <Column
             columnKey="endDate"
             header={t("End date")}
-            cell={s => {
+            cell={(s) => {
               const endDate = localizedMoment(s.endDate);
               return <ToolTip content={endDate.fromNow()} title={endDate.toUserDateString()} />;
             }}
           />
           <Column
             columnKey="actions"
-            cell={s => (
+            cell={(s) => (
               <PinButton
                 onClick={() => this.props.onSubscriptionSelected(s.id)}
                 content={

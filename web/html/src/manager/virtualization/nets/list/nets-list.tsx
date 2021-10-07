@@ -67,20 +67,20 @@ export function NetsList(props: Props) {
               columnKey="name"
               comparator={Utils.sortByText}
               header={t("Name")}
-              cell={row => row.name}
+              cell={(row) => row.name}
             />,
             <Column
               key="state"
               columnKey="state"
               header={t("State")}
               comparator={ListUtils.sortByState}
-              cell={row => (row.active ? "running" : "stopped")}
+              cell={(row) => (row.active ? "running" : "stopped")}
             />,
             <Column
               key="autostart"
               columnKey="autostart"
               header={t("Autostart")}
-              cell={row =>
+              cell={(row) =>
                 row.autostart && (
                   <i className="fa fa-check-square fa-1-5x" title={t(`${row.name} is started automatically`)} />
                 )
@@ -90,7 +90,7 @@ export function NetsList(props: Props) {
               key="persistent"
               columnKey="persistent"
               header={t("Persistent")}
-              cell={row =>
+              cell={(row) =>
                 row.persistent && <i className="fa fa-check-square fa-1-5x" title={t(`${row.name} is persistent`)} />
               }
             />,
@@ -99,10 +99,10 @@ export function NetsList(props: Props) {
               columnKey="bridge"
               comparator={Utils.sortByText}
               header={t("Bridge")}
-              cell={row => row.bridge}
+              cell={(row) => row.bridge}
             />,
           ];
-          const actionsProvider = row => {
+          const actionsProvider = (row) => {
             return (
               <div className="btn-group">
                 {!row.active && (

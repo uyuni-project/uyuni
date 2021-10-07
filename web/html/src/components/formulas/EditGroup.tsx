@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Utils, Formulas } from "utils/functions";
-import { ElementDefinition, generateFormulaComponent, generateFormulaComponentForId } from "./FormulaComponentGenerator";
+import {
+  ElementDefinition,
+  generateFormulaComponent,
+  generateFormulaComponentForId,
+} from "./FormulaComponentGenerator";
 import HelpIcon from "components/utils/HelpIcon";
 import "./formula-form.css";
 import SectionToggle from "./SectionToggle";
@@ -19,11 +23,11 @@ type EditGroupProps = {
   value: any;
   formulaForm: any;
   element: ElementDefinition;
-}
+};
 
 type EditGroupState = {
   visible: boolean;
-}
+};
 
 /*
  * Base class for edit-group.
@@ -36,7 +40,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
       visible: true,
     };
     ["handleAddItem", "handleRemoveItem", "isDisabled", "setVisible", "isVisible"].forEach(
-      method => (this[method] = this[method].bind(this))
+      (method) => (this[method] = this[method].bind(this))
     );
   }
 
@@ -106,7 +110,9 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
           <i
             className="fa fa-plus"
             id={this.props.id + "#add_item"}
-            title={this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"}
+            title={
+              this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
+            }
             onClick={this.handleAddItem}
             /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
             disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
@@ -149,7 +155,7 @@ type EditPrimitiveGroupProps = {
 class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
   constructor(props) {
     super(props);
-    ["simpleWrapper"].forEach(method => (this[method] = this[method].bind(this)));
+    ["simpleWrapper"].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   simpleWrapper(name, required, element, help = null) {
@@ -202,7 +208,7 @@ type EditPrimitiveDictionaryGroupProps = {
   formulaForm: any;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
-}
+};
 
 /*
  * Used for rendering edit-groups in the form of "dictionary of primitive types",
@@ -304,7 +310,7 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
     this.state = {
       visibility: new Map(),
     };
-    ["isVisible", "setVisible"].forEach(method => (this[method] = this[method].bind(this)));
+    ["isVisible", "setVisible"].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   wrapKeyGroup(element_name, required, innerHTML) {
@@ -326,7 +332,7 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
   generateItemName(item_index) {
     let name = this.props.element.$itemName;
     name = name.replace(/\${i}/g, parseInt(item_index, 10) + 1);
-    name = name.replace(/\${.*}/g, txt => get(this.props.value[item_index][txt.substring(2, txt.length - 1)], txt));
+    name = name.replace(/\${.*}/g, (txt) => get(this.props.value[item_index][txt.substring(2, txt.length - 1)], txt));
     name = name.replace(/\${productName}/g, productName);
     return name;
   }

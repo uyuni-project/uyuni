@@ -69,7 +69,7 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
         content={
           <Table
             data={this.props.servers}
-            identifier={srv => srv.id}
+            identifier={(srv) => srv.id}
             initialSortColumnKey="modified"
             initialSortDirection={-1}
             initialItemsPerPage={window.userPrefPageSize}
@@ -162,7 +162,7 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
       >
         <Table
           data={this.props.baseChannels}
-          identifier={channel => channel.base.id}
+          identifier={(channel) => channel.base.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
           initialItemsPerPage={window.userPrefPageSize}
@@ -199,12 +199,12 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
             cell={(channel: SsmAllowedBaseChannelsJson) => {
               const newBaseId = this.state.baseChanges.get(channel.base.id);
               const baseOptions = channel.allowedBaseChannels
-                .filter(c => !c.custom)
-                .map(c => <option value={c.id}>{c.name}</option>)
+                .filter((c) => !c.custom)
+                .map((c) => <option value={c.id}>{c.name}</option>)
                 .concat(defaultOption);
               const customOptions = channel.allowedBaseChannels
-                .filter(c => c.custom)
-                .map(c => <option value={c.id}>{c.name}</option>);
+                .filter((c) => c.custom)
+                .map((c) => <option value={c.id}>{c.name}</option>);
 
               return (
                 <select
@@ -212,7 +212,7 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
                   size={5}
                   defaultValue="0"
                   value={newBaseId}
-                  onChange={ev => this.onChangeBase(channel.base.id, ev.target.value)}
+                  onChange={(ev) => this.onChangeBase(channel.base.id, ev.target.value)}
                 >
                   <option value="0">{t("No Change")}</option>
                   {customOptions && customOptions.length > 0 ? (
@@ -284,7 +284,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     super(props);
 
     const selections: Map<string, string> = new Map();
-    props.childChanges.forEach(change => {
+    props.childChanges.forEach((change) => {
       change.childChannelActions.forEach((childAction, childId) =>
         selections.set(this.getChangeId(change, childId), childAction)
       );
@@ -303,7 +303,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     // get channel dependencies
     // TODO cache stuff to avoid repeated calls
     const childrenIds = Array.from(
-      this.props.childChannels.flatMap(dto => dto.childChannels.map(channel => channel.id))
+      this.props.childChannels.flatMap((dto) => dto.childChannels.map((channel) => channel.id))
     );
     Network.post("/rhn/manager/api/admin/mandatoryChannels", childrenIds)
       .then((response: JsonResult<Map<number, Array<number>>>) => {
@@ -313,7 +313,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           requiredByChannels: channelDeps.requiredByChannels,
         });
       })
-      .catch(err => console.log(err.statusText));
+      .catch((err) => console.log(err.statusText));
   }
 
   getChangeId = (change: ChannelChangeDto, childId: string | number) => {
@@ -345,7 +345,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     }
 
     // change the channel AND its dependencies
-    [childId].concat(dependencies).forEach(channelId => {
+    [childId].concat(dependencies).forEach((channelId) => {
       const allowedId = getAllowedChangeId(allowedChannels, channelId);
       this.state.selections.set(allowedId, action);
       this.setState({ selections: this.state.selections });
@@ -353,12 +353,12 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     });
   };
 
-  dependenciesTooltip = channelId => {
-    const resolveChannelNames = channelIds => {
+  dependenciesTooltip = (channelId) => {
+    const resolveChannelNames = (channelIds) => {
       return this.props.childChannels
-        .flatMap(dto => dto.childChannels)
-        .filter(channel => (channelIds || new Set()).has(channel.id))
-        .map(channel => channel.name);
+        .flatMap((dto) => dto.childChannels)
+        .filter((channel) => (channelIds || new Set()).has(channel.id))
+        .map((channel) => channel.name);
     };
     return (
       ChannelUtils.dependenciesTooltip(
@@ -370,26 +370,26 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 
   toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
     const recommendedChildChannelIds = change.childChannels
-      .filter(channel => channel.recommended)
-      .map(channel => channel.id);
+      .filter((channel) => channel.recommended)
+      .map((channel) => channel.id);
 
     if (this.areRecommendedChildrenSelected(change)) {
       recommendedChildChannelIds
-        .filter(channelId => this.state.selections.get(getAllowedChangeId(change, channelId)) === "SUBSCRIBE")
-        .forEach(channelId => this.onChangeChild(change, channelId, "NO_CHANGE"));
+        .filter((channelId) => this.state.selections.get(getAllowedChangeId(change, channelId)) === "SUBSCRIBE")
+        .forEach((channelId) => this.onChangeChild(change, channelId, "NO_CHANGE"));
     } else {
       recommendedChildChannelIds
-        .filter(channelId => this.state.selections.get(getAllowedChangeId(change, channelId)) !== "SUBSCRIBE")
-        .forEach(channelId => this.onChangeChild(change, channelId, "SUBSCRIBE"));
+        .filter((channelId) => this.state.selections.get(getAllowedChangeId(change, channelId)) !== "SUBSCRIBE")
+        .forEach((channelId) => this.onChangeChild(change, channelId, "SUBSCRIBE"));
     }
   };
 
   areRecommendedChildrenSelected = (change: SsmAllowedChildChannelsDto) => {
-    const recommendedChannels = change.childChannels.filter(channel => channel.recommended);
+    const recommendedChannels = change.childChannels.filter((channel) => channel.recommended);
     const recommendedNonSubscribeActions = recommendedChannels
-      .map(channel => getAllowedChangeId(change, channel.id))
-      .map(changeId => this.state.selections.get(changeId))
-      .filter(action => action !== "SUBSCRIBE");
+      .map((channel) => getAllowedChangeId(change, channel.id))
+      .map((changeId) => this.state.selections.get(changeId))
+      .filter((action) => action !== "SUBSCRIBE");
 
     return recommendedChannels.length > 0 && recommendedNonSubscribeActions.length === 0;
   };
@@ -409,7 +409,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
   };
 
   render() {
-    const rows = this.props.childChannels.map(allowed => {
+    const rows = this.props.childChannels.map((allowed) => {
       return (
         <div key={getAllowedChangeId(allowed, "")}>
           <div className="row">
@@ -427,7 +427,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                 handler={() => this.toggleRecommended(allowed)}
                 value={this.areRecommendedChildrenSelected(allowed)}
                 text={t("include recommended")}
-                disabled={!allowed.childChannels.some(channel => channel.recommended)}
+                disabled={!allowed.childChannels.some((channel) => channel.recommended)}
               />
             </div>
             <div className="col-md-4 text-right">
@@ -470,7 +470,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           </div>
           <hr />
           <dl className="col-lg-12">
-            {allowed.childChannels.map(child => (
+            {allowed.childChannels.map((child) => (
               <dt className="row">
                 <div className="col-md-6">
                   <ChannelLink id={child.id} newWindow={true}>
@@ -502,7 +502,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                         id={"ch_action_no_change_" + child.id}
                         value="NO_CHANGE"
                         checked={this.state.selections.get(getAllowedChangeId(allowed, child.id)) === "NO_CHANGE"}
-                        onChange={ev => this.onChangeChild(allowed, child.id, ev.target.value)}
+                        onChange={(ev) => this.onChangeChild(allowed, child.id, ev.target.value)}
                       />
                       <label htmlFor={"ch_action_no_change_" + child.id}>{t("No change")}</label>
                     </div>
@@ -513,7 +513,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                         id={"ch_action_subscr_" + child.id}
                         value="SUBSCRIBE"
                         checked={this.state.selections.get(getAllowedChangeId(allowed, child.id)) === "SUBSCRIBE"}
-                        onChange={ev => this.onChangeChild(allowed, child.id, ev.target.value)}
+                        onChange={(ev) => this.onChangeChild(allowed, child.id, ev.target.value)}
                       />
                       <label htmlFor={"ch_action_subscr_" + child.id}>{t("Subscribe")}</label>
                     </div>
@@ -524,7 +524,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                         id={"ch_action_unscr_" + child.id}
                         value="UNSUBSCRIBE"
                         checked={this.state.selections.get(getAllowedChangeId(allowed, child.id)) === "UNSUBSCRIBE"}
-                        onChange={ev => this.onChangeChild(allowed, child.id, ev.target.value)}
+                        onChange={(ev) => this.onChangeChild(allowed, child.id, ev.target.value)}
                       />
                       <label htmlFor={"ch_action_unscr_" + child.id}>{t("Unsubscribe")}</label>
                     </div>
@@ -610,7 +610,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
   };
 
   // This is used internally by testsuite/features/step_definitions/datepicker_steps.rb
-  setScheduleTime = newtime => {
+  setScheduleTime = (newtime) => {
     const time = localizedMoment(newtime);
     this.setState({
       earliest: time,
@@ -627,12 +627,12 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
 
   computeSystemIds = () => {
     return this.props.allowedChanges
-      .map(allowed => allowed.servers.map(srv => srv.id))
+      .map((allowed) => allowed.servers.map((srv) => srv.id))
       .reduce((ids1, ids2) => ids1.concat(ids2), []);
   };
 
   render() {
-    const rows = this.props.allowedChanges.map(allowed => {
+    const rows = this.props.allowedChanges.map((allowed) => {
       const newBaseName = allowed.newBaseChannel
         ? allowed.newBaseChannel.name
         : t("(Couldn't determine new base channel)");
@@ -690,7 +690,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
           </div>
           <hr />
           <dl className="col-lg-12">
-            {allowed.childChannels.map(child => (
+            {allowed.childChannels.map((child) => (
               <dt className="row">
                 <div className="col-md-6">
                   <ChannelLink id={child.id} newWindow={true}>
@@ -734,7 +734,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
 
   getChildAction = (allowed: SsmAllowedChildChannelsDto, childId: string) => {
     const ch = this.props.finalChanges.find(
-      fc =>
+      (fc) =>
         fc.newBaseId &&
         allowed.newBaseChannel &&
         DEPRECATED_unsafeEquals(fc.newBaseId, allowed.newBaseChannel.id) &&
@@ -760,7 +760,7 @@ class ResultPage extends React.Component<ResultPageProps> {
       >
         <Table
           data={this.props.results}
-          identifier={dto => dto.server.id}
+          identifier={(dto) => dto.server.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
           initialItemsPerPage={window.userPrefPageSize}
@@ -892,7 +892,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
         this.setState({
           allowedBaseChannels: data.data,
           baseChanges: {
-            changes: data.data.map(bc => {
+            changes: data.data.map((bc) => {
               return {
                 oldBaseId: bc.base ? bc.base.id : "0",
                 newBaseId: "0",
@@ -909,9 +909,9 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 
     // check if partially successful
     if (jqXHR.responseJSON.data) {
-      const anySuccess = jqXHR.responseJSON.data.some(dto => dto.actionId && !dto.errorMessage);
+      const anySuccess = jqXHR.responseJSON.data.some((dto) => dto.actionId && !dto.errorMessage);
       if (anySuccess) {
-        msg.concat(MessagesUtils.warning(t("Some changes scheduled successfully.")))
+        msg.concat(MessagesUtils.warning(t("Some changes scheduled successfully.")));
       }
     }
 
@@ -919,7 +919,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   };
 
   onChangeBase = (oldBaseId: string, newBaseId: string) => {
-    let change = this.state.baseChanges.changes.find(e => DEPRECATED_unsafeEquals(e.oldBaseId, oldBaseId));
+    let change = this.state.baseChanges.changes.find((e) => DEPRECATED_unsafeEquals(e.oldBaseId, oldBaseId));
     if (!change) {
       change = {
         oldBaseId: oldBaseId,
@@ -938,21 +938,18 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   onChangeChild = (allowedChange: SsmAllowedChildChannelsDto, childId: string | number, action: string) => {
     this.state.finalChanges // find allowed changes by new base channel
       .filter(
-        ch =>
+        (ch) =>
           ch.newBaseId &&
           allowedChange.newBaseChannel &&
           DEPRECATED_unsafeEquals(ch.newBaseId, allowedChange.newBaseChannel.id)
       ) // set child action for each final change that matches the new base channel
-      .forEach(ch => {
+      .forEach((ch) => {
         ch.childChannelActions.set(childId, action);
       });
   };
 
   onGotoChildChannels = () => {
-    return Network.post(
-      "/rhn/manager/systems/ssm/channels/allowed-changes",
-      this.state.baseChanges
-    )
+    return Network.post("/rhn/manager/systems/ssm/channels/allowed-changes", this.state.baseChanges)
       .then((data: JsonResult<Array<SsmAllowedChildChannelsDto>>) => {
         // group the allowed changes by the new base in order to show child channels only once
         const groupByNewBase: Map<string, SsmAllowedChildChannelsDto> = new Map();
@@ -1114,7 +1111,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
           finalChanges={this.state.finalChanges}
           onChangeEarliest={this.onChangeEarliest}
           onChangeActionChain={this.onChangeActionChain}
-          ref={component => {
+          ref={(component) => {
             // This is used internally by testsuite/features/step_definitions/datepicker_steps.rb
             (window as any).schedulePage = component;
           }}
@@ -1144,4 +1141,4 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   }
 }
 
-export const renderer = id => SpaRenderer.renderNavigationReact(<SsmChannelPage />, document.getElementById(id));
+export const renderer = (id) => SpaRenderer.renderNavigationReact(<SsmChannelPage />, document.getElementById(id));

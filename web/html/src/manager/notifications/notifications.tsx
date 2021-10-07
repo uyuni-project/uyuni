@@ -19,7 +19,7 @@ class Notifications extends React.Component<Props, State> {
     classStyle: "",
   };
 
-  onBeforeUnload = e => {
+  onBeforeUnload = (e) => {
     if (this.state.websocket != null) {
       this.state.websocket.close();
     }
@@ -33,7 +33,7 @@ class Notifications extends React.Component<Props, State> {
     var url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/notifications";
     var ws = new WebSocket(url);
     ws.onopen = () => {};
-    ws.onclose = e => {
+    ws.onclose = (e) => {
       var errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
@@ -43,7 +43,7 @@ class Notifications extends React.Component<Props, State> {
         websocket: null,
       });
     };
-    ws.onerror = e => {
+    ws.onerror = (e) => {
       console.log("Websocket error: " + JSON.stringify(e));
       if (this.state.websocket != null) {
         this.state.websocket.close();
@@ -54,7 +54,7 @@ class Notifications extends React.Component<Props, State> {
         websocket: null,
       });
     };
-    ws.onmessage = e => {
+    ws.onmessage = (e) => {
       this.setState({ unreadMessagesLength: e.data });
     };
     window.addEventListener("beforeunload", this.onBeforeUnload);
@@ -71,7 +71,7 @@ class Notifications extends React.Component<Props, State> {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.unreadMessagesLength && this.state.unreadMessagesLength > prevState.unreadMessagesLength) {
       jQuery("#notification-counter").addClass("highlight-updated-value");
-      setTimeout(function() {
+      setTimeout(function () {
         jQuery("#notification-counter").removeClass("highlight-updated-value");
       }, 1000);
     }

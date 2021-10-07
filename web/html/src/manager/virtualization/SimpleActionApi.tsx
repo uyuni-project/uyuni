@@ -20,7 +20,7 @@ export function SimpleActionApi(props: Props) {
       {({ onAction: apiAction, messages }) => {
         const onAction = (action: string, ids: Array<string>, parameters: any) => {
           const messageData = Object.assign({}, parameters, { [props.idName]: ids });
-          apiAction(urlTemplate => `${urlTemplate}${action}`, action, messageData);
+          apiAction((urlTemplate) => `${urlTemplate}${action}`, action, messageData);
         };
         return props.children({ onAction, messages });
       }}

@@ -5,7 +5,7 @@ import escapeHtml from "html-react-parser";
 import * as React from "react";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-const Link = props => (
+const Link = (props) => (
   <a href={props.url} className={props.cssClass + " js-spa"} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
@@ -21,10 +21,10 @@ type NodeProps = {
   label: string;
   isSearchActive?: boolean;
   isOpen?: boolean;
-}
+};
 
 class Node extends React.Component<NodeProps> {
-  handleClick = event => {
+  handleClick = (event) => {
     // if the click is triggered on a link, do not toggle the menu, just offload the page and go to the requested link
     if (!event.target.href) {
       this.props.handleClick?.();
@@ -33,13 +33,13 @@ class Node extends React.Component<NodeProps> {
 
   render() {
     return (
-      <div className={this.props.isLeaf ? " leafLink " : " nodeLink "} onClick={event => this.handleClick(event)}>
+      <div className={this.props.isLeaf ? " leafLink " : " nodeLink "} onClick={(event) => this.handleClick(event)}>
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
         <Link
           url={this.props.url}
           target={this.props.target}
           label={escapeHtml(this.props.label)}
-          onClick={event => this.handleClick(event)}
+          onClick={(event) => this.handleClick(event)}
         />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
           <i className={"submenuIcon " + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
@@ -86,11 +86,11 @@ class Element extends React.Component<ElementProps> {
     const leafVisible = this.isCurrentVisible(element, search);
     const childrenVisible = this.isLeaf(element)
       ? leafVisible
-      : element.submenu.filter(l => this.isVisible(l, search)).length > 0;
+      : element.submenu.filter((l) => this.isVisible(l, search)).length > 0;
     return leafVisible || childrenVisible;
   };
 
-  isLeaf = element => {
+  isLeaf = (element) => {
     return element.submenu == null;
   };
 
@@ -98,7 +98,7 @@ class Element extends React.Component<ElementProps> {
     this.setState({ open: !this.state.open });
   };
 
-  getUrl = element => {
+  getUrl = (element) => {
     return element.submenu ? this.getUrl(element.submenu[0]) : element.primaryUrl;
   };
 
@@ -165,7 +165,7 @@ class MenuLevel extends React.Component<MenuLevelProps> {
 class Nav extends React.Component {
   state = { search: "", forceCollapse: false };
 
-  onSearch = e => {
+  onSearch = (e) => {
     this.setState({ search: e.target.value });
   };
 
@@ -221,10 +221,10 @@ class Breadcrumb extends React.Component {
 
   render() {
     var breadcrumbArray: any[] = [];
-    var level = window.JSONMenu.find(l => l.active);
+    var level = window.JSONMenu.find((l) => l.active);
     while (level != null) {
       breadcrumbArray.push(level);
-      level = level.submenu ? level.submenu.find(l => l.active) : null;
+      level = level.submenu ? level.submenu.find((l) => l.active) : null;
     }
 
     const product_name_link = window._IS_UYUNI ? (

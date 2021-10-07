@@ -11,11 +11,11 @@ type Props = {
   disabled: boolean;
   element: ElementDefinition;
   required?: boolean;
-}
+};
 
 type State = {
   showPassword: boolean;
-}
+};
 
 class PasswordInput extends React.Component<Props, State> {
   constructor(props: Props) {

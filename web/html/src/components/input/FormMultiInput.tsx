@@ -57,7 +57,7 @@ type Props = {
  */
 export function getOrderedItemsFromModel(model: any, prefix: string): Array<number> {
   return Object.keys(model)
-    .map(property => {
+    .map((property) => {
       const result = property.match(new RegExp(`^${prefix}([0-9]+)`));
       if (result != null) {
         return Number.parseInt(result[1], 10);
@@ -138,8 +138,8 @@ export function FormMultiInput(props: Props) {
         />
       }
     >
-      { props.header }
-      {items.map(index => {
+      {props.header}
+      {items.map((index) => {
         const removeButton = (
           <Button
             icon="fa-minus"

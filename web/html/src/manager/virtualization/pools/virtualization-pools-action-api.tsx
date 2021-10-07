@@ -30,7 +30,7 @@ export function VirtualizationPoolsActionApi(props: Props) {
           const messageData =
             volumes == null ? Object.assign({}, parameters, { poolNames }) : Object.assign({}, parameters, { volumes });
           apiAction(
-            urlTemplate => {
+            (urlTemplate) => {
               const urlBase = volumes == null ? urlTemplate : urlTemplate.replace("/pools/", "/volumes/");
               return `${urlBase}${action}`;
             },

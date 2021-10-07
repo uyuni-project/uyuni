@@ -42,7 +42,7 @@ const FormulaConfig = (props: Props) => {
 
   useEffect(() => {
     fetchProviderFormulaForm(props.provider, props.formula, props.context ? props.context : null)
-      .then(data => {
+      .then((data) => {
         setForm(data.form);
         if (data.params) {
           // merge params with props.values
@@ -120,7 +120,9 @@ const FormulaConfig = (props: Props) => {
                     icon="fa-eraser"
                     text="Clear values"
                     className="btn btn-default"
-                    handler={() => (clearValues as any)?.(() => window.confirm("Are you sure you want to clear all values?"))}
+                    handler={() =>
+                      (clearValues as any)?.(() => window.confirm("Are you sure you want to clear all values?"))
+                    }
                   />
                 )}
               </FormulaFormContext.Consumer>

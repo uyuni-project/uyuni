@@ -62,7 +62,7 @@ describe("Select", () => {
           { value: "vanilla", label: "Vanilla", color: "#F3E5AB" },
         ]}
         isMulti
-        formatOptionLabel={object => <div style={{ color: object.color }}>{object.label}</div>}
+        formatOptionLabel={(object) => <div style={{ color: object.color }}>{object.label}</div>}
       />
     );
     expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["vanilla", "strawberry"]);

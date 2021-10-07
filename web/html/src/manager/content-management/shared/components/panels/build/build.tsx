@@ -62,7 +62,7 @@ const Build = ({
               ? t(
                   "Build ({0})",
                   changesToBuild.filter(
-                    s =>
+                    (s) =>
                       s.includes(` ${statesEnum.findByKey(statesEnum.enum.ATTACHED.key).sign} `) ||
                       s.includes(` ${statesEnum.findByKey(statesEnum.enum.DETACHED.key).sign} `)
                   ).length
@@ -100,7 +100,7 @@ const Build = ({
                 />
               )}
 
-              <Form model={buildVersionForm} onChange={model => setBuildVersionForm(model)}>
+              <Form model={buildVersionForm} onChange={(model) => setBuildVersionForm(model)}>
                 <div className="row">
                   <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" disabled />
                 </div>
@@ -151,7 +151,7 @@ const Build = ({
                         );
                         onBuild(projectWithUpdatedSources);
                       })
-                      .catch(error => {
+                      .catch((error) => {
                         showErrorToastr(error.messages, { autoHide: false });
                         closeDialog(modalNameId);
                       });

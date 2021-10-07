@@ -36,7 +36,8 @@
     "copy-webpack-plugin": "^6.1.0",
     "core-js": "^3.8.1",
     "css-loader": "^2.1.0",
-    "eslint": "7.15.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-loader": "^3.0.3",
@@ -44,6 +45,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-local-rules": "^1.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "identity-obj-proxy": "^3.0.0",
@@ -92,6 +94,7 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "node-gettext": "^3.0.0",
+    "prettier": "2.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -104,7 +107,8 @@
     "validator": "^13.5.2"
   },
   "resolutions": {
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "prettier": "2.4.1"
   },
   "scripts": {
     "clean": "rm -rf node_modules",

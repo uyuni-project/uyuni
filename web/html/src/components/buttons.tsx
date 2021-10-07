@@ -28,7 +28,7 @@ type BaseProps = {
    * Any additional css classes for the button, `"btn"` is prepended automatically
    */
   className?: string;
-}
+};
 
 type BaseState = {};
 
@@ -50,7 +50,7 @@ type AsyncProps = BaseProps & {
    * The function is required and must return a Promise object or 'false'.
    * @return {Promise} The asynchronous action.
    */
-  action?: (...args: any[]) => (Promise<any> | false | void),
+  action?: (...args: any[]) => Promise<any> | false | void;
 
   /**
    * One of Bootstrap button type classes (e.g. 'btn-success', 'btn-primary').
@@ -67,7 +67,7 @@ type AsyncProps = BaseProps & {
 
 type AsyncState = {
   value: string;
-}
+};
 
 /**
  * A button which performs an asynchronous action and displays an animation while waiting for the result.
@@ -75,7 +75,7 @@ type AsyncState = {
 export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
   constructor(props: AsyncProps) {
     super(props);
-    ["trigger"].forEach(method => (this[method] = this[method].bind(this)));
+    ["trigger"].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       value: props.initialValue ? props.initialValue : "initial",
     };
@@ -147,7 +147,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
 
 export type ButtonProps = BaseProps & {
   /** Callback function to execute on button click. */
-  handler?: (...args: any[]) => any,
+  handler?: (...args: any[]) => any;
 };
 
 /**
@@ -176,10 +176,10 @@ type LinkProps = BaseProps & {
   href?: string;
 
   /** target of the link */
-  target?: string,
+  target?: string;
 
   /** Callback function to execute on button click. */
-  handler?: (...args: any[]) => any,
+  handler?: (...args: any[]) => any;
 };
 
 /**
@@ -187,12 +187,15 @@ type LinkProps = BaseProps & {
  */
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
-    const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> = this.props.target === "_blank" ? {
-      target: "_blank",
-      rel: "noopener noreferrer",
-    } : {
-      target : this.props.target,
-    };
+    const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
+      this.props.target === "_blank"
+        ? {
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }
+        : {
+            target: this.props.target,
+          };
     return (
       <a
         id={this.props.id}
@@ -228,10 +231,10 @@ type DropdownProps = BaseProps & {
   className: string;
 
   /** Callback function to execute on button click. */
-  handler?: (...args: any[]) => any,
+  handler?: (...args: any[]) => any;
 
   items: React.ReactNode[];
-}
+};
 
 /**
  * A bootstrap-style dropdown button.
@@ -253,7 +256,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
           {this.props.text} <span className="caret" />
         </button>
         <ul className="dropdown-menu dropdown-menu-right">
-          {this.props.items.map(i => (
+          {this.props.items.map((i) => (
             <li>{i}</li>
           ))}
         </ul>

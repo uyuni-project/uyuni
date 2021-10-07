@@ -21,7 +21,7 @@ interface SchedulePlaybookProps {
 }
 
 interface PlaybookArgs {
-  flushCache: Boolean
+  flushCache: Boolean;
 }
 
 export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookProps) {
@@ -39,12 +39,12 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
     const getInventoryPaths = () => {
       return Network.get(`/rhn/manager/api/systems/details/ansible/paths/inventory/${playbook.path.minionServerId}`)
         .then((res: JsonResult<AnsiblePath[]>) => (res.success ? res.data : Promise.reject(res)))
-        .then(inv => inv.map(i => i.path))
-        .then(inv => {
+        .then((inv) => inv.map((i) => i.path))
+        .then((inv) => {
           if (playbook.customInventory) inv.push(playbook.customInventory);
           setInventories(inv);
         })
-        .catch(res => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+        .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
     };
 
     const getPlaybookContents = () => {
@@ -54,7 +54,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
       })
         .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
         .then(setPlaybookContent)
-        .catch(res => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+        .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
     };
 
     Promise.all([getInventoryPaths(), getPlaybookContents()]).finally(() => setLoading(false));
@@ -71,8 +71,8 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
       earliest: datetime,
     })
       .then((res: JsonResult<number>) => (res.success ? res.data : Promise.reject(res)))
-      .then(actionId => setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text} />)))
-      .catch(res => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+      .then((actionId) => setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text} />)))
+      .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
   };
 
   if (loading) return <Loading text={t("Loading playbook contents..")} />;
@@ -117,11 +117,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
               systemIds={[playbook.path.minionServerId]}
               actionType="ansible.playbook"
             />
-            <Form
-              model={playbookArgs}
-              onChange={setPlaybookArgs}
-              formDirection="form-horizontal"
-            >
+            <Form model={playbookArgs} onChange={setPlaybookArgs} formDirection="form-horizontal">
               <div className="form-group">
                 <div className="col-sm-3 control-label">
                   <label>{t("Inventory Path")}:</label>
@@ -137,7 +133,11 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
                 </div>
               </div>
               <div className="col-sm-offset-3 col-sm-6">
-                <Check name="flushCache" label={t("Flush Ansible fact cache")} title={t("Clear the fact cache for every host in inventory")}/>
+                <Check
+                  name="flushCache"
+                  label={t("Flush Ansible fact cache")}
+                  title={t("Clear the fact cache for every host in inventory")}
+                />
               </div>
             </Form>
           </div>

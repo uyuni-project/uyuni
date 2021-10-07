@@ -14,7 +14,7 @@ declare global {
 }
 
 export function closeDialog(modalId: string) {
-  const closeModalPromise = new Promise(resolve => {
+  const closeModalPromise = new Promise((resolve) => {
     jQuery("#" + modalId).on("hidden.bs.modal", () => resolve(undefined));
   });
   jQuery("#" + modalId).modal("hide");
@@ -40,7 +40,7 @@ export function Dialog(props: DialogProps) {
     if (props.autoFocus === false) {
       return;
     }
-    jQuery("#" + props.id).on("shown.bs.modal", function() {
+    jQuery("#" + props.id).on("shown.bs.modal", function () {
       jQuery("#" + props.id + " :input:visible:enabled:first").focus();
     });
   }, []);

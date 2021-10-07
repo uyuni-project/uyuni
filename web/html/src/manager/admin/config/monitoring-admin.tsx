@@ -115,14 +115,14 @@ const ExportersList = (props: {
 
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
-      {keys.map(key => (
+      {keys.map((key) => (
         <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} />
       ))}
     </ul>
   );
 };
 
-const ListPlaceholderItem = props => {
+const ListPlaceholderItem = (props) => {
   return (
     <li className="placeholder-item">
       <Icon type="item-disabled" className="fa-1-5x" />
@@ -131,17 +131,17 @@ const ListPlaceholderItem = props => {
   );
 };
 
-const ListPlaceholder = props => {
+const ListPlaceholder = (props) => {
   return (
     <ul className="placeholder">
-      {Object.keys(exporterMap).map(e => (
+      {Object.keys(exporterMap).map((e) => (
         <ListPlaceholderItem />
       ))}
     </ul>
   );
 };
 
-const HelpPanel = props => {
+const HelpPanel = (props) => {
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
       <h4>{t("Server Monitoring")}</h4>
@@ -178,8 +178,8 @@ const ExportersMessages = (props: {
     return (
       <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
         {keys
-          .filter(key => props.messages[key] !== "restart")
-          .map(key => (
+          .filter((key) => props.messages[key] !== "restart")
+          .map((key) => (
             <li key={key}>
               <Icon type="system-warn" className="fa-1-5x" />
               {msgMap[key + "_msg_" + props.messages[key]]}
@@ -192,7 +192,7 @@ const ExportersMessages = (props: {
   }
 };
 
-const MonitoringAdmin = props => {
+const MonitoringAdmin = (props) => {
   const {
     action,
     fetchStatus,

@@ -80,7 +80,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 };
 
 type OverviewProps = {
-  id: number,
+  id: number;
   name: string; // Name of the maintenance schedule
   eventNames: Array<string>;
   calendarName: string | undefined;
@@ -100,17 +100,15 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
   return (
     <div>
       <BootstrapPanel title={t("Schedule Details")}>
-        <Table data={tableData} identifier={row => tableData.indexOf(row)} initialItemsPerPage={0}>
-          <Column columnKey="left" cell={row => row.left} />
-          <Column columnKey="right" cell={row => row.right} />
+        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} initialItemsPerPage={0}>
+          <Column columnKey="left" cell={(row) => row.left} />
+          <Column columnKey="right" cell={(row) => row.right} />
         </Table>
       </BootstrapPanel>
-      { props.calendarName &&
+      {props.calendarName && (
         <div className="panel panel-default">
           <div className="panel-heading">
-            <h4>
-              {props.name}
-            </h4>
+            <h4>{props.name}</h4>
           </div>
           <div className="panel-body">
             <WebCalendar
@@ -123,7 +121,7 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
             />
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };
@@ -142,24 +140,24 @@ const SystemPicker = (props: SystemPickerProps) => {
   useEffect(() => {
     Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`)
       .then(setSelectedSystems)
-      .catch(xhr => props.onMessage(Network.responseErrorMessage(xhr)));
+      .catch((xhr) => props.onMessage(Network.responseErrorMessage(xhr)));
   }, [props.scheduleId]);
 
   const onAssign = () => {
-    return Network.post(
-      `/rhn/manager/api/maintenance/schedule/${props.scheduleId}/setsystems`,
-      { systemIds: selectedSystems, cancelActions: isCancelActions }
-    )
+    return Network.post(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/setsystems`, {
+      systemIds: selectedSystems,
+      cancelActions: isCancelActions,
+    })
       .then(() =>
         props.onMessage(
           MessagesUtils.success(t("Maintenance schedule has been assigned to {0} system(s)", selectedSystems.length))
         )
       )
       .then(props.onBack)
-      .catch(xhr => props.onMessage(Network.responseErrorMessage(xhr)));
+      .catch((xhr) => props.onMessage(Network.responseErrorMessage(xhr)));
   };
 
-  const onSelect = systems => {
+  const onSelect = (systems) => {
     setHasChanges(true);
     setSelectedSystems(systems);
   };
@@ -190,7 +188,7 @@ const SystemPicker = (props: SystemPickerProps) => {
       >
         <Table
           data="/rhn/manager/api/maintenance/schedule/systems"
-          identifier={system => system.id}
+          identifier={(system) => system.id}
           searchField={<SearchField placeholder={t("Search systems")} />}
           selectable
           selectedItems={selectedSystems}
@@ -201,7 +199,7 @@ const SystemPicker = (props: SystemPickerProps) => {
             columnKey="name"
             sortable
             header={t("System")}
-            cell={system => (
+            cell={(system) => (
               <SystemLink id={system.id} newWindow>
                 {system.name}
               </SystemLink>
@@ -211,7 +209,7 @@ const SystemPicker = (props: SystemPickerProps) => {
             columnKey="scheduleName"
             sortable
             header={t("Current Schedule")}
-            cell={system =>
+            cell={(system) =>
               system.scheduleId &&
               (system.scheduleId === props.scheduleId ? (
                 <span>{system.scheduleName}</span>

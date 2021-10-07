@@ -8,11 +8,11 @@ import { Utils as ListUtils } from "../../list.utils";
 import { ListTab } from "../../ListTab";
 import { HypervisorCheck } from "../../HypervisorCheck";
 import { ActionApi } from "../../ActionApi";
-import { MigrateDialog } from './MigrateDialog';
+import { MigrateDialog } from "./MigrateDialog";
 
 export type HostInfo = {
-  hypervisor: string,
-  cluster_other_nodes: string[],
+  hypervisor: string;
+  cluster_other_nodes: string[];
 };
 
 type Props = {
@@ -77,7 +77,7 @@ export function GuestsList(props: Props) {
               title={t("Synchronize Guests List")}
               text={t("Synchronize")}
               icon="fa-refresh"
-              action={() => onAction(url => url, "", {})}
+              action={() => onAction((url) => url, "", {})}
               defaultType="btn-info"
             />
           );
@@ -89,7 +89,10 @@ export function GuestsList(props: Props) {
 
   return (
     <>
-      <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hostInfo?.hypervisor || ""}/>
+      <HypervisorCheck
+        saltVirtHost={!props.foreignEntitled && props.saltEntitled}
+        hypervisor={props.hostInfo?.hypervisor || ""}
+      />
 
       <ListTab
         serverId={props.serverId}
@@ -99,9 +102,9 @@ export function GuestsList(props: Props) {
         title={t("Hosted Virtual Systems")}
         description={t("This is a list of virtual guests which are configured to run on this host.")}
         modalsData={modalsData}
-        isActionVisible={action => !props.foreignEntitled && (action.type !== "delete" || props.saltEntitled)}
-        getCreateActionsKeys={actions => {
-          return Object.keys(actions).filter(key => key.startsWith("new-") && actions[key].type === "virt.create");
+        isActionVisible={(action) => !props.foreignEntitled && (action.type !== "delete" || props.saltEntitled)}
+        getCreateActionsKeys={(actions) => {
+          return Object.keys(actions).filter((key) => key.startsWith("new-") && actions[key].type === "virt.create");
         }}
         idName="uuid"
         panelButtons={panelButtons}
@@ -113,14 +116,14 @@ export function GuestsList(props: Props) {
               columnKey="name"
               comparator={Utils.sortByText}
               header={t("Guest")}
-              cell={row => row.name}
+              cell={(row) => row.name}
             />,
             <Column
               key="server"
               columnKey="serverName"
               comparator={Utils.sortByText}
               header={t("System")}
-              cell={row => {
+              cell={(row) => {
                 if (row.virtualSystemId == null) {
                   return t("Unregistered System");
                 }
@@ -136,7 +139,7 @@ export function GuestsList(props: Props) {
               columnKey="statusType"
               comparator={ListUtils.sortByUpdate}
               header={t("Updates")}
-              cell={row => {
+              cell={(row) => {
                 if (row.statusType == null) {
                   return "-";
                 }
@@ -148,28 +151,28 @@ export function GuestsList(props: Props) {
               columnKey="stateLabel"
               header={t("State")}
               comparator={ListUtils.sortByState}
-              cell={row => row.stateName}
+              cell={(row) => row.stateName}
             />,
             <Column
               key="memory"
               columnKey="memory"
               comparator={Utils.sortByNumber}
               header={t("Current Memory")}
-              cell={row => `${row.memory} MiB`}
+              cell={(row) => `${row.memory} MiB`}
             />,
             <Column
               key="vcpus"
               columnKey="vcpus"
               comparator={Utils.sortByNumber}
               header={t("vCPUs")}
-              cell={row => row.vcpus}
+              cell={(row) => row.vcpus}
             />,
             <Column
               key="channel"
               columnKey="channelLabels"
               comparator={Utils.sortByText}
               header={t("Base Software Channel")}
-              cell={row => {
+              cell={(row) => {
                 if (row.channelId == null) {
                   return t("(none)");
                 }
@@ -181,7 +184,7 @@ export function GuestsList(props: Props) {
             />,
           ];
 
-          const actionsProvider = row => {
+          const actionsProvider = (row) => {
             if (props.foreignEntitled) {
               return [];
             }
@@ -197,7 +200,10 @@ export function GuestsList(props: Props) {
                     action={() => onAction("start", [row.uuid], {})}
                   />
                 )}
-                {state === 'running' && row.name !== 'Domain-0' && !clustered && createModalButton('suspend', modalsData, row)}
+                {state === "running" &&
+                  row.name !== "Domain-0" &&
+                  !clustered &&
+                  createModalButton("suspend", modalsData, row)}
                 {state !== "stopped" && row.name !== "Domain-0" && createModalButton("shutdown", modalsData, row)}
                 {(state === "paused" || state === "running") && createModalButton("restart", modalsData, row)}
                 {props.saltEntitled && ["spice", "vnc"].includes(row.graphics_type) && (
@@ -209,16 +215,16 @@ export function GuestsList(props: Props) {
                     target="_blank"
                   />
                 )}
-                {row.cluster_primitive && state === 'running' &&
+                {row.cluster_primitive && state === "running" && (
                   <AsyncButton
                     defaultType="btn-default btn-sm"
-                    title={t('Migrate')}
+                    title={t("Migrate")}
                     icon="fa-share-square-o"
                     action={() => {
                       setMigrateVm(row);
                     }}
                   />
-                }
+                )}
                 <LinkButton
                   title={t("Edit")}
                   className="btn-default btn-sm"
@@ -234,8 +240,7 @@ export function GuestsList(props: Props) {
         }}
       </ListTab>
       <ActionApi urlTemplate={`/rhn/manager/api/systems/details/virtualization/guests/${props.serverId}/migrate`}>
-      {
-        ({onAction}) => (
+        {({ onAction }) => (
           <MigrateDialog
             id="migrate-modal"
             key="migrate-modal"
@@ -250,8 +255,7 @@ export function GuestsList(props: Props) {
             onClose={() => setMigrateVm(undefined)}
             clusterNodes={props.hostInfo?.cluster_other_nodes}
           />
-        )
-      }
+        )}
       </ActionApi>
     </>
   );

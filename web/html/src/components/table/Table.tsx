@@ -78,7 +78,7 @@ export function Table(props: TableProps) {
   const { ...allProps } = props;
   const columns = React.Children.toArray(props.children)
     .filter(isColumn)
-    .map(child => React.cloneElement(child));
+    .map((child) => React.cloneElement(child));
 
   return (
     <TableDataHandler columns={columns} {...allProps}>
@@ -86,7 +86,7 @@ export function Table(props: TableProps) {
         const rows = currItems.map((datum, index) => {
           const cells: React.ReactNode[] = React.Children.toArray(props.children)
             .filter(isColumn)
-            .map(column => React.cloneElement(column, { data: datum, criteria: criteria }));
+            .map((column) => React.cloneElement(column, { data: datum, criteria: criteria }));
 
           if (selectable) {
             const checkbox = (
@@ -96,7 +96,7 @@ export function Table(props: TableProps) {
                   <input
                     type="checkbox"
                     checked={selectedItems.includes(props.identifier(datum))}
-                    onChange={e => handleSelect(props.identifier(datum), e.target.checked)}
+                    onChange={(e) => handleSelect(props.identifier(datum), e.target.checked)}
                   />
                 }
               />
@@ -118,7 +118,7 @@ export function Table(props: TableProps) {
             const column = (
               <Column
                 key="delete"
-                cell={row => {
+                cell={(row) => {
                   if (typeof deletable === "function") {
                     return deletable(row) ? deleteButton : null;
                   }
@@ -134,7 +134,7 @@ export function Table(props: TableProps) {
           const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
           const evenOddClass = index % 2 === 0 ? "list-row-odd" : "list-row-even";
           let key = props.identifier(datum);
-          if (typeof key === 'undefined') {
+          if (typeof key === "undefined") {
             Loggerhead.error(`Could not identify table row with identifier: ${props.identifier}`);
             key = index;
           }

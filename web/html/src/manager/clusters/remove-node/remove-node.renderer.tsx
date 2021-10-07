@@ -10,7 +10,7 @@ type RendererProps = {
   cluster?: string;
   nodes?: string;
   flashMessage?: ServerMessageType;
-}
+};
 
 export const renderer = (id: string, { cluster, nodes, flashMessage }: RendererProps = {}) => {
   let clusterObj: any = {};

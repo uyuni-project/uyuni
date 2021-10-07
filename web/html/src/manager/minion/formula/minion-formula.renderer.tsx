@@ -51,7 +51,7 @@ export const renderer = (renderId, { serverId, formulaId }) => {
       addFormulaNavBar={addFormulaNavBar}
       formulaId={formulaId}
       systemId={serverId}
-      getFormulaUrl={function(id) {
+      getFormulaUrl={function (id) {
         return "/rhn/manager/systems/details/formula/" + id + "?sid=" + serverId;
       }}
       scope="system"

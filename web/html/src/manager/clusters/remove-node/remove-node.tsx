@@ -28,7 +28,7 @@ const RemoveNode = (props: Props) => {
     if (removeConfig) {
       return scheduleRemoveNode(
         props.cluster.id,
-        props.nodes.filter(node => (node.server ? true : false)).map(node => (node.server ? node.server.id : 0)),
+        props.nodes.filter((node) => (node.server ? true : false)).map((node) => (node.server ? node.server.id : 0)),
         removeConfig,
         earliest,
         actionChain
@@ -50,11 +50,11 @@ const RemoveNode = (props: Props) => {
                 values={removeConfig}
                 formula="remove_node"
                 context={{
-                  node_names: props.nodes.map(node => node.hostname),
+                  node_names: props.nodes.map((node) => node.hostname),
                   cluster: props.cluster.id,
                 }}
                 provider={props.cluster.provider.label}
-                onNext={formulaValues => {
+                onNext={(formulaValues) => {
                   setRemoveConfig(formulaValues);
                   goTo("schedule");
                 }}
@@ -75,7 +75,7 @@ const RemoveNode = (props: Props) => {
                       <div className="form-group">
                         <label className="col-md-3 control-label">{t("Nodes to remove:")}</label>
                         <div className="col-md-9">
-                          {props.nodes.map(node => (
+                          {props.nodes.map((node) => (
                             <div>
                               {node.server ? (
                                 <SystemLink id={node.server.id}>{node.hostname}</SystemLink>
