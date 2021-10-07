@@ -99,7 +99,7 @@ Feature: PXE boot a terminal with Cobbler
     When I reboot the PXE boot minion
     And I wait for "60" seconds
     And I set the default PXE menu entry to the "local boot" on the "proxy"
-    And I wait at most 900 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
     And I am on the Systems page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
