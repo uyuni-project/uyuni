@@ -684,6 +684,7 @@ PKGLISTDEBIAN10 = [
     "debconf-utils",
     "dirmngr",
     "distro-info-data",
+    "dmidecode",
     "gnupg",
     "gnupg-l10n",
     "gnupg-utils",
