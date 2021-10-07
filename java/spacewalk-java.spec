@@ -101,6 +101,7 @@ BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  hibernate-types
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
 BuildRequires:  httpcomponents-asyncclient
@@ -195,6 +196,7 @@ Requires:       (glassfish-jaxb-api or jaxb-api)
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
+Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
@@ -365,6 +367,7 @@ Requires:       classmate
 Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
+Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
@@ -789,6 +792,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/hibernate-c3p0-5.jar
 %{jardir}/hibernate-ehcache-5.jar
 %{jardir}/hibernate-commons-annotations.jar
+%{jardir}/hibernate-types-52-2.12.1.jar
 %{jardir}/ehcache-core.jar
 %{jardir}/classmate.jar
 %{jardir}/javassist.jar
