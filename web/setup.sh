@@ -12,5 +12,5 @@ set -euxo pipefail
         flock -x 200;
     fi
 ) 200>/tmp/setup_yarn.lock
-(cd web/html/src; #yarn build:novalidate)
+# (cd web/html/src; yarn build:novalidate)
 echo ""
