@@ -1,4 +1,5 @@
 set -euxo pipefail
+exit 0
 # This lock is shared with web/setup.sh
 (
     # Only run the below block if we're the first to acquire the lock
