@@ -367,9 +367,14 @@ If you want to specify an authenticated registry server to be used when testing 
 and place the credentials on that server in the `AUTH_REGISTRY_CREDENTIALS` separated
 by a vertical bar:
 ```bash
-export AUTH_REGISTRY= = "hostname:port/path"
+export AUTH_REGISTRY = "hostname:port/path"
 export AUTH_REGISTRY_CREDENTIALS = "user|password"
 ```
 
+In case you want to use a non-authenticated registry, you need to use:
+```bash
+export NO_AUTH_REGISTRY = "hostname:port/path"
+```
+
 You can also set this option from sumaform:
-https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#alternative-docker-registry
+https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#alternative-authenticated-docker-registry
