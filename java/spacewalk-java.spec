@@ -798,6 +798,9 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/javassist.jar
 %{jardir}/jboss-logging.jar
 %{jardir}/statistics.jar
+%{jardir}/jackson-databind.jar
+%{jardir}/jackson-core.jar
+%{jardir}/jackson-annotations.jar
 
 %{jardir}/jaf.jar
 %if 0%{?sle_version} >= 150200
