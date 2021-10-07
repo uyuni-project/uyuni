@@ -16,7 +16,7 @@ module.exports = {
     jQuery: true,
   },
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "jsx-a11y/anchor-is-valid": "error",
     "react/jsx-no-target-blank": "error",
     "react-hooks/rules-of-hooks": "error",
