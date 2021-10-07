@@ -174,7 +174,9 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -8009,6 +8011,37 @@ public class SystemHandler extends BaseHandler {
             }
         }
         return skipped;
+    }
+
+    /**
+     * Connect given systems to another proxy.
+     *
+     * @param loggedInUser The current user
+     * @param sids A list of systems ids
+     * @param proxyId Id of the proxy or 0 for direct connection to SUMA server
+     * @return Returns a list of scheduled action ids
+     *
+     * @xmlrpc.doc Connect given systems to another proxy.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "systemIds")
+     * @xmlrpc.param #param("int", "proxyId")
+     * @xmlrpc.returntype #array_single("int", "actionIds", "list of scheduled action ids")
+     */
+
+    public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+        try {
+            return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (java.lang.UnsupportedOperationException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
     }
 
     /**
