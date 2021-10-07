@@ -1,13 +1,12 @@
 set -euxo pipefail
-exit 0
 # This lock is shared with web/setup.sh
 (
     # Only run the below block if we're the first to acquire the lock
     if flock -x -n 200 ; then
         echo  "Frontent setup calling yarn *******DEBUG*******"
         cd susemanager-frontend/susemanager-nodejs-sdk-devel;
-        # yarn install --force --ignore-optional --frozen-lockfile;
-        # yarn autoclean --force;
+        yarn install --force --ignore-optional --frozen-lockfile;
+        yarn autoclean --force;
     else
         # Wait for the lock to be released and then continue
         flock -x 200;
