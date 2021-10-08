@@ -1,4 +1,4 @@
-name: Javascript lint
+name: Frontend lint
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
       - 'susemanager-frontend/**'
 
 jobs:
-  javascript_lint:
+  frontend_lint:
     runs-on: ubuntu-latest
 
     strategy:
@@ -42,5 +42,6 @@ jobs:
     - name: Install dependencies
       run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
 
+    # Run lint without fixes so the job fails if there are fixes to be applied
     - name: Run lint
       run: yarn --cwd web/html/src lint:production
