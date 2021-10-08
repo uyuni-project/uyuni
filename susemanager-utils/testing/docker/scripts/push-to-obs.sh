@@ -2,7 +2,8 @@
 
 REL_ENG_FOLDER="/build/rel-eng"
 mkdir /build
-rsync -av /manager /build
+echo "Copying files for building in parallel"
+cp -a /manager /build
 
 help() {
   echo ""
