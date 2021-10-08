@@ -1,3 +1,4 @@
+- Reposync: replace architecture variables in mirror lists
 - Minor spec update.
 - Added RHN config parameter httpd_config_dir.
 - Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
