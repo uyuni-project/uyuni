@@ -183,6 +183,8 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetter
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -2445,87 +2447,97 @@ public class SystemHandler extends BaseHandler {
                 result.put("result_msg", sAction.getResultMsg());
             }
 
-            // depending on the event type, we need to retrieve additional information
-            // and store that information in the result
-            ActionType type = action.getActionType();
-            List<Map<String, String>> additionalInfo = new ArrayList<Map<String, String>>();
-
-            if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
-                    type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                    type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-
-                // retrieve the list of package names associated with the action...
-
-                DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-                for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-                    Map pkg = (Map) itr.next();
-                    String detail = (String) pkg.get("nvre");
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", detail);
-                    additionalInfo.add(info);
-                }
+            final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
+            if (additionalInfo.size() > 0) {
+                result.put("additional_info", additionalInfo);
             }
-            else if (type.equals(ActionFactory.TYPE_ERRATA)) {
 
-                // retrieve the errata that were associated with the action...
-                DataResult errata = ActionManager.getErrataList(action.getId());
-                for (Iterator itr = errata.iterator(); itr.hasNext();) {
-                    Map erratum = (Map) itr.next();
-                    String detail = (String) erratum.get("advisory");
-                    detail += " (" + (String) erratum.get("synopsis") + ")";
+            results.add(result);
+        }
+        return results;
+    }
 
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", detail);
-                    additionalInfo.add(info);
-                }
+    private List<Map<String, String>> createActionSpecificDetails(Action action, ServerAction serverAction) {
+        // depending on the event type, we need to retrieve additional information
+        // and store that information in the result
+        final ActionType type = action.getActionType();
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
+                type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
+                type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
+
+            // retrieve the list of package names associated with the action...
+            DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
+            for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
+                Map pkg = (Map) itr.next();
+                String detail = (String) pkg.get("nvre");
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", detail);
+                additionalInfo.add(info);
             }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
-                    type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
+        }
+        else if (type.equals(ActionFactory.TYPE_ERRATA)) {
 
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileUploadList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
+            // retrieve the errata that were associated with the action...
+            DataResult errata = ActionManager.getErrataList(action.getId());
+            for (Iterator itr = errata.iterator(); itr.hasNext();) {
+                Map erratum = (Map) itr.next();
+                String detail = (String) erratum.get("advisory");
+                detail += " (" + erratum.get("synopsis") + ")";
 
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", (String) file.get("path"));
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    additionalInfo.add(info);
-                }
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", detail);
+                additionalInfo.add(info);
             }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
+                type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
 
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileDeployList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileUploadList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
 
-                    Map<String, String> info = new HashMap<String, String>();
-                    String path = (String) file.get("path");
-                    path += " (rev. " + file.get("revision") + ")";
-                    info.put("detail", path);
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    additionalInfo.add(info);
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", (String) file.get("path"));
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
                 }
+                additionalInfo.add(info);
             }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
 
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileDiffList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileDeployList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
 
-                    Map<String, String> info = new HashMap<String, String>();
-                    String path = (String) file.get("path");
-                    path += " (rev. " + file.get("revision") + ")";
-                    info.put("detail", path);
+                Map<String, String> info = new HashMap<>();
+                String path = (String) file.get("path");
+                path += " (rev. " + file.get("revision") + ")";
+                info.put("detail", path);
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileDiffList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                String path = (String) file.get("path");
+                path += " (rev. " + file.get("revision") + ")";
+                info.put("detail", path);
 
                 String error = (String) file.get("failure_reason");
                 if (error != null) {
@@ -2559,16 +2571,11 @@ public class SystemHandler extends BaseHandler {
                                                       .map(Object::toString)
                                                       .orElse("");
 
-                    additionalInfo.add(Map.of("detail", output, "result", returnCode));
-                }
+                additionalInfo.add(Map.of("detail", output, "result", returnCode));
             }
-
-            if (additionalInfo.size() > 0) {
-                result.put("additional_info", additionalInfo);
-            }
-            results.add(result);
         }
-        return results;
+
+        return additionalInfo;
     }
 
     /**
@@ -3326,6 +3333,51 @@ public class SystemHandler extends BaseHandler {
      */
     public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate) {
         return getEventHistory(loggedInUser, sid, earliestDate, null, null);
+    }
+
+    /**
+     * Returns the details of a history event.
+     *
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param eid The id of the event in question
+     * @return Returns the details of the requested event
+     * @throws FaultException A FaultException is thrown if the server corresponding to sid or the event corresponding
+     * to the eid cannot be found.
+
+     * @xmlrpc.doc Returns the details of the event associated with the specified server and event.
+     *             The event id must be a value returned by the system.getEventHistory API.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "eventId")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           SystemEventDetailDtoSerializer
+     *      #array_end()
+    */
+    public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
+
+        final Server server = lookupServer(loggedInUser, sid);
+        final SystemEventDetailsDto eventDetail = SystemManager.systemEventDetails(server.getId(),
+                loggedInUser.getOrg().getId(), eid.longValue());
+
+        if (eventDetail == null) {
+            throw new NoSuchHistoryEventException("No such history event for server - sid = " + sid + ", eid = " + eid);
+        }
+
+        if (eventDetail.getHistoryType() != null) {
+            // This is an action related entry this we can extract additional information
+            final Action action = ActionManager.lookupAction(loggedInUser, eventDetail.getId());
+            final ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+
+            eventDetail.setEarliestAction(action.getEarliestAction());
+            eventDetail.setResultMsg(serverAction.getResultMsg());
+            eventDetail.setResultCode(serverAction.getResultCode());
+
+            eventDetail.setAdditionalInfo(createActionSpecificDetails(action, serverAction));
+        }
+
+        return eventDetail;
     }
 
     /**

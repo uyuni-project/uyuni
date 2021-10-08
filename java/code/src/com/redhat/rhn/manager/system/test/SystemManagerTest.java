@@ -35,6 +35,7 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
@@ -72,6 +73,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -123,6 +125,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
@@ -1822,19 +1825,60 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Event 3", allEvents.get(8).getSummary());
     }
 
-    private void createHistoryEntry(Server server, String s) {
-        SystemManager.addHistoryEvent(server, s, "Test history event entry");
-        ServerFactory.save(server);
+    public void testSystemEventDetails() throws Exception {
+        final Server server = ServerTestUtils.createTestSystem(user);
+
+        Long historyEventId = createHistoryEntry(server, "Event 1");
+        Long actionEventId = createTestAction(server, ActionFactory.TYPE_APPLY_STATES, ActionFactory.STATUS_PICKED_UP);
+
+        final Long sid = server.getId();
+        final Long oid = user.getOrg().getId();
+
+        // Retrieve an history event
+        SystemEventDetailsDto eventDetail = SystemManager.systemEventDetails(sid, oid, historyEventId);
+
+        assertNotNull(eventDetail);
+        assertEquals(historyEventId, eventDetail.getId());
+        assertNull(eventDetail.getHistoryTypeName());
+        assertEquals("(n/a)", eventDetail.getHistoryStatus());
+        assertEquals("Event 1", eventDetail.getSummary());
+        assertNull(eventDetail.getCreated());
+        assertNull(eventDetail.getPickedUp());
+        assertNotNull(eventDetail.getCompleted());
+
+        // Retrieve an action event
+        eventDetail = SystemManager.systemEventDetails(sid, oid, actionEventId);
+
+        assertNotNull(eventDetail);
+        assertEquals(actionEventId, eventDetail.getId());
+        assertEquals("Apply states", eventDetail.getHistoryTypeName());
+        assertEquals("Picked Up", eventDetail.getHistoryStatus());
+        assertEquals("RHN-JAVA Test Action scheduled by " + user.getLogin(), eventDetail.getSummary());
+        assertNotNull(eventDetail.getCreated());
+        assertNotNull(eventDetail.getPickedUp());
+        assertNull(eventDetail.getCompleted());
+
     }
 
-    private void createTestAction(Server server, ActionType actionType)
-            throws Exception {
+    private Long createHistoryEntry(Server server, String s) {
+        final ServerHistoryEvent historyEvent = SystemManager.addHistoryEvent(server, s, "Test history event entry");
+        ServerFactory.save(server);
+        return historyEvent.getId();
+    }
+
+    private Long createTestAction(Server server, ActionType actionType) throws Exception {
+        return createTestAction(server, actionType, ActionFactory.STATUS_COMPLETED);
+    }
+
+    private Long createTestAction(Server server, ActionType actionType, ActionStatus actionStatus) throws Exception {
         final Action action = ActionFactoryTest.createAction(user, actionType);
         final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
 
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        serverAction.setStatus(actionStatus);
 
         ActionFactory.save(action);
+
+        return action.getId();
     }
 
     private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {

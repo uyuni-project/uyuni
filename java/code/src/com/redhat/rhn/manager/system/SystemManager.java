@@ -117,6 +117,7 @@ import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -3214,6 +3215,28 @@ public class SystemManager extends BaseManager {
 
         return m.execute(params);
     }
+
+    /**
+     * Returns the details of a single history event
+     *
+     * @param sid server id
+     * @param oid organization id
+     * @param eid event id
+     * @return Returns the details of the requested event
+     */
+    public static SystemEventDetailsDto systemEventDetails(Long sid, Long oid, Long eid) {
+        SelectMode m = ModeFactory.getMode("System_queries", "system_event_details");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("sid", sid);
+        params.put("oid", oid);
+        params.put("eid", eid);
+
+        @SuppressWarnings("unchecked")
+        final DataResult<SystemEventDetailsDto> result = m.execute(params);
+        return result.isEmpty() ? null : result.get(0);
+    }
+
     /**
      * @param sid server id
      * @param pc pageContext
