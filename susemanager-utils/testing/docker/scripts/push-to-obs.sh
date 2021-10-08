@@ -1,9 +1,9 @@
 #!/bin/sh -e
 
 REL_ENG_FOLDER="/build/rel-eng"
-mkdir /build
+[ -d build ] && rm -rf /build
 echo "Copying files for building in parallel"
-cp -a /manager /build
+cp -av /manager /build
 
 help() {
   echo ""
