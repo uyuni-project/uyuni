@@ -48,6 +48,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
                 "    -   makedirs: true\n" +
+                "    -   template: jinja\n" +
                 "    -   user: chuck\n" +
                 "    -   group: nobody\n" +
                 "    -   mode: 700\n";

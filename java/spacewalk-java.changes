@@ -1,3 +1,4 @@
+- Allow usage of jinja template in Salt config channels
 - Store Salt minion pillars in database
 - Fix datetime format parsing with moment (bsc#1191348)
 - trigger reboot needed message also when installhint is available
