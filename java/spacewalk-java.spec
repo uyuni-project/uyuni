@@ -185,7 +185,7 @@ Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       (jaf or jakarta-activation)
+Requires:       (gnu-jaf or jakarta-activation)
 %if 0%{?rhel} || 0%{?fedora}
 Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
