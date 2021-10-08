@@ -559,6 +559,10 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.RepoSync.get_compatible_arches(None),
                          ['a1', 'a2'])
 
+    def test_get_channel_arch(self):
+        _mock_rhnsql(self.reposync, {'label': 'channel-amd64-deb'})
+        self.assertEqual(self.reposync.RepoSync.get_channel_arch(None), 'amd64')
+
     def test_set_repo_credentials_no_credentials(self):
         url = {'source_url': "http://example.com"}
         rs = self._create_mocked_reposync()

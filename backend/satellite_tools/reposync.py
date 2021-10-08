@@ -484,6 +484,7 @@ class RepoSync(object):
         #if self.checksum_cache is None:
         #    self.checksum_cache = {}
         self.arches = self.get_compatible_arches(int(self.channel['id']))
+        self.channel_arch = self.get_channel_arch(int(self.channel['id']))
         self.import_batch_size = default_import_batch_size
 
     def set_import_batch_size(self, batch_size):
@@ -2380,6 +2381,22 @@ class RepoSync(object):
         arches = [k['label'] for k in  h.fetchall_dict()
                 if CFG.SYNC_SOURCE_PACKAGES or k['label'] not in ['src', 'nosrc']]
         return arches
+
+    @staticmethod
+    def get_channel_arch(channel_id):
+        """Return the basearch value for the channel"""
+        h = rhnSQL.prepare("""select ca.label
+                              from rhnChannel c,
+                              rhnChannelArch ca
+                              where c.id = :channel_id
+                              and c.channel_arch_id = ca.id""")
+        h.execute(channel_id=channel_id)
+        row = h.fetchone_dict()
+
+        if not isinstance(row, dict):
+            return None
+
+        return re.sub("^channel-([^-]+)(?:-deb)?$", "\\1", row['label'])
 
     @staticmethod
     def _update_keywords(notice):
