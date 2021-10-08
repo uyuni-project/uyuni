@@ -12,5 +12,5 @@ set -euxo pipefail
         flock -x 200;
     fi
 ) 200>/tmp/setup_yarn.lock
-#(cd susemanager-frontend/susemanager-nodejs-sdk-devel; yarn zip)
+(cd susemanager-frontend/susemanager-nodejs-sdk-devel; yarn zip)
 echo "susemanager-nodejs-modules.tar.gz"
