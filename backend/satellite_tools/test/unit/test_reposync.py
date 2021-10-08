@@ -130,6 +130,7 @@ class RepoSyncTest(unittest.TestCase):
                                                  'id': 1,
                                                  'org_id': 1})
         self.reposync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
+        self.reposync.RepoSync.get_channel_arch = Mock('arch1')
 
         rs = self.reposync.RepoSync('Label', RTYPE)
 
@@ -920,6 +921,7 @@ def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
     """Initialize the RepoSync object with some mocked attrs"""
     reposync.RepoSync.get_compatible_arches = Mock(
         return_value=['arch1', 'arch2'])
+    reposync.RepoSync.get_channel_arch = Mock(return_value=['arch1'])
     channel = {'org_id':1, 'id':1, 'arch': 'arch1'}
     reposync.RepoSync.load_channel = Mock(return_value=channel)
     rs = reposync.RepoSync(label, repo_type, **kwargs)

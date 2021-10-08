@@ -572,7 +572,8 @@ class RepoSync(object):
                                                   channel_label=self.channel_label,
                                                   ca_cert_file=ca_cert_file,
                                                   client_cert_file=client_cert_file,
-                                                  client_key_file=client_key_file)
+                                                  client_key_file=client_key_file,
+                                                  channel_arch=self.channel_arch)
                     except repo.GeneralRepoException as exc:
                         log(0, "Plugin error: {}".format(exc))
                         sync_error = -1
@@ -715,6 +716,7 @@ class RepoSync(object):
         """Try to import the repository plugin required to sync the repository
 
         :repo_type: type of the repository; only 'yum' is currently supported
+        :channel_arch: the channel architecture
 
         """
         if repo_type == "yum" and not isSUSE():
