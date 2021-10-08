@@ -1,6 +1,8 @@
 #!/bin/sh -e
 
-REL_ENG_FOLDER="/manager/rel-eng"
+REL_ENG_FOLDER="/build/rel-eng"
+mkdir /build
+rsync -av /manager /build
 
 help() {
   echo ""
