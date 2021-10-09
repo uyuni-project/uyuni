@@ -172,70 +172,70 @@
       </trans-unit>
       <trans-unit id="5" xml:space="preserve">
         <source>5</source>
-        <target/>
+        <target>5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6" xml:space="preserve">
         <source>6</source>
-        <target/>
+        <target>6</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7" xml:space="preserve">
         <source>7</source>
-        <target/>
+        <target>7</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8" xml:space="preserve">
         <source>8</source>
-        <target/>
+        <target>8</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9" xml:space="preserve">
         <source>9</source>
-        <target/>
+        <target>9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yes" xml:space="preserve">
           <source>Yes</source>
-        <target/>
+        <target>Áno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no" xml:space="preserve">
           <source>No</source>
-        <target/>
+        <target>Nie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Enabled" xml:space="preserve">
           <source>Enabled</source>
-        <target/>
+        <target>Povolené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Disabled" xml:space="preserve">
           <source>Disabled</source>
-        <target/>
+        <target>Zakázané</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tip" xml:space="preserve">
           <source>Tip</source>
-        <target/>
+        <target>Tip</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
