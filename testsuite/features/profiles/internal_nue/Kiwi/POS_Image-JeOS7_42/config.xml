@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="6.1" name="POS_Image_JeOS7_32">
+<image schemaversion="6.1" name="POS_Image_JeOS7_42">
     <description type="system">
         <author>Admin User</author>
         <contact>noemail@example.com</contact>
-        <specification>SUSE Linux Enterprise 15 SP1 JeOS</specification>
+        <specification>SUSE Linux Enterprise 15 SP3 JeOS</specification>
     </description>
     <preferences>
         <version>7.0.0</version>
@@ -20,6 +20,7 @@
         <rpm-excludedocs>true</rpm-excludedocs>
         <type filesystem="ext3" image="pxe" initrd_system="dracut"/>
     </preferences>
+
     <users group="root">
       <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash"/>
     </users>
@@ -32,28 +33,28 @@
          in that case, sync those repos in Uyuni, and add them to the activation key;
          finally, re-enable option  '- -ignore-repos-used-for-build' in file 'kiwi-image-build.sls' -->
     <repository type="rpm-md">  <!-- product -->
-        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Product-SLES/15-SP1/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Product-SLES/15-SP3/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Product-SLES/15-SP1/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Product-SLES/15-SP3/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- base system -->
-        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Basesystem/15-SP1/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Basesystem/15-SP3/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Basesystem/15-SP1/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- desktop applications -->
-        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Desktop-Applications/15-SP1/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Desktop-Applications/15-SP3/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP1/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP3/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- development tools -->
-        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Development-Tools/15-SP1/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Development-Tools/15-SP3/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Development-Tools/15-SP1/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Development-Tools/15-SP3/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- manager tools -->
         <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Manager-Tools/15/x86_64/product/"/>
@@ -61,8 +62,8 @@
     <repository type="rpm-md">
         <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
     </repository>
-    <repository type="rpm-md">  <!-- 3.2 development client tools -->
-        <source path="http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.2:/SLE15-SUSE-Manager-Tools/SLE_15/"/>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/4.2:/SLE15-SUSE-Manager-Tools/SLE_15/"/>
     </repository>
 
     <packages type="image">
@@ -96,6 +97,7 @@
         <package name="iproute2"/>
         <package name="openssh"/>
         <package name="rsync"/>
+        <package name="plymouth-plugin-label-ft"/>
 
         <package name="kernel-default"/>
 	<package name="salt-minion"/>
@@ -108,10 +110,10 @@
         <package name="plymouth"/>
         <package name="plymouth-dracut"/>
         <package name="plymouth-branding-SLE"/>
+        <package name="plymouth-plugin-label-ft"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
         <package name="noto-sans-fonts"/>
-        <package name="wpa_supplicant"/>
         <package name="busybox"/>
         <package name="bind-utils"/>
         <package name="kiwi-tools"/>
