@@ -242,70 +242,70 @@
       </trans-unit>
       <trans-unit id="Note" xml:space="preserve">
           <source>Note</source>
-        <target/>
+        <target>Poznámka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning" xml:space="preserve">
           <source>Warning</source>
-        <target/>
+        <target>Varovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Custom" xml:space="preserve">
           <source>Custom</source>
-        <target/>
+        <target>Vlastné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Examples" xml:space="preserve">
           <source>Examples</source>
-        <target/>
+        <target>Príklady</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="none specified" xml:space="preserve">
           <source>none specified</source>
-        <target/>
+        <target>neuvedené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
-        <target/>
+        <target>O</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Account" xml:space="preserve">
         <source>Account</source>
-        <target/>
+        <target>Účet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Account Deactivation" xml:space="preserve">
         <source>Account Deactivation</source>
-        <target/>
+        <target>Deaktivácia účtu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Activation Keys" xml:space="preserve">
         <source>Activation Keys</source>
-        <target/>
+        <target>Aktivačné kľúče</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Addresses" xml:space="preserve">
         <source>Addresses</source>
-        <target/>
+        <target>Adresy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
