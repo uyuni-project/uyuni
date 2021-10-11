@@ -65,17 +65,23 @@ mgr_server_localhost_alias_absent:
   #end of expections
 {%- endif %}
 
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
 
 {%- if grains['os_family'] == 'RedHat' or  grains['os_family'] == 'Suse'%}
   {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
   {%- if 'status' not in bootstrap_repo_request %}
     {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
-  # if bootstrap does not work, try with RedHat
+  # if bootstrap does not work, try with RedHat and re-test
   {%- elif grains['os_family'] == 'RedHat' and not (0 < bootstrap_repo_request['status'] < 300) %}
     {%- set os_base = 'res' %}
     {% set osrelease = grains['osrelease_info'][0] %}
-    {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/' ~ '/bootstrap/' %}
+    {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
+    {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
+    {%- if 'status' not in bootstrap_repo_request %}
+      {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
+    {%- elif bootstrap_repo_request['status'] == 901 %}
+      {{ raise(bootstrap_repo_request['error']) }}
+    {%- endif %}
   {%- elif bootstrap_repo_request['status'] == 901 %}
     {{ raise(bootstrap_repo_request['error']) }}
   {%- endif %}
