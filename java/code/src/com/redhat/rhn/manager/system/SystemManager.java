@@ -326,8 +326,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Optional<Long> serverId) {
-        SelectMode m = ModeFactory.getSelectMode("System_queries",
-                "systems_requiring_reboot", true);
+        SelectMode m = ModeFactory.getMode("System_queries", "systems_requiring_reboot");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());

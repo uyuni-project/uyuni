@@ -76,6 +76,11 @@ const filterMatchers: FilterMatcherEnumType = {
     text: "version greater than",
     longDescription: t("contains package with epoch/version/release greater than"),
   },
+  CONTAINS_PROVIDES_NAME: {
+    key: "contains_provides_name",
+    text: "provides name",
+    longDescription: t("contains package which provides name equal"),
+  },
   EQUALS: {
     key: "equals",
     text: t("equals"),
@@ -91,6 +96,11 @@ const filterMatchers: FilterMatcherEnumType = {
     text: t("matches"),
     longDescription: t("matches regular expression"),
   },
+  PROVIDES_NAME: {
+    key: "provides_name",
+    text: t("provides name"),
+    longDescription: t("provides name equal"),
+  },
 };
 
 export const clmFilterOptions: ClmFilterOptionsEnumType = {
@@ -105,6 +115,12 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     text: t("NEVRA"),
     entityType: filterEntity.PACKAGE,
     matchers: [filterMatchers.EQUALS],
+  },
+  PROVIDES_NAME: {
+    key: "provides_name",
+    text: t("Contains Package Provides Name"),
+    entityType: filterEntity.PACKAGE,
+    matchers: [filterMatchers.PROVIDES_NAME],
   },
   ADVISORY_NAME: {
     key: "advisory_name",
@@ -141,6 +157,12 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     text: t("Contains Package Name"),
     entityType: filterEntity.ERRATUM,
     matchers: [filterMatchers.CONTAINS_PKG_NAME, filterMatchers.MATCHES_PKG_NAME],
+  },
+  PACKAGE_PROVIDES_NAME: {
+    key: "package_provides_name",
+    text: t("Contains Package Provides Name"),
+    entityType: filterEntity.ERRATUM,
+    matchers: [filterMatchers.CONTAINS_PROVIDES_NAME],
   },
   PACKAGE_NEVR: {
     key: "package_nevr",
