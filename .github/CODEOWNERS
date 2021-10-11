@@ -41,7 +41,6 @@ java/conf/cobbler/snippets/ @SchoolGuy
 
 # Python
 *.py @uyuni-project/python
-backend/satellite_exporter/ @uyuni-project/python @lucidd
 
 # Frontend
 web/ @uyuni-project/frontend
