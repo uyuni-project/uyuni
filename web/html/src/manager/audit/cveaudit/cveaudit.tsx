@@ -364,6 +364,7 @@ class CVEAudit extends React.Component<Props, State> {
               "&statuses=" +
               this.state.statuses
             }
+            data-senna-off="true"
           >
             Download CSV
           </a>
