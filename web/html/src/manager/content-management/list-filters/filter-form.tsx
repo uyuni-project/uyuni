@@ -234,6 +234,26 @@ const FilterForm = (props: Props) => {
               />
             )}
 
+            {clmFilterOptions.PACKAGE_PROVIDES_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PACKAGE_PROVIDES_NAME.key}
+                label={t("Package Provides Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PROVIDES_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PROVIDES_NAME.key}
+                label={t("Provides Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
             {clmFilterOptions.STREAM.key === filterType && (
               <>
                 <AppStreamsForm />
