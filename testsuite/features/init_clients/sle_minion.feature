@@ -57,7 +57,7 @@ Feature: Bootstrap a Salt minion via the GUI
     When I follow "Events"
     And I follow "History"
     And I wait at most 600 seconds until event "Product Migration" is completed
-    And I wait until event "Package List Refresh" is completed
+    And I wait until event "Subscribe channels scheduled by admin" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP3" text
     And vendor change should be enabled for product migration on "sle_minion"
