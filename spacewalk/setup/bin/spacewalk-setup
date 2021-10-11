@@ -1011,8 +1011,10 @@ sub populate_initial_configs {
           chmod 0640, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
       }
   }
-  Spacewalk::Setup::write_config( \%rhnopt,
+  if(keys %rhnopt) {
+      Spacewalk::Setup::write_config( \%rhnopt,
                 '/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
+  }
 
     foreach my $opt_name (qw/session_swap_secret session_secret/) {
         foreach my $i (1 .. 4) {
