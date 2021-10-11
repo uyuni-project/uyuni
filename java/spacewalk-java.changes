@@ -1,3 +1,5 @@
+- mgr-sync refresh logs when a vendor channel is expire and shows how to remove it (bsc#1191222)
+
 -------------------------------------------------------------------
 Wed Oct 06 16:25:25 CEST 2021 - jgonzalez@suse.com
 
