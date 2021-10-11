@@ -312,49 +312,49 @@
       </trans-unit>
       <trans-unit id="address type B" xml:space="preserve">
         <source>Billing Address</source>
-        <target/>
+        <target>Fakturačná adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type M" xml:space="preserve">
         <source>Mailing Address</source>
-        <target/>
+        <target>Poštová adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type S" xml:space="preserve">
         <source>Shipping Address</source>
-        <target/>
+        <target>Dodacia adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address not filled in" xml:space="preserve">
         <source>Address not filled in</source>
-        <target/>
+        <target>Adresa nie je vyplnená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Fill in this address" xml:space="preserve">
         <source>Fill in this address</source>
-        <target/>
+        <target>Vyplňte túto adresu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
-        <target/>
+        <target>Pokročilé vyhľadávanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Affected Systems" xml:space="preserve">
         <source>Affected Systems</source>
-        <target/>
+        <target>Ovplyvnené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
@@ -368,11 +368,11 @@
       </trans-unit>
       <trans-unit id="url" xml:space="preserve">
         <source>url</source>
-        <target/>
+        <target>url</target>
       </trans-unit>
       <trans-unit id="alphabet" xml:space="preserve">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
-        <target/>
+        <target>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -382,77 +382,77 @@
       </trans-unit>
       <trans-unit id="API" xml:space="preserve">
         <source>API</source>
-        <target/>
+        <target>API</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FAQs" xml:space="preserve">
         <source>FAQs</source>
-        <target/>
+        <target>FAQ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sample Scripts" xml:space="preserve">
         <source>Sample Scripts</source>
-        <target/>
+        <target>Vzorové skripty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Archived Actions" xml:space="preserve">
         <source>Archived Actions</source>
-        <target/>
+        <target>Archivované akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Action Chains" xml:space="preserve">
         <source>Action Chains</source>
-        <target/>
+        <target>Reťazce akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cant have spaces" xml:space="preserve">
         <source>do spaces work?</source>
-        <target/>
+        <target>fungujú medzery?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="list delimiter" xml:space="preserve">
         <source>, </source>
-        <target/>
+        <target>, </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Change Email" xml:space="preserve">
         <source>Change Email</source>
-        <target/>
+        <target>Zmeniť email</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.create" xml:space="preserve">
         <source>Create Software Channel</source>
-        <target/>
+        <target>Vytvoriť softvérový kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Audit" xml:space="preserve">
         <source>Audit</source>
-        <target/>
+        <target>Audit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
-        <target/>
+        <target>OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
