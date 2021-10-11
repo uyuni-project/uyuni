@@ -1,3 +1,5 @@
+- Improved event history listing and added new system_eventdetails 
+  command to retrieve the details of an event
 - configchannel_updatefile handles directory properly (bsc#1190512)
 
 -------------------------------------------------------------------
