@@ -118,7 +118,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
   },
   PROVIDES_NAME: {
     key: "provides_name",
-    text: t("Contains Package Provides Name"),
+    text: t("Provides Name"),
     entityType: filterEntity.PACKAGE,
     matchers: [filterMatchers.PROVIDES_NAME],
   },
