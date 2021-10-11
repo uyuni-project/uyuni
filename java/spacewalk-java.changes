@@ -1,3 +1,4 @@
+- mgr-sync refresh logs when a vendor channel is expire and shows how to remove it (bsc#1191222)
 - Remove NullPointerException in rhn_web_ui.log when building an image (bsc#1185951)
 - Add checksums to repository metadata filenames (bsc#1188315)
 - Fix ISE in product migration if base product is missing (bsc#1190151)
