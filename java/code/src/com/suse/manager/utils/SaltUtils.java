@@ -522,7 +522,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
+        Action action = serverAction.getParentAction();
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
@@ -1088,8 +1088,8 @@ public class SaltUtils {
 
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction)action;
-        ImageBuildActionDetails details = ba.getDetails();
+        ImageBuildAction ba = (ImageBuildAction) action;
+        Optional<ImageBuildActionDetails> details = Optional.ofNullable(ba.getDetails());
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -1099,53 +1099,62 @@ public class SaltUtils {
         serverAction.setResultMsg(json);
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            Optional<ImageProfile> profileOpt =
-                    ImageProfileFactory.lookupById(details.getImageProfileId());
+            details.ifPresentOrElse(det -> {
+                Optional<ImageProfile> profileOpt =
+                        ImageProfileFactory.lookupById(det.getImageProfileId());
 
-            profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    // Download the built Kiwi image to SUSE Manager server
-                    OSImageInspectSlsResult.Bundle bundleInfo =
-                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet().getBundle();
-                    infoOpt.ifPresent(info -> info.setChecksum(
-                            ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = systemQuery
-                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
-                            .orElseThrow(() -> new RuntimeException("Failed to download image."));
+                profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
+                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                        // Download the built Kiwi image to SUSE Manager server
+                        OSImageInspectSlsResult.Bundle bundleInfo =
+                                Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                        .getKiwiBuildInfo().getChanges().getRet().getBundle();
+                        infoOpt.ifPresent(info -> info.setChecksum(
+                                ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
+                                .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                        OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
+                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                    if (collectResult.getReturnCode() != 0) {
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        serverAction.setResultMsg(StringUtils
-                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()), 1024));
-                    }
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
+                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                            1024));
+                        }
+                    });
+                }));
+                ImageInspectAction iAction = ActionManager.scheduleImageInspect(
+                        action.getSchedulerUser(),
+                        action.getServerActions()
+                                .stream()
+                                .map(ServerAction::getServerId)
+                                .collect(Collectors.toList()),
+                        Optional.of(action.getId()),
+                        det.getVersion(),
+                        profileOpt.map(ImageProfile::getLabel).orElse(null),
+                        profileOpt.map(ImageProfile::getTargetStore).orElse(null),
+                        Date.from(Instant.now())
+                );
+                try {
+                    TASKOMATIC_API.scheduleActionExecution(iAction);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule image inspection");
+                    LOG.error(e);
+                }
+
+                infoOpt.ifPresent(info -> {
+                    info.setRevisionNumber(info.getRevisionNumber() + 1);
+                    info.setInspectAction(iAction);
+                    ImageInfoFactory.save(info);
                 });
-            }));
-            ImageInspectAction iAction = ActionManager.scheduleImageInspect(
-                    action.getSchedulerUser(),
-                    action.getServerActions()
-                            .stream()
-                            .map(ServerAction::getServerId)
-                            .collect(Collectors.toList()),
-                    Optional.of(action.getId()),
-                    details.getVersion(),
-                    profileOpt.map(ImageProfile::getLabel).orElse(null),
-                    profileOpt.map(ImageProfile::getTargetStore).orElse(null),
-                    Date.from(Instant.now())
-            );
-            try {
-                TASKOMATIC_API.scheduleActionExecution(iAction);
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule image inspection");
-                LOG.error(e);
-            }
-
-            infoOpt.ifPresent(info -> {
-                info.setRevisionNumber(info.getRevisionNumber() + 1);
-                info.setInspectAction(iAction);
-                ImageInfoFactory.save(info);
+            }, () -> {
+                LOG.error("Details not found in ImageBuildAction");
+                LOG.error("Name is: " + action.getName());
+                LOG.error("Action ID is: " + action.getId());
+                LOG.error("Earliest action was: " + action.getEarliestAction());
+                LOG.error("Scheduler User is: " + action.getSchedulerUser());
             });
         }
     }
