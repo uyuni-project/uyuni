@@ -67,4 +67,4 @@ jobs:
         # Ask for a review from the user who triggered the run, in this case the person who pushed to master
         # TODO: Disabled for workflow test
         # reviewers: ${{ github.actor }}
-        team-reviewers: "@uyuni-project/frontend"
+        team-reviewers: uyuni-project/frontend
