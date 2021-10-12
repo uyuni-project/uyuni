@@ -109,12 +109,13 @@ def _org_create_handler(self, args, first):
         if not options.password:
             logging.error(_N('A password is required'))
             return 1
+        if not first:
+            if not options.pam:
+                options.pam = False
 
-        if not options.pam:
-            options.pam = False
-
-        if not options.prefix:
-            options.prefix = _('Dr.')
+        if not first:
+            if not options.prefix:
+                options.prefix = _('Dr.')
 
     if not first:
         if options.prefix[-1] != '.' and options.prefix != _('Miss'):
