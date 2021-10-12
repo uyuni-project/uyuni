@@ -107,7 +107,7 @@ BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  (jaf or jakarta-activation)
+BuildRequires:  (gnu-jaf or jakarta-activation)
 %if 0%{?rhel} >= 8 || 0%{?fedora}
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
