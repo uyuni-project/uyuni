@@ -1,37 +1,5 @@
--------------------------------------------------------------------
-Tue Feb 15 10:00:44 CET 2022 - jgonzalez@suse.com
-
-- version 4.3.7-1
-  * Include group formulas configuration in spacecmd group_backup and
-    spacecmd group_restore. This changes backup format to json,
-    previously used plain text is still supported for reading (bsc#1190462)
-  * Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
-
--------------------------------------------------------------------
-Mon Jan 24 11:16:36 CET 2022 - jgonzalez@suse.com
-
-- version 4.3.6-1
-  * Update translation strings
-
--------------------------------------------------------------------
-Tue Jan 18 13:37:17 CET 2022 - jgonzalez@suse.com
-
-- version 4.3.5-1
-  * require python macros for building
-
--------------------------------------------------------------------
-Tue Nov 16 10:02:53 CET 2021 - jgonzalez@suse.com
-
-- version 4.3.4-1
-  * Update translation strings
-
--------------------------------------------------------------------
-Fri Nov 05 13:35:11 CET 2021 - jgonzalez@suse.com
-
-- version 4.3.3-1
-  * Improved event history listing and added new system_eventdetails 
-    command to retrieve the details of an event
-  * configchannel_updatefile handles directory properly (bsc#1190512)
+- option 'org_createfirst' added to perform initial organization and user creation
+- configchannel_updatefile handles directory properly (bsc#1190512)
 
 -------------------------------------------------------------------
 Fri Sep 17 12:00:28 CEST 2021 - jgonzalez@suse.com
