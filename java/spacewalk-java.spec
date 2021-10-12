@@ -108,7 +108,7 @@ BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  jaf
+BuildRequires:  (gnu-jaf or jakarta-activation)
 %if 0%{?rhel} >= 8 || 0%{?fedora}
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
@@ -186,7 +186,7 @@ Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       (jaf or gnu-jaf)
+Requires:       (gnu-jaf or jakarta-activation)
 %if 0%{?rhel} || 0%{?fedora}
 Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
@@ -639,11 +639,11 @@ mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jard
 
 # Prettifying symlinks for RHEL
 %if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
+mv $RPM_BUILD_ROOT%{jardir}/jakarta-activationjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
 mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
 mv $RPM_BUILD_ROOT%{jardir}/jta.jar $RPM_BUILD_ROOT%{jardir}/geronimo-jta-1.1-api.jar
 # Removing unused symlinks.
-rm -rf $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation-api.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/jakarta-activationjakarta.activation-api.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamaildsn.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailgimap.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailimap.jar

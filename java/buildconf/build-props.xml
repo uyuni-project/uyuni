@@ -83,6 +83,10 @@
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
+  <condition property="jaf" value="jaf" else="jakarta-activation">
+    <available file="${java.lib.dir}/jaf/jakarta.activation.jar"/>
+  </condition>
+
   <!-- com.sun.xml.bind replacement (jaxb) -->
   <condition property="jaxb-api" value="jaxb-api" else="">
     <available file="${java.lib.dir}/jaxb-api.jar" />
@@ -156,7 +160,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j jaf ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
@@ -178,7 +182,7 @@
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr jaf ${jta11-jars} sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr ${jaf} ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
@@ -199,7 +203,7 @@
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
              ${commons-validator} concurrent dom4j ${hibernate} ${jta11-jars}
-             jaf ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
+             ${jaf} ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
