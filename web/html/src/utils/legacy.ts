@@ -14,5 +14,5 @@
  */
 export function DEPRECATED_unsafeEquals(a: any, b: any) {
   // eslint-disable-next-line eqeqeq
-return a == b
+  return a == b;
 }
