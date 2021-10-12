@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - lint-pr-test
     paths:
       - 'web/html/src/**'
       - 'susemanager-frontend/**'
@@ -65,5 +66,6 @@ jobs:
           - [x] No changelog needed
         commit-message: Automatic frontend lint fixes
         # Ask for a review from the user who triggered the run, in this case the person who pushed to master
-        reviewers: ${{ github.actor }}
+        # TODO: Disabled for workflow test
+        # reviewers: ${{ github.actor }}
         team-reviewers: "@uyuni-project/frontend"
