@@ -83,8 +83,8 @@
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
-  <condition property="jaf" value="jaf" else="jakarta-activation">
-    <available file="${java.lib.dir}/jaf/jakarta.activation.jar"/>
+  <condition property="jaf" value="jakarta-activation" else="jaf">
+    <available file="${java.lib.dir}/jakarta-activation/jakarta.activation.jar"/>
   </condition>
 
   <!-- com.sun.xml.bind replacement (jaxb) -->
