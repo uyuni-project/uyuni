@@ -3,7 +3,6 @@ name: Automatic frontend lint fix PR
 on:
   push:
     branches:
-      - master
       - lint-pr-test
     paths:
       - 'web/html/src/**'
