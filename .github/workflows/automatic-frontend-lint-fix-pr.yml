@@ -66,4 +66,3 @@ jobs:
         commit-message: Automatic frontend lint fixes
         # Ask for a review from the user who triggered the run, in this case the person who pushed to master
         reviewers: ${{ github.actor }}
-        team-reviewers: "@uyuni-project/frontend"
