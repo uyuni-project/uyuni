@@ -1,3 +1,6 @@
+- Improved the diskcheck script to return an exit value and to
+  allow performing the check without sending notification
+
 -------------------------------------------------------------------
 Wed Oct 06 09:31:39 CEST 2021 - jgonzalez@suse.com
 
