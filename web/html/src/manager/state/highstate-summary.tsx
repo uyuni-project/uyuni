@@ -7,7 +7,7 @@ import { AsyncButton } from "components/buttons";
 import { Utils } from "utils/functions";
 
 interface StateSource {
-  id: number;
+  id?: number;
   name: string;
   type: "STATE" | "CONFIG" | "FORMULA" | "INTERNAL";
   typeName: string; //Filled in on-the-fly via typeMap
@@ -52,10 +52,17 @@ export default function HighstateSummary({ minionId }) {
     );
   }
 
+  const identifier = (state: StateSource) => {
+    if (Object.prototype.hasOwnProperty.call(state, 'id')) {
+      return state.id;
+    }
+    // Internal states have no id
+    return `${state.type}_${state.name}`;
+  }
+
   return (
-    // TODO: This identifier seems wrong, what's the correct identifier here?
     <>
-      <Table identifier={state => state.state} data={summary} initialItemsPerPage={0}>
+      <Table identifier={identifier} data={summary} initialItemsPerPage={0}>
         <Column header={t("State Source")} comparator={Utils.sortByText} columnKey="name" cell={source => <State minionId={minionId} state={source} />} />
         <Column header={t("Type")} comparator={Utils.sortByText} columnKey="typeName" cell={source => source.typeName} />
         <Column header={t("Inherited From")} comparator={Utils.sortByText} sortable columnKey="sourceName" cell={source => <Source source={source} />} />
