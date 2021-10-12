@@ -37,7 +37,7 @@ function clearFields(initialModel, setModel) {
     // Split the hosts name and port
     let model = initialModel;
     if ((model.source || {}).hosts) {
-      const splitHosts = model.source.hosts.map(host => {
+      const splitHosts = model.source.hosts.map((host) => {
         const [hostname, port] = host.split(":");
         return { name: hostname, port };
       });
@@ -79,7 +79,7 @@ export function PoolProperties(props: Props) {
 
     // Merge hosts name and port
     if (data.source != null && data.source.hosts != null) {
-      const hosts = data.source.hosts.map(host => {
+      const hosts = data.source.hosts.map((host) => {
         const port = host.port ? `:${host.port}` : "";
         return `${host.name}${port}`;
       });
@@ -130,10 +130,10 @@ export function PoolProperties(props: Props) {
       {({ capabilities, messages: capsError }) => {
         if (capabilities != null) {
           const pool_types = capabilities["pool_types"]
-            .filter(pool_type => pool_type.supported)
-            .map(pool_type => pool_type["name"]);
+            .filter((pool_type) => pool_type.supported)
+            .map((pool_type) => pool_type["name"]);
 
-          const pool_type = capabilities["pool_types"].find(type => type.name === model.type);
+          const pool_type = capabilities["pool_types"].find((type) => type.name === model.type);
           const source_format_types = (((pool_type || {})["options"] || {})["pool"] || {})["sourceFormatType"];
           const source_format_default = (((pool_type || {})["options"] || {})["pool"] || {})["default_format"];
 
@@ -376,7 +376,7 @@ export function PoolProperties(props: Props) {
                         labelClass="col-md-3"
                         divClass="col-md-6"
                         defaultValue={default_adapter_selection}
-                        options={Object.keys(adapter_selections).map(k => ({
+                        options={Object.keys(adapter_selections).map((k) => ({
                           value: k,
                           label: adapter_selections[k],
                         }))}

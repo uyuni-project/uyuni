@@ -25,7 +25,7 @@ const PackageStates = ({ serverId }: PropsType) => {
   const { messages, onActionPackageStatesApi, packageStates, searchResults } = usePackageStatesApi();
 
   useEffect(() => {
-    onActionPackageStatesApi({ type: "GetServerPackages", serverId }).catch(error => {
+    onActionPackageStatesApi({ type: "GetServerPackages", serverId }).catch((error) => {
       showErrorToastr(error, { autoHide: false });
     });
   }, []);
@@ -56,7 +56,7 @@ const PackageStates = ({ serverId }: PropsType) => {
         delete draft[key];
       });
     } else {
-      setChanged(draft => {
+      setChanged((draft) => {
         draft[key] = {
           original: original,
           value: {
@@ -75,10 +75,10 @@ const PackageStates = ({ serverId }: PropsType) => {
 
   const applyPackageState = () => {
     onActionPackageStatesApi({ type: "Apply", serverId })
-      .then(data => {
+      .then((data) => {
         console.log("apply action queued:" + data);
       })
-      .catch(error => {
+      .catch((error) => {
         showErrorToastr(error, { autoHide: false });
       });
   };
@@ -91,12 +91,12 @@ const PackageStates = ({ serverId }: PropsType) => {
           return {};
         });
       })
-      .catch(error => {
+      .catch((error) => {
         showErrorToastr(error, { autoHide: false });
       });
   };
 
-  const handleUndo = packageState => {
+  const handleUndo = (packageState) => {
     return (): void => {
       setChanged((draft: ChangesMapObject) => {
         const key = packageHelpers.packageStateKey(packageState);
@@ -105,16 +105,18 @@ const PackageStates = ({ serverId }: PropsType) => {
     };
   };
 
-  const handleStateChangeEvent = original => {
+  const handleStateChangeEvent = (original) => {
     return (event): void => {
-      const newPackageStateId: OptionalValue = packageHelpers.selectValue2PackageState(parseInt(event.target.value, 10));
+      const newPackageStateId: OptionalValue = packageHelpers.selectValue2PackageState(
+        parseInt(event.target.value, 10)
+      );
       const newPackageConstraintId: OptionalValue =
         newPackageStateId === packageHelpers.INSTALLED ? packageHelpers.LATEST : original.versionConstraintId;
       addChanged(original, newPackageStateId, newPackageConstraintId);
     };
   };
 
-  const handleConstraintChangeEvent = original => {
+  const handleConstraintChangeEvent = (original) => {
     return (event): void => {
       const newPackageConstraintId: OptionalValue = packageHelpers.selectValue2VersionConstraints(
         parseInt(event.target.value, 10)
@@ -142,12 +144,12 @@ const PackageStates = ({ serverId }: PropsType) => {
       .then(() => {
         setView("search");
       })
-      .catch(error => {
+      .catch((error) => {
         showErrorToastr(error, { autoHide: false });
       });
   };
 
-  const changeTabUrl = currentTab => {
+  const changeTabUrl = (currentTab) => {
     setView(currentTab);
   };
 

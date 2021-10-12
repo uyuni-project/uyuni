@@ -41,7 +41,7 @@ type RecurringEventPickerState = {
 };
 
 class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
-  minutes = Array.from(Array(60).keys()).map(id => ({ id: Number(id), text: id.toString() }));
+  minutes = Array.from(Array(60).keys()).map((id) => ({ id: Number(id), text: id.toString() }));
 
   weekDays = [
     { id: Number(1), text: t("Sunday") },
@@ -53,7 +53,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     { id: Number(7), text: t("Saturday") },
   ];
 
-  monthDays = Array.from(Array(28).keys()).map(id => ({ id: Number(id + 1), text: (id + 1).toString() }));
+  monthDays = Array.from(Array(28).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
 
   constructor(props: RecurringEventPickerProps) {
     super(props);
@@ -77,7 +77,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
    * Quartz cron configuration without regarding time zones. To accommodate for this, we manually offset the values as
    * needed. This is a very specific use case and should **NOT** be used elsewhere where dates and times are concerned.
    */
-   private fromLegacyServerTime(value: moment.Moment, hour: number, minute: number): moment.Moment {
+  private fromLegacyServerTime(value: moment.Moment, hour: number, minute: number): moment.Moment {
     const serverTime = localizedMoment(value).tz(localizedMoment.serverTimeZone);
     if (!isNaN(hour)) {
       serverTime.hours(hour);
@@ -88,12 +88,12 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     return localizedMoment(serverTime);
   }
 
-  private toLegacyServerTime(value: moment.Moment): { hour: number, minute: number } {
+  private toLegacyServerTime(value: moment.Moment): { hour: number; minute: number } {
     const serverTime = localizedMoment(value).tz(localizedMoment.serverTimeZone);
     return {
       hour: serverTime.hours(),
       minute: serverTime.minutes(),
-    }
+    };
   }
 
   initialize = () => {
@@ -115,7 +115,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     });
   };
 
-  setScheduleName = model => {
+  setScheduleName = (model) => {
     const scheduleName = model.scheduleName;
     this.setState({
       scheduleName: scheduleName,
@@ -141,7 +141,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     this.selectType("hourly");
   };
 
-  onSelectMinutes = event => {
+  onSelectMinutes = (event) => {
     this.onMinutesChanged({
       id: isNaN(event.target.valueAsNumber) ? "" : event.target.valueAsNumber,
       text: event.target.value,
@@ -304,7 +304,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     this.selectCustom();
   };
 
-  onCronChanged = cron => {
+  onCronChanged = (cron) => {
     this.setState({
       cron: cron.target.value,
     });

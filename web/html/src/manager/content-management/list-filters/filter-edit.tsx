@@ -38,7 +38,7 @@ const FilterEditModalContent = ({
       filter={filter}
       errors={errors}
       editing={editing}
-      onChange={updatedFilter => onChange(updatedFilter)}
+      onChange={(updatedFilter) => onChange(updatedFilter)}
       onClientValidate={onClientValidate}
     />
   );
@@ -85,7 +85,7 @@ const FilterEdit = (props: FilterEditProps) => {
     } else {
       if (props.editing) {
         onAction(mapFilterFormToRequest(item, props.projectLabel), "update", itemId)
-          .then(updatedListOfFilters => {
+          .then((updatedListOfFilters) => {
             if (props.projectLabel) {
               redirectToProject(props.projectLabel);
             } else {
@@ -94,13 +94,13 @@ const FilterEdit = (props: FilterEditProps) => {
               props.onChange(updatedListOfFilters);
             }
           })
-          .catch(error => {
+          .catch((error) => {
             setErrors(error.errors);
             showErrorToastr(error.messages, { autoHide: false });
           });
       } else {
         onAction(mapFilterFormToRequest(item, props.projectLabel), "create")
-          .then(updatedListOfFilters => {
+          .then((updatedListOfFilters) => {
             if (props.projectLabel) {
               redirectToProject(props.projectLabel);
             } else {
@@ -109,7 +109,7 @@ const FilterEdit = (props: FilterEditProps) => {
               props.onChange(updatedListOfFilters);
             }
           })
-          .catch(error => {
+          .catch((error) => {
             setErrors(error.errors);
             showErrorToastr(error.messages, { autoHide: false });
           });
@@ -161,12 +161,12 @@ const FilterEdit = (props: FilterEditProps) => {
                   disabled={isLoading}
                   handler={() => {
                     onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
-                      .then(updatedListOfFilters => {
+                      .then((updatedListOfFilters) => {
                         closeDialog(modalNameId);
                         showSuccessToastr(t("Filter deleted successfully"));
                         props.onChange(updatedListOfFilters);
                       })
-                      .catch(error => {
+                      .catch((error) => {
                         showErrorToastr(error.messages, { autoHide: false });
                       });
                   }}

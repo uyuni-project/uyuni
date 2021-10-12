@@ -38,7 +38,7 @@ const TARGET_IMAGE = "IMAGE";
 const TARGET_SERVER = "SERVER";
 const CVE_REGEX = /(\d{4})-(\d{4,7})/i;
 const CURRENT_YEAR = new Date().getFullYear();
-const YEARS = (function() {
+const YEARS = (function () {
   const arr: number[] = [];
   for (let i = 1999; i <= CURRENT_YEAR; i++) {
     arr.push(i);
@@ -72,7 +72,7 @@ class CVEAudit extends React.Component<Props, State> {
     super(props);
 
     ["onCVEChange", "searchData", "handleSelectItems", "audit", "onCVEYearChange", "onTargetChange"].forEach(
-      method => (this[method] = this[method].bind(this))
+      (method) => (this[method] = this[method].bind(this))
     );
     this.state = {
       cveNumber: "",
@@ -93,12 +93,12 @@ class CVEAudit extends React.Component<Props, State> {
   }
 
   handleSelectItems(items) {
-    const removed = this.state.selectedItems.filter(i => !items.includes(i));
+    const removed = this.state.selectedItems.filter((i) => !items.includes(i));
     const isAdd = removed.length === 0;
     const list = isAdd ? items : removed;
 
     this.setState({ selectedItems: items }, () => {
-      DWRItemSelector.select("system_list", list, isAdd, res => {
+      DWRItemSelector.select("system_list", list, isAdd, (res) => {
         // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
@@ -143,11 +143,11 @@ class CVEAudit extends React.Component<Props, State> {
   }
 
   audit(target) {
-    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then(data => {
+    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
       if (data.success) {
         this.setState({
           results: data.data,
-          selectedItems: data.data.filter(i => i.selected).map(i => i.id),
+          selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
           resultType: target,
           messages: [],
         });
@@ -166,7 +166,7 @@ class CVEAudit extends React.Component<Props, State> {
       <span>
         <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="reference/audit/audit-cve-audit.html">
           <Messages
-            items={this.state.messages.map(msg => {
+            items={this.state.messages.map((msg) => {
               return { severity: "warning", text: msg };
             })}
           />
@@ -178,7 +178,7 @@ class CVEAudit extends React.Component<Props, State> {
               onChange={this.onCVEYearChange}
               className="form-control"
             >
-              {YEARS.map(year => (
+              {YEARS.map((year) => (
                 <option value={year}>{year}</option>
               ))}
             </select>
@@ -191,17 +191,17 @@ class CVEAudit extends React.Component<Props, State> {
             />
           </div>
           <div>
-            {ALL.map(status => {
+            {ALL.map((status) => {
               return (
                 <div className="checkbox">
                   <label>
                     <input
                       type="checkbox"
                       checked={this.state.statuses.includes(status)}
-                      onChange={e => {
+                      onChange={(e) => {
                         if (this.state.statuses.includes(status)) {
                           this.setState({
-                            statuses: this.state.statuses.filter(x => x !== status),
+                            statuses: this.state.statuses.filter((x) => x !== status),
                           });
                         } else {
                           this.setState({
@@ -240,7 +240,7 @@ class CVEAudit extends React.Component<Props, State> {
           </p>
           <Table
             data={this.state.results}
-            identifier={row => row.id}
+            identifier={(row) => row.id}
             initialSortColumnKey="id"
             initialItemsPerPage={window.userPrefPageSize}
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
@@ -296,7 +296,7 @@ class CVEAudit extends React.Component<Props, State> {
                             Install a new patch on this system.
                           </a>
                         </div>
-                        {row.erratas.map(errata => {
+                        {row.erratas.map((errata) => {
                           return (
                             <div>
                               <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>

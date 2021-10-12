@@ -63,7 +63,7 @@ function beforeNavigation() {
 }
 
 function afterNavigationTransition() {
-  window.pageRenderers?.spa?.previousReactRenderers?.forEach(navigationRenderer => {
+  window.pageRenderers?.spa?.previousReactRenderers?.forEach((navigationRenderer) => {
     try {
       (navigationRenderer as any).clean();
     } catch (error) {
@@ -76,7 +76,7 @@ function afterNavigationTransition() {
 }
 
 function onSpaEndNavigation() {
-  window.pageRenderers?.spa?.globalRenderersToUpdate?.forEach(comp => comp.onSPAEndNavigation?.());
+  window.pageRenderers?.spa?.globalRenderersToUpdate?.forEach((comp) => comp.onSPAEndNavigation?.());
 }
 
 export default {

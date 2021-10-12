@@ -41,7 +41,7 @@ class RecurringStatesEdit extends React.Component<Props, State> {
     }
   }
 
-  setSchedule = schedule => {
+  setSchedule = (schedule) => {
     Object.assign(this.state, schedule);
   };
 
@@ -82,23 +82,23 @@ class RecurringStatesEdit extends React.Component<Props, State> {
     });
   };
 
-  onScheduleNameChanged = scheduleName => {
+  onScheduleNameChanged = (scheduleName) => {
     this.setState({ scheduleName: scheduleName });
   };
 
-  onToggleActive = active => {
+  onToggleActive = (active) => {
     this.setState({ active: active });
   };
 
-  onTypeChanged = type => {
+  onTypeChanged = (type) => {
     this.setState({ type: type });
   };
 
-  onCronTimesChanged = cronTimes => {
+  onCronTimesChanged = (cronTimes) => {
     this.setState({ cronTimes: cronTimes });
   };
 
-  onCustomCronChanged = cron => {
+  onCustomCronChanged = (cron) => {
     this.setState({ cron: cron });
   };
 

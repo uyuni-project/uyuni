@@ -29,9 +29,9 @@ export function getAllRecommentedIdsByBaseId(
   }
 
   const recommendedChildrenIds = channelsTree.channelsById[baseId].children
-    .map(cId => channelsTree.channelsById[cId])
-    .filter(c => c.recommended)
-    .map(c => c.id);
+    .map((cId) => channelsTree.channelsById[cId])
+    .filter((c) => c.recommended)
+    .map((c) => c.id);
   const recommendedIds = [baseId, ...recommendedChildrenIds];
   const recommendedIdsSelected = _intersection(recommendedIds, selectedChannelsIds);
   const areRecommendedChildrenSelected = recommendedIds.length === recommendedIdsSelected.length;

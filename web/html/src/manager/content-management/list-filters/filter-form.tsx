@@ -31,7 +31,7 @@ const FilterForm = (props: Props) => {
   useEffect(() => {
     if (!editing) {
       onChange(
-        produce(filter, draft => {
+        produce(filter, (draft) => {
           const selectedFilter = findClmFilterByKey(filter.type);
           if (selectedFilter && selectedFilter.matchers.length === 1) {
             draft.matcher = selectedFilter.matchers[0].key;
@@ -58,7 +58,7 @@ const FilterForm = (props: Props) => {
       model={{ ...props.filter }}
       errors={props.errors}
       onValidate={props.onClientValidate}
-      onChange={model => {
+      onChange={(model) => {
         props.onChange(model);
       }}
     >
@@ -117,8 +117,8 @@ const FilterForm = (props: Props) => {
               required
               disabled={props.editing}
               options={getClmFiltersOptions()}
-              getOptionValue={filter => filter.key}
-              formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+              getOptionValue={(filter) => filter.key}
+              formatOptionLabel={(filter) => `${filter.entityType.text} (${filter.text})`}
             />
 
             {selectedFilterMatchers?.length ? (
@@ -130,8 +130,8 @@ const FilterForm = (props: Props) => {
                 required
                 disabled={props.editing}
                 options={selectedFilterMatchers}
-                getOptionValue={matcher => matcher.key}
-                getOptionLabel={matcher => matcher.text}
+                getOptionValue={(matcher) => matcher.key}
+                getOptionLabel={(matcher) => matcher.text}
               />
             ) : null}
 

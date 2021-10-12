@@ -51,7 +51,9 @@ describe("Testing filters enum and descriptions", () => {
     filter.criteriaKey = "provides_name";
     filter.criteriaValue = "installhint(reboot-needed)";
     filter.rule = "allow";
-    expect(getClmFilterDescription(filter)).toEqual("filter by provides name: allow package provides name equal installhint(reboot-needed) (provides_name)");
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by provides name: allow package provides name equal installhint(reboot-needed) (provides_name)"
+    );
   });
 
   test("test filter advisory name description", () => {

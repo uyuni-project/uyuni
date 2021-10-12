@@ -14,7 +14,7 @@ const PropertiesForm = (props: Props) => (
   <Form
     model={props.properties}
     errors={props.errors}
-    onChange={model => {
+    onChange={(model) => {
       props.onChange(model);
     }}
   >

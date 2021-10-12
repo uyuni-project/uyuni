@@ -37,7 +37,7 @@ export default (props: FilterFormProps) => {
     {
       label: t("AppStream modules with defaults"),
       value: Template.AppStreamsWithDefaults,
-    }
+    },
   ];
   return (
     <>

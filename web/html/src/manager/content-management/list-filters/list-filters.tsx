@@ -41,7 +41,7 @@ const ListFilters = (props: Props) => {
     const keysToSearch = ["filter_name", "projects.right"];
     if (criteria) {
       return keysToSearch
-        .map(key => getValue(row, key))
+        .map((key) => getValue(row, key))
         .filter(Boolean)
         .join()
         .toLowerCase()
@@ -55,7 +55,7 @@ const ListFilters = (props: Props) => {
   };
 
   const onSelectUnused = () => {
-    const unused = displayedFilters.filter(row => !row.projects?.length);
+    const unused = displayedFilters.filter((row) => !row.projects?.length);
     setSelectedIdentifiers(unused.map(identifier));
   };
 
@@ -67,7 +67,7 @@ const ListFilters = (props: Props) => {
     try {
       const remainingFilters = await onAction(mapFilterFormToRequest(row), "delete", row.id?.toString());
       setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
-      const remainingSelection = selectedIdentifiers.filter(item => item !== identifier(row));
+      const remainingSelection = selectedIdentifiers.filter((item) => item !== identifier(row));
       setSelectedIdentifiers(remainingSelection);
     } catch (error) {
       showErrorToastr(error?.messages ?? error);
@@ -75,13 +75,13 @@ const ListFilters = (props: Props) => {
   };
 
   const deleteSelectedRows = async () => {
-    const rows = displayedFilters.filter(row => selectedIdentifiers.includes(identifier(row)));
+    const rows = displayedFilters.filter((row) => selectedIdentifiers.includes(identifier(row)));
     if (!rows.every(isDeletable)) {
       showErrorToastr(t("Some of the selected filters are used in projects and can not be deleted."));
       return;
     }
     try {
-      await Promise.all(rows.map(row => onAction(mapFilterFormToRequest(row), "delete", row.id?.toString())));
+      await Promise.all(rows.map((row) => onAction(mapFilterFormToRequest(row), "delete", row.id?.toString())));
       setSelectedIdentifiers([]);
 
       const remainingFilters = await onAction(undefined, "get");
@@ -91,7 +91,7 @@ const ListFilters = (props: Props) => {
     }
   };
 
-  const identifier = row => row.filter_name;
+  const identifier = (row) => row.filter_name;
 
   const sortProjects = (row: FilterFormType) => {
     return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
@@ -123,7 +123,7 @@ const ListFilters = (props: Props) => {
           buttonText="Create Filter"
           openFilterId={openFilterId}
           projectLabel={projectLabel}
-          onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
+          onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
         />
       )}
     </div>
@@ -164,21 +164,21 @@ const ListFilters = (props: Props) => {
           columnKey="filter_name"
           comparator={Utils.sortByText}
           header={t("Name")}
-          cell={row => row.filter_name}
+          cell={(row) => row.filter_name}
         />
         <Column
           columnKey="projects"
           header={t("Projects in use")} // {left: project label, right: project name}
           comparator={(aRow: FilterFormType, bRow: FilterFormType, _, sortDirection) => {
             const aProjects = sortProjects(aRow)
-              .map(project => project.right)
+              .map((project) => project.right)
               .join();
             const bProjects = sortProjects(bRow)
-              .map(project => project.right)
+              .map((project) => project.right)
               .join();
             return aProjects.localeCompare(bProjects) * sortDirection;
           }}
-          cell={row =>
+          cell={(row) =>
             sortProjects(row).map((p, index) => (
               <a
                 className="project-tag-link js-spa"
@@ -193,14 +193,14 @@ const ListFilters = (props: Props) => {
         <Column
           columnKey="action-buttons"
           header={t("")}
-          cell={row =>
+          cell={(row) =>
             hasEditingPermissions && (
               <FilterEdit
                 id={`edit-filter-button-${row.id}`}
                 initialFilterForm={row}
                 icon="fa-edit"
                 buttonText="Edit Filter"
-                onChange={responseFilters => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
+                onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
                 openFilterId={openFilterId}
                 projectLabel={projectLabel}
                 editing

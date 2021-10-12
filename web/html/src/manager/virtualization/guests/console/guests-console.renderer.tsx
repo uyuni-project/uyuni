@@ -11,7 +11,10 @@ type RendererProps = {
   token: string;
 };
 
-export const renderer = (id: string, { hostId, guestUuid, guestName, guestState, graphicsType, token }: RendererProps) => {
+export const renderer = (
+  id: string,
+  { hostId, guestUuid, guestName, guestState, graphicsType, token }: RendererProps
+) => {
   SpaRenderer.renderNavigationReact(
     <GuestsConsole
       hostId={hostId}

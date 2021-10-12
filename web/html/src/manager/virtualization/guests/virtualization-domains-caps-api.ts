@@ -28,13 +28,13 @@ class VirtualizationDomainsCapsApi extends React.Component<Props, State> {
     Network.get(
       `/rhn/manager/api/systems/details/virtualization/guests/${this.props.hostId}/domains_capabilities`
     ).then(
-      response => {
+      (response) => {
         this.setState({
           osTypes: response.osTypes,
           domainsCaps: response.domainsCaps,
         });
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? [

@@ -25,10 +25,12 @@ type State = {
 
 class GuestsCreate extends React.Component<Props, State> {
   static getRequestParameterFromModel(model: any) {
-    const nics = getOrderedItemsFromModel(model, "network").map(index => GuestNicsPanel.getRequestParams(model, index));
+    const nics = getOrderedItemsFromModel(model, "network").map((index) =>
+      GuestNicsPanel.getRequestParams(model, index)
+    );
 
     // Diff the model with the initial one to avoid changing disks if user hasn't touched them.
-    const disks = getOrderedItemsFromModel(model, "disk").map(index => DiskUtils.getRequestParams(model, index));
+    const disks = getOrderedItemsFromModel(model, "disk").map((index) => DiskUtils.getRequestParams(model, index));
 
     const filteredProps = ["disk", "network", "vmType"];
     return Object.assign(
@@ -36,7 +38,7 @@ class GuestsCreate extends React.Component<Props, State> {
         (res, entry) =>
           Object.assign(
             res,
-            filteredProps.every(prop => !entry[0].startsWith(prop)) ? { [entry[0]]: entry[1] } : undefined
+            filteredProps.every((prop) => !entry[0].startsWith(prop)) ? { [entry[0]]: entry[1] } : undefined
           ),
         {}
       ),
@@ -46,7 +48,7 @@ class GuestsCreate extends React.Component<Props, State> {
         earliest: model.earliest,
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
-      disks.length !== 0 ? { disks } : undefined,
+      disks.length !== 0 ? { disks } : undefined
     );
   }
 
@@ -71,8 +73,9 @@ class GuestsCreate extends React.Component<Props, State> {
       >
         {({ onAction, messages: actionMessages }) => {
           const initialModel = this.initModel();
-          const onSubmit = properties => onAction("update", [], GuestsCreate.getRequestParameterFromModel(properties));
-          const messages = actionMessages.filter(item => item).map(item => MessagesUtils.error(item));
+          const onSubmit = (properties) =>
+            onAction("update", [], GuestsCreate.getRequestParameterFromModel(properties));
+          const messages = actionMessages.filter((item) => item).map((item) => MessagesUtils.error(item));
           return (
             <TopPanel title={t("Create Virtual Machine")} icon="fa spacewalk-icon-virtual-guest">
               <GuestProperties

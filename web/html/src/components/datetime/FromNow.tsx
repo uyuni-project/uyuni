@@ -19,4 +19,4 @@ export const FromNow = (props: Props) => {
 // Use case: at the moment the `t()` function (to translate strings) does not support complex components
 export const fromNow = (value) => {
   return value ? localizedMoment(value).tz(localizedMoment.userTimeZone).fromNow() : null;
-}
+};

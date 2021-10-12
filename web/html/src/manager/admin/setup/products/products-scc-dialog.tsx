@@ -69,20 +69,20 @@ class SCCDialog extends React.Component<Props> {
 
   // returns if the sync is running right now
   isSyncRunning = () => {
-    return this.state.steps.some(s => s.inProgress);
+    return this.state.steps.some((s) => s.inProgress);
   };
 
   // returns if the sync has run checking if
   // there is at least one step with a valid 'success' flag value
   // or the sync is running
   hasRun = () => {
-    return this.state.steps.some(s => s.success != null) || this.isSyncRunning();
+    return this.state.steps.some((s) => s.success != null) || this.isSyncRunning();
   };
 
   startSync = () => {
     if (this.hasRun()) {
       // reset state
-      _SCC_REFRESH_STEPS.forEach(s => {
+      _SCC_REFRESH_STEPS.forEach((s) => {
         s.inProgress = false;
         s.success = null;
       });
@@ -109,7 +109,7 @@ class SCCDialog extends React.Component<Props> {
       });
 
       Network.post(currentStep.url)
-        .then(data => {
+        .then((data) => {
           // set the result for the i-step
           currentStep.success = data;
           currentStep.inProgress = false;
@@ -129,7 +129,7 @@ class SCCDialog extends React.Component<Props> {
   handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
     this.finishSync();
     const stepList = this.state.steps;
-    const currentStep = stepList.find(s => s.inProgress);
+    const currentStep = stepList.find((s) => s.inProgress);
     if (currentStep) {
       currentStep.inProgress = false;
       currentStep.success = false;
@@ -146,7 +146,7 @@ class SCCDialog extends React.Component<Props> {
         <div className="d-block">
           <Messages items={this.state.errors} />
           <ul id="scc-task-list" className="fa-ul">
-            {this.state.steps.map(s => {
+            {this.state.steps.map((s) => {
               return (
                 <li key={s.id}>
                   <i
@@ -178,7 +178,7 @@ class SCCDialog extends React.Component<Props> {
           {this.isSyncRunning() ? (
             <p>{t("Please be patient, this might take several minutes.")}</p>
           ) : this.hasRun() ? (
-            this.state.steps.every(s => s.success) ? (
+            this.state.steps.every((s) => s.success) ? (
               <span>
                 <i className="fa fa-check text-success" />
                 {t("Completed")}

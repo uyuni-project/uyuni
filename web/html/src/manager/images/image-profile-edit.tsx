@@ -76,7 +76,7 @@ class CreateImageProfile extends React.Component<Props, State> {
       "onFormChange",
       "onValidate",
       "clearFields",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
 
     this.getImageStores(typeMap[this.state.model.imageType].storeType);
     if (this.isEdit()) {
@@ -89,7 +89,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   setValues(id) {
-    Network.get("/rhn/manager/api/cm/imageprofiles/" + id).then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/" + id).then((res) => {
       if (res.success) {
         var data = res.data;
         this.setState({
@@ -127,7 +127,7 @@ class CreateImageProfile extends React.Component<Props, State> {
       return;
     }
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then((res) => {
       // Prevent out-of-order async results
       if (!DEPRECATED_unsafeEquals(res.activationKey, this.state.model.activationKey)) return false;
 
@@ -147,7 +147,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   handleImageStoreChange(name, storeLabel) {
-    Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel).then(res => {
+    Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel).then((res) => {
       this.setState({
         storeUri: res.success && res.data.uri,
       });
@@ -187,7 +187,7 @@ class CreateImageProfile extends React.Component<Props, State> {
 
     // Check for uniqueness
     return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
-      .then(res => !res.success && isValid)
+      .then((res) => !res.success && isValid)
       .catch(() => false);
   }
 
@@ -200,17 +200,14 @@ class CreateImageProfile extends React.Component<Props, State> {
 
     model.label = model.label.trim();
     model.path = model.path.trim();
-    return Network.post(
-      "/rhn/manager/api/cm/imageprofiles/update/" + window.profileId,
-      model
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imageprofiles/update/" + window.profileId, model).then((data) => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imageprofiles");
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -229,17 +226,14 @@ class CreateImageProfile extends React.Component<Props, State> {
 
     model.label = model.label.trim();
     model.path = model.path.trim();
-    return Network.post(
-      "/rhn/manager/api/cm/imageprofiles/create",
-      model
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imageprofiles/create", model).then((data) => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imageprofiles");
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -268,7 +262,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   getImageStores(type) {
-    return Network.get("/rhn/manager/api/cm/imagestores/type/" + type).then(data => {
+    return Network.get("/rhn/manager/api/cm/imagestores/type/" + type).then((data) => {
       // Preselect store after retrieval
       const model = Object.assign({}, this.state.model, { imageStore: data[0] && data[0].label });
       const storeUri = data[0] && data[0].uri;
@@ -303,7 +297,7 @@ class CreateImageProfile extends React.Component<Props, State> {
           </span>
         }
         isClearable
-        options={this.state.imageStores.map(k => k.label)}
+        options={this.state.imageStores.map((k) => k.label)}
       />,
     ];
 
@@ -390,7 +384,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         <ul className="list-unstyled">
           <li>{this.state.channels.base.name}</li>
           <ul>
-            {this.state.channels.children.map(c => (
+            {this.state.channels.children.map((c) => (
               <li key={c.id}>{c.name}</li>
             ))}
           </ul>
@@ -419,8 +413,8 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   renderCustomDataFields() {
-    const fields = Object.entries(this.state.customData).map(d => {
-      const key = window.customDataKeys.find(k => k.label === d[0]);
+    const fields = Object.entries(this.state.customData).map((d) => {
+      const key = window.customDataKeys.find((k) => k.label === d[0]);
 
       return (
         key && (
@@ -433,7 +427,7 @@ class CreateImageProfile extends React.Component<Props, State> {
                   className="form-control input-sm"
                   type="text"
                   value={this.state.customData[key.label]}
-                  onChange={event => {
+                  onChange={(event) => {
                     const target = event.target;
 
                     let data = this.state.customData;
@@ -468,8 +462,8 @@ class CreateImageProfile extends React.Component<Props, State> {
             onChange={({ value }) => this.addCustomData(value)}
             isClearable
             options={window.customDataKeys
-              .filter(k => !Object.keys(this.state.customData).includes(k.label))
-              .map(k => ({ value: k.label, label: k.label }))}
+              .filter((k) => !Object.keys(this.state.customData).includes(k.label))
+              .map((k) => ({ value: k.label, label: k.label }))}
           />
           <div className="help-block">
             These key-value pairs will be added to the build command as 'buildarg' values
@@ -534,7 +528,7 @@ class CreateImageProfile extends React.Component<Props, State> {
           model={this.state.model}
           className="image-profile-form"
           onChange={this.onFormChange}
-          onSubmit={e => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
+          onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
           onValidate={this.onValidate}
         >
           <Text
@@ -554,7 +548,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             divClass="col-md-6"
             onChange={this.handleImageTypeChange}
             disabled={this.isEdit()}
-            options={this.state.imageTypes.map(k => ({ value: k, label: typeMap[k].name }))}
+            options={this.state.imageTypes.map((k) => ({ value: k, label: typeMap[k].name }))}
           />
           {this.renderTypeInputs(this.state.model.imageType)}
           <hr />

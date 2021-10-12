@@ -13,14 +13,12 @@ export function VirtualizationListRefreshApi(props: Props) {
   const [error, setError] = React.useState<any>(undefined);
 
   const refreshServerData = React.useCallback(() => {
-    Network.get(
-      `/rhn/manager/api/systems/details/virtualization/${props.type}/${props.serverId}/data`
-    )
-      .then(data => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/${props.type}/${props.serverId}/data`)
+      .then((data) => {
         setData(data);
         setError(undefined);
       })
-      .catch(jqXHR => {
+      .catch((jqXHR) => {
         setError(Network.responseErrorMessage(jqXHR));
       });
   }, [props.serverId, props.type]);

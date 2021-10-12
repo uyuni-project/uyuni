@@ -25,9 +25,7 @@ function mountDateTimeTo(mountingPoint: HTMLElement | null) {
 }
 
 function mountAll() {
-  Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time")).forEach(node =>
-    mountDateTimeTo(node)
-  );
+  Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time")).forEach((node) => mountDateTimeTo(node));
 }
 
 jQuery(document).ready(mountAll);

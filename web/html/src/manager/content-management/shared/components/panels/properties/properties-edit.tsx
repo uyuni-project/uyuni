@@ -37,7 +37,7 @@ const PropertiesEdit = (props: Props) => {
 
   const messages = getRenderedMessages(props.messages || []);
 
-  let propertiesToShow = produce(props.properties, draftProperties => {
+  let propertiesToShow = produce(props.properties, (draftProperties) => {
     if (props.showDraftVersion) {
       draftProperties.historyEntries.unshift(defaultDraftHistory);
     }
@@ -61,12 +61,12 @@ const PropertiesEdit = (props: Props) => {
       disableOperations={isLoading}
       onSave={({ item, closeDialog, setErrors }) => {
         return onAction(item, "update", props.projectId)
-          .then(editedProject => {
+          .then((editedProject) => {
             closeDialog();
             showSuccessToastr(t("Project properties updated successfully"));
             props.onChange(editedProject);
           })
-          .catch(error => {
+          .catch((error) => {
             setErrors(error.errors);
             showErrorToastr(error.messages, { autoHide: false });
           });
@@ -87,7 +87,7 @@ const PropertiesEdit = (props: Props) => {
           <PropertiesForm
             properties={{ ...item }}
             errors={errors}
-            onChange={editedProperties => setItem(editedProperties)}
+            onChange={(editedProperties) => setItem(editedProperties)}
             editing
           />
         );

@@ -43,7 +43,7 @@ class ImageStores extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     ["reloadData", "handleSelectItems", "selectStore", "deleteStores"].forEach(
-      method => (this[method] = this[method].bind(this))
+      (method) => (this[method] = this[method].bind(this))
     );
     this.state = {
       messages: [],
@@ -64,7 +64,7 @@ class ImageStores extends React.Component<Props, State> {
   }
 
   reloadData() {
-    Network.get("/rhn/manager/api/cm/imagestores").then(data => {
+    Network.get("/rhn/manager/api/cm/imagestores").then((data) => {
       this.setState({
         imagestores: data,
       });
@@ -91,10 +91,7 @@ class ImageStores extends React.Component<Props, State> {
   }
 
   deleteStores(idList) {
-    return Network.post(
-      "/rhn/manager/api/cm/imagestores/delete",
-      idList
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imagestores/delete", idList).then((data) => {
       if (data.success) {
         this.setState({
           messages: (
@@ -107,14 +104,14 @@ class ImageStores extends React.Component<Props, State> {
               ]}
             />
           ),
-          imagestores: this.state.imagestores.filter(store => !idList.includes(store.id)),
-          selectedItems: this.state.selectedItems.filter(item => !idList.includes(item)),
+          imagestores: this.state.imagestores.filter((store) => !idList.includes(store.id)),
+          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
         });
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -166,7 +163,7 @@ class ImageStores extends React.Component<Props, State> {
           {this.state.messages}
           <Table
             data={this.state.imagestores}
-            identifier={imagestore => imagestore.id}
+            identifier={(imagestore) => imagestore.id}
             initialSortColumnKey="id"
             initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} />}
@@ -179,14 +176,14 @@ class ImageStores extends React.Component<Props, State> {
               width="50%"
               comparator={Utils.sortByText}
               header={t("Label")}
-              cell={row => row.label}
+              cell={(row) => row.label}
             />
             <Column
               columnKey="type"
               width="35%"
               comparator={Utils.sortByText}
               header={t("Type")}
-              cell={row => typeMap[row.type]}
+              cell={(row) => typeMap[row.type]}
             />
             {window.isAdmin && (
               <Column
@@ -194,7 +191,7 @@ class ImageStores extends React.Component<Props, State> {
                 columnClass="text-right"
                 headerClass="text-right"
                 header={t("Actions")}
-                cell={row => {
+                cell={(row) => {
                   return (
                     <div className="btn-group">
                       <LinkButton
@@ -228,7 +225,7 @@ class ImageStores extends React.Component<Props, State> {
             </span>
           }
           item={this.state.selected}
-          onConfirm={item => this.deleteStores([item.id])}
+          onConfirm={(item) => this.deleteStores([item.id])}
           onClosePopUp={() => this.selectStore(undefined)}
         />
         <DeleteDialog

@@ -40,8 +40,8 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
     return true;
   };
 
-  buildRows = subscriptions => {
-    return Object.keys(subscriptions).map(id => subscriptions[id]);
+  buildRows = (subscriptions) => {
+    return Object.keys(subscriptions).map((id) => subscriptions[id]);
   };
 
   render() {
@@ -51,8 +51,8 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
         <div>
           <Table
             data={this.buildRows(this.props.subscriptions)}
-            identifier={row => row.id}
-            cssClassFunction={row => {
+            identifier={(row) => row.id}
+            cssClassFunction={(row) => {
               const now = localizedMoment();
               return localizedMoment(row.endDate).isBefore(now) || localizedMoment(row.startDate).isAfter(now)
                 ? "text-muted"
@@ -66,31 +66,31 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
               columnKey="partNumber"
               comparator={Utils.sortByText}
               header={t("Part number")}
-              cell={row => row.partNumber}
+              cell={(row) => row.partNumber}
             />
             <Column
               columnKey="description"
               comparator={Utils.sortByText}
               header={t("Description")}
-              cell={row => row.description}
+              cell={(row) => row.description}
             />
             <Column
               columnKey="policy"
               comparator={this.sortByPolicy}
               header={t("Policy")}
-              cell={row => humanReadablePolicy(row.policy)}
+              cell={(row) => humanReadablePolicy(row.policy)}
             />
             <Column
               columnKey="quantity"
               comparator={this.sortByQuantity}
               header={t("Matched/Total")}
-              cell={row => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} />}
+              cell={(row) => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} />}
             />
             <Column
               columnKey="startDate"
               comparator={Utils.sortByText}
               header={t("Start date")}
-              cell={row => {
+              cell={(row) => {
                 const startDate = localizedMoment(row.startDate);
                 return <ToolTip content={startDate.fromNow()} title={startDate.toUserDateString()} />;
               }}
@@ -99,7 +99,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
               columnKey="endDate"
               comparator={Utils.sortByText}
               header={t("End date")}
-              cell={row => {
+              cell={(row) => {
                 const endDate = localizedMoment(row.endDate);
                 const isWarning =
                   endDate.isBefore(localizedMoment().add(6, "months")) && endDate.isAfter(localizedMoment());
@@ -128,7 +128,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   }
 }
 
-const QuantityCell = props => {
+const QuantityCell = (props) => {
   const matched = props.matched;
   const total = props.total;
   const content = matched + "/" + total;

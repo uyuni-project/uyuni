@@ -21,7 +21,7 @@ class ImageViewRuntime extends React.Component<ImageViewRuntimeProps> {
   render() {
     const data = this.props.data;
     const runtimeInfo = data.clusters
-      ? Object.keys(data.clusters).map(cluster => (
+      ? Object.keys(data.clusters).map((cluster) => (
           <ClusterInfo key={cluster} data={{ name: cluster, pods: data.clusters[cluster] }} />
         ))
       : undefined;
@@ -93,7 +93,7 @@ type ClusterInfoProps = {
 
 class ClusterInfo extends React.Component<ClusterInfoProps> {
   renderTitle(data) {
-    const statusId = data.pods.map(p => p.statusId).reduce((a, b) => Math.max(a, b));
+    const statusId = data.pods.map((p) => p.statusId).reduce((a, b) => Math.max(a, b));
 
     let icon;
 
@@ -128,7 +128,7 @@ class ClusterInfo extends React.Component<ClusterInfoProps> {
                 <th>{t("Namespace")}</th>
                 <th>{t("Status")}</th>
               </tr>
-              {data.pods.map(p => (
+              {data.pods.map((p) => (
                 <PodInfo key={p.name} data={p} />
               ))}
             </tbody>

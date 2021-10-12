@@ -30,7 +30,7 @@ const JoinCluster = (props: Props) => {
     if (nodesToJoin && joinConfig) {
       return scheduleJoinNode(
         props.cluster.id,
-        nodesToJoin.map(node => node.id),
+        nodesToJoin.map((node) => node.id),
         joinConfig,
         earliest,
         actionChain
@@ -67,7 +67,7 @@ const JoinCluster = (props: Props) => {
                 multiple={true}
                 selectedServers={nodesToJoin}
                 fetchServers={() => fetchNodesToJoin(props.cluster.id)}
-                onNext={nodes => {
+                onNext={(nodes) => {
                   setNodesToJoin(nodes);
                   goTo("join-config");
                 }}
@@ -81,9 +81,9 @@ const JoinCluster = (props: Props) => {
                   title={t("New node configuration")}
                   values={joinConfig}
                   formula="join_node"
-                  context={{ nodes: nodesToJoin.map(node => node.id), cluster: props.cluster.id }}
+                  context={{ nodes: nodesToJoin.map((node) => node.id), cluster: props.cluster.id }}
                   provider={props.cluster.provider.label}
-                  onNext={formulaValues => {
+                  onNext={(formulaValues) => {
                     setJoinConfig(formulaValues);
                     goTo("schedule");
                   }}
@@ -107,7 +107,7 @@ const JoinCluster = (props: Props) => {
                       </div>
                       <div className="form-group">
                         <label className="col-md-3 control-label">{t("Node to join:")}</label>
-                        {nodesToJoin.map(nodeToJoin => (
+                        {nodesToJoin.map((nodeToJoin) => (
                           <div className="col-md-9">
                             <SystemLink id={nodeToJoin.id}>{nodeToJoin.name}</SystemLink>
                           </div>

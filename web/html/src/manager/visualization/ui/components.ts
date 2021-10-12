@@ -11,15 +11,12 @@ import * as d3 from "d3";
 // changes
 function addFilter(targetSelection, caption, placeholder, onInputCallback) {
   const filterDiv = targetSelection.append("div").attr("class", "filter");
-  filterDiv
-    .append("span")
-    .attr("class", "filter-title")
-    .text(caption);
+  filterDiv.append("span").attr("class", "filter-title").text(caption);
   filterDiv
     .append("input")
     .attr("type", "text")
     .attr("placeholder", placeholder)
-    .on("input", function(this: HTMLInputElement) {
+    .on("input", function (this: HTMLInputElement) {
       onInputCallback(this.value);
     });
 }
@@ -33,10 +30,7 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
 // the 'Apply' button
 // - clearCallback - clearCallback will be executed when the user clicks the "Clear" button
 function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback) {
-  const checkinTimePartitioning = d3
-    .select(anchorId)
-    .append("div")
-    .attr("class", "filter");
+  const checkinTimePartitioning = d3.select(anchorId).append("div").attr("class", "filter");
 
   checkinTimePartitioning
     .append("div")
@@ -45,15 +39,9 @@ function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback
 
   const inputGroup = checkinTimePartitioning.append("div").attr("class", "input-group");
 
-  inputGroup
-    .append("input")
-    .attr("type", "text")
-    .attr("class", "partitioning-datepicker input-group-addon");
+  inputGroup.append("input").attr("type", "text").attr("class", "partitioning-datepicker input-group-addon");
 
-  inputGroup
-    .append("input")
-    .attr("type", "text")
-    .attr("class", "partitioning-timepicker input-group-addon");
+  inputGroup.append("input").attr("type", "text").attr("class", "partitioning-timepicker input-group-addon");
 
   jQuery(anchorId + " .partitioning-datepicker").datepicker({
     autoclose: true,
@@ -101,7 +89,7 @@ function addCheckbox(targetSelection, caption, icon, classes, callback) {
     .append("input")
     .attr("type", "checkbox")
     .attr("id", id)
-    .on("change", function(this: HTMLInputElement) {
+    .on("change", function (this: HTMLInputElement) {
       callback(this.checked);
     });
 
@@ -138,7 +126,7 @@ function addCheckbox(targetSelection, caption, icon, classes, callback) {
 function groupSelector(groups, element) {
   const NO_GROUP_LABEL = "** NO GROUP **";
   const data: any[] = [];
-  let onChange = function(data) {
+  let onChange = function (data) {
     console.log("data changed: " + data);
   };
   groups = Array.from(new Set(groups));
@@ -149,7 +137,7 @@ function groupSelector(groups, element) {
       .attr("href", "#")
       .attr("class", "toggle-grouping-level")
       .text(t("Add a grouping level"))
-      .on("click", d => {
+      .on("click", (d) => {
         data.push([]);
         update();
       })
@@ -162,10 +150,7 @@ function groupSelector(groups, element) {
 
     updateSection.exit().remove();
 
-    const divEnter = updateSection
-      .enter()
-      .append("div")
-      .attr("class", "grpCriterion");
+    const divEnter = updateSection.enter().append("div").attr("class", "grpCriterion");
 
     const selectEnter = divEnter
       .append("select")
@@ -178,22 +163,19 @@ function groupSelector(groups, element) {
       .data(groups)
       .enter()
       .append("option")
-      .attr("value", d => d)
-      .text(d => d);
+      .attr("value", (d) => d)
+      .text((d) => d);
 
-    selectEnter
-      .append("option")
-      .attr("value", NO_GROUP_LABEL)
-      .text(NO_GROUP_LABEL);
+    selectEnter.append("option").attr("value", NO_GROUP_LABEL).text(NO_GROUP_LABEL);
 
     //HACK: usage of JQuery here is needed to apply the select2js plugin
-    jQuery("select.apply-select2js-on-this").each(function(i) {
+    jQuery("select.apply-select2js-on-this").each(function (i) {
       var select = jQuery(this);
       // apply select2js only one time
       if (!select.hasClass("select2js-applied")) {
         select.addClass("select2js-applied");
         var select2js = select.select2({ placeholder: t("Select a system group") });
-        select2js.on("change", function(event) {
+        select2js.on("change", function (event) {
           data[i] = select.val() || [];
           onChange(data);
         });
@@ -203,7 +185,7 @@ function groupSelector(groups, element) {
           .attr("href", "#")
           .attr("class", "toggle-grouping-level")
           .attr("title", "Remove this level")
-          .on("click", function() {
+          .on("click", function () {
             data.splice(i, 1);
             onChange(data);
             update();
@@ -224,7 +206,7 @@ function groupSelector(groups, element) {
     appendAdder();
   }
 
-  my.onChange = function(callback) {
+  my.onChange = function (callback) {
     return arguments.length ? ((onChange = callback), my) : onChange;
   };
 
@@ -241,10 +223,7 @@ function groupSelector(groups, element) {
 // grouping level)
 function addGroupSelector(targetSelection, groups, callback) {
   const groupingDiv = targetSelection.append("div").attr("class", "filter");
-  groupingDiv
-    .append("div")
-    .attr("class", "filter-title")
-    .text(t("Split into groups"));
+  groupingDiv.append("div").attr("class", "filter-title").text(t("Split into groups"));
 
   let mySel = groupSelector(groups, groupingDiv);
   mySel.onChange(callback);

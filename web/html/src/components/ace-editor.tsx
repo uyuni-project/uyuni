@@ -10,7 +10,7 @@ type Props = {
   className: string;
   id: string;
   content: React.ReactNode;
-}
+};
 
 class AceEditor extends React.Component<Props> {
   componentDidMount() {
@@ -25,7 +25,7 @@ class AceEditor extends React.Component<Props> {
     editor.setOptions({ maxLines: component.props.maxLines });
     editor.setReadOnly(component.props.readOnly);
 
-    editor.getSession().on("change", function() {
+    editor.getSession().on("change", function () {
       component.props.onChange?.(editor.getSession().getValue());
     });
   }

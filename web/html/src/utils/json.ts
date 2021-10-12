@@ -7,11 +7,11 @@
  *  - JSON.stringify(new Map([['a', 1]]), replacer) will return '{"a":1}'
  */
 function replacer(key, value) {
-    if(value instanceof Map) {
-        return Object.fromEntries(value);
-      } else {
-        return value;
-      }
-};
+  if (value instanceof Map) {
+    return Object.fromEntries(value);
+  } else {
+    return value;
+  }
+}
 
-export {replacer};
+export { replacer };

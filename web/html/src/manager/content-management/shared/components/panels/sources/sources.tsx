@@ -36,17 +36,17 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
         initialSelectedIds={softwareSources
-          .filter(source => !statesEnum.isDeletion(source.state))
-          .map(source => source.channelId)}
-        onChange={selectedChannels => {
-          onChange(selectedChannels.map(c => c.label));
+          .filter((source) => !statesEnum.isDeletion(source.state))
+          .map((source) => source.channelId)}
+        onChange={(selectedChannels) => {
+          onChange(selectedChannels.map((c) => c.label));
         }}
       />
     </form>
   );
 };
 
-const renderSourceEntry = source => {
+const renderSourceEntry = (source) => {
   const unsyncedPatches = source.hasUnsyncedPatches ? "(" + t("has unsynchronized patches") + ")" : "";
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
@@ -98,20 +98,20 @@ const Sources = (props: SourcesProps) => {
       collapsible
       customIconClass="fa-small"
       onCancel={() => cancelAction()}
-      onOpen={({ setItem }) => setItem(props.softwareSources.map(source => source.label))}
+      onOpen={({ setItem }) => setItem(props.softwareSources.map((source) => source.label))}
       onSave={({ closeDialog, item }) => {
         const requestParam = {
           projectLabel: props.projectId,
-          softwareSources: item.map(label => ({ label })),
+          softwareSources: item.map((label) => ({ label })),
         };
 
         onAction(requestParam, "update", props.projectId)
-          .then(projectWithUpdatedSources => {
+          .then((projectWithUpdatedSources) => {
             closeDialog();
             showSuccessToastr(t("Sources edited successfully"));
             props.onChange(projectWithUpdatedSources);
           })
-          .catch(error => {
+          .catch((error) => {
             showErrorToastr(error.messages, { autoHide: false });
           });
       }}
@@ -119,7 +119,7 @@ const Sources = (props: SourcesProps) => {
         return (
           <ModalSourceCreationContent
             softwareSources={props.softwareSources}
-            onChange={channelsLabel => {
+            onChange={(channelsLabel) => {
               setItem(channelsLabel);
             }}
             isLoading={isLoading}
@@ -142,7 +142,7 @@ const Sources = (props: SourcesProps) => {
                     <dt className="col-xs-2">Child Channels:</dt>
                     <dd className="col-xs-6">
                       <ul className="list-unstyled">
-                        {props.softwareSources.slice(1, props.softwareSources.length).map(source => (
+                        {props.softwareSources.slice(1, props.softwareSources.length).map((source) => (
                           <li key={`softwareSources_entry_${source.channelId}`}>{renderSourceEntry(source)}</li>
                         ))}
                       </ul>

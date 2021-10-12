@@ -62,7 +62,7 @@ const ClusterOverview = (props: Props) => {
   const fetchData = () => {
     setFetching(true);
     fetchClusterNodes(props.cluster.id)
-      .then(clusterNodes => {
+      .then((clusterNodes) => {
         setNodes(clusterNodes.nodes);
         setNodeDetailFields(clusterNodes.fields);
         setSelections(new Set());
@@ -85,7 +85,9 @@ const ClusterOverview = (props: Props) => {
 
   const onRefreshGroupNodes = () => {
     refreshGroupNodes(props.cluster.id)
-      .then(actionId => props.setMessages([Messages.success(t("System group refresh action scheduled successfully"))]))
+      .then((actionId) =>
+        props.setMessages([Messages.success(t("System group refresh action scheduled successfully"))])
+      )
       .catch((error: ErrorMessagesType) => {
         props.setMessages(error.messages);
       });
@@ -108,7 +110,7 @@ const ClusterOverview = (props: Props) => {
 
   const onSaveClusterProps = () => {
     return saveClusterProps(props.cluster.id, editModel)
-      .then(_ => {
+      .then((_) => {
         closeDialog("cluster-edit-dialog");
         props.setMessages([Messages.success(t("Cluster properties updated successfully"))]);
         onFetchClusterProps();
@@ -122,7 +124,7 @@ const ClusterOverview = (props: Props) => {
     const keysToSearch = ["hostname"];
     if (criteria) {
       return keysToSearch
-        .map(key => row[key])
+        .map((key) => row[key])
         .join()
         .toLowerCase()
         .includes(criteria.toLowerCase());
@@ -143,7 +145,7 @@ const ClusterOverview = (props: Props) => {
   const editContent = (
     <Form
       model={editModel}
-      onChange={model => {
+      onChange={(model) => {
         setEditModel(model);
       }}
       formDirection="form-horizontal"
@@ -297,7 +299,7 @@ const ClusterOverview = (props: Props) => {
         <Table
           data={nodes}
           loading={fetching}
-          identifier={row => row.hostname}
+          identifier={(row) => row.hostname}
           initialSortColumnKey="hostname"
           searchField={<SearchField filter={filterFunc} placeholder={t("Filter by any value")} />}
         >
@@ -330,7 +332,7 @@ const ClusterOverview = (props: Props) => {
               row.server ? <SystemLink id={row.server.id}>{row.server.name}</SystemLink> : t("(none)")
             }
           />
-          {nodeDetailFields.map(field => (
+          {nodeDetailFields.map((field) => (
             <Column
               columnKey={field}
               header={capitalize(field)}

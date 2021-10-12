@@ -47,12 +47,12 @@ const EnvironmentLifecycle = (props: Props) => {
       disableOperations={isLoading}
       onSave={({ item, closeDialog, setErrors }) =>
         onAction(mapAddEnvironmentRequest(item, props.environments, props.projectId), "create", props.projectId)
-          .then(projectWithCreatedEnvironment => {
+          .then((projectWithCreatedEnvironment) => {
             closeDialog();
             showSuccessToastr(t("Environment created successfully"));
             props.onChange(projectWithCreatedEnvironment);
           })
-          .catch(error => {
+          .catch((error) => {
             setErrors(error.errors);
             showErrorToastr(error.messages, { autoHide: false });
           })
@@ -73,7 +73,7 @@ const EnvironmentLifecycle = (props: Props) => {
             environment={{ ...item }}
             errors={errors}
             environments={props.environments}
-            onChange={item => setItem(item)}
+            onChange={(item) => setItem(item)}
           />
         );
       }}
@@ -95,12 +95,12 @@ const EnvironmentLifecycle = (props: Props) => {
                     disableOperations={isLoading}
                     onSave={({ item, closeDialog, setErrors }) =>
                       onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update", props.projectId)
-                        .then(projectWithUpdatedEnvironment => {
+                        .then((projectWithUpdatedEnvironment) => {
                           props.onChange(projectWithUpdatedEnvironment);
                           closeDialog();
                           showSuccessToastr(t("Environment updated successfully"));
                         })
-                        .catch(error => {
+                        .catch((error) => {
                           setErrors(error.errors);
                           showErrorToastr(error.messages, { autoHide: false });
                         })
@@ -110,13 +110,13 @@ const EnvironmentLifecycle = (props: Props) => {
                     disableDelete={environment.hasProfiles}
                     onDelete={({ item, closeDialog }) => {
                       return onAction(item, "delete", props.projectId)
-                        .then(projectWithDeleteddEnvironment => {
+                        .then((projectWithDeleteddEnvironment) => {
                           closeDialog().then(() => {
                             props.onChange(projectWithDeleteddEnvironment);
                           });
                           showSuccessToastr(t("Environment {0} deleted successfully", environment.label));
                         })
-                        .catch(error => {
+                        .catch((error) => {
                           showErrorToastr(error.messages, { autoHide: false });
                         });
                     }}
@@ -150,7 +150,7 @@ const EnvironmentLifecycle = (props: Props) => {
                             environment={{ ...item }}
                             errors={errors}
                             environments={props.environments}
-                            onChange={item => setItem(item)}
+                            onChange={(item) => setItem(item)}
                             editing
                           />
                         </>

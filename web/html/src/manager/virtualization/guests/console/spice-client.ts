@@ -32,7 +32,7 @@ class SpiceClient implements ConsoleClientType {
       this.disconnected(e.message);
     }
     if (e != null && e.message === "Permission denied." && this.askPassword != null) {
-      this.askPassword().then(password => this.doConnect(password));
+      this.askPassword().then((password) => this.doConnect(password));
     }
   };
 
