@@ -53,7 +53,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I follow "History"
     And I wait until event "Apply states" is completed
     And I wait at most 600 seconds until event "Product Migration" is completed
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP3" text
     And vendor change should be enabled for product migration on "ssh_minion"
