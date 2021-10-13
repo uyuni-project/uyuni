@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -84,9 +85,10 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
-        ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(new Long(systemGroupId), loggedInUser.getOrg());
+        ManagedServerGroup group = ServerGroupFactory
+                .lookupByIdAndOrg(systemGroupId.longValue(), loggedInUser.getOrg());
         FormulaUtil.ensureUserHasPermissionsOnServerGroup(loggedInUser, group);
-        return FormulaFactory.getFormulasByGroupId(systemGroupId.longValue());
+        return FormulaFactory.getFormulasByGroup(group);
    }
 
     /**
@@ -121,9 +123,11 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
-        Server server = ServerFactory.lookupById(new Long(systemId));
-        FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
-        return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue());
+        MinionServer minion = MinionServerFactory.lookupById(systemId.longValue())
+                .orElseThrow(() -> new InvalidParameterException(
+                        "Provided systemId does not correspond to a minion"));
+        FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
+        return FormulaFactory.getCombinedFormulasByServer(minion);
     }
 
     /**
@@ -144,14 +148,11 @@ public class FormulaHandler extends BaseHandler {
     public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
             List<String> formulas) throws IOFaultException {
         try {
-            FormulaFactory.saveGroupFormulas(systemGroupId.longValue(), formulas,
-                    loggedInUser.getOrg());
+            ServerGroup group = ServerGroupFactory.lookupById(systemGroupId.longValue());
+            FormulaFactory.saveGroupFormulas(group, formulas);
         }
         catch (ValidatorException e) {
             throw new ValidationException(e.getMessage(), e);
-        }
-        catch (IOException e) {
-            throw new IOFaultException(e);
         }
         return 1;
     }
@@ -186,9 +187,6 @@ public class FormulaHandler extends BaseHandler {
         }
         catch (ValidatorException e) {
             throw new ValidationException(e.getMessage(), e);
-        }
-        catch (IOException e) {
-            throw new IOFaultException(e);
         }
         return 1;
     }
@@ -278,7 +276,9 @@ public class FormulaHandler extends BaseHandler {
     public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
                 Object> content) throws IOFaultException, InvalidParameterException {
         try {
-            boolean assigned = formulaManager.hasSystemFormulaAssignedCombined(formulaName, systemId);
+            MinionServer server = MinionServerFactory.lookupById(systemId.longValue())
+                    .orElseThrow(() -> new InvalidParameterException("Salt minion system not found: " + systemId));
+            boolean assigned = formulaManager.hasSystemFormulaAssignedCombined(formulaName, server);
             if (assigned) {
                 formulaManager.validateInput(formulaName, content);
                 formulaManager.saveServerFormulaData(loggedInUser, systemId.longValue(), formulaName, content);
@@ -318,7 +318,8 @@ public class FormulaHandler extends BaseHandler {
     public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
             Object> content) throws IOFaultException, InvalidParameterException {
         try {
-            boolean assigned = formulaManager.hasGroupFormulaAssigned(formulaName, groupId.longValue());
+            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId.longValue(), loggedInUser.getOrg());
+            boolean assigned = formulaManager.hasGroupFormulaAssigned(formulaName, group);
             if (assigned) {
                 formulaManager.validateInput(formulaName, content);
                 formulaManager.saveGroupFormulaData(loggedInUser, groupId.longValue(), formulaName, content);

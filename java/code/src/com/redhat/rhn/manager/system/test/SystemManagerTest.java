@@ -1624,14 +1624,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // Create a group and enable monitoring
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+        FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));
         Map<String, Object> formulaData = new HashMap<>();
         Map<String, Object> exportersData = new HashMap<>();
         exportersData.put("node_exporter", Collections.singletonMap("enabled", true));
         exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("exporters", exportersData);
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
         systemManager.addServerToServerGroup(server, group);

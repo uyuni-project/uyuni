@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -89,7 +90,7 @@ public class FormulaManager {
 
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
-        FormulaFactory.saveGroupFormulaData(content, groupId, user.getOrg(), formulaName);
+        FormulaFactory.saveGroupFormulaData(content, group, formulaName);
         List<String> minionIds = group.getServers().stream()
             .flatMap(s -> Opt.stream(s.asMinionServer()))
             .map(MinionServer::getMinionId).collect(Collectors.toList());
@@ -123,7 +124,7 @@ public class FormulaManager {
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
         Optional<Map<String, Object>> data =
-                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId);
+                FormulaFactory.getGroupFormulaValuesByNameAndGroup(formulaName, group);
         return data.orElse(Collections.emptyMap());
     }
 
@@ -281,21 +282,21 @@ public class FormulaManager {
     /**
      * Check if the given formula is assigned to the specified server considering group assignments as well.
      * @param formulaName formulaName
-     * @param systemId systemId
+     * @param server the server
      * @return True/False based upon if all of the systems has formulas assigned to them
      */
-    public boolean hasSystemFormulaAssignedCombined(String formulaName, Integer systemId) {
-        return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue()).contains(formulaName);
+    public boolean hasSystemFormulaAssignedCombined(String formulaName, MinionServer server) {
+        return FormulaFactory.getCombinedFormulasByServer(server).contains(formulaName);
     }
 
     /**
      * Check if given formula is assigned to the specificied group
      * @param formulaName formulaName
-     * @param groupId groupId
+     * @param group group
      * @return True/False based upon group has formulas assigned to it
      */
-    public boolean hasGroupFormulaAssigned(String formulaName, Long groupId) {
-        return FormulaFactory.getFormulasByGroupId(groupId).contains(formulaName);
+    public boolean hasGroupFormulaAssigned(String formulaName, ServerGroup group) {
+        return FormulaFactory.getFormulasByGroup(group).contains(formulaName);
     }
 
     /**
@@ -379,7 +380,8 @@ public class FormulaManager {
         Map<Long, Map<String, Object>> response = new HashMap<>();
 
         for (Long groupID : groupIDs) {
-            response.put(groupID, FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupID)
+            ManagedServerGroup group = ServerGroupFactory.lookupById(groupID);
+            response.put(groupID, FormulaFactory.getGroupFormulaValuesByNameAndGroup(formulaName, group)
                     .orElse(Collections.emptyMap()));
         }
         return response;
@@ -388,9 +390,10 @@ public class FormulaManager {
     private Map<Long, Map<String, Map<String, Object>>> getGroupsFormulaData(Set<Long> groupIDs) {
         Map<Long, Map<String, Map<String, Object>>> response = new HashMap<>();
         for (Long groupID : groupIDs) {
+            ServerGroup group = ServerGroupFactory.lookupById(groupID);
             Map<String, Map<String, Object>> responseEntry = new HashMap<>();
-            for (String formula : FormulaFactory.getFormulasByGroupId(groupID)) {
-                responseEntry.put(formula, FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formula, groupID)
+            for (String formula : FormulaFactory.getFormulasByGroup(group)) {
+                responseEntry.put(formula, FormulaFactory.getGroupFormulaValuesByNameAndGroup(formula, group)
                         .orElse(Collections.emptyMap()));
             }
             response.put(groupID, responseEntry);
@@ -407,8 +410,7 @@ public class FormulaManager {
     public Optional<Map<String, Object>> getClusterFormulaData(Cluster cluster, String formulaKey) {
         Optional<String> formulaName = FormulaFactory.getClusterProviderFormulaName(cluster.getProvider(), formulaKey);
         return formulaName
-                .flatMap(name -> FormulaFactory.getGroupFormulaValuesByNameAndGroupId(name,
-                        cluster.getGroup().getId()));
+                .flatMap(name -> FormulaFactory.getGroupFormulaValuesByNameAndGroup(name, cluster.getGroup()));
     }
 
     /**
@@ -427,7 +429,7 @@ public class FormulaManager {
 
         Map<Long, Map<String, Map<String, Object>>> groupsFormulaData = getGroupsFormulaData(groupIDs);
 
-        return minions.stream().flatMap(minion -> FormulaFactory.getCombinedFormulasByServerId(minion.getId())
+        return minions.stream().flatMap(minion -> FormulaFactory.getCombinedFormulasByServer(minion)
                 .stream()
                 .flatMap(formulaName -> FormulaFactory.getEndpointsFromFormulaData(formulaName,
                         getCombinedFormulaDataForSystemAndFormula(minion,

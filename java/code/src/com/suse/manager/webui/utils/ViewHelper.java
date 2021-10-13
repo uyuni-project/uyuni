@@ -257,7 +257,7 @@ public enum ViewHelper {
             Map<String, Object> systemData = FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion)
                     .orElseGet(Collections::emptyMap);
             Map<String, Object> groupData = FormulaFactory
-                    .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
+                    .getGroupFormulaValuesByNameAndServer(formulaName, server)
                     .orElseGet(Collections::emptyMap);
             return Objects.toString(systemData.get(valueName), "")
                     .equals(valueToCheck) ||

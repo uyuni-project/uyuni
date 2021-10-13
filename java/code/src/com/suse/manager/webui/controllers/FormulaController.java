@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
@@ -51,7 +52,6 @@ import com.google.gson.JsonSerializer;
 
 import org.apache.http.HttpStatus;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
@@ -170,22 +170,25 @@ public class FormulaController {
         switch (type) {
             case SERVER:
                 try {
-                    FormulaUtil.ensureUserHasPermissionsOnServer(user, ServerFactory.lookupById(id));
+                    Server server = ServerFactory.lookupById(id);
+                    FormulaUtil.ensureUserHasPermissionsOnServer(user, server);
+                    MinionServer minion = server.asMinionServer()
+                            .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id));
+                    formulas = new LinkedList<>(FormulaFactory.getCombinedFormulasByServer(minion));
                 }
                 catch (PermissionException e) {
                     return deniedResponse(response);
                 }
-                formulas = new LinkedList<>(FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
                 try {
-                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
-                            ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
+                    formulas = FormulaFactory.getFormulasByGroup(group);
                 }
                 catch (PermissionException | LookupException e) {
                     return deniedResponse(response);
                 }
-                formulas = FormulaFactory.getFormulasByGroupId(id);
                 break;
             default:
                 return errorResponse(response, Arrays.asList("Invalid target type!"));
@@ -211,13 +214,14 @@ public class FormulaController {
                         getFormulaValuesByNameAndMinion(formulaName, server)
                         .orElseGet(Collections::emptyMap));
                 map.put("group_data", FormulaFactory
-                        .getGroupFormulaValuesByNameAndServerId(formulaName, id)
+                        .getGroupFormulaValuesByNameAndServer(formulaName, server)
                         .orElseGet(Collections::emptyMap));
                 break;
             case GROUP:
+                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
                 map.put("system_data", Collections.emptyMap());
                 map.put("group_data", FormulaFactory
-                        .getGroupFormulaValuesByNameAndGroupId(formulaName, id)
+                        .getGroupFormulaValuesByNameAndGroup(formulaName, group)
                         .orElseGet(Collections::emptyMap));
                 break;
             default:
@@ -262,14 +266,14 @@ public class FormulaController {
                     saltApi.refreshPillar(new MinionList(minion.getMinionId()));
                     break;
                 case GROUP:
-                    ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                    ManagedServerGroup group = ServerGroupFactory.lookupById(id);
                     try {
                         FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
                     }
                     catch (PermissionException | LookupException e) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveGroupFormulaData(formData, id, user.getOrg(), formulaName);
+                    FormulaFactory.saveGroupFormulaData(formData, group, formulaName);
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
                             .map(MinionServer::getMinionId).collect(Collectors.toList());
@@ -279,7 +283,7 @@ public class FormulaController {
                     return errorResponse(response, Arrays.asList("error_invalid_target")); //Invalid target type!
             }
         }
-        catch (IOException | UnsupportedOperationException e) {
+        catch (UnsupportedOperationException e) {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
@@ -336,21 +340,20 @@ public class FormulaController {
                 catch (PermissionException e) {
                     return deniedResponse(response);
                 }
-                data.put("selected", FormulaFactory.getFormulasByMinion(
-                        server.asMinionServer()
-                                .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id))
-                ));
-                data.put("active", FormulaFactory.getCombinedFormulasByServerId(id));
+                MinionServer minion = server.asMinionServer()
+                        .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id));
+                data.put("selected", FormulaFactory.getFormulasByMinion(minion));
+                data.put("active", FormulaFactory.getCombinedFormulasByServer(minion));
                 break;
             case GROUP:
                 try {
-                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
-                            ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
+                    data.put("selected", FormulaFactory.getFormulasByGroup(group));
                 }
                catch (PermissionException | LookupException e) {
                     return deniedResponse(response);
                }
-                data.put("selected", FormulaFactory.getFormulasByGroupId(id));
                 break;
             default:
                 return errorResponse(response, Arrays.asList("Invalid target type!"));
@@ -392,19 +395,19 @@ public class FormulaController {
                     break;
                 case GROUP:
                     try {
-                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
-                                ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                        ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
+                        FormulaFactory.saveGroupFormulas(group, selectedFormulas);
                     }
                     catch (PermissionException | LookupException e) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveGroupFormulas(id, selectedFormulas, user.getOrg());
                     break;
                 default:
                     return errorResponse(response, Arrays.asList("error_invalid_target"));
             }
         }
-        catch (IOException | ValidatorException | UnsupportedOperationException e) {
+        catch (ValidatorException | UnsupportedOperationException e) {
             return errorResponse(response, Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }
         return GSON.toJson(Arrays.asList("formulas_saved"));
