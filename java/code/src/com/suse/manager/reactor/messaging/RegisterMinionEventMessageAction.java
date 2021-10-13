@@ -364,7 +364,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             MinionPillarManager.INSTANCE.generatePillar(registeredMinion);
 
-            migrateMinionFormula(minionId, Optional.of(oldMinionId));
+            migrateMinionFormula(registeredMinion, Optional.of(oldMinionId));
 
             saltApi.deleteKey(oldMinionId);
             SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
@@ -525,12 +525,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minion, org, grains);
                 applySaltboot(minion);
-                migrateMinionFormula(minionId, originalMinionId);
+                migrateMinionFormula(minion, originalMinionId);
                 return;
             }
 
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
-            migrateMinionFormula(minionId, originalMinionId);
+            migrateMinionFormula(minion, originalMinionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -543,27 +543,37 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
     }
 
-    private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
+    private void migrateMinionFormula(MinionServer minion, Optional<String> originalMinionId) {
         // after everything is done, if minionId has changed, we want to put the formula data
         // to the correct location on the FS
         originalMinionId.ifPresent(oldId -> {
-            if (!oldId.equals(minionId)) {
+            if (!oldId.equals(minion.getMinionId())) {
                 try {
-                    List<String> minionFormulas = FormulaFactory.getFormulasByMinionId(oldId);
-                    FormulaFactory.saveServerFormulas(minionId, minionFormulas);
-                    for (String minionFormula : minionFormulas) {
-                        Optional<Map<String, Object>> formulaValues =
-                                FormulaFactory.getFormulaValuesByNameAndMinionId(minionFormula, oldId);
-                        if (formulaValues.isPresent()) {
-                            // handle via Optional.get because of exception handling
-                            FormulaFactory.saveServerFormulaData(formulaValues.get(), minionId, minionFormula);
-                            FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
+                    List<String> minionFormulas = FormulaFactory.getLegacyFormulasByMinionId(oldId);
+                    if (!minionFormulas.isEmpty() && minion.getPillars().stream()
+                            .noneMatch(pillar -> pillar.getCategory().startsWith(FormulaFactory.PREFIX))) {
+                        // There are formula data files to be converted to the new way
+                        FormulaFactory.saveServerFormulas(minion, minionFormulas);
+                        for (String minionFormula : minionFormulas) {
+                            Optional<Map<String, Object>> formulaValues =
+                                    FormulaFactory.getLegacyFormulaValuesByNameAndMinionId(minionFormula, oldId);
+                            if (formulaValues.isPresent()) {
+                                // handle via Optional.get because of exception handling
+                                FormulaFactory.saveServerFormulaData(formulaValues.get(), minion, minionFormula);
+                                FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
+                            }
                         }
+                        for (String formula : minionFormulas) {
+                            FormulaFactory.deleteServerFormulaData(oldId, formula);
+                        }
+
+                        // Ensure old minion id is not in the legacy formulas file
+                        FormulaFactory.removeEntryFromFormulaFile(oldId, FormulaFactory.getServerDataFile());
                     }
-                    FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
                 }
                 catch (IOException | ValidatorException e) {
-                    LOG.warn("Error when converting formulas from minionId " + oldId + "to minionId " + minionId);
+                    LOG.warn("Error when converting formulas from minionId " + oldId +
+                            "to minionId " + minion.getMinionId());
                 }
             }
         });

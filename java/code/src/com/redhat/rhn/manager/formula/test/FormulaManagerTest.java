@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -169,8 +169,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.enableFormula(minion.getMinionId(), FORMULA_NAME);
-        List<String> enabledFormulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        manager.enableFormula(minion, FORMULA_NAME);
+        List<String> enabledFormulas = FormulaFactory.getFormulasByMinion(minion);
         assertNotNull(enabledFormulas);
         assertEquals(true, enabledFormulas.contains(FORMULA_NAME));
     }
@@ -190,7 +190,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }});
         manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getFormulaValuesByNameAndMinionId(FORMULA_NAME, minion.getMinionId())
+                FormulaFactory.getFormulaValuesByNameAndMinion(FORMULA_NAME, minion)
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents, savedFormulaData);
@@ -291,7 +291,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        FormulaFactory.saveServerFormulas(minion.getMinionId(), Collections.singletonList(PROMETHEUS_EXPORTERS));
+        FormulaFactory.saveServerFormulas(minion, Collections.singletonList(PROMETHEUS_EXPORTERS));
         manager.saveServerFormulaData(user, minion.getId(), PROMETHEUS_EXPORTERS, formulaValuesMap);
 
         List<EndpointInfo> endpoints = manager.listEndpoints(Collections.singletonList(minion.getId()));

@@ -138,9 +138,7 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -295,13 +293,16 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String minionId = minion.getMinionId();
         String formulaName = "test-formula";
         File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
-        FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
-        FormulaFactory.saveServerFormulaData(singletonMap("fooKey", "barVal"), minionId, formulaName);
+        Map<String, Object> formulaData = singletonMap("fooKey", "barVal");
+        FormulaFactory.saveServerFormulas(minion, singletonList(formulaName));
+        FormulaFactory.saveServerFormulaData(formulaData, minion, formulaName);
 
-        assertNotEmpty(FormulaFactory.getFormulasByMinionId(minionId));
-        assertTrue(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
+        assertNotEmpty(FormulaFactory.getFormulasByMinion(minion));
+        assertTrue(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion).isPresent());
         // Test the filesystem part:
-        assertTrue(formulaValues.exists());
+        assertFalse(formulaValues.exists());
+        assertEquals(formulaData,
+                minion.getPillarByCategory(FormulaFactory.PREFIX + formulaName).orElseThrow().getPillar());
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(minionId);
@@ -310,8 +311,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }});
         systemManager.deleteServer(user, minion.getId());
 
-        assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
-        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
+        assertTrue(FormulaFactory.getFormulasByMinion(minion).isEmpty());
+        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion).isPresent());
         assertFalse(formulaValues.exists());
     }
 
@@ -321,11 +322,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         String formulaName = "test-formula";
         File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
-        FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
-        try (FileChannel outChan = new FileOutputStream(
-                new File(FormulaFactory.getServerDataFile()), true).getChannel()) {
-            outChan.truncate(0);
-        }
+        FormulaFactory.saveServerFormulas(minion, singletonList(formulaName));
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(minionId);
@@ -334,10 +331,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }});
         systemManager.deleteServer(user, minion.getId());
 
-        assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
-        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
+        assertTrue(FormulaFactory.getFormulasByMinion(minion).isEmpty());
+        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion).isPresent());
         assertFalse(formulaValues.exists());
-        assertEquals("{}", FileUtils.readFileToString(new File(FormulaFactory.getServerDataFile())));
+        assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
 
     public void testDeleteVirtualServer() throws Exception {
