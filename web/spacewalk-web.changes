@@ -1,3 +1,4 @@
+- Provide a search box on section name for Formulas content
 - Add expand/collapse all button for formula sections
 - Fix legacy timepicker passing wrong time to the backend if server and
   user time differ (bsc#1192699)
