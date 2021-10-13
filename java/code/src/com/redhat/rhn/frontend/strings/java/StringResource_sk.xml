@@ -671,210 +671,210 @@
       </trans-unit>
       <trans-unit id="GPG and SSL Keys" xml:space="preserve">
         <source>GPG and SSL Keys</source>
-        <target/>
+        <target>Kľúče GPG a SSL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Help" xml:space="preserve">
         <source>Help</source>
-        <target/>
+        <target>Pomocník</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Documentation_version" xml:space="preserve">
         <source>Documentation {0}</source>
-        <target/>
+        <target>Dokumentácia {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Inactive" xml:space="preserve">
         <source>Inactive</source>
-        <target/>
+        <target>Neaktívne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Active" xml:space="preserve">
         <source>Active</source>
-        <target/>
+        <target>Aktívne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IP Ranges" xml:space="preserve">
         <source>IP Ranges</source>
-        <target/>
+        <target>Rozsahy IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart" xml:space="preserve">
         <source>Autoinstallation</source>
-        <target/>
+        <target>Automatická inštalácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management" xml:space="preserve">
         <source>Power Management</source>
-        <target/>
+        <target>Správa napájania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Lookup Login/Password" xml:space="preserve">
         <source>Lookup Login/Password</source>
-        <target/>
+        <target>Vyhľadanie prihlasovacieho mena/hesla</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Errata" xml:space="preserve">
         <source>Manage Patches</source>
-        <target/>
+        <target>Spravovať opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Management" xml:space="preserve">
         <source>Management</source>
-        <target/>
+        <target>Správa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage" xml:space="preserve">
         <source>Manage</source>
-        <target/>
+        <target>Spravovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Repositories" xml:space="preserve">
         <source>Manage Repositories</source>
-        <target/>
+        <target>Spravovať repozitáre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
-        <target/>
+        <target>Mapovanie distribučných kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Monitoring" xml:space="preserve">
         <source>Monitoring</source>
-        <target/>
+        <target>Monitorovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="name" xml:space="preserve">
         <source>name</source>
-        <target/>
+        <target>názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="arch" xml:space="preserve">
         <source>architecture</source>
-        <target/>
+        <target>architektúra</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.evr" xml:space="preserve">
         <source>this system</source>
-        <target/>
+        <target>tento systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="other.evr" xml:space="preserve">
         <source>profile</source>
-        <target/>
+        <target>profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="comparison" xml:space="preserve">
         <source>difference</source>
-        <target/>
+        <target>rozdiel</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Notification Methods" xml:space="preserve">
         <source>Notification Methods</source>
-        <target/>
+        <target>Metódy upozorňovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Notification" xml:space="preserve">
         <source>Notification</source>
-        <target/>
+        <target>Oznámenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Out of Date" xml:space="preserve">
         <source>Out of Date</source>
-        <target/>
+        <target>Zastarané</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Overview" xml:space="preserve">
         <source>Overview</source>
-        <target/>
+        <target>Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target>Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package Search" xml:space="preserve">
         <source>Package Search</source>
-        <target/>
+        <target>Vyhľadávanie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pending Actions" xml:space="preserve">
         <source>Pending Actions</source>
-        <target/>
+        <target>Čakajúce akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Preferences" xml:space="preserve">
         <source>Preferences</source>
-        <target/>
+        <target>Predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Locale Preferences" xml:space="preserve">
         <source>Locale Preferences</source>
-        <target/>
+        <target>Lokálne predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Profiles" xml:space="preserve">
         <source>Profiles</source>
-        <target/>
+        <target>Profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
