@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
@@ -23,6 +24,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,6 +36,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 
 /**
@@ -122,6 +127,37 @@ public class Pillar implements Identifiable {
      */
     public Pillar(String categoryIn, Map<String, Object> pillarIn, Org orgIn) {
         initPillar(categoryIn, pillarIn, null, null, orgIn);
+    }
+
+    /**
+     * @return The global pillars
+     */
+    public static List<Pillar> getGlobalPillars() {
+        CriteriaBuilder criteriaBuilder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<Pillar> criteriaQuery = criteriaBuilder.createQuery(Pillar.class);
+        Root<Pillar> root = criteriaQuery.from(Pillar.class);
+        criteriaQuery.where(
+                criteriaBuilder.isNull(root.get("minion")),
+                criteriaBuilder.isNull(root.get("org")),
+                criteriaBuilder.isNull(root.get("group"))
+        );
+        return HibernateFactory.getSession().createQuery(criteriaQuery).getResultList();
+    }
+
+    /**
+     * Create a global pillar and store it in the database.
+     *
+     * Note that this function doesn't check if an existing global pillar with the same category is existing.
+     *
+     * @param category the pillar category
+     * @param data the pillar data
+     *
+     * @return the created pillar
+     */
+    public static Pillar createGlobalPillar(String category, Map<String, Object> data) {
+        Pillar pillar = new Pillar(category, data);
+        HibernateFactory.getSession().save(pillar);
+        return pillar;
     }
 
     private void initPillar(String categoryIn, Map<String, Object> pillarIn,
