@@ -75,6 +75,9 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
                                                     managedGroup.getOrg());
         assertEquals(managedGroup, sg1);
+
+        ServerGroup sg2 = ServerGroupFactory.lookupById(managedGroup.getId());
+        assertEquals(managedGroup, sg2);
     }
 
     public void testListNoAssociatedAdmins() throws Exception {
