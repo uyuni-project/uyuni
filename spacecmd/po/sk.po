@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-28 11:27+0200\n"
-"PO-Revision-Date: 2021-10-03 16:11+0000\n"
+"PO-Revision-Date: 2021-10-13 13:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2061,7 +2061,7 @@ msgstr "Príklad:"
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"
-msgstr "filepreservation_list: Vypísať zoznam všetkých zachovaní súborov"
+msgstr "filepreservation_list: Vypísať zoznam všetkých uchovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:43
 msgid "usage: filepreservation_list"
@@ -2086,7 +2086,7 @@ msgstr "Súbor [prázdne na dokončenie]:"
 
 #: ../src/spacecmd/filepreservation.py:109
 msgid "filepreservation_delete: Delete a file preservation list"
-msgstr "filepreservation_delete: Vymazať zoznam zachovaní súborov"
+msgstr "filepreservation_delete: Vymazať zoznam uchovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:110
 msgid "usage: filepreservation_delete NAME"
@@ -2101,8 +2101,8 @@ msgid ""
 "filepreservation_details: Show the details of a file\n"
 "'preservation list"
 msgstr ""
-"filepreservation_details: Zobraziť podrobnosti zoznam\n"
-"'zachovaní súborov"
+"filepreservation_details: Zobraziť podrobnosti zoznamu\n"
+"'uchovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:141
 msgid "usage: filepreservation_details NAME"
@@ -2574,7 +2574,7 @@ msgstr "Šifrovacie kľúče"
 
 #: ../src/spacecmd/kickstart.py:476
 msgid "File Preservations"
-msgstr "Zachovania súborov"
+msgstr "Uchovania súborov"
 
 #: ../src/spacecmd/kickstart.py:485
 msgid "Variables"
@@ -2890,8 +2890,7 @@ msgstr "použitie: kickstart_listchildchannels PROFIL"
 msgid ""
 "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr ""
-"kickstart_addfilepreservations: Pridať zachovania súborov do profilu "
-"Kickstart"
+"kickstart_addfilepreservations: Pridať uchovania súborov do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1676
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
@@ -2902,7 +2901,7 @@ msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
 msgstr ""
-"kickstart_removefilepreservations: Odstrániť zachovania súborov z profilu "
+"kickstart_removefilepreservations: Odstrániť uchovania súborov z profilu "
 "Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1713
@@ -3182,12 +3181,12 @@ msgstr "nepodarilo sa pridať rozsah ip %s-%s, pokračuje sa"
 #: ../src/spacecmd/kickstart.py:2439
 #, python-format
 msgid "failed to add file preservation %s, skipping"
-msgstr "nepodarilo sa pridať zachovanie súboru %s, preskakuje sa"
+msgstr "nepodarilo sa pridať uchovanie súboru %s, preskakuje sa"
 
 #: ../src/spacecmd/kickstart.py:2441
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
-msgstr "zoznam zachovania súborov %s neexistuje, preskakuje sa"
+msgstr "zoznam uchovaní súborov %s neexistuje, preskakuje sa"
 
 #: ../src/spacecmd/kickstart.py:2452
 #, python-format
