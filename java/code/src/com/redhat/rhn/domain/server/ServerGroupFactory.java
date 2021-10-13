@@ -38,6 +38,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 /**
  *
  * ServerGroupFactory
@@ -126,6 +130,20 @@ public class ServerGroupFactory extends HibernateFactory {
                                             "ServerGroup.lookupByIdAndOrg")
             .setParameter("id", id).setParameter("org", org)
             .uniqueResult();
+    }
+
+    /**
+     * Lookup a ServerGroup by ID
+     *
+     * @param id the server group id
+     * @return server group object
+     */
+    public static ManagedServerGroup lookupById(Long id) {
+        CriteriaBuilder builder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<ManagedServerGroup> query = builder.createQuery(ManagedServerGroup.class);
+        Root<ManagedServerGroup> root = query.from(ManagedServerGroup.class);
+        query.where(builder.equal(root.get("id"), id));
+        return HibernateFactory.getSession().createQuery(query).getSingleResult();
     }
 
     /**
