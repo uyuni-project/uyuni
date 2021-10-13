@@ -210,6 +210,7 @@ export function generateFormulaComponentForId(
         sectionsExpanded={formulaForm.props.sectionsExpanded}
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
+        criteria={formulaForm.props.searchCriteria}
       >
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
       </Group>
@@ -227,6 +228,7 @@ export function generateFormulaComponentForId(
         sectionsExpanded={formulaForm.props.sectionsExpanded}
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
+        criteria={formulaForm.props.searchCriteria}
       />
     );
   } else if (element.$type === "select")
@@ -348,8 +350,12 @@ function checkVisibilityCondition(id, condition, formulaForm) {
   return false;
 }
 
+export function isFiltered(criteria) {
+  return criteria && criteria.length > 0;
+}
+
 // return the element content visibility conditionally based on the element name by the criteria
-function isVisibleByCriteria(element, criteria) {
+function isVisibleByCriteria(element: any, criteria: string) {
   let visibilityForcedByChildren = false;
   // check if all children are not visible by criteria so we can hide the parent (this element) as well
   for (var child_name in element) {

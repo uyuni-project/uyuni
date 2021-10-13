@@ -1,6 +1,9 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { Highlight } from "components/table/Highlight";
+
+import { isFiltered } from "./FormulaComponentGenerator";
 import SectionToggle from "./SectionToggle";
 
 type Props = {
@@ -11,6 +14,7 @@ type Props = {
   help?: React.ReactNode;
   children?: React.ReactNode;
   isVisibleByCriteria?: any;
+  criteria: string;
 };
 
 const Group = (props: Props) => {
@@ -40,7 +44,11 @@ const Group = (props: Props) => {
       >
         <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
           <h4 id={props.id} key={props.id}>
-            {props.header}
+            {
+              isFiltered(props.criteria) ?
+                <Highlight enabled={isFiltered(props.criteria)} text={props.header ? props.header.toString() : ""} highlight={props.criteria} />
+                : props.header
+            }
           </h4>
         </SectionToggle>
         <div>
