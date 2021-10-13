@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -109,8 +109,8 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
 
         // Create a system level assignment of the Formula
-        FormulaFactory.saveServerFormulas(minion.getMinionId(), Arrays.asList(PROMETHEUS_EXPORTERS));
-        FormulaFactory.saveServerFormulaData(formulaData, minion.getMinionId(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveServerFormulas(minion, Arrays.asList(PROMETHEUS_EXPORTERS));
+        FormulaFactory.saveServerFormulaData(formulaData, minion, PROMETHEUS_EXPORTERS);
         assertTrue(manager.isMonitoringCleanupNeeded(minion));
     }
 

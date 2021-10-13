@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -37,10 +37,10 @@ public class FormulaMonitoringManager implements MonitoringManager {
     public void enableMonitoring(MinionServer minion) throws IOException, ValidatorException {
         // Assign the monitoring formula to the system unless it belongs to a group with monitoring enabled
         if (!FormulaFactory.isMemberOfGroupHavingMonitoring(minion)) {
-            List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+            List<String> formulas = FormulaFactory.getFormulasByMinion(minion);
             if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
                 formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
-                FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
+                FormulaFactory.saveServerFormulas(minion, formulas);
             }
         }
     }
@@ -53,10 +53,10 @@ public class FormulaMonitoringManager implements MonitoringManager {
             // Get the current data and set all exporters to disabled
             String minionId = minion.getMinionId();
             Map<String, Object> data = FormulaFactory
-                    .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
+                    .getFormulaValuesByNameAndMinion(PROMETHEUS_EXPORTERS, minion)
                     .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
             FormulaFactory.saveServerFormulaData(
-                    FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
+                    FormulaFactory.disableMonitoring(data), minion, PROMETHEUS_EXPORTERS);
         }
     }
 
@@ -67,7 +67,7 @@ public class FormulaMonitoringManager implements MonitoringManager {
      * @return true if cleanup is needed, false otherwise
      */
     public boolean isMonitoringCleanupNeeded(MinionServer server) {
-        return FormulaFactory.getFormulasByMinionId(server.getMinionId()).contains(PROMETHEUS_EXPORTERS) ||
+        return FormulaFactory.getFormulasByMinion(server).contains(PROMETHEUS_EXPORTERS) ||
                 FormulaFactory.isMemberOfGroupHavingMonitoring(server);
     }
 }

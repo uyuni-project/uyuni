@@ -740,7 +740,7 @@ public class SystemManager extends BaseManager {
 
             // cleanup server formulas
             try {
-                FormulaFactory.saveServerFormulas(minion.getMinionId(), emptyList());
+                FormulaFactory.saveServerFormulas(minion, emptyList());
             }
             catch (ValidatorException | IOException e) {
                 log.warn("Couldn't clean up formula data and assignment for " + minion);

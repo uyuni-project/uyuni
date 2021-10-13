@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -742,7 +742,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinionId(minion.getMinionId()));
+        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinion(minion));
         assertTrue(ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock", "minion_blackout",
                 "true"));
     }
@@ -820,7 +820,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertTrue(FormulaFactory.getFormulasByMinionId(minion.getMinionId()).isEmpty());
+        assertTrue(FormulaFactory.getFormulasByMinion(minion).isEmpty());
     }
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {

@@ -59,7 +59,7 @@ public class StateSourceService {
 
         // System formulas
         stateOrigins = Stream.concat(stateOrigins, getFormulaSources(formulaIndex,
-                FormulaFactory.getFormulasByMinionId(minion.getMinionId()), minion, processedFormulas));
+                FormulaFactory.getFormulasByMinion(minion), minion, processedFormulas));
 
         // Group states
         stateOrigins = Stream.concat(stateOrigins, minion.getGroups().stream()

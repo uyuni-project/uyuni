@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -20,6 +20,7 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -101,9 +102,10 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
-        Server server = ServerFactory.lookupById(new Long(systemId));
+        Server server = ServerFactory.lookupById(systemId.longValue());
         FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
-        return FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(systemId.longValue()));
+        return FormulaFactory.getFormulasByMinion(server.asMinionServer()
+                .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + systemId)));
     }
 
     /**
@@ -173,9 +175,11 @@ public class FormulaHandler extends BaseHandler {
     public int setFormulasOfServer(User loggedInUser, Integer systemId,
             List<String> formulas) throws IOFaultException, InvalidParameterException {
         try {
-            Server server = ServerFactory.lookupById(new Long(systemId));
-            FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
-            FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(systemId.longValue()), formulas);
+            MinionServer minion = MinionServerFactory.lookupById(systemId.longValue())
+                    .orElseThrow(() -> new InvalidParameterException(
+                            "Provided systemId does not correspond to a minion"));
+            FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
+            FormulaFactory.saveServerFormulas(minion, formulas);
         }
         catch (PermissionException e) {
             throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));
@@ -185,10 +189,6 @@ public class FormulaHandler extends BaseHandler {
         }
         catch (IOException e) {
             throw new IOFaultException(e);
-        }
-        catch (UnsupportedOperationException e) {
-            throw new InvalidParameterException(
-                    "Provided systemId does not correspond to a minion");
         }
         return 1;
     }

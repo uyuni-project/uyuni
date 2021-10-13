@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2019 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -81,6 +82,7 @@ public class FormulaFactory {
 
     /** This formula is coupled with the monitoring system type */
     public static final String PROMETHEUS_EXPORTERS = "prometheus-exporters";
+    public static final String PREFIX = "formula-";
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
@@ -289,23 +291,57 @@ public class FormulaFactory {
         }
     }
 
+    private static void convertServerFormulasFromFiles(MinionServer server) {
+        Map<String, List<String>> serverFormulas = readFormulaFile(getServerDataFile());
+        List<String> legacyFormulas = new LinkedList<>(serverFormulas.getOrDefault(server.getMinionId(),
+                new LinkedList<>()));
+
+        if (!legacyFormulas.isEmpty()) {
+            legacyFormulas.forEach(formula -> {
+                Optional<Map<String, Object>> data = getFormulaValuesByNameAndMinion(formula, server);
+                data.ifPresent(formData -> {
+                    server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
+                        server.getPillars().add(pillar);
+                        return pillar;
+                    }).setPillar(formData);
+                });
+                deleteServerFormulaData(server.getMinionId(), formula);
+            });
+
+            // Remove the entry from the data file
+            try {
+                removeEntryFromFormulaFile(server.getMinionId(), getServerDataFile());
+            }
+            catch (IOException ignored) {
+            }
+        }
+    }
+
     /**
      * Saves the values of a formula for a server.
      * @param formData the values to save
-     * @param minionId the minionId
+     * @param minion the minion
      * @param formulaName the name of the formula
-     * @throws IOException if an IOException occurs while saving the data
      */
-    public static void saveServerFormulaData(Map<String, Object> formData, String minionId, String formulaName)
-            throws IOException {
+    public static void saveServerFormulaData(Map<String, Object> formData, MinionServer minion, String formulaName) {
+        // Ensure all the minion formulas are converted to pillar in DB
+        convertServerFormulasFromFiles(minion);
+
+        minion.getPillarByCategory(PREFIX + formulaName).orElseGet(() -> {
+            Pillar pillar = new Pillar(PREFIX + formulaName, Collections.emptyMap(), minion);
+            minion.getPillars().add(pillar);
+            return pillar;
+        }).setPillar(formData);
+
         // Add the monitoring entitlement if at least one of the exporters is enabled
         if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
-            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+            MinionServerFactory.findByMinionId(minion.getMinionId()).ifPresent(s -> {
                 if (!hasMonitoringDataEnabled(formData)) {
                     if (isMemberOfGroupHavingMonitoring(s)) {
                         // nothing to do here, keep monitoring entitlement and disable formula
                         LOG.debug(String.format("Minion %s is member of group having monitoring enabled." +
-                                " Not removing monitoring entitlement.", minionId));
+                                " Not removing monitoring entitlement.", minion.getMinionId()));
                     }
                     else {
                         systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
@@ -316,19 +352,6 @@ public class FormulaFactory {
                     systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.MONITORING);
                 }
             });
-        }
-
-        File file = new File(getPillarDir() + minionId +
-                "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-        try {
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-        }
-        catch (FileAlreadyExistsException e) {
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(GSON.toJson(formData));
         }
     }
 
@@ -356,22 +379,45 @@ public class FormulaFactory {
     }
 
     /**
-     * Returns the formulas applied to a given server
+     * Legacy way to get the list of formulas for a minion. Should not be used by new code!
      * @param minionId the minion id
      * @return the list of formulas
+     * @deprecated in favor of the getFormulasByMinion()
      */
-    public static List<String> getFormulasByMinionId(String minionId) {
+    @Deprecated
+    public static List<String> getLegacyFormulasByMinionId(String minionId) {
         List<String> formulas = new LinkedList<>();
         File serverDataFile = new File(getServerDataFile());
         try {
             Map<String, List<String>> serverFormulas = GSON.fromJson(
                     new BufferedReader(new FileReader(serverDataFile)), Map.class);
-            formulas.addAll(serverFormulas.getOrDefault(minionId,
-                    Collections.emptyList()));
+            if (serverFormulas != null) {
+                formulas.addAll(serverFormulas.getOrDefault(minionId,
+                        Collections.emptyList()));
+            }
         }
         catch (FileNotFoundException | UnsupportedOperationException e) {
         }
         return orderFormulas(formulas);
+    }
+
+    /**
+     * Returns the formulas applied to a given server
+     * @param minion the minion
+     * @return the list of formulas
+     */
+    public static List<String> getFormulasByMinion(MinionServer minion) {
+        List<String> formulas = orderFormulas(minion.getPillars().stream()
+                .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
+                .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
+                .collect(Collectors.toList()));
+
+        // Still try the legacy way since the formula data may not be converted yet
+        File serverDataFile = new File(getServerDataFile());
+        if (formulas.isEmpty() && serverDataFile.exists()) {
+            return getLegacyFormulasByMinionId(minion.getMinionId());
+        }
+        return formulas;
     }
 
     /**
@@ -381,7 +427,7 @@ public class FormulaFactory {
      * @return the combined list of formulas
      */
     public static List<String> getCombinedFormulasByServerId(Long serverId) {
-        List<String> formulas = getFormulasByMinionId(MinionServerFactory.getMinionId(serverId));
+        List<String> formulas = getFormulasByMinion(MinionServerFactory.lookupById(serverId).get());
         List<String> groupFormulas = getGroupFormulasByServerId(serverId);
         formulas.removeAll(groupFormulas); // Remove duplicates
         formulas.addAll(groupFormulas);
@@ -447,8 +493,10 @@ public class FormulaFactory {
      * @param name the name of the formula
      * @param minionId the minion id
      * @return the saved values or an empty optional if no values were found
+     * @deprecated Use getFormulaValuesByNameAndMinion() instead
      */
-    public static Optional<Map<String, Object>> getFormulaValuesByNameAndMinionId(
+    @Deprecated
+    public static Optional<Map<String, Object>> getLegacyFormulaValuesByNameAndMinionId(
             String name, String minionId) {
         try {
             File dataFile = new File(getPillarDir() +
@@ -464,6 +512,26 @@ public class FormulaFactory {
         catch (FileNotFoundException | UnsupportedOperationException e) {
             return Optional.empty();
         }
+    }
+    /**
+     * Returns the saved values of a given server for a given formula.
+     * @param name the name of the formula
+     * @param minion the minion
+     * @return the saved values or an empty optional if no values were found
+     */
+    public static Optional<Map<String, Object>> getFormulaValuesByNameAndMinion(
+            String name, MinionServer minion) {
+        return minion.getPillarByCategory(PREFIX + name)
+                .map(Pillar::getPillar)
+                .or(() -> {
+                    // Look for the legacy file in case the minion hasn't been converted yet
+                    File dataFile = new File(getPillarDir() +
+                            minion.getMinionId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
+                    if (dataFile.exists()) {
+                        return getLegacyFormulaValuesByNameAndMinionId(name, minion.getMinionId());
+                    }
+                    return Optional.empty();
+                });
     }
 
     /**
@@ -620,9 +688,9 @@ public class FormulaFactory {
     }
 
     private static boolean serverHasMonitoringFormulaEnabled(MinionServer minion) {
-        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        List<String> formulas = FormulaFactory.getFormulasByMinion(minion);
         return formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS) &&
-                getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minion.getMinionId())
+                getFormulaValuesByNameAndMinion(PROMETHEUS_EXPORTERS, minion)
                         .map(data -> hasMonitoringDataEnabled(data))
                         .orElse(false);
     }
@@ -654,69 +722,91 @@ public class FormulaFactory {
         }
     }
 
+    private static Map<String, List<String>> readFormulaFile(String path) {
+        File dataFile = new File(path);
+        Map<String, List<String>> formulas = new HashMap<>();
+        try {
+            formulas = Optional
+                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
+                    .orElse(new HashMap());
+        }
+        catch (FileNotFoundException e) {
+        }
+        return formulas;
+    }
+
     /**
      * Save the selected formulas for a server.
      * This also deletes all saved values of that formula.
-     * @param minionId the minion id
+     * @param minion the minion
      * @param selectedFormulas the new selected formulas to save
      * @throws IOException if an IOException occurs while saving the data
      * @throws ValidatorException if a formula is not present (unchecked)
      */
-    public static synchronized void saveServerFormulas(String minionId, List<String> selectedFormulas)
+    public static synchronized void saveServerFormulas(MinionServer minion, List<String> selectedFormulas)
             throws IOException, ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
-        File dataFile = new File(getServerDataFile());
 
-        Map<String, List<String>> serverFormulas;
-        if (!dataFile.exists()) {
-            dataFile.getParentFile().mkdirs();
-            dataFile.createNewFile();
-            serverFormulas = new HashMap<>();
-        }
-        else {
-            serverFormulas = Optional
-                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
-        }
+        // Ensure all the minion formulas are converted to pillar in DB
+        convertServerFormulasFromFiles(minion);
 
         // Remove formula data for unselected formulas
-        List<String> deletedFormulas = new LinkedList<>(serverFormulas.getOrDefault(minionId, new LinkedList<>()));
+        List<String> deletedFormulas = getFormulasByMinion(minion);
         deletedFormulas.removeAll(selectedFormulas);
         for (String deletedFormula : deletedFormulas) {
-            deleteServerFormulaData(minionId, deletedFormula);
+            minion.getPillarByCategory(PREFIX + deletedFormula).ifPresent(pillar -> minion.getPillars().remove(pillar));
         }
 
-        // Save selected Formulas
-        List<String> orderedFormulas = orderFormulas(selectedFormulas);
-        if (orderedFormulas.isEmpty()) {
-            // when no formulas are assigned, we remove the entry completely for the minion
-            serverFormulas.remove(minionId);
-        }
-        else {
-            serverFormulas.put(minionId, orderedFormulas);
-        }
-
-        // Write minion_formulas file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
-            writer.write(GSON.toJson(serverFormulas));
+        // Save selected Formulas if we don't have them already
+        for (String formula : selectedFormulas) {
+            if (minion.getPillarByCategory(PREFIX + formula).isEmpty()) {
+                Pillar pillar = new Pillar(PREFIX + formula, new HashMap<>(), minion);
+                minion.getPillars().add(pillar);
+            }
         }
 
         // Generate monitoring default data from the 'pillar.example' file, otherwise the API would not return any
         // formula data as long as the default values are unchanged.
-        if (orderedFormulas.contains(PROMETHEUS_EXPORTERS) &&
-                getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId).isEmpty()) {
-            FormulaFactory.saveServerFormulaData(
-                    getPillarExample(PROMETHEUS_EXPORTERS), minionId, PROMETHEUS_EXPORTERS);
-        }
+        minion.getPillarByCategory(PREFIX + PROMETHEUS_EXPORTERS)
+                .ifPresent(pillar -> {
+                    if (pillar.getPillar().isEmpty()) {
+                        pillar.setPillar(getPillarExample(PROMETHEUS_EXPORTERS));
+                    }
+                });
 
         // Handle entitlement removal in case of monitoring
-        if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
-            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
-                if (!isMemberOfGroupHavingMonitoring(s)) {
-                    systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
+        if (deletedFormulas.contains(PROMETHEUS_EXPORTERS) && !isMemberOfGroupHavingMonitoring(minion)) {
+            systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
+        }
+    }
+
+    /**
+     * Ensure the minion id is removed from the legacy formula file.
+     *
+     * @param id the minion or group id to look for
+     * @param filePath the path of the formula file
+     * @throws IOException if the data file failed to be written
+     */
+    public static void removeEntryFromFormulaFile(String id, String filePath) throws IOException {
+        File dataFile = new File(filePath);
+
+        if (dataFile.exists()) {
+            Map<String, List<String>> serverFormulas = Optional
+                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
+                    .orElse(new HashMap());
+
+            if (serverFormulas.containsKey(id)) {
+                serverFormulas.remove(id);
+                if (serverFormulas.isEmpty() && dataFile.exists()) {
+                    dataFile.delete();
                 }
-            });
+                else {
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
+                        writer.write(GSON.toJson(serverFormulas));
+                    }
+                }
+            }
         }
     }
 
@@ -736,7 +826,7 @@ public class FormulaFactory {
             }
         }
         catch (UnsupportedOperationException e) {
-            LOG.error("Error deleting formular data for " + formulaName +
+            LOG.error("Error deleting formula data for " + formulaName +
                     ": " + e.getMessage());
         }
     }

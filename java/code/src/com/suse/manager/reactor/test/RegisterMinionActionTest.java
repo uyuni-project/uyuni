@@ -89,13 +89,17 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1901,6 +1905,31 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 DEFAULT_CONTACT_METHOD);
     }
 
+    private void saveTestLegacyFormulasFile(String minionId, List<String> formulas) throws Exception {
+        File dataFile = new File(FormulaFactory.getServerDataFile());
+        if (!dataFile.exists()) {
+            dataFile.getParentFile().mkdirs();
+            dataFile.createNewFile();
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            writer.write(gson.toJson(Map.of(minionId, formulas)));
+        }
+    }
+
+    private void saveTestLegacyFormulaValue(String minionId, String formula, Map<String, Object> data)
+            throws Exception {
+        File file = new File(FormulaFactory.getPillarDir() + minionId + "_" + formula + ".json");
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            writer.write(gson.toJson(data));
+        }
+    }
 
     /**
      * Tests migration of formula assignment and data for empty profile during registration
@@ -1914,9 +1943,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionServer emptyMinion = systemManager.createSystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         String minionId = "_" + hwAddress;
-        FormulaFactory.saveServerFormulas(minionId, Collections.singletonList(testFormula));
+        saveTestLegacyFormulasFile(minionId, Collections.singletonList(testFormula));
+
         Map<String, Object> formulaContent = singletonMap("testKey", "testVal");
-        FormulaFactory.saveServerFormulaData(formulaContent, minionId, testFormula);
+        saveTestLegacyFormulaValue(minionId, testFormula, formulaContent);
 
         assertTrue(Paths.get(FormulaFactory.getPillarDir(), "_" + hwAddress + "_" + testFormula + ".json")
                 .toFile().exists());
@@ -1964,14 +1994,17 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(MINION_ID, minion.getMinionId());
                     assertEquals(MACHINE_ID, minion.getMachineId());
                     assertEquals(MACHINE_ID, minion.getDigitalServerId());
+                    HibernateFactory.getSession().flush();
                     HibernateFactory.getSession().refresh(minion); // refresh minions to populate network interfaces
                     HibernateFactory.getSession().refresh(emptyMinion);
                     assertEquals(emptyMinion.getNetworkInterfaces(), minion.getNetworkInterfaces());
 
-                    assertTrue(Paths.get(FormulaFactory.getPillarDir(), MINION_ID + "_" + testFormula + ".json")
+                    assertFalse(Paths.get(FormulaFactory.getPillarDir(), MINION_ID + "_" + testFormula + ".json")
                             .toFile().exists());
                     assertFalse(Paths.get(FormulaFactory.getPillarDir(), hwAddress + "_" + testFormula + ".json")
                             .toFile().exists());
+                    assertEquals(formulaContent,
+                            minion.getPillarByCategory(FormulaFactory.PREFIX + testFormula).orElseThrow().getPillar());
                 },
                 null,
                 DEFAULT_CONTACT_METHOD);

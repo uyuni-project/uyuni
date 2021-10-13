@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.formula.FormulaUtil;
 
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -59,7 +60,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -205,8 +205,10 @@ public class FormulaController {
         String formulaName = formulas.get(formulaId);
         switch (type) {
             case SERVER:
+                MinionServer server = MinionServerFactory.lookupById(id)
+                        .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id));
                 map.put("system_data", FormulaFactory.
-                        getFormulaValuesByNameAndMinionId(formulaName, MinionServerFactory.getMinionId(id))
+                        getFormulaValuesByNameAndMinion(formulaName, server)
                         .orElseGet(Collections::emptyMap));
                 map.put("group_data", FormulaFactory
                         .getGroupFormulaValuesByNameAndServerId(formulaName, id)
@@ -249,15 +251,15 @@ public class FormulaController {
         try {
             switch (type) {
                 case SERVER:
-                    Optional<MinionServer> minion = MinionServerFactory.lookupById(id);
+                    MinionServer minion = MinionServerFactory.lookupById(id).get();
                     try {
-                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion.get());
+                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     }
                     catch (PermissionException e) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveServerFormulaData(formData, MinionServerFactory.getMinionId(id), formulaName);
-                    saltApi.refreshPillar(new MinionList(minion.get().getMinionId()));
+                    FormulaFactory.saveServerFormulaData(formData, minion, formulaName);
+                    saltApi.refreshPillar(new MinionList(minion.getMinionId()));
                     break;
                 case GROUP:
                     ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
@@ -327,13 +329,17 @@ public class FormulaController {
         Map<String, Object> data = new HashMap<>();
         switch (type) {
             case SERVER:
+                Server server = ServerFactory.lookupById(id);
                 try {
-                    FormulaUtil.ensureUserHasPermissionsOnServer(user, ServerFactory.lookupById(id));
+                    FormulaUtil.ensureUserHasPermissionsOnServer(user, server);
                 }
                 catch (PermissionException e) {
                     return deniedResponse(response);
                 }
-                data.put("selected", FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(id)));
+                data.put("selected", FormulaFactory.getFormulasByMinion(
+                        server.asMinionServer()
+                                .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id))
+                ));
                 data.put("active", FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
@@ -373,14 +379,16 @@ public class FormulaController {
         try {
             switch (type) {
                 case SERVER:
+                    MinionServer minion = MinionServerFactory.lookupById(id)
+                            .orElseThrow(() -> new InvalidParameterException(
+                                    "Provided systemId does not correspond to a minion"));
                     try {
-                        FormulaUtil.ensureUserHasPermissionsOnServer(user,
-                                ServerFactory.lookupById(id));
+                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     }
                     catch (PermissionException e) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(id), selectedFormulas);
+                    FormulaFactory.saveServerFormulas(minion, selectedFormulas);
                     break;
                 case GROUP:
                     try {
