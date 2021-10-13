@@ -42,6 +42,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
         KickstartDataTest.setupTestConfiguration(user);
