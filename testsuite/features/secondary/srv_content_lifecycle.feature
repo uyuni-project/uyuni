@@ -94,7 +94,7 @@ Feature: Content lifecycle
     When I enter "test version message 1" as "message"
     And I click the environment build button
     And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
-    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
+    And I wait at most 600 seconds until I see "Built time:" text in the environment "dev_name"
 
 @susemanager
   Scenario: Build the sources in the project for SUSE Manager
@@ -106,7 +106,7 @@ Feature: Content lifecycle
     When I enter "test version message 1" as "message"
     And I click the environment build button
     And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
-    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
+    And I wait at most 600 seconds until I see "Built time:" text in the environment "dev_name"
 
   Scenario: Promote the sources in the project
     When I follow the left menu "Content Lifecycle > Projects"
@@ -119,11 +119,11 @@ Feature: Content lifecycle
     When I click promote from Development to QA
     Then I should see a "Version 1: test version message 1" text
     And I click on "Promote environment" in "Promote version 1 into qa_name" modal
-    Then I wait until I see "Built" text in the environment "qa_name"
+    Then I wait until I see "Built time:" text in the environment "qa_name"
     When I click promote from QA to Production
     Then I should see a "Version 1: test version message 1" text
     And I click on "Promote environment" in "Promote version 1 into prod_name" modal
-    Then I wait until I see "Built" text in the environment "prod_name"
+    Then I wait until I see "Built time:" text in the environment "prod_name"
 
   Scenario: Add new sources and promote again
     When I follow the left menu "Content Lifecycle > Projects"
@@ -140,15 +140,15 @@ Feature: Content lifecycle
     When I enter "test version message 2" as "message"
     And I click the environment build button
     Then I wait until I see "Version 2: test version message 2" text in the environment "dev_name"
-    And I wait until I see "Built" text in the environment "dev_name"
+    And I wait until I see "Built time:" text in the environment "dev_name"
     When I click promote from Development to QA
     Then I should see a "Version 2: test version message 2" text
     And I click on "Promote environment" in "Promote version 2 into qa_name" modal
-    Then I wait until I see "Built" text in the environment "qa_name"
+    Then I wait until I see "Built time:" text in the environment "qa_name"
     When I click promote from QA to Production
     Then I should see a "Version 2: test version message 2" text
     And I click on "Promote environment" in "Promote version 2 into prod_name" modal
-    Then I wait until I see "Built" text in the environment "prod_name"
+    Then I wait until I see "Built time:" text in the environment "prod_name"
 
   Scenario: Clean up the Content Lifecycle Management feature
     When I follow the left menu "Content Lifecycle > Projects"
