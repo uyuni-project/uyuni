@@ -89,7 +89,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
         SaltApi saltApi = new TestSaltApi();
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
         systemManager.addServerToServerGroup(minion, group);
-        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+        FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));
 
         // Save data that enables monitoring
         Map<String, Object> formulaData = new HashMap<>();
@@ -98,14 +98,14 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("exporters", exportersData);
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
         assertTrue(manager.isMonitoringCleanupNeeded(minion));
 
         // Save data that disables monitoring
         exportersData.put("node_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
 
         // Create a system level assignment of the Formula

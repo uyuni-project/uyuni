@@ -127,7 +127,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -742,7 +741,7 @@ public class SystemManager extends BaseManager {
             try {
                 FormulaFactory.saveServerFormulas(minion, emptyList());
             }
-            catch (ValidatorException | IOException e) {
+            catch (ValidatorException e) {
                 log.warn("Couldn't clean up formula data and assignment for " + minion);
             }
         });

@@ -49,7 +49,7 @@ public class StateSourceService {
         Set<String> processedFormulas = new HashSet<>();
 
         // Index formulas for anchors
-        List<String> activeFormulas = FormulaFactory.getCombinedFormulasByServerId(minion.getId());
+        List<String> activeFormulas = FormulaFactory.getCombinedFormulasByServer(minion);
         Map<String, Integer> formulaIndex = IntStream.range(0, activeFormulas.size()).boxed()
                 .collect(Collectors.toMap(activeFormulas::get, i -> i));
 
@@ -69,7 +69,7 @@ public class StateSourceService {
         // Group formulas
         stateOrigins = Stream.concat(stateOrigins, minion.getGroups().stream()
                 .flatMap(g -> getFormulaSources(formulaIndex,
-                        FormulaFactory.getFormulasByGroupId(g.getId()), g, processedFormulas)));
+                        FormulaFactory.getFormulasByGroup(g), g, processedFormulas)));
 
         // Org states
         stateOrigins = Stream.concat(stateOrigins, StateFactory.latestConfigChannels(minion.getOrg())

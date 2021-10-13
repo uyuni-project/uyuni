@@ -150,7 +150,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }});
         manager.saveGroupFormulaData(user, managed.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(FORMULA_NAME, managed.getId())
+                FormulaFactory.getGroupFormulaValuesByNameAndGroup(FORMULA_NAME, managed)
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents, savedFormulaData);
@@ -225,7 +225,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+        FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));
 
         Map<String, Object> formulaData = new HashMap<>();
         Map<String, Object> exportersData = new HashMap<>();
@@ -234,7 +234,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("exporters", exportersData);
 
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
