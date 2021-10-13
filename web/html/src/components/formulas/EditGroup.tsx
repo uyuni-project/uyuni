@@ -4,10 +4,12 @@ import {
   ElementDefinition,
   generateFormulaComponent,
   generateFormulaComponentForId,
+  isFiltered,
 } from "./FormulaComponentGenerator";
 import HelpIcon from "components/utils/HelpIcon";
 import "./formula-form.css";
 import SectionToggle from "./SectionToggle";
+import { Highlight } from "components/table/Highlight";
 
 const EditGroupSubtype = Formulas.EditGroupSubtype;
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
@@ -26,6 +28,7 @@ type EditGroupProps = {
   sectionsExpanded: string;
   setSectionsExpanded: (string) => void;
   isVisibleByCriteria?: any;
+  criteria: string;
 };
 
 type EditGroupState = {
@@ -117,7 +120,9 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
         >
           <div className="group-heading">
             <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
-              <h4>{this.props.element.$name}</h4>
+              <h4>
+                <Highlight enabled={isFiltered(this.props.criteria)} text={this.props.element.$name} highlight={this.props.criteria} />
+              </h4>
             </SectionToggle>
             <i
               className="fa fa-plus"
