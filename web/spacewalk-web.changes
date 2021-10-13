@@ -1,3 +1,4 @@
+- Provide a search box on section name for Formulas content
 - Add expand/collapse all button for formula sections
 - Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
   to default rhn_web.conf
