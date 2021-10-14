@@ -951,42 +951,42 @@
       </trans-unit>
       <trans-unit id="Relevant" xml:space="preserve">
         <source>Relevant</source>
-        <target/>
+        <target>Relevantné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reviews" xml:space="preserve">
         <source>Reviews</source>
-        <target/>
+        <target>Prehľady</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="request" xml:space="preserve">
         <source>Request</source>
-        <target/>
+        <target>Požiadavka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Schedule" xml:space="preserve">
         <source>Schedule</source>
-        <target/>
+        <target>Plán</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Scout Config Push" xml:space="preserve">
         <source>Scout Config Push</source>
-        <target/>
+        <target>Postúpenie konfigurácie skauta</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Search" xml:space="preserve">
         <source>Search</source>
-        <target/>
+        <target>Hľadať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -10235,7 +10235,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.ssh-push" xml:space="preserve">
         <source>SSH Server Push</source>
-        <target/>
+        <target>Postúpenie servera SSH</target>
       </trans-unit>
       <trans-unit id="task.status.cve-server-channels" xml:space="preserve">
         <source>CVE Server Channels</source>
@@ -10275,7 +10275,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
-        <target/>
+        <target>Spravuje klientov cez postúpenie servera SSH</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch" xml:space="preserve">
         <source>Generates data required for performing CVE audit queries</source>
@@ -10307,11 +10307,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="server.contact-method.ssh-push" xml:space="preserve">
         <source>Push via SSH</source>
-        <target/>
+        <target>Postúpiť cez SSH</target>
       </trans-unit>
       <trans-unit id="server.contact-method.ssh-push-tunnel" xml:space="preserve">
         <source>Push via SSH tunnel</source>
-        <target/>
+        <target>Postúpiť cez tunel SSH</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.title" xml:space="preserve">
         <source>Content Lifecycle</source>
