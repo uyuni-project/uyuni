@@ -79,7 +79,11 @@ module.exports = (env, argv) => {
             test: /\.(ts|js)x?$/,
             exclude: /node_modules/,
             use: {
-              loader: "babel-loader",
+              loader: "esbuild-loader",
+              options: {
+                loader: "tsx",
+                target: "es2015",
+              },
             },
           },
           {
