@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-28 11:27+0200\n"
-"PO-Revision-Date: 2021-08-23 04:11+0000\n"
+"PO-Revision-Date: 2021-10-14 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -429,31 +429,31 @@ msgstr "{0} / {1}페이지"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:47
 msgid "Sunday"
-msgstr ""
+msgstr "일요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:48
 msgid "Monday"
-msgstr ""
+msgstr "월요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Tuesday"
-msgstr ""
+msgstr "화요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:50
 msgid "Wednesday"
-msgstr ""
+msgstr "수요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:51
 msgid "Thursday"
-msgstr ""
+msgstr "목요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:52
 msgid "Friday"
-msgstr ""
+msgstr "금요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:53
 msgid "Saturday"
-msgstr ""
+msgstr "토요일"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:323
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
@@ -2114,7 +2114,7 @@ msgstr "SUSE 제품 기반 라이브 패치"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "AppStream modules with defaults"
-msgstr ""
+msgstr "기본값이 있는 앱 스트림 모듈"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:45
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
@@ -3726,11 +3726,11 @@ msgstr "인벤토리 경로"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
 msgid "Flush Ansible fact cache"
-msgstr ""
+msgstr "Ansible 팩트 캐시 플러시"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
 msgid "Clear the fact cache for every host in inventory"
-msgstr ""
+msgstr "인벤토리의 모든 호스트에 대한 팩트 캐시 지우기"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
@@ -4290,7 +4290,7 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {0}. The scheduled "
 "time will be the server time."
-msgstr ""
+msgstr "아래 시간은 서버 시간대 {0}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
 
 #: ../html/src/manager/state/recurring-states-utils.tsx:4
 msgid "Minion"
@@ -4313,13 +4313,12 @@ msgid "Base Channel:"
 msgstr "기본 채널:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:123
-#, fuzzy
 msgid "${defaultChannelName}"
-msgstr "채널 이름"
+msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:130
 msgid "${this.getDefaultBase().name}"
-msgstr ""
+msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:137
 msgid "Child Channels:"
