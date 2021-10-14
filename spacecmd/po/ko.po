@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-28 11:27+0200\n"
-"PO-Revision-Date: 2021-08-23 04:11+0000\n"
+"PO-Revision-Date: 2021-10-14 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4707,68 +4707,57 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "사용법: schedule_list [BEGINDATE] [ENDDATE]"
 
 #: ../src/spacecmd/schedule.py:459
-#, fuzzy
 msgid ""
 "schedule_deletearchived: Delete all archived actions older than given date."
-msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
+msgstr "schedule_deletearchived: 지정된 날짜보다 오래된 보관된 모든 작업을 삭제합니다."
 
 #: ../src/spacecmd/schedule.py:460
-#, fuzzy
 msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
-msgstr "사용법: schedule_deletearchived"
+msgstr "사용법: schedule_deletearchived [yyyymmdd] [옵션]"
 
 #: ../src/spacecmd/schedule.py:461 ../src/spacecmd/schedule.py:520
-#, fuzzy
 msgid ""
 "\n"
 "options:\n"
 "  -y, --yes   Confirm without prompt"
 msgstr ""
-"사용법: repo_clearfilters repo <options>\n"
 "\n"
 "옵션:\n"
-"  -y, --yes   메시지 없이 확인\n"
-"\n"
+"  -y, --yes   메시지 없이 확인"
 
 #: ../src/spacecmd/schedule.py:465
-#, fuzzy
 msgid "If no date is provided it will delete all archived actions"
-msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+msgstr "날짜가 제공되지 않으면 보관된 모든 작업이 삭제됩니다."
 
 #: ../src/spacecmd/schedule.py:492
-#, fuzzy
 msgid "Do you want to delete ({}) archived actions? [y/N]"
-msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+msgstr "보관된 작업({})을 삭제하시겠습니까? [예/아니요]"
 
 #: ../src/spacecmd/schedule.py:512
 msgid "No archived actions found."
 msgstr "보관된 작업을 찾을 수 없습니다."
 
 #: ../src/spacecmd/schedule.py:518
-#, fuzzy
 msgid ""
 "schedule_archivecompleted: Archive all completed actions older than given "
 "date."
-msgstr "schedule_listcompleted: 완료된 작업 나열"
+msgstr "schedule_listcompleted: 지정된 날짜보다 오래된 완료된 모든 작업을 보관합니다."
 
 #: ../src/spacecmd/schedule.py:519
-#, fuzzy
 msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
-msgstr "사용법: schedule_listcompleted [BEGINDATE] [ENDDATE]"
+msgstr "사용법: schedule_archivecompleted [yyyymmdd] [옵션]"
 
 #: ../src/spacecmd/schedule.py:524
 msgid "If no date is provided it will archive all completed actions"
-msgstr ""
+msgstr "날짜가 제공되지 않으면 완료된 모든 작업을 보관합니다."
 
 #: ../src/spacecmd/schedule.py:551
-#, fuzzy
 msgid "Do you want to archive ({}) completed actions? [y/N]"
-msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+msgstr "완료된 작업({})을 보관하시겠습니까? [예/아니요]"
 
 #: ../src/spacecmd/schedule.py:571
-#, fuzzy
 msgid "No completed actions found."
-msgstr "보관된 작업을 찾을 수 없습니다."
+msgstr "완료된 작업을 찾을 수 없습니다."
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
