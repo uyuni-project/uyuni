@@ -1,17 +1,23 @@
 node_exporter:
-  cmd.run:
-    - name: /usr/bin/rpm --query --info golang-github-prometheus-node_exporter
+  pkg.installed:
+    - name: golang-github-prometheus-node_exporter
 
 node_exporter_service:
   service.running:
     - name: prometheus-node_exporter
     - enable: True
     - require:
-      - cmd: node_exporter
+      - pkg: node_exporter
 
+{% set global = namespace(has_pillar_data = True) %}
+{% for key in ['db_name', 'db_host', 'db_port', 'db_user', 'db_pass'] if global.has_pillar_data %}
+  {% set global.has_pillar_data = key in pillar and pillar[key] %}
+{% endfor %}
+
+{% if global.has_pillar_data %}
 postgres_exporter:
-  cmd.run:
-    - name: /usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter
+  pkg.installed:
+    - name: golang-github-wrouesnel-postgres_exporter
 
 postgres_exporter_configuration:
   file.managed:
@@ -32,7 +38,7 @@ postgres_exporter_service:
     - group: root
     - mode: 644
     - require:
-      - cmd: postgres_exporter
+      - pkg: postgres_exporter
       - file: postgres_exporter_configuration
   service.running:
     - name: prometheus-postgres_exporter
@@ -41,58 +47,79 @@ postgres_exporter_service:
       - file: postgres_exporter_service
     - watch:
       - file: postgres_exporter_configuration
+{% endif %}
 
 jmx_exporter:
-  cmd.run:
-    - name: /usr/bin/rpm --query --info prometheus-jmx_exporter prometheus-jmx_exporter-tomcat
+  pkg.installed:
+    - name: prometheus-jmx_exporter
 
-{% set remove_javaagent_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
-{%- include 'srvmonitoring/removejavaagentprops.sls' %}
+jmx_exporter_tomcat:
+  pkg.removed:
+    - name: prometheus-jmx_exporter-tomcat
+
+{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
+{% include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_exporter_tomcat_yaml_config:
   file.managed:
-    - name: /etc/prometheus-jmx_exporter/tomcat/uyuni.yml
+    - name: /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
-    - contents: |
-        whitelistObjectNames:
-          - java.lang:type=Threading,*
-          - java.lang:type=Memory,*
-          - Catalina:type=ThreadPool,name=*
-        rules:
-        - pattern: ".*"
+    - source:
+      - salt://srvmonitoring/java_agent.yaml
 
 jmx_tomcat_config:
-  cmd.run:
-    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=5556:\/etc\/prometheus-jmx_exporter\/tomcat\/uyuni.yml"/' /etc/sysconfig/tomcat
-    - require:
-      - cmd: remove_tomcat_javaagent
+  file.managed:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: 644
+    - source:
+      - salt://srvmonitoring/tomcat_jmx.conf
 
-{% set remove_javaagent_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
-{%- include 'srvmonitoring/removejavaagentprops.sls' %}
+jmx_exporter_tomcat_service:
+  service.dead:
+    - name: prometheus-jmx_exporter@tomcat
+    - enable: False
+
+jmx_exporter_taskomatic_systemd_config:
+  file.absent:
+    - name: /etc/prometheus-jmx_exporter/taskomatic/environment
+
+{% set remove_jmx_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
+{%- include 'srvmonitoring/removejmxprops.sls' %}
+
+jmx_exporter_taskomatic_yaml_config_old:
+  file.absent:
+    - name: /etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml
 
 jmx_exporter_taskomatic_yaml_config:
   file.managed:
-    - name: /etc/prometheus-jmx_exporter/taskomatic/uyuni.yml
+    - name: /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
-    - contents: |
-        whitelistObjectNames:
-          - java.lang:type=Threading,*
-          - java.lang:type=Memory,*
-          - Catalina:type=ThreadPool,name=*
-        rules:
-        - pattern: ".*"
+    - source:
+      - salt://srvmonitoring/java_agent.yaml
 
 jmx_taskomatic_config:
-  cmd.run:
-    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=5557:\/etc\/prometheus-jmx_exporter\/taskomatic\/prometheus-jmx_exporter.yml"/' /etc/rhn/taskomatic.conf
-    - require:
-      - cmd: remove_taskomatic_javaagent
+  file.managed:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: 644
+    - source:
+      - salt://srvmonitoring/taskomatic_jmx.conf
+
+jmx_exporter_taskomatic_service:
+  service.dead:
+    - name: prometheus-jmx_exporter@taskomatic
+    - enable: False
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

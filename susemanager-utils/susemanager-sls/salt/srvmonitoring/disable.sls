@@ -8,23 +8,13 @@ postgres_exporter_service:
     - name: prometheus-postgres_exporter
     - enable: False
 
-{% set remove_javaagent_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
-{%- include 'srvmonitoring/removejavaagentprops.sls' %}
-
 jmx_tomcat_config:
-  cmd.run:
-    - name: grep -q -v -- 'jmx_prometheus_javaagent.jar' /etc/sysconfig/tomcat
-    - require:
-      - cmd: remove_tomcat_javaagent
-
-{% set remove_javaagent_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
-{%- include 'srvmonitoring/removejavaagentprops.sls' %}
+  file.absent:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 
 jmx_taskomatic_config:
-  cmd.run:
-    - name: grep -q -v -- 'jmx_prometheus_javaagent.jar' /etc/rhn/taskomatic.conf
-    - require:
-      - cmd: remove_taskomatic_javaagent
+  file.absent:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

@@ -36,6 +36,7 @@ License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
+Requires(posttrans): spacewalk-admin
 Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
 BuildRequires:  python3-mock
@@ -141,49 +142,12 @@ base:
 EOF
     fi
 fi
+
+%posttrans
 # Run JMX exporter as Java Agent (bsc#1184617)
-set_up_java_agent()
-{
-  JMXREMOTE_OPT='-Dcom\.sun\.management\.jmxremote\.'
-  RMI_SERVER_HOSTNAME='-Djava\.rmi\.server\.hostname='
-  JMX_EXPORTER_JAVA_AGENT='jmx_prometheus_javaagent.jar'
-  service_name='prometheus-jmx_exporter@'${1}'.service'
-  systemctl is-enabled $service_name > /dev/null 2>&1
-  jmx_exporter_enabled=$?
-  grep -q -- $JMXREMOTE_OPT ${2}
-  jmxremote_opt_configured=$?
-  grep -q -- $JMX_EXPORTER_JAVA_AGENT ${2}
-  jmx_exporter_java_agent_configured=$?
-  if [ $jmx_exporter_enabled -eq 0 ]; then
-    systemctl disable $service_name
-    if [ $jmxremote_opt_configured -eq 0 ]; then
-      sed -ri "s/[[:blank:]]*${JMXREMOTE_OPT}[[:alpha:]]+=[[:alnum:]]+//g" ${2}
-      sed -ri "s/[[:blank:]]*${RMI_SERVER_HOSTNAME}[[:alpha:]]+//g" ${2}
-      if [ $jmx_exporter_java_agent_configured -eq 1 ]; then
-        sed -ri "s/JAVA_OPTS=\"(.*)\"/JAVA_OPTS=\"\1\ -javaagent:\/usr\/share\/java\/jmx_prometheus_javaagent.jar=${3}:\/etc\/prometheus-jmx_exporter\/${1}\/uyuni.yml\"/" ${2}
-      fi
-    fi
-    if [ ! -f /etc/prometheus-jmx_exporter/${1}/uyuni.yml ]; then
-      cat > /etc/prometheus-jmx_exporter/${1}/uyuni.yml << EOF
-whitelistObjectNames:
-  - java.lang:type=Threading,*
-  - java.lang:type=Memory,*
-  - Catalina:type=ThreadPool,name=*
-rules:
-  - pattern: ".*"
-EOF
-    fi
-  fi
-}
-tomcat_config=/etc/sysconfig/tomcat
-tomcat_jmx_exporter_port=5556
-taskomatic_config=/etc/rhn/taskomatic.conf
-taskomatic_jmx_exporter_port=5557
-if [ $1 -gt 1 ] && [ -e $tomcat_config ]; then
-  set_up_java_agent tomcat $tomcat_config $tomcat_jmx_exporter_port
-fi
-if [ $1 -gt 1 ] && [ -e $taskomatic_config ]; then
-  set_up_java_agent taskomatic $taskomatic_config $taskomatic_jmx_exporter_port
+grep -q 'prometheus_monitoring_enabled\s*=\s*1\s*$' /etc/rhn/rhn.conf
+if [[ $? == 0 ]]; then
+  /usr/sbin/mgr-monitoring-ctl enable
 fi
 
 %files

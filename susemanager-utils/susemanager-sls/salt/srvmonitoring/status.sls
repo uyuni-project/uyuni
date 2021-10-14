@@ -11,13 +11,13 @@ postgres_exporter_service:
 jmx_tomcat_java_config:
   mgrcompat.module_run:
     - name: file.search
-    - path: /etc/sysconfig/tomcat
+    - path: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
     - pattern: "jmx_prometheus_javaagent.jar=5556"
 
 jmx_taskomatic_java_config:
   mgrcompat.module_run:
     - name: file.search
-    - path: /etc/rhn/taskomatic.conf
+    - path: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
     - pattern: "jmx_prometheus_javaagent.jar=5557"
 
 mgr_is_prometheus_self_monitoring_enabled:

@@ -11,4 +11,4 @@ TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INI
 TASKO_CLASSPATH="${TASKO_RHN_CLASSPATH}:${TASKO_RHN_JARS}:${TASKO_JARS}"
 
 # options sourced from /usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf (do not touch). Add additional options to /etc/rhn/taskomatic.conf
-/usr/bin/java -Djava.library.path=${TASKO_LIBRARY_PATH} -classpath ${TASKO_CLASSPATH} ${TASKO_PARAMS} ${JAVA_OPTS} com.redhat.rhn.taskomatic.core.TaskomaticDaemon
+/usr/bin/java -Djava.library.path=${TASKO_LIBRARY_PATH} -classpath ${TASKO_CLASSPATH} ${TASKO_PARAMS} ${JAVA_OPTS} ${JAVA_AGENT} com.redhat.rhn.taskomatic.core.TaskomaticDaemon
