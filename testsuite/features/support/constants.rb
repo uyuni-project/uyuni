@@ -141,7 +141,8 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian9_minion' => 'bison',
                       'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
-                      'debian10_ssh_minion' => 'bison' }.freeze
+                      'debian10_ssh_minion' => 'bison',
+                      'opensuse153arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
                            'sle_client' => 'SLES12-SP4-Pool',
@@ -188,7 +189,8 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
                            'debian9_minion' => 'debian-9-pool',
                            'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
-                           'debian10_ssh_minion' => 'debian-10-pool' }.freeze
+                           'debian10_ssh_minion' => 'debian-10-pool',
+                           'opensuse15sp3arm_minion' => 'repo-15.3-oss' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
                           'SLES11-SP3-Pool' => 'sles11-sp3-pool-i586',
@@ -204,7 +206,8 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-prod
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
-                          'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
+                          'debian-10-pool' => 'debian-10-pool-amd64',
+                          'repo-15.3-oss' => 'repo-15.3-oss-aarch64' }.freeze
 
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'SUMA-41-PROXY-x86_64',
                                     'SLES11-SP3-Pool' => 'SLE-11-SP3-i586',
@@ -220,7 +223,8 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' =>
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'debian-9-pool' => 'debian9-amd64',
-                                    'debian-10-pool' => 'debian10-amd64' }.freeze
+                                    'debian-10-pool' => 'debian10-amd64',
+                                    'repo-15.3-oss' => 'repo-15.3-oss-aarch64' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
                                            'SLES11-SP3-Pool' => nil,
@@ -236,7 +240,8 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-P
                                            'ubuntu-18.04-pool' => nil,
                                            'ubuntu-2004-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
-                                           'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
+                                           'debian-10-pool' => 'debian-10-pool-amd64',
+                                           'repo-15.3-oss' => nil }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
@@ -277,7 +282,8 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian9_minion' => 'amd64',
                       'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
-                      'debian10_ssh_minion' => 'amd64' }.freeze
+                      'debian10_ssh_minion' => 'amd64',
+                      'opensuse15sp3arm_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   '12-SP4' =>

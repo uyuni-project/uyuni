@@ -123,8 +123,8 @@ When(/^I use spacewalk\-channel to list available channels$/) do
   $command_output, _code = $client.run(command)
 end
 
-When(/^I use spacewalk\-common\-channel to add Debian channel "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-common-channels -u admin -p admin -a amd64-deb #{child_channel}"
+When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
+  command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = $server.run(command)
 end
 

@@ -75,6 +75,7 @@ if $build_validation
   $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
+  $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
@@ -90,7 +91,8 @@ if $build_validation
              $debian10_minion, $debian10_ssh_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp5_buildhost, $sle12sp5_terminal,
-             $sle15sp3_buildhost, $sle15sp3_terminal]
+             $sle15sp3_buildhost, $sle15sp3_terminal,
+             $opensuse153arm_minion]
 else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
@@ -263,7 +265,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle12sp4_buildhost'        => $sle12sp4_buildhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
-                  'sle15sp3_terminal'         => $sle15sp3_terminal }
+                  'sle15sp3_terminal'         => $sle15sp3_terminal,
+                  'opensuse153arm_minion'     => $opensuse153arm_minion }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}

@@ -1,6 +1,8 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle11sp3_terminal
+@sle11sp4_buildhost
 Feature: Prepare prerequisities for SLE11 SP3 terminal deployment
 
   Scenario: Prepare activation keys for SLE11 retail systems
