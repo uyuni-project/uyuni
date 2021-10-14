@@ -11053,10 +11053,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">仮想ドメインの移行</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
+      <trans-unit id="contentmanagement.invalid_template" xml:space="preserve" approved="yes">
         <source>Invalid filter template</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="final">フィルタテンプレートが無効です</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
