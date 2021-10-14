@@ -12410,12 +12410,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target state="final">以下では、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。  キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。
-このセクションではネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。
-キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。
+        <target state="final">以下では、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。  キックスタートのプレスクリプトはシステムで
+キックスタートファイルの構文解析が終了次第、実行されます。このセクションではネットワークにアクセスすることができますが、
+IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。キックスタートのプレスクリプトに関する詳細は、
+&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。
 &lt;br/&gt;&lt;br/&gt;
 以下では、このキックスタートのポストスクリプトも編集することができます。  最初に @@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。
-次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。  キックスタートのポストスクリプトに関する詳細は、 &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
+次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。  キックスタートのポストスクリプトに関する詳細は、 
+&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.langheader" xml:space="preserve">
         <source>Kickstart Script Scripting Language</source>
@@ -17501,7 +17503,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -17509,7 +17511,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>最終変更</target>
       </trans-unit>
@@ -17538,7 +17540,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>このチャンネルをサブスクライブしていて配備可能なシステムはありません</target>
       </trans-unit>
@@ -17546,7 +17548,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -17554,7 +17556,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17562,7 +17564,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -17570,7 +17572,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -17578,7 +17580,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
@@ -17586,7 +17588,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">以下の一覧から配備したいファイルを選択することができます。  選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -17594,7 +17596,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17602,7 +17604,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -17610,7 +17612,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -17618,7 +17620,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -17626,7 +17628,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりも順位が低くなる場合、この上書きや最上位のファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -21975,8 +21977,9 @@ Base Channel chosen on the
         <target state="final">以下でパッケージプロファイルを選択することで、キックスタートしているシステムを
 @@PRODUCT_NAME@@ に登録しているシステムのパッケージプロファイルと
 同期することができます。  &lt;strong&gt;注記&lt;/strong&gt;: この一覧では、
-&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;オペレーティングシステム&lt;/a&gt; ページで選択された、
-同じベースチャンネルに対して作成されたパッケージプロファイルのみが表示されます。</target>
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt; オペレーティングシステム
+Base Channel chosen on the 
+&lt;/a&gt; ページで選択された、同じベースチャンネルに対して作成されたパッケージプロファイルのみが表示されます。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
@@ -29777,53 +29780,53 @@ given channel.</source>
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
         <target state="final">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
       </trans-unit>
-    <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
+      <trans-unit id="appstream.jsp.nomodules" xml:space="preserve" approved="yes">
         <source>No Modules</source>
-	<context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
 	</context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="appstream.jsp.streamname" xml:space="preserve">
+        <target state="final">モジュールなし</target>
+      </trans-unit>
+      <trans-unit id="appstream.jsp.streamname" xml:space="preserve" approved="yes">
         <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="appstream.jsp.modulename" xml:space="preserve">
+        <target state="final">ストリーム名(存在する場合は &lt;span class="ラベルlabel-primary"&gt; Default &lt;/span&gt;,)</target>
+      </trans-unit>
+      <trans-unit id="appstream.jsp.modulename" xml:space="preserve" approved="yes">
         <source>Module Name</source>
-         <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-    <target state="new" />
-  </trans-unit>
-      <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
+        <target state="final">モジュール名</target>
+      </trans-unit>
+      <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve" approved="yes">
           <source>Optional OVAL Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
-        <target state="new" />
-  </trans-unit>
-        <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
+        <target state="final">オプションのOVALファイル</target>
+      </trans-unit>
+      <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.create_clm_filter" xml:space="preserve">
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.create_clm_filter" xml:space="preserve" approved="yes">
         <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
+        <target state="final">&lt;abbr title="コンテンツライフサイクル管理"&gt;CLM&lt;/abbr&gt;のライブパッチ適用フィルタを作成します。</target>
+      </trans-unit>
+      <trans-unit id="channel.jsp.appstreams" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="final">AppStream</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
