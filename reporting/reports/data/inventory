@@ -53,21 +53,24 @@ sql:
 		entitlements, system_group, organization, virtual_host, architecture, is_virtualized, virt_type, osad_status, hardware,
 		minion_id, machine_id
 	from (
-	select rhnserver.id as server_id, rhnserver.name as profile_name,
-		rhnserver.hostname, suseminioninfo.minion_id, trim(ipaddr) as ip_address,
+	select servers_data.*,
+	rhnchannel.name as software_channel,
+	rhnchannel.parent_channel as parent_channel,
+	rhnchannel.id as channel_id,
+	COALESCE(update_data.packages_out_of_date, 0) as packages_out_of_date,
+	COALESCE(update_data.errata_out_of_date, 0) as errata_out_of_date
+	from
+	(select rhnserver.id as server_id,
+		rhnserver.name as profile_name,
+		rhnserver.hostname,
+		(select minion_id from suseMinionInfo where rhnserver.id = suseMinionInfo.server_id) as minion_id,
+		trim(ipaddr) as ip_address,
 		trim(ip6addr) as ipv6_address,
 		rhnserver.machine_id,
 		( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
 		to_char(rhnserver.created, 'YYYY-MM-DD HH24:MI:SS') as registration_time,
 		( select to_char(checkin, 'YYYY-MM-DD HH24:MI:SS') from rhnserverinfo where rhnserver.id = server_id ) as last_checkin_time,
 		running_kernel as kernel_version,
-		( select count(distinct rhnpackage.name_id) from rhnpackage, rhnServerNeededCache
-			where rhnserver.id = rhnServerNeededCache.server_id
-				and rhnServerNeededCache.package_id = rhnpackage.id ) as packages_out_of_date,
-		( select count(*) from rhnServerNeededCache where rhnserver.id = server_id and errata_id is not null) as errata_out_of_date,
-		rhnchannel.name as software_channel,
-		rhnchannel.parent_channel as parent_channel,
-		rhnchannel.id as channel_id,
 		rhnconfigchannel.name as configuration_channel,
 		rhnconfigchannel.id as configuration_channel_id,
 		entitlement_data.name as entitlements,
@@ -102,10 +105,6 @@ sql:
 			)
 		) netinfos
 		on rhnserver.id = netinfos.server_id
-		left outer join rhnserverchannel
-		on rhnserver.id = rhnserverchannel.server_id
-		left outer join rhnchannel
-		on rhnserverchannel.channel_id = rhnchannel.id
 		left outer join rhnserverconfigchannel
 		on rhnserver.id = rhnserverconfigchannel.server_id
 		left outer join rhnconfigchannel
@@ -133,8 +132,17 @@ sql:
 		where host_system_id is not null
 		) virtual_data
 		on rhnserver.id = virtual_data.virtual_system_id
-		left outer join suseMinionInfo
-		on rhnserver.id = suseMinionInfo.server_id
+		) servers_data
+		left outer join rhnserverchannel
+			on servers_data.server_id = rhnserverchannel.server_id
+		left outer join rhnchannel
+			on rhnserverchannel.channel_id = rhnchannel.id
+		left join (select rhnServerNeededCache.server_id,
+					count(distinct rhnpackage.name_id) as packages_out_of_date,
+					count(rhnServerNeededCache.errata_id) as errata_out_of_date
+				from rhnpackage, rhnServerNeededCache
+				where rhnServerNeededCache.package_id = rhnpackage.id
+				group by rhnServerNeededCache.server_id) update_data on update_data.server_id = servers_data.server_id
 	) X
 	-- where placeholder
 	order by server_id, parent_channel nulls first, channel_id,
