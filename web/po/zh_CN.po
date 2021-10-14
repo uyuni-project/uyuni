@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-28 11:27+0200\n"
-"PO-Revision-Date: 2021-08-20 05:12+0000\n"
+"PO-Revision-Date: 2021-10-14 04:11+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -424,31 +424,31 @@ msgstr "第 {0} 页，共 {1} 页"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:47
 msgid "Sunday"
-msgstr ""
+msgstr "星期日"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:48
 msgid "Monday"
-msgstr ""
+msgstr "星期一"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Tuesday"
-msgstr ""
+msgstr "星期二"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:50
 msgid "Wednesday"
-msgstr ""
+msgstr "星期三"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:51
 msgid "Thursday"
-msgstr ""
+msgstr "星期四"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:52
 msgid "Friday"
-msgstr ""
+msgstr "星期五"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:53
 msgid "Saturday"
-msgstr ""
+msgstr "星期六"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:323
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
@@ -2070,7 +2070,7 @@ msgstr "根据 SUSE 产品在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "AppStream modules with defaults"
-msgstr ""
+msgstr "含默认值的 AppStream 模块"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:45
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
@@ -3658,11 +3658,11 @@ msgstr "库存路径"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
 msgid "Flush Ansible fact cache"
-msgstr ""
+msgstr "刷新 Ansible 事实缓存"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
 msgid "Clear the fact cache for every host in inventory"
-msgstr ""
+msgstr "为正在库存的每个主机清除事实缓存"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
@@ -4217,7 +4217,7 @@ msgstr "删除操作时出错。请检查 Taskomatic 是否正在运行"
 msgid ""
 "The below times are displayed in the server time zone {0}. The scheduled "
 "time will be the server time."
-msgstr ""
+msgstr "服务器时区 {0} 中会显示以下时间。安排的时间将会是服务器时间。"
 
 #: ../html/src/manager/state/recurring-states-utils.tsx:4
 msgid "Minion"
@@ -4240,13 +4240,12 @@ msgid "Base Channel:"
 msgstr "基础频道："
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:123
-#, fuzzy
 msgid "${defaultChannelName}"
-msgstr "频道名称"
+msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:130
 msgid "${this.getDefaultBase().name}"
-msgstr ""
+msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:137
 msgid "Child Channels:"
