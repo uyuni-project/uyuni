@@ -881,70 +881,70 @@
       </trans-unit>
       <trans-unit id="Proxy Guide" xml:space="preserve">
         <source>Proxy Quick Start</source>
-        <target/>
+        <target>Rýchly štart Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Proxy" xml:space="preserve">
         <source>Proxy</source>
-        <target/>
+        <target>Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
-        <target/>
+        <target>Proxy @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
-        <target/>
+        <target>Server @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Published" xml:space="preserve">
         <source>Published</source>
-        <target/>
+        <target>Publikované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscription Management" xml:space="preserve">
         <source>Subscription Management</source>
-        <target/>
+        <target>Správa predplatného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Organization Trusts" xml:space="preserve">
         <source>Organization Trusts</source>
-        <target/>
+        <target>Dôveryhodnosti organizácií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Quota" xml:space="preserve">
         <source>Quota</source>
-        <target/>
+        <target>Kvóta</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reference Guide" xml:space="preserve">
         <source>Reference Guide</source>
-        <target/>
+        <target>Referenčná príručka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Release Notes" xml:space="preserve">
         <source>Release Notes</source>
-        <target/>
+        <target>Poznámky k vydaniu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
