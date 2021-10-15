@@ -12410,14 +12410,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target state="final">以下では、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。  キックスタートのプレスクリプトはシステムで
-キックスタートファイルの構文解析が終了次第、実行されます。このセクションではネットワークにアクセスすることができますが、
-IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。キックスタートのプレスクリプトに関する詳細は、
-&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。
+        <target state="final">以下では、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。  キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。
+このセクションではネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。
+キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。
 &lt;br/&gt;&lt;br/&gt;
 以下では、このキックスタートのポストスクリプトも編集することができます。  最初に @@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。
-次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。  キックスタートのポストスクリプトに関する詳細は、 
-&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
+次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。  キックスタートのポストスクリプトに関する詳細は、 &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.langheader" xml:space="preserve">
         <source>Kickstart Script Scripting Language</source>
@@ -21977,9 +21975,8 @@ Base Channel chosen on the
         <target state="final">以下でパッケージプロファイルを選択することで、キックスタートしているシステムを
 @@PRODUCT_NAME@@ に登録しているシステムのパッケージプロファイルと
 同期することができます。  &lt;strong&gt;注記&lt;/strong&gt;: この一覧では、
-&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt; オペレーティングシステム
-Base Channel chosen on the 
-&lt;/a&gt; ページで選択された、同じベースチャンネルに対して作成されたパッケージプロファイルのみが表示されます。</target>
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;オペレーティングシステム&lt;/a&gt; ページで選択された、
+同じベースチャンネルに対して作成されたパッケージプロファイルのみが表示されます。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
@@ -29793,7 +29790,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-        <target state="final">ストリーム名(存在する場合は &lt;span class="ラベルlabel-primary"&gt; Default &lt;/span&gt;,)</target>
+        <target state="final">ストリーム名(存在する場合は&lt;span class="label label-primary"&gt;デフォルト&lt;/span&gt;)</target>
       </trans-unit>
       <trans-unit id="appstream.jsp.modulename" xml:space="preserve" approved="yes">
         <source>Module Name</source>
@@ -29821,7 +29818,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">&lt;abbr title="コンテンツライフサイクル管理"&gt;CLM&lt;/abbr&gt;のライブパッチ適用フィルタを作成します。</target>
+        <target state="final">&lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;のライブパッチ適用フィルタの作成</target>
       </trans-unit>
       <trans-unit id="channel.jsp.appstreams" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
