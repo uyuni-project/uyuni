@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.clusters.ClusterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.utils.Maps;
 import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
@@ -41,7 +42,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -552,7 +552,7 @@ public class FormulaFactory {
                     .findFirst();
 
             return formulaKey.map(key ->
-                    getValueByPath(data, "mgr_clusters:" + cluster.getLabel() + ":" + key)
+                    Maps.getValueByPath(data, "mgr_clusters:" + cluster.getLabel() + ":" + key)
                             .filter(Map.class::isInstance)
                             .map(o -> (Map<String, Object>)o)
                             .orElse(null))
@@ -600,7 +600,7 @@ public class FormulaFactory {
      */
     public static Optional<String> getClusterProviderFormulaName(String clusterProvider, String formulaKey) {
         Map<String, Object> metadata = getClusterProviderMetadata(clusterProvider);
-        return getValueByPath(metadata, "formulas:" + formulaKey)
+        return Maps.getValueByPath(metadata, "formulas:" + formulaKey)
                 .filter(Map.class::isInstance)
                 .map(Map.class::cast)
                 .filter(data -> !"cluster-provider".equals(data.get("source")))
@@ -1055,7 +1055,7 @@ public class FormulaFactory {
      */
     public static <T> Optional<T> getClusterProviderMetadata(String provider, String key, Class<T> keyType) {
         Map<String, Object> metadata = FormulaFactory.getClusterProviderMetadata(provider);
-        return FormulaFactory.getValueByPath(metadata, key)
+        return Maps.getValueByPath(metadata, key)
                 .filter(keyType::isInstance)
                 .map(keyType::cast);
     }
@@ -1068,11 +1068,11 @@ public class FormulaFactory {
      */
     public static Optional<Map<String, Object>> getClusterProviderFormulaLayout(String provider, String formulaKey) {
         Map<String, Object> metadata = getClusterProviderMetadata(provider);
-        Optional<String> formulaName = getValueByPath(metadata, "formulas:" + formulaKey + ":name")
+        Optional<String> formulaName = Maps.getValueByPath(metadata, "formulas:" + formulaKey + ":name")
                 .filter(String.class::isInstance)
                 .map(String.class::cast);
 
-        String formulaSource = getValueByPath(metadata, "formulas:" + formulaKey + ":source")
+        String formulaSource = Maps.getValueByPath(metadata, "formulas:" + formulaKey + ":source")
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .orElse("system");
@@ -1124,36 +1124,6 @@ public class FormulaFactory {
                 .orElse(false);
     }
 
-
-    /**
-     * Get the value from a nested map structure by a colon separated path.
-     * E.g. key1:key2:key3 for a map with a depth of 3.
-     * @param data the nested map
-     * @param path the path
-     * @return a value if available
-     */
-    public static Optional<Object> getValueByPath(Map<String, Object> data, String path) {
-        String[] tokens = StringUtils.split(path, ":");
-        Map<String, Object> current = data;
-        for (int i = 0; i < tokens.length; i++) {
-            String token = tokens[i];
-            Object val = current.get(token);
-            if (i == tokens.length - 1) {
-                return Optional.ofNullable(val);
-            }
-            if (val == null) {
-                return Optional.empty();
-            }
-            if (val instanceof Map) {
-                current = (Map<String, Object>)val;
-            }
-            else {
-                return Optional.empty();
-            }
-        }
-        return Optional.empty();
-    }
-
     /**
      * Get all installed cluster providers.
      * @return a list containing the metadata of all installed cluster providers
@@ -1191,21 +1161,21 @@ public class FormulaFactory {
     private static List<EndpointInfo> getExportersEndpoints(FormulaData formulaData) {
         Map<String, Object> formulaValues = formulaData.getFormulaValues();
         if (formulaValues.containsKey("exporters")) {
-            Boolean proxyEnabled = getValueByPath(formulaValues, "proxy_enabled")
+            Boolean proxyEnabled = Maps.getValueByPath(formulaValues, "proxy_enabled")
                     .filter(Boolean.class::isInstance)
                     .map(Boolean.class::cast)
                     .orElse(false);
-            Optional<Integer> proxyPort = proxyEnabled ? getValueByPath(formulaValues, "proxy_port")
+            Optional<Integer> proxyPort = proxyEnabled ? Maps.getValueByPath(formulaValues, "proxy_port")
                     .filter(Number.class::isInstance)
                     .map(Number.class::cast)
                     .map(Number::intValue) : Optional.empty();
             String proxyPath = proxyEnabled ? "/proxy" : null;
-            Boolean tlsEnabled = getValueByPath(formulaValues, "tls:enabled")
+            Boolean tlsEnabled = Maps.getValueByPath(formulaValues, "tls:enabled")
                     .filter(Boolean.class::isInstance)
                     .map(Boolean.class::cast)
                     .orElse(false);
 
-            Map<String, Object> exportersMap = getValueByPath(formulaValues, "exporters")
+            Map<String, Object> exportersMap = Maps.getValueByPath(formulaValues, "exporters")
                     .filter(Map.class::isInstance)
                     .map(Map.class::cast)
                     .orElseGet(Collections::emptyMap);
