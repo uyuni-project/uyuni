@@ -959,7 +959,7 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
 
-When(/^I enter URI, username and password for portus$/) do
+When(/^I enter URI, username and password for registry$/) do
   auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
     When I enter "#{$auth_registry}" as "uri"
