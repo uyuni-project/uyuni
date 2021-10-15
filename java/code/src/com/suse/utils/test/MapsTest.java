@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.formula.test;
+package com.suse.utils.test;
 
-import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.suse.utils.Maps;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -24,12 +24,12 @@ import java.util.Optional;
 
 import junit.framework.TestCase;
 
-public class FormulaFactoryTest extends TestCase {
+public class MapsTest extends TestCase {
 
     public void testGetValueByPath() {
         Map<String, Object> map = new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 
-        Optional<Object> val = FormulaFactory.getValueByPath(map, "cluster:management_node:match");
+        Optional<Object> val = Maps.getValueByPath(map, "cluster:management_node:match");
         assertTrue(val.isPresent());
         assertEquals("I@caasp:management_node:true", val.get());
     }
@@ -37,15 +37,13 @@ public class FormulaFactoryTest extends TestCase {
     public void testGetValueByPathWrongPath() {
         Map<String, Object> map = new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 
-        Optional<Object> val = FormulaFactory.getValueByPath(map, "cluster:foo:bar");
+        Optional<Object> val = Maps.getValueByPath(map, "cluster:foo:bar");
         assertTrue(val.isEmpty());
 
-        val = FormulaFactory.getValueByPath(map, "foo:bar");
+        val = Maps.getValueByPath(map, "foo:bar");
         assertTrue(val.isEmpty());
 
-        val = FormulaFactory.getValueByPath(map, ":xxx");
+        val = Maps.getValueByPath(map, ":xxx");
         assertTrue(val.isEmpty());
-
     }
-
 }
