@@ -20,13 +20,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-28 11:27+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-10-15 12:11+0000\n"
+"Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
+"Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>"
+"\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -3727,7 +3730,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:39
 msgid "Package states have been saved."
@@ -4080,7 +4083,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:189
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
-msgstr ""
+msgstr "Organização"
 
 #: ../html/src/manager/state/highstate.tsx:63
 msgid "Action has been successfully added to the "
