@@ -1,3 +1,4 @@
+- Add link to the original vendor advisory in the patch details page
 - fix issue with empty action chains getting deleted too early (bsc#1191377)
 - Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
 - Add additional matchers to package (nevra) filter
