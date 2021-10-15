@@ -1,4 +1,4 @@
-{%- if grains['osmajorrelease'] == 6 %}
+{%- if grains['osrelease']|int == 6 %}
 enable_ca_store:
   cmd.run:
     - name: /usr/bin/update-ca-trust enable
@@ -9,7 +9,7 @@ enable_ca_store:
   file.managed:
     - source:
       - salt://certs/RHN-ORG-TRUSTED-SSL-CERT
-{%- if grains['osmajorrelease'] == 6 %}
+{%- if grains['osrelease']|int == 6 %}
     - require:
       - cmd: enable_ca_store
 {%- endif %}
@@ -19,3 +19,4 @@ update-ca-certificates:
     - runas: root
     - onchanges:
       - file: /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT
+
