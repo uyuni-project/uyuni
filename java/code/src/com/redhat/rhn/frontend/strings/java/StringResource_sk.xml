@@ -993,70 +993,70 @@
       </trans-unit>
       <trans-unit id="Sessions" xml:space="preserve">
         <source>Sessions</source>
-        <target/>
+        <target>Sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sign In" xml:space="preserve">
         <source>Sign In</source>
-        <target/>
+        <target>Prihlásiť sa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Create First User" xml:space="preserve">
         <source>Create First User</source>
-        <target/>
+        <target>Vytvoriť prvého používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Software Channels" xml:space="preserve">
         <source>Software Channels</source>
-        <target/>
+        <target>Softvérové kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
-        <target/>
+        <target>Stav</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Stored Profiles" xml:space="preserve">
         <source>Stored Profiles</source>
-        <target/>
+        <target>Uložené profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscription" xml:space="preserve">
         <source>Subscription</source>
-        <target/>
+        <target>Predplatné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Entitlements" xml:space="preserve">
         <source>System Types</source>
-        <target/>
+        <target>Typy systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Groups" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target>Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Set Manager" xml:space="preserve">
         <source>System Set Manager</source>
-        <target/>
+        <target>Správca sád systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
