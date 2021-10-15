@@ -1,13 +1,13 @@
 node_exporter:
-  pkg.installed:
-    - name: golang-github-prometheus-node_exporter
+  cmd.run:
+    - name: /usr/bin/rpm --query --info golang-github-prometheus-node_exporter
 
 node_exporter_service:
   service.running:
     - name: prometheus-node_exporter
     - enable: True
     - require:
-      - pkg: node_exporter
+      - cmd: node_exporter
 
 {% set global = namespace(has_pillar_data = True) %}
 {% for key in ['db_name', 'db_host', 'db_port', 'db_user', 'db_pass'] if global.has_pillar_data %}
@@ -16,8 +16,8 @@ node_exporter_service:
 
 {% if global.has_pillar_data %}
 postgres_exporter:
-  pkg.installed:
-    - name: golang-github-wrouesnel-postgres_exporter
+  cmd.run:
+    - name: /usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter
 
 postgres_exporter_configuration:
   file.managed:
@@ -38,7 +38,7 @@ postgres_exporter_service:
     - group: root
     - mode: 644
     - require:
-      - pkg: postgres_exporter
+      - cmd: postgres_exporter
       - file: postgres_exporter_configuration
   service.running:
     - name: prometheus-postgres_exporter
@@ -50,12 +50,8 @@ postgres_exporter_service:
 {% endif %}
 
 jmx_exporter:
-  pkg.installed:
-    - name: prometheus-jmx_exporter
-
-jmx_exporter_tomcat:
-  pkg.removed:
-    - name: prometheus-jmx_exporter-tomcat
+  cmd.run:
+    - name: /usr/bin/rpm --query --info prometheus-jmx_exporter
 
 {% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
 {% include 'srvmonitoring/removejmxprops.sls' %}
