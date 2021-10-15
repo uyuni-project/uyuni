@@ -1304,3 +1304,13 @@ When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host
   dest = "/srv/playbooks/"
   target.run("rm -rf #{dest}")
 end
+
+When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  node_id = retrieve_server_id(system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  react_key = @system_api.obtain_reactivation_key(node_id)
+  puts "Reactivation Key: #{react_key}"
+  step %(I enter "#{react_key}" as "reactivationKey")
+end

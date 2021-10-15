@@ -92,4 +92,9 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   def list_empty_system_profiles
     @connection.call('system.listEmptySystemProfiles', @sid)
   end
+
+  # Obtain Reactivation Key
+  def obtain_reactivation_key(server)
+    @connection.call('system.obtainReactivationKey', @sid, server)
+  end
 end
