@@ -1063,70 +1063,70 @@
       </trans-unit>
       <trans-unit id="Systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target>Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System List" xml:space="preserve">
         <source>System List</source>
-        <target/>
+        <target>Zoznam systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Task Schedules" xml:space="preserve">
         <source>Task Schedules</source>
-        <target/>
+        <target>Plány úloh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Task Engine Status" xml:space="preserve">
         <source>Task Engine Status</source>
-        <target/>
+        <target>Stav nástroja úloh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Last Execution Times" xml:space="preserve">
         <source>Last Execution Times</source>
-        <target/>
+        <target>Posledné časy vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Runtime Status" xml:space="preserve">
         <source>Runtime Status</source>
-        <target/>
+        <target>Stav behu programu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Show Tomcat Logs" xml:space="preserve">
         <source>Show Tomcat Logs</source>
-        <target/>
+        <target>Zobraziť záznamy Tomcat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage" xml:space="preserve">
         <source>this is a test of the emergency broadcast</source>
-        <target/>
+        <target>toto je test núdzového broadcastu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage.oneparam" xml:space="preserve">
         <source>this is a test of the {0}</source>
-        <target/>
+        <target>toto je test {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage.html" xml:space="preserve">
         <source>&lt;p&gt;You do not have enough entitlements for &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} systems&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Nemáte dostatočné oprávnenia pre systémy &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} systems&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
