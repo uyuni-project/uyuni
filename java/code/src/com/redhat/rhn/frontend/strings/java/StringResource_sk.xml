@@ -1133,28 +1133,28 @@
       </trans-unit>
       <trans-unit id="traceback message header" xml:space="preserve">
         <source>The following exception occurred while executing this request:</source>
-        <target/>
+        <target>Pri vykonávaní tejto požiadavky nastala nasledujúca výnimka:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Ungrouped" xml:space="preserve">
         <source>Ungrouped</source>
-        <target/>
+        <target>Nezoskupené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Unix Release Notes" xml:space="preserve">
         <source>Unix Release Notes</source>
-        <target/>
+        <target>Poznámky k vydaniu Unix</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Unentitled" xml:space="preserve">
         <source>Without System Type</source>
-        <target/>
+        <target>Bez typu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/SystemList</context>
           <context context-type="sourcefile">
@@ -1165,42 +1165,42 @@
       </trans-unit>
       <trans-unit id="User List" xml:space="preserve">
         <source>User List</source>
-        <target/>
+        <target>Zoznam používateľov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix Dr." xml:space="preserve">
         <source>Dr.</source>
-        <target/>
+        <target>Dr.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix Hr." xml:space="preserve">
         <source>Hr.</source>
-        <target/>
+        <target>Hr.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix Miss" xml:space="preserve">
         <source>Miss</source>
-        <target/>
+        <target>Slečna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix Mr." xml:space="preserve">
         <source>Mr.</source>
-        <target/>
+        <target>Pán</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix Mrs." xml:space="preserve">
         <source>Mrs.</source>
-        <target/>
+        <target>Pani</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
