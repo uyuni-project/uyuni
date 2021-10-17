@@ -1207,28 +1207,28 @@
       </trans-unit>
       <trans-unit id="user prefix Ms." xml:space="preserve">
         <source>Ms.</source>
-        <target/>
+        <target>Pani</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix Sr." xml:space="preserve">
         <source>Sr.</source>
-        <target/>
+        <target>Sr.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user prefix  " xml:space="preserve">
         <source> </source>
-        <target/>
+        <target> </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user.delete" xml:space="preserve">
         <source>Deleted user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Vymazaný používateľ &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
           <context context-type="paramnotes">Deleted user ssprocket.</context>
@@ -1236,7 +1236,7 @@
       </trans-unit>
       <trans-unit id="user.disable" xml:space="preserve">
         <source>Deactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Deaktivovaný používateľ &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
@@ -1244,21 +1244,21 @@
       </trans-unit>
       <trans-unit id="account.disabled" xml:space="preserve">
         <source>Your account has been deactivated.</source>
-        <target/>
+        <target>Váš účet bol deaktivovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
       </trans-unit>
       <trans-unit id="account.user.disabled" xml:space="preserve">
         <source>Account {0} has been deactivated.</source>
-        <target/>
+        <target>Účet {0} bol deaktivovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user.enable" xml:space="preserve">
         <source>Reactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Znovu aktivovaný používateľ &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
@@ -1266,14 +1266,14 @@
       </trans-unit>
       <trans-unit id="user.deleteself" xml:space="preserve">
         <source>You may not delete yourself.</source>
-        <target/>
+        <target>Sami seba nemôžete vymazať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user.satadmin.remove" xml:space="preserve">
         <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Odstránená rola administrátora @@PRODUCT_NAME@@ z {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
