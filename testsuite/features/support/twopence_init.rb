@@ -294,7 +294,7 @@ def client_public_ip(host)
   end
 
   interface = case host
-              when /^sle/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
+              when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
                 'eth0'
               when /^ubuntu/
                 'ens3'
