@@ -134,17 +134,18 @@ public class MonitoringService {
         }
     };
 
-    private static Supplier<Boolean> tomcatJmxStatusSupplier = () -> {
-        try {
-            Class.forName("io.prometheus.jmx.shaded.io.prometheus.jmx.JavaAgent");
-        }
-        catch (ClassNotFoundException ex) {
-            return false;
-        }
-        return true;
-    };
+    private static Supplier<Boolean> tomcatJmxStatusSupplier = TaskoXmlRpcHandler::isJmxEnabled;
 
-    private static Supplier<Boolean> taskomaticJmxStatusSupplier = TaskoXmlRpcHandler::isJmxEnabled;
+    private static Supplier<Boolean> taskomaticJmxStatusSupplier = () -> {
+        TaskomaticApi taskomatic = new TaskomaticApi();
+        try {
+            return taskomatic.isJmxEnabled();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Error getting Taskomatic JMX status", e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    };
 
     private static Supplier<Boolean> selfMonitoringStatusSupplier =
             () -> ConfigDefaults.get().isPrometheusMonitoringEnabled();
