@@ -30,6 +30,12 @@ from uyuni.common.checksum import getFileChecksum
 from uyuni.common.rhnLib import isSUSE
 from uyuni.common.usix import ListType, TupleType, MaxInt
 
+try:
+    import lzma
+    HAS_LZMA = True
+except ImportError:
+    HAS_LZMA = False
+
 def cleanupAbsPath(path):
     """ take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible.
 
@@ -497,11 +503,9 @@ def decompress_open(filename):
     elif filename.endswith('.bz2'):
         file_obj = bz2.BZ2File(filename, 'rb')
     elif filename.endswith('.xz'):
-        try:
-            # pylint: disable=F0401,E1101
-            import lzma
+        if HAS_LZMA:
             file_obj = lzma.LZMAFile(filename, 'rb')
-        except ImportError: # No LZMA lib - be sad
+        else:
             file_obj = subprocess.Popen(["xz", "-d", "-k", filename],
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL).stdout
