@@ -30,7 +30,7 @@ const args = require("./args");
 
     const cwd = process.cwd();
     // Make all paths absolute to avoid any issues
-    const inputPaths = rawInputs.map(item => path.resolve(cwd, item));
+    const inputPaths = rawInputs.map((item) => path.resolve(cwd, item));
     const inputs = inputPaths.join(" ");
     if (isVerbose) {
       console.log(`got input paths:\n${inputPaths.join("\n")}`);
@@ -107,7 +107,9 @@ const args = require("./args");
 
     // React.useState(undefined) -> React.useState<any>(undefined)
     console.log("migrate untyped use state");
-    await execAndLog(`sed -i'${tempExtension}' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`
+    );
 
     // TODO: Review this with https://github.com/typescript-cheatsheets/react
     // React.ReactNode -> JSX.Element
@@ -126,16 +128,28 @@ const args = require("./args");
     // In strict TS, an empty untyped object is of type `{}` and can't have keys added to it
     // let foo = {}; -> let foo: any = {};
     console.log("migrate untyped object initializations");
-    await execAndLog(`sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
-    await execAndLog(`sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
-    await execAndLog(`sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`
+    );
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`
+    );
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`
+    );
 
     // In strict TS, an empty untyped array is of type `never[]` and you can't push to it without adding a type
     // let foo = []; -> let foo: any[] = [];
     console.log("migrate untyped array initializations");
-    await execAndLog(`sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
-    await execAndLog(`sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
-    await execAndLog(`sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`
+    );
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`
+    );
+    await execAndLog(
+      `sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`
+    );
 
     // TS doesn't know what the type of this is, but we do
     // jqXHR: any -> jqXHR: JQueryXHR
@@ -155,7 +169,7 @@ const args = require("./args");
       const { stdout } = await execAndLog(
         `(yarn --silent tsc 2>&1 || true) | tee | grep "can only be used in TypeScript files" | sed -e 's/\\.js.*/.js/' | uniq`
       );
-      const paths = stdout.split("\n").filter(item => !!item.trim());
+      const paths = stdout.split("\n").filter((item) => !!item.trim());
       if (paths.length) {
         console.log(
           `the following imported files have annotations but are not marked as typed:\n\t${paths.join("\n\t")}`
