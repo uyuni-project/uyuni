@@ -26,8 +26,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.utils.MinionServerUtils;
-
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -70,12 +68,6 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                         new Date());
                 TASKOMATIC_API.scheduleActionExecution(action,
                         applyStatesEvent.isForcePackageListRefresh());
-
-                // For Salt SSH: simply schedule package profile update (no job metadata)
-                if (MinionServerUtils.isSshPushMinion(server) &&
-                        applyStatesEvent.isForcePackageListRefresh()) {
-                    ActionManager.schedulePackageRefresh(server.getOrg(), server);
-                }
             }
             catch (TaskomaticApiException e) {
                 LOG.error("Could not schedule state application for system: " +
