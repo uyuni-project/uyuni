@@ -193,7 +193,7 @@ public class SaltUtils {
     /** Package-affecting Salt state module names. */
     private static final List<String> PKG_STATE_MODULES = Arrays.asList(
         "pkg.group_installed", "pkg.installed", "pkg.latest", "pkg.patch_installed",
-        "pkg.purged", "pkg.removed", "pkg.uptodate"
+        "pkg.purged", "pkg.removed", "pkg.uptodate", "product.all_installed"
     );
 
     /** Package-affecting Salt execution module names. */
