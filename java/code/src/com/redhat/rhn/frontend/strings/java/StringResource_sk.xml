@@ -1280,21 +1280,21 @@
       </trans-unit>
       <trans-unit id="user.satadmin.add" xml:space="preserve">
         <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Pridaná rola administrátora @@PRODUCT_NAME@@ do {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user.deleteadmin" xml:space="preserve">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
-        <target/>
+        <target>Nemôžete vymazať iného správcu organizácie. Prosím, odstráňte rolu 'Administrátor organizácie' z tohto používateľa predtým, ako sa pokúsite odstrániť jeho účet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin" xml:space="preserve">
         <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Nie je možné odstrániť posledného zostávajúceho administrátora @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
@@ -1308,14 +1308,14 @@
       </trans-unit>
       <trans-unit id="user info" xml:space="preserve">
         <source>User Information</source>
-        <target/>
+        <target>Informácie o používateľovi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user" xml:space="preserve">
         <source>User</source>
-        <target/>
+        <target>Používateľ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
           <context context-type="sourcefile">Navigation Menu</context>
@@ -1323,35 +1323,35 @@
       </trans-unit>
       <trans-unit id="value" xml:space="preserve">
         <source>value</source>
-        <target/>
+        <target>hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="web traceback subject" xml:space="preserve">
         <source>WEB TRACEBACK from </source>
-        <target/>
+        <target>WEB TRACEBACK z </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic notif subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">UPOZORNENIE TASKOMATIC @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Notification Messages" xml:space="preserve">
         <source>Notification Messages</source>
-        <target/>
+        <target>Správy s upozorneniami</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="User Account" xml:space="preserve">
         <source>User Account</source>
-        <target/>
+        <target>Používateľský účet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
