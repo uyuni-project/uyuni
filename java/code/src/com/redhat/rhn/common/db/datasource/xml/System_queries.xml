@@ -6,7 +6,7 @@ select * from (
   SELECT  DISTINCT S.id,
                    S.name,
                    SI.server_id AS IS_RHN_SATELLITE,
-                   PI.server_id AS IS_RHN_PROXY,
+                   PI.server_id AS IS_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
     LEFT OUTER JOIN rhnSatelliteInfo SI ON S.id = SI.server_id
@@ -1286,7 +1286,7 @@ SELECT  DISTINCT ST.element AS ID
   SELECT  DISTINCT S.id,
                    S.name,
                    SI.server_id AS IS_RHN_SATELLITE,
-                   PI.server_id AS IS_RHN_PROXY,
+                   PI.server_id AS IS_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN,
                    SO.SECURITY_ERRATA, SO.BUG_ERRATA, SO.ENHANCEMENT_ERRATA, SO.LOCKED,
                    SO.OUTDATED_PACKAGES, SO.SERVER_NAME, SO.SERVER_ADMINS, SO.GROUP_COUNT,
@@ -1347,7 +1347,7 @@ ORDER BY S.ID
   SELECT SERVER_ID AS ID, OUTDATED_PACKAGES, SERVER_NAME, security_errata, bug_errata, enhancement_errata,
           SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, CHANNEL_ID, HISTORY_COUNT,
           LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
-          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_RHN_PROXY
+          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_PROXY
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
 ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
