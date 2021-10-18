@@ -75,20 +75,22 @@ jmx_tomcat_config:
     - mode: 644
     - source:
       - salt://srvmonitoring/tomcat_jmx.conf
+    - require:
+      - cmd: jmx_exporter
 
-jmx_exporter_tomcat_service:
+jmx_exporter_tomcat_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@tomcat
     - enable: False
 
-jmx_exporter_taskomatic_systemd_config:
+jmx_exporter_taskomatic_systemd_config_cleanup:
   file.absent:
     - name: /etc/prometheus-jmx_exporter/taskomatic/environment
 
 {% set remove_jmx_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
 {%- include 'srvmonitoring/removejmxprops.sls' %}
 
-jmx_exporter_taskomatic_yaml_config_old:
+jmx_exporter_taskomatic_yaml_config_cleanup:
   file.absent:
     - name: /etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml
 
@@ -111,8 +113,10 @@ jmx_taskomatic_config:
     - mode: 644
     - source:
       - salt://srvmonitoring/taskomatic_jmx.conf
+    - require:
+      - cmd: jmx_exporter
 
-jmx_exporter_taskomatic_service:
+jmx_exporter_taskomatic_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@taskomatic
     - enable: False

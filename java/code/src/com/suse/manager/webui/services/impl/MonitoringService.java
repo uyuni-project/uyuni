@@ -18,6 +18,7 @@ package com.suse.manager.webui.services.impl;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -143,16 +144,7 @@ public class MonitoringService {
         return true;
     };
 
-    private static Supplier<Boolean> taskomaticJmxStatusSupplier = () -> {
-        TaskomaticApi taskomatic = new TaskomaticApi();
-        try {
-            return taskomatic.isJmxEnabled();
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Error getting Taskomatic JMX status", e);
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    };
+    private static Supplier<Boolean> taskomaticJmxStatusSupplier = TaskoXmlRpcHandler::isJmxEnabled;
 
     private static Supplier<Boolean> selfMonitoringStatusSupplier =
             () -> ConfigDefaults.get().isPrometheusMonitoringEnabled();

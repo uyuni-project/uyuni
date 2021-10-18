@@ -642,7 +642,7 @@ public class TaskoXmlRpcHandler {
      * Check if JMX is enabled.
      * @return true if JavaAgent class can be found
      */
-    public boolean isJmxEnabled() {
+    public static boolean isJmxEnabled() {
         try {
             Class.forName("io.prometheus.jmx.shaded.io.prometheus.jmx.JavaAgent");
         }
