@@ -1,4 +1,4 @@
-{%- if grains['osmajorrelease'] == 11 %}
+{%- if grains['osrelease']|int == 11 %}
 /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem:
 {%- else %}
 /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT:
@@ -7,7 +7,7 @@
     - source:
       - salt://certs/RHN-ORG-TRUSTED-SSL-CERT
 
-{%- if grains['osmajorrelease'] == 11 %}
+{%- if grains['osrelease']|int == 11 %}
 salt://certs/update-multi-cert.sh:
   cmd.wait_script:
     - runas: root
