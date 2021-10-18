@@ -629,6 +629,8 @@ PKGLISTUBUNTU2004 = [
 PKGLISTDEBIAN9 = [
     "dctrl-tools",
     "apt-transport-https",
+    "debconf-utils",
+    "bsdmainutils",
     "javascript-common",
     "libjs-jquery",
     "libjs-sphinxdoc",
