@@ -245,7 +245,7 @@ public class MonitoringService {
 
     private static Optional<String> computeMessage(boolean configPresent,
                                                    boolean runtimeJmxEnabled) {
-        if (configPresent ^ runtimeJmxEnabled) {
+        if (configPresent != runtimeJmxEnabled) {
             return Optional.of("restart");
         }
         return Optional.empty();
