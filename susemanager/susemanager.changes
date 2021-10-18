@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 18 16:39:02 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.24-1
+  * Fix syntax error on migration script (bsc#1191551)
+
+-------------------------------------------------------------------
 Wed Oct 06 09:38:20 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.23-1
