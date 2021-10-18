@@ -32,7 +32,7 @@ mgr_server_localhost_alias_absent:
 
 # Debian OS Family
 {%- if grains['os_family'] == 'Debian' %}
-  ## This common part should cover most of distro e.g. Debian, Raspbian 
+  ## This common part should cover most of distro e.g. Debian, Ubuntu
   {%- set os_base = grains['os_family']|lower %}
   {% set osrelease = grains['osrelease_info'][0] %}
   #exceptions to the family rule
@@ -40,10 +40,12 @@ mgr_server_localhost_alias_absent:
     {%- set os_base = 'astra' %}
     {% set osrelease = grains['oscodename'] %}
   {%- elif grains['os'] == 'Ubuntu' %}
+    {%- set os_base = grains['os']|lower %}
     {% set osrelease = grains['osrelease_info'][0]|string + '/' + grains['osrelease_info'][1]|string %}
   {%- endif %}
   #end of expections
 {%- endif %}
+
 
 # RedHat OS Family
 {%- if grains['os_family'] == 'RedHat' %}
