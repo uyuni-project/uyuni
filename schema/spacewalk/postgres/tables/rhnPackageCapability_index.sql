@@ -14,11 +14,11 @@
 --
 
 CREATE UNIQUE INDEX rhn_pkg_cap_name_version_uq
-    ON rhnPackageCapability USING btree (sha512(replace(name, '\', '\\')::bytea), version)
+    ON rhnPackageCapability USING btree (sha512(replace(name, E'\\', E'\\\\')::bytea), version)
  WHERE version IS NOT NULL;
 
 CREATE UNIQUE INDEX rhn_pkg_cap_name_uq
-    ON rhnPackageCapability USING btree (sha512(replace(name, '\', '\\')::bytea))
+    ON rhnPackageCapability USING btree (sha512(replace(name, E'\\', E'\\\\')::bytea))
  WHERE version IS NULL;
 
 CREATE INDEX rhn_pkg_cap_name_idx
