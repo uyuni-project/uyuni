@@ -1,3 +1,5 @@
+- Fix syntax error on migration script (bsc#1191551)
+
 -------------------------------------------------------------------
 Wed Oct 06 09:38:20 CEST 2021 - jgonzalez@suse.com
 
