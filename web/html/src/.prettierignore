@@ -1,6 +1,2 @@
 dist/**/*
 vendors/**/*
-build/**/*
-build.js
-global.d.ts
-imports.d.ts
