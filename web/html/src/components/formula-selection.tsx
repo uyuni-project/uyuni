@@ -41,7 +41,7 @@ class FormulaSelection extends React.Component<Props, State> {
       "generateList",
       "onGroupItemClick",
       "onListItemClick",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
 
     this.state = {
       formulas: {},
@@ -55,10 +55,10 @@ class FormulaSelection extends React.Component<Props, State> {
   }
 
   init() {
-    Network.get(this.props.dataUrl).then(data => {
+    Network.get(this.props.dataUrl).then((data) => {
       const groupDict = { groupless: [] };
       const formulaDict: any = {};
-      data.formulas.forEach(function(e) {
+      data.formulas.forEach(function (e) {
         e.selected = data.selected.indexOf(e.name) >= 0;
         const group = e.group || "groupless";
         if (DEPRECATED_unsafeEquals(groupDict[group], undefined)) groupDict[group] = [];
@@ -76,7 +76,7 @@ class FormulaSelection extends React.Component<Props, State> {
 
   saveRequest() {
     const selectedFormulas: unknown[] = [];
-    jQuery.each(this.state.formulas, function(name, formula) {
+    jQuery.each(this.state.formulas, function (name, formula) {
       if (formula.selected) selectedFormulas.push(name);
     });
 
@@ -85,7 +85,7 @@ class FormulaSelection extends React.Component<Props, State> {
      * Do not assign to state fields directly, use `setState()` instead
      */
     (this.state as any).activeFormulas = selectedFormulas;
-    return this.props.saveRequest(this, selectedFormulas).then(data => {
+    return this.props.saveRequest(this, selectedFormulas).then((data) => {
       this.init();
       window.scrollTo(0, 0);
     });
@@ -93,14 +93,14 @@ class FormulaSelection extends React.Component<Props, State> {
 
   resetChanges() {
     const selectedFormulas = this.state.activeSelectedFormulas;
-    jQuery.each(this.state.formulas, function(name, formula) {
+    jQuery.each(this.state.formulas, function (name, formula) {
       formula.selected = selectedFormulas.indexOf(name) >= 0;
     });
     this.forceUpdate();
   }
 
   removeAllFormulas() {
-    jQuery.each(this.state.formulas, function(name, formula) {
+    jQuery.each(this.state.formulas, function (name, formula) {
       formula.selected = false;
     });
     this.forceUpdate();
@@ -108,7 +108,7 @@ class FormulaSelection extends React.Component<Props, State> {
 
   getGroupItemState(group) {
     let selectedCount = 0;
-    group.forEach(function(formula) {
+    group.forEach(function (formula) {
       if (formula.selected) selectedCount++;
     });
     if (selectedCount === 0) return 0;
@@ -146,7 +146,7 @@ class FormulaSelection extends React.Component<Props, State> {
           </strong>
         </span>
       );
-      groups.groupless.forEach(function(this: FormulaSelection, formula) {
+      groups.groupless.forEach(function (this: FormulaSelection, formula) {
         list.push(
           // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
@@ -187,7 +187,7 @@ class FormulaSelection extends React.Component<Props, State> {
           </strong>
         </a>
       );
-      group.forEach(function(this: FormulaSelection, formula) {
+      group.forEach(function (this: FormulaSelection, formula) {
         list.push(
           // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
@@ -214,9 +214,8 @@ class FormulaSelection extends React.Component<Props, State> {
 
   onListItemClick(e) {
     e.preventDefault();
-    const formula = this.state.formulas[
-      DEPRECATED_unsafeEquals(e.target.href, undefined) ? e.target.parentElement.id : e.target.id
-    ];
+    const formula =
+      this.state.formulas[DEPRECATED_unsafeEquals(e.target.href, undefined) ? e.target.parentElement.id : e.target.id];
 
     if (e.target.id.startsWith("info_button_")) {
       /**
@@ -240,12 +239,12 @@ class FormulaSelection extends React.Component<Props, State> {
     switch (state) {
       case 0:
       case 2:
-        group.forEach(function(formula) {
+        group.forEach(function (formula) {
           formula.selected = true;
         });
         break;
       case 1:
-        group.forEach(function(formula) {
+        group.forEach(function (formula) {
           formula.selected = false;
         });
         break;
@@ -260,7 +259,7 @@ class FormulaSelection extends React.Component<Props, State> {
     }
     if (this.state.messages.length > 0) {
       items = items.concat(
-        this.state.messages.map(function(msg) {
+        this.state.messages.map(function (msg) {
           return { severity: "info", text: msg };
         })
       );
@@ -268,7 +267,7 @@ class FormulaSelection extends React.Component<Props, State> {
 
     if (this.state.errors && this.state.errors.length > 0) {
       items = items.concat(
-        this.state.errors.map(function(e) {
+        this.state.errors.map(function (e) {
           return { severity: "error", text: e };
         })
       );
@@ -313,7 +312,7 @@ class FormulaSelection extends React.Component<Props, State> {
             <form
               id="chooseFormulaForm"
               className="form-horizontal"
-              onSubmit={function(e) {
+              onSubmit={function (e) {
                 e.preventDefault();
               }}
             >

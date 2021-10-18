@@ -15,18 +15,18 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfProfile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**

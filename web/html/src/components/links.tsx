@@ -15,61 +15,37 @@ const targetProps = (props: LinkProps): Partial<React.HTMLProps<HTMLAnchorElemen
 };
 
 const ChannelAnchorLink = (props: LinkProps) => (
-  <a
-    className="channel-anchor-link"
-    href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
-    {...targetProps(props)}
-  >
+  <a className="channel-anchor-link" href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`} {...targetProps(props)}>
     <i className="fa fa-link fa-right"></i>
   </a>
 );
 
 const ChannelLink = (props: LinkProps) => (
-  <a
-    href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
-    title={props.title}
-    {...targetProps(props)}
-  >
+  <a href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`} title={props.title} {...targetProps(props)}>
     {props.children}
   </a>
 );
 
 const ActionLink = (props: LinkProps) => (
-  <a
-    href={"/rhn/schedule/ActionDetails.do?aid=" + props.id}
-    className={props.className}
-    {...targetProps(props)}
-  >
+  <a href={"/rhn/schedule/ActionDetails.do?aid=" + props.id} className={props.className} {...targetProps(props)}>
     {props.children}
   </a>
 );
 
 const SystemLink = (props: LinkProps) => (
-  <a
-    href={"/rhn/systems/details/Overview.do?sid=" + props.id}
-    className={props.className}
-    {...targetProps(props)}
-  >
+  <a href={"/rhn/systems/details/Overview.do?sid=" + props.id} className={props.className} {...targetProps(props)}>
     {props.children}
   </a>
 );
 
 const ActionChainLink = (props: LinkProps) => (
-  <a
-    href={"/rhn/schedule/ActionChain.do?id=" + props.id}
-    className={props.className}
-    {...targetProps(props)}
-  >
+  <a href={"/rhn/schedule/ActionChain.do?id=" + props.id} className={props.className} {...targetProps(props)}>
     {props.children}
   </a>
 );
 
 const SystemGroupLink = (props: LinkProps) => (
-  <a
-    href={`/rhn/groups/GroupDetail.do?sgid=${props.id}`}
-    className={props.className}
-    {...targetProps(props)}
-  >
+  <a href={`/rhn/groups/GroupDetail.do?sgid=${props.id}`} className={props.className} {...targetProps(props)}>
     {props.children}
   </a>
 );

@@ -40,28 +40,36 @@ end
 def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
   when 'sles15sp3', 'sles15sp3o'
+    # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
     'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
-    # Same image version is used in case of 4.0 and 4.1
     'Kiwi/POS_Image-JeOS7_41'
   when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not supported image version.'
-  else
+    raise 'This is not a supported image version.'
+  when 'sles12sp5', 'sles12sp5o'
+    # 'Kiwi/POS_Image-JeOS6_41' for 4.1 branch
+    # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
     'Kiwi/POS_Image-JeOS6_head'
+  else
+    raise 'Is this a supported image version?'
   end
 end
 
 def compute_image_name
   case ENV['PXEBOOT_IMAGE']
   when 'sles15sp3', 'sles15sp3o'
+    # 'POS_Image_JeOS7_42' for 4.2 branch
     'POS_Image_JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
-    # Same kiwi image version is used in case of 4.0 and 4.1
     'POS_Image_JeOS7_41'
   when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not supported image version.'
-  else
+    raise 'This is not a supported image version.'
+  when 'sles12sp5', 'sles12sp5o'
+    # 'POS_Image_JeOS6_41' for 4.1 branch
+    # 'POS_Image_JeOS6_42' for 4.2 branch
     'POS_Image_JeOS6_head'
+  else
+    raise 'Is this a supported image version?'
   end
 end
 
@@ -107,9 +115,9 @@ def count_table_items
 end
 
 def product
-  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', false)
+  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', check_errors: false)
   return 'Uyuni' if code.zero?
-  _product_raw, code = $server.run('rpm -q patterns-suma_server', false)
+  _product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
   return 'SUSE Manager' if code.zero?
   raise 'Could not determine product'
 end
@@ -241,7 +249,7 @@ def extract_logs_from_node(node)
     node.run('zypper --non-interactive install tar')
     node.run('zypper mr --disable os_pool_repo os_update_repo') unless $build_validation
   end
-  node.run('journalctl > /var/log/messages', false) # Some clients might not support systemd
+  node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")

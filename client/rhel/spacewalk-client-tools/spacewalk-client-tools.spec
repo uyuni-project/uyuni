@@ -80,7 +80,7 @@ Group:          System Environment/Base
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
@@ -750,9 +750,6 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/rhn-profile-sync
 
 %ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
-
-#public keys and certificates
-%{_datadir}/rhn/RHNS-CA-CERT
 
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 %{_presetdir}/50-spacewalk-client.preset

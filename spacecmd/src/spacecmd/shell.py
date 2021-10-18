@@ -119,10 +119,9 @@ class SpacewalkShell(Cmd):
                                     self.history_file)
                 except IOError:
                     logging.error(_N('Could not read history file'))
-        # pylint: disable=W0702
+        # pylint: disable=broad-except
         except Exception as exc:
-            # pylint: disable=W0702
-            logging.error(_N("Exception occurred: {}").format(exc))
+            logging.error(_N("Exception occurred: %s"), exc)
             sys.exit(1)
 
     # handle shell exits and history substitution
@@ -143,7 +142,7 @@ class SpacewalkShell(Cmd):
             sys.exit(0)
 
         # don't attempt to login for some commands
-        if re.match('help|login|logout|whoami|history|clear', line, re.I):
+        if re.match('help|login|logout|history|clear', line, re.I):
             # login required for clear_caches or it fails with:
             # "SpacewalkShell instance has no attribute 'system_cache_file'"
             if not re.match('clear_caches', line, re.I):
@@ -241,7 +240,6 @@ class SpacewalkShell(Cmd):
             except TypeError:
                 # catch methods returning undefined results at least in debug mode
                 logging.debug('Undefined return code from \"%s\"', cmd)
-                pass
 
         return cmdresult
 

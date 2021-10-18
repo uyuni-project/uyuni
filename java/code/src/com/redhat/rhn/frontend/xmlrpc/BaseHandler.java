@@ -15,25 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
-import org.hibernate.HibernateException;
-
-import redstone.xmlrpc.XmlRpcFault;
-import redstone.xmlrpc.XmlRpcInvocationHandler;
-
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
@@ -52,6 +34,25 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import redstone.xmlrpc.XmlRpcFault;
+import redstone.xmlrpc.XmlRpcInvocationHandler;
 
 /**
  * A basic xmlrpc handler class.  Uses reflection + an arbitrary algorithm
@@ -147,8 +148,17 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         }
         catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
-            log.error("Error calling method: ", e);
-            log.error("Caused by: ", cause);
+
+            if (cause instanceof FaultException) {
+                // FaultExceptions are "bad request" type of exceptions
+                // Normally they should be thrown as response to the client but there's no need to log them as errors.
+                FaultException fault = (FaultException) cause;
+                log.debug("'" + methodCalled + "' returned: [" + fault.getErrorCode() + "] " + fault.getMessage());
+            }
+            else {
+                log.error("Error calling method: ", e);
+                log.error("Caused by: ", cause);
+            }
 
             /*
              * HACK: this should really be handled by SessionFilter.doFilter,
@@ -158,7 +168,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
              * committing changes after an Exception, roll back here.
              */
             try {
-                log.error("Rolling back transaction");
+                log.debug("Rolling back transaction");
                 HibernateFactory.rollbackTransaction();
             }
             catch (HibernateException he) {

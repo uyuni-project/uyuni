@@ -25,7 +25,7 @@ const UpgradeCluster = (props: Props) => {
 
   const { scheduleUpgradeCluster } = useClustersApi();
 
-  const scheduleUpgrade = (earliest: Date, actionChain: string | null | undefined): Promise<any> => {
+  const scheduleUpgrade = (earliest: moment.Moment, actionChain: string | null | undefined): Promise<any> => {
     return scheduleUpgradeCluster(props.cluster.id, earliest, actionChain).then(() => {
       window.location.href = `/rhn/manager/cluster/${props.cluster.id}`;
     });
@@ -58,7 +58,7 @@ const UpgradeCluster = (props: Props) => {
                 context={{ cluster: props.cluster.id }}
                 provider={props.cluster.provider.label}
                 onPrev={props.showUpgradePlan ? back : undefined}
-                onNext={formulaValues => {
+                onNext={(formulaValues) => {
                   setUpgradeConfig(formulaValues);
                   goTo("schedule");
                 }}

@@ -41,12 +41,14 @@ import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.model.products.ChannelJson;
 import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
+
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
@@ -56,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

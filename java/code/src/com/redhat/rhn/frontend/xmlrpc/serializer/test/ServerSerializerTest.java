@@ -20,11 +20,11 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ServerSerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
-import com.redhat.rhn.testing.TestUtils;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 

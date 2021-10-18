@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
-import java.util.Date;
-import java.io.Serializable;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * KickstartPackage

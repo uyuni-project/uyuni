@@ -31,6 +31,7 @@ import static java.util.stream.Collectors.toMap;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -54,6 +55,7 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -118,9 +120,11 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -173,8 +177,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.jose4j.lang.JoseException;
 
 import java.io.File;
@@ -224,6 +226,7 @@ public class SaltServerActionService {
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
+    private static final String PACKAGES_PKGLOCK = "packages.pkglock";
     private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
     private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
     private static final String PARAM_PKGS = "param_pkgs";
@@ -272,15 +275,6 @@ public class SaltServerActionService {
         this.saltKeyUtils = saltKeyUtilsIn;
     }
 
-    private Action unproxy(Action entity) {
-        Hibernate.initialize(entity);
-        if (entity instanceof HibernateProxy) {
-            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
-                    .getImplementation();
-        }
-        return entity;
-    }
-
     /**
      * For a given action return the salt call(s) that need to be executed for the minions involved.
      *
@@ -305,12 +299,14 @@ public class SaltServerActionService {
         }
 
         ActionType actionType = actionIn.getActionType();
-        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
             return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
+        }
+        else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
+            return packagesLockAction(minions, (PackageLockAction) actionIn);
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
@@ -1106,6 +1102,25 @@ public class SaltServerActionService {
                 );
             },
             Map.Entry::getValue));
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
+            List<MinionSummary> minionSummaries, PackageLockAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        for (MinionSummary m : minionSummaries) {
+            DataResult<PackageListItem> setLockPkg = PackageManager.systemSetLockedPackages(
+                    m.getServerId(), action.getId(), null);
+            List<List<String>> pkgs = setLockPkg.stream().map(d -> Arrays.asList(d.getName(), d.getArch(),
+                    new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
+                    .toUniversalEvrString())).collect(Collectors.toList());
+            LocalCall<Map<String, ApplyResult>> localCall =
+                    State.apply(Arrays.asList(PACKAGES_PKGLOCK), Optional.of(singletonMap(PARAM_PKGS, pkgs)));
+            List<MinionSummary> mSums = ret.getOrDefault(localCall, new ArrayList<>());
+            mSums.add(m);
+            ret.put(localCall, mSums);
+        }
+        return ret;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
@@ -2346,6 +2361,7 @@ public class SaltServerActionService {
         pillarData.put("playbook_path", playbookPath);
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
+        pillarData.put("flush_cache", details.isFlushCache());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
     }

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 17 12:14:16 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Upgrade immer to 9.0.6 to fix CVE-2021-23436
+  * Add moment and moment-timezone
+  * Upgrade react-select to 4.3.1
+
+-------------------------------------------------------------------
 Mon Aug 09 11:09:46 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

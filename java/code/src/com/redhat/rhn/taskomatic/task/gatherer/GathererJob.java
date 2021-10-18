@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.gatherer.HostJson;
 

@@ -33,9 +33,11 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -451,6 +453,21 @@ public class Access extends BaseHandler {
         }
 
         return false;
+    }
+
+    /**
+     * Returns true if it is a modular channel
+     * @param ctx acl context (includes the channel cid and the user name)
+     * @param params parameters for acl (ignored)
+     * @return true if the user is channel admin of the corresponding channel.
+     */
+    public boolean aclIsModularChannel(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long cid = getAsLong(map.get("cid"));
+        User user = (User) map.get("user");
+        Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
+
+        return chan.isModular();
     }
 
     /**

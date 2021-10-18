@@ -75,12 +75,7 @@ if $build_validation
   $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
-  # As we share core features for all the environments, we share also those vm twopence objects
-  $client = $sle12sp5_client
-  $minion = $sle12sp5_minion
-  $ssh_minion = $sle12sp5_ssh_minion
-  $ceos_minion = $ceos8_ssh_minion
-  $ubuntu_minion = $ubuntu2004_minion
+  $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
@@ -97,7 +92,7 @@ if $build_validation
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp5_buildhost, $sle12sp5_terminal,
              $sle15sp3_buildhost, $sle15sp3_terminal,
-             $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
+             $opensuse153arm_minion]
 else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
@@ -192,9 +187,21 @@ def file_exists?(node, file)
   code.zero? && local.zero?
 end
 
+# This function tests whether a folder exists on a node
+def folder_exists?(node, file)
+  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
+  code.zero? && local.zero?
+end
+
 # This function deletes a file from a node
 def file_delete(node, file)
   _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
+  code
+end
+
+# This function deletes a file from a node
+def folder_delete(node, folder)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
   code
 end
 
@@ -273,7 +280,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle12sp4_buildhost'        => $sle12sp4_buildhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
-                  'sle15sp3_terminal'         => $sle15sp3_terminal }
+                  'sle15sp3_terminal'         => $sle15sp3_terminal,
+                  'opensuse153arm_minion'     => $opensuse153arm_minion }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}
@@ -301,7 +309,7 @@ def client_public_ip(host)
   end
 
   interface = case host
-              when /^sle/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
+              when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
                 'eth0'
               when /^ubuntu/
                 'ens3'

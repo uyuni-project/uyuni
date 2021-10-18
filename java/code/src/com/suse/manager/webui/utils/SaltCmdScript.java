@@ -15,11 +15,11 @@
 
 package com.suse.manager.webui.utils;
 
+import static java.util.Collections.singletonMap;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.singletonMap;
 
 /**
  * YAML generator for the Salt cmd script state.

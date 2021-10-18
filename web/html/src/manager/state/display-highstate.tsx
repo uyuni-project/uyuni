@@ -2,8 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import HighstateSummary from "./highstate-summary";
 
-
-function MinionHighstateSingle({ minion }: { minion: { id: number, name: string } }) {
+function MinionHighstateSingle({ minion }: { minion: { id: number; name: string } }) {
   return (
     <div className="row">
       <h3>{t("State Summary for {0}", minion.name)}</h3>
@@ -12,16 +11,22 @@ function MinionHighstateSingle({ minion }: { minion: { id: number, name: string 
   );
 }
 
-function MinionHighstate({ minion }: { minion: { id: number, name: string } }) {
+function MinionHighstate({ minion }: { minion: { id: number; name: string } }) {
   const [show, setShow] = useState(false);
 
   return (
     <div className="panel panel-default" style={{ marginBottom: 10 }}>
-      <div className="panel-heading" onClick={() => { setShow(!show) }} style={{ cursor: "pointer" }}>
+      <div
+        className="panel-heading"
+        onClick={() => {
+          setShow(!show);
+        }}
+        style={{ cursor: "pointer" }}
+      >
         <div className="row">
           <strong>{minion.name}</strong>
           <div className="pull-right">
-            <i className={`fa fa-right fa-chevron-${show ? 'up' : 'down'} fa-1-5x`} />
+            <i className={`fa fa-right fa-chevron-${show ? "up" : "down"} fa-1-5x`} />
           </div>
         </div>
       </div>
@@ -62,9 +67,9 @@ class DisplayHighstate extends React.Component<DisplayHighstateProps, DisplayHig
   render() {
     return (
       <div>
-        {this.state.minions.length === 1 ?
+        {this.state.minions.length === 1 ? (
           <MinionHighstateSingle minion={this.state.minions[0]} />
-          :
+        ) : (
           <div className="row">
             <div className="col-md-12">
               <h3>Target Systems ({this.state.minions.length})</h3>
@@ -72,12 +77,12 @@ class DisplayHighstate extends React.Component<DisplayHighstateProps, DisplayHig
                 <div className="panel panel-default">
                   <div className="panel-body">{t("There are no applicable systems.")}</div>
                 </div>
-              ) :
+              ) : (
                 this.renderMinions()
-              }
+              )}
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

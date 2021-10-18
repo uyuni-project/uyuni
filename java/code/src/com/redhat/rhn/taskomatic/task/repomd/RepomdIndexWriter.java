@@ -143,7 +143,7 @@ public class RepomdIndexWriter {
             handler.startElement("data", attr);
 
             attr.clear();
-            attr.addAttribute("href", "repodata/" + location);
+            attr.addAttribute("href", "repodata/" + data.getChecksum() + "-" + location);
             handler.startElement("location", attr);
             handler.endElement("location");
 

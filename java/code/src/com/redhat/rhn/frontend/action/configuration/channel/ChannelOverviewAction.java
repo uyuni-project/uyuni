@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.channel;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -30,9 +32,9 @@ import com.redhat.rhn.manager.configuration.ChannelSummary;
 import com.redhat.rhn.manager.configuration.ConfigChannelCreationHelper;
 import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
-
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -43,8 +45,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * DetailsAction backs the page for managing config-channel details

@@ -6,6 +6,8 @@ module.exports = {
   preset: "ts-jest/presets/js-with-babel",
   // Required for in-memory rendering with @testing-library/react
   testEnvironment: "jsdom",
+  // We sometimes get slow runs in our internal infra when the load is high on tests that otherwise pass
+  testTimeout: 30000,
   verbose: true,
   moduleFileExtensions: [...defaults.moduleFileExtensions, "ts", "tsx"],
   moduleNameMapper: {
@@ -18,4 +20,13 @@ module.exports = {
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules"],
   setupFiles: ["./utils/test-utils/setup/index.ts"],
+  globals: {
+    // These are simply sufficiently different so it's easy to check outputs
+    serverTimeZone: "Asia/Tokyo", // GMT+9
+    // Don't do server time sanity checks in the test env since they litter the logs but don't give any useful info there
+    serverTime: undefined,
+    userTimeZone: "America/Los_Angeles", // GMT-7
+    userDateFormat: "YYYY-MM-DD",
+    userTimeFormat: "HH:mm",
+  },
 };

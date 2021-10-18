@@ -47,15 +47,10 @@ Feature: PXE boot a Retail terminal
     And the "vsftpd" formula should be checked
     And the "pxe" formula should be checked
 
-  Scenario: Configure PXE part of DNS on the branch server
+  Scenario: Configure general info for PXE part of DNS on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    # general information:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    # direct zone example.org:
     And I press "Add Item" in first CNAME section
     And I enter "ftp" in first CNAME alias field
     And I enter "proxy" in first CNAME name field
@@ -63,22 +58,24 @@ Feature: PXE boot a Retail terminal
     And I enter "tftp" in second CNAME alias field
     And I enter "proxy" in second CNAME name field
     And I press "Add Item" in first CNAME section
-    And I enter "salt" in third CNAME alias field
     And I enter the hostname of "proxy" in third CNAME name field
-    # direct zone tf.local:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
+
+  # Note: Avahi does not cross networks, so we need to cheat by serving tf.local
+  Scenario: Configure avahi info for PXE part of DNS on the branch server
     And I scroll to the top of the page
+    And I press "Add Item" in configured zones section
+    And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
     And I enter "tf.local" in third available zone name field
     And I enter "master/db.tf.local" in third file name field
     And I enter the hostname of "proxy" in third name server field
     And I enter "admin@tf.local." in third contact field
+    And I enter "salt" in third CNAME alias field
     And I press "Add Item" in third A section
     And I enter the hostname of "proxy" in fifth A name field
     And I enter the IP address of "proxy" in fifth A address field
     And I press "Add Item" in third NS section
     And I enter the hostname of "proxy" in third NS field
-    # end
     And I scroll to the top of the page
     And I should see a "Bind" text
     And I click on "Save Formula"
@@ -448,3 +445,7 @@ Feature: PXE boot a Retail terminal
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+
+  Scenario: Reset TFTP defaults
+    When I stop tftp on the proxy
+    And I reset tftp defaults on the proxy

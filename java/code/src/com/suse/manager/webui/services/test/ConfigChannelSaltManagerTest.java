@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 
@@ -47,6 +48,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
                 "    -   makedirs: true\n" +
+                "    -   template: jinja\n" +
                 "    -   user: chuck\n" +
                 "    -   group: nobody\n" +
                 "    -   mode: 700\n";

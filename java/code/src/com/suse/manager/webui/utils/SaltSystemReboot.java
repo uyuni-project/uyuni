@@ -15,12 +15,12 @@
 
 package com.suse.manager.webui.utils;
 
+import static java.util.Collections.singletonMap;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.Collections.singletonMap;
 
 /**
  * Represents a system reboot state run.

@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.ssm;
 
 import com.redhat.rhn.domain.server.Server;
+
 import com.suse.salt.netapi.utils.Xor;
 
 /**

@@ -41,7 +41,7 @@ const CreateProject = () => {
                   `/rhn/manager/contentmanagement/project/${project.properties.label || ""}`
                 );
               })
-              .catch(error => {
+              .catch((error) => {
                 setProject({ ...project, errors: error.errors });
                 showErrorToastr(error.messages, { autoHide: false });
               })
@@ -52,7 +52,7 @@ const CreateProject = () => {
       <PropertiesCreate
         properties={project.properties}
         errors={project.errors}
-        onChange={newProperties => setProject({ ...project, properties: newProperties })}
+        onChange={(newProperties) => setProject({ ...project, properties: newProperties })}
       />
     </TopPanel>
   );

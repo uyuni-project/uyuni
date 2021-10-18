@@ -958,7 +958,7 @@ end
 
 # Wait until a modal window with a specific content is shown
 When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
-  path = "//*[contains(@class, \"modal-body\") and contains(., \"#{title}\")]" \
+  path = "//*[contains(@class, \"modal-content\") and contains(., \"#{title}\")]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   dialog = find(:xpath, path, wait: timeout.to_i)
@@ -977,7 +977,7 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
 
-When(/^I enter URI, username and password for portus$/) do
+When(/^I enter URI, username and password for registry$/) do
   auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
     When I enter "#{$auth_registry}" as "uri"

@@ -9811,14 +9811,6 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="alphabar.label" xml:space="preserve">
         <source>Select first character</source>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-      <target state="needs-adaptation" />
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
-        <source> </source>
-      <target state="needs-adaptation" />
-      </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
       </trans-unit>
@@ -10716,6 +10708,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
+        <source>Invalid filter template</source>
       <target state="new" />
   </trans-unit>
       </body>

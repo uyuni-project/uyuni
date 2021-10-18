@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"POT-Creation-Date: 2021-09-28 11:27+0200\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -1063,19 +1063,6 @@ msgstr "설명: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s의 형식은 YYYYMMDD여야 합니다.\n"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 로그를 이메일로 전송 +++"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s의 %s 동기화 보고서"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
-
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -1351,10 +1338,18 @@ msgstr "SUSE Manager는 조직 데이터 동기화를 지원하지 않습니다.
 msgid "Skipping..."
 msgstr "건너뛰는 중..."
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr "+++ 로그를 이메일로 전송 +++"
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "%s의 SUSE Manager 내부 서버 동기화 보고서"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2047,3 +2042,8 @@ msgstr "  28 - 오류: --master는 --mount-point와 함께 사용하는 경우�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "오류: 알 수 없는 덤프 버전, %s 중 하나 시도"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s의 %s 동기화 보고서"

@@ -86,7 +86,7 @@ public enum SaltStateGeneratorService {
     /**
      * @param skip set skip set owner - used for testsuite
      */
-    public void setSkipSetOwber(boolean skip) {
+    public void setSkipSetOwner(boolean skip) {
         skipSetOwner = skip;
     }
 
@@ -427,14 +427,13 @@ public enum SaltStateGeneratorService {
 
     /**
      * Remove pillars and config channels assignments of a server.
-     * @param minionId the salt minionId
-     * @param machineId the salt machineId
+     * @param minion the salt minion
      */
-    public void removeServer(String minionId, String machineId) {
-        MinionPillarManager.INSTANCE.removePillar(minionId);
-        StatesAPI.removePackageState(machineId);
-        removeConfigChannelAssignmentsByMachineId(machineId);
-        removeActionChains(machineId);
+    public void removeServer(MinionServer minion) {
+        MinionPillarManager.INSTANCE.removePillar(minion);
+        StatesAPI.removePackageState(minion.getMachineId());
+        removeConfigChannelAssignmentsByMachineId(minion.getMachineId());
+        removeActionChains(minion.getMachineId());
     }
 
     /**
@@ -451,7 +450,7 @@ public enum SaltStateGeneratorService {
      */
     public void removeOrg(Org org) {
         MinionServerFactory.lookupByOrg(org.getId())
-                .forEach(m -> removeServer(m.getMinionId(), m.getMachineId()));
+                .forEach(this::removeServer);
         removeConfigChannelAssignments(org);
     }
 

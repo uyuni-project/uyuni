@@ -118,7 +118,8 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         String json = virtualNetsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user, host);
 
-        List<VirtualNetworkInfoJson> nets = GSON.fromJson(json, new TypeToken<List<VirtualNetworkInfoJson>>() {}.getType());
+        List<VirtualNetworkInfoJson> nets = GSON.fromJson(
+                json, new TypeToken<List<VirtualNetworkInfoJson>>() { }.getType());
         assertTrue(nets.stream().filter(net -> net.getName().equals("net0")).findFirst().isPresent());
         VirtualNetworkInfoJson net1 = nets.stream().filter(net -> net.getName().equals("net1")).findFirst().get();
         assertEquals("virbr0", net1.getBridge());
@@ -126,6 +127,9 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertFalse(net1.isAutostart());
         assertTrue(net1.isPersistent());
         assertEquals("860e49a3-d227-4105-95ca-d19dc8f0c8b6", net1.getUuid());
+
+        VirtualNetworkInfoJson net0 = nets.stream().filter(net -> net.getName().equals("net0")).findFirst().get();
+        assertNull(net0.getBridge());
     }
 
     public void testDevices() throws Exception {
@@ -133,7 +137,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         String json = virtualNetsController.devices(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/devices", host.getId()), response, user, host);
 
-        List<JsonObject> devs = GSON.fromJson(json, new TypeToken<List<JsonObject>>() {}.getType());
+        List<JsonObject> devs = GSON.fromJson(json, new TypeToken<List<JsonObject>>() { }.getType());
 
         // Physical function device
         JsonObject eth0 = devs.stream().filter(dev -> dev.get("name").getAsString().equals("eth0")).findFirst().get();
@@ -173,7 +177,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("start", virtAction.getState());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -196,7 +200,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("stop", virtAction.getState());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -219,7 +223,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("delete", virtAction.getState());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -250,7 +254,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals(41, def.getVlans().get(0).getTag());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -285,7 +289,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals(Integer.valueOf(24), def.getIpv4().orElseThrow().getPrefix());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 }

@@ -1,3 +1,22 @@
+- Fix virt_utils module python 2.6 compatibility (bsc#1191123)
+- Update proxy path on minion connection
+- deploy certificate on SLE Micro 5.1
+- Fix cpuinfo grain and virt_utils state python2 compatibility
+  (bsc#1191139, bsc#1191123)
+- Fix pkgset beacon to work with salt-minion 2016.11.10 (bsc#1189260)
+- Add 'flush_cache' flag to 'ansible.playbooks' call (bsc#1190405)
+- Update kernel live patch version on minion startup (bsc#1190276)
+- Fix virt grain python2 compatibility
+- disable unaccessible local repos before bootstrapping (bsc#1186405)
+- Fix mgrcompat state module to work with Salt 3003 and 3004
+
+-------------------------------------------------------------------
+Fri Sep 17 12:17:49 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * don't use libvirt API to get its version for the virt features grain
+  * implement package locking for salt minions
+
 -------------------------------------------------------------------
 Mon Aug 09 11:11:17 CEST 2021 - jgonzalez@suse.com
 

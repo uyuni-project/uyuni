@@ -28,6 +28,18 @@ test("check order by date function'", () => {
   expect(arr[0]).toEqual(eRaw);
 });
 
+describe("capitalize", () => {
+  test("simple cases", () => {
+    expect(Utils.capitalize("foo")).toEqual("Foo");
+    expect(Utils.capitalize("foo-bar")).toEqual("Foo Bar");
+    expect(Utils.capitalize("fooBar")).toEqual("Foobar");
+  });
+  test("acronym cases", () => {
+    expect(Utils.capitalize("FOO")).toEqual("FOO");
+    expect(Utils.capitalize("FO-O")).toEqual("FO-O");
+  });
+});
+
 describe("cancelable", () => {
   const { cancelable } = Utils;
 
@@ -51,7 +63,7 @@ describe("cancelable", () => {
     const onSuccess = jest.fn();
     const onCancel = jest.fn();
     let resolve: (value: void) => void;
-    const promise = new Promise(r => (resolve = r)).then(() => onSuccess());
+    const promise = new Promise((r) => (resolve = r)).then(() => onSuccess());
 
     const instance = cancelable(promise, onCancel);
     setTimeout(() => resolve(), 100);
@@ -65,7 +77,7 @@ describe("cancelable", () => {
     const onSuccess = jest.fn();
     const onCancel = jest.fn();
     let resolve: (value: void) => void;
-    const promise = new Promise(r => (resolve = r)).then(() => onSuccess());
+    const promise = new Promise((r) => (resolve = r)).then(() => onSuccess());
 
     const instance = cancelable(promise, onCancel);
     setTimeout(() => resolve(), 100);
@@ -75,7 +87,7 @@ describe("cancelable", () => {
     expect(onCancel).toBeCalledTimes(0);
   });
 
-  test("cancelling works", async done => {
+  test("cancelling works", async (done) => {
     const onSuccess = jest.fn();
     const onCancel = () => {
       expect(onSuccess).toBeCalledTimes(0);

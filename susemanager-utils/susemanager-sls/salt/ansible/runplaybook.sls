@@ -16,7 +16,8 @@ run_ansible_playbook:
   ansible.playbooks:
     - name: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}
-{%- if "inventory_path" in pillar %}
     - ansible_kwargs:
+        flush_cache: {{ pillar["flush_cache"] }}
+{%- if "inventory_path" in pillar %}
         inventory: {{ pillar["inventory_path"] }}
 {% endif %}

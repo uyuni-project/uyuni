@@ -2301,23 +2301,21 @@ def processCommandline():
         log(-1, _("ERROR: Check if your database is running."), stream=sys.stderr)
         sys.exit(20)
 
-    CFG.set("ISS_Parent", getDbIssParent())
+    CFG.set("ISS_PARENT", getDbIssParent())
     CFG.set("TRACEBACK_MAIL", OPTIONS.traceback_mail or CFG.TRACEBACK_MAIL)
     CFG.set("RHN_PARENT", idn_ascii_to_puny(OPTIONS.iss_parent or OPTIONS.server or
                                             CFG.ISS_PARENT or CFG.RHN_PARENT))
+    CFG.set("CA_CHAIN", OPTIONS.ca_cert or getDbCaChain(CFG.RHN_PARENT) or CFG.CA_CHAIN)
     if OPTIONS.server and not OPTIONS.iss_parent:
         # server option on comman line should override ISS parent from config
         CFG.set("ISS_PARENT", None)
     else:
         CFG.set("ISS_PARENT", idn_ascii_to_puny(OPTIONS.iss_parent or CFG.ISS_PARENT))
-        CFG.set("ISS_CA_CHAIN", OPTIONS.ca_cert or getDbCaChain(CFG.RHN_PARENT)
-                or CFG.CA_CHAIN)
 
     if not OPTIONS.ignore_proxy:
         CFG.set("HTTP_PROXY", idn_ascii_to_puny(OPTIONS.http_proxy or CFG.HTTP_PROXY))
         CFG.set("HTTP_PROXY_USERNAME", OPTIONS.http_proxy_username or CFG.HTTP_PROXY_USERNAME)
         CFG.set("HTTP_PROXY_PASSWORD", OPTIONS.http_proxy_password or CFG.HTTP_PROXY_PASSWORD)
-        CFG.set("CA_CHAIN", OPTIONS.ca_cert or CFG.CA_CHAIN)
 
     CFG.set("SYNC_TO_TEMP", OPTIONS.sync_to_temp or CFG.SYNC_TO_TEMP)
 

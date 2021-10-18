@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static org.quartz.TriggerKey.triggerKey;
+
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import static org.quartz.TriggerKey.triggerKey;
 
 
 /**

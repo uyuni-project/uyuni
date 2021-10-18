@@ -78,7 +78,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       "activationKeyChanged",
       "clearFields",
       "proxyChanged",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   hostChanged(event) {
@@ -116,7 +116,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       privKeyLoading: true,
     });
     const reader = new FileReader();
-    reader.onload = e => this.privKeyLoaded(e.target?.result);
+    reader.onload = (e) => this.privKeyLoaded(e.target?.result);
     reader.readAsText(event.target.files[0]);
   }
 
@@ -155,7 +155,7 @@ class BootstrapMinions extends React.Component<Props, State> {
 
   proxyChanged(event) {
     var proxyId = event.target.value;
-    var proxy = this.props.proxies.find(p => DEPRECATED_unsafeEquals(p.id, proxyId));
+    var proxy = this.props.proxies.find((p) => DEPRECATED_unsafeEquals(p.id, proxyId));
     var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
       proxy: event.target.value,
@@ -188,14 +188,14 @@ class BootstrapMinions extends React.Component<Props, State> {
       this.state.manageWithSSH ? "/rhn/manager/api/systems/bootstrap-ssh" : "/rhn/manager/api/systems/bootstrap",
       formData
     ).then(
-      data => {
+      (data) => {
         this.setState({
           success: data.success,
           messages: data.messages,
           loading: false,
         });
       },
-      xhr => {
+      (xhr) => {
         try {
           this.setState({
             success: false,
@@ -203,14 +203,13 @@ class BootstrapMinions extends React.Component<Props, State> {
             loading: false,
           });
         } catch (err) {
-          var errMessages =
-            DEPRECATED_unsafeEquals(xhr.status, 0)
-              ? [
-                  t(
-                    "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
-                  ),
-                ]
-              : [Network.errorMessageByStatus(xhr.status)];
+          var errMessages = DEPRECATED_unsafeEquals(xhr.status, 0)
+            ? [
+                t(
+                  "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
+                ),
+              ]
+            : [Network.errorMessageByStatus(xhr.status)];
           this.setState({
             success: false,
             messages: errMessages,
@@ -250,7 +249,7 @@ class BootstrapMinions extends React.Component<Props, State> {
     } else if (this.state.messages.length > 0) {
       messages = (
         <Messages
-          items={this.state.messages.map(function(msg) {
+          items={this.state.messages.map(function (msg) {
             return { severity: "error", text: msg };
           })}
         />
@@ -439,7 +438,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                 </option>
                 {this.props.availableActivationKeys
                   .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-                  .map(k => (
+                  .map((k) => (
                     <option key={k} value={k}>
                       {k}
                     </option>
@@ -454,11 +453,12 @@ class BootstrapMinions extends React.Component<Props, State> {
                 <option key="none" value="">
                   {t("None")}
                 </option>
-                {this.props.proxies.map(p => (
+                {this.props.proxies.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
                     {p.path.reduce(
-                      (acc, val, idx) => acc + "\u2192 " + val + (DEPRECATED_unsafeEquals(idx, p.path.length - 1) ? "" : " "),
+                      (acc, val, idx) =>
+                        acc + "\u2192 " + val + (DEPRECATED_unsafeEquals(idx, p.path.length - 1) ? "" : " "),
                       ""
                     )}
                   </option>
@@ -517,7 +517,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    window.addEventListener("beforeunload", e => {
+    window.addEventListener("beforeunload", (e) => {
       if (this.state.loading) {
         var confirmationMessage = "Are you sure you want to close this page while bootstrapping is in progress ?";
         (e || window.event).returnValue = confirmationMessage;
@@ -527,7 +527,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = id =>
+export const renderer = (id) =>
   SpaRenderer.renderNavigationReact(
     <BootstrapMinions availableActivationKeys={window.availableActivationKeys} proxies={window.proxies} />,
     document.getElementById(id)

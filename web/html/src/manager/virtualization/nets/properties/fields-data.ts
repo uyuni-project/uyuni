@@ -8,7 +8,7 @@ export const mapping = {
     bridge_name: true,
     interfaces: true,
     virtualport_types: ["open vSwitch", "MidoNet"],
-    vlan_trunk: model => model.virtualport_type === "openvswitch",
+    vlan_trunk: (model) => model.virtualport_type === "openvswitch",
   },
   nat: {
     description: t("Virtual network using the host IP routing stack and NAT"),
@@ -40,7 +40,7 @@ export const mapping = {
     pf: true,
     interfaces: true,
     virtualport_types: ["802.1Qbh"],
-    vlan: model => model.macvtap_mode === "passthrough",
+    vlan: (model) => model.macvtap_mode === "passthrough",
   },
   hostdev: {
     label: t("SR-IOV pool"),

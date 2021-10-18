@@ -17,13 +17,13 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;

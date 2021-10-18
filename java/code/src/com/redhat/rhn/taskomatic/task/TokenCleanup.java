@@ -20,8 +20,10 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
 import com.redhat.rhn.testing.UserTestUtils;
 

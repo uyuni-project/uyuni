@@ -18,8 +18,8 @@ package com.redhat.rhn.domain.action.cluster.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
 import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
 import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.model.clusters.Cluster;
 
 public class ClusterActionTest extends JMockBaseTestCaseWithUser {
@@ -38,8 +39,8 @@ public class ClusterActionTest extends JMockBaseTestCaseWithUser {
 
         Cluster cluster = createTestCluster(user, minion);
 
-        ClusterGroupRefreshNodesAction testAction = (ClusterGroupRefreshNodesAction) ActionFactoryTest.createNewAction(user,
-                ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES);
+        ClusterGroupRefreshNodesAction testAction = (ClusterGroupRefreshNodesAction) ActionFactoryTest
+                .createNewAction(user, ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES);
         testAction.setCluster(cluster);
 
         saveAction(testAction);

@@ -15,9 +15,6 @@ type Props = {
   /** Function to trigger when the Submit button is clicked */
   onSubmit?: Function;
 
-  /** Function to trigger when the Submit button is clicked while the model is invalid */
-  onSubmitInvalid?: Function;
-
   /** A reference to pass to the <form> element */
   formRef?: React.LegacyRef<HTMLFormElement>;
 
@@ -61,7 +58,6 @@ export const FormContext = React.createContext<Partial<FormContextType>>({});
 export class Form extends React.Component<Props> {
   static defaultProps = {
     onSubmit: undefined,
-    onSubmitInvalid: undefined,
     formRef: undefined,
     divClass: "",
     onValidate: undefined,
@@ -88,7 +84,7 @@ export class Form extends React.Component<Props> {
   };
 
   allValid(): boolean {
-    return Object.keys(this.inputs).every(name => this.inputs[name]?.isValid());
+    return Object.keys(this.inputs).every((name) => this.inputs[name]?.isValid());
   }
 
   validateForm = () => {
@@ -128,14 +124,12 @@ export class Form extends React.Component<Props> {
     event.preventDefault();
     if (this.allValid() && this.props.onSubmit) {
       this.props.onSubmit(this.props.model, event);
-    } else if (this.props.onSubmitInvalid) {
-      this.props.onSubmitInvalid(this.props.model, event);
     }
   };
 
   componentDidUpdate(prevProps: any) {
     if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
-      Object.keys(this.inputs).forEach(name => {
+      Object.keys(this.inputs).forEach((name) => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
           this.inputs[name]?.validate(this.props.model[name], this.props.errors && this.props.errors[name]);

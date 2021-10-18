@@ -17,12 +17,13 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.frontend.xmlrpc.serializer.PinnedSubscriptionSerializer;
-import junit.framework.TestCase;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import junit.framework.TestCase;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * PinnedSubscriptionSerializer test

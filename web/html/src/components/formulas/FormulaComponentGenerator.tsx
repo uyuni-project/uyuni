@@ -34,14 +34,14 @@ export type ElementDefinition = {
 };
 
 type Context = {
-  scope: any | null,
-  layout: any,
-  values: any,
-  onFormulaChange?: any | null,
-  getCleanValues?: any | null,
-  clearValues: any | null,
-  validate: any | null,
-}
+  scope: any | null;
+  layout: any;
+  values: any;
+  onFormulaChange?: any | null;
+  getCleanValues?: any | null;
+  clearValues: any | null;
+  validate: any | null;
+};
 
 export const FormulaFormContext = React.createContext<Context>({
   scope: null,
@@ -140,7 +140,7 @@ export function generateFormulaComponentForId(
           <button
             className="btn btn-default"
             title={t("Reset")}
-            onClick={function(event) {
+            onClick={function (event) {
               event.preventDefault();
               console.warn("Reseting color picker is not implemented!");
               /* TODO: reset Value */
@@ -407,7 +407,9 @@ export function text(txt) {
 }
 
 export const FormulaFormRenderer = () => (
-  <FormulaFormContext.Consumer>{context => <UnwrappedFormulaFormRenderer {...context} />}</FormulaFormContext.Consumer>
+  <FormulaFormContext.Consumer>
+    {(context) => <UnwrappedFormulaFormRenderer {...context} />}
+  </FormulaFormContext.Consumer>
 );
 
 type UnwrappedFormulaFormRendererProps = {
@@ -424,7 +426,7 @@ type UnwrappedFormulaFormRendererProps = {
 class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormRendererProps> {
   submitButton = React.createRef<HTMLInputElement>();
 
-  handleChange = event => {
+  handleChange = (event) => {
     let id, value;
     if (event.id) {
       id = event.id;
@@ -453,7 +455,7 @@ class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormR
     this.submitButton.current?.click();
   };
 
-  dontSubmitForm = event => {
+  dontSubmitForm = (event) => {
     event.preventDefault();
   };
 
@@ -475,7 +477,7 @@ class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormR
       <form
         id="formula-form"
         className="form-horizontal"
-        onSubmit={event => {
+        onSubmit={(event) => {
           event.preventDefault();
           return false;
         }}
@@ -555,8 +557,8 @@ function preprocessCleanValues(values, layout) {
 
     if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
       result[key] = value
-        .map(entry => preprocessCleanValues(entry, element.$prototype))
-        .filter(entry => entry["$key"] !== "")
+        .map((entry) => preprocessCleanValues(entry, element.$prototype))
+        .filter((entry) => entry["$key"] !== "")
         .reduce((acc, entry) => {
           acc[entry["$key"]] = entry;
           delete entry["$key"];
@@ -564,15 +566,15 @@ function preprocessCleanValues(values, layout) {
         }, {});
     } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
       result[key] = value
-        .filter(entry => entry[0] !== "")
+        .filter((entry) => entry[0] !== "")
         .reduce((acc, entry) => {
           acc[entry[0]] = entry[1];
           return acc;
         }, {});
     } else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
-      result[key] = value.map(entry => preprocessCleanValues(entry, element.$prototype));
+      result[key] = value.map((entry) => preprocessCleanValues(entry, element.$prototype));
     } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_LIST) {
-      result[key] = value.filter(entry => entry !== "");
+      result[key] = value.filter((entry) => entry !== "");
       // we need to recur to groups as they can contain edit-groups that need an adjustment
     } else if (element !== undefined && (element.$type === "group" || element.$type === "namespace")) {
       result[key] = preprocessCleanValues(value, element);
@@ -651,13 +653,13 @@ export class FormulaFormContextProvider extends React.Component<
     this.setFormulaValues(this.state.formulaValues);
   };
 
-  registerValidationTrigger = validationTrigger => {
+  registerValidationTrigger = (validationTrigger) => {
     this.setState({
       validationTrigger: validationTrigger,
     });
   };
 
-  setFormulaValues = values => {
+  setFormulaValues = (values) => {
     this.setState({
       formulaValues: values,
       formulaChanged: true,
@@ -711,7 +713,7 @@ export class FormulaFormContextProvider extends React.Component<
         if (meta["required"]) {
           const required = evalExpression(meta["id"], meta["required"] + "", formulaForm);
           if (required) {
-            if (Array.isArray(val) && val.some(v => !v)) {
+            if (Array.isArray(val) && val.some((v) => !v)) {
               requiredErrors.push(meta["name"]);
             } else if (!val) {
               requiredErrors.push(meta["name"]);
@@ -739,7 +741,7 @@ export class FormulaFormContextProvider extends React.Component<
             const re = new RegExp(regex, "u");
             if (Array.isArray(value)) {
               // match each value
-              if (!value.every(v => re.test(v))) {
+              if (!value.every((v) => re.test(v))) {
                 errors.push(meta["name"]);
               }
             } else {
@@ -839,7 +841,7 @@ export class FormulaFormContextProvider extends React.Component<
    * Some subtypes of edit-group need special handling (e.g. nested dictionary
    * needs to be converted to lists).
    */
-  adjustEditGroup = element => {
+  adjustEditGroup = (element) => {
     // Adjust common edit-group attributes
     if (element.$prototype.$type === undefined) {
       element.$prototype.$type = "group";
@@ -883,13 +885,13 @@ export class FormulaFormContextProvider extends React.Component<
    */
   adjustNestedDefault = (element, defVal) => {
     // helper function for setting values from the prototype
-    const setMissingValues = value => {
+    const setMissingValues = (value) => {
       Object.keys(element.$prototype)
-        .filter(att => !att.startsWith("$") && !Object.keys(value).includes(att))
-        .forEach(att => (value[att] = element.$prototype[att].$default));
+        .filter((att) => !att.startsWith("$") && !Object.keys(value).includes(att))
+        .forEach((att) => (value[att] = element.$prototype[att].$default));
     };
 
-    const recurOnVals = value => {
+    const recurOnVals = (value) => {
       return Object.entries(value)
         .map(([nestedName, nestedVal]) => [
           nestedName,
@@ -911,7 +913,7 @@ export class FormulaFormContextProvider extends React.Component<
         return value;
       });
     } else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
-      return (defVal || []).map(defEntry => {
+      return (defVal || []).map((defEntry) => {
         defEntry = recurOnVals(defEntry);
         setMissingValues(defEntry);
         return defEntry;
@@ -964,7 +966,7 @@ export class FormulaFormContextProvider extends React.Component<
     return get(defValue, "");
   };
 
-  defaultValueForElement = element => {
+  defaultValueForElement = (element) => {
     return this.defaultValue(element.$type, element.$default, element.$values);
   };
 
@@ -982,7 +984,7 @@ export class FormulaFormContextProvider extends React.Component<
         let value: any = null;
         let element = layout[key];
         let elementId;
-        if (prototypeParentId && typeof elementIndex !== 'undefined' && elementIndex !== null) {
+        if (prototypeParentId && typeof elementIndex !== "undefined" && elementIndex !== null) {
           elementId = prototypeParentId + "#" + elementIndex + "#" + element.$id;
         } else {
           elementId = (layout.$id ? layout.$id + "#" : "") + element.$id;
@@ -1058,7 +1060,7 @@ export class FormulaFormContextProvider extends React.Component<
     return deepCopy(generateValuesInternal(layout, group_data, system_data));
   };
 
-  clearValues = clearValuesConfirmation => {
+  clearValues = (clearValuesConfirmation) => {
     const layout = this.state.formulaLayout;
     if (clearValuesConfirmation()) {
       let clearValues: any = {};

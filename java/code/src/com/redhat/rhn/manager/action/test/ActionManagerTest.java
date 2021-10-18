@@ -95,7 +95,10 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -289,7 +292,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 i -> {
                     try {
                         return MinionServerFactoryTest.createTestMinionServer(user);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });
@@ -454,10 +458,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                     try {
                         if (i < 3) {
                             return MinionServerFactoryTest.createTestMinionServer(user);
-                        } else {
+                        }
+                        else {
                             return ServerFactoryTest.createTestServer(user, true);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });
@@ -905,7 +911,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
         } });
 
         MinionServer srvr = MinionServerFactoryTest.createTestMinionServer(user);

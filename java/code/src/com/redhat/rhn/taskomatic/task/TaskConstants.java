@@ -50,6 +50,9 @@ public class TaskConstants {
     public static final String TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES =
         "errataqueue_find_candidates";
 
+    public static final String TASK_QUERY_AUTO_ERRATA_SYSTEMS =
+        "auto_errata_systems";
+
     public static final String TASK_QUERY_AUTO_ERRATA_CANDIDATES =
         "auto_errata_candidates";
 

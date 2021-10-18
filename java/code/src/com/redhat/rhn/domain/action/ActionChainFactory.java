@@ -17,23 +17,23 @@
  */
 package com.redhat.rhn.domain.action;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.ObjectNotFoundException;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.ObjectNotFoundException;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -303,6 +303,16 @@ public class ActionChainFactory extends HibernateFactory {
                 put("sortOrder", sortOrder);
             } }
         );
+    }
+
+    /**
+     * Returns all existing ActionChains in the database
+     *
+     * @return an ActionChain list
+     */
+    public static List<ActionChain> getAllActionChains() {
+        return singleton.listObjectsByNamedQuery(
+                "ActionChain.getAllActionChains", new HashMap<String, Object>());
     }
 
     /**

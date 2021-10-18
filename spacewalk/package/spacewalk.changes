@@ -1,3 +1,6 @@
+- Added source with license.
+- Removed spacewalk-selinux dependency.
+
 -------------------------------------------------------------------
 Mon Aug 09 10:10:53 CEST 2021 - jgonzalez@suse.com
 

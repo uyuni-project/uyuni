@@ -8595,12 +8595,6 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="alphabar.label" xml:space="preserve">
         <source>Select first character</source>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-      </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
-        <source> </source>
-      </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
       </trans-unit>
@@ -8913,6 +8907,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
       </trans-unit>
+      <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
+        <source>Invalid filter template</source>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
       </trans-unit>
@@ -8927,6 +8924,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
+        <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
       </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>

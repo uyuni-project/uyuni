@@ -7,13 +7,15 @@
     "susemanager-nodejs-sdk-devel": "1.0.0"
   },
   "scripts": {
+    "all": "yarn install && npm-run-all -clps --aggregate-output build lint test tsc",
     "clean": "rm -rf node_modules && rm -rf dist",
     "dev": "webpack -d --config build/webpack.config.js --mode development",
     "watch": "webpack -d --config build/webpack.config.js --mode development --watch",
     "proxy": "webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
     "build": "node build",
     "build:novalidate": "BUILD_VALIDATION=false node build",
-    "lint": "eslint . -f codeframe",
+    "lint": "eslint . -f codeframe --fix",
+    "lint:production": "eslint . -f codeframe --config .eslintrc.production.js",
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",

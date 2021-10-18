@@ -4,11 +4,10 @@ import { Text, DateTime, Radio, Select, Form } from "components/input";
 import AppStreamsForm from "./appstreams/appstreams";
 import { FilterFormType } from "../shared/type/filter.type";
 import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
-import useUserLocalization from "core/user-localization/use-user-localization";
-import { Utils } from "utils/functions";
 import produce from "utils/produce";
 
 import TemplatesForm from "./templates";
+import { localizedMoment } from "utils";
 
 enum FilterBy {
   Type = "Type",
@@ -24,15 +23,15 @@ export type Props = {
 };
 
 const FilterForm = (props: Props) => {
-  const { timezone, localTime } = useUserLocalization();
-  const [filterBy, setFilterBy] = useState(FilterBy.Type);
+  const initialFilterBy = props.filter.template ? FilterBy.Template : FilterBy.Type;
+  const [filterBy, setFilterBy] = useState(initialFilterBy);
 
   // If the filter type changes, resets the matcher filter
   const { editing, filter, onChange } = props;
   useEffect(() => {
     if (!editing) {
       onChange(
-        produce(filter, draft => {
+        produce(filter, (draft) => {
           const selectedFilter = findClmFilterByKey(filter.type);
           if (selectedFilter && selectedFilter.matchers.length === 1) {
             draft.matcher = selectedFilter.matchers[0].key;
@@ -43,7 +42,7 @@ const FilterForm = (props: Props) => {
             draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
           }
           if (clmFilterOptions.ISSUE_DATE.key === filter.type) {
-            draft[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(localTime || "");
+            draft[clmFilterOptions.ISSUE_DATE.key] = localizedMoment();
           }
         })
       );
@@ -59,7 +58,7 @@ const FilterForm = (props: Props) => {
       model={{ ...props.filter }}
       errors={props.errors}
       onValidate={props.onClientValidate}
-      onChange={model => {
+      onChange={(model) => {
         props.onChange(model);
       }}
     >
@@ -75,7 +74,7 @@ const FilterForm = (props: Props) => {
             name="filter_name"
             label={t("Filter Name")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             required
             disabled={props.editing}
           />
@@ -85,7 +84,7 @@ const FilterForm = (props: Props) => {
             name="labelPrefix"
             label={t("Prefix")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             hint={t("The prefix will be prepended to the name of every individual filter created by the template")}
             required
             disabled={props.editing}
@@ -114,12 +113,12 @@ const FilterForm = (props: Props) => {
               name="type"
               label={t("Filter Type")}
               labelClass="col-md-3"
-              divClass="col-md-6"
+              divClass="col-md-8"
               required
               disabled={props.editing}
               options={getClmFiltersOptions()}
-              getOptionValue={filter => filter.key}
-              formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+              getOptionValue={(filter) => filter.key}
+              formatOptionLabel={(filter) => `${filter.entityType.text} (${filter.text})`}
             />
 
             {selectedFilterMatchers?.length ? (
@@ -127,12 +126,12 @@ const FilterForm = (props: Props) => {
                 name="matcher"
                 label={t("Matcher")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
                 disabled={props.editing}
                 options={selectedFilterMatchers}
-                getOptionValue={matcher => matcher.key}
-                getOptionLabel={matcher => matcher.text}
+                getOptionValue={(matcher) => matcher.key}
+                getOptionLabel={(matcher) => matcher.text}
               />
             ) : null}
 
@@ -141,27 +140,27 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.NAME.key}
                 label={t("Package Name")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
 
             {clmFilterOptions.NEVRA.key === filterType && (
               <>
-                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
-                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="architecture" label={t("Architecture")} labelClass="col-md-3" divClass="col-md-6" />
+                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-8" />
+                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="architecture" label={t("Architecture")} labelClass="col-md-3" divClass="col-md-8" />
               </>
             )}
 
             {clmFilterOptions.PACKAGE_NEVR.key === filterType && (
               <>
-                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
-                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-8" />
+                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-8" required />
               </>
             )}
 
@@ -170,7 +169,7 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.ADVISORY_NAME.key}
                 label={t("Advisory name")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -186,7 +185,7 @@ const FilterForm = (props: Props) => {
                 ]}
                 label={t("Advisory Type")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
               />
             )}
 
@@ -195,9 +194,8 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.ISSUE_DATE.key}
                 label={t("Issued")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
-                timezone={timezone}
               />
             )}
 
@@ -206,7 +204,7 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.SYNOPSIS.key}
                 label={t("Synopsis")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -222,7 +220,7 @@ const FilterForm = (props: Props) => {
                 openOption
                 label={t("Advisory Keywords")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
               />
             )}
 
@@ -231,7 +229,27 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.PACKAGE_NAME.key}
                 label={t("Package Name")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PACKAGE_PROVIDES_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PACKAGE_PROVIDES_NAME.key}
+                label={t("Package Provides Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PROVIDES_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PROVIDES_NAME.key}
+                label={t("Provides Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -252,7 +270,7 @@ const FilterForm = (props: Props) => {
                 ]}
                 label={t("Rule")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
               />
             )}
           </React.Fragment>

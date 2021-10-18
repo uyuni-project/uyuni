@@ -13,7 +13,7 @@ When(/^I prepare configuration for "([^"]*)" terminal deployment$/) do |environm
   }
   config_items = {
     SERVER_URL: $server.full_hostname,
-    BUILDHOST: buildhosts[environment].full_hostname,
+    BUILDHOST: buildhosts[environment.to_sym].full_hostname,
     RBS: $proxy.full_hostname
   }
   config_items.each do |key, value|

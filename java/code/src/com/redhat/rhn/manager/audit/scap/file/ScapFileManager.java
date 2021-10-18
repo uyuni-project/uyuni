@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.manager.audit.scap.file;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ScapFileManager - Handling of full SCAP results assigned to a rhnXccdfTestResult

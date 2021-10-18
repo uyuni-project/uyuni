@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import java.util.Date;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
 
 import org.quartz.JobExecutionContext;
 
-import com.redhat.rhn.manager.audit.CVEAuditManager;
+import java.util.Date;
 
 /**
  * Trigger the population of the suseCVEServerChannels table, which is

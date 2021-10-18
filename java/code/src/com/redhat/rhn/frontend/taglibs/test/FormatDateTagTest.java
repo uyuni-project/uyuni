@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
+
+import com.mockobjects.helpers.TagTestHelper;
+import com.mockobjects.servlet.MockJspWriter;
+
 import java.util.Date;
+
 import javax.servlet.jsp.JspException;
 
 public class FormatDateTagTest extends RhnBaseTestCase {

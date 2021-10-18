@@ -17,10 +17,10 @@ function isInput(input: HTMLElement): input is HTMLInputElement {
 export const getFieldValuesByName = (formName: string, fieldName: string) => {
   const form = screen.getByTitle(formName);
   const fields = queryAllByName(form, fieldName);
-  return fields.filter(isInput).map(field => field.value);
+  return fields.filter(isInput).map((field) => field.value);
 };
 
-const asyncAnimationFrame = () => new Promise(resolve => window.requestAnimationFrame(() => resolve(undefined)));
+const asyncAnimationFrame = () => new Promise((resolve) => window.requestAnimationFrame(() => resolve(undefined)));
 
 /**
  * This is a usable alternative for @testing-library/user-event's `type()`.

@@ -55,9 +55,10 @@ def do_repo_list(self, args, doreturn=False):
 
     if doreturn:
         return repos
-    else:
-        if repos:
-            print('\n'.join(sorted(repos)))
+    if repos:
+        print('\n'.join(sorted(repos)))
+
+    return None
 
 ####################
 
@@ -148,6 +149,8 @@ def complete_repo_addfilters(self, text, line, beg, end):
         return tab_completer(self.do_repo_list('', True),
                              text)
 
+    return None
+
 
 def do_repo_addfilters(self, args):
     # arguments can start with -, so don't parse arguments in the normal way
@@ -163,7 +166,7 @@ def do_repo_addfilters(self, args):
         flag = arg[0]
         repofilter = arg[1:]
 
-        if not (flag == '+' or flag == '-'):
+        if not flag in ('+', '-'):
             logging.error(_N('Each filter must start with + or -'))
             return 1
 
@@ -200,7 +203,7 @@ def do_repo_removefilters(self, args):
         flag = arg[0]
         repofilter = arg[1:]
 
-        if not (flag == '+' or flag == '-'):
+        if not flag in('+', '-'):
             logging.error(_N('Each filter must start with + or -'))
             return 1
 
@@ -239,7 +242,7 @@ def do_repo_setfilters(self, args):
         flag = arg[0]
         repofilter = arg[1:]
 
-        if not (flag == '+' or flag == '-'):
+        if not flag in ('+', '-'):
             logging.error(_N('Each filter must start with + or -'))
             return 1
 
@@ -388,6 +391,8 @@ def complete_repo_rename(self, text, line, beg, end):
         return tab_completer(self.do_repo_list('', True),
                              text)
 
+    return None
+
 
 def do_repo_rename(self, args):
     arg_parser = get_argument_parser()
@@ -423,6 +428,8 @@ def complete_repo_updateurl(self, text, line, beg, end):
     if len(line.split(' ')) == 2:
         return tab_completer(self.do_repo_list('', True),
                              text)
+
+    return None
 
 
 def do_repo_updateurl(self, args):

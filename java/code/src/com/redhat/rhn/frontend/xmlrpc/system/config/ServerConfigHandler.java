@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.config;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -40,7 +42,9 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -56,8 +60,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * ServerConfigChannelHandler

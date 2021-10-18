@@ -102,7 +102,7 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
             buf.append(getStopWatch().getTime() / 1000.00);
             buf.append(" seconds");
 
-            log.info(buf.toString());
+            log.info(buf);
         }
         catch (RuntimeException e) {
             log.error("postProcess error CALL: " + invocation.getHandlerName() +
@@ -136,7 +136,10 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
             buf.append(getStopWatch().getTime() / 1000.00);
             buf.append(" seconds");
 
-            log.error(buf.toString(), exception);
+            buf.append(System.lineSeparator());
+            buf.append(exception);
+
+            log.info(buf);
         }
         catch (RuntimeException e) {
             log.error("postProcess error CALL: " + invocation.getHandlerName() +

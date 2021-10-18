@@ -24,6 +24,7 @@ Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+Source:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -85,17 +86,6 @@ Requires:       susemanager-sls
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
-%if 0%{?rhel} || 0%{?fedora}
-# SELinux
-Requires:       mgr-osa-dispatcher-selinux
-Requires:       spacewalk-selinux
-Obsoletes:      spacewalk-monitoring-selinux < 2.3
-%endif
-
-%if 0%{?rhel} == 6
-Requires:       selinux-policy-base >= 3.7.19-93
-%endif
-
 Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
 
@@ -142,7 +132,7 @@ inventory, provision, update and control your Linux machines.
 Version for PostgreSQL database backend.
 
 %prep
-#nothing to do here
+%setup -q
 
 %build
 #nothing to do here
@@ -166,6 +156,8 @@ done
 
 %files common
 %{_sysconfdir}/*-release
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup

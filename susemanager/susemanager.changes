@@ -1,3 +1,23 @@
+- Add aarch64 bootstrap repositories for CentOS 7/8, Oracle Linux 7/8,
+  Rocky Linux8, AlmaLinux8, Amazon Linux 2 and openSUSE Leap 15.3
+- Add the gnupg package for ubuntu which is then needed by apt-key (bsc#1187998)
+
+-------------------------------------------------------------------
+Fri Sep 17 12:13:57 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add SLE 15 SAP Product ID to SLE15 bootstrap repositories, as
+    it is required to get python3-M2Crypto (bsc#1189422)
+  * Abort migration if data_directory is defined at the PostgreSQL
+    configuration file
+  * Package 'snapper' is now optional.
+
+-------------------------------------------------------------------
+Fri Aug 13 12:23:43 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+- Tell the user to use the new PostgreSQL migration script
+
 -------------------------------------------------------------------
 Mon Aug 09 11:09:21 CEST 2021 - jgonzalez@suse.com
 

@@ -102,7 +102,7 @@ public class MenuTreeTest extends TestCase {
         }
 
         // check if deepest active level has expected dir value
-        Integer lastIndex = bestActiveDir.size()-1;
+        Integer lastIndex = bestActiveDir.size() - 1;
         assertTrue(bestActiveDir.get(lastIndex).getDirectories().get(0)
                 .equalsIgnoreCase("/rhn/errata/manage"));
     }

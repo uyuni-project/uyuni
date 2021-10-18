@@ -21,7 +21,9 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
+
 import com.suse.manager.webui.utils.gson.ChannelsJson;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

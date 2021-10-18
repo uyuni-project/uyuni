@@ -18,12 +18,13 @@ package com.suse.manager.webui.controllers.clusters.mappers;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.clusters.ClusterNode;
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.clusters.ClusterProvider;
+import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.controllers.clusters.response.ClusterNodeResponse;
-import com.suse.manager.webui.controllers.clusters.response.ClusterResponse;
 import com.suse.manager.webui.controllers.clusters.response.ClusterProviderResponse;
+import com.suse.manager.webui.controllers.clusters.response.ClusterResponse;
 import com.suse.manager.webui.controllers.clusters.response.MessageResponse;
 import com.suse.manager.webui.controllers.clusters.response.ServerGroupResponse;
 import com.suse.manager.webui.controllers.clusters.response.ServerResponse;

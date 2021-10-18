@@ -17,11 +17,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.Writer;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link ContentProjectFilter}

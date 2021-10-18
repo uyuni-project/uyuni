@@ -4833,16 +4833,6 @@ public class SystemHandler extends BaseHandler {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
             if (autoUpdate.booleanValue()) {
-                if (server.getAutoUpdate().equals("N")) {
-                    // schedule errata update only it if the value has changed
-                    try {
-                        ActionManager.scheduleAllErrataUpdate(loggedInUser, server,
-                                new Date());
-                    }
-                    catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-                        throw new TaskomaticApiException(e.getMessage());
-                    }
-                }
                 server.setAutoUpdate("Y");
             }
             else {
@@ -5619,6 +5609,29 @@ public class SystemHandler extends BaseHandler {
             String release) {
         return SystemManager.listSystemsWithPackage(loggedInUser,
                 name, version, release);
+    }
+
+    /**
+     * Method to list systems having a given entitlement
+     *
+     * @param loggedInUser the current user
+     * @param entitlementName the entitlement name to look for
+     * @return an array of systemOverview objects
+     *
+     * @xmlrpc.doc Lists the systems that have the given entitlement
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("string", "entitlementName", "the entitlement name")
+     * @xmlrpc.returntype
+     *              #array_begin()
+     *                  $SystemOverviewSerializer
+     *              #array_end()
+     */
+    public List<SystemOverview> listSystemsWithEntitlement(User loggedInUser, String entitlementName) {
+        Entitlement entitlement = EntitlementManager.getByName(entitlementName);
+        if (entitlement == null) {
+            throw new InvalidEntitlementException(entitlementName);
+        }
+        return SystemManager.listSystemsWithEntitlement(loggedInUser, entitlement);
     }
 
     /**
@@ -7769,6 +7782,68 @@ public class SystemHandler extends BaseHandler {
      */
     public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
         return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
+    }
+
+    /**
+     * Refresh all the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh all the pillar data of a list of systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, List<Integer> systemIds) {
+        return refreshPillar(loggedInUser, null, systemIds);
+    }
+
+    /**
+     * Refresh the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param subset the string representation of the pillar subset
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh the pillar data of a list of systems. The subset value represents the pillar to be refreshed
+     * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "subset", "subset of the pillar to refresh.")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> systemIds) {
+        List<Integer> skipped = new ArrayList<>();
+        MinionPillarManager.PillarSubset subsetValue = subset != null ?
+                MinionPillarManager.PillarSubset.valueOf(subset.toUpperCase()) :
+                null;
+        for (Integer sysId : systemIds) {
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
+                Server system = SystemManager.lookupByIdAndUser(Long.valueOf(sysId), loggedInUser);
+                system.asMinionServer().ifPresentOrElse(
+                    minionServer -> {
+                        if (subsetValue != null) {
+                            MinionPillarManager.INSTANCE.generatePillar(minionServer, true, subsetValue);
+                        }
+                        else {
+                            MinionPillarManager.INSTANCE.generatePillar(minionServer);
+                        }
+                    },
+                    () -> {
+                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        skipped.add(sysId);
+                    }
+                );
+            }
+            else {
+                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                skipped.add(sysId);
+            }
+        }
+        return skipped;
     }
 
     /**

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 13:44+0200\n"
-"PO-Revision-Date: 2021-06-17 08:58+0000\n"
+"POT-Creation-Date: 2021-09-28 11:27+0200\n"
+"PO-Revision-Date: 2021-08-23 04:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -323,7 +323,7 @@ msgid "Software Channels"
 msgstr "소프트웨어 채널"
 
 #: ../src/spacecmd/activationkey.py:961 ../src/spacecmd/configchannel.py:801
-#: ../src/spacecmd/configchannel.py:908 ../src/spacecmd/system.py:3075
+#: ../src/spacecmd/configchannel.py:916 ../src/spacecmd/system.py:3075
 msgid "Configuration Channels"
 msgstr "구성 채널"
 
@@ -536,7 +536,7 @@ msgstr "원래 키:"
 msgid "Cloned Key:"
 msgstr "복제된 키:"
 
-#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1425
+#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1433
 msgid "Error - must specify either -c or -x options!"
 msgstr "오류 - -c 또는 -x 옵션을 지정해야 합니다!"
 
@@ -577,7 +577,7 @@ msgstr "없습니다. 건너뜁니다!"
 msgid "Cloning key %s as %s"
 msgstr "%s 키를 %s(으)로 복제"
 
-#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1477
+#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1485
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "%s을(를) %s(으)로 복제하지 못함"
@@ -852,7 +852,7 @@ msgid "Binary:          %s"
 msgstr "바이너리:          %s"
 
 #: ../src/spacecmd/configchannel.py:299 ../src/spacecmd/configchannel.py:732
-#: ../src/spacecmd/configchannel.py:982 ../src/spacecmd/kickstart.py:1905
+#: ../src/spacecmd/configchannel.py:990 ../src/spacecmd/kickstart.py:1905
 #: ../src/spacecmd/snippet.py:162
 msgid "Contents"
 msgstr "컨텐트"
@@ -1034,16 +1034,16 @@ msgstr "모드 [%s]:"
 msgid "SELinux Context [%s]:"
 msgstr "SELinux 컨텍스트 [%s]:"
 
-#: ../src/spacecmd/configchannel.py:611 ../src/spacecmd/configchannel.py:947
+#: ../src/spacecmd/configchannel.py:611 ../src/spacecmd/configchannel.py:955
 msgid "Revision [next]:"
 msgstr "리비전 [다음]:"
 
-#: ../src/spacecmd/configchannel.py:629 ../src/spacecmd/configchannel.py:952
+#: ../src/spacecmd/configchannel.py:629 ../src/spacecmd/configchannel.py:960
 msgid "The revision must be an integer"
 msgstr "리비전은 정수여야 함"
 
 #. get the contents of the script
-#: ../src/spacecmd/configchannel.py:632 ../src/spacecmd/configchannel.py:934
+#: ../src/spacecmd/configchannel.py:632 ../src/spacecmd/configchannel.py:942
 #: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:1956
 #: ../src/spacecmd/snippet.py:142
 msgid "Read an existing file [y/N]:"
@@ -1057,7 +1057,7 @@ msgstr "파일:"
 msgid "The path is required"
 msgstr "경로는 필수입니다."
 
-#: ../src/spacecmd/configchannel.py:666 ../src/spacecmd/configchannel.py:958
+#: ../src/spacecmd/configchannel.py:666 ../src/spacecmd/configchannel.py:966
 msgid "You must provide the file contents"
 msgstr "파일 내용을 입력해야 합니다."
 
@@ -1145,7 +1145,7 @@ msgstr ""
 msgid "Select:"
 msgstr "선택:"
 
-#: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:920
+#: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:928
 #: ../src/spacecmd/softwarechannel.py:1342
 #, python-format
 msgid "%s is not a valid channel"
@@ -1159,19 +1159,19 @@ msgstr "유효한 채널을 가져올 수 없습니다."
 msgid "Path:"
 msgstr "경로:"
 
-#: ../src/spacecmd/configchannel.py:841 ../src/spacecmd/configchannel.py:971
+#: ../src/spacecmd/configchannel.py:841 ../src/spacecmd/configchannel.py:979
 msgid "No config channel specified!"
 msgstr "구성 채널이 지정되지 않았습니다!"
 
-#: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:976
+#: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:984
 msgid "Error obtaining file info"
 msgstr "파일 정보를 가져오는 중 오류"
 
-#: ../src/spacecmd/configchannel.py:881
+#: ../src/spacecmd/configchannel.py:889
 msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls: init.sls 파일 업데이트"
 
-#: ../src/spacecmd/configchannel.py:882
+#: ../src/spacecmd/configchannel.py:890
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1189,52 +1189,52 @@ msgstr ""
 "  -f 파일 컨텐트의 로컬 경로\n"
 "  -y 자동으로 파일 컨텐트 진행\n"
 
-#: ../src/spacecmd/configchannel.py:930
+#: ../src/spacecmd/configchannel.py:938
 #, python-format
 msgid "No existing file information found for %s"
 msgstr "%s에 대한 기존 파일 정보를 찾을 수 없음"
 
-#: ../src/spacecmd/configchannel.py:980
+#: ../src/spacecmd/configchannel.py:988
 #, python-format
 msgid "revision:                 %s"
 msgstr "리비전:                 %s"
 
-#: ../src/spacecmd/configchannel.py:981
+#: ../src/spacecmd/configchannel.py:989
 #, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64:           %s"
 
-#: ../src/spacecmd/configchannel.py:1008
+#: ../src/spacecmd/configchannel.py:1016
 msgid "configchannel_removefiles: Remove configuration files"
 msgstr "configchannel_removefiles: 구성 파일 제거"
 
-#: ../src/spacecmd/configchannel.py:1009
+#: ../src/spacecmd/configchannel.py:1017
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
 msgstr "사용법: configchannel_removefiles CHANNEL <FILE ...>"
 
-#: ../src/spacecmd/configchannel.py:1046
+#: ../src/spacecmd/configchannel.py:1054
 msgid "configchannel_verifyfile: Verify a configuration file"
 msgstr "configchannel_verifyfile: 구성 파일 확인"
 
-#: ../src/spacecmd/configchannel.py:1047
+#: ../src/spacecmd/configchannel.py:1055
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 msgstr "사용법: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 
-#: ../src/spacecmd/configchannel.py:1086
+#: ../src/spacecmd/configchannel.py:1094
 msgid "No valid system selected"
 msgstr "유효한 시스템이 선택되지 않음"
 
-#: ../src/spacecmd/configchannel.py:1094 ../src/spacecmd/system.py:510
+#: ../src/spacecmd/configchannel.py:1102 ../src/spacecmd/system.py:510
 #: ../src/spacecmd/system.py:530 ../src/spacecmd/system.py:960
 #, python-format
 msgid "Action ID: %i"
 msgstr "작업 ID: %i"
 
-#: ../src/spacecmd/configchannel.py:1102
+#: ../src/spacecmd/configchannel.py:1110
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr "configchannel_export: json 파일 형식으로 구성 파일 내보내기"
 
-#: ../src/spacecmd/configchannel.py:1103
+#: ../src/spacecmd/configchannel.py:1111
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
@@ -1258,40 +1258,40 @@ msgstr ""
 "참고: 채널 목록은 선택 사항이며, 기본값은 모두 내보내기입니다."
 
 #. Get the cc details
-#: ../src/spacecmd/configchannel.py:1119
+#: ../src/spacecmd/configchannel.py:1127
 #, python-format
 msgid "Getting config channel details for %s"
 msgstr "%s에 대한 구성 채널 세부 사항 가져오기"
 
-#: ../src/spacecmd/configchannel.py:1139
+#: ../src/spacecmd/configchannel.py:1147
 #, python-format
 msgid "Failed to get details for file %s from %s"
 msgstr "%s에서 %s 파일에 대한 세부 사항을 가져오지 못함"
 
-#: ../src/spacecmd/configchannel.py:1185
+#: ../src/spacecmd/configchannel.py:1193
 #, python-format
 msgid "File %s could not be exported "
 msgstr "%s 파일을 내보낼 수 없음 "
 
-#: ../src/spacecmd/configchannel.py:1186
+#: ../src/spacecmd/configchannel.py:1194
 msgid "with this API version(needs base64 encoding)"
 msgstr "이 API 버전을 사용하여(base64 인코딩 필요)"
 
-#: ../src/spacecmd/configchannel.py:1188
+#: ../src/spacecmd/configchannel.py:1196
 #, python-format
 msgid "File %s could not be exported as"
 msgstr "%s 파일을 다음으로 내보낼 수 없음"
 
-#: ../src/spacecmd/configchannel.py:1189
+#: ../src/spacecmd/configchannel.py:1197
 msgid " text...getting base64 encoded version"
 msgstr " 텍스트...base64 인코딩 버전 가져오기"
 
-#: ../src/spacecmd/configchannel.py:1220
+#: ../src/spacecmd/configchannel.py:1228
 #, python-format
 msgid "Exporting ALL config channels to %s"
 msgstr "모든 구성 채널을 %s(으)로 내보내는 중"
 
-#: ../src/spacecmd/configchannel.py:1227
+#: ../src/spacecmd/configchannel.py:1235
 msgid ""
 "Error, no valid config channel passed, check name is  correct with spacecmd "
 "configchannel_list"
@@ -1299,77 +1299,77 @@ msgstr ""
 "오류, 유효한 구성 채널이 전달되지 않음, spacecmd configchannel_list를 사용하"
 "여 이름이 올바른지 확인"
 
-#: ../src/spacecmd/configchannel.py:1242
+#: ../src/spacecmd/configchannel.py:1250
 #, python-format
 msgid "Exporting cc %s to %s"
 msgstr "cc %s을(를) %s(으)로 내보내는 중"
 
-#: ../src/spacecmd/configchannel.py:1249
+#: ../src/spacecmd/configchannel.py:1257
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 
-#: ../src/spacecmd/configchannel.py:1252
+#: ../src/spacecmd/configchannel.py:1260
 #, python-format
 msgid "Error saving exported config channels to file: %s"
 msgstr "내보낸 구성 채널을 파일로 저장하는 중 오류: %s"
 
-#: ../src/spacecmd/configchannel.py:1261
+#: ../src/spacecmd/configchannel.py:1269
 msgid "configchannel_import: import config channel(s) from json file"
 msgstr "configchannel_import: json 파일에서 구성 채널 가져오기"
 
-#: ../src/spacecmd/configchannel.py:1262
+#: ../src/spacecmd/configchannel.py:1270
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "사용법: configchannel_import <JSONFILES...>"
 
-#: ../src/spacecmd/configchannel.py:1271 ../src/spacecmd/kickstart.py:2332
+#: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2332
 msgid "Error, no filename passed"
 msgstr "오류, 파일 이름이 전달되지 않음"
 
-#: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2340
+#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2340
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "오류, %s에서 json 데이터를 읽을 수 없음"
 
-#: ../src/spacecmd/configchannel.py:1283
+#: ../src/spacecmd/configchannel.py:1291
 #, python-format
 msgid "Error importing configchannel %s"
 msgstr "구성 채널 %s을(를) 가져오는 중 오류"
 
-#: ../src/spacecmd/configchannel.py:1295
+#: ../src/spacecmd/configchannel.py:1303
 #, python-format
 msgid "Config channel %s already exists! Skipping!"
 msgstr "구성 채널 %s이(가) 이미 있습니다! 건너뜁니다!"
 
 #. create the cc, we need to drop the org prefix from the cc name
-#: ../src/spacecmd/configchannel.py:1300
+#: ../src/spacecmd/configchannel.py:1308
 #, python-format
 msgid "Importing config channel  %s"
 msgstr "구성 채널 %s을(를) 가져오는 중"
 
-#: ../src/spacecmd/configchannel.py:1315
+#: ../src/spacecmd/configchannel.py:1323
 #, python-format
 msgid "Found %s %s for cc %s"
 msgstr "cc %s에 대한 %s %s 찾음"
 
-#: ../src/spacecmd/configchannel.py:1343
+#: ../src/spacecmd/configchannel.py:1351
 #, python-format
 msgid "Failed trying to import file %s (empty content)"
 msgstr "%s 파일을 가져오지 못함(비어 있는 컨텐트)"
 
-#: ../src/spacecmd/configchannel.py:1345
+#: ../src/spacecmd/configchannel.py:1353
 msgid "Older APIs can't export encoded files"
 msgstr "기존 API는 인코딩된 파일을 내보낼 수 없음"
 
-#: ../src/spacecmd/configchannel.py:1368
+#: ../src/spacecmd/configchannel.py:1376
 #, python-format
 msgid "Error adding file %s to %s"
 msgstr "%s 파일을 %s(으)로 추가하는 중 오류"
 
-#: ../src/spacecmd/configchannel.py:1378
+#: ../src/spacecmd/configchannel.py:1386
 msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone: 구성 채널 복제"
 
-#: ../src/spacecmd/configchannel.py:1379
+#: ../src/spacecmd/configchannel.py:1387
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1399,101 +1399,101 @@ msgstr ""
 "                   foo를 bar로 대체\n"
 "  참고 : -c 또는 -x 옵션이 지정되면 비활성으로 간주됨"
 
-#: ../src/spacecmd/configchannel.py:1408
+#: ../src/spacecmd/configchannel.py:1416
 msgid "No config channels found"
 msgstr "채널 구성을 찾지 못함"
 
-#: ../src/spacecmd/configchannel.py:1411
+#: ../src/spacecmd/configchannel.py:1419
 msgid "Config Channels"
 msgstr "구성 채널"
 
-#: ../src/spacecmd/configchannel.py:1417
+#: ../src/spacecmd/configchannel.py:1425
 #, python-format
 msgid "Channel to clone: %s"
 msgstr "복제할 채널: %s"
 
-#: ../src/spacecmd/configchannel.py:1421
+#: ../src/spacecmd/configchannel.py:1429
 msgid "Channel to clone:"
 msgstr "복제할 채널:"
 
-#: ../src/spacecmd/configchannel.py:1422
+#: ../src/spacecmd/configchannel.py:1430
 msgid "Clone label:"
 msgstr "레이블 복제:"
 
-#: ../src/spacecmd/configchannel.py:1431
+#: ../src/spacecmd/configchannel.py:1439
 msgid "Error no channel label passed!"
 msgstr "채널 레이블 전달 안 됨 오류입니다!"
 
-#: ../src/spacecmd/configchannel.py:1440
+#: ../src/spacecmd/configchannel.py:1448
 msgid "No suitable channels to clone has been found."
 msgstr "복제한 적합한 채널을 찾을 수 없습니다."
 
-#: ../src/spacecmd/configchannel.py:1493
+#: ../src/spacecmd/configchannel.py:1501
 msgid "no configchannel given"
 msgstr "구성 채널이 지정되지 않음"
 
-#: ../src/spacecmd/configchannel.py:1496
+#: ../src/spacecmd/configchannel.py:1504
 msgid "invalid configchannel label "
 msgstr "유효하지 않은 구성 채널 레이블 "
 
-#: ../src/spacecmd/configchannel.py:1522
+#: ../src/spacecmd/configchannel.py:1530
 msgid "configchannel_diff: diff between config channels"
 msgstr "configchannel_diff: 구성 채널 간의 차이"
 
-#: ../src/spacecmd/configchannel.py:1524
+#: ../src/spacecmd/configchannel.py:1532
 msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "사용법: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/configchannel.py:1573
+#: ../src/spacecmd/configchannel.py:1581
 msgid "configchannel_sync:"
 msgstr "configchannel_sync:"
 
-#: ../src/spacecmd/configchannel.py:1574
+#: ../src/spacecmd/configchannel.py:1582
 msgid "sync config files between two config channels"
 msgstr "두 구성 채널의 구성 파일 동기화"
 
-#: ../src/spacecmd/configchannel.py:1576
+#: ../src/spacecmd/configchannel.py:1584
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "사용법: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/configchannel.py:1614
+#: ../src/spacecmd/configchannel.py:1622
 msgid "syncing files from configchannel "
 msgstr "구성 채널에서 파일 동기화 중 "
 
-#: ../src/spacecmd/configchannel.py:1621
+#: ../src/spacecmd/configchannel.py:1629
 msgid "files common in both channels:"
 msgstr "두 채널의 공통 파일:"
 
-#: ../src/spacecmd/configchannel.py:1627
+#: ../src/spacecmd/configchannel.py:1635
 msgid "files only in source "
 msgstr "소스의 파일만 "
 
-#: ../src/spacecmd/configchannel.py:1633
+#: ../src/spacecmd/configchannel.py:1641
 msgid "files only in target "
 msgstr "대상의 파일만 "
 
-#: ../src/spacecmd/configchannel.py:1638
+#: ../src/spacecmd/configchannel.py:1646
 msgid ""
 "files that are in both channels will be overwritten in the target channel"
 msgstr "두 채널에 있는 파일을 대상 채널에서 덮어씁니다."
 
-#: ../src/spacecmd/configchannel.py:1640
+#: ../src/spacecmd/configchannel.py:1648
 msgid "files only in the source channel will be added to the target channel"
 msgstr "소스 채널의 파일만 대상 채널에 추가됩니다."
 
-#: ../src/spacecmd/configchannel.py:1642
+#: ../src/spacecmd/configchannel.py:1650
 msgid "files only in the target channel will be deleted"
 msgstr "대상 채널에 있는 파일만 삭제됩니다."
 
-#: ../src/spacecmd/configchannel.py:1645
+#: ../src/spacecmd/configchannel.py:1653
 msgid "nothing to do"
 msgstr "수행할 작업 없음"
 
-#: ../src/spacecmd/configchannel.py:1649
+#: ../src/spacecmd/configchannel.py:1657
 msgid "perform synchronisation [y/N]:"
 msgstr "동기화 수행 [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:1701
+#: ../src/spacecmd/configchannel.py:1709
 msgid "unknown file type "
 msgstr "알 수 없는 파일 유형 "
 
@@ -1643,7 +1643,6 @@ msgid "distribution_create: Create a Kickstart tree"
 msgstr "distribution_create: 킥스타트 트리 생성"
 
 #: ../src/spacecmd/distribution.py:44
-#, fuzzy
 msgid ""
 "usage: distribution_create [options]\n"
 "\n"
@@ -1660,7 +1659,8 @@ msgstr ""
 "  -n 이름\n"
 "  -p 트리 경로\n"
 "  -b 연결할 기본 채널\n"
-"  -t 설치 유형 [fedora|rhel_4/5/6|generic_rpm]"
+"  -t 설치 유형 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1763,7 +1763,6 @@ msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update: 킥스타트 트리의 경로 업데이트"
 
 #: ../src/spacecmd/distribution.py:290
-#, fuzzy
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -1778,7 +1777,8 @@ msgstr ""
 "옵션:\n"
 "  -p 트리 경로\n"
 "  -b 연결할 기본 채널\n"
-"  -t 설치 유형 [fedora|rhel_4/5/6|generic_rpm]"
+"  -t 설치 유형 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -1914,9 +1914,9 @@ msgid "Type:       %s"
 msgstr "유형:       %s"
 
 #: ../src/spacecmd/errata.py:400
-#, fuzzy, python-format
+#, python-format
 msgid "Status:     %s"
-msgstr "OSA 상태:    %s"
+msgstr "상태:     %s"
 
 #: ../src/spacecmd/errata.py:401
 #, python-format
@@ -3870,58 +3870,57 @@ msgid "%s is not a valid package"
 msgstr "%s은(는) 유효한 패키지가 아님"
 
 #: ../src/spacecmd/package.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "Name:      %s"
-msgstr "이름:       %s"
+msgstr "이름:      %s"
 
 #: ../src/spacecmd/package.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "Version:   %s"
-msgstr "버전: %s"
+msgstr "버전:   %s"
 
 #: ../src/spacecmd/package.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "Release:   %s"
-msgstr "릴리스: %s"
+msgstr "릴리스:   %s"
 
 #: ../src/spacecmd/package.py:95
-#, fuzzy, python-format
+#, python-format
 msgid "Epoch:     %s"
-msgstr "에포크:   %s"
+msgstr "에포크:     %s"
 
 #: ../src/spacecmd/package.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Arch:      %s"
-msgstr "아키텍처:     %s"
+msgstr "아카이브:      %s"
 
 #: ../src/spacecmd/package.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "File:      %s"
-msgstr "파일:    %s"
+msgstr "파일:      %s"
 
 #: ../src/spacecmd/package.py:99
-#, fuzzy, python-format
+#, python-format
 msgid "Path:      %s"
-msgstr "경로:     %s"
+msgstr "경로:      %s"
 
 #: ../src/spacecmd/package.py:100
-#, fuzzy, python-format
+#, python-format
 msgid "Size:      %s"
-msgstr "크기:    %s"
+msgstr "크기:      %s"
 
 #: ../src/spacecmd/package.py:101
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: ../src/spacecmd/package.py:102
-#, fuzzy
 msgid "No"
-msgstr "없음"
+msgstr "아니요"
 
 #: ../src/spacecmd/package.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "Retracted: %s"
-msgstr "생성됨:  %s"
+msgstr "철회됨: %s"
 
 #: ../src/spacecmd/package.py:106
 #, python-format
@@ -4709,22 +4708,67 @@ msgstr "사용법: schedule_list [BEGINDATE] [ENDDATE]"
 
 #: ../src/spacecmd/schedule.py:459
 #, fuzzy
-msgid "schedule_deletearchived: Delete all archived actions"
-msgstr "schedule_listarchived: 보관된 작업 나열"
+msgid ""
+"schedule_deletearchived: Delete all archived actions older than given date."
+msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
 
 #: ../src/spacecmd/schedule.py:460
 #, fuzzy
-msgid "usage: schedule_deletearchived"
-msgstr "사용법: schedule_details ID"
+msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
+msgstr "사용법: schedule_deletearchived"
 
-#: ../src/spacecmd/schedule.py:477
-msgid "Do you want to delete all ({}) archived actions? [y/N]"
+#: ../src/spacecmd/schedule.py:461 ../src/spacecmd/schedule.py:520
+#, fuzzy
+msgid ""
+"\n"
+"options:\n"
+"  -y, --yes   Confirm without prompt"
+msgstr ""
+"사용법: repo_clearfilters repo <options>\n"
+"\n"
+"옵션:\n"
+"  -y, --yes   메시지 없이 확인\n"
+"\n"
+
+#: ../src/spacecmd/schedule.py:465
+#, fuzzy
+msgid "If no date is provided it will delete all archived actions"
+msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#: ../src/spacecmd/schedule.py:492
+#, fuzzy
+msgid "Do you want to delete ({}) archived actions? [y/N]"
+msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#: ../src/spacecmd/schedule.py:512
+msgid "No archived actions found."
+msgstr "보관된 작업을 찾을 수 없습니다."
+
+#: ../src/spacecmd/schedule.py:518
+#, fuzzy
+msgid ""
+"schedule_archivecompleted: Archive all completed actions older than given "
+"date."
+msgstr "schedule_listcompleted: 완료된 작업 나열"
+
+#: ../src/spacecmd/schedule.py:519
+#, fuzzy
+msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
+msgstr "사용법: schedule_listcompleted [BEGINDATE] [ENDDATE]"
+
+#: ../src/spacecmd/schedule.py:524
+msgid "If no date is provided it will archive all completed actions"
 msgstr ""
 
-#: ../src/spacecmd/schedule.py:500
+#: ../src/spacecmd/schedule.py:551
 #, fuzzy
-msgid "No archived actions found."
-msgstr "편집기를 찾지 못함"
+msgid "Do you want to archive ({}) completed actions? [y/N]"
+msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+
+#: ../src/spacecmd/schedule.py:571
+#, fuzzy
+msgid "No completed actions found."
+msgstr "보관된 작업을 찾을 수 없습니다."
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"

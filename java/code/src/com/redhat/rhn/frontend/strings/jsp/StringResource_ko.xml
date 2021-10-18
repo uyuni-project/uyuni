@@ -12252,12 +12252,12 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         </context-group>
         <target>기본 채널</target>
       </trans-unit>
-      <trans-unit id="softwareedit.jsp.tip" xml:space="preserve">
+      <trans-unit approved="yes" id="softwareedit.jsp.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; Changing the base channel will require you to reselect any child channels that may be associated with this profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target>&lt;strong&gt;팁:&lt;/strong&gt; 기본 채널을 변경한 경우 프로파일과 관련된 모든 자식 채널을 다시 선택해야 합니다.</target>
+        <target>&lt;strong&gt;팁:&lt;/strong&gt; 기본 채널을 변경한 경우 프로파일과 관련된 모든 하위 채널을 다시 선택해야 합니다.</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.child_channels" xml:space="preserve">
         <source>Child Channels</source>
@@ -20788,7 +20788,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
-        <target state="final">인터페이스를 통해 추가된 모든 파일은 {0}에서 시스템의 샌드박스 채널로 가져오게 됩니다. 다음번에 파일을 가져오려면 시스템에서 &lt;code&gt;mgr_check&lt;/code&gt;를 실행합니다. 이 파일을 배치하거나 글로벌 채널에서 설정 파일을 덮어쓰고자 할 경우, 파일을 가져오기 한 후 이를 로컬 오버라이드 채널에 복사합니다. 아래의 파일 선택 방식을 사용하실 수 있습니다.</target>
+        <target state="final">인터페이스를 통해 추가된 모든 파일은 {0}에서 시스템의 샌드박스 채널로 가져오게 됩니다. 다음번에 파일을 가져오려면 시스템에서 &lt;code&gt;mgr_check&lt;/code&gt;를 실행합니다. 이 파일을 배치하거나 글로벌 채널에서 설정 파일을 덮어쓰고자 할 경우, 파일을 가져오기 한 후 이를 로컬 오버라이드 채널에 복사합니다. 아래의 파일 선택 방식을 사용할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFile.do</context>
         </context-group>
@@ -21008,12 +21008,12 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/DiffFile.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="yes" id="sdcdifffile.jsp.summary" xml:space="preserve">
+      <trans-unit approved="no" id="sdcdifffile.jsp.summary" xml:space="preserve">
           <source>You may compare configuration files on {0} to @@PRODUCT_NAME@@ managed configuration files. The files listed below are the deployable revisions of files from configuration channels to which this system is subscribed.</source>
         <context-group name="ctx">
             <context context-type="paramnotes">You may compare configuration files on postmaster.devel to @@PRODUCT_NAME@@ managed configuration files. The files listed below are the deployable revisions of files from configuration channels to which this system is subscribed.</context>
           </context-group>
-        <target>{0}에 있는 설정 파일을 @@PRODUCT_NAME@@ 관리 설정 파일에 비교하실 수 있습니다. 아래 목록에 있는 파일은 시스템이 등록된 설정 채널에서 배치할 수 있는 파일 리비전입니다.</target>
+        <target>{0}에 있는 설정 파일을 @@PRODUCT_NAME@@ 관리 설정 파일에 비교할 수 있습니다. 아래 목록에 있는 파일은 시스템이 등록된 설정 채널에서 배치할 수 있는 파일 버전입니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/DiffFile.do</context>
         </context-group>
@@ -29737,30 +29737,77 @@ given channel.</source>
         </context-group>
         <target state="final">Ansible 플레이북 실행</target>
       </trans-unit>
-    <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
+      <trans-unit approved="yes" id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
-        <target state="new" />
-  </trans-unit>
-        <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
+        <target state="final">선택적 OVAL 파일(쉼표로 구분)</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.event.scapOvalFiles" xml:space="preserve">
           <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
+        <target state="final">&lt;strong&gt;OVAL 파일(쉼표로 구분): &lt;/strong&gt; </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+        <source>Modular Data Cleanup</source>
+        <target state="final">모듈러 데이터 정리</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.mgr-forward-registration" xml:space="preserve">
+        <source>Forward Registration</source>
+        <target state="final">등록 전달</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
+        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+        <target state="final">트랜잭션 업데이트가 있는 OS: 패키지 및/또는 채널이 변경된 후 재부팅하십시오.</target>
+      </trans-unit>
+    <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
+        <source>No Modules</source>
+	<context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+	</context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="appstream.jsp.streamname" xml:space="preserve">
+        <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="appstream.jsp.modulename" xml:space="preserve">
+        <source>Module Name</source>
+         <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+    <target state="new" />
+  </trans-unit>
+      <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
+          <source>Optional OVAL Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
+        </context-group>
         <target state="new" />
   </trans-unit>
-        <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
-        <source>Modular Data Cleanup</source>
+        <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
+        </context-group>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
-        <source>Forward Registration</source>
+      <trans-unit id="sdc.details.overview.create_clm_filter" xml:space="preserve">
+        <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+      <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
+        <source>AppStreams</source>
       <target state="new" />
   </trans-unit>
       </body>

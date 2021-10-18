@@ -52,7 +52,22 @@
       <property name="max" value="120"/>
     </module>
 
+    <module name="SuppressionFilter">
+        <property name="file" value="${checkstyle.suppressions.file}"/>
+        <property name="optional" value="false"/>
+    </module>
+
+    <module name="SuppressWithPlainTextCommentFilter"/>
+
     <module name="TreeWalker">
+
+        <module name="ImportOrder">
+            <property name="groups" value="/^com.redhat.rhn\./,/^com.suse\./,com,org,/^java\./,javax,*" />
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="top"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
 
         <module name="SuppressionCommentFilter"/>
 

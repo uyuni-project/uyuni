@@ -15,21 +15,26 @@
 
 package com.suse.manager.webui.controllers.utils.test;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.utils.Xor;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -38,9 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 /**
  * Base for tests for bootstrapping minions.

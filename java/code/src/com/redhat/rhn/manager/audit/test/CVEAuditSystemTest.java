@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
-import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
-import junit.framework.TestCase;
-
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
+import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
+
+import junit.framework.TestCase;
 
 /**
  * Tests for {@link CVEAuditSystem}.

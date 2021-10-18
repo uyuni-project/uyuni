@@ -97,7 +97,7 @@ class TestSCShell:
         options.nohistory = True
         shell = SpacewalkShell(options, "", None)
         shell.config["server"] = ""
-        for cmd in ["help", "login", "logout", "whoami", "history", "clear"]:
+        for cmd in ["help", "login", "logout", "history", "clear"]:
             assert shell.precmd(cmd) == cmd
 
     @patch("spacecmd.shell.atexit", MagicMock())

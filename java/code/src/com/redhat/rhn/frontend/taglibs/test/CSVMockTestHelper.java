@@ -16,9 +16,11 @@
 package com.redhat.rhn.frontend.taglibs.test;
 
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
+
 import org.jmock.Expectations;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 
 /**

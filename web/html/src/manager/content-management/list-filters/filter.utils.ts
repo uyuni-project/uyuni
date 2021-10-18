@@ -1,13 +1,9 @@
 import _isEmpty from "lodash/isEmpty";
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
-import { Utils } from "utils/functions";
+import { localizedMoment } from "utils";
 
-export function mapFilterFormToRequest(
-  filterForm: Partial<FilterFormType>,
-  projectLabel?: string,
-  localTime?: string
-): FilterServerType {
+export function mapFilterFormToRequest(filterForm: Partial<FilterFormType>, projectLabel?: string): FilterServerType {
   const requestForm: any = {};
   requestForm.projectLabel = projectLabel;
   requestForm.name = filterForm.filter_name;
@@ -18,7 +14,8 @@ export function mapFilterFormToRequest(
   if (Object.prototype.hasOwnProperty.call(filterForm, "template")) {
     requestForm.prefix = filterForm.labelPrefix;
     requestForm.kernelEvrId = filterForm.kernelId;
-    requestForm.template = filterForm['template'];
+    requestForm.channelId = filterForm.channelId;
+    requestForm.template = filterForm["template"];
   }
 
   const selectedFilterOption = findClmFilterByKey(filterForm.type);
@@ -35,25 +32,26 @@ export function mapFilterFormToRequest(
   // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
   if (filterForm.type === clmFilterOptions.ISSUE_DATE.key) {
     const formDateValue = filterForm[clmFilterOptions.ISSUE_DATE.key];
-    requestForm.criteriaValue = formDateValue
-      ? moment(Utils.dateWithoutTimezone(formDateValue, localTime || "")).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-      : "";
+    requestForm.criteriaValue = formDateValue ? localizedMoment(formDateValue) : "";
   } else if (filterForm.type === clmFilterOptions.NEVRA.key) {
     // UI filter NEVRA form can map either into nevr or nevra
     const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : "";
     if (_isEmpty(filterForm.architecture)) {
       requestForm.criteriaKey = "nevr";
-      requestForm.criteriaValue = `${filterForm.packageName || ""}-${epochName}${filterForm.version ||
-        ""}-${filterForm.release || ""}`;
+      requestForm.criteriaValue = `${filterForm.packageName || ""}-${epochName}${filterForm.version || ""}-${
+        filterForm.release || ""
+      }`;
     } else {
       requestForm.criteriaKey = "nevra";
-      requestForm.criteriaValue = `${filterForm.packageName || ""}-${epochName}${filterForm.version ||
-        ""}-${filterForm.release || ""}.${filterForm.architecture}`;
+      requestForm.criteriaValue = `${filterForm.packageName || ""}-${epochName}${filterForm.version || ""}-${
+        filterForm.release || ""
+      }.${filterForm.architecture}`;
     }
   } else if (filterForm.type === clmFilterOptions.PACKAGE_NEVR.key) {
     const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : "";
-    requestForm.criteriaValue = `${filterForm.packageName || ""} ${epochName}${filterForm.version ||
-      ""}-${filterForm.release || ""}`;
+    requestForm.criteriaValue = `${filterForm.packageName || ""} ${epochName}${filterForm.version || ""}-${
+      filterForm.release || ""
+    }`;
   } else if (filterForm.type === clmFilterOptions.STREAM.key) {
     const streamName = !_isEmpty(filterForm.moduleStream) ? `:${filterForm.moduleStream}` : "";
     requestForm.criteriaValue = `${filterForm.moduleName || ""}${streamName}`;
@@ -64,7 +62,7 @@ export function mapFilterFormToRequest(
 }
 
 export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType> = []): Array<FilterFormType> {
-  return filtersResponse.map(filterResponse => {
+  return filtersResponse.map((filterResponse) => {
     let filterForm: any = {};
     filterForm.id = filterResponse.id;
     filterForm.filter_name = filterResponse.name;
@@ -84,7 +82,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     // Custom filters mappers for complex filter forms
     // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
     if (filterResponse.criteriaKey === clmFilterOptions.ISSUE_DATE.key) {
-      filterForm[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(filterResponse.criteriaValue);
+      filterForm[clmFilterOptions.ISSUE_DATE.key] = localizedMoment(filterResponse.criteriaValue);
     } else if (filterResponse.criteriaKey === "nevr") {
       // NEVR filter is mapped into NEVRA in the UI
       filterForm.type = clmFilterOptions.NEVRA.key;

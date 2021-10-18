@@ -6,12 +6,12 @@ import { Select } from "components/input/Select";
 
 type Props = {
   /** The modal dialog id */
-  id: string,
+  id: string;
   /** Virtual Machine descriptor as the one used in the VMs list data */
-  vm: any,
-  onConfirm: (vm: any, target: string) => any,
-  onClose?: () => any,
-  clusterNodes?: string[],
+  vm: any;
+  onConfirm: (vm: any, target: string) => any;
+  onClose?: () => any;
+  clusterNodes?: string[];
 };
 
 /**
@@ -22,7 +22,7 @@ type Props = {
  * This 'vm' will be passed to the 'onConfirm' and 'onClosePopUp' handlers.
  */
 export function MigrateDialog(props: Props) {
-  const [model, setModel] = React.useState<{target: string | undefined}>({target: undefined});
+  const [model, setModel] = React.useState<{ target: string | undefined }>({ target: undefined });
   const [valid, setValid] = React.useState(false);
   const onSubmit = () => {
     if (!_isNil(model.target)) {
@@ -37,39 +37,35 @@ export function MigrateDialog(props: Props) {
       id={props.id}
       title={t(`Migrate Guest ${vmName}`)}
       submitIcon="fa-share-square-o"
-      submitText={t('Migrate')}
+      submitText={t("Migrate")}
       onConfirm={valid ? onSubmit : undefined}
-      onClose={
-        () => {
-          setModel({target: undefined});
-          if (props.onClose) {
-            props.onClose();
-          }
+      onClose={() => {
+        setModel({ target: undefined });
+        if (props.onClose) {
+          props.onClose();
         }
-      }
+      }}
       btnClass="btn-success"
       content={
-        (
-          <Form
-            model={model}
-            onChange={newModel => setModel(newModel)}
-            divClass="col-md-12"
-            className="col-md-12"
-            formDirection="form-horizontal"
-            onValidate={valid => setValid(valid)}
-          >
-            <p>{ t('Select where to migrate the virtual guest to.') }</p>
-            <Select
-              name="target"
-              label={t('Target Host')}
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              options={props.clusterNodes || []}
-            />
-          </Form>
-        )
+        <Form
+          model={model}
+          onChange={(newModel) => setModel(newModel)}
+          divClass="col-md-12"
+          className="col-md-12"
+          formDirection="form-horizontal"
+          onValidate={(valid) => setValid(valid)}
+        >
+          <p>{t("Select where to migrate the virtual guest to.")}</p>
+          <Select
+            name="target"
+            label={t("Target Host")}
+            required
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            options={props.clusterNodes || []}
+          />
+        </Form>
       }
     />
   );
-};
+}

@@ -22,7 +22,7 @@ Feature: Lock packages on traditional client
     And I click on "Lock"
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "Packages has been requested for being locked." text
-    And "hoag-dummy-1.1-1.1" is locked on this client
+    And "hoag-dummy-1.1-1.1" is locked on "sle_client"
     When I follow "Lock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
 
@@ -51,7 +51,7 @@ Feature: Lock packages on traditional client
     And I click on "Unlock"
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "Packages has been requested for being unlocked." text
-    And "hoag-dummy-1.1-1.1" is unlocked on this client
+    And "hoag-dummy-1.1-1.1" is unlocked on "sle_client"
     When I follow "Lock"
     Then package "hoag-dummy-1.1-1.1" is reported as unlocked
 
@@ -77,8 +77,8 @@ Feature: Lock packages on traditional client
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be locked
     And package "milkyway-dummy-2.0-1.1" cannot be selected
     When I run "rhn_check -vvv" on "sle_client"
-    Then "hoag-dummy-1.1-1.1" is locked on this client
-    And "milkyway-dummy-2.0-1.1" is locked on this client
+    Then "hoag-dummy-1.1-1.1" is locked on "sle_client"
+    And "milkyway-dummy-2.0-1.1" is locked on "sle_client"
     When I follow "Lock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
@@ -104,9 +104,9 @@ Feature: Lock packages on traditional client
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be unlocked
     And package "orion-dummy-1.1-1.1" is reported as pending to be locked
     When I run "rhn_check -vvv" on "sle_client"
-    Then "hoag-dummy-1.1-1.1" is locked on this client
-    And "milkyway-dummy-2.0-1.1" is unlocked on this client
-    And "orion-dummy-1.1-1.1" is locked on this client
+    Then "hoag-dummy-1.1-1.1" is locked on "sle_client"
+    And "milkyway-dummy-2.0-1.1" is unlocked on "sle_client"
+    And "orion-dummy-1.1-1.1" is locked on "sle_client"
     When I follow "Lock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as unlocked

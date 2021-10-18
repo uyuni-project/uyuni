@@ -78,7 +78,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
             calendar={props.selected}
             onRefresh={props.onRefresh}
             onEdit={props.onEdit}
-            isLoading={i => setIcalLoading(i)}
+            isLoading={(i) => setIcalLoading(i)}
           />
         ))}
     </InnerPanel>

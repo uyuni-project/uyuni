@@ -1,6 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle11sp4_buildhost
 Feature: Prepare buildhost and build OS image for SLES 11 SP3
 
   Scenario: Log in as admin user
@@ -13,8 +14,11 @@ Feature: Prepare buildhost and build OS image for SLES 11 SP3
     When I add server record into hosts file on "sle11sp4_buildhost" if avahi is used
     And I add proxy record into hosts file on "sle11sp4_buildhost" if avahi is used
 
+  Scenario: Clean up sumaform leftovers on a SLES 11 SP4 build host
+    When I perform a full salt minion cleanup on "sle11sp4_buildhost"
+
   Scenario: Bootstrap a SLES 11 SP4 build host
-    When I bootstrap minion client "sle11sp4_buildhost" using bootstrap script with activation key "1-sle11sp4_buildhost_key" from the server
+    When I bootstrap minion client "sle11sp4_buildhost" using bootstrap script with activation key "1-sle11sp4_buildhost_key" from the proxy
     And I wait until onboarding is completed for "sle11sp4_buildhost"
 
   Scenario: Turn SLE11 SP4 system into buildhost, prepare profile and build kiwi image

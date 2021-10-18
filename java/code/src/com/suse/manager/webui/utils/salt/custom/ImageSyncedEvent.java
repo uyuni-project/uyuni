@@ -14,11 +14,13 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
+import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.parser.JsonParser;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.suse.salt.netapi.datatypes.Event;
-import com.suse.salt.netapi.parser.JsonParser;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Map;

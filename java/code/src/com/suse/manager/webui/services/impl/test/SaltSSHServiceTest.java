@@ -1,7 +1,22 @@
+/**
+ * Copyright (c) 2017--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.webui.services.impl.SaltSSHService;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -33,41 +48,53 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel -W minion:22 proxy1 '",
+                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "-o User=mgrsshtunnel -W minion:22 proxy1 '",
                 res.get());
     }
 
     public void testProxyCommandSSHPushTunnel1Proxy() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1"), "ssh-push-tunnel", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(
+                Arrays.asList("proxy1"), "ssh-push-tunnel", "minion");
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy1 " +
-                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgruser -R 1233:proxy1:443 minion " +
-                        "ssh -i /home/mgruser/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no -o User=mgruser minion'",
+                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "-o User=mgrsshtunnel  proxy1 " +
+                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push " +
+                        "-o StrictHostKeyChecking=no -o User=mgruser -R 1233:proxy1:443 minion " +
+                        "ssh -i /home/mgruser/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no " +
+                        "-o User=mgruser minion'",
                 res.get());
     }
 
     public void testProxyCommandSSHPush2Proxies() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1", "proxy2"), "ssh-push", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(
+                Arrays.asList("proxy1", "proxy2"), "ssh-push", "minion");
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy1 " +
-                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgrsshtunnel -W minion:22 proxy2 '",
+                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "-o User=mgrsshtunnel  proxy1 " +
+                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push " +
+                        "-o StrictHostKeyChecking=no -o User=mgrsshtunnel -W minion:22 proxy2 '",
                 res.get());
     }
 
     public void testProxyCommandSSHPushTunnel2Proxies() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(
+                Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion");
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy1 " +
-                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy2 " +
-                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgruser -R 1233:proxy2:443 minion " +
-                        "ssh -i /home/mgruser/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no -o User=mgruser minion'",
+                        "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "-o User=mgrsshtunnel  proxy1 " +
+                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push " +
+                        "-o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy2 " +
+                        "/usr/bin/ssh -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push " +
+                        "-o StrictHostKeyChecking=no -o User=mgruser -R 1233:proxy2:443 minion " +
+                        "ssh -i /home/mgruser/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no " +
+                        "-o User=mgruser minion'",
                 res.get());
     }
-
 }

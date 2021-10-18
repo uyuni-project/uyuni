@@ -245,7 +245,8 @@ install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}:/usr/share/rhn
-spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn
+# Run pylint check but never fail
+spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn ||:
 %endif
 
 %post broker

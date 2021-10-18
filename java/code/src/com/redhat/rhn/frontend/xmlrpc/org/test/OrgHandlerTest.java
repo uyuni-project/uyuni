@@ -101,7 +101,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     public void testListOrgs() throws Exception {
         Org testOrg = createOrg();
         OrgDto dto = OrgManager.toDetailsDto(testOrg);
-        List <OrgDto> orgs = handler.listOrgs(admin);
+        List<OrgDto> orgs = handler.listOrgs(admin);
         assertTrue(orgs.contains(dto));
     }
 
@@ -114,12 +114,12 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
             // expected
         }
     }
-    
+
     public void testContentStagingSettings() {
         Org testOrg = createOrg();
         int testId = testOrg.getId().intValue();
         assertFalse(handler.isContentStagingEnabled(admin, testId));
-        handler.setContentStaging(admin,testId, true);
+        handler.setContentStaging(admin, testId, true);
         assertTrue(handler.isContentStagingEnabled(admin, testId));
         handler.setContentStaging(admin, testId, false);
         assertFalse(handler.isContentStagingEnabled(admin, testId));
@@ -134,7 +134,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
     public void testListActiveUsers() throws Exception {
         Org testOrg = createOrg();
-        List <MultiOrgUserOverview> users = handler.listUsers(admin,
+        List<MultiOrgUserOverview> users = handler.listUsers(admin,
                                                 testOrg.getId().intValue());
         assertTrue(users.size() == 1);
         User user = UserFactory.lookupByLogin(

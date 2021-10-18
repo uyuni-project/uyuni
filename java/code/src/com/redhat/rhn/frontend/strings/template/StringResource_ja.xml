@@ -310,7 +310,7 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -331,7 +331,7 @@ You may address the issues outlined in this advisory in two ways:
         {1} - system list URL
       </context>
           </context-group>
-        <target state="translated">
+        <target state="final">
 リリース    アーキテクチャー       プロファイル名
 ---------- ---------- ---------------------------------------------
 {0}
@@ -498,7 +498,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins" xml:space="preserve">
+      <trans-unit approved="yes" id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -525,7 +525,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target state="translated">
+        <target state="final">
 [ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。]
 
 電子メールアドレス {0} に関連するすべての @@PRODUCT_NAME@@ ログインの一覧についての

@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 type RendererProps = {
   activationKeyId?: any;
-}
+};
 
 export const renderer = (id: string, { activationKeyId }: RendererProps = {}) =>
   SpaRenderer.renderNavigationReact(

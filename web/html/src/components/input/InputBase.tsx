@@ -133,7 +133,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
         }
       };
       if (this.props.name instanceof Array) {
-        this.props.name.forEach(name => {
+        this.props.name.forEach((name) => {
           const defaultValue =
             this.props.defaultValue instanceof Object ? this.props.defaultValue[name] : this.props.defaultValue;
           checkValueChange(name, defaultValue);
@@ -166,7 +166,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (Object.keys(this.context).length > 0) {
       this.context.unregisterInput(this);
       if (this.props.name instanceof Array) {
-        this.props.name.forEach(name => this.context.setModelValue(name, undefined));
+        this.props.name.forEach((name) => this.context.setModelValue(name, undefined));
       } else {
         this.context.setModelValue(this.props.name, undefined);
       }
@@ -208,23 +208,23 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (!this.props.disabled && (value || this.props.required)) {
       const noValue =
         this.isEmptyValue(value) ||
-        (Array.isArray(this.props.name) && Object.values(value).filter(v => !this.isEmptyValue(v)).length === 0);
+        (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
       if (this.props.required && noValue) {
         isValid = false;
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
-        validators.forEach(v => {
+        validators.forEach((v) => {
           results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ""}`)));
         });
       }
     }
 
-    Promise.all(results).then(result => {
-      result.forEach(r => {
+    Promise.all(results).then((result) => {
+      result.forEach((r) => {
         isValid = isValid && r;
       });
       this.setState(
-        state => ({
+        (state) => ({
           isValid: isValid,
           errors: errors,
           showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
@@ -280,7 +280,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
     const errors = Array.isArray(this.state.errors) ? this.state.errors : this.state.errors ? [this.state.errors] : [];
     if (errors.length > 0) {
-      errors.forEach(error => this.pushHint(hints, error));
+      errors.forEach((error) => this.pushHint(hints, error));
     } else {
       this.pushHint(hints, invalidHint);
     }

@@ -51,7 +51,7 @@
                            bound="false"
                            headerkey="schedule.edit.jsp.activefrom"
                            sortattr="active_from" >
-                           <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss z" value="${current.active_from}"/>
+                        <span class="legacy-date-time"><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ssZ" value="${current.active_from}"/></span>
                 </rl:column>
 
                 <rl:column bound="false"

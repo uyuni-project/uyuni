@@ -220,6 +220,24 @@ public class ScheduleHandler extends BaseHandler {
     }
 
     /**
+     * List all the scheduled actions that have been archived.
+     * @param loggedInUser The current user
+     * @return Returns a list of actions with details
+     *
+     * @xmlrpc.doc Returns a list of actions that have been archived.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype
+     * #array_begin()
+     *   $ScheduleActionSerializer
+     * #array_end()
+     */
+    public Object[] listAllArchivedActions(User loggedInUser) {
+        // the second argument is "PageControl". This is not needed for the api usage;
+        // therefore, null will be used.
+        return ActionManager.allArchivedActions(loggedInUser, null).toArray();
+    }
+
+    /**
      * List the systems that have completed a specific action.
      * @param loggedInUser The current user
      * @param actionId The id of the action.
@@ -242,6 +260,24 @@ public class ScheduleHandler extends BaseHandler {
         dr.elaborate();
 
         return dr.toArray();
+    }
+
+    /**
+     * List all the scheduled actions that have been completed.
+     * @param loggedInUser The current user
+     * @return Returns a list of actions with details
+     *
+     * @xmlrpc.doc Returns a list of actions that have been completed.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype
+     * #array_begin()
+     *   $ScheduleActionSerializer
+     * #array_end()
+     */
+    public Object[] listAllCompletedActions(User loggedInUser) {
+        // the second argument is "PageControl". This is not needed for the api usage;
+        // therefore, null will be used.
+        return ActionManager.allCompletedActions(loggedInUser, null).toArray();
     }
 
     /**
@@ -368,5 +404,4 @@ public class ScheduleHandler extends BaseHandler {
         return 1;
     }
 }
-
 

@@ -1,14 +1,22 @@
 import * as React from "react";
+import { localizedMoment } from "utils";
 import Network from "utils/network";
+import { fromNow } from "components/datetime/FromNow";
 
 type MatcherRunPanelProps = {
-  initialLatestStart?: any;
-  initialLatestEnd?: any;
+  initialLatestStart?: moment.Moment | null;
+  initialLatestEnd?: moment.Moment | null;
   dataAvailable?: boolean;
   onMatcherRunSchedule: (...args: any[]) => any;
 };
 
-class MatcherRunPanel extends React.Component<MatcherRunPanelProps> {
+type MatcherRunPanelState = {
+  latestStart?: moment.Moment | null;
+  latestEnd?: moment.Moment | null;
+  error: boolean;
+};
+
+class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPanelState> {
   state = {
     latestStart: this.props.initialLatestStart,
     latestEnd: this.props.initialLatestEnd,
@@ -27,7 +35,7 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps> {
 
   onScheduled = () => {
     this.setState({
-      latestStart: new Date().toJSON(),
+      latestStart: localizedMoment(),
       latestEnd: null,
       error: false,
     });
@@ -66,9 +74,9 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps> {
 
 type MatcherRunDescriptionProps = {
   error?: any;
-  latestStart?: any;
-  latestEnd?: any;
-}
+  latestStart?: moment.Moment | null;
+  latestEnd?: moment.Moment | null;
+};
 
 const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
   if (props.error) {
@@ -93,9 +101,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
 
   if (props.latestEnd == null) {
     return (
-      <div>
-        {t("Matching data is currently being recomputed, it was started {0}.", moment(props.latestStart).fromNow())}
-      </div>
+      <div>{t("Matching data is currently being recomputed, it was started {0}.", fromNow(props.latestStart))}</div>
     );
   }
 
@@ -103,7 +109,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     <div>
       {t(
         "Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.",
-        moment(props.latestEnd).fromNow()
+        fromNow(props.latestEnd)
       )}
     </div>
   );
@@ -127,9 +133,7 @@ type MatcherScheduleButtonProps = {
 
 class MatcherScheduleButton extends React.Component<MatcherScheduleButtonProps> {
   onClick = () => {
-    Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run").catch(() =>
-      this.props.onError()
-    );
+    Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run").catch(() => this.props.onError());
     this.props.onScheduled();
   };
 

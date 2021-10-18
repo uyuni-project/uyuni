@@ -14,15 +14,15 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * Cleanup of notification messages after a configurable lifetime.

@@ -603,6 +603,7 @@ PKGLISTUBUNTU1804 = [
     "python-apt-common",
     "python3-distro",
     "python3-gnupg",
+    "gnupg",
 ]
 
 PKGLISTUBUNTU2004 = [
@@ -621,6 +622,7 @@ PKGLISTUBUNTU2004 = [
     "python3-zmq",
     "salt-common",
     "salt-minion",
+    "gnupg",
 ]
 
 PKGLISTDEBIAN9 = [
@@ -673,6 +675,7 @@ PKGLISTDEBIAN9 = [
     "salt-common",
     "salt-minion",
     "dmidecode",
+    "gnupg",
 ]
 
 PKGLISTDEBIAN10 = [
@@ -728,7 +731,8 @@ PKGLISTDEBIAN10 = [
     "python3-zmq",
     "python-apt-common",
     "salt-common",
-    "salt-minion"
+    "salt-minion",
+    "gnupg",
 ]
 
 PKGLISTASTRALINUXOREL = [
@@ -778,7 +782,8 @@ PKGLISTASTRALINUXOREL = [
     "python2.7",
     "python2.7-minimal",
     "salt-common",
-    "salt-minion"
+    "salt-minion",
+    "gnupg",
 ]
 
 DATA = {
@@ -1118,6 +1123,14 @@ DATA = {
         'PDID' : [1576, 2056, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
+    'SLES4SAP-15-ppc64le' : {
+        'PDID' : [1588, 1613, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+    },
+    'SLES4SAP-15-x86_64' : {
+        'PDID' : [1576, 1612, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+    },
     'SLE-15-SP1-aarch64' : {
         'PDID' : [1769, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
@@ -1214,6 +1227,10 @@ DATA = {
         'PDID' : [2236], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/3/bootstrap/'
     },
+    'openSUSE-Leap-15.3-aarch64' : {
+        'PDID' : [2233], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/3/bootstrap/'
+    },
     'openSUSE-Leap-15.3-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_3-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/3/bootstrap/'
@@ -1230,8 +1247,16 @@ DATA = {
         'PDID' : [-12, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
+    'centos-7-aarch64' : {
+        'PDID' : [-31, 2361], 'BETAPDID' : [2363], 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+    },
     'centos-8-x86_64' : {
         'PDID' : [-13, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+    },
+    'centos-8-aarch64' : {
+        'PDID' : [-30, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
     },
     'centos-6-x86_64-uyuni' : {
@@ -1270,8 +1295,16 @@ DATA = {
         'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
     },
+    'oracle-7-aarch64' : {
+        'PDID' : [-28, 2361], 'BETAPDID' : [2363], 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+    },
     'oracle-8-x86_64' : {
         'PDID' : [-17, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+    },
+    'oracle-8-aarch64' : {
+        'PDID' : [-29, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
     },
     'oracle-6-x86_64-uyuni' : {
@@ -1296,6 +1329,10 @@ DATA = {
     },
     'amazonlinux-2-x86_64' : {
         'PDID' : [-22, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
+        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
+    },
+    'amazonlinux-2-aarch64' : {
+        'PDID' : [-28, 2361], 'BETAPDID' : [2363], 'PKGLIST' : RES7 + AMAZONLINUX2,
         'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
     },
     'amazonlinux-2-x86_64-uyuni' : {
@@ -1338,10 +1375,22 @@ DATA = {
         'PDID' : [-23, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
     },
+    'almalinux-8-aarch64' : {
+        'PDID' : [-26, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
+    },    
     'almalinux-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
     },    
+    'rockylinux-8-x86_64' : {
+        'PDID' : [-24, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
+    },
+    'rockylinux-8-aarch64' : {
+        'PDID' : [-27, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
+    },
     'rockylinux-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'rockylinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'

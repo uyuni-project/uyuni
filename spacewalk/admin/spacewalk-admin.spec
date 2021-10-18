@@ -23,7 +23,6 @@
 
 %define pythonX %{?build_py3: python3}%{!?build_py3: python}
 
-%global rhnroot /%{_datadir}/rhn
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only
 Group:          Applications/Internet
@@ -36,11 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
 Requires:       spacewalk-base
-%if 0%{?suse_version}
-Requires:       sysvinit-tools
-%else
-Requires:       procps-ng
-%endif
+Requires:       procps
 Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
@@ -99,7 +94,6 @@ fi
 
 %files
 %license LICENSE
-%dir %{rhnroot}
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
@@ -112,7 +106,6 @@ fi
 %{_bindir}/salt-secrets-config.py
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
-%{rhnroot}/RHN-GPG-KEY
 %{_mandir}/man8/rhn-satellite.8*
 %{_mandir}/man8/rhn-config-schema.pl.8*
 %{_mandir}/man8/spacewalk-service.8*

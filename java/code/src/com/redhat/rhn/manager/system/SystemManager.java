@@ -326,8 +326,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Optional<Long> serverId) {
-        SelectMode m = ModeFactory.getSelectMode("System_queries",
-                "systems_requiring_reboot", true);
+        SelectMode m = ModeFactory.getMode("System_queries", "systems_requiring_reboot");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
@@ -748,15 +747,15 @@ public class SystemManager extends BaseManager {
             removeSaltSSHKnownHosts(server);
         }
 
-        // remove server itself
-        ServerFactory.delete(server);
-
         server.asMinionServer().ifPresent(minion -> {
-            SaltStateGeneratorService.INSTANCE.removeServer(minion.getMinionId(), minion.getMachineId());
+            SaltStateGeneratorService.INSTANCE.removeServer(minion);
             if (deleteSaltKey) {
                 saltApi.deleteKey(minion.getMinionId());
             }
         });
+
+        // remove server itself
+        ServerFactory.delete(server);
     }
 
     private static void removeSaltSSHKnownHosts(Server server) {
@@ -2600,6 +2599,24 @@ public class SystemManager extends BaseManager {
                 "virtual_hosts_for_user");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
+        DataResult<SystemOverview> toReturn = m.execute(params);
+        toReturn.elaborate();
+        return toReturn;
+    }
+
+    /**
+     * List all systems with the given entitlement
+     *
+     * @param user the user doing the search
+     * @param entitlement the entitlement to match
+     * @return list of SystemOverview objects
+     */
+    public static List<SystemOverview> listSystemsWithEntitlement(User user, Entitlement entitlement) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "systems_with_entitlement");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("entitlement_label", entitlement.getLabel());
         DataResult<SystemOverview> toReturn = m.execute(params);
         toReturn.elaborate();
         return toReturn;

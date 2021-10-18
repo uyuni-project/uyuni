@@ -23,7 +23,7 @@ puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-$stdout.sync = true
+STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
@@ -289,6 +289,34 @@ end
 
 Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
+end
+
+Before('@sle11sp4_buildhost') do
+  skip_this_scenario unless $sle11sp4_buildhost
+end
+
+Before('@sle11sp3_terminal') do
+  skip_this_scenario unless $sle11sp3_terminal
+end
+
+Before('@sle12sp5_buildhost') do
+  skip_this_scenario unless $sle12sp5_buildhost
+end
+
+Before('@sle12sp5_terminal') do
+  skip_this_scenario unless $sle12sp5_terminal
+end
+
+Before('@sle15sp3_buildhost') do
+  skip_this_scenario unless $sle15sp3_buildhost
+end
+
+Before('@sle15sp3_terminal') do
+  skip_this_scenario unless $sle15sp3_terminal
+end
+
+Before('@opensuse153arm_minion') do
+  skip_this_scenario unless $opensuse153arm_minion
 end
 
 Before('@skip_for_debianlike') do |scenario|

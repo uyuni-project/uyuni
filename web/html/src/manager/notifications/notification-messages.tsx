@@ -16,7 +16,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 declare global {
   interface JQuery {
-      select2: (...args: any[]) => JQuery;
+    select2: (...args: any[]) => JQuery;
   }
 }
 
@@ -84,11 +84,11 @@ class NotificationMessages extends React.Component<Props, State> {
     }
   }
 
-  changeTabUrl = nextDataUrlTag => {
+  changeTabUrl = (nextDataUrlTag) => {
     this.setState({ currentDataUrlTag: nextDataUrlTag });
   };
 
-  decodeDataUrlSlice = dataUrlTag => {
+  decodeDataUrlSlice = (dataUrlTag) => {
     let dataUrlSlice;
     // decode the tab, the data and the table to present
     switch (dataUrlTag) {
@@ -110,11 +110,11 @@ class NotificationMessages extends React.Component<Props, State> {
     return dataUrlSlice;
   };
 
-  refreshServerData = dataUrlTag => {
+  refreshServerData = (dataUrlTag) => {
     this.setState({ loading: true });
     var currentObject = this;
     reloadData(this.decodeDataUrlSlice(dataUrlTag))
-      .then(data => {
+      .then((data) => {
         currentObject.setState({
           serverData: data,
           error: null,
@@ -124,22 +124,26 @@ class NotificationMessages extends React.Component<Props, State> {
         });
 
         //HACK: usage of JQuery here is needed to apply the select2js plugin
-        jQuery("select#notification-messages-type-filter.apply-select2js-on-this").each(function(i) {
+        jQuery("select#notification-messages-type-filter.apply-select2js-on-this").each(function (i) {
           var select = jQuery(this);
           // apply select2js only one time
           if (!select.hasClass("select2js-applied")) {
             select.addClass("select2js-applied");
 
             var select2js = select.select2({ placeholder: t("Filter by type") });
-            select2js.on("change", function(event) {
+            select2js.on("change", function (event) {
               currentObject.handleFilterTypeChange(select.val() || []);
             });
           }
         });
       })
-      .catch(response => {
+      .catch((response) => {
         currentObject.setState({
-          error: DEPRECATED_unsafeEquals(response.status, 401) ? "authentication" : response.status >= 500 ? "general" : null,
+          error: DEPRECATED_unsafeEquals(response.status, 401)
+            ? "authentication"
+            : response.status >= 500
+            ? "general"
+            : null,
           loading: false,
           messages: [],
           selectedItems: [],
@@ -147,18 +151,18 @@ class NotificationMessages extends React.Component<Props, State> {
       });
   };
 
-  handleFilterTypeChange = types => {
+  handleFilterTypeChange = (types) => {
     this.setState({ typeCriteria: types });
   };
 
-  filterDataByType = data => {
+  filterDataByType = (data) => {
     if (this.state.typeCriteria.length > 0) {
-      return data.filter(p => this.state.typeCriteria.includes(p.type));
+      return data.filter((p) => this.state.typeCriteria.includes(p.type));
     }
     return data;
   };
 
-  handleSelectItems = items => {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items,
     });
@@ -169,20 +173,17 @@ class NotificationMessages extends React.Component<Props, State> {
     dataRequest.messageIds = ids;
     dataRequest.flagAsRead = flagAsRead;
 
-    return Network.post(
-      "/rhn/manager/notification-messages/update-messages-status",
-      dataRequest
-    )
-      .then(data => {
+    return Network.post("/rhn/manager/notification-messages/update-messages-status", dataRequest)
+      .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({
           // serverData = prev serverData without those are changed + those changed with the changes
           serverData: prevState.serverData
-            .filter(m => !ids.includes(m.id))
+            .filter((m) => !ids.includes(m.id))
             .concat(
               prevState.serverData
-                .filter(m => ids.includes(m.id))
-                .map(m => {
+                .filter((m) => ids.includes(m.id))
+                .map((m) => {
                   var newM = Object.assign({}, m);
                   newM.isRead = flagAsRead;
                   return newM;
@@ -191,39 +192,47 @@ class NotificationMessages extends React.Component<Props, State> {
           messages: prevState.messages.concat([newMessage]),
         }));
       })
-      .catch(response => {
+      .catch((response) => {
         this.setState({
-          error: DEPRECATED_unsafeEquals(response.status, 401) ? "authentication" : response.status >= 500 ? "general" : null,
+          error: DEPRECATED_unsafeEquals(response.status, 401)
+            ? "authentication"
+            : response.status >= 500
+            ? "general"
+            : null,
         });
       });
   };
 
-  markAsRead = ids => {
+  markAsRead = (ids) => {
     return this.updateReadStatus(ids, true);
   };
 
-  deleteNotifications = ids => {
+  deleteNotifications = (ids) => {
     return Network.post("/rhn/manager/notification-messages/delete", ids)
-      .then(data => {
+      .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({
-          serverData: prevState.serverData.filter(m => !ids.includes(m.id)),
-          selectedItems: prevState.selectedItems.filter(m => !ids.includes(m)),
+          serverData: prevState.serverData.filter((m) => !ids.includes(m.id)),
+          selectedItems: prevState.selectedItems.filter((m) => !ids.includes(m)),
           messages: prevState.messages.concat([newMessage]),
         }));
       })
-      .catch(response => {
+      .catch((response) => {
         this.setState({
-          error: DEPRECATED_unsafeEquals(response.status, 401) ? "authentication" : response.status >= 500 ? "general" : null,
+          error: DEPRECATED_unsafeEquals(response.status, 401)
+            ? "authentication"
+            : response.status >= 500
+            ? "general"
+            : null,
         });
       });
   };
 
-  decodeTypeText = rawType => {
+  decodeTypeText = (rawType) => {
     return _MESSAGE_TYPE[rawType].text;
   };
 
-  decodeIconBySeverity = severity => {
+  decodeIconBySeverity = (severity) => {
     var severityHtml;
     switch (severity) {
       case "info":
@@ -277,38 +286,34 @@ class NotificationMessages extends React.Component<Props, State> {
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
-  buildSummaryText = row => {
+  buildSummaryText = (row) => {
     var div = document.createElement("div");
     div.innerHTML = row["summary"];
     return div.textContent || div.innerText || "";
   };
 
   sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = this.buildSummaryText(aRaw)
-      .toLowerCase()
-      .localeCompare(this.buildSummaryText(bRaw).toLowerCase());
+    var result = this.buildSummaryText(aRaw).toLowerCase().localeCompare(this.buildSummaryText(bRaw).toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   searchData = (datum, criteria) => {
     if (criteria) {
-      return this.buildSummaryText(datum)
-        .toLowerCase()
-        .includes(criteria.toLowerCase());
+      return this.buildSummaryText(datum).toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
   };
 
-  buildRows = message => {
-    return Object.keys(message).map(id => message[id]);
+  buildRows = (message) => {
+    return Object.keys(message).map((id) => message[id]);
   };
 
-  showDetailsPopup = row => {
+  showDetailsPopup = (row) => {
     this.setState({ popupItem: row });
     showDialog("notifications-popup-dialog");
   };
 
-  buildSummary = row => {
+  buildSummary = (row) => {
     const popupLink = (
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       <a href="#" onClick={() => this.showDetailsPopup(row)}>
@@ -335,22 +340,22 @@ class NotificationMessages extends React.Component<Props, State> {
     return escapeHtml(details);
   };
 
-  retryOnboarding = minionId => {
+  retryOnboarding = (minionId) => {
     return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId)
-      .then(data => {
+      .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({ messages: prevState.messages.concat([newMessage]) }));
       })
-      .catch(response => {});
+      .catch((response) => {});
   };
 
-  retryReposync = channelId => {
+  retryReposync = (channelId) => {
     return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId)
-      .then(data => {
+      .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({ messages: prevState.messages.concat([newMessage]) }));
       })
-      .catch(response => {});
+      .catch((response) => {});
   };
 
   messageReaction = (messageType, messageData) => {
@@ -387,7 +392,13 @@ class NotificationMessages extends React.Component<Props, State> {
     const headerTabs = (
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
-          <li className={DEPRECATED_unsafeEquals(dataHashTag, "#data-unread") || DEPRECATED_unsafeEquals(dataHashTag, "") ? "active" : ""}>
+          <li
+            className={
+              DEPRECATED_unsafeEquals(dataHashTag, "#data-unread") || DEPRECATED_unsafeEquals(dataHashTag, "")
+                ? "active"
+                : ""
+            }
+          >
             <a href="#data-unread" onClick={() => this.changeTabUrl("#data-unread")}>
               {t("Unread Messages")}
             </a>
@@ -409,7 +420,7 @@ class NotificationMessages extends React.Component<Props, State> {
           className="form-control d-inline-block apply-select2js-on-this"
           multiple={true}
         >
-          {Object.keys(_MESSAGE_TYPE).map(id => (
+          {Object.keys(_MESSAGE_TYPE).map((id) => (
             <option key={id} value={id}>
               {this.decodeTypeText(id)}
             </option>
@@ -446,7 +457,7 @@ class NotificationMessages extends React.Component<Props, State> {
 
     const visibleMessages =
       this.state.messages.length > 3 ? this.state.messages.slice(this.state.messages.length - 3) : this.state.messages;
-    const messages = visibleMessages.map(m => (
+    const messages = visibleMessages.map((m) => (
       <MessageContainer items={[{ severity: m.severity, text: <p>{t(m.text)}.</p> }]} />
     ));
 
@@ -464,8 +475,8 @@ class NotificationMessages extends React.Component<Props, State> {
 
           <Table
             data={this.buildRows(this.filterDataByType(data))}
-            identifier={row => row["id"]}
-            cssClassFunction={row => (DEPRECATED_unsafeEquals(row["isRead"], true) ? "text-muted" : "")}
+            identifier={(row) => row["id"]}
+            cssClassFunction={(row) => (DEPRECATED_unsafeEquals(row["isRead"], true) ? "text-muted" : "")}
             initialSortColumnKey="created"
             initialSortDirection={-1}
             initialItemsPerPage={window.userPrefPageSize}
@@ -480,36 +491,36 @@ class NotificationMessages extends React.Component<Props, State> {
               columnKey="severity"
               comparator={this.sortBySeverity}
               header={t("Severity")}
-              cell={row => this.decodeIconBySeverity(row["severity"])}
+              cell={(row) => this.decodeIconBySeverity(row["severity"])}
             />
             <Column
               columnKey="type"
               comparator={this.sortByType}
               header={t("Type")}
-              cell={row => this.decodeTypeText(row["type"])}
+              cell={(row) => this.decodeTypeText(row["type"])}
             />
             <Column
               columnKey="summary"
               comparator={this.sortByText}
               header={t("Summary")}
-              cell={row => this.buildSummary(row)}
+              cell={(row) => this.buildSummary(row)}
             />
             <Column
               columnKey="created"
               comparator={Utils.sortByDate}
               header={t("Created")}
-              cell={row => row["created"]}
+              cell={(row) => row["created"]}
             />
             <Column
               columnKey="action"
               header={t("Action")}
-              cell={row => this.messageReaction(row["type"], row["data"])}
+              cell={(row) => this.messageReaction(row["type"], row["data"])}
             />
             <Column
               columnKey="isRead"
               comparator={this.sortByStatus}
               header={t("Read|Delete")}
-              cell={row => (
+              cell={(row) => (
                 <div className="btn-group">
                   <AsyncButton
                     id="updateReadStatus"
@@ -543,7 +554,7 @@ class NotificationMessages extends React.Component<Props, State> {
   }
 }
 
-const ErrorMessage = props => (
+const ErrorMessage = (props) => (
   <MessageContainer
     items={
       DEPRECATED_unsafeEquals(props.error, "authentication")

@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.state;
 
 import com.redhat.rhn.domain.server.ServerGroup;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

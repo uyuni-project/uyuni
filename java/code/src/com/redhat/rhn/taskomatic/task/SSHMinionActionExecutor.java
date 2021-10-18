@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

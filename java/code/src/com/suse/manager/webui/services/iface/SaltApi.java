@@ -14,9 +14,8 @@
  */
 package com.suse.manager.webui.services.iface;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
@@ -36,6 +35,9 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;

@@ -15,12 +15,14 @@
 package com.suse.manager.metrics;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import io.prometheus.client.exporter.HTTPServer;
+
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
 
 import java.io.IOException;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import io.prometheus.client.exporter.HTTPServer;
 
 /**
  * Exports Prometheus metrics.

@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -48,6 +49,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.gatherer.GathererModule;
@@ -67,10 +69,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
@@ -270,6 +274,10 @@ public class ImageBuildController {
         }
         else {
             model.put("id", null);
+        }
+
+        if (new File(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg())).exists()) {
+            model.put("osImageStoreUrl", OSImageStoreUtils.getOSImageStoreRelativeURI(user.getOrg()));
         }
 
         model.put("isAdmin", user.hasRole(ADMIN_ROLE));

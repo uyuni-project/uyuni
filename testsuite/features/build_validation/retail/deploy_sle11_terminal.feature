@@ -1,6 +1,9 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@proxy
+@private_net
+@sle11sp3_terminal
 Feature: PXE boot a SLES 11 SP3 retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator
@@ -15,9 +18,6 @@ Feature: PXE boot a SLES 11 SP3 retail terminal
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
-  Scenario: Prepare branch server for SLE11 SP3 terminal deployment
-    When I execute "prepare" for "SLE11 SP3" via semi-xmlrpc-tester    
 
   Scenario: PXE boot the SLES 11 SP3 retail terminal
     When I run "reboot" on "sle11sp3_terminal"

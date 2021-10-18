@@ -27,7 +27,7 @@ const FinishAddCluster = (props: Props) => {
     if (isValid) {
       return props
         .onAdd(name, label, description)
-        .then(data => {
+        .then((data) => {
           setSubmitted(true);
           window.location.href = `/rhn/manager/cluster/${data}`;
         })
@@ -70,7 +70,7 @@ const FinishAddCluster = (props: Props) => {
         id="formula-form"
         ref={theForm}
         className="form-horizontal"
-        onSubmit={event => {
+        onSubmit={(event) => {
           event.preventDefault();
           return false;
         }}
@@ -83,7 +83,7 @@ const FinishAddCluster = (props: Props) => {
                 className="form-control"
                 type="text"
                 value={name}
-                onChange={ev => setName(ev.target.value)}
+                onChange={(ev) => setName(ev.target.value)}
                 required
               />
             </div>
@@ -95,7 +95,7 @@ const FinishAddCluster = (props: Props) => {
                 className="form-control"
                 type="text"
                 value={label}
-                onChange={ev => setLabel(ev.target.value)}
+                onChange={(ev) => setLabel(ev.target.value)}
                 required
                 pattern="^[a-zA-Z_][a-zA-Z0-9_-]+$"
                 title="letters and numbers, optionally underscore or hyphen, must start with a letter or underscore"
@@ -109,7 +109,7 @@ const FinishAddCluster = (props: Props) => {
                 className="form-control"
                 type="text"
                 value={description}
-                onChange={ev => setDescription(ev.target.value)}
+                onChange={(ev) => setDescription(ev.target.value)}
                 required
               />
             </div>

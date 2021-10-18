@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
@@ -41,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;

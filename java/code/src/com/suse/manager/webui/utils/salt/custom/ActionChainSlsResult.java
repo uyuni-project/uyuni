@@ -15,10 +15,11 @@
 
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 

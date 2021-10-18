@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.user.UserManager;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 

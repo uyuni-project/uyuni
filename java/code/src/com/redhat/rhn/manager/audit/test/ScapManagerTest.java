@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2017--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.redhat.rhn.manager.audit.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -36,7 +50,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    public void testXccdfEvalTransform_xccdf11() throws Exception {
+    public void testXccdfEvalTransformXccdf11() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
@@ -51,7 +65,8 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 
         File resumeXsl = new File(TestUtils.findTestData(
-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath());
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                .getPath());
         InputStream resultsIn = TestUtils.findTestData(
                 "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results.xml")
                 .openStream();
@@ -81,9 +96,12 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         ScapAction action = ActionManager.scheduleXccdfEval(user,
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
         String resume = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<benchmark-resume xmlns:cdf=\"http://checklists.nist.gov/xccdf/1.1\" xmlns:xccdf_12=\"http://checklists.nist.gov/xccdf/1.2\" id=\"SUSE-Security-Benchmark-YaST2\" version=\"1\">\n" +
+                "<benchmark-resume xmlns:cdf=\"http://checklists.nist.gov/xccdf/1.1\" " +
+                "xmlns:xccdf_12=\"http://checklists.nist.gov/xccdf/1.2\" " +
+                "id=\"SUSE-Security-Benchmark-YaST2\" version=\"1\">\n" +
                 "  <profile title=\"Default vanilla kernel hardening\" id=\"Default\" description=\"\"/>\n" +
-                "  <TestResult id=\"xccdf_org.open-scap_testresult_Default\" start-time=\"2017-02-14T15:22:39\" end-time=\"2017-02-14T15:22:39\">\n" +
+                "  <TestResult id=\"xccdf_org.open-scap_testresult_Default\" start-time=\"2017-02-14T15:22:39\" " +
+                "end-time=\"2017-02-14T15:22:39\">\n" +
                 "    <pass>\n" +
                 "      <rr id=\"rule-sysctl-ipv4-forward\">\n" +
                 "          <ident system=\"SYSTEM\">IDENT1</ident>\n" +
@@ -231,7 +249,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 ));
     }
 
-    public void testXccdfEvalTransform_xccdf12() throws Exception {
+    public void testXccdfEvalTransformXccdf12() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
@@ -247,7 +265,8 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "--profile xccdf_org.ssgproject.content_profile_rht-ccp", new Date());
 
         File resumeXsl = new File(TestUtils.findTestData(
-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath());
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                .getPath());
         InputStream resultsIn = TestUtils.findTestData(
                 "/com/redhat/rhn/manager/audit/test/openscap/rhccp/results.xml")
                 .openStream();
@@ -260,7 +279,8 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(result);
 
         assertEquals("xccdf_org.ssgproject.content_profile_rht-ccp", result.getProfile().getIdentifier());
-        assertEquals("Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)", result.getProfile().getTitle());
+        assertEquals("Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)",
+                result.getProfile().getTitle());
 
         assertEquals(841, result.getResults().size());
         assertRuleResultsCount(result, "pass", 35);
@@ -302,14 +322,16 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 
         File resumeXsl = new File(TestUtils.findTestData(
-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath());
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                .getPath());
         InputStream resultsIn = TestUtils.findTestData(
                 "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results_malformed.xml")
                 .openStream();
         try {
             XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
             fail("Expected exception");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             assertTrue(e instanceof RuntimeException);
         }
     }

@@ -22,10 +22,10 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 
+import org.quartz.JobExecutionContext;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.quartz.JobExecutionContext;
 
 
 /**

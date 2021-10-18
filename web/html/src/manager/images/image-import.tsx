@@ -99,7 +99,7 @@ class ImageImport extends React.Component {
   getImageStores() {
     const type = "registry";
     Network.get("/rhn/manager/api/cm/imagestores/type/" + type)
-      .then(data => {
+      .then((data) => {
         this.setState({
           imageStores: data,
         });
@@ -109,7 +109,7 @@ class ImageImport extends React.Component {
 
   getBuildHosts() {
     Network.get("/rhn/manager/api/cm/build/hosts/container_build_host")
-      .then(data => {
+      .then((data) => {
         this.setState({
           hosts: data,
         });
@@ -119,7 +119,7 @@ class ImageImport extends React.Component {
 
   getActivationKeys() {
     Network.get("/rhn/manager/api/cm/activationkeys")
-      .then(data => {
+      .then((data) => {
         this.setState({
           activationkeys: data,
         });
@@ -135,7 +135,7 @@ class ImageImport extends React.Component {
       return;
     }
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then((res) => {
       // Prevent out-of-order async results
       if (res.activationKey !== this.state.model.activationKey) return false;
 
@@ -192,7 +192,7 @@ class ImageImport extends React.Component {
         version: this.state.model.version,
       };
       return Network.post("/rhn/manager/api/cm/images/import", importObj)
-        .then(data => {
+        .then((data) => {
           if (data.success) {
             Utils.urlBounce("/rhn/manager/cm/images");
           } else {
@@ -222,7 +222,7 @@ class ImageImport extends React.Component {
         <ul className="list-unstyled">
           <li>{this.state.channels.base.name}</li>
           <ul>
-            {this.state.channels.children.map(c => (
+            {this.state.channels.children.map((c) => (
               <li key={c.id}>{c.name}</li>
             ))}
           </ul>
@@ -268,14 +268,11 @@ class ImageImport extends React.Component {
             invalidHint={
               <span>
                 Target Image Store is required.&nbsp;
-                <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>
-                  Create a new one
-                </a>
-                .
+                <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.
               </span>
             }
             options={this.state.imageStores}
-            getOptionValue={option => option.id}
+            getOptionValue={(option) => option.id}
           />
 
           <Text
@@ -304,8 +301,8 @@ class ImageImport extends React.Component {
             divClass="col-md-6"
             isClearable
             options={this.state.hosts}
-            getOptionValue={option => option.id}
-            getOptionLabel={option => option.name}
+            getOptionValue={(option) => option.id}
+            getOptionLabel={(option) => option.name}
           />
 
           {this.renderActivationKeySelect()}
