@@ -1428,70 +1428,70 @@
       </trans-unit>
       <trans-unit id="username" xml:space="preserve">
         <source>Username</source>
-        <target/>
+        <target>Používateľské meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="password" xml:space="preserve">
         <source>Password</source>
-        <target/>
+        <target>Heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredlogin" xml:space="preserve">
         <source>Desired Login</source>
-        <target/>
+        <target>Požadované prihlásenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredpass" xml:space="preserve">
         <source>Desired Password</source>
-        <target/>
+        <target>Požadované heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirmpass" xml:space="preserve">
         <source>Confirm Password</source>
-        <target/>
+        <target>Potvrdiť heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.invalid_login" xml:space="preserve">
         <source>Either the password or username is incorrect.</source>
-        <target/>
+        <target>Heslo alebo používateľské meno je nesprávne.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.user_readonly" xml:space="preserve">
         <source>This user has read only API access. WebUI login is denied.</source>
-        <target/>
+        <target>Tento používateľ má prístup iba na čítanie API. Prihlásenie WebUI je zamietnuté.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.org_already_taken" xml:space="preserve">
         <source>That organization name is already taken; please choose another.</source>
-        <target/>
+        <target>Tento názov organizácie je už použitý, prosím, zvoľte si iný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/OrgCreate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.login_already_taken" xml:space="preserve">
         <source>That username is already taken; please choose another.</source>
-        <target/>
+        <target>Toto používateľské meno je už použité, prosím, zvoľte si iné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.same_email" xml:space="preserve">
         <source>You must specify a different email</source>
-        <target/>
+        <target>Musíte zadať iný email</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
         </context-group>
