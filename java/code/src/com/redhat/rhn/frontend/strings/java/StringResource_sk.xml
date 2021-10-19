@@ -1358,70 +1358,70 @@
       </trans-unit>
       <trans-unit id="My Account" xml:space="preserve">
         <source>My Account</source>
-        <target/>
+        <target>Môj účet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Preferences" xml:space="preserve">
         <source>My Preferences</source>
-        <target/>
+        <target>Moje predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Organization" xml:space="preserve">
         <source>My Organization</source>
-        <target/>
+        <target>Moja organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Organization Applicants" xml:space="preserve">
         <source>Organization Applicants</source>
-        <target/>
+        <target>Žiadatelia organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Activation Key Administrators" xml:space="preserve">
         <source>Activation Key Administrators</source>
-        <target/>
+        <target>Administrátori aktivačných kľúčov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel Administrators" xml:space="preserve">
         <source>Channel Administrators</source>
-        <target/>
+        <target>Administrátori kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Organization Administrators" xml:space="preserve">
         <source>Organization Administrators</source>
-        <target/>
+        <target>Administrátori organizácií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Satellite Administrators" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrators</source>
-        <target/>
+        <target>Administrátori @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Administrators" xml:space="preserve">
         <source>System Group Administrators</source>
-        <target/>
+        <target>Administrátori systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="for Org" xml:space="preserve">
         <source> for Org </source>
-        <target/>
+        <target> pre Org </target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
