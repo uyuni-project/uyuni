@@ -1,3 +1,5 @@
+- Require tftp instead of atftp on Proxy
+
 -------------------------------------------------------------------
 Tue Aug 10 15:32:22 CEST 2021 - jgonzalez@suse.com
 
