@@ -9,8 +9,11 @@ def check_changelog?(pr_body, files)
   files.any? { |f| f.include? '.changes' } 
 end
 
+puts ENV['GITHUB_EVENT_PATH']
 github_event = JSON.parse(File.read(ENV['GITHUB_EVENT_PATH']))
+puts github_event
 files = ARGV[0].split(' ')
+puts files
 puts "-" * 20, "PR Description: #{github_event['pull_request']['body']}"
 puts "-" * 20, "Files modified: #{files}"
 check_changelog?(github_event['pull_request']['body'], files) ?  exit(0) : exit(1)
