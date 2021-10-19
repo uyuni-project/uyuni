@@ -43,7 +43,7 @@ def features():
             libvirt_version = 0
             for idx in range(len(matcher.groups())):
                 libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (len(matcher.groups()) - idx - 1)
-    except FileNotFoundError:
+    except OSError:
         log.error("libvirtd is not installed or is not in the PATH")
 
     return {
