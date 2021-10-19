@@ -1,3 +1,4 @@
+- Run Prometheus JMX exporter as Java agent (bsc#1184617)
 - Replace FileNotFoundError by python2-compatible OSError (bsc#1191139)
 
 -------------------------------------------------------------------
