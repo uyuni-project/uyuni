@@ -1,3 +1,4 @@
+- Remove minion_pillars PL/SQL function
 - Force metadata files regeneration for Debian based repos
   to change the format of the repos to flat
 - Added rights column to rhnerrata to handle copyright information
