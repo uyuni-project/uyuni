@@ -1,3 +1,5 @@
+- Replace FileNotFoundError by python2-compatible OSError (bsc#1191139)
+
 -------------------------------------------------------------------
 Wed Oct 06 09:40:53 CEST 2021 - jgonzalez@suse.com
 
