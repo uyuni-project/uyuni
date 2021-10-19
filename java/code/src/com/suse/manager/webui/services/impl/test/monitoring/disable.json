@@ -9,8 +9,8 @@
             "comment": "Service prometheus-node_exporter has been disabled, and is dead",
             "__sls__": "srvmonitoring.disable",
             "__run_num__": 0,
-            "start_time": "16:06:05.923859",
-            "duration": 248.344,
+            "start_time": "15:41:29.204182",
+            "duration": 570.393,
             "__id__": "node_exporter_service"
         },
         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead": {
@@ -22,232 +22,66 @@
             "comment": "Service prometheus-postgres_exporter has been disabled, and is dead",
             "__sls__": "srvmonitoring.disable",
             "__run_num__": 1,
-            "start_time": "16:06:06.172567",
-            "duration": 286.435,
+            "start_time": "15:41:29.774981",
+            "duration": 632.209,
             "__id__": "postgres_exporter_service"
         },
-        "cmd_|-remove_tomcat_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-absent": {
+            "name": "/usr/lib/systemd/system/tomcat.service.d/jmx.conf",
             "changes": {
-                "pid": 6335,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
+                "removed": "/usr/lib/systemd/system/tomcat.service.d/jmx.conf"
             },
             "result": true,
-            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat\" run",
+            "comment": "Removed file /usr/lib/systemd/system/tomcat.service.d/jmx.conf",
             "__sls__": "srvmonitoring.disable",
             "__run_num__": 2,
-            "start_time": "16:06:06.461899",
-            "duration": 13.875,
-            "__id__": "remove_tomcat_jmx_host"
-        },
-        "cmd_|-remove_tomcat_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
-            "changes": {
-                "pid": 6335,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 2,
-            "start_time": "16:06:06.461899",
-            "duration": 13.875,
-            "__id__": "remove_tomcat_jmx_port"
-        },
-        "cmd_|-remove_tomcat_jmx_ssl_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
-            "changes": {
-                "pid": 6337,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 3,
-            "start_time": "16:06:06.476144",
-            "duration": 14.323,
-            "__id__": "remove_tomcat_jmx_ssl"
-        },
-        "cmd_|-remove_tomcat_jmx_auth_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
-            "changes": {
-                "pid": 6339,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 4,
-            "start_time": "16:06:06.490826",
-            "duration": 13.945,
-            "__id__": "remove_tomcat_jmx_auth"
-        },
-        "cmd_|-remove_tomcat_jmx_hostname_|-sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
-            "changes": {
-                "pid": 6341,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 5,
-            "start_time": "16:06:06.505167",
-            "duration": 13.157,
-            "__id__": "remove_tomcat_jmx_hostname"
-        },
-        "cmd_|-jmx_tomcat_config_|-grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat_|-run": {
-            "name": "grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat",
-            "changes": {
-                "pid": 6342,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 6,
-            "start_time": "16:06:06.519393",
-            "duration": 9.63,
+            "start_time": "15:41:30.412150",
+            "duration": 1.791,
             "__id__": "jmx_tomcat_config"
         },
-        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-dead": {
-            "name": "prometheus-jmx_exporter@tomcat",
+        "mgrcompat_|-jmx_tomcat_config_|-service.systemctl_reload_|-module_run": {
+            "name": "service.systemctl_reload",
             "changes": {
-                "prometheus-jmx_exporter@tomcat": true
+                "ret": true
             },
+            "comment": "Module function service.systemctl_reload executed",
             "result": true,
-            "comment": "Service prometheus-jmx_exporter@tomcat has been disabled, and is dead",
             "__sls__": "srvmonitoring.disable",
-            "__run_num__": 7,
-            "start_time": "16:06:06.530091",
-            "duration": 615.425,
-            "__id__": "jmx_exporter_tomcat_service"
+            "__run_num__": 3,
+            "start_time": "15:41:30.415761",
+            "duration": 428.661,
+            "__id__": "jmx_tomcat_config"
         },
-        "cmd_|-remove_taskomatic_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|-absent": {
+            "name": "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf",
             "changes": {
-                "pid": 6372,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
+                "removed": "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf"
             },
             "result": true,
-            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf\" run",
+            "comment": "Removed file /usr/lib/systemd/system/taskomatic.service.d/jmx.conf",
             "__sls__": "srvmonitoring.disable",
-            "__run_num__": 8,
-            "start_time": "16:06:07.145892",
-            "duration": 14.262,
-            "__id__": "remove_taskomatic_jmx_host"
-        },
-        "cmd_|-remove_taskomatic_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
-            "changes": {
-                "pid": 6372,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 8,
-            "start_time": "16:06:07.145892",
-            "duration": 14.262,
-            "__id__": "remove_taskomatic_jmx_port"
-        },
-        "cmd_|-remove_taskomatic_jmx_ssl_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
-            "changes": {
-                "pid": 6374,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 9,
-            "start_time": "16:06:07.160525",
-            "duration": 13.637,
-            "__id__": "remove_taskomatic_jmx_ssl"
-        },
-        "cmd_|-remove_taskomatic_jmx_auth_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
-            "changes": {
-                "pid": 6376,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 10,
-            "start_time": "16:06:07.174526",
-            "duration": 13.591,
-            "__id__": "remove_taskomatic_jmx_auth"
-        },
-        "cmd_|-remove_taskomatic_jmx_hostname_|-sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
-            "changes": {
-                "pid": 6378,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 11,
-            "start_time": "16:06:07.188493",
-            "duration": 13.131,
-            "__id__": "remove_taskomatic_jmx_hostname"
-        },
-        "cmd_|-jmx_taskomatic_config_|-grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf",
-            "changes": {
-                "pid": 6379,
-                "retcode": 0,
-                "stdout": "",
-                "stderr": ""
-            },
-            "result": true,
-            "comment": "Command \"grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf\" run",
-            "__sls__": "srvmonitoring.disable",
-            "__run_num__": 12,
-            "start_time": "16:06:07.202697",
-            "duration": 9.216,
+            "__run_num__": 4,
+            "start_time": "15:41:30.844762",
+            "duration": 1.905,
             "__id__": "jmx_taskomatic_config"
         },
-        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-dead": {
-            "name": "prometheus-jmx_exporter@taskomatic",
+        "mgrcompat_|-jmx_taskomatic_config_|-service.systemctl_reload_|-module_run": {
+            "name": "service.systemctl_reload",
             "changes": {
-                "prometheus-jmx_exporter@taskomatic": true
+                "ret": true
             },
+            "comment": "Module function service.systemctl_reload executed",
             "result": true,
-            "comment": "Service prometheus-jmx_exporter@taskomatic has been disabled, and is dead",
             "__sls__": "srvmonitoring.disable",
-            "__run_num__": 13,
-            "start_time": "16:06:07.212846",
-            "duration": 632.044,
-            "__id__": "jmx_exporter_taskomatic_service"
+            "__run_num__": 5,
+            "start_time": "15:41:30.846849",
+            "duration": 443.199,
+            "__id__": "jmx_taskomatic_config"
         },
         "cmd_|-mgr_enable_prometheus_self_monitoring_|-grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf_|-run": {
             "name": "grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf",
             "changes": {
-                "pid": 6408,
+                "pid": 27137,
                 "retcode": 0,
                 "stdout": "",
                 "stderr": ""
@@ -255,15 +89,15 @@
             "result": true,
             "comment": "Command \"grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf\" run",
             "__sls__": "srvmonitoring.disable",
-            "__run_num__": 14,
-            "start_time": "16:06:07.845259",
-            "duration": 9.327,
+            "__run_num__": 6,
+            "start_time": "15:41:31.294412",
+            "duration": 16.521,
             "__id__": "mgr_enable_prometheus_self_monitoring"
         },
         "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf_|-run": {
             "name": "grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf",
             "changes": {
-                "pid": 6411,
+                "pid": 27140,
                 "retcode": 0,
                 "stdout": "",
                 "stderr": ""
@@ -271,9 +105,9 @@
             "result": true,
             "comment": "Command \"grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf\" run",
             "__sls__": "srvmonitoring.disable",
-            "__run_num__": 15,
-            "start_time": "16:06:07.854962",
-            "duration": 7.137,
+            "__run_num__": 7,
+            "start_time": "15:41:31.311538",
+            "duration": 13.529,
             "__id__": "mgr_is_prometheus_self_monitoring_disabled"
         }
     }
