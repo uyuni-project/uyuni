@@ -1,3 +1,4 @@
+- Run Prometheus JMX exporter as Java agent (bsc#1184617)
 - Fix problem installing/removing packages using action chains
   in transactional systems
 - Don't create skeleton /srv/salt/top.sls
