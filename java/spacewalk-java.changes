@@ -1,3 +1,4 @@
+- Fix package update action with shared channels (bsc#1191313)
 - fix issue with empty action chains getting deleted too early (bsc#1191377)
 - switch to best repo auth item for contentsources (bsc#1191442)
 - Set product name and version in the User-Agent header when connecting to SCC
