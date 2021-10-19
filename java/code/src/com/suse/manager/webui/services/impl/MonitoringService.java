@@ -289,9 +289,9 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running"),
                 new Tuple2<>("tomcat",
-                        "cmd_|-jmx_tomcat_config_|-sed*"),
+                        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-managed"),
                 new Tuple2<>("taskomatic",
-                        "cmd_|-jmx_taskomatic_config_|-sed*"),
+                        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|-managed"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
         );
@@ -327,9 +327,9 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead"),
                 new Tuple2<>("tomcat",
-                        "cmd_|-jmx_tomcat_config_|-grep*"),
+                        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-absent"),
                 new Tuple2<>("taskomatic",
-                        "cmd_|-jmx_taskomatic_config_|-grep*"),
+                        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|-absent"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-grep*")
                 ).map(map -> {
