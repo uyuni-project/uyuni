@@ -105,10 +105,8 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -1133,18 +1131,16 @@ public class SaltServerActionService {
             List<MinionSummary> minionSummaries, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        List<Package> packages = action.getDetails().stream().flatMap(details -> {
-            PackageName packageName = details.getPackageName();
+        List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
+
+        List<String> nevraStrings = action.getDetails().stream().map(details -> {
+            PackageName name = details.getPackageName();
             PackageEvr evr = details.getEvr();
             PackageArch arch = details.getArch();
-            return PackageFactory.lookupByNevra(action.getOrg(), packageName.getName(), evr.getVersion(),
-                    evr.getRelease(), evr.getEpoch(), arch).stream();
+            return name.getName() + "-" + evr.toUniversalEvrString() + "." + arch.getLabel();
         }).collect(toList());
 
-        List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
-        List<Long> pids = packages.stream().map(p -> p.getId()).collect(toList());
-
-        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackages(pids, sids);
+        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackagesByNevra(nevraStrings, sids);
         Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
                 .collect(groupingBy(t -> t.getB(), mapping(t -> t.getA(), toList())));
         action.getServerActions().forEach(sa -> {
