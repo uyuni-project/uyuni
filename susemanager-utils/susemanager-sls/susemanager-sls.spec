@@ -125,22 +125,6 @@ py.test
 # HACK! Create broken link when it will be replaces with the real file
 ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
-# Pre-create top.sls to suppress empty/absent top.sls warning/error (bsc#1017754)
-USERLAND="/srv/salt"
-TOP="$USERLAND/top.sls"
-if [ -d "$USERLAND" ]; then
-    if [ ! -f "$TOP" ]; then
-	cat <<EOF >> $TOP
-# This only calls no-op statement from
-# /usr/share/susemanager/salt/util/noop.sls state
-# Feel free to change it.
-
-base:
-  '*':
-    - util.noop
-EOF
-    fi
-fi
 # Restrict Java RMI to localhost (bsc#1184617)
 restrict_to_localhost()
 {
