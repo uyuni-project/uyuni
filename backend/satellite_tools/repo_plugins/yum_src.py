@@ -118,7 +118,7 @@ class ZyppoSync:
         zypper_gpg_keys = {}
         with tempfile.NamedTemporaryFile() as f:
             # Collect GPG keys from the Spacewalk GPG keyring
-            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
             process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
             for line in process.stdout.readlines():
                line_l = line.decode().split(":")
