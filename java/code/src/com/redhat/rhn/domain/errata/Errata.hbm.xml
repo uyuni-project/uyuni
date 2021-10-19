@@ -189,6 +189,22 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="pid" type="long" />
         <return-scalar column="sid" type="long" />
     </sql-query>
+
+    <sql-query name="Errata.retractedPackagesByNevra">
+        <![CDATA[
+            SELECT pid, sid
+            FROM suseServerChannelsRetractedPackagesView
+                JOIN rhnpackage p on p.id = pid
+                JOIN rhnpackagename pn on pn.id = p.name_id
+                JOIN rhnpackageevr pevr on pevr.id = p.evr_id
+                JOIN rhnpackagearch parch on parch.id = p.package_arch_id
+            WHERE (pn.name || '-' || COALESCE(pevr.epoch || ':', '') || pevr.version || '-' || pevr.release || '.' || parch.label) in (:nevras)
+                AND sid in (:sids)
+        ]]>
+        <return-scalar column="pid" type="long" />
+        <return-scalar column="sid" type="long" />
+    </sql-query>
+
     <sql-query name="Errata.searchById">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName,
                     e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
