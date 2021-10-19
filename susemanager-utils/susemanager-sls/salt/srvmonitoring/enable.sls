@@ -77,6 +77,8 @@ jmx_tomcat_config:
       - salt://srvmonitoring/tomcat_jmx.conf
     - require:
       - cmd: jmx_exporter
+  module.run:
+    - name: service.systemctl_reload
 
 jmx_exporter_tomcat_service_cleanup:
   service.dead:
@@ -115,6 +117,8 @@ jmx_taskomatic_config:
       - salt://srvmonitoring/taskomatic_jmx.conf
     - require:
       - cmd: jmx_exporter
+  module.run:
+    - name: service.systemctl_reload
 
 jmx_exporter_taskomatic_service_cleanup:
   service.dead:
