@@ -11,13 +11,13 @@ postgres_exporter_service:
 jmx_tomcat_config:
   file.absent:
     - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
-  module.run:
+  mgrcompat.module_run:
     - name: service.systemctl_reload
 
 jmx_taskomatic_config:
   file.absent:
     - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
-  module.run:
+  mgrcompat.module_run:
     - name: service.systemctl_reload
 
 mgr_enable_prometheus_self_monitoring:
