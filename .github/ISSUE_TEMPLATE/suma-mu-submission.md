@@ -43,7 +43,7 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
 - [ ] Prepare the submissions with `patch-creator`
 - [ ] Ping the Ion squad so they submit salt to `SLE15SP1`, `SLE15SP2` and `SLE15SP3` (not needed for MUs without salt/client tools)
 - [ ] Check if `golang-github-prometheus-node_exporter` is included in the SLE12 client tools submission, and if so, ping @witekest so he can prepare a submission for `SUSE:SLE-15-SP1:Update` (other codestreams will inherit, `SUSE:SLE-15:Update` is not needed because it's LTSS and soon EoL, and this package comes from Basesystem)
-- [ ] Check if `grafana` is included in the SLE15 client tools submission, and if so, ping @witekest so he can prepare a submission for `SUSE:SLE-15:Update` (other codestreams will inherit)
+- [ ] Check if `grafana` is included in the SLE15 client tools submission, and if so, ping @witekest so he can prepare a submission for `SUSE:SLE-15-SP2:Update` (other codestreams will inherit)
 - [ ] Create the JIRA ticket with all the submissions and ping the Maintenace Team
 - [ ] Send an email with the links for the patchinfos for the Server and the Proxy, and a link to this card to PO, so the release notes are generated and later submitted by the PO
 - [ ] Submit the release notes
