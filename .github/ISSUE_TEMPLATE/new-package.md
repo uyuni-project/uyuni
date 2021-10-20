@@ -14,6 +14,12 @@ This is not about the RPM package, but about the OBS package, that should be the
 
 - [ ] OBS name: 
 
+# Maintainer
+
+- [ ] suse-manager-maintainers
+- [ ] monitoring (some monitoring packages only)
+- [ ] Other (**please specify, only for excepcional situations**)
+
 # Affected versions
 
 **Mandatory**. You need to mark at least one checkbox. If you are not sure, check with the Product owner.
@@ -22,6 +28,7 @@ This is not about the RPM package, but about the OBS package, that should be the
 - [ ] SUSE Manager Head
 - [ ] SUSE Manager 4.2
 - [ ] SUSE Manager 4.1
+- [ ] SLE modules
 
 
 # Affected patterns, if any
@@ -40,14 +47,15 @@ This section is **optional**.
 
 - [ ] Server (**specify the RPMs to be added**)
 - [ ] Proxy/Retail Branch Server (**specify the RPMs to be added**)
-- [ ] Client Tools (**specify the list of client tools and the RPMs**)
+- [ ] Client Tools (**specify the list of client tools and the RPMs to be added**)
+- [ ] SLE modules (**specify the SLE module names, the affected SLE versions , and the RPMs to be added**)
 
 # ECO requirement
 
 **Mandatory**.
 
 If the new package:
-- Is going to be part of the SLE12/SLE15 client tools for a released SUSE Manager version, and
+- Is going to be part of the SLE12/SLE15 client tools for a released SUSE Manager version, or part of a SLE module, and
 - Is either a runtime dependency, or a build dependency for an existing package
 
 Then mark the following checkbox:

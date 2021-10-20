@@ -14,6 +14,14 @@ This is not about the RPM package, but about the OBS package, that should be the
 
 - [ ] OBS name: (**if this is a package rename, specify the new name**)
 
+# Maintainer
+
+Run `iosc bugowner <package_name>` and pick one:
+
+- [ ] suse-manager-maintainers
+- [ ] monitoring (some monitoring packages only)
+- [ ] Other (**please specify, only for excepcional situations**)
+
 # Actions
 
 **Mandatory**
@@ -32,11 +40,11 @@ This is not about the RPM package, but about the OBS package, that should be the
 - [ ] SUSE Manager 4.2
 - [ ] SUSE Manager 4.1
 
-# Affected codestreams
+# Affected codestreams and product/modules
 
 **Mandatory**
 
-Use https://maintenance.suse.de/maintained/ to find the codestreams where the package is, and list them here. 
+Use https://maintenance.suse.de/maintained/ to find the codestreams and product/modules where the package is, and list them here. 
 
 If you are doing a package rename, use the old OBS package name.
 
@@ -50,7 +58,7 @@ If you are doing a package rename, use the old OBS package name.
 
 **Mandatory**.
 
-If the new package is part of any codestream matching: `SUSE:SLE-12:Update`, `SUSE:SLE-12-SP[X]:Update`, `SUSE:SLE-15:Update`, or `SUSE:SLE-15-SP[X]:Update` 
+If the new package is part of any codestream matching: `SUSE:SLE-12:Update`, `SUSE:SLE-12-SP[X]:Update`, `SUSE:SLE-15:Update`, or `SUSE:SLE-15-SP[X]:Update`, or part of SLE modules.
 
 Then mark the following checkbox:
 - [ ] ECO is **required**
