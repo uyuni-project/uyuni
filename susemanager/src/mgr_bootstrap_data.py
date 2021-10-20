@@ -427,6 +427,7 @@ PKGLIST15_SALT = [
     "libpgm-5_2-0",
     "libsodium23",
     "libzmq5",
+    "openssl",
     "python3-Babel",
     "python3-certifi",
     "python3-chardet",
