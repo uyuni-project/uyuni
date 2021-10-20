@@ -1247,7 +1247,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
-        <target>Conta {0}  foi desativada.</target>
+        <target>Conta {0} foi desativada.</target>
       </trans-unit>
       <trans-unit id="user.enable" xml:space="preserve">
         <source>Reactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -1571,7 +1571,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>Prefixo inválido  [{0}]. Deve ser um de {1}.</target>
+        <target>Prefixo inválido [{0}]. Deve ser um de {1}.</target>
       </trans-unit>
       <trans-unit id="error.readonly_org_admin" xml:space="preserve">
         <source>At least one Organization Administrator with regular access must remain in {0} organization.</source>
@@ -2017,7 +2017,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>Método impróprio de manuseio da ACL [{0}]. Os métodos de manuseio da ACL  devem possuir a seguinte subscrição (estática ou não-estática), sem nenhuma exceção declarada: aclXXXX(Objeto, String[]) pública</target>
+        <target>Método impróprio de manuseio da ACL [{0}]. Os métodos de manuseio da ACL devem possuir a seguinte subscrição (estática ou não-estática), sem nenhuma exceção declarada: aclXXXX(Objeto, String[]) pública</target>
       </trans-unit>
       <trans-unit id="bad-syntax" xml:space="preserve">
         <source>Could not parse ACL statement: "{0}"</source>
@@ -10233,7 +10233,7 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
-        <target state="translated">Este sistema está programado para uma simulação da migração para &amp;lt;strong&amp;gt;{2}&amp;lt;/strong&amp;gt;. Assim que a ação for concluída com êxito, você pode agendar a migração completa &amp; lt; a href="/rhn/systems/details/history/Event.do?sid={0}&amp;amp;aid={1}"&amp;gt;aqui&amp;lt;/a&amp;gt;</target>
+        <target state="translated">Este sistema está programado para uma simulação da migração para &amp;lt;strong&amp;;gt;{2}&amp;;lt;/strong&amp;;gt;. Assim que a ação for concluída com êxito, você pode agendar a migração completa &amp;lt; a href="/rhn/systems/details/history/Event.do?sid={0}&amp;amp;aid={1}"&amp;;gt;aqui&amp;lt;/a&amp;gt;</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-register" xml:space="preserve">
         <source>Run mgr-register</source>
@@ -11059,10 +11059,10 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         </context-group>
         <target state="translated">Migrar um domínio virtual</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
+      <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">Modelo de filtro inválido</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
