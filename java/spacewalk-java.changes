@@ -1,3 +1,4 @@
+- Fix Service Package migration with pillar in database
 - Run Prometheus JMX exporter as Java agent (bsc#1184617)
 - Allow usage of jinja template in Salt config channels
 - Store Salt minion pillars in database

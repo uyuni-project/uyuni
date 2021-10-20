@@ -1590,8 +1590,12 @@ public class SaltServerActionService {
             Set<Channel> currentChannels = minion.getChannels();
             currentChannels.removeAll(unsubbed);
             currentChannels.addAll(subbed);
-            ServerFactory.save(minion);
             MinionPillarManager.INSTANCE.generatePillar(minion);
+            ServerFactory.save(minion);
+            if (commitTransaction) {
+                HibernateFactory.commitTransaction();
+            }
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         });
 
         Map<String, Object> pillar = new HashMap<>();
