@@ -2000,7 +2000,7 @@ public class SaltUtils {
     }
 
     /**
-     * Update the system info of the minion
+     * Update the system info of the minion and set Reboot Actions to completed
      * @param systemInfo response from salt master against util.systeminfo state
      * @param minion  minion for which information should be updated
      */
