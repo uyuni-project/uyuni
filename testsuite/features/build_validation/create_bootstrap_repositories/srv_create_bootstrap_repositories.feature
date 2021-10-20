@@ -152,4 +152,4 @@ Feature: Create bootstrap repositories
 
 @opensuse153arm_minion
   Scenario: Create the bootstrap repository for a OpenSUSE 15.3 ARM minion
-    When I create the bootstrap repository for "opensuse 15.3arm_minion" on the server
+    When I create the bootstrap repository for "opensuse153arm_minion" on the server
