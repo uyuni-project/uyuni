@@ -1498,14 +1498,14 @@
       </trans-unit>
       <trans-unit id="error.maxemail" xml:space="preserve">
         <source>The email address is too long. Please enter a shorter email address and try again.</source>
-        <target/>
+        <target>Emailová adresa je príliš dlhá. Prosím, zadajte kratšiu emailovú adresu a skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.addr_invalid" xml:space="preserve">
         <source>Entered email address is not valid</source>
-        <target/>
+        <target>Zadaná emailová adresa nie je platná</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
@@ -1514,14 +1514,14 @@
       </trans-unit>
       <trans-unit id="error.proxy_invalid" xml:space="preserve">
         <source>HTTP proxy needs to be specified as host:port.</source>
-        <target/>
+        <target>HTTP proxy musí byť zadané ako hostiteľ:port.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
         </context-group>
       </trans-unit>
       <trans-unit id="/rhn/" xml:space="preserve">
         <source>That username is already taken; please choose another.</source>
-        <target/>
+        <target>Toto používateľské meno je už použité, prosím, zvoľte si iné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/newlogin/CreatePersonal</context>
           <context context-type="sourcefile">/newlogin/CreateCorporate</context>
@@ -1529,7 +1529,7 @@
       </trans-unit>
       <trans-unit id="error.minlogin" xml:space="preserve">
         <source>Logins must be no shorter than {0} characters.</source>
-        <target/>
+        <target>Prihlasovacie mená nesmú byť kratšie ako {0} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="paramnotes">Logins must be no shorter than 5 characters.</context>
@@ -1537,14 +1537,14 @@
       </trans-unit>
       <trans-unit id="error.maxlogin" xml:space="preserve">
         <source>The desired login you requested is too long. Please enter a shorter desired login and try again.</source>
-        <target/>
+        <target>Požadované prihlasovacie meno je príliš dlhé. Prosím, zadajte kratšie požadované prihlasovacie meno a skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.minpassword" xml:space="preserve">
         <source>Passwords must be at least {0} characters.</source>
-        <target/>
+        <target>Heslá musia mať aspoň {0} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="paramnotes">Passwords must be no shorter than 5 characters.</context>
@@ -1552,21 +1552,21 @@
       </trans-unit>
       <trans-unit id="error.invalidpasswordcharacters" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
-        <target/>
+        <target>Heslo obsahuje znaky tabulátora alebo nového riadku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
-        <target/>
+        <target>Heslá nemôžu mať viac ako {0} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.password_mismatch" xml:space="preserve">
         <source>Passwords do not match.</source>
-        <target/>
+        <target>Heslá sa nezhodujú.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
