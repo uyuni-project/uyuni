@@ -1,0 +1,29 @@
+name: Run unit tests for susemanager-sls
+
+on:
+  pull_request:
+    paths: 'susemanager-utils/susemanager-sls/**/*'
+
+jobs:
+  susemanager_sls_unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pytest mock pyyaml salt
+
+      - name: Run susemanager-sls unit tests
+        run: |
+          cd susemanager-utils/susemanager-sls/test/
+          pytest test_pillar_suma_minion.py
+          cd ../src/tests
+          pytest
