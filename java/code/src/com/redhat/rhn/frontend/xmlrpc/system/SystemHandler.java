@@ -3352,7 +3352,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "eventId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *           SystemEventDetailDtoSerializer
+     *           $SystemEventDetailsDtoSerializer
      *      #array_end()
     */
     public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
