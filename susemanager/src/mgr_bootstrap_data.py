@@ -682,6 +682,9 @@ PKGLISTDEBIAN9 = [
     "python2.7-minimal",
     "salt-common",
     "salt-minion",
+    "dmidecode",
+    "gnupg",
+    "gnupg1",
 ]
 
 
