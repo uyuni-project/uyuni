@@ -1,4 +1,4 @@
-- Avoid error message about failed GPG key import when running reposync (bsc#1191538)
+- Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
 - handle download of metadata filesnames with checksums (bsc#1188315)
 - Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
 
