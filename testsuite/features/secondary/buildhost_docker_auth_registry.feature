@@ -10,7 +10,7 @@ Feature: Build image with authenticated registry
     Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Stores"
     And I follow "Create"
-    And I enter "registry" as "label"
+    And I enter "galaxy-registry" as "label"
     And I check "useCredentials"
     And I enter URI, username and password for registry
     And I click on "create-btn"
@@ -20,7 +20,7 @@ Feature: Build image with authenticated registry
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "registry_profile" as "label"
-    And I select "registry" from "imageStore"
+    And I select "galaxy-registry" from "imageStore"
     And I select "1-DOCKER-TEST" from "activationKey"
     And I enter "Docker/authprofile" relative to profiles as "path"
     And I click on "create-btn"
@@ -47,7 +47,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: remove authenticated image store
     When I follow the left menu "Images > Stores"
-    And I check the row with the "registry" text
+    And I check the row with the "galaxy-registry" text
     And I click on "Delete"
     And I click on the red confirmation button
     And I should see a "Image store has been deleted." text
