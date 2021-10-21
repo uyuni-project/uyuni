@@ -118,6 +118,8 @@ class ZyppoSync:
         zypper_gpg_keys = {}
         with tempfile.NamedTemporaryFile() as f:
             # Collect GPG keys from the Spacewalk GPG keyring
+            # The '--export-options export-clean' is needed avoid exporting key signatures
+            # which are not needed and can cause issues when importing into the RPMDB
             os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
             process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
             for line in process.stdout.readlines():
