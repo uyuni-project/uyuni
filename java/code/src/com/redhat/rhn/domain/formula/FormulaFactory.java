@@ -221,7 +221,6 @@ public class FormulaFactory {
                 }
             }
         }
-        formulasList.sort(String.CASE_INSENSITIVE_ORDER);
         return FormulaFactory.orderFormulas(formulasList);
     }
 
@@ -370,7 +369,7 @@ public class FormulaFactory {
             catch (FileNotFoundException e) {
             }
         }
-        return formulas;
+        return orderFormulas(formulas);
     }
 
     /**
@@ -412,7 +411,7 @@ public class FormulaFactory {
         if (formulas.isEmpty() && serverDataFile.exists()) {
             return getLegacyFormulasByMinionId(minion.getMinionId());
         }
-        return formulas;
+        return orderFormulas(formulas);
     }
 
     /**
@@ -848,6 +847,7 @@ public class FormulaFactory {
      */
     public static List<String> orderFormulas(List<String> formulasToOrder) {
         LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
+        formulas.sort(String.CASE_INSENSITIVE_ORDER);
 
         Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
 
