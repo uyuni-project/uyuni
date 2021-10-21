@@ -652,9 +652,11 @@ PKGLISTDEBIAN9 = [
     "python-cryptography",
     "python-dateutil",
     "python-enum34",
+    "python-gnupg",
     "python-idna",
     "python-ipaddress",
     "python-jinja2",
+    "python-mako",
     "python-markupsafe",
     "python-minimal",
     "python-msgpack",
@@ -676,6 +678,7 @@ PKGLISTDEBIAN9 = [
     "salt-minion",
     "dmidecode",
     "gnupg",
+    "gnupg1",
 ]
 
 PKGLISTDEBIAN10 = [

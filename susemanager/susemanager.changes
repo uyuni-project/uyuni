@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 21 16:30:55 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.25-1
+  * Add python-mako, python-gnupg and gnupg1 to the Debian 9 bootstrap repository
+    so bootstrapping without any enabled repositories is possible (bsc#1191898)
+
+-------------------------------------------------------------------
 Mon Oct 18 16:39:02 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.24-1
