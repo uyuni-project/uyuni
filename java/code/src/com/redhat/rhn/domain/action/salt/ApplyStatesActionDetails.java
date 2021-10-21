@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -132,6 +133,22 @@ public class ApplyStatesActionDetails extends ActionChild {
         }
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);
+    }
+
+    /**
+     * Get the action result for a specific server.
+     * @param serverId the server id.
+     * @return an {@link Optional} wrapping the result of the given server or {@link Optional#empty()} if no there is
+     * no result for it
+     */
+    public Optional<ApplyStatesActionResult> getResult(long serverId) {
+        if (results == null || results.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return results.stream()
+                      .filter(r -> r.getServerId() == serverId)
+                      .findFirst();
     }
 
     /**
