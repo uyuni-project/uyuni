@@ -1,3 +1,4 @@
+- Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
 - Add suite, component and arch handling for deb repo plugin
   to improve non-flat deb repos synchronization
 - Improved the diskcheck script to return an exit value and to
