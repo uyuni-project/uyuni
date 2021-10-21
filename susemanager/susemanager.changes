@@ -1,4 +1,4 @@
-- Require tftp instead of atftp on Proxy
+- Strictly require tftp for the Proxy
 - Fix syntax error on migration script (bsc#1191551)
 - Add aarch64 bootstrap repositories for CentOS 7/8, Oracle Linux 7/8,
   Rocky Linux8, AlmaLinux8, Amazon Linux 2 and openSUSE Leap 15.3
