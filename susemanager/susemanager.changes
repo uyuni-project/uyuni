@@ -1,3 +1,5 @@
+- Add python-mako, python-gnupg and gnupg1 to the Debian 9 bootstrap repository
+  so bootstrapping without any enabled repositories is possible (bsc#1191898)
 - Strictly require tftp for the Proxy
 - Fix syntax error on migration script (bsc#1191551)
 - Add aarch64 bootstrap repositories for CentOS 7/8, Oracle Linux 7/8,
