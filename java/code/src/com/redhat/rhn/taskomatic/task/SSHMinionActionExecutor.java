@@ -41,6 +41,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long actionId = context.getJobDetail()
                 .getJobDataMap().getLongValueFromString("action_id");
+        boolean forcePkgRefresh = context.getJobDetail().getJobDataMap().getBooleanValue("force_pkg_list_refresh");
         String sshMinionId = context.getJobDetail().getJobDataMap().getString("ssh_minion_id");
         Optional<MinionServer> sshMinionOpt = MinionServerFactory.findByMinionId(sshMinionId);
         if (sshMinionId.isEmpty()) {
@@ -53,6 +54,6 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
             return;
         }
         log.info("Executing action: " + actionId + " on ssh minion: " + sshMinionId);
-        saltServerActionService.executeSSHAction(action, sshMinionOpt.get());
+        saltServerActionService.executeSSHAction(action, sshMinionOpt.get(), forcePkgRefresh);
     }
 }

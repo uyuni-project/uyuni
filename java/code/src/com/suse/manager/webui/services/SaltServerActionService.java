@@ -481,7 +481,7 @@ public class SaltServerActionService {
         if (!sshPushMinions.isEmpty()) {
             for (MinionServer sshMinion : sshPushMinions) {
                 try {
-                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion, forcePackageListRefresh);
                 }
                 catch (TaskomaticApiException e) {
                     LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
@@ -2188,6 +2188,17 @@ public class SaltServerActionService {
      * @param minion minion on which the action will be executed
      */
     public void executeSSHAction(Action action, MinionServer minion) {
+        executeSSHAction(action, minion, false);
+    }
+
+    /**
+     * Execute an action on an ssh-push minion.
+     *
+     * @param action the action to be executed
+     * @param minion minion on which the action will be executed
+     * @param forcePkgRefresh set to true if a package list refresh should be scheduled at the end
+     */
+    public void executeSSHAction(Action action, MinionServer minion, boolean forcePkgRefresh) {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
@@ -2262,7 +2273,7 @@ public class SaltServerActionService {
                     minion.updateServerInfo();
 
                     // Perform a package profile update in the end if necessary
-                    if (saltUtils.shouldRefreshPackageList(function, result)) {
+                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, result)) {
                         LOG.info("Scheduling a package profile update");
                         Action pkgList;
                         try {
