@@ -1575,70 +1575,70 @@
       </trans-unit>
       <trans-unit id="error.user_invalid_prefix" xml:space="preserve">
         <source>Invalid prefix [{0}]. Must be one of {1}.</source>
-        <target/>
+        <target>Neplatná predpona [{0}]. Musí to byť jedna z {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.readonly_org_admin" xml:space="preserve">
         <source>At least one Organization Administrator with regular access must remain in {0} organization.</source>
-        <target/>
+        <target>V organizácii {0} musí zostať aspoň jeden administrátor organizácie s riadnym prístupom.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.readonly_sat_admin" xml:space="preserve">
         <source>At least one @@PRODUCT_NAME@@ Administrator must remain with regular access.</source>
-        <target/>
+        <target>Aspoň jeden administrátor @@PRODUCT_NAME@@ musí mať riadny prístup.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="login" xml:space="preserve">
         <source>Desired Login</source>
-        <target/>
+        <target>Požadované prihlásenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredPassword" xml:space="preserve">
         <source>Desired Password</source>
-        <target/>
+        <target>Požadované heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="passwordConfirm" xml:space="preserve">
         <source>Confirm Password</source>
-        <target/>
+        <target>Potvrdiť heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="firstNames" xml:space="preserve">
         <source>First Name</source>
-        <target/>
+        <target>Krstné meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lastName" xml:space="preserve">
         <source>Last Name</source>
-        <target/>
+        <target>Priezvisko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email" xml:space="preserve">
         <source>Email</source>
-        <target/>
+        <target>Email</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
