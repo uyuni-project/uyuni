@@ -1,3 +1,5 @@
+- Implement using re-activation keys when bootstrapping with the Web UI
+  or XMLRPC API
 - Show salt ssh error message in failed action details
 - switch to best repo auth item for contentsources (bsc#1191442)
 - Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
