@@ -1,3 +1,4 @@
+- Allow configuration of Cobbler > 3.2.0
 - Add postgresql external pillar configuration
 - Simplified perl module dependency.
 - Fixed com.sun.bind issue on package update.
