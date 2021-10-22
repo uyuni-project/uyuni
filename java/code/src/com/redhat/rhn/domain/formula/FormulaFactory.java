@@ -36,10 +36,6 @@ import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
@@ -55,7 +51,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -101,18 +96,6 @@ public class FormulaFactory {
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
-            .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
-                @Override
-                public JsonElement serialize(Double src, Type type,
-                            JsonSerializationContext context) {
-                        if (src % 1 == 0) {
-                            return new JsonPrimitive(src.intValue());
-                        }
-                        else {
-                            return new JsonPrimitive(src);
-                        }
-                    }
-                })
             .serializeNulls()
             .create();
     private static final Yaml YAML = new Yaml(new SafeConstructor());
