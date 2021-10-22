@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-28 11:27+0200\n"
+"POT-Creation-Date: 2021-10-22 11:13+0200\n"
 "PO-Revision-Date: 2021-10-14 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "new action chain"
 msgstr "새 작업 체인"
 
-#: ../html/src/components/action-schedule.tsx:189
+#: ../html/src/components/action-schedule.tsx:194
 msgid ""
 "There are multiple maintenance schedules for selected systems. Make sure "
 "that systems in the set use at most 1 maintenance schedule if you want to "
@@ -56,23 +56,23 @@ msgstr ""
 "으로 예약하려면 세트 단위의 시스템이 최대 1개의 유지보수 일정을 사용하는지 확"
 "인하십시오."
 
-#: ../html/src/components/action-schedule.tsx:196
+#: ../html/src/components/action-schedule.tsx:201
 msgid "No upcoming maintenance windows"
 msgstr "향후 유지보수 기간 없음"
 
-#: ../html/src/components/action-schedule.tsx:243
+#: ../html/src/components/action-schedule.tsx:246
 msgid "Earliest:"
 msgstr "가장 빠른 날짜:"
 
-#: ../html/src/components/action-schedule.tsx:243
+#: ../html/src/components/action-schedule.tsx:246
 msgid "Maintenance Window:"
 msgstr "유지보수 기간:"
 
-#: ../html/src/components/action-schedule.tsx:273
+#: ../html/src/components/action-schedule.tsx:276
 msgid "Add to:"
 msgstr "추가 위치:"
 
-#: ../html/src/components/action-schedule.tsx:291
+#: ../html/src/components/action-schedule.tsx:294
 msgid "Loading the scheduler..."
 msgstr "스케줄러를 로드하는 중..."
 
@@ -100,15 +100,15 @@ msgstr "상태 할당이 저장되었습니다."
 msgid "An error occurred on save."
 msgstr "저장하는 동안 오류가 발생했습니다."
 
-#: ../html/src/components/config-channels.tsx:242
+#: ../html/src/components/config-channels.tsx:244
 msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
-#: ../html/src/components/config-channels.tsx:295
+#: ../html/src/components/config-channels.tsx:296
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:93
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
-#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:50
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:145
+#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:49
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
 #: ../html/src/manager/images/image-view.tsx:801
 #: ../html/src/manager/images/image-view.tsx:803
@@ -118,46 +118,46 @@ msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:88
 #: ../html/src/manager/state/recurring-states-details.tsx:142
 #: ../html/src/manager/state/recurring-states-details.tsx:144
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:119
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:184
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:116
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:118
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:201
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
 msgid "Back"
 msgstr "뒤로"
 
-#: ../html/src/components/config-channels.tsx:297
+#: ../html/src/components/config-channels.tsx:298
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:665
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:658
 msgid "Confirm"
 msgstr "확인"
 
-#: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:182
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:187
+#: ../html/src/components/config-channels.tsx:306
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 msgid "Save Changes"
 msgstr "변경사항 저장"
 
-#: ../html/src/components/config-channels.tsx:318
+#: ../html/src/components/config-channels.tsx:319
 msgid "Execute States"
 msgstr "실행 상태"
 
-#: ../html/src/components/config-channels.tsx:325
+#: ../html/src/components/config-channels.tsx:326
 msgid "Reorder"
 msgstr "다시 정렬"
 
-#: ../html/src/components/config-channels.tsx:337
+#: ../html/src/components/config-channels.tsx:338
 msgid "Configuration Channels"
 msgstr "구성 채널"
 
-#: ../html/src/components/config-channels.tsx:346
+#: ../html/src/components/config-channels.tsx:347
 msgid "Search in configuration channels"
 msgstr "구성 채널에서 검색"
 
-#: ../html/src/components/config-channels.tsx:351
-#: ../html/src/manager/minion/packages/package-states.tsx:214
-#: ../html/src/manager/minion/packages/package-states.tsx:247
+#: ../html/src/components/config-channels.tsx:352
+#: ../html/src/manager/minion/packages/package-states.tsx:216
+#: ../html/src/manager/minion/packages/package-states.tsx:249
 msgid "Search"
 msgstr "검색"
 
@@ -194,8 +194,8 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:52
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/panels/CreatorPanel.tsx:112
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:179
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
@@ -203,21 +203,23 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/manager/images/image-view-overview.tsx:694
 #: ../html/src/manager/images/image-view-overview.tsx:766
 #: ../html/src/manager/images/image-view-overview.tsx:767
-#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/systems/delete-system.tsx:76
 #: ../html/src/manager/systems/delete-system.tsx:77
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:61
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
 msgid "Cancel"
 msgstr "취소"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:158
-#: ../html/src/manager/content-management/project/project.tsx:92
-#: ../html/src/manager/images/image-profiles.tsx:139
-#: ../html/src/manager/images/image-profiles.tsx:214
-#: ../html/src/manager/images/image-stores.tsx:139
-#: ../html/src/manager/images/image-stores.tsx:208
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
+#: ../html/src/manager/content-management/project/project.tsx:94
+#: ../html/src/manager/images/image-profiles.tsx:136
+#: ../html/src/manager/images/image-profiles.tsx:211
+#: ../html/src/manager/images/image-stores.tsx:136
+#: ../html/src/manager/images/image-stores.tsx:205
 #: ../html/src/manager/images/image-view.tsx:352
 #: ../html/src/manager/images/image-view.tsx:362
 #: ../html/src/manager/images/image-view.tsx:683
@@ -225,14 +227,14 @@ msgstr "취소"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
-#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:31
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:23
 #: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-list.tsx:128
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:140
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:139
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:91
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:64
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:36
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
@@ -241,11 +243,11 @@ msgstr "취소"
 msgid "Delete"
 msgstr "삭제"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:20
+#: ../html/src/components/dialog/dialog.stories.tsx:16
 msgid "Delete project"
 msgstr "프로젝트 삭제"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:23
+#: ../html/src/components/dialog/dialog.stories.tsx:19
 msgid "Are you sure you want to delete project "
 msgstr "프로젝트를 삭제하시겠습니까 "
 
@@ -273,7 +275,7 @@ msgstr ""
 "이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
 "니다."
 
-#: ../html/src/components/formulas/EditGroup.tsx:320
+#: ../html/src/components/formulas/EditGroup.tsx:326
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
@@ -281,7 +283,7 @@ msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니
 msgid " No group"
 msgstr " 그룹 없음"
 
-#: ../html/src/components/formula-selection.tsx:283
+#: ../html/src/components/formula-selection.tsx:282
 msgid ""
 "On this page you can select Salt Formulas for this group/system, which can "
 "then be configured on group and system level. This allows you to "
@@ -291,18 +293,18 @@ msgstr ""
 "에서 구성할 수 있습니다. 이를 통해 소프트웨어를 자동으로 설치 및 구성할 수 있"
 "습니다."
 
-#: ../html/src/components/formula-selection.tsx:290
+#: ../html/src/components/formula-selection.tsx:289
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:192
-#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:175
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:16
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
-#: ../html/src/manager/minion/packages/package-states.tsx:194
+#: ../html/src/manager/minion/packages/package-states.tsx:196
 msgid "Save"
 msgstr "저장"
 
-#: ../html/src/components/formula-selection.tsx:310
+#: ../html/src/components/formula-selection.tsx:309
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
@@ -325,105 +327,183 @@ msgstr "비밀번호 표시/숨기기"
 msgid "Toggle section visibility"
 msgstr "섹션 표시 여부 전환"
 
-#: ../html/src/components/input/Check.stories.tsx:31
-#: ../html/src/components/input/DateTime.stories.tsx:33
-#: ../html/src/components/input/FormMultiInput.stories.tsx:76
-#: ../html/src/components/input/FormMultiInput.stories.tsx:132
-#: ../html/src/components/input/FormMultiInput.stories.tsx:180
-#: ../html/src/components/input/FormMultiInput.stories.tsx:260
-#: ../html/src/components/input/form.stories.tsx:35
-#: ../html/src/components/input/Password.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:38
-#: ../html/src/components/input/Radio.stories.tsx:67
-#: ../html/src/components/input/Radio.stories.tsx:96
-#: ../html/src/components/input/Radio.stories.tsx:126
-#: ../html/src/components/input/Range.stories.tsx:50
-#: ../html/src/components/input/Select.stories.tsx:35
-#: ../html/src/components/input/Text.stories.tsx:43
+#: ../html/src/components/input/Check.stories.tsx:26
+#: ../html/src/components/input/DateTime.stories.tsx:26
+#: ../html/src/components/input/FormMultiInput.stories.tsx:71
+#: ../html/src/components/input/FormMultiInput.stories.tsx:121
+#: ../html/src/components/input/FormMultiInput.stories.tsx:163
+#: ../html/src/components/input/FormMultiInput.stories.tsx:232
+#: ../html/src/components/input/form.stories.tsx:34
+#: ../html/src/components/input/Password.stories.tsx:34
+#: ../html/src/components/input/Radio.stories.tsx:37
+#: ../html/src/components/input/Radio.stories.tsx:64
+#: ../html/src/components/input/Radio.stories.tsx:91
+#: ../html/src/components/input/Radio.stories.tsx:119
+#: ../html/src/components/input/Range.stories.tsx:44
+#: ../html/src/components/input/Select.stories.tsx:33
+#: ../html/src/components/input/Text.stories.tsx:42
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:23
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "제출"
+
+#: ../html/src/components/input/DateTime.stories.tsx:25
+msgid "Time"
+msgstr "시간"
+
+#: ../html/src/components/input/FormMultiInput.stories.tsx:27
+#: ../html/src/components/input/FormMultiInput.stories.tsx:88
+#: ../html/src/components/input/FormMultiInput.stories.tsx:138
+#: ../html/src/components/input/FormMultiInput.stories.tsx:187
+msgid "Users"
+msgstr "사용자"
+
+#: ../html/src/components/input/FormMultiInput.stories.tsx:52
+#: ../html/src/components/input/form.stories.tsx:27
+#: ../html/src/components/input/Text.stories.tsx:27
+msgid "First Name"
+msgstr "이름"
+
+#: ../html/src/components/input/FormMultiInput.stories.tsx:54
+#: ../html/src/components/input/FormMultiInput.stories.tsx:63
+#: ../html/src/components/input/FormMultiInput.stories.tsx:113
+#: ../html/src/components/input/FormMultiInput.stories.tsx:215
+#: ../html/src/components/input/FormMultiInput.stories.tsx:223
+#: ../html/src/components/input/form.stories.tsx:29
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
+#: ../html/src/components/input/Text.stories.tsx:29
+#: ../html/src/components/input/Text.stories.tsx:38
+msgid "Minimum 2 characters"
+msgstr "2자 이상"
+
+#: ../html/src/components/input/FormMultiInput.stories.tsx:61
+msgid "Last Name"
+msgstr "성"
+
+#: ../html/src/components/input/FormMultiInput.stories.tsx:111
+#: ../html/src/manager/login/login.tsx:161
+msgid "Login"
+msgstr "로그인"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "제거"
 
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
-msgid "Minimum 2 characters"
-msgstr "2자 이상"
-
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
 msgstr "필수"
 
+#: ../html/src/components/input/Password.stories.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:181
+#: ../html/src/manager/login/login.tsx:172
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:409
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:37
+msgid "Password"
+msgstr "비밀번호"
+
+#: ../html/src/components/input/Password.stories.tsx:29
+msgid "Minimum 4 characters"
+msgstr "4자 이상"
+
+#: ../html/src/components/input/Radio.stories.tsx:27
+#: ../html/src/components/input/Radio.stories.tsx:53
+#: ../html/src/components/input/Radio.stories.tsx:81
+#: ../html/src/components/input/Radio.stories.tsx:108
+#: ../html/src/components/input/Select.stories.tsx:27
+#: ../html/src/components/input/Select.stories.tsx:120
+msgid "Level"
+msgstr "레벨"
+
+#: ../html/src/components/input/Radio.stories.tsx:32
+#: ../html/src/components/input/Radio.stories.tsx:59
+#: ../html/src/components/input/Radio.stories.tsx:86
+#: ../html/src/components/input/Radio.stories.tsx:114
+msgid "Beginner"
+msgstr "초급자"
+
+#: ../html/src/components/input/Radio.stories.tsx:33
+#: ../html/src/components/input/Radio.stories.tsx:60
+#: ../html/src/components/input/Radio.stories.tsx:87
+#: ../html/src/components/input/Radio.stories.tsx:115
+msgid "Normal"
+msgstr "일반"
+
+#: ../html/src/components/input/Radio.stories.tsx:34
+#: ../html/src/components/input/Radio.stories.tsx:61
+#: ../html/src/components/input/Radio.stories.tsx:88
+#: ../html/src/components/input/Radio.stories.tsx:116
+msgid "Expert"
+msgstr "전문가"
+
+#: ../html/src/components/input/Range.stories.tsx:31
+msgid "Port range"
+msgstr "포트 범위"
+
+#: ../html/src/components/input/Range.stories.tsx:33
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/components/input/Select.stories.tsx:61
+#: ../html/src/components/input/Select.stories.tsx:52
 msgid "Flavor"
 msgstr "특징"
 
-#: ../html/src/components/input/Select.stories.tsx:63
+#: ../html/src/components/input/Select.stories.tsx:54
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "입력 시작..."
 
-#: ../html/src/components/input/Select.stories.tsx:64
+#: ../html/src/components/input/Select.stories.tsx:55
 msgid "No flavors"
 msgstr "특징 없음"
-
-#: ../html/src/components/input/Select.stories.tsx:129
-msgid "Level"
-msgstr "레벨"
 
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
 msgstr "특징 없음"
 
-#: ../html/src/components/pagination.tsx:19
+#: ../html/src/components/pagination.tsx:22
 msgid "First"
 msgstr "첫 번째"
 
-#: ../html/src/components/pagination.tsx:23
+#: ../html/src/components/pagination.tsx:27
 #: ../html/src/manager/admin/setup/products/products.tsx:391
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:658
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1093
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1124
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:651
 msgid "Prev"
 msgstr "이전"
 
-#: ../html/src/components/pagination.tsx:28
+#: ../html/src/components/pagination.tsx:32
 #: ../html/src/manager/admin/setup/products/products.tsx:397
 #: ../html/src/manager/clusters/add-cluster/select-provider.tsx:26
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:102
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:154
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:112
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:45
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:553
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1074
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1100
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:548
 msgid "Next"
 msgstr "다음"
 
-#: ../html/src/components/pagination.tsx:33
+#: ../html/src/components/pagination.tsx:37
 msgid "Last"
 msgstr "성"
 
-#: ../html/src/components/pagination.tsx:88
+#: ../html/src/components/pagination.tsx:92
 msgid "Page"
 msgstr "페이지"
 
-#: ../html/src/components/pagination.tsx:103
+#: ../html/src/components/pagination.tsx:107
 #: ../html/src/manager/admin/setup/products/products.tsx:402
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:867
 msgid "of"
 msgstr "/"
 
-#: ../html/src/components/pagination.tsx:109
+#: ../html/src/components/pagination.tsx:113
 msgid "Page {0} of {1}"
 msgstr "{0} / {1}페이지"
 
@@ -506,8 +586,8 @@ msgid "Configuration Channel: {0}"
 msgstr "구성 채널: {0}"
 
 #: ../html/src/components/salt-state-popup.tsx:59
-#: ../html/src/manager/images/image-profiles.tsx:208
-#: ../html/src/manager/images/image-stores.tsx:202
+#: ../html/src/manager/images/image-profiles.tsx:205
+#: ../html/src/manager/images/image-stores.tsx:199
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
@@ -517,10 +597,10 @@ msgstr "구성 채널: {0}"
 #: ../html/src/manager/state/recurring-states-details.tsx:149
 #: ../html/src/manager/state/recurring-states-details.tsx:151
 #: ../html/src/manager/state/recurring-states-list.tsx:120
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:133
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:130
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:83
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "편집"
@@ -556,11 +636,11 @@ msgid "Select All"
 msgstr "모두 선택"
 
 #: ../html/src/components/table/TableDataHandler.tsx:337
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:620
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:621
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:615
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:91
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:329
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:322
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:462
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:586
 msgid "Loading..."
 msgstr "로드하는 중..."
@@ -569,11 +649,11 @@ msgstr "로드하는 중..."
 msgid "items per page"
 msgstr "페이지당 항목 수"
 
-#: ../html/src/components/tree/tree.tsx:109
+#: ../html/src/components/tree/tree.tsx:111
 msgid "Invalid data"
 msgstr "유효하지 않은 데이터"
 
-#: ../html/src/components/tree/tree.tsx:117
+#: ../html/src/components/tree/tree.tsx:119
 msgid "No data"
 msgstr "데이터 없음"
 
@@ -599,16 +679,16 @@ msgstr "하위 채널을 찾을 수 없거나 인증되지 않았습니다."
 msgid "Invalid channel id"
 msgstr "유효하지 않은 채널 ID"
 
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:29
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Required channels"
 msgstr "필수 채널"
 
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:31
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:35
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:32
 msgid "none"
 msgstr "없음"
 
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:33
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:30
 msgid "Require this channel"
 msgstr "이 채널 필요"
 
@@ -697,13 +777,13 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:283
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:120
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
-#: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
+#: ../html/src/manager/minion/packages/package-states.tsx:226
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:771
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:122
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "시스템"
 
@@ -833,11 +913,11 @@ msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.tsx:144
-#: ../html/src/manager/images/image-stores.tsx:144
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:220
+#: ../html/src/manager/images/image-profiles.tsx:141
+#: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
-#: ../html/src/manager/notifications/notification-messages.tsx:425
+#: ../html/src/manager/notifications/notification-messages.tsx:436
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "새로 고침"
@@ -861,7 +941,7 @@ msgstr "작업 실패: 서버에서 빈 회신"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:112
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:75
 msgid "Details"
 msgstr "세부 사항"
 
@@ -988,17 +1068,17 @@ msgstr "이 제품은 미러링되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:887
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:56
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:140
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:142
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:533
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:528
 msgid "recommended"
 msgstr "권장"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:905
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:74
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:169
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:171
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:580
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:575
 msgid "include recommended"
 msgstr "권장에 포함"
 
@@ -1104,7 +1184,7 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:278
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.tsx:238
+#: ../html/src/manager/virtualization/ListTab.tsx:237
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1148,15 +1228,15 @@ msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:260
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:106
-#: ../html/src/manager/notifications/notification-messages.tsx:550
+#: ../html/src/manager/notifications/notification-messages.tsx:561
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:108
-#: ../html/src/manager/notifications/notification-messages.tsx:552
-#: ../html/src/utils/network.ts:85
+#: ../html/src/manager/notifications/notification-messages.tsx:563
+#: ../html/src/utils/network.ts:100
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
 
@@ -1178,23 +1258,23 @@ msgstr "감사 이미지"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:269
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:151
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:153
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:270
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:109
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/salt/keys/key-management.tsx:159
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:83
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:128
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:221
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:218
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:92
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:243
@@ -1202,24 +1282,24 @@ msgid "Name"
 msgstr "이름"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:286
-#: ../html/src/manager/images/image-profiles.tsx:194
-#: ../html/src/manager/images/image-stores.tsx:196
+#: ../html/src/manager/images/image-profiles.tsx:191
+#: ../html/src/manager/images/image-stores.tsx:193
 #: ../html/src/manager/images/image-view.tsx:668
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:107
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:261
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:69
+#: ../html/src/manager/virtualization/ListTab.tsx:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "동작"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:57
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:58
 msgid "Match data status"
 msgstr "데이터 상태 일치"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:85
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:86
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
@@ -1227,11 +1307,11 @@ msgstr ""
 "일치하는 실행을 시작할 수 없습니다. SUSE Manager 관리자에게 문의하여 작업 스"
 "케줄러가 실행 중인지 확인하십시오."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:94
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:95
 msgid "No match data is currently available."
 msgstr "현재 일치 데이터를 사용할 수 없습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:96
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "You can also trigger a first run now by clicking the button below."
 msgstr "아래 버튼을 클릭하여 첫 번째 실행을 트리거할 수도 있습니다."
 
@@ -1240,7 +1320,7 @@ msgid "Matching data is currently being recomputed, it was started {0}."
 msgstr ""
 "현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {0}에 시작되었습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:112
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:111
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
@@ -1248,20 +1328,20 @@ msgstr ""
 "마지막 일치 데이터는 {0}에 계산되었으며, 이제 아래 버튼을 클릭하여 새 실행을 "
 "트리거할 수 있습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:121
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:120
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
 msgstr "일치 데이터는 작업 일정을 통해 계산되며, 기본값은 야간(사용자는 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:123
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:122
 msgid "change the task schedule from the administration page"
 msgstr "관리 페이지에서 작업 일정을 변경할 수 있음"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:125
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:124
 msgid "). "
 msgstr "입니다). "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:150
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:147
 msgid "Refresh matching data"
 msgstr "일치 데이터 새로 고침"
 
@@ -1310,19 +1390,19 @@ msgstr "구독 ID"
 msgid "Please review warning and information messages below."
 msgstr "아래 경고 및 정보 메시지를 검토하십시오."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:87
 msgid "Message"
 msgstr "메시지"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:88
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
 msgid "Additional information"
 msgstr "추가 정보"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:102
 msgid "No messages from the last match run."
 msgstr "마지막 일치 실행에서 제공된 메시지가 없습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:102
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:107
 msgid "Messages"
 msgstr "메시지"
 
@@ -1442,9 +1522,9 @@ msgstr "시스템 선택으로 돌아가기"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:373
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:74
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:154
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:274
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:107
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:44
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:37
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:35
@@ -1492,20 +1572,20 @@ msgstr "가상 호스트 관리자 편집"
 msgid "Subscription Matching"
 msgstr "구독 일치"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:150
 msgid "Subscriptions"
 msgstr "구독"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
 msgid "Unmatched Products"
 msgstr "일치하지 않는 제품"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:153
 msgid "Pins "
 msgstr "핀 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
 msgid "Messages "
 msgstr "메시지 "
 
@@ -1564,7 +1644,7 @@ msgid "Select management node"
 msgstr "관리 노드 선택"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:74
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:102
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:104
 #: ../html/src/manager/clusters/cluster/cluster.tsx:124
 msgid "Provider Settings"
 msgstr "공급자 설정"
@@ -1617,86 +1697,86 @@ msgid "No"
 msgstr "아니요"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:332
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(없음)"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:88
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:89
 msgid "System group refresh action scheduled successfully"
 msgstr "시스템 그룹 새로 고침 작업 예약됨"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:113
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:115
 msgid "Cluster properties updated successfully"
 msgstr "클러스터 속성 업데이트됨"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:186
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:253
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:188
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:255
 msgid "Edit cluster details"
 msgstr "클러스터 세부 사항 편집"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:199
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:201
 msgid "Join node"
 msgstr "노드 조인"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:209
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:211
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:49
 msgid "Remove node"
 msgstr "노드 제거"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:226
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:228
 msgid "Upgrade cluster"
 msgstr "클러스터 업그레이드"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:236
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:238
 msgid "Refresh system group"
 msgstr "시스템 그룹 새로 고침"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:246
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:248
 msgid "Cluster Properties"
 msgstr "클러스터 속성"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:252
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:254
 msgid "Edit properties"
 msgstr "속성 편집"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:264
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:266
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:37
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:33
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
-#: ../html/src/manager/images/image-build.tsx:267
-#: ../html/src/manager/images/image-profile-edit.tsx:542
-#: ../html/src/manager/images/image-profiles.tsx:181
-#: ../html/src/manager/images/image-store-edit.tsx:266
-#: ../html/src/manager/images/image-stores.tsx:181
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:264
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:320
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+#: ../html/src/manager/images/image-build.tsx:264
+#: ../html/src/manager/images/image-profile-edit.tsx:536
+#: ../html/src/manager/images/image-profiles.tsx:178
+#: ../html/src/manager/images/image-store-edit.tsx:260
+#: ../html/src/manager/images/image-stores.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:282
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:338
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:45
 msgid "Label"
 msgstr "레이블"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:276
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:278
 msgid "Cluster provider"
 msgstr "클러스터 공급자"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:280
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:282
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:115
 msgid "Management node"
 msgstr "관리 노드"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:286
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:288
 msgid "System group"
 msgstr "시스템 그룹"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:302
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:304
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:87
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:125
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:89
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:92
 msgid "Filter by any value"
 msgstr "값을 기준으로 필터링"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:322
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:324
 msgid "Node Hostname"
 msgstr "노드 호스트 이름"
 
@@ -1705,11 +1785,11 @@ msgid "Action has been "
 msgstr "작업이 "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.tsx:220
+#: ../html/src/manager/images/image-build.tsx:217
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:56
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:370
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "scheduled"
 msgstr "예약됨"
 
@@ -1718,9 +1798,9 @@ msgid " successfully."
 msgstr " 성공"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.tsx:214
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1043
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:361
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1040
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:356
 msgid "Action has been successfully added to the Action Chain "
 msgstr "작업이 작업 체인에 추가되었습니다. "
 
@@ -1820,13 +1900,13 @@ msgstr "클러스터"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:29
-#: ../html/src/manager/images/image-stores.tsx:188
+#: ../html/src/manager/images/image-stores.tsx:185
 #: ../html/src/manager/images/image-view-patches.tsx:84
 #: ../html/src/manager/images/image-view.tsx:627
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
-#: ../html/src/manager/notifications/notification-messages.tsx:488
-#: ../html/src/manager/state/highstate-summary.tsx:60
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:302
+#: ../html/src/manager/notifications/notification-messages.tsx:499
+#: ../html/src/manager/state/highstate-summary.tsx:71
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:295
 msgid "Type"
 msgstr "유형"
 
@@ -1875,18 +1955,18 @@ msgid "Create project"
 msgstr "프로젝트 만들기"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
-#: ../html/src/manager/images/image-profile-edit.tsx:517
-#: ../html/src/manager/images/image-profiles.tsx:150
-#: ../html/src/manager/images/image-profiles.tsx:151
-#: ../html/src/manager/images/image-store-edit.tsx:232
-#: ../html/src/manager/images/image-stores.tsx:150
-#: ../html/src/manager/images/image-stores.tsx:151
+#: ../html/src/manager/images/image-profile-edit.tsx:511
+#: ../html/src/manager/images/image-profiles.tsx:147
+#: ../html/src/manager/images/image-profiles.tsx:148
+#: ../html/src/manager/images/image-store-edit.tsx:226
+#: ../html/src/manager/images/image-stores.tsx:147
+#: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.tsx:47
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:230
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:80
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:30
 #: ../html/src/manager/virtualization/pools/create/pools-create.tsx:28
 msgid "Create"
@@ -1907,7 +1987,7 @@ msgstr "사용할 수 있는 모듈 없음"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:41
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:8
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
 msgid "Stream"
 msgstr "스트림"
 
@@ -1920,7 +2000,7 @@ msgid "No streams available"
 msgstr "사용할 수 있는 스트림 없음"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
-#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
+#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:41
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:33
 msgid "Channel"
 msgstr "채널"
@@ -1933,27 +2013,27 @@ msgstr "모듈 이름"
 msgid "Updating the filter..."
 msgstr "필터를 업데이트하는 중..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:82
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:84
 msgid "Check the required fields below"
 msgstr "아래에서 필수 필드를 확인하십시오."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:91
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:93
 msgid "Filter updated successfully"
 msgstr "필터 업데이트됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:106
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 msgid "Filter created successfully"
 msgstr "필터 생성됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:118
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
 msgid "Filter Details"
 msgstr "필터 세부사항"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:118
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:120
 msgid "Create a new filter"
 msgstr "새 필터 만들기"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:166
 msgid "Filter deleted successfully"
 msgstr "필터 삭제됨"
 
@@ -1998,7 +2078,7 @@ msgstr "선택기"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:160
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:230
 #: ../html/src/manager/images/image-view-packages.tsx:48
-#: ../html/src/manager/minion/packages/package-states.tsx:343
+#: ../html/src/manager/minion/packages/package-states.tsx:345
 msgid "Package Name"
 msgstr "패키지 이름"
 
@@ -2013,7 +2093,7 @@ msgstr "에포크"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
-#: ../html/src/manager/images/image-build.tsx:383
+#: ../html/src/manager/images/image-build.tsx:380
 #: ../html/src/manager/images/image-view.tsx:629
 msgid "Version"
 msgstr "버전"
@@ -2036,7 +2116,7 @@ msgid "Product Enhancement Advisory"
 msgstr "제품 향상 자문"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:133
 msgid "Advisory Type"
 msgstr "자문 유형"
 
@@ -2045,8 +2125,8 @@ msgid "Issued"
 msgstr "발급됨"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:205
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
-#: ../html/src/manager/images/image-view-patches.tsx:97
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
+#: ../html/src/manager/images/image-view-patches.tsx:100
 msgid "Synopsis"
 msgstr "개요"
 
@@ -2062,17 +2142,28 @@ msgstr "패키지 관리자를 다시 시작해야 함"
 msgid "Advisory Keywords"
 msgstr "자문 키워드"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:248
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
+#, fuzzy
+msgid "Package Provides Name"
+msgstr "패키지 이름"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
+#, fuzzy
+msgid "Provides Name"
+msgstr "모듈 이름"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "Deny"
 msgstr "거부"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:249
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:269
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
 msgid "Allow"
 msgstr "허용"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
 msgid "Rule"
 msgstr "규칙"
 
@@ -2086,8 +2177,8 @@ msgid "Select unused"
 msgstr "미사용 항목 선택"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:139
-#: ../html/src/manager/images/image-profiles.tsx:140
-#: ../html/src/manager/images/image-stores.tsx:140
+#: ../html/src/manager/images/image-profiles.tsx:137
+#: ../html/src/manager/images/image-stores.tsx:137
 #: ../html/src/manager/images/image-view.tsx:353
 msgid "Delete selected"
 msgstr "선택 항목 삭제"
@@ -2117,35 +2208,45 @@ msgid "AppStream modules with defaults"
 msgstr "기본값이 있는 앱 스트림 모듈"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:45
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:276
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:272
 msgid "Template"
 msgstr "템플릿"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:106
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 msgid "Product"
 msgstr "제품"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:131
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:130
 msgid "Kernel"
 msgstr "커널"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:138
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:137
 msgid "latest"
 msgstr "최신"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:72
 msgid "Create a new content lifecycle project"
 msgstr "새 컨텐트 라이프사이클 프로젝트 만들기"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:70
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:73
 msgid "Create Project"
 msgstr "프로젝트 만들기"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:79
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:82
 msgid "Content Lifecycle Projects"
 msgstr "컨텐트 라이프싸이클 프로젝트"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:109
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
+#, fuzzy
+msgid "Last Build"
+msgstr "빌드"
+
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
+#, fuzzy
+msgid "never"
+msgstr "심각도"
+
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
 msgid "Environment Lifecycle"
 msgstr "환경 라이프싸이클"
@@ -2154,15 +2255,15 @@ msgstr "환경 라이프싸이클"
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "찾고 있는 프로젝트가 없거나 삭제되었습니다."
 
-#: ../html/src/manager/content-management/project/project.tsx:87
+#: ../html/src/manager/content-management/project/project.tsx:89
 msgid "Content Lifecycle Project - {0}"
 msgstr "컨텐트 라이프싸이클 프로젝트 - {0}"
 
-#: ../html/src/manager/content-management/project/project.tsx:99
+#: ../html/src/manager/content-management/project/project.tsx:101
 msgid "Delete Project"
 msgstr "프로젝트 삭제"
 
-#: ../html/src/manager/content-management/project/project.tsx:102
+#: ../html/src/manager/content-management/project/project.tsx:104
 msgid "Are you sure you want to delete project"
 msgstr "프로젝트를 삭제하시겠습니까"
 
@@ -2171,8 +2272,8 @@ msgstr "프로젝트를 삭제하시겠습니까"
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:42
 #: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:38
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:34
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:34
+#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:32
+#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:32
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
@@ -2197,7 +2298,7 @@ msgid "containing"
 msgstr "포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "matches"
 msgstr "일치"
 
@@ -2206,7 +2307,7 @@ msgid "regular expression matches package name"
 msgstr "정규식이 패키지 이름과 일치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "equals"
 msgstr "같음"
 
@@ -2251,46 +2352,66 @@ msgid "contains package with epoch/version/release greater than"
 msgstr "다음을 초과하는 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
+#, fuzzy
+msgid "contains package which provides name equal"
+msgstr "이름이 다음과 같은 패키지 포함"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
 msgstr "같음"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "later or equal"
 msgstr "이상"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 msgid "later or equal than"
 msgstr "다음 이상"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "matches regular expression"
 msgstr "정규식 일치"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:105
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#, fuzzy
+msgid "provides name"
+msgstr "서비스 이름"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#, fuzzy
+msgid "provides name equal"
+msgstr "다음과 같은 버전"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:127
 msgid "Advisory Name"
 msgstr "자문 이름"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:129
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:145
 msgid "Keyword"
 msgstr "키워드"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:135
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:151
 msgid "Issue date"
 msgstr "발급 날짜"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:141
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
 msgid "Contains Package Name"
 msgstr "패키지 이름 포함"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:147
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
+#, fuzzy
+msgid "Contains Package Provides Name"
+msgstr "패키지 이름 포함"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
 msgstr "패키지 포함"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
 msgid "enable module"
 msgstr "모듈 활성화"
 
@@ -2300,8 +2421,8 @@ msgstr "빌드({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
-#: ../html/src/manager/images/image-build.tsx:411
-#: ../html/src/manager/images/image-profiles.tsx:202
+#: ../html/src/manager/images/image-build.tsx:408
+#: ../html/src/manager/images/image-profiles.tsx:199
 #: ../html/src/manager/images/image-view-overview.tsx:578
 #: ../html/src/manager/images/image-view-overview.tsx:677
 #: ../html/src/manager/images/image-view.tsx:656
@@ -2509,21 +2630,21 @@ msgstr "자세히 표시"
 msgid "Versions history"
 msgstr "버전 기록"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:84
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:79
 msgid "New Base Channel"
 msgstr "새 기본 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:114
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:109
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "새 기본 채널로 선택할 채널 선택"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:121
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:116
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:591
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:586
 msgid "Child Channels"
 msgstr "하위 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:136
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:131
 msgid "Clear Search"
 msgstr "검색 지우기"
 
@@ -2541,8 +2662,8 @@ msgid "This channel is mandatory"
 msgstr "이 채널은 필수입니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:538
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:147
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:533
 msgid "mandatory"
 msgstr "필수"
 
@@ -2559,7 +2680,7 @@ msgid "Sources edited successfully"
 msgstr "소스 편집됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:133
-#: ../html/src/manager/images/image-build.tsx:296
+#: ../html/src/manager/images/image-build.tsx:293
 msgid "Software Channels"
 msgstr "소프트웨어 채널"
 
@@ -2603,7 +2724,7 @@ msgstr ""
 "이 페이지에 잘못 도달했다고 생각되는 경우 수신 방법에 대한 세부 정보를 문의하"
 "십시오. "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
+#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:26
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
@@ -2618,7 +2739,7 @@ msgstr "수식이 저장되었습니다. 다음을 적용: "
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/state/highstate.tsx:138
+#: ../html/src/manager/state/highstate.tsx:135
 msgid "Highstate"
 msgstr "Highstate"
 
@@ -2661,49 +2782,49 @@ msgstr ""
 "작업을 예약하는 동안 오류가 발생했습니다. 작업 스케줄러가 실행 중인지 확인하"
 "십시오."
 
-#: ../html/src/manager/images/image-build.tsx:219
+#: ../html/src/manager/images/image-build.tsx:216
 msgid "Building the image has been "
 msgstr "이미지 빌드가 "
 
-#: ../html/src/manager/images/image-build.tsx:250
+#: ../html/src/manager/images/image-build.tsx:247
 msgid "Profile Summary"
 msgstr "프로파일 요약"
 
-#: ../html/src/manager/images/image-build.tsx:260
+#: ../html/src/manager/images/image-build.tsx:257
 msgid "No profile selected"
 msgstr "프로파일을 선택하지 않음"
 
-#: ../html/src/manager/images/image-build.tsx:271
-#: ../html/src/manager/images/image-profile-edit.tsx:551
+#: ../html/src/manager/images/image-build.tsx:268
+#: ../html/src/manager/images/image-profile-edit.tsx:545
 msgid "Image Type"
 msgstr "이미지 유형"
 
-#: ../html/src/manager/images/image-build.tsx:275
+#: ../html/src/manager/images/image-build.tsx:272
 #: ../html/src/manager/images/image-import.tsx:264
 msgid "Image Store"
 msgstr "이미지 저장소"
 
-#: ../html/src/manager/images/image-build.tsx:279
+#: ../html/src/manager/images/image-build.tsx:276
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:529
 msgid "Path"
 msgstr "경로"
 
-#: ../html/src/manager/images/image-build.tsx:283
+#: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.tsx:408
+#: ../html/src/manager/images/image-profile-edit.tsx:402
 msgid "Activation Key"
 msgstr "활성화 키"
 
-#: ../html/src/manager/images/image-build.tsx:352
+#: ../html/src/manager/images/image-build.tsx:349
 msgid "Build Image"
 msgstr "이미지 빌드"
 
-#: ../html/src/manager/images/image-build.tsx:368
+#: ../html/src/manager/images/image-build.tsx:365
 msgid "Image Profile"
 msgstr "이미지 프로파일"
 
-#: ../html/src/manager/images/image-build.tsx:389
-#: ../html/src/manager/images/image-import.tsx:302
+#: ../html/src/manager/images/image-build.tsx:386
+#: ../html/src/manager/images/image-import.tsx:299
 msgid "Build Host"
 msgstr "호스트 빌드"
 
@@ -2716,7 +2837,7 @@ msgid "The image import has been scheduled."
 msgstr "이미지 가져오기가 예약되었습니다."
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.tsx:400
+#: ../html/src/manager/images/image-profile-edit.tsx:394
 msgid "There are no channels assigned to this key."
 msgstr "이 키에 할당된 채널이 없습니다."
 
@@ -2728,86 +2849,86 @@ msgstr "이미지 가져오기"
 msgid "You can import Container images only using this feature."
 msgstr "이 기능을 사용해서만 컨테이너 이미지를 가져올 수 있습니다."
 
-#: ../html/src/manager/images/image-import.tsx:283
+#: ../html/src/manager/images/image-import.tsx:280
 msgid "Image name"
 msgstr "이미지 이름"
 
-#: ../html/src/manager/images/image-import.tsx:285
+#: ../html/src/manager/images/image-import.tsx:282
 msgid "Image name is required."
 msgstr "이미지 이름은 필수입니다."
 
-#: ../html/src/manager/images/image-import.tsx:292
+#: ../html/src/manager/images/image-import.tsx:289
 msgid "Image version"
 msgstr "이미지 버전"
 
-#: ../html/src/manager/images/image-import.tsx:294
+#: ../html/src/manager/images/image-import.tsx:291
 msgid "Image version is required."
 msgstr "이미지 버전은 필수입니다."
 
-#: ../html/src/manager/images/image-import.tsx:318
+#: ../html/src/manager/images/image-import.tsx:315
 #: ../html/src/manager/images/image-view.tsx:371
 msgid "Import"
 msgstr "가져오기"
 
-#: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:209
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:281
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:191
+#: ../html/src/manager/images/image-import.tsx:322
+#: ../html/src/manager/images/image-profile-edit.tsx:489
+#: ../html/src/manager/images/image-store-edit.tsx:203
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:280
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:209
 msgid "Clear fields"
 msgstr "필드 지우기"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:292
+#: ../html/src/manager/images/image-profile-edit.tsx:286
 msgid "Target Image Store"
 msgstr "대상 이미지 저장소"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:316
+#: ../html/src/manager/images/image-profile-edit.tsx:310
 msgid "Dockerfile URL"
 msgstr "Dockerfile URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:342
+#: ../html/src/manager/images/image-profile-edit.tsx:336
 msgid "Config URL"
 msgstr "구성 URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:365
+#: ../html/src/manager/images/image-profile-edit.tsx:359
 msgid "Kiwi options"
 msgstr "Kiwi 옵션"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:409
+#: ../html/src/manager/images/image-profile-edit.tsx:403
 msgid "Activation key is required for kiwi images."
 msgstr "kiwi 이미지에는 활성화 키가 필수입니다."
 
-#: ../html/src/manager/images/image-profile-edit.tsx:449
+#: ../html/src/manager/images/image-profile-edit.tsx:443
 msgid "Remove entry"
 msgstr "항목 제거"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:464
+#: ../html/src/manager/images/image-profile-edit.tsx:458
 msgid "Custom Info Values"
 msgstr "사용자 정의 정보 값"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:478
+#: ../html/src/manager/images/image-profile-edit.tsx:472
 msgid "Create additional custom info keys"
 msgstr "추가 사용자 정의 정보 키 만들기"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:506
-#: ../html/src/manager/images/image-store-edit.tsx:221
+#: ../html/src/manager/images/image-profile-edit.tsx:500
+#: ../html/src/manager/images/image-store-edit.tsx:215
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:220
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:107
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
 msgid "Update"
 msgstr "업데이트"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:529
+#: ../html/src/manager/images/image-profile-edit.tsx:523
 msgid "Edit Image Profile: '"
 msgstr "이미지 프로파일 편집: '"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:529
+#: ../html/src/manager/images/image-profile-edit.tsx:523
 msgid "Create Image Profile"
 msgstr "이미지 프로파일 만들기"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:545
+#: ../html/src/manager/images/image-profile-edit.tsx:539
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2833,69 +2954,63 @@ msgstr "이미지 프로파일이 삭제되었습니다."
 msgid "Image profiles have been deleted."
 msgstr "이미지 프로파일이 삭제되었습니다."
 
-#: ../html/src/manager/images/image-profiles.tsx:161
+#: ../html/src/manager/images/image-profiles.tsx:158
 msgid "Image Profiles"
 msgstr "이미지 프로파일"
 
-#: ../html/src/manager/images/image-profiles.tsx:188
+#: ../html/src/manager/images/image-profiles.tsx:185
 msgid "Build Type"
 msgstr "빌드 유형"
 
-#: ../html/src/manager/images/image-profiles.tsx:230
+#: ../html/src/manager/images/image-profiles.tsx:227
 #: ../html/src/manager/systems/delete-system-confirm.tsx:18
 msgid "Delete Profile"
 msgstr "프로파일 삭제"
 
-#: ../html/src/manager/images/image-profiles.tsx:233
+#: ../html/src/manager/images/image-profiles.tsx:230
 msgid "Are you sure you want to delete profile"
 msgstr "프로파일을 삭제하시겠습니까"
 
-#: ../html/src/manager/images/image-profiles.tsx:243
+#: ../html/src/manager/images/image-profiles.tsx:240
 msgid "Delete Selected Profile(s)"
 msgstr "선택한 프로파일 삭제"
 
-#: ../html/src/manager/images/image-profiles.tsx:247
+#: ../html/src/manager/images/image-profiles.tsx:244
 msgid "Are you sure you want to delete the selected profile?"
 msgstr "선택한 프로파일을 삭제하시겠습니까?"
 
-#: ../html/src/manager/images/image-profiles.tsx:249
+#: ../html/src/manager/images/image-profiles.tsx:246
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
 msgstr "선택한 프로파일을 삭제하시겠습니까?({0}개 프로파일 선택됨)"
 
-#: ../html/src/manager/images/image-store-edit.tsx:172
+#: ../html/src/manager/images/image-store-edit.tsx:166
 msgid "Use credentials"
 msgstr "자격 증명 사용"
 
-#: ../html/src/manager/images/image-store-edit.tsx:178
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:178
+#: ../html/src/manager/images/image-store-edit.tsx:172
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
 msgid "Username"
 msgstr "사용자 이름"
 
-#: ../html/src/manager/images/image-store-edit.tsx:187
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
-msgid "Password"
-msgstr "비밀번호"
-
-#: ../html/src/manager/images/image-store-edit.tsx:244
+#: ../html/src/manager/images/image-store-edit.tsx:238
 msgid "Edit Image Store: '"
 msgstr "이미지 저장소 편집: '"
 
-#: ../html/src/manager/images/image-store-edit.tsx:244
+#: ../html/src/manager/images/image-store-edit.tsx:238
 msgid "Create Image Store"
 msgstr "이미지 저장소 만들기"
 
-#: ../html/src/manager/images/image-store-edit.tsx:258
+#: ../html/src/manager/images/image-store-edit.tsx:252
 msgid "Store Type"
 msgstr "저장소 유형"
 
-#: ../html/src/manager/images/image-store-edit.tsx:269
+#: ../html/src/manager/images/image-store-edit.tsx:263
 msgid "Label is required and must be unique."
 msgstr "레이블은 필수이며 고유해야 합니다."
 
-#: ../html/src/manager/images/image-store-edit.tsx:275
+#: ../html/src/manager/images/image-store-edit.tsx:269
 msgid "Store URI"
 msgstr "저장소 URI"
 
@@ -2911,27 +3026,27 @@ msgstr "이미지 저장소가 삭제되었습니다."
 msgid "Image stores have been deleted."
 msgstr "이미지 저장소가 삭제되었습니다."
 
-#: ../html/src/manager/images/image-stores.tsx:161
+#: ../html/src/manager/images/image-stores.tsx:158
 msgid "Image Stores"
 msgstr "이미지 저장소"
 
-#: ../html/src/manager/images/image-stores.tsx:223
+#: ../html/src/manager/images/image-stores.tsx:220
 msgid "Delete Store"
 msgstr "저장소 삭제"
 
-#: ../html/src/manager/images/image-stores.tsx:226
+#: ../html/src/manager/images/image-stores.tsx:223
 msgid "Are you sure you want to delete store"
 msgstr "저장소를 삭제하시겠습니까"
 
-#: ../html/src/manager/images/image-stores.tsx:236
+#: ../html/src/manager/images/image-stores.tsx:233
 msgid "Delete Selected Store(s)"
 msgstr "선택한 저장소 삭제"
 
-#: ../html/src/manager/images/image-stores.tsx:240
+#: ../html/src/manager/images/image-stores.tsx:237
 msgid "Are you sure you want to delete the selected store?"
 msgstr "선택한 저장소를 삭제하시겠습니까?"
 
-#: ../html/src/manager/images/image-stores.tsx:242
+#: ../html/src/manager/images/image-stores.tsx:239
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr "선택한 저장소를 삭제하시겠습니까?({0}개 저장소 선택됨)"
 
@@ -3137,7 +3252,7 @@ msgid "Reinspect Image"
 msgstr "이미지 다시 검사"
 
 #: ../html/src/manager/images/image-view-packages.tsx:53
-#: ../html/src/manager/minion/packages/package-states.tsx:323
+#: ../html/src/manager/minion/packages/package-states.tsx:325
 msgid "Installed"
 msgstr "설치됨"
 
@@ -3185,7 +3300,7 @@ msgstr "패키지 관리 스택에 영향을 줌"
 msgid "Advisory"
 msgstr "자문"
 
-#: ../html/src/manager/images/image-view-patches.tsx:101
+#: ../html/src/manager/images/image-view-patches.tsx:106
 msgid "Updated"
 msgstr "업데이트됨"
 
@@ -3253,7 +3368,7 @@ msgid "Revision"
 msgstr "리비전"
 
 #: ../html/src/manager/images/image-view.tsx:636
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:138
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "업데이트"
 
@@ -3291,11 +3406,35 @@ msgstr ""
 "스키마를 업데이트해야 합니다. 최신 버그 수정을 수신하고 잠재적인 문제를 방지"
 "하려면 최대한 빨리 스키마를 업데이트하십시오."
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/login.tsx:61
+msgid ""
+"Unable to validate the disk space availability. Please contact your system "
+"admistrator if this problem persists."
+msgstr ""
+
+#: ../html/src/manager/login/login.tsx:66
+msgid ""
+"Some important directories are missing. Please contact your system "
+"administrator to review the configuration."
+msgstr ""
+
+#: ../html/src/manager/login/login.tsx:71
+msgid ""
+"The available disk space on the server is running low. Please contact your "
+"system administrator to add more disk space."
+msgstr ""
+
+#: ../html/src/manager/login/login.tsx:76
+msgid ""
+"The available disk space on the server is critically low. Please contact "
+"your system administrator to add more disk space."
+msgstr ""
+
+#: ../html/src/manager/login/login.tsx:94
 msgid "Signing in ..."
 msgstr "로그인 중..."
 
-#: ../html/src/manager/login/login.tsx:106
+#: ../html/src/manager/login/login.tsx:141
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3303,17 +3442,13 @@ msgstr ""
 "서버, 패키지, 패치 등을 단일 인터페이스에서 관리하기 위한 새로운 방법을 알아"
 "보십시오."
 
-#: ../html/src/manager/login/login.tsx:109
+#: ../html/src/manager/login/login.tsx:144
 msgid "Learn more about"
 msgstr "자세히 알아보기"
 
-#: ../html/src/manager/login/login.tsx:118
-#: ../html/src/manager/login/login.tsx:145
+#: ../html/src/manager/login/login.tsx:153
+#: ../html/src/manager/login/login.tsx:180
 msgid "Sign In"
-msgstr "로그인"
-
-#: ../html/src/manager/login/login.tsx:126
-msgid "Login"
 msgstr "로그인"
 
 #: ../html/src/manager/login/use-login-api.ts:12
@@ -3338,27 +3473,27 @@ msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?
 msgid "Skip to the last maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:73
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
 msgid "Skip to the next maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:108
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:115
 msgid "There are no more past maintenance windows"
 msgstr "마지막 유지보수 기간이 더 이상 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:138
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:149
 msgid "There are no more future maintenance windows"
 msgstr "더 이상 향후 유지보수 기간이 없음"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:292
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:317
 msgid "Today"
 msgstr "오늘"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:302
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:327
 msgid "Month"
 msgstr "월"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:306
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:331
 msgid "Day"
 msgstr "일"
 
@@ -3372,7 +3507,7 @@ msgstr "유지보수 달력 삭제"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:141
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:105
 msgid "Are you sure you want to delete the selected item?"
 msgstr "선택한 항목을 삭제하시겠습니까?"
 
@@ -3413,7 +3548,7 @@ msgid "Delete maintenance schedule"
 msgstr "유지보수 일정 삭제"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:58
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
 msgid "Assigned Systems"
 msgstr "할당된 시스템"
 
@@ -3444,23 +3579,23 @@ msgstr "다중"
 msgid "Schedule Details"
 msgstr "일정 세부 사항"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:155
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "유지보수 일정이 {0}개 시스템에 할당되었습니다."
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:174
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:137
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:138
 msgid "Cancel affected actions"
 msgstr "영향을 받는 작업 취소"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:194
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 msgid "Search systems"
 msgstr "검색 시스템"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:213
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
 msgid "Current Schedule"
 msgstr "현재 일정"
 
@@ -3502,11 +3637,11 @@ msgstr "계속 진행할지 여부를 확인하십시오."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:130
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:96
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:101
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:441
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:565
 msgid "Schedule"
 msgstr "일정"
@@ -3584,33 +3719,33 @@ msgstr ""
 msgid "Are you sure you want to proceed?"
 msgstr "계속하시겠습니까?"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:37
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:40
 msgid "Maintenance schedule has been cleared"
 msgstr "유지보수 일정 제거됨"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:44
 msgid "Maintenance schedule has been assigned"
 msgstr "유지보수 일정 지정됨"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:83
 msgid "Clear All"
 msgstr "모두 지우기"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:81
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:84
 msgid "fa-times"
 msgstr "fa-times"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:91
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:99
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:94
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:102
 msgid "Assign All"
 msgstr "모두 할당"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:92
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:100
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:95
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:103
 msgid "fa-edit"
 msgstr "fa-edit"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:122
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:125
 msgid "None - clear schedule"
 msgstr "없음 - 일정 지우기"
 
@@ -3628,19 +3763,34 @@ msgid ""
 "systems in the set."
 msgstr "일정을 할당하면 집합 내 모든 시스템의 모든 이전 할당이 대체됩니다."
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:120
 msgid "No Playbook found."
 msgstr "플레이북을 찾을 수 없습니다."
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
+#, fuzzy
+msgid "Playbook File Name"
+msgstr "플레이북 디렉터리"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
+#, fuzzy
+msgid "Full Path"
+msgstr "경로"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:142
+#, fuzzy
+msgid "Custom Inventory"
+msgstr "인벤토리 경로"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:156
 msgid "Inventory file empty."
 msgstr "인벤토리 파일이 비어 있습니다."
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:163
 msgid "Registered Systems"
 msgstr "등록된 시스템"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
 msgid "Unknown Hostnames"
 msgstr "알 수 없는 호스트 이름"
 
@@ -3648,12 +3798,12 @@ msgstr "알 수 없는 호스트 이름"
 msgid "Loading content.."
 msgstr "컨텐트를 로드하는 중..."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:53
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:44
 msgid "An error occurred while loading data. Please check server logs."
 msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:150
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:155
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
@@ -3661,36 +3811,36 @@ msgstr ""
 "Ansible 제어 노드 구성: 플레이북 검색 및 인벤토리 파일 검사를 위한 경로를 추"
 "가합니다."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:160
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:162
 msgid "Playbook Directories"
 msgstr "플레이북 디렉터리"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:182
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "Add a Playbook directory"
 msgstr "플레이북 디렉터리 추가"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
 msgid "e.g., /srv/playbooks"
 msgstr "예: /srv/playbooks"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:194
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:195
 msgid "Inventory Files"
 msgstr "인벤토리 파일"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:216
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:218
 msgid "Add an Inventory file"
 msgstr "인벤토리 파일 추가"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:221
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "예: /etc/ansible/testing/hosts"
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:66
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:96
 msgid "Loading.."
 msgstr "로드하는 중.."
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:77
 msgid "Nothing configured. Please add paths in the "
 msgstr "구성된 항목이 없습니다. 다음에 경로 추가: "
 
@@ -3699,7 +3849,7 @@ msgid "Loading playbook contents.."
 msgstr "플레이북 컨텐츠를 로드하는 중..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:84
-#: ../html/src/manager/state/highstate.tsx:117
+#: ../html/src/manager/state/highstate.tsx:114
 #: ../html/src/manager/state/recurring-states-edit.tsx:113
 msgid "Test mode"
 msgstr "테스트 모드"
@@ -3720,15 +3870,15 @@ msgstr "'{0}' 플레이북"
 msgid "Schedule Playbook Execution"
 msgstr "플레이북 실행 예약"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:123
 msgid "Inventory Path"
 msgstr "인벤토리 경로"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:138
 msgid "Flush Ansible fact cache"
 msgstr "Ansible 팩트 캐시 플러시"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Clear the fact cache for every host in inventory"
 msgstr "인벤토리의 모든 호스트에 대한 팩트 캐시 지우기"
 
@@ -3744,7 +3894,7 @@ msgstr "작업이 작업 체인에 추가되었습니다."
 msgid "Playbook execution has been"
 msgstr "플레이븍 실행이"
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:27
 msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
 
@@ -3753,72 +3903,72 @@ msgstr "구성 채널 적용이 "
 msgid "Configuration"
 msgstr "구성"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:195
+#: ../html/src/manager/minion/packages/package-states.tsx:197
 msgid "Please save all your changes before applying!"
 msgstr "모든 변경 사항을 저장한 후 적용하십시오!"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:196
+#: ../html/src/manager/minion/packages/package-states.tsx:198
 msgid "Apply changes"
 msgstr "변경 사항 적용"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:202
-#: ../html/src/manager/minion/packages/package-states.tsx:206
+#: ../html/src/manager/minion/packages/package-states.tsx:204
+#: ../html/src/manager/minion/packages/package-states.tsx:208
 msgid "Changes"
 msgstr "변경 사항"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:204
+#: ../html/src/manager/minion/packages/package-states.tsx:206
 msgid "1 Change"
 msgstr "1개 변경"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:241
+#: ../html/src/manager/minion/packages/package-states.tsx:243
 msgid "Search package"
 msgstr "패키지 검색"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:278
+#: ../html/src/manager/minion/packages/package-states.tsx:280
 msgid "No current changes."
 msgstr "현재 변경 사항이 없습니다."
 
-#: ../html/src/manager/minion/packages/package-states.tsx:278
+#: ../html/src/manager/minion/packages/package-states.tsx:280
 msgid "No package states."
 msgstr "패키지 상태가 없습니다."
 
-#: ../html/src/manager/minion/packages/package-states.tsx:297
+#: ../html/src/manager/minion/packages/package-states.tsx:299
 msgid "Latest"
 msgstr "최신"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:298
+#: ../html/src/manager/minion/packages/package-states.tsx:300
 msgid "Any"
 msgstr "임의"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:307
+#: ../html/src/manager/minion/packages/package-states.tsx:309
 msgid "Undo"
 msgstr "실행 취소"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:322
+#: ../html/src/manager/minion/packages/package-states.tsx:324
 msgid "Unmanaged"
 msgstr "관리되지 않음"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:324
+#: ../html/src/manager/minion/packages/package-states.tsx:326
 msgid "Removed"
 msgstr "제거됨"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:336
+#: ../html/src/manager/minion/packages/package-states.tsx:338
 msgid "Package States"
 msgstr "패키지 상태"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:344
+#: ../html/src/manager/minion/packages/package-states.tsx:346
 #: ../html/src/manager/salt/keys/key-management.tsx:187
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:149
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "시/도"
 
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:39
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:36
 msgid "Package states have been saved."
 msgstr "패키지 상태가 저장되었습니다."
 
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:54
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:48
 msgid "Applying the packages states has been "
 msgstr "패키지 상태 적용이 "
 
@@ -3846,112 +3996,112 @@ msgstr "상태 적용 실패"
 msgid "Filter by type"
 msgstr "유형을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:232
-#: ../html/src/manager/notifications/notification-messages.tsx:233
+#: ../html/src/manager/notifications/notification-messages.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:242
 msgid "Info"
 msgstr "정보"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:240
-#: ../html/src/manager/notifications/notification-messages.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Warning"
 msgstr "경고"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:248
-#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Error"
 msgstr "오류"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:315
+#: ../html/src/manager/notifications/notification-messages.tsx:320
 msgid "show details"
 msgstr "세부 사항 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:364
+#: ../html/src/manager/notifications/notification-messages.tsx:369
 msgid "Retry onboarding"
 msgstr "온보딩 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:374
+#: ../html/src/manager/notifications/notification-messages.tsx:379
 msgid "Retry repo sync"
 msgstr "저장소 동기화 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:392
+#: ../html/src/manager/notifications/notification-messages.tsx:403
 msgid "Unread Messages"
 msgstr "읽지 않은 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:397
+#: ../html/src/manager/notifications/notification-messages.tsx:408
 msgid "All Messages"
 msgstr "모든 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:429
-#: ../html/src/manager/notifications/notification-messages.tsx:430
+#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "선택한 메시지 삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:437
-#: ../html/src/manager/notifications/notification-messages.tsx:438
+#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "선택 항목을 읽음으로 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:466
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Notification Messages"
 msgstr "알림 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:471
 msgid "The server has collected the following notification messages."
 msgstr "서버에서 다음 알림 메시지가 수집되었습니다."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:476
+#: ../html/src/manager/notifications/notification-messages.tsx:487
 msgid "Filter by summary"
 msgstr "요약을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:482
+#: ../html/src/manager/notifications/notification-messages.tsx:493
 msgid "Severity"
 msgstr "심각도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 msgid "Summary"
 msgstr "요약"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Created"
 msgstr "생성됨"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:505
+#: ../html/src/manager/notifications/notification-messages.tsx:516
 msgid "Action"
 msgstr "작업"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:511
+#: ../html/src/manager/notifications/notification-messages.tsx:522
 msgid "Read|Delete"
 msgstr "읽기|삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:520
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Flag as Unread"
 msgstr "읽지 않음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:520
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Flag as Read"
 msgstr "읽음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:526
+#: ../html/src/manager/notifications/notification-messages.tsx:537
 msgid "Delete Notification"
 msgstr "알림 삭제"
 
 #: ../html/src/manager/notifications/notifications.tsx:39
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:340
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:341
 #: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 "Websocket 연결이 종료되었습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
 #: ../html/src/manager/notifications/notifications.tsx:52
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:360
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:361
 #: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 "서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십"
 "시오."
 
-#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:30
+#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:27
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
@@ -3982,81 +4132,81 @@ msgstr "- 응답 숨기기 -"
 msgid "- show response -"
 msgstr "- 응답 표시 -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:178
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:179
 msgid "Stop waiting"
 msgstr "대기 중지"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:181
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:182
 msgid "Stop waiting for all the minions to respond"
 msgstr "응답할 모든 minion에 대한 대기 중지"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:189
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:190
 msgid "Find targets"
 msgstr "대상 찾기"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:192
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:202
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:193
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:203
 msgid "Check which minions match the target expression"
 msgstr "대상 식과 일치하는 minion 확인"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:207
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:208
 msgid "Run command"
 msgstr "명령 실행"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:210
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:211
 msgid "Run the command on the target minions"
 msgstr "대상 minion에서 명령 실행"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:218
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
 msgstr "원격 명령"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:231
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
 msgstr "여기에 명령 입력"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:241
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:242
 msgid "Type the minion_id pattern to target here"
 msgstr "여기에 대상 minion_id 패턴 입력"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:252
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:253
 msgid "Target systems"
 msgstr "대상 시스템"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:262
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
 msgid "No target systems previewed"
 msgstr "미리 본 대상 시스템 없음"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:264
 msgid "No target systems found"
 msgstr "대상 시스템을 찾지 못함"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:464
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:465
 msgid "Not all minions responded on time."
 msgstr "일부 minion이 정시에 응답하지 않았습니다."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:491
 msgid "No minions matched the target expression."
 msgstr "대상 식과 일치하는 minion이 없습니다."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:492
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:493
 msgid "Server returned an error: {0}"
 msgstr "서버에서 오류가 반환됨: {0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:561
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:570
 msgid "Matching ssh-push minions..."
 msgstr "ssh-push minion을 일치시키는 중..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:84
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:88
 msgid "Formula Catalog"
 msgstr "수식 카탈로그"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:99
 msgid "Filter by formula name"
 msgstr "수식 이름을 기준으로 필터링"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:104
 #: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr "수식"
@@ -4119,11 +4269,11 @@ msgstr "SUSE"
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/state/display-highstate.tsx:9
+#: ../html/src/manager/state/display-highstate.tsx:8
 msgid "State Summary for {0}"
 msgstr "{0}에 대한 상태 요약"
 
-#: ../html/src/manager/state/display-highstate.tsx:73
+#: ../html/src/manager/state/display-highstate.tsx:78
 msgid "There are no applicable systems."
 msgstr "해당 시스템이 없습니다."
 
@@ -4139,54 +4289,54 @@ msgstr "채널 구성"
 msgid "internal"
 msgstr "내부"
 
-#: ../html/src/manager/state/highstate-summary.tsx:32
+#: ../html/src/manager/state/highstate-summary.tsx:31
 msgid "Internal states"
 msgstr "내부 상태"
 
-#: ../html/src/manager/state/highstate-summary.tsx:50
+#: ../html/src/manager/state/highstate-summary.tsx:48
 msgid "Retrieving highstate summary..."
 msgstr "highstate 요약을 검색하는 중..."
 
-#: ../html/src/manager/state/highstate-summary.tsx:59
+#: ../html/src/manager/state/highstate-summary.tsx:65
 msgid "State Source"
 msgstr "상태 소스"
 
-#: ../html/src/manager/state/highstate-summary.tsx:61
+#: ../html/src/manager/state/highstate-summary.tsx:77
 msgid "Inherited From"
 msgstr "상속 출처"
 
-#: ../html/src/manager/state/highstate-summary.tsx:79
+#: ../html/src/manager/state/highstate-summary.tsx:100
 msgid "Show full highstate output"
 msgstr "전체 highstate 출력 표시"
 
-#: ../html/src/manager/state/highstate-summary.tsx:133
+#: ../html/src/manager/state/highstate-summary.tsx:161
 msgid "System Group"
 msgstr "시스템 그룹"
 
-#: ../html/src/manager/state/highstate-summary.tsx:142
+#: ../html/src/manager/state/highstate-summary.tsx:168
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:189
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:62
 msgid "Organization"
 msgstr "조직"
 
-#: ../html/src/manager/state/highstate.tsx:63
+#: ../html/src/manager/state/highstate.tsx:60
 msgid "Action has been successfully added to the "
 msgstr "작업이 다음에 추가됨: "
 
-#: ../html/src/manager/state/highstate.tsx:68
+#: ../html/src/manager/state/highstate.tsx:65
 msgid "Applying the highstate has been "
 msgstr "highstate 적용이 "
 
-#: ../html/src/manager/state/highstate.tsx:69
+#: ../html/src/manager/state/highstate.tsx:66
 msgid "scheduled."
 msgstr "예약되었습니다."
 
-#: ../html/src/manager/state/highstate.tsx:125
+#: ../html/src/manager/state/highstate.tsx:122
 msgid "Apply Highstate"
 msgstr "Highstate 적용"
 
-#: ../html/src/manager/state/highstate.tsx:134
+#: ../html/src/manager/state/highstate.tsx:131
 msgid "Create Recurring"
 msgstr "반복 생성"
 
@@ -4290,7 +4440,8 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {0}. The scheduled "
 "time will be the server time."
-msgstr "아래 시간은 서버 시간대 {0}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
+msgstr ""
+"아래 시간은 서버 시간대 {0}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
 
 #: ../html/src/manager/state/recurring-states-utils.tsx:4
 msgid "Minion"
@@ -4312,26 +4463,26 @@ msgstr "하위 채널 로드 중.."
 msgid "Base Channel:"
 msgstr "기본 채널:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:123
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:125
 msgid "${defaultChannelName}"
 msgstr "${defaultChannelName}"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:130
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:134
 msgid "${this.getDefaultBase().name}"
 msgstr "${this.getDefaultBase().name}"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:137
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
 msgid "Child Channels:"
 msgstr "하위 채널:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:142
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:148
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
 msgstr ""
 "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:210
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:209
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4339,58 +4490,58 @@ msgstr ""
 "서버로부터 수신된 중단되거나 유효하지 않은 응답을 요청하십시오. minion이 올바"
 "르게 부트스트랩되었는지 확인하십시오."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:239
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:238
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "호스트를 부트스트랩했습니다! 시스템이 표시되어야 하는 위치:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:241
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
 msgid "systems"
 msgstr "시스템"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:243
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
 msgid "shortly"
 msgstr "곧"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:261
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:260
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "시스템을 부트스트랩하는 중: 응답을 기다리는 중..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:265
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:264
 msgid "Loading SSH Private Key.."
 msgstr "SSH 개인 키를 로드하는 중..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:273
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:272
 msgid "Bootstrap"
 msgstr "부트스트랩"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:298
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:297
 msgid "e.g., ••••••••••••"
 msgstr "예: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:422
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:306
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
 msgid "SSH Private Key"
 msgstr "SSH 개인 키"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:312
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차 후에 삭제됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:318
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:326
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
 msgid "Leave empty for no passphrase"
 msgstr "비밀번호가 없는 경우 비워두십시오."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
 msgid "Bootstrap Minions"
 msgstr "부트스트랩 Minion"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:339
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4398,15 +4549,15 @@ msgstr ""
 "SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {0}은(는) 시스템"
 "을 원격으로 준비하며 등록을 수행합니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:352
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:351
 msgid "e.g., host.domain.com"
 msgstr "예: host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:371
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:370
 msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:389
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4418,12 +4569,12 @@ msgstr ""
 "'root'입니다. 이 사용자는 부트스트랩 절차 중에 {0}의 SSH 키가 배포된 후에 설"
 "정됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:438
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:437
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:454
 msgid "None"
 msgstr "없음"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:451
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Proxy"
 msgstr "프록시"
 
@@ -4497,7 +4648,7 @@ msgid "System Default Base Channel"
 msgstr "시스템 기본값 기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:565
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:560
 msgid "Base Channel"
 msgstr "기본 채널"
 
@@ -4535,12 +4686,12 @@ msgid "Desired base Channel"
 msgstr "올바른 기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:449
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:446
 msgid "SUSE Channels"
 msgstr "SUSE 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:477
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:472
 msgid "Custom Channels"
 msgstr "사용자 정의 채널"
 
@@ -4629,20 +4780,20 @@ msgstr "알 수 없는 오류가 발생했습니다. 채널 변경을 예약하�
 msgid "Some changes scheduled successfully."
 msgstr "일부 변경이 예약되었습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1050
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1047
 msgid "Channel changes scheduled."
 msgstr "채널 변경이 예약되었습니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:225
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:438
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:221
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:435
 msgid "(none, disable service)"
 msgstr "(없음, 서비스 비활성화)"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:369
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:364
 msgid "Changing the channels has been "
 msgstr "채널 변경이 "
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:570
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:565
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
@@ -4651,7 +4802,7 @@ msgstr ""
 "시스템이 가입한 기본 소프트웨어 채널 시스템을 변경할 수 있습니다. 모든 소프트"
 "웨어 채널에서 시스템의 가입이 취소되고 새 기본 소프트웨어 채널에 가입합니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:596
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:591
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
@@ -4660,77 +4811,77 @@ msgstr ""
 "이 시스템은 아래에 선택한 채널에 가입되었습니다(있는 경우). 비활성화된 확인란"
 "은 채널에 수동으로 가입 또는 가입 취소할 수 없음을 나타냅니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:615
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:696
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:697
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:611
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:689
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:690
 msgid "No child channels available."
 msgstr "사용할 수 있는 하위 채널이 없습니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:650
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:643
 msgid "Confirm Software Channel Change"
 msgstr "소프트웨어 채널 변경 확인"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:57
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:54
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr "이 가상 호스트 관리자에 대한 데이터 새로 고침이 트리거되었습니다."
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:72
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:69
 msgid "Properties"
 msgstr "속성"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:76
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:73
 msgid "Nodes"
 msgstr "노드"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:95
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:92
 msgid "OS"
 msgstr "OS"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:99
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:96
 msgid "CPU Arch"
 msgstr "CPU 아키텍처"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:105
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:102
 msgid "CPU Sockets"
 msgstr "CPU 소켓"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:108
 msgid "RAM (Mb)"
 msgstr "RAM(Mb)"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:126
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:123
 msgid "Refresh Data"
 msgstr "데이터 새로 고침"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:128
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 msgid "Refresh data from this Virtual Host Manager"
 msgstr "이 가상 호스트 관리자에서 제공되는 데이터 새로 고침"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:149
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:105
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:146
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:104
 msgid "Delete Virtual Host Manager"
 msgstr "가상 호스트 관리자 삭제"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:150
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:147
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "이 가상 호스트 관리자를 삭제하시겠습니까?"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:193
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:267
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:190
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:285
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:56
 msgid "Gatherer module"
 msgstr "Gatherer 모듈"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:308
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:326
 msgid "Current Context"
 msgstr "현재 컨텍스트"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:340
 msgid "Kubeconfig file"
 msgstr "Kubeconfig 파일"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:41
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:40
 msgid "No Virtual Host Managers."
 msgstr "가상 호스트 관리자가 없습니다."
 
@@ -4778,23 +4929,41 @@ msgstr "가상 호스트 관리자"
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:177
 msgid "Disconnected"
 msgstr "연결 끊김"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:177
 msgid "Failed to connect"
 msgstr "연결 실패"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:338
 msgid "Toggle full size"
 msgstr "전체 크기 전환"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:358
+msgid "Guest is not running"
+msgstr "게스트가 실행 중이 아님"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
+#, fuzzy
+msgid "Unknown guest"
+msgstr "알 수 없음"
+
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:26
+msgid "Retry"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
+#, fuzzy
+msgid "Connecting..."
+msgstr "연결성"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
 msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
 
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:77
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:80
 msgid "Create Virtual Machine"
 msgstr "가상 머신 생성"
 
@@ -4829,15 +4998,40 @@ msgstr "양수 필요"
 msgid "Virtual CPU Count"
 msgstr "가상 CPU 수"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:220
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:192
+#, fuzzy
+msgid "Enable UEFI"
+msgstr "IPv6 활성화"
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
+msgid "UEFI firmware path"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:204
+msgid "NVRAM template path"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:216
 msgid "Auto-installation Profile"
 msgstr "자동 설치 프로파일"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:236
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:232
 msgid "Kernel options"
 msgstr "커널 옵션"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:298
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:245
+msgid "Cluster support is disabled since VirtualDomain resource agent "
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
+msgid "Define as a cluster resource"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
+msgid "Path to the cluster shared folder for VM definitions"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:291
 msgid "Graphics"
 msgstr "그래픽"
 
@@ -4867,42 +5061,56 @@ msgstr "게스트 목록 동기화"
 msgid "Synchronize"
 msgstr "동기화"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:99
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
 msgid "Hosted Virtual Systems"
 msgstr "호스팅된 가상 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:100
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:115
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
 msgid "Guest"
 msgstr "게스트"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
 msgid "Unregistered System"
 msgstr "미등록 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:157
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
 msgid "Current Memory"
 msgstr "현재 메모리"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:164
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:171
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:195
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
 msgid "paused"
 msgstr "일시 중지됨"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:205
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
 msgid "Graphical Console"
 msgstr "그래픽 콘솔"
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:40
+msgid "Migrate"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:58
+msgid "Select where to migrate the virtual guest to."
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
+#, fuzzy
+msgid "Target Host"
+msgstr "대상 호스트 이름"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"
@@ -4934,7 +5142,7 @@ msgstr "파일"
 msgid "Format"
 msgstr "형식"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:79
 msgid "Disks"
 msgstr "디스크"
 
@@ -4972,7 +5180,7 @@ msgid "Networks"
 msgstr "네트워크"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:120
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:454
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:455
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:579
 msgid "Clear Fields"
 msgstr "필드 지우기"
@@ -4993,11 +5201,11 @@ msgstr ""
 "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 확"
 "인하십시오."
 
-#: ../html/src/manager/virtualization/ListTab.tsx:164
+#: ../html/src/manager/virtualization/ListTab.tsx:162
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:243
+#: ../html/src/manager/virtualization/ListTab.tsx:242
 msgid "Action Status"
 msgstr "작업 상태"
 
@@ -5068,9 +5276,9 @@ msgid "Maximum Transmission Unit (MTU)"
 msgstr "최대 전송 단위(MTU)"
 
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:275
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:176
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:185
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:194
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:177
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:186
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:195
 msgid "The value has to be a positive integer"
 msgstr "값은 양의 정수여야 합니다."
 
@@ -5124,28 +5332,28 @@ msgstr "VLAN 태그 트렁킹"
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 범위"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:405
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:406
 msgid "Both values has to be IPv4 addresses"
 msgstr "두 값 모두 IPv4 주소여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:409
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:410
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:411
 msgid "NAT port range"
 msgstr "NAT 포트 범위"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:423
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:424
 msgid "Both values has to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:431
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:432
 msgid "Addressing"
 msgstr "주소"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:433
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:434
 msgid "Enable IPv6"
 msgstr "IPv6 활성화"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:435
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:436
 msgid "Domain name"
 msgstr "도메인 이름"
 
@@ -5166,8 +5374,8 @@ msgid "DNS server address"
 msgstr "DNS 서버 주소"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:49
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:162
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:237
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:163
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:238
 msgid "Has to be a valid qualified host name"
 msgstr "유효한 정규화된 호스트 이름이어야 합니다."
 
@@ -5189,48 +5397,48 @@ msgstr "주소"
 msgid "hostnames (comma-separated)"
 msgstr "호스트 이름(쉼표로 구분)"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:109
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:110
 msgid "Has to be a comma-separated list of host names"
 msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:116
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:117
 msgid "SRV records"
 msgstr "SRV 레코드"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:136
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:137
 msgid "Service name"
 msgstr "서비스 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:144
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:145
 msgid "Protocol"
 msgstr "프로토콜"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:156
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:157
 msgid "Service domain name"
 msgstr "서비스 도메인 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:166
 msgid "Target hostname"
 msgstr "대상 호스트 이름"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:172
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:173
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:221
 msgid "Port"
 msgstr "포트"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:181
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:182
 msgid "Target priority"
 msgstr "대상 우선순위"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:190
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:191
 msgid "Target weight"
 msgstr "대상 가중치"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:203
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:204
 msgid "TXT records"
 msgstr "TXT 레코드"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:221
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:222
 msgid "Value"
 msgstr "값"
 
@@ -5368,7 +5576,7 @@ msgstr "태그됨"
 msgid "Untagged"
 msgstr "태그되지 않음"
 
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
+#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:25
 msgid "Could not get network devices from the server. Please try again."
 msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
 
@@ -5419,7 +5627,7 @@ msgid ""
 "guests disks."
 msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:383
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:385
 msgid "Filter by pool or volume name"
 msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 
@@ -5546,7 +5754,7 @@ msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
 msgid "SELinux label"
 msgstr "SELinux 레이블"
 
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
+#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:25
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
@@ -5559,112 +5767,112 @@ msgstr "  보안 자문"
 msgid "  bug fix advisories"
 msgstr "  버그 수정 자문"
 
-#: ../html/src/manager/visualization/data-tree.ts:151
+#: ../html/src/manager/visualization/data-tree.ts:149
 msgid "  product enhancement advisories"
 msgstr "  제품 향상 자문"
 
-#: ../html/src/manager/visualization/data-tree.ts:197
+#: ../html/src/manager/visualization/data-tree.ts:188
 msgid "Add/remove system from SSM"
 msgstr "SSM에서 시스템 추가/제거"
 
-#: ../html/src/manager/visualization/data-tree.ts:256
+#: ../html/src/manager/visualization/data-tree.ts:246
 msgid "Add children to SSM"
 msgstr "SSM에 하위 추가"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:63
+#: ../html/src/manager/visualization/hierarchy.tsx:60
 msgid "Filtering"
 msgstr "필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:72
+#: ../html/src/manager/visualization/hierarchy.tsx:69
 msgid "Partitioning"
 msgstr "파티셔닝"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:95
+#: ../html/src/manager/visualization/hierarchy.tsx:83
 msgid "Show systems with:"
 msgstr "다음과 함께 표시:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:124
+#: ../html/src/manager/visualization/hierarchy.tsx:112
 msgid "security advisories"
 msgstr "보안 자문"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:129
+#: ../html/src/manager/visualization/hierarchy.tsx:117
 msgid "bug fix advisories"
 msgstr "버그 수정 자문"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:132
+#: ../html/src/manager/visualization/hierarchy.tsx:120
 msgid "product enhancement advisories"
 msgstr "제품 향상 자문"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:128
 msgid "Filter by system name"
 msgstr "시스템 이름을 기준으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:142
+#: ../html/src/manager/visualization/hierarchy.tsx:128
 msgid "e.g., client.nue.sles"
 msgstr "예: client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:134
 msgid "Filter by system base channel"
 msgstr "시스템 기본 채널을 기분으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:148
+#: ../html/src/manager/visualization/hierarchy.tsx:134
 msgid "e.g., SLE12"
 msgstr "예: SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:140
 msgid "Filter by system installed products"
 msgstr "시스템 설치 제품을 기준으로 필터링"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:154
+#: ../html/src/manager/visualization/hierarchy.tsx:140
 msgid "e.g., SLES"
 msgstr "예: SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:199
+#: ../html/src/manager/visualization/hierarchy.tsx:182
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "패치 존재 여부에 따른 시스템 파티션:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:241
+#: ../html/src/manager/visualization/hierarchy.tsx:224
 msgid "There was an error fetching data from the server."
 msgstr "서버에서 데이터를 가져오는 동안 오류가 발생했습니다."
 
-#: ../html/src/manager/visualization/hierarchy.tsx:284
+#: ../html/src/manager/visualization/hierarchy.tsx:263
 msgid " filters"
 msgstr " 필터"
 
-#: ../html/src/manager/visualization/ui/components.ts:44
+#: ../html/src/manager/visualization/ui/components.ts:38
 msgid "Partition systems by given check-in time:"
 msgstr "지정된 체크인 시간을 기준으로 시스템 파티션:"
 
-#: ../html/src/manager/visualization/ui/components.ts:151
+#: ../html/src/manager/visualization/ui/components.ts:139
 msgid "Add a grouping level"
 msgstr "그룹 수준 추가"
 
-#: ../html/src/manager/visualization/ui/components.ts:195
+#: ../html/src/manager/visualization/ui/components.ts:177
 msgid "Select a system group"
 msgstr "시스템 그룹 선택"
 
-#: ../html/src/manager/visualization/ui/components.ts:247
+#: ../html/src/manager/visualization/ui/components.ts:226
 msgid "Split into groups"
 msgstr "그룹으로 분할"
 
-#: ../html/src/utils/network.ts:79
+#: ../html/src/utils/network.ts:94
 msgid "Session expired, please reload the page."
 msgstr "세션이 만료되었습니다. 페이지를 다시 로드하십시오."
 
-#: ../html/src/utils/network.ts:81
+#: ../html/src/utils/network.ts:96
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 "인증 오류입니다. 페이지를 다시 로드하거나 로그아웃한 후 다시 로그인하십시오."
 
-#: ../html/src/utils/network.ts:83
+#: ../html/src/utils/network.ts:98
 msgid "Resource not found."
 msgstr "리소스를 찾을 수 없음"
 
-#: ../html/src/utils/network.ts:87
+#: ../html/src/utils/network.ts:102
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
 
@@ -5687,36 +5895,6 @@ msgstr "푸 {0} 티 {1}"
 #~ "Instead of the default, "
 #~ msgstr ""
 #~ "설치된 SUSE Linux 버전에 해당하는 채널이 제공되었습니다. 기본값 대신, "
-
-#~ msgid "Time"
-#~ msgstr "시간"
-
-#~ msgid "Users"
-#~ msgstr "사용자"
-
-#~ msgid "First Name"
-#~ msgstr "이름"
-
-#~ msgid "Last Name"
-#~ msgstr "성"
-
-#~ msgid "Minimum 4 characters"
-#~ msgstr "4자 이상"
-
-#~ msgid "Beginner"
-#~ msgstr "초급자"
-
-#~ msgid "Normal"
-#~ msgstr "일반"
-
-#~ msgid "Expert"
-#~ msgstr "전문가"
-
-#~ msgid "Port range"
-#~ msgstr "포트 범위"
-
-#~ msgid "Guest is not running"
-#~ msgstr "게스트가 실행 중이 아님"
 
 #~ msgid "Apply"
 #~ msgstr "적용"
