@@ -10,9 +10,6 @@ mgr_server_localhost_alias_absent:
 {% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
 
-# disable all unaccessible local repos
-{%- include 'channels/disablelocalbrokenrepos.sls' %}
-
 # SUSE OS Family
 {%- if grains['os_family'] == 'Suse' %}
   {% set os_base = 'sle' %}
