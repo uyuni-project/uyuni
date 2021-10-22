@@ -1,4 +1,8 @@
-- revert disable unaccessible local repos before bootstrapping (bsc#1186405)
+-------------------------------------------------------------------
+Fri Oct 22 15:55:30 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.18-1
+  * revert disable unaccessible local repos before bootstrapping (bsc#1186405)
 
 -------------------------------------------------------------------
 Wed Oct 06 09:40:53 CEST 2021 - jgonzalez@suse.com
