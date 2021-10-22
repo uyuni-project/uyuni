@@ -11063,6 +11063,10 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>Invalid filter template</source>
         <target state="translated">Modelo de filtro inválido</target>
       </trans-unit>
-    </body>
+    <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
+        <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
