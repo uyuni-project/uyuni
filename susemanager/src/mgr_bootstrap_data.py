@@ -427,7 +427,6 @@ PKGLIST15_SALT = [
     "libpgm-5_2-0",
     "libsodium23",
     "libzmq5",
-    "openssl",
     "python3-Babel",
     "python3-certifi",
     "python3-chardet",
@@ -627,13 +626,8 @@ PKGLISTUBUNTU2004 = [
 ]
 
 PKGLISTDEBIAN9 = [
-    "apt-transport-https",
-    "bsdmainutils",
     "dctrl-tools",
-    "debconf-utils",
-    "gnupg1",
-    "gnupg1-curl",
-    "gnupg1-l10n",
+    "apt-transport-https",
     "javascript-common",
     "libjs-jquery",
     "libjs-sphinxdoc",
@@ -682,15 +676,16 @@ PKGLISTDEBIAN9 = [
     "python2.7-minimal",
     "salt-common",
     "salt-minion",
+    "dmidecode",
+    "gnupg",
+    "gnupg1",
 ]
-
 
 PKGLISTDEBIAN10 = [
     "dctrl-tools",
     "debconf-utils",
     "dirmngr",
     "distro-info-data",
-    "dmidecode",
     "gnupg",
     "gnupg-l10n",
     "gnupg-utils",
