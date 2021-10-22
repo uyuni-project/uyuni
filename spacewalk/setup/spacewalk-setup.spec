@@ -117,6 +117,9 @@ Requires:       spacewalk-setup-jabberd
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
 
+# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1"
+Requires(post): cobbler
+
 %description
 A collection of post-installation scripts for managing Spacewalk's initial
 setup tasks, re-installation, and upgrades.
