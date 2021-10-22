@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:17+0200\n"
+"POT-Creation-Date: 2021-10-22 11:12+0200\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1507,7 +1507,7 @@ msgstr ""
 "tentar novamente para evitar\n"
 "     exigindo um direito de gerenciamento."
 
-#: ../src/bin/rhn_check.py:426
+#: ../src/bin/rhn_check.py:423
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "Tentando executar mais do que uma instância do mgr_check. Saindo.\n"
 
