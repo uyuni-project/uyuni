@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:17+0200\n"
+"POT-Creation-Date: 2021-10-22 11:12+0200\n"
 "PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (Taiwan) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1386,7 +1386,7 @@ msgstr ""
 "    一組帳號上為全域預設值，您可停用這組金鑰，並重新嘗試以避免\n"
 "    需要使用到 Management 權利。"
 
-#: ../src/bin/rhn_check.py:426
+#: ../src/bin/rhn_check.py:423
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "試圖執行超過一組 rhn_check。退出中。\n"
