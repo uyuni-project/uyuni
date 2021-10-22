@@ -159,7 +159,7 @@ BuildRequires:  tomcat >= 7
 BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
-BuildRequires:  velocity
+BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
 

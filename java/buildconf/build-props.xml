@@ -139,13 +139,10 @@
              bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec logdriver quartz dwr slf4j-api slf4j-log4j12
-             concurrent velocity simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
+             concurrent velocity-engine-core simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
 
   <!-- deps needed for testing, but required to build -->
-  <property name="test.build.jar.dependencies"
-      value="junit commons-lang
-             ${log4j-jars}
-             regexp ${jmock-jars} postgresql-jdbc" />
+  <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
       value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
@@ -197,7 +194,7 @@
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
-             taglibs-standard-spec quartz ${suse-common-jars} velocity
+             taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
