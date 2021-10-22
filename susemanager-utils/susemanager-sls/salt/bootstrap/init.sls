@@ -10,9 +10,6 @@ mgr_server_localhost_alias_absent:
 {% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
 
-# disable all unaccessible local repos
-{%- include 'channels/disablelocalbrokenrepos.sls' %}
-
 {% set os_base = 'sle' %}
 # CentOS6 oscodename is bogus
 {%- if "centos" in grains['os']|lower %}
