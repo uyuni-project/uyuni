@@ -88,8 +88,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
@@ -2377,7 +2377,7 @@ public class ActionManager extends BaseManager {
      *
      */
 
-    public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId) 
+    public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
         throws TaskomaticApiException {
         List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
                     .map(m -> m.getId()).collect(toList());

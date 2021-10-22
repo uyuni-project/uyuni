@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -36,14 +37,19 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
+import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
 import com.suse.salt.netapi.calls.wheel.Key;
+
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -103,6 +109,7 @@ public class MinionsAPI {
         post("/manager/api/systems/keys/:target/accept", withOrgAdmin(this::accept));
         post("/manager/api/systems/keys/:target/reject", withOrgAdmin(this::reject));
         post("/manager/api/systems/keys/:target/delete", withOrgAdmin(this::delete));
+        post("/manager/api/systems/proxy", withOrgAdmin(this::setProxy));
     }
 
     /**
@@ -250,4 +257,34 @@ public class MinionsAPI {
             throw new UnsupportedOperationException();
         }
     }
+
+    /**
+     * API endpoint to set a proxy
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the current user
+     * @return json result of the API call
+     */
+    public String setProxy(Request req, Response res, User user) {
+        res.type("application/json");
+        ServerSetProxyJson rq = GSON.fromJson(req.body(),
+                ServerSetProxyJson.class);
+
+        try {
+             Map<String, Object> data = new TreeMap<>();
+             List<Long> actions = ActionManager.changeProxy(user, rq.getIds(), rq.getProxy());
+             if (actions.isEmpty()) {
+                 throw new RuntimeException("No action in schedule result");
+             }
+             data.put("actions", actions);
+             return json(GSON, res, ResultJson.success(data));
+        }
+        catch (Exception e) {
+            LOG.error("Could not change proxy", e);
+            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return "{}";
+        }
+    }
+
 }
