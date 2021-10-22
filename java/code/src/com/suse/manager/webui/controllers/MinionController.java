@@ -102,6 +102,9 @@ public class MinionController {
         get("/manager/systems/details/recurring-states",
                 withCsrfToken(withDocsLocale(withUserAndServer(MinionController::recurringStates))),
                 jade);
+        get("/manager/systems/details/proxy",
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::proxy))),
+                jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
@@ -127,6 +130,8 @@ public class MinionController {
     private static void initSSMRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/ssm/highstate",
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmHighstate))), jade);
+        get("/manager/systems/ssm/proxy",
+                withCsrfToken(withDocsLocale(withUser(MinionController::ssmProxy))), jade);
     }
 
     /**
@@ -428,20 +433,7 @@ public class MinionController {
         model.put("actionChains", ActionChainHelper.actionChainsJson(user));
     }
 
-    /**
-     * Handler for the bootstrapping page.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @param user the current user
-     * @return the ModelAndView object to render the page
-     */
-    public static ModelAndView bootstrap(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        ActivationKeyManager akm = ActivationKeyManager.getInstance();
-        List<String> visibleBootstrapKeys = akm.findAllActive(user).stream()
-                .map(ActivationKey::getKey)
-                .collect(Collectors.toList());
+    public static void addProxies(User user, Map<String, Object> model) {
         List<Map<String, Object>> proxies = ServerFactory.lookupProxiesByOrg(user)
                 .stream()
                 .map(proxy -> {
@@ -456,8 +448,57 @@ public class MinionController {
                     entry.put("path", path);
                     return entry; })
                 .collect(Collectors.toList());
+        model.put("proxies", Json.GSON.toJson(proxies));
+    }
+
+    /**
+     * Handler for the bootstrapping page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView bootstrap(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        ActivationKeyManager akm = ActivationKeyManager.getInstance();
+        List<String> visibleBootstrapKeys = akm.findAllActive(user).stream()
+                .map(ActivationKey::getKey)
+                .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
-        data.put("proxies", Json.GSON.toJson(proxies));
+        addProxies(user, data);
         return new ModelAndView(data, "templates/minion/bootstrap.jade");
     }
+
+
+    public static ModelAndView proxy(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("entityType", "MINION");
+        addProxies(user, data);
+
+        data.put("currentProxy", Json.GSON.toJson(server.getFirstServerPath()
+                .map(p -> p.getId().getProxyServer().getId()).orElseGet(() -> 0L)));
+
+        return new ModelAndView(data, "templates/minion/proxy.jade");
+    }
+
+    public static ModelAndView ssmProxy(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        addProxies(user, data);
+        List<SimpleMinionJson> minions =
+                MinionServerFactory.lookupByIds(SsmManager.listServerIds(user))
+                        .filter(m -> !m.isProxy())
+                        .map(m -> new SimpleMinionJson(m.getId(), m.getMinionId())).collect(Collectors.toList());
+        if (minions.size() == SsmManager.listServerIds(user).size()) {
+            data.put("minions", Json.GSON.toJson(minions));
+        }
+        else {
+            data.put("minions", "[]");
+        }
+
+        return new ModelAndView(data, "templates/ssm/proxy.jade");
+    }
+
 }
