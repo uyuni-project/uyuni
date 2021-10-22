@@ -115,8 +115,21 @@ public class TaskomaticApi {
      */
     public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion)
             throws TaskomaticApiException {
+        scheduleSSHActionExecution(actionIn, sshMinion, false);
+    }
+
+    /**
+     * Schedule a single ssh minion action.
+     * @param actionIn the action
+     * @param sshMinion the Salt ssh minion
+     * @param forcePackageListRefresh force package list refresh when set to true
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion, boolean forcePackageListRefresh)
+            throws TaskomaticApiException {
         Map scheduleParams = new HashMap();
         scheduleParams.put("action_id", Long.toString(actionIn.getId()));
+        scheduleParams.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
         scheduleParams.put("ssh_minion_id", sshMinion.getMinionId());
         invoke("tasko.scheduleSingleSatBunchRun",
                 "ssh-minion-action-executor-bunch",
