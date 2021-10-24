@@ -287,7 +287,7 @@ fi
 # https://github.com/uyuni-project/uyuni/blob/ea02d4cdf5a91daefa468884548a8b1e60370d3c/spacewalk/setup/bin/spacewalk-setup-cobbler#L29
 COBBLER_VERSION=$(grep "version " /etc/cobbler/version)
 if [[ $(echo -e "version = 3.2.0\n${COBBLER_VERSION}" | sort -rV | head -n 1) != "version = 3.2.0" ]]; then
-  ln -s /etc/cobbler/settings.yaml /etc/cobbler/settings
+  sed -i 's/COBBLER_CONFIG_FILES = \["modules.conf", "settings"\]/COBBLER_CONFIG_FILES = \["modules.conf", "settings.yaml"\]/' /usr/bin/spacewalk-setup-cobbler
 fi
 
 exit 0
