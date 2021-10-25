@@ -433,6 +433,12 @@ public class MinionController {
         model.put("actionChains", ActionChainHelper.actionChainsJson(user));
     }
 
+    /**
+     * Add the proxies configured for  the use to the bootstrap object model
+     *
+     * @param user the user
+     * @param model the current bootstrap model
+     */
     public static void addProxies(User user, Map<String, Object> model) {
         List<Map<String, Object>> proxies = ServerFactory.lookupProxiesByOrg(user)
                 .stream()
@@ -471,6 +477,15 @@ public class MinionController {
     }
 
 
+    /**
+     * Handler for the proxy page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView proxy(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
         data.put("entityType", "MINION");
@@ -482,6 +497,14 @@ public class MinionController {
         return new ModelAndView(data, "templates/minion/proxy.jade");
     }
 
+    /**
+     * Handler for the ssm proxy page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView ssmProxy(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("entityType", "SSM");

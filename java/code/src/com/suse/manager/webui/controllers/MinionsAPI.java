@@ -88,7 +88,7 @@ public class MinionsAPI {
      * @param saltApiIn instance to use.
      * @param regularMinionBootstrapperIn regular bootstrapper
      * @param sshMinionBootstrapperIn ssh bootstrapper
-     * @param saltKeyUtilsIn
+     * @param saltKeyUtilsIn salt key utils instance
      */
     public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
                       RegularMinionBootstrapper regularMinionBootstrapperIn,
@@ -257,6 +257,14 @@ public class MinionsAPI {
         }
     }
 
+    /**
+     * API endpoint to set a proxy
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the current user
+     * @return json result of the API call
+     */
     public String setProxy(Request req, Response res, User user) {
         res.type("application/json");
         ServerSetProxyJson rq = GSON.fromJson(req.body(),
