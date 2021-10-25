@@ -27,8 +27,7 @@ _header = """\
 # then we call the script using bash
 SHPATH=$(readlink /proc/$$/exe)
 if [ "$SHPATH" = "/bin/dash" -o "$SHPATH" = "/usr/bin/dash" ]; then
-  bash "$0" "$@"
-  exit $?
+  exec bash "$0" "$@"
 fi
 
 echo "{productName} Client bootstrap script v4.2"
