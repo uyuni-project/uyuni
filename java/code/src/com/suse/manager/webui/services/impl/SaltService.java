@@ -208,6 +208,15 @@ public class SaltService implements SystemQuery, SaltApi {
         }
     }
 
+    /**
+     * Synchronously executes a salt function on a single minion and returns the result.
+     *
+     * @param call the salt function
+     * @param minionId the minion server id
+     * @param <R> type of result
+     * @return an optional containing the result or empty if no result was retrieved from the minion
+     * @throws RuntimeException when a {@link SaltException} is thrown
+     */
     public <R> Optional<Result<R>> callSyncResult(LocalCall<R> call, String minionId) {
         try {
             Map<String, Result<R>> stringRMap = callSync(call, new MinionList(minionId));
