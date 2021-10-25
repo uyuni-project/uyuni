@@ -1046,15 +1046,15 @@ echo "------------"
 # If you require use of several different activation keys, copy this file and
 # change the string as needed.
 #
-if [ -z "$ACTIVATION_KEYS" ]; then
-    echo "*** ERROR: in order to bootstrap {productName} clients, an activation key or keys"
+if [ -z "$ACTIVATION_KEYS" ] && [ -z "$REACTIVATION_KEY" ]; then
+    echo "*** ERROR: in order to bootstrap {productName} clients, an activation/reactivation key or keys"
     echo "           must be created in the {productName} web user interface, and the"
     echo "           corresponding key or keys string (XKEY,YKEY,...) must be mapped to"
-    echo "           the ACTIVATION_KEYS variable of this script."
+    echo "           the ACTIVATION_KEYS or REACTIVATION_KEYS variable of this script."
     exit 1
-fi
-
-if [ -n "$REACTIVATION_KEY" ]; then
+elif [ -z "$ACTIVATION_KEYS" ] && [ -n "$REACTIVATION_KEY" ]; then
+    ACTIVATION_KEYS="$REACTIVATION_KEY"
+elif [ -n "$ACTIVATION_KEYS" ] && [ -n "$REACTIVATION_KEY" ]; then
     ACTIVATION_KEYS="$REACTIVATION_KEY,$ACTIVATION_KEYS"
 fi
 
