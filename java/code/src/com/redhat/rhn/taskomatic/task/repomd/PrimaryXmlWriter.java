@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  * Copyright (c) 2019 SUSE LLC
  *
