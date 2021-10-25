@@ -23,8 +23,8 @@ import os.path
 _header = """\
 #!/bin/bash
 
-# In case the script is executed with dash on debian system
-# then we call the script using bash
+# In case the script is executed using different interpreter than bash
+# then we call the script explicitely using bash
 SHPATH=$(readlink /proc/$$/exe)
 if ! [ "$SHPATH" = "/bin/bash" -o "$SHPATH" = "/usr/bin/bash" ]; then
   exec bash "$0" "$@"
