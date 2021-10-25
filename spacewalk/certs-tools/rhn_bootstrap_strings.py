@@ -26,7 +26,7 @@ _header = """\
 # In case the script is executed with dash on debian system
 # then we call the script using bash
 SHPATH=$(readlink /proc/$$/exe)
-if [ "$SHPATH" = "/bin/dash" -o "$SHPATH" = "/usr/bin/dash" ]; then
+if ! [ "$SHPATH" = "/bin/bash" -o "$SHPATH" = "/usr/bin/bash" ]; then
   exec bash "$0" "$@"
 fi
 
