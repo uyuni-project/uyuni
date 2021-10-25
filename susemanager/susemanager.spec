@@ -172,13 +172,13 @@ ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
-mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
-install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
+install -m 0644 etc/issue.d/99-uyuni.conf %{buildroot}%{_datadir}/rhn/config-defaults/99-uyuni.conf
+install -m 0644 etc/issue.d/99-uyuni-installed.conf %{buildroot}%{_datadir}/rhn/config-defaults/99-uyuni-installed.conf
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
 
@@ -232,11 +232,21 @@ popd
 
 %post
 POST_ARG=$1
-%if 0%{?suse_version}
-%{fillup_and_insserv susemanager}
-%else
-%systemd_post %{name}
-%endif
+
+# install default issues info to /usr/share/rhn/config-default
+# then check if configured and link the correct one to /usr/lib/issue.d
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep -q 'SUSE Manager'; then
+  sed -i -e 's/{product}/SUSE Manager/' %{_datadir}/rhn/config-defaults/99-uyuni.conf %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf
+else
+  sed -i -e 's/{product}/Uyuni/' %{_datadir}/rhn/config-defaults/99-uyuni.conf %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf
+fi
+
+if [ -d '/var/spacewalk' ]; then
+  ln -fs %{_datadir}/rhn/config-defaults/99-uyuni.conf %{_libdir}/issue.d/99-uyuni.conf
+else
+  ln -fs %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf %{_libdir}/issue.d/99-uyuni.conf
+fi
+
 if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
@@ -296,7 +306,6 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %{_datadir}/YaST2/clients/*.rb
 %{_datadir}/YaST2/scrconf/*.scr
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
-%{_sysconfdir}/init.d/susemanager
 %if 0%{?is_opensuse}
 %{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
 %else
@@ -321,7 +330,10 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %dir %{wwwdocroot}/pub/repositories/empty/repodata
 %dir %{wwwdocroot}/pub/repositories/empty-deb
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
-%{_prefix}/share/rhn/config-defaults/rhn_*.conf
+%{_datadir}/rhn/config-defaults/rhn_*.conf
+%{_datadir}/rhn/config-defaults/99-uyuni.conf
+%{_datadir}/rhn/config-defaults/99-uyuni-installed.conf
+%ghost %{_libdir}/issue.d/99-uyuni.conf
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch

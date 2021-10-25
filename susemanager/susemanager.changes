@@ -1,3 +1,4 @@
+- Replace old sysv init notifier by issue.d (bsc#1191857)
 - Add python-mako, python-gnupg and gnupg1 to the Debian 9 bootstrap repository
   so bootstrapping without any enabled repositories is possible (bsc#1191898)
 - Strictly require tftp for the Proxy
