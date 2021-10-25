@@ -16,21 +16,18 @@ package com.suse.manager.errata.test;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import com.suse.manager.errata.ErrataParsingException;
 import com.suse.manager.errata.SUSEErrataParser;
 
 import java.net.URI;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneOffset;
 
 /**
  * Tests class for {@link SUSEErrataParser}
  */
-public class SUSEErrataParserTest extends RhnBaseTestCase {
+public class SUSEErrataParserTest extends BaseErrataTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
@@ -204,20 +201,6 @@ public class SUSEErrataParserTest extends RhnBaseTestCase {
         catch (ErrataParsingException e) {
             assertEquals("Unable to parse an advisory issued before 2019", e.getMessage());
         }
-    }
-
-    private Errata createErrata(String advisory, String type, LocalDate issedDate, Long release) {
-        final Errata errata = new Errata();
-
-        if (issedDate != null) {
-            errata.setIssueDate(Date.from(issedDate.atStartOfDay(ZoneOffset.systemDefault()).toInstant()));
-        }
-
-        errata.setAdvisory(advisory);
-        errata.setErrataFrom("maint-coord@suse.de");
-        errata.setAdvisoryRel(release);
-        errata.setAdvisoryType(type);
-        return errata;
     }
 
 }

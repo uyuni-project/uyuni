@@ -30,6 +30,13 @@ public final class ErrataParserFactory {
      * All supported vendors
      */
     private enum SupportedVendor {
+        ALIBABA("alicloud-linux-os@service.aliyun.com", AlibabaErrataParser::new),
+        ALMALINUX("packager@almalinux.org", AlmaLinuxErrataParser::new),
+        AMAZON("linux-security@amazon.com", AmazonErrataParser::new),
+        ORACLE("el-errata@oss.oracle.com", OracleErrataParser::new),
+        REDHAT("release-engineering@redhat.com", RedhatErrataParser::new),
+        ROCKYLINUX("releng@rockylinux.org", RockyLinuxErrataParser::new),
+        SUSE_RES("res-maintenance@suse.de", SUSERESErrataParser::new),
         SUSE("maint-coord@suse.de", SUSEErrataParser::new);
 
         /** Email used in the errata */
