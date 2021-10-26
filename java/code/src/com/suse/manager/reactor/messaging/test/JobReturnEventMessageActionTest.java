@@ -1784,7 +1784,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
             File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() +
@@ -1808,6 +1808,66 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
                 assertEquals("a64dbc025c748bde968b888db6b7b9e3",
                         images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
+            }
+            catch (FileNotFoundException e) {
+                fail("Cannot find OS Image generated pillar");
+            }
+            catch (IOException e) {
+                fail("Cannot find OS Image generated pillar");
+            }
+        });
+    }
+
+    public void testKiwiImageInspectCompressedImage() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
+                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
+        }});
+
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        new File("/srv/susemanager/pillar_data/images").mkdirs();
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", (info) -> {
+            assertNotNull(info.getInspectAction().getId());
+            assertEquals(286, info.getPackages().size());
+            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() +
+                    "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
+
+            assertTrue(generatedPillar.exists());
+            Map<String, Object> map;
+
+            try (FileInputStream fi = new FileInputStream(generatedPillar)) {
+                map = new Yaml().loadAs(fi, Map.class);
+                assertTrue(map.containsKey("boot_images"));
+                Map<String, Map<String, Map<String, Object>>> bootImages =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
+                assertEquals(
+                    "ftp://ftp/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+                Map<String, Map<String, Map<String, Object>>> images =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
+                assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
+                assertEquals("a64dbc025c748bde968b888db6b7b9e3",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
+                assertEquals("gzip", images.get("POS_Image_JeOS6").get("6.0.0").get("compressed"));
+                assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("compressed_hash"));
             }
             catch (FileNotFoundException e) {
                 fail("Cannot find OS Image generated pillar");
@@ -1847,8 +1907,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return imgInfoBuild.get();
     }
 
-    private ImageInfo doTestKiwiImageInspect(MinionServer server, String imageName,
-                                             ImageProfile profile, Consumer<ImageInfo> assertions)
+    private ImageInfo doTestKiwiImageInspect(MinionServer server, ImageProfile profile,
+                                             String returnEventJson,
+                                             Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile,
@@ -1866,7 +1927,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.reload(inspectAction);
         // Process the image inspect return event
         Optional<JobReturnEvent> event = JobReturnEvent
-                .parse(getJobReturnEvent("image.inspect.kiwi.json", actionId));
+                .parse(getJobReturnEvent(returnEventJson, actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
