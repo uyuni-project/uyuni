@@ -242,9 +242,9 @@ else
 fi
 
 if [ -d '/var/spacewalk' ]; then
-  ln -fs %{_datadir}/rhn/config-defaults/99-uyuni.conf %{_libdir}/issue.d/99-uyuni.conf
+  ln -fs %{_datadir}/rhn/config-defaults/99-uyuni.conf %{_prefix}/lib/issue.d/99-uyuni.conf
 else
-  ln -fs %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf %{_libdir}/issue.d/99-uyuni.conf
+  ln -fs %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf %{_prefix}/lib/issue.d/99-uyuni.conf
 fi
 
 if [ ! -d /srv/tftpboot ]; then
@@ -326,7 +326,7 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %{_datadir}/rhn/config-defaults/rhn_*.conf
 %{_datadir}/rhn/config-defaults/99-uyuni.conf
 %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf
-%ghost %{_libdir}/issue.d/99-uyuni.conf
+%ghost %{_prefix}/lib/issue.d/99-uyuni.conf
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
