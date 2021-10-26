@@ -171,10 +171,10 @@ install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
 ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
-mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
+mkdir -p %{buildroot}%{_datadir}/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
-install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
+install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}%{_datadir}/rhn/config-defaults
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 install -m 0644 etc/issue.d/99-uyuni.conf %{buildroot}%{_datadir}/rhn/config-defaults/99-uyuni.conf
@@ -322,7 +322,7 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %defattr(-,root,root,-)
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
-%dir %{_prefix}/share/rhn/
+%dir %{_datadir}/rhn/
 %dir %{_datadir}/susemanager
 %dir %{wwwdocroot}/pub
 %dir %{wwwdocroot}/pub/repositories
