@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -503,7 +504,8 @@ public class CVEAuditManager {
                 .collect(Collectors.toList());
 
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
-        int currentRank = maxRank;
+
+        int currentRank = 49_999;
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
@@ -956,6 +958,8 @@ public class CVEAuditManager {
                     .map(p -> Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$").matcher(p))
                     .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
 
+            AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
+
             // Loop through affected packages one by one
             for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
                 if (livePatchedPackages.contains(packageResults.getKey())) {
@@ -977,11 +981,14 @@ public class CVEAuditManager {
                     if (result.isChannelAssigned()) {
                         assignedChannels.add(channel);
                     }
+                    else if (result.getChannelRank().get() >= 50_000) {
+                        patchInSuccessorProduct.set(true);
+                    }
                 });
             }
-
             system.setPatchStatus(getPatchStatus(system.getErratas().isEmpty(),
-                    assignedChannels.containsAll(system.getChannels()), !resultsByPackage.isEmpty()));
+                    assignedChannels.containsAll(system.getChannels()), !resultsByPackage.isEmpty(),
+                    patchInSuccessorProduct.get()));
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(system.getPatchStatus())) {
@@ -1073,17 +1080,21 @@ public class CVEAuditManager {
      * @param allChannelsForOneErrataAssigned the true if system has all
      * channels for at least one relevant errata assigned
      * @param hasErrata true if query row has an errata ID
+     * @param patchInSuccessorProduct if the patch is present in a successor product (requires product migration)
      * @return the patch status
      */
     public static PatchStatus getPatchStatus(
             boolean allPackagesForAllErrataInstalled,
-            boolean allChannelsForOneErrataAssigned, boolean hasErrata) {
+            boolean allChannelsForOneErrataAssigned, boolean hasErrata, boolean patchInSuccessorProduct) {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
                 return PatchStatus.PATCHED;
             }
             else if (allChannelsForOneErrataAssigned) {
                 return PatchStatus.AFFECTED_PATCH_APPLICABLE;
+            }
+            else if (patchInSuccessorProduct) {
+                return PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT;
             }
             else {
                 return PatchStatus.AFFECTED_PATCH_INAPPLICABLE;
