@@ -83,6 +83,8 @@ Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(post): user(%{apache_user})
 Requires:       yast2-users
+BuildRequires:  issue-generator
+Requires:       issue-generator
 %endif
 Requires(pre):  salt
 Requires:       cobbler
