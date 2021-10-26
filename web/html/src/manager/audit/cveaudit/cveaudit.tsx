@@ -12,14 +12,19 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
+const AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
 const NOT_AFFECTED = "NOT_AFFECTED";
 const PATCHED = "PATCHED";
-const ALL = [AFFECTED_PATCH_INAPPLICABLE, AFFECTED_PATCH_APPLICABLE, NOT_AFFECTED, PATCHED];
+const ALL = [AFFECTED_PATCH_INAPPLICABLE, AFFECTED_PATCH_APPLICABLE, AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT, NOT_AFFECTED, PATCHED];
 const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
     className: "fa-exclamation-circle text-danger",
     label: "Affected, patches available in channels which are not assigned",
+  },
+  AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
+    className: "fa-exclamation-circle text-danger",
+    label: "Affected, patches available in a Product Migration target",
   },
   AFFECTED_PATCH_APPLICABLE: {
     className: "fa-exclamation-triangle text-warning",
@@ -305,12 +310,24 @@ class CVEAudit extends React.Component<Props, State> {
                         })}
                       </div>
                     );
+                  } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT) {
+                    return (
+                      <div>
+                        <div>
+                          <a href={"/rhn/systems/details/SPMigration.do?sid=" + row.id}>
+                          Patch available, but system needs to be migrated to a newer Product.
+                          </a>
+                        </div>
+                        <div>{"Channel: " + row.channels[0].name}</div>
+                        <div>{"Patch: " + row.erratas[0].advisory}</div>
+                      </div>
+                    );
                   } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE) {
                     return (
                       <div>
                         <div>
                           <a href="/rhn/channels/manage/Manage.do">
-                            Patch available but needs to be cloned into Channel.
+                            Patch available, but needs to be cloned into Channel.
                           </a>
                         </div>
                         <div>{"Channel: " + row.channels[0].name}</div>
