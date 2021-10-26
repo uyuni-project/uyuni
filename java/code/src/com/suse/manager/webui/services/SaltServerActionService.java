@@ -1592,10 +1592,6 @@ public class SaltServerActionService {
             currentChannels.addAll(subbed);
             MinionPillarManager.INSTANCE.generatePillar(minion);
             ServerFactory.save(minion);
-            if (commitTransaction) {
-                HibernateFactory.commitTransaction();
-            }
-            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         });
 
         Map<String, Object> pillar = new HashMap<>();
@@ -1609,6 +1605,10 @@ public class SaltServerActionService {
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
+
+        if (commitTransaction) {
+            HibernateFactory.commitTransaction();
+        }
 
         LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
                 Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
