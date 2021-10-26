@@ -328,10 +328,12 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, true, true, false));
         assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, false, true, false));
         assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, CVEAuditManager.getPatchStatus(false, true, true, false));
-        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, CVEAuditManager.getPatchStatus(false, false, true, false));
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE,
+                CVEAuditManager.getPatchStatus(false, false, true, false));
         assertEquals(PatchStatus.NOT_AFFECTED, CVEAuditManager.getPatchStatus(false, false, false, false));
         assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, CVEAuditManager.getPatchStatus(false, true, true, true));
-        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT, CVEAuditManager.getPatchStatus(false, false, true, true));
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
+                CVEAuditManager.getPatchStatus(false, false, true, true));
     }
 
     /**
