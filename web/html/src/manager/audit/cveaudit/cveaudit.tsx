@@ -315,7 +315,7 @@ class CVEAudit extends React.Component<Props, State> {
                       <div>
                         <div>
                           <a href={"/rhn/systems/details/SPMigration.do?sid=" + row.id}>
-                          Patch available, but system needs to be migrated to a newer Product.
+                            Patch available, but system needs to be migrated to a newer Product.
                           </a>
                         </div>
                         <div>{"Channel: " + row.channels[0].name}</div>
