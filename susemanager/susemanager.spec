@@ -247,13 +247,6 @@ else
   ln -fs %{_datadir}/rhn/config-defaults/99-uyuni-installed.conf %{_libdir}/issue.d/99-uyuni.conf
 fi
 
-if [ -f /etc/sysconfig/atftpd ]; then
-  . /etc/sysconfig/atftpd
-  if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
-    sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
-    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/srv/tftpboot"
-  fi
-fi
 if [ ! -d /srv/tftpboot ]; then
   mkdir -p /srv/tftpboot
   chmod 750 /srv/tftpboot
