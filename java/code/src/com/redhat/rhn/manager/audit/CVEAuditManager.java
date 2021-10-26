@@ -89,6 +89,11 @@ public class CVEAuditManager {
 
     private static final String KERNEL_XEN_NAME = "kernel-xen";
 
+    /** Magic number signalling a patch present in a product migration channel */
+    private static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
+    /** Magic number signalling a patch present in a product predecessor channel */
+    private static final int PREDECESSOR_PRODUCT_RANK_BOUNDARY = 100_000;
+
     /**
      * Not to be instantiated.
      */
@@ -505,7 +510,7 @@ public class CVEAuditManager {
 
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
 
-        int currentRank = 49_999;
+        int currentRank = SUCCESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
@@ -539,7 +544,7 @@ public class CVEAuditManager {
         }
 
         // Increase the rank for indication of older products (previous SPs)
-        currentRank = 99999;
+        currentRank = PREDECESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
@@ -981,7 +986,7 @@ public class CVEAuditManager {
                     if (result.isChannelAssigned()) {
                         assignedChannels.add(channel);
                     }
-                    else if (result.getChannelRank().get() >= 50_000) {
+                    else if (result.getChannelRank().get() >= SUCCESSOR_PRODUCT_RANK_BOUNDARY) {
                         patchInSuccessorProduct.set(true);
                     }
                 });
@@ -1012,7 +1017,7 @@ public class CVEAuditManager {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
-                .filter(r -> r.isPackageInstalled() && r.getChannelRank().orElse(null) < 100000)
+                .filter(r -> r.isPackageInstalled() && r.getChannelRank().orElse(null) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
                 .max(evrComparator);
 
         Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
