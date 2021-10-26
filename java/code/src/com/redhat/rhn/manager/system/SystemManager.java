@@ -102,7 +102,6 @@ import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -3531,23 +3530,12 @@ public class SystemManager extends BaseManager {
     /**
      * Set auto_update for all systems in the system set
      * @param user The user
-     * @param value True if the servers should audo update
+     * @param value True if the servers should enable auto update
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
     public static void setAutoUpdateBulk(User user, Boolean value)
         throws TaskomaticApiException {
-        if (value) {
-            // schedule all existing applicable errata
-            List<SystemOverview> systems = inSet(user, "system_list");
-            List<Long> sids = new ArrayList<Long>();
-            for (SystemOverview system : systems) {
-                sids.add(system.getId());
-            }
-            List<Long> eids = errataIdsReleventToSystemSet(user);
-            java.util.Date earliest = new java.util.Date();
-            ErrataManager.applyErrata(user, eids, earliest, sids);
-        }
         CallableMode mode = ModeFactory.getCallableMode("System_queries",
                 "set_auto_update_bulk");
         Map<String, Object> params = new HashMap<String, Object>();
