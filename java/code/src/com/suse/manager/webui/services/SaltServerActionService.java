@@ -278,7 +278,7 @@ public class SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionSummary>> callsForAction(Action actionIn, List<MinionSummary> minions) {
         if (minions.isEmpty()) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
 
         ActionType actionType = actionIn.getActionType();
@@ -324,19 +324,21 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
             ImageInspectActionDetails details = iia.getDetails();
-            ImageStore store = ImageStoreFactory.lookupById(
-                    details.getImageStoreId()).get();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            ImageStore store = ImageStoreFactory.lookupById(details.getImageStoreId()).get();
             return imageInspectAction(minions, details, store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
-            ImageBuildActionDetails details = imageBuildAction.getDetails();
-            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(ip -> imageBuildAction(
-                            minions,
-                            Optional.ofNullable(details.getVersion()),
-                            ip,
-                            imageBuildAction.getSchedulerUser(),
-                            imageBuildAction.getId())
+           ImageBuildActionDetails details = imageBuildAction.getDetails();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
+                    ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
+                            imageBuildAction.getSchedulerUser(), imageBuildAction.getId())
             ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
