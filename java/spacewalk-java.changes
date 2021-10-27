@@ -1,3 +1,4 @@
+- Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
 - On salt-ssh minions, enforce package list refresh after state apply
 - Run Prometheus JMX exporter as Java agent (bsc#1184617)
 - Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
