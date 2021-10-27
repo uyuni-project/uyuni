@@ -275,7 +275,10 @@ public class SCCRepository extends BaseDomainHelper {
                     return Optional.of(a);
                 }
             }
-            result = Optional.of(a);
+            if (result.isEmpty() || a.getId().longValue() < result.get().getId().longValue()) {
+                // get always the same result and use the oldest alternative if there are multiple
+                result = Optional.of(a);
+            }
         }
         return result;
     }
