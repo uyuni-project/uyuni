@@ -1,3 +1,6 @@
+- Minor spec update.
+- Added RHN config parameter httpd_config_dir.
+
 -------------------------------------------------------------------
 Thu Oct 28 12:03:44 CEST 2021 - jgonzalez@suse.com
 
