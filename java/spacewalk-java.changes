@@ -1,3 +1,4 @@
+- Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
 - UI and API call for changing proxy
 - Use an 'allow' filter for the kernel packages with live patching
   filter templates (bsc#1191460)
