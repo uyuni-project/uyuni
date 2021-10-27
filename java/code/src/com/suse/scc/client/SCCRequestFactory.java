@@ -14,6 +14,9 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
@@ -65,6 +68,10 @@ public class SCCRequestFactory {
         // Send the UUID for debugging if available
         String uuid = config.getUUID();
         request.addHeader("SMS", uuid != null ? uuid : "undefined");
+
+        // overwrite the default
+        request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
+                ConfigDefaults.get().getProductVersion());
 
         return request;
     }
