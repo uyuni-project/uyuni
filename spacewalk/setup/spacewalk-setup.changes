@@ -1,3 +1,5 @@
+- Don't delete cobbler.conf contents.
+- Fixed FileNotFoundError on cobbler setup.
 - cobbler20-setup was removed
 - spacewalk-setup-cobbler was reimplemented in Python
 - Config files for Cobbler don't get edited in place anymore, thus the original

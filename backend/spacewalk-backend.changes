@@ -1,3 +1,5 @@
+- Minor spec update.
+- Added RHN config parameter httpd_config_dir.
 - Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
 - Improved the diskcheck script to return an exit value and to
   allow performing the check without sending notification
