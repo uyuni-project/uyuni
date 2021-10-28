@@ -1,3 +1,5 @@
+- Use an 'allow' filter for the kernel packages with live patching
+  filter templates (bsc#1191460)
 - Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
 - On salt-ssh minions, enforce package list refresh after state apply
 - Run Prometheus JMX exporter as Java agent (bsc#1184617)
