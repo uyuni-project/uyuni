@@ -1,3 +1,4 @@
+- Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
 - On salt-ssh minions, enforce package list refresh after state apply
 - Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
 - mgr-sync refresh logs when a vendor channel is expire and shows how to remove it (bsc#1191222)
