@@ -1,6 +1,11 @@
-- Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
-- handle download of metadata filesnames with checksums (bsc#1188315)
-- Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
+-------------------------------------------------------------------
+Thu Oct 28 12:03:44 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.29-1
+  * Avoid GPG errors messages in reposync caused by rpm not understanding
+    signatures (bsc#1191538)
+  * handle download of metadata filesnames with checksums (bsc#1188315)
+  * Sanitize cached filename for custom SSL certs used by reposync (bsc#1190751)
 
 -------------------------------------------------------------------
 Mon Sep 20 12:14:28 CEST 2021 - jmassaguerpla@suse.de
