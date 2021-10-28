@@ -70,7 +70,7 @@ def __virtual__():
     '''
     return True
 
-def ext_pillar(minion_id, *args):
+def ext_pillar(minion_id, pillar, *args):
     '''
     Find SUMA-related pillars for the registered minions and return the data.
     '''
@@ -109,13 +109,13 @@ def ext_pillar(minion_id, *args):
 
     # Including formulas into pillar data
     try:
-        ret.update(formula_pillars(minion_id, ret.get("group_ids", [])))
+        ret.update(formula_pillars(minion_id, pillar.get("group_ids", [])))
     except Exception as error:
         log.error('Error accessing formula pillar data: {message}'.format(message=str(error)))
 
     # Including images pillar
     try:
-        ret.update(image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)))
+        ret.update(image_pillars(minion_id, pillar.get("group_ids", []), pillar.get("org_id", 1)))
     except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
 
