@@ -1,3 +1,5 @@
+- Use an 'allow' filter for the kernel packages with live patching
+  filter templates (bsc#1191460)
 - Remove NullPointerException in rhn_web_ui.log when building an image (bsc#1185951)
 - Bugfix: Prevent "no session" hibernate error on deleting server
 - Set product name and version in the User-Agent header when connecting to SCC
