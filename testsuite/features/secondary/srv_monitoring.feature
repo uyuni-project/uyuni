@@ -58,8 +58,10 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "Tomcat (Java JMX)" and a pending bullet
     And I should see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
     And file "/etc/rhn/rhn.conf" should contain "prometheus_monitoring_enabled = 1" on server
-    And file "/etc/sysconfig/tomcat" should contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
-    And file "/etc/rhn/taskomatic.conf" should contain "Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
+    And file "/etc/sysconfig/tomcat" should not contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
+    And file "/etc/rhn/taskomatic.conf" should not contain "Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
+    And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5556" on server
+    And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5557" on server
 
   Scenario: Restart spacewalk services to apply config changes after enabling monitoring
     When I restart the spacewalk service
