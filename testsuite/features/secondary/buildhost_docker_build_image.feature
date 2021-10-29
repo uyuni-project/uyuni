@@ -52,11 +52,11 @@ Feature: Build container images
   Scenario: Build the images with and without activation key
     Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_key" via XML-RPC calls
-    And I wait at most 600 seconds until event "Image Build suse_key scheduled by admin" is completed
+    And I wait at most 660 seconds until event "Image Build suse_key scheduled by admin" is completed
     And I schedule the build of image "suse_simple" via XML-RPC calls
-    And I wait at most 600 seconds until event "Image Build suse_simple scheduled by admin" is completed
+    And I wait at most 660 seconds until event "Image Build suse_simple scheduled by admin" is completed
     And I schedule the build of image "suse_real_key" via XML-RPC calls
-    And I wait at most 600 seconds until event "Image Build suse_real_key scheduled by admin" is completed
+    And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
 
   Scenario: Build same images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
