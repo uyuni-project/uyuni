@@ -35,34 +35,35 @@ const Group = (props: Props) => {
     props.setSectionsExpanded("mixed");
   };
 
-  return (
-    props.isVisibleByCriteria?.() ?
-      <div
-        className={
-          visible ? "formula-content-section-open group-heading" : "formula-content-section-closed group-heading"
-        }
-      >
-        <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
-          <h4 id={props.id} key={props.id}>
-            {
-              isFiltered(props.criteria) ?
-                <Highlight enabled={isFiltered(props.criteria)} text={props.header ? props.header.toString() : ""} highlight={props.criteria} />
-                : props.header
-            }
-          </h4>
-        </SectionToggle>
-        <div>
-          {visible ? (
-            <React.Fragment>
-              {props.help ? <p>{props.help}</p> : null}
-              {props.children}
-            </React.Fragment>
-          ) : null}
-
-        </div>
+  return props.isVisibleByCriteria?.() ? (
+    <div
+      className={
+        visible ? "formula-content-section-open group-heading" : "formula-content-section-closed group-heading"
+      }
+    >
+      <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
+        <h4 id={props.id} key={props.id}>
+          {isFiltered(props.criteria) ? (
+            <Highlight
+              enabled={isFiltered(props.criteria)}
+              text={props.header ? props.header.toString() : ""}
+              highlight={props.criteria}
+            />
+          ) : (
+            props.header
+          )}
+        </h4>
+      </SectionToggle>
+      <div>
+        {visible ? (
+          <React.Fragment>
+            {props.help ? <p>{props.help}</p> : null}
+            {props.children}
+          </React.Fragment>
+        ) : null}
       </div>
-      : null
-  );
+    </div>
+  ) : null;
 };
 
 export default Group;
