@@ -113,50 +113,52 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
       Component = EditDictionaryGroup;
     }
 
-    return (
-      this.props.isVisibleByCriteria?.() ?
-        <div
-          id={this.props.id}
-          className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
-        >
-          <div className="group-heading">
-            <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
-              <h4>
-                <Highlight enabled={isFiltered(this.props.criteria)} text={this.props.element.$name} highlight={this.props.criteria} />
-              </h4>
-            </SectionToggle>
-            <i
-              className="fa fa-plus"
-              id={this.props.id + "#add_item"}
-              title={
-                this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
-              }
-              onClick={this.handleAddItem}
-              /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
-              disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
-            ></i>
-          </div>
-          <div>
-            {this.state.visible ? (
-              <React.Fragment>
-                {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
-                <Component
-                  handleRemoveItem={this.handleRemoveItem}
-                  isDisabled={this.isDisabled()}
-                  id={this.props.id}
-                  key={this.props.key}
-                  element={this.props.element}
-                  value={this.props.value}
-                  sectionsExpanded={this.props.sectionsExpanded}
-                  setSectionsExpanded={this.props.setSectionsExpanded}
-                  formulaForm={this.props.formulaForm}
-                />
-              </React.Fragment>
-            ) : null}
-          </div>
+    return this.props.isVisibleByCriteria?.() ? (
+      <div
+        id={this.props.id}
+        className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
+      >
+        <div className="group-heading">
+          <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
+            <h4>
+              <Highlight
+                enabled={isFiltered(this.props.criteria)}
+                text={this.props.element.$name}
+                highlight={this.props.criteria}
+              />
+            </h4>
+          </SectionToggle>
+          <i
+            className="fa fa-plus"
+            id={this.props.id + "#add_item"}
+            title={
+              this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
+            }
+            onClick={this.handleAddItem}
+            /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
+            disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+          ></i>
         </div>
-        : null
-    );
+        <div>
+          {this.state.visible ? (
+            <React.Fragment>
+              {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
+              <Component
+                handleRemoveItem={this.handleRemoveItem}
+                isDisabled={this.isDisabled()}
+                id={this.props.id}
+                key={this.props.key}
+                element={this.props.element}
+                value={this.props.value}
+                sectionsExpanded={this.props.sectionsExpanded}
+                setSectionsExpanded={this.props.setSectionsExpanded}
+                formulaForm={this.props.formulaForm}
+              />
+            </React.Fragment>
+          ) : null}
+        </div>
+      </div>
+    ) : null;
   }
 }
 

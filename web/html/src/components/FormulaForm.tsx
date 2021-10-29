@@ -337,9 +337,10 @@ class FormulaForm extends React.Component<Props, State> {
               >
                 <div className="formula-content">
                   <SearchField
-                      placeholder={t("Search by formula's group name")}
-                      criteria={this.state.searchCriteria}
-                      onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: "expanded"}) } />
+                    placeholder={t("Search by formula's group name")}
+                    criteria={this.state.searchCriteria}
+                    onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: "expanded" })}
+                  />
                   <hr />
                   <p>{text(this.state.formulaMetadata.description)}</p>
                   <hr />

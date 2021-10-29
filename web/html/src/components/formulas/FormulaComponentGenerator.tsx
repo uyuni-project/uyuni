@@ -366,10 +366,10 @@ function isVisibleByCriteria(element: any, criteria: string) {
 
   // return conditions result whether the element can be hided or not
   return (
-      criteria == null ||
-      criteria === "" ||
-      element.$name.toLowerCase().includes(criteria.toLowerCase()) ||
-      visibilityForcedByChildren
+    criteria == null ||
+    criteria === "" ||
+    element.$name.toLowerCase().includes(criteria.toLowerCase()) ||
+    visibilityForcedByChildren
   );
 }
 
