@@ -1,4 +1,8 @@
-- add GPG keys using apt-key on debian machines (bsc#1187998)
+-------------------------------------------------------------------
+Fri Oct 29 15:45:46 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.19-1
+  * add GPG keys using apt-key on debian machines (bsc#1187998)
 
 -------------------------------------------------------------------
 Thu Oct 28 12:06:06 CEST 2021 - jgonzalez@suse.com
