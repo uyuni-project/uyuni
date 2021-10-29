@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-28 19:12+0000\n"
+"PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5144,9 +5144,8 @@ msgid "Select where to migrate the virtual guest to."
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
-#, fuzzy
 msgid "Target Host"
-msgstr "Názov hostiteľa cieľa"
+msgstr "Cieľový hostiteľ"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"
@@ -5457,7 +5456,7 @@ msgstr "Názov domény služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:166
 msgid "Target hostname"
-msgstr "Názov hostiteľa cieľa"
+msgstr "Názov cieľového hostiteľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:173
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:221
