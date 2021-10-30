@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-29 21:12+0000\n"
+"PO-Revision-Date: 2021-10-30 10:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2326,11 +2326,11 @@ msgstr "regulárny výraz sa zhoduje s názvom balíka"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "equals"
-msgstr "rovná sa"
+msgstr "zhoduje sa"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
 msgid "contains package name equals"
-msgstr "obsahuje názov balíka rovný"
+msgstr "obsahuje názov balíka rovnaký"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 msgid "version lower than"
@@ -2350,7 +2350,7 @@ msgstr "obsahuje balík s obdobím/verziou/vydaním nižším alebo rovným ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "version equal"
-msgstr "verzia rovnaká"
+msgstr "rovnaká verzia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
 msgid "contains package with epoch/version/release equal than"
@@ -2370,11 +2370,11 @@ msgstr "obsahuje balík s obdobím/verziou/vydaním väčším ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
 msgid "contains package which provides name equal"
-msgstr "obsahuje balík, ktorý poskytuje názov rovný"
+msgstr "obsahuje balík, ktorý poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
-msgstr "rovnaké"
+msgstr "rovnaký"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "later or equal"
@@ -2393,9 +2393,8 @@ msgid "provides name"
 msgstr "poskytuje názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "provides name equal"
-msgstr "verzia rovnaká"
+msgstr "poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
@@ -2418,9 +2417,8 @@ msgid "Contains Package Name"
 msgstr "Obsahuje názov balíka"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
-#, fuzzy
 msgid "Contains Package Provides Name"
-msgstr "Obsahuje názov balíka"
+msgstr "Obsahuje balík poskytujúci názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
@@ -3435,24 +3433,32 @@ msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
 msgstr ""
+"Nie je možné overiť dostupnosť miesta na disku. Prosím, kontaktujte svojho "
+"systémového administrátora, ak tento problém pretrváva."
 
 #: ../html/src/manager/login/login.tsx:66
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
 msgstr ""
+"Chýbajú niektoré dôležité adresáre. Prosím, kontaktujte svojho systémového "
+"administrátora, aby skontroloval konfiguráciu."
 
 #: ../html/src/manager/login/login.tsx:71
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
 msgstr ""
+"Dostupné miesto na disku na serveri je nedostatočné. Prosím, kontaktuje "
+"svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/login.tsx:76
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
 msgstr ""
+"Dostupné miesto na disku na serveri je kriticky nízke. Prosíme, kontaktuje "
+"svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/login.tsx:94
 msgid "Signing in ..."
@@ -3796,19 +3802,16 @@ msgid "No Playbook found."
 msgstr "Nenašiel sa žiadny scenár."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
-#, fuzzy
 msgid "Playbook File Name"
-msgstr "Adresáre scenárov"
+msgstr "Názov súboru scenára"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
-#, fuzzy
 msgid "Full Path"
-msgstr "Cesta"
+msgstr "Úplná cesta"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:142
-#, fuzzy
 msgid "Custom Inventory"
-msgstr "Inventárna cesta"
+msgstr "Vlastný inventár"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:156
 msgid "Inventory file empty."
@@ -4981,13 +4984,12 @@ msgid "Guest is not running"
 msgstr "Hosť nie je spustený"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
-#, fuzzy
 msgid "Unknown guest"
-msgstr "Neznáme"
+msgstr "Neznámy hosť"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:26
 msgid "Retry"
-msgstr ""
+msgstr "Znovu"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
 msgid "Connecting..."
@@ -5033,9 +5035,8 @@ msgid "Virtual CPU Count"
 msgstr "Počet virtuálnych CPU"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:192
-#, fuzzy
 msgid "Enable UEFI"
-msgstr "Povoliť IPv6"
+msgstr "Povoliť UEFI"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "UEFI firmware path"
