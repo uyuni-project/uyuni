@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-15 12:11+0000\n"
+"POT-Creation-Date: 2021-10-29 16:05+0200\n"
+"PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -707,18 +707,18 @@ msgstr ""
 "      channel.software.listAllPackages\n"
 
 #: ../src/spacecmd/api.py:81
-#, fuzzy, python-format
+#, python-format
 msgid "Could not open to write: %s"
-msgstr "Nepodarilo sa otvoriť na zápis: "
+msgstr "Nepodarilo sa otvoriť na zápis: %s"
 
 #: ../src/spacecmd/api.py:82
 msgid "Fallback output to stdout"
 msgstr "Núdzový výstup na stdout"
 
 #: ../src/spacecmd/api.py:91
-#, fuzzy, python-format
+#, python-format
 msgid "No such API: %s"
-msgstr "Žiadne také API: "
+msgstr "Žiadne také API: %s"
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "configchannel_list: List all configuration channels"
@@ -4855,9 +4855,9 @@ msgid "Could not read history file"
 msgstr "Nebolo možné prečítať súbor histórie"
 
 #: ../src/spacecmd/shell.py:124
-#, fuzzy, python-format
+#, python-format
 msgid "Exception occurred: %s"
-msgstr "Vyskytla sa výnimka: {}"
+msgstr "Vyskytla sa výnimka: %s"
 
 #: ../src/spacecmd/shell.py:188 ../src/spacecmd/shell.py:227
 #, python-format
@@ -7594,13 +7594,12 @@ msgstr ""
 "  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:3233 ../src/spacecmd/system.py:3256
-#, fuzzy
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_listeventhistory instead.\n"
 msgstr ""
 "Táto metóda je zastaraná a bude odstránená v budúcej verzii API. Namiesto "
-"toho, prosím, použite system_scheduleproductmigration."
+"toho, prosím, použite system_scheduleproductmigration.\n"
 
 #: ../src/spacecmd/system.py:3236
 msgid "system_listevents: List the event history for a system"
@@ -7621,9 +7620,8 @@ msgid "Details:   %s"
 msgstr "Podrobnosti:   %s"
 
 #: ../src/spacecmd/system.py:3297
-#, fuzzy
 msgid "system_listeventhistory: List the event history for a system"
-msgstr "system_listevents: Vypísať históriu udalostí pre systém"
+msgstr "system_listeventhistory: Vypísať históriu udalostí pre systém"
 
 #: ../src/spacecmd/system.py:3298
 msgid ""
@@ -7637,130 +7635,133 @@ msgid ""
 "  -l LIMIT limit the results to the specified number of events. [Default: no "
 "limit]"
 msgstr ""
+"použitie: system_listeventhistory <SYSTÉMY> [voľby]\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA vypíše zoznam iba udalostí, ktoré sa stali po zadanom "
+"čase. [Predvolené: vráti všetky udalosti]\n"
+"  -o POSUN preskočí prvé udalosti. Ignoruje sa, ak nie je zadané -l. "
+"[Predvolené: 0]\n"
+"  -l OBMEDZENIE obmedzí výsledky na zadaný počet udalostí. [Predvolené: bez "
+"obmedzenia]"
 
 #: ../src/spacecmd/system.py:3351
-#, fuzzy
 msgid "Invalid offset"
-msgstr "Neplatný časový limit"
+msgstr "Neplatný posun"
 
 #: ../src/spacecmd/system.py:3358
-#, fuzzy
 msgid "Invalid limit"
-msgstr "Neplatný časový limit"
+msgstr "Neplatné obmedzenie"
 
 #: ../src/spacecmd/system.py:3383
-#, fuzzy, python-format
+#, python-format
 msgid "Id:           %s"
-msgstr "Režim:            %s"
+msgstr "Id:            %s"
 
 #: ../src/spacecmd/system.py:3384
 #, python-format
 msgid "History type: %s"
-msgstr ""
+msgstr "Typ histórie: %s"
 
 #: ../src/spacecmd/system.py:3385
-#, fuzzy, python-format
+#, python-format
 msgid "Status:       %s"
-msgstr "Stav:     %s"
+msgstr "Stav:       %s"
 
 #: ../src/spacecmd/system.py:3386
-#, fuzzy, python-format
+#, python-format
 msgid "Summary:      %s"
-msgstr "Súhrn:   %s"
+msgstr "Súhrn:      %s"
 
 #: ../src/spacecmd/system.py:3387
-#, fuzzy, python-format
+#, python-format
 msgid "Completed:    %s"
-msgstr "Dokončené: %s"
+msgstr "Dokončené:    %s"
 
 #: ../src/spacecmd/system.py:3395
-#, fuzzy
 msgid "system_eventdetails: Retrieve the details of an event for a system"
-msgstr "system_details: Zobraziť podrobnosti o systémovom profile"
+msgstr "system_eventdetails: Získať podrobnosti o udalosti pre systém"
 
 #: ../src/spacecmd/system.py:3396
-#, fuzzy
 msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
-msgstr "použitie: system_details <SYSTÉMY>"
+msgstr "použitie: system_eventdetails <SYSTÉM> <UDALOSŤ>"
 
 #: ../src/spacecmd/system.py:3435
-#, fuzzy
 msgid "No event specified"
-msgstr "Nie je zadaný žiadny server"
+msgstr "Nie je zadaná žiadna udalosť"
 
 #: ../src/spacecmd/system.py:3441
-#, fuzzy
 msgid "Invalid event id"
-msgstr "Neplatné prihlasovanie údaje"
+msgstr "Neplatné id udalosti"
 
 #: ../src/spacecmd/system.py:3463
 #, python-format
 msgid "No event %s found in the history of system %s"
-msgstr ""
+msgstr "Nebola nájdená žiadna udalosť %s v histórii systému %s"
 
 #: ../src/spacecmd/system.py:3466
-#, fuzzy, python-format
+#, python-format
 msgid "Id:              %s"
-msgstr "Názov:              %s"
+msgstr "Id:              %s"
 
 #: ../src/spacecmd/system.py:3468
-#, fuzzy, python-format
+#, python-format
 msgid "History type:    %s"
-msgstr "Krstné meno:    %s"
+msgstr "Typ histórie:    %s"
 
 #: ../src/spacecmd/system.py:3469
-#, fuzzy, python-format
+#, python-format
 msgid "Status:          %s"
-msgstr "Stav:     %s"
+msgstr "Stav:          %s"
 
 #: ../src/spacecmd/system.py:3470
-#, fuzzy, python-format
+#, python-format
 msgid "Summary:         %s"
-msgstr "Súhrn:          %s"
+msgstr "Súhrn:         %s"
 
 #: ../src/spacecmd/system.py:3472
-#, fuzzy, python-format
+#, python-format
 msgid "Created:         %s"
-msgstr "Vytvorený:       %s"
+msgstr "Vytvorené:         %s"
 
 #: ../src/spacecmd/system.py:3473
-#, fuzzy, python-format
+#, python-format
 msgid "Picked up:       %s"
-msgstr "Uzamknutý:        %s"
+msgstr "Vyzdvihnuté:       %s"
 
 #: ../src/spacecmd/system.py:3474
-#, fuzzy, python-format
+#, python-format
 msgid "Completed:       %s"
-msgstr "Vytvorený:       %s"
+msgstr "Vytvorené:       %s"
 
 #: ../src/spacecmd/system.py:3478
-#, fuzzy, python-format
+#, python-format
 msgid "Earliest action: %s"
-msgstr "Neúspešná akcia: %s"
+msgstr "Najskoršia akcia: %s"
 
 #: ../src/spacecmd/system.py:3479
-#, fuzzy, python-format
+#, python-format
 msgid "Result message:  %s"
-msgstr "Vydanie:   %s"
+msgstr "Správa o výsledku:   %s"
 
 #: ../src/spacecmd/system.py:3480
-#, fuzzy, python-format
+#, python-format
 msgid "Result code:     %s"
-msgstr "Priezvisko:     %s"
+msgstr "Kód výsledku:     %s"
 
 #: ../src/spacecmd/system.py:3485
 msgid "Additional info:"
-msgstr ""
+msgstr "Ďalšie informácie:"
 
 #: ../src/spacecmd/system.py:3494
-#, fuzzy, python-format
+#, python-format
 msgid "    Result:          %s"
-msgstr "Názov:              %s"
+msgstr "    Výsledok:          %s"
 
 #: ../src/spacecmd/system.py:3495
-#, fuzzy, python-format
+#, python-format
 msgid "    Detail:          %s"
-msgstr "Názov:              %s"
+msgstr "    Detail:          %s"
 
 #: ../src/spacecmd/system.py:3503
 msgid "system_listentitlements: List the entitlements for a system"

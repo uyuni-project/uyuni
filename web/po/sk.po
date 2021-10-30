@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-02 14:11+0000\n"
+"PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -2163,15 +2163,13 @@ msgid "Advisory Keywords"
 msgstr "Kľúčové slová upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
-#, fuzzy
 msgid "Package Provides Name"
-msgstr "Názov balíka"
+msgstr "Balík poskytuje názov"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#, fuzzy
 msgid "Provides Name"
-msgstr "Názov modulu"
+msgstr "Poskytuje názov"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
@@ -2258,14 +2256,12 @@ msgid "Content Lifecycle Projects"
 msgstr "Projekty životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
-#, fuzzy
 msgid "Last Build"
-msgstr "Zostaviť"
+msgstr "Posledné zostavenie"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
-#, fuzzy
 msgid "never"
-msgstr "Závažnosť"
+msgstr "nikdy"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
@@ -2373,9 +2369,8 @@ msgid "contains package with epoch/version/release greater than"
 msgstr "obsahuje balík s obdobím/verziou/vydaním väčším ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
-#, fuzzy
 msgid "contains package which provides name equal"
-msgstr "obsahuje názov balíka rovný"
+msgstr "obsahuje balík, ktorý poskytuje názov rovný"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
@@ -2394,9 +2389,8 @@ msgid "matches regular expression"
 msgstr "sa zhoduje s regulárnym výrazom"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "provides name"
-msgstr "Názov služby"
+msgstr "poskytuje názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
 #, fuzzy
@@ -4996,9 +4990,8 @@ msgid "Retry"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
-#, fuzzy
 msgid "Connecting..."
-msgstr "Pripojenie"
+msgstr "Pripájanie..."
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
@@ -5151,9 +5144,8 @@ msgid "Select where to migrate the virtual guest to."
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
-#, fuzzy
 msgid "Target Host"
-msgstr "Názov hostiteľa cieľa"
+msgstr "Cieľový hostiteľ"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"
@@ -5464,7 +5456,7 @@ msgstr "Názov domény služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:166
 msgid "Target hostname"
-msgstr "Názov hostiteľa cieľa"
+msgstr "Názov cieľového hostiteľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:173
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:221
