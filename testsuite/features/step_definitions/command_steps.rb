@@ -856,11 +856,21 @@ When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          "zypper mr --#{action} #{repos}"
+          mand_repos = ""
+          opt_repos = ""
+          repos.split(' ').map do |repo|
+            if repo =~ /_ltss_/
+              opt_repos = "#{opt_repos} #{repo}"
+            else
+              mand_repos = "#{mand_repos} #{repo}"
+            end
+          end
+          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
         else
           cmd_list = if action == 'enable'
                        repos.split(' ').map do |repo|
@@ -883,6 +893,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
         end
   node.run(cmd, check_errors: error_control.empty?)
 end
+# rubocop:enable Metrics/BlockLength
 
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
