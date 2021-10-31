@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-30 10:12+0000\n"
+"PO-Revision-Date: 2021-10-31 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5040,11 +5040,11 @@ msgstr "Povoliť UEFI"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "UEFI firmware path"
-msgstr ""
+msgstr "Cesta k firmvéru UEFI"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:204
 msgid "NVRAM template path"
-msgstr ""
+msgstr "Cesta k šablóne NVRAM"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:216
 msgid "Auto-installation Profile"
@@ -5056,15 +5056,15 @@ msgstr "Voľby jadra"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:245
 msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr ""
+msgstr "Podpora klastra je vypnutá, pretože agent prostriedkov VirtualDomain "
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Define as a cluster resource"
-msgstr ""
+msgstr "Definovať ako prostriedok klastra"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Path to the cluster shared folder for VM definitions"
-msgstr ""
+msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:291
 msgid "Graphics"
@@ -5138,11 +5138,11 @@ msgstr "Grafická konzola"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:40
 msgid "Migrate"
-msgstr ""
+msgstr "Migrovať"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:58
 msgid "Select where to migrate the virtual guest to."
-msgstr ""
+msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
 msgid "Target Host"
