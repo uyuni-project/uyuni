@@ -1652,21 +1652,21 @@
       </trans-unit>
       <trans-unit id="desiredpassword" xml:space="preserve">
         <source>Desired Password</source>
-        <target/>
+        <target>Požadované heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredpasswordConfirm" xml:space="preserve">
         <source>Confirm Password</source>
-        <target/>
+        <target>Potvrdiť heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address1" xml:space="preserve">
         <source>Street Address</source>
-        <target/>
+        <target>Adresa ulice</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1675,7 +1675,7 @@
       </trans-unit>
       <trans-unit id="address2" xml:space="preserve">
         <source>Street Address 2</source>
-        <target/>
+        <target>Adresa ulice 2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1683,7 +1683,7 @@
       </trans-unit>
       <trans-unit id="city" xml:space="preserve">
         <source>City</source>
-        <target/>
+        <target>Mesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1692,7 +1692,7 @@
       </trans-unit>
       <trans-unit id="state" xml:space="preserve">
         <source>State/Province</source>
-        <target/>
+        <target>Štát/Provincia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1701,7 +1701,7 @@
       </trans-unit>
       <trans-unit id="country" xml:space="preserve">
         <source>Country</source>
-        <target/>
+        <target>Krajina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1710,7 +1710,7 @@
       </trans-unit>
       <trans-unit id="building" xml:space="preserve">
         <source>Building</source>
-        <target/>
+        <target>Budova</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1718,7 +1718,7 @@
       </trans-unit>
       <trans-unit id="room" xml:space="preserve">
         <source>Room</source>
-        <target/>
+        <target>Miestnosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1726,7 +1726,7 @@
       </trans-unit>
       <trans-unit id="rack" xml:space="preserve">
         <source>Rack</source>
-        <target/>
+        <target>Rack</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
