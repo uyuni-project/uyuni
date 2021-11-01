@@ -1734,70 +1734,70 @@
       </trans-unit>
       <trans-unit id="system_name" xml:space="preserve">
         <source>System Name</source>
-        <target/>
+        <target>Názov systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="zip" xml:space="preserve">
         <source>Zip / Postal Code</source>
-        <target/>
+        <target>PSČ / Poštové smerovacie číslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="phone" xml:space="preserve">
         <source>Phone</source>
-        <target/>
+        <target>Telefón</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.subjecttoolong" xml:space="preserve">
         <source>Subject too long (80 character maximum)</source>
-        <target/>
+        <target>Príliš dlhý predmet (maximálne 80 znakov)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.subjecttooshort" xml:space="preserve">
         <source>Subject must not be empty</source>
-        <target/>
+        <target>Predmet nesmie byť prázdny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.notetoolong" xml:space="preserve">
         <source>Note details must be 4000 characters or less</source>
-        <target/>
+        <target>Podrobnosti v poznámke musia mať nie viac ako 4000 znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sid" xml:space="preserve">
         <source>System ID</source>
-        <target/>
+        <target>Systémové ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="to_org" xml:space="preserve">
         <source>Destination Organization</source>
-        <target/>
+        <target>Cieľová organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="params" xml:space="preserve">
         <source>Command-line Arguments</source>
-        <target/>
+        <target>Argumenty príkazového riadka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="path" xml:space="preserve">
         <source>Path to XCCDF document</source>
-        <target/>
+        <target>Cesta k dokumentu XCCDF</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
