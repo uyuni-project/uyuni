@@ -364,7 +364,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         list.add(sa1.getServerId());
 
         // Should NOT update if already in final state.
-        ActionFactory.updateServerActionsPickedUp(a1, list, ActionFactory.STATUS_PICKED_UP);
+        ActionFactory.updateServerActionsPickedUp(a1, list);
         HibernateFactory.reload(sa1);
         assertTrue(sa1.getStatus().equals(ActionFactory.STATUS_FAILED));
 
