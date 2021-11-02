@@ -161,6 +161,10 @@ public enum SaltStateGeneratorService {
         imagePillarDetails.put("arch", image.getArch());
         imagePillarDetails.put("basename", image.getBasename());
         imagePillarDetails.put("boot_image", name + "-" + version);
+        if (image.getCompression() != null) {
+            imagePillarDetails.put("compressed", image.getCompression());
+            imagePillarDetails.put("compressed_hash", image.getCompressedHash());
+        }
         imagePillarDetails.put("filename", image.getFilename());
         imagePillarDetails.put("filepath", image.getFilepath());
         imagePillarDetails.put("fstype", image.getFstype());

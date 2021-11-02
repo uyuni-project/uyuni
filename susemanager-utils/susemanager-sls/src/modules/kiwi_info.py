@@ -186,11 +186,15 @@ def image_details(dest, bundle_dest = None):
         'arch': arch,
         'type': image_type,
         'version': version,
-        'compression': compression,
         'filename': filename,
         'filepath': filepath,
         'fstype': fstype
     }
+    if compression:
+        res['image'].update({
+            'compression': compression,
+            'compressed_hash': __salt__['hashutil.digest_file'](filepath, checksum='md5')
+        })
 
     res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5'), compression is not None))
 

@@ -1,3 +1,4 @@
+- Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
 - Use an 'allow' filter for the kernel packages with live patching
   filter templates (bsc#1191460)
 - Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
