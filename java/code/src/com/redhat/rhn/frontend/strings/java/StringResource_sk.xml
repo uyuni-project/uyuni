@@ -1804,70 +1804,70 @@
       </trans-unit>
       <trans-unit id="first" xml:space="preserve">
           <source>First Scan Id</source>
-        <target/>
+        <target>Id prvého skenovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="second" xml:space="preserve">
           <source>Second Scan Id</source>
-        <target/>
+        <target>Id druhého skenovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.perms_updated" xml:space="preserve">
         <source>Permissions Updated</source>
-        <target/>
+        <target>Oprávnenia aktualizované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.refeshScheduled" xml:space="preserve">
         <source>You have successfully &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; a hardware profile refresh for &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Úspešne ste &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;naplánovali&lt;/a&gt; obnovenie hardvérového profilu pre &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
         <source>Networking properties updated.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Vlastnosti siete sú aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
-        <target/>
+        <target>Predpona</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="position" xml:space="preserve">
         <source>Position</source>
-        <target/>
+        <target>Pozícia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usertype" xml:space="preserve">
         <source>User Type</source>
-        <target/>
+        <target>Typ používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="created" xml:space="preserve">
         <source>Created</source>
-        <target/>
+        <target>Vytvorený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="last_sign_in" xml:space="preserve">
         <source>Last Sign In</source>
-        <target/>
+        <target>Naposledy prihlásený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
