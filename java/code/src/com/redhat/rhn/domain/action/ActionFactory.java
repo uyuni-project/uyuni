@@ -916,7 +916,7 @@ public class ActionFactory extends HibernateFactory {
     public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
         if (log.isDebugEnabled()) {
             log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
-                    " is going to b set for these servers: " + serverIds);
+                    " is going to be set for these servers: " + serverIds);
         }
         Map<String, Object>  parameters = new HashMap<String, Object>();
         parameters.put("action_id", actionIn.getId());
