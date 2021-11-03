@@ -1,3 +1,4 @@
+- update last boot time of SSH Minions after bootstrapping (bsc#1191899)
 - Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
 - Use an 'allow' filter for the kernel packages with live patching
   filter templates (bsc#1191460)
