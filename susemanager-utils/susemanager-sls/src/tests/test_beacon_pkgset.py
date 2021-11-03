@@ -12,10 +12,7 @@ def test_virtual():
     '''
     Test virtual function.
     '''
-    with patch('os.path.exists', MagicMock(return_value=False)):
-        assert pkgset.__virtual__() != pkgset.__virtualname__
-    with patch('os.path.exists', MagicMock(return_value=True)):
-        assert pkgset.__virtual__() == pkgset.__virtualname__
+    assert pkgset.__virtual__() == pkgset.__virtualname__
 
 
 @patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True))
