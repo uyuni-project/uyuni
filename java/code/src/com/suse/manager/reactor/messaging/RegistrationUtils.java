@@ -144,6 +144,10 @@ public class RegistrationUtils {
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
+        else {
+            // SSH Minions need this to set last booted value.
+            statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
+        }
         MessageQueue.publish(new ApplyStatesEventMessage(
                 minion.getId(),
                 minion.getCreator() != null ? minion.getCreator().getId() : null,
