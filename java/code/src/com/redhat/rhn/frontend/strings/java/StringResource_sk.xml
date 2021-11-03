@@ -1874,14 +1874,14 @@
       </trans-unit>
       <trans-unit id="address_record" xml:space="preserve">
         <source>Address Record:</source>
-        <target/>
+        <target>Záznam adresy:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.defaultSystemGroups" xml:space="preserve">
         <source>Default system groups updated for &lt;strong&gt;{0}&lt;/strong&gt;</source>
-        <target/>
+        <target>Predvolené systémové skupiny aktualizované pre &lt;strong&gt;{0}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
           <context context-type="paramnotes">
@@ -1891,49 +1891,49 @@
       </trans-unit>
       <trans-unit id="message.preferencesModified" xml:space="preserve">
         <source>Preferences modified</source>
-        <target/>
+        <target>Predvoľby upravené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.addressChanged" xml:space="preserve">
         <source>Address changed</source>
-        <target/>
+        <target>Adresa zmenená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userInfoUpdated" xml:space="preserve">
         <source>User information updated</source>
-        <target/>
+        <target>Informácie o používateľovi aktualizované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no user loggedin" xml:space="preserve">
         <source>No User logged in.</source>
-        <target/>
+        <target>Nie je prihlásený žiadny používateľ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headers" xml:space="preserve">
         <source>Headers</source>
-        <target/>
+        <target>Hlavičky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="form variables" xml:space="preserve">
         <source>Form Variables</source>
-        <target/>
+        <target>Premenné formulára</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userCreated" xml:space="preserve">
         <source>Account &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Účet &lt;strong&gt;{0}&lt;/strong&gt; vytvorený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
@@ -1943,7 +1943,7 @@
       </trans-unit>
       <trans-unit id="message.filterby" xml:space="preserve">
         <source>Filter by {0}: </source>
-        <target/>
+        <target>Filtrovať podľa {0}: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
