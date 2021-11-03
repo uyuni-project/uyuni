@@ -54,7 +54,7 @@ function update_xliff() {
     return 0
 }
 
-PO_DIRS=(backend client/rhel/yum-rhn-plugin client/rhel/mgr-daemon client/rhel/spacewalk-client-tools client/tools/spacewalk-abrt web susemanager spacecmd)
+PO_DIRS=(backend client/rhel/yum-rhn-plugin client/rhel/mgr-daemon client/rhel/spacewalk-client-tools web susemanager spacecmd)
 commits=0
 safe=0
 
