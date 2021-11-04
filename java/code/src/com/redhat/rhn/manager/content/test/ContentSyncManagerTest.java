@@ -672,7 +672,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        Credentials sccCreds = CredentialsFactory.lookupByUserAndType(user, Credentials.TYPE_SCC);
+        Credentials sccCreds = CredentialsFactory.lookupSCCCredentials().get(0);
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
