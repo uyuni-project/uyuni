@@ -1950,14 +1950,14 @@
       </trans-unit>
       <trans-unit id="message.filterby.multiple" xml:space="preserve">
         <source>Filter by: </source>
-        <target/>
+        <target>Filtrovať podľa: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.range" xml:space="preserve">
         <source>{0} - {1} of {2}</source>
-        <target/>
+        <target>{0} - {1} z {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
@@ -1965,14 +1965,15 @@
       <trans-unit id="message.range.withtypedescription" xml:space="preserve">
         <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
 {3} displayed</source>
-        <target/>
+        <target>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
+{3} zobrazené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
-        <target/>
+        <target>({0} vybrané)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
           <context context-type="paramnotes">
@@ -1982,14 +1983,14 @@
       </trans-unit>
       <trans-unit id="message.items.per.page" xml:space="preserve">
         <source>{0} items per page</source>
-        <target/>
+        <target>{0} položiek na stránku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userCreatedIntoOrg" xml:space="preserve">
         <source>Account &lt;strong&gt;{0}&lt;/strong&gt; created, login information sent to &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target>Účet &lt;strong&gt;{0}&lt;/strong&gt; vytvorený, prihlasovacie údaje odoslané na &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
@@ -1999,28 +2000,28 @@
       </trans-unit>
       <trans-unit id="show.all" xml:space="preserve">
         <source>Show All</source>
-        <target/>
+        <target>Zobraziť všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hide.all" xml:space="preserve">
         <source>Hide All</source>
-        <target/>
+        <target>Skryť všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-class" xml:space="preserve">
         <source>Class does not implement AclHandler: {0}</source>
-        <target/>
+        <target>Trieda neimplementuje AclHandler: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-signature" xml:space="preserve">
         <source>Bad ACL handler method [{0}]. ACL handler methods must have the following signature (may be static or non-static), with no declared exceptions: public aclXXXX(Object, String[])</source>
-        <target/>
+        <target>Zlá metóda obsluhy ACL [{0}]. Metódy obsluhy ACL musia mať nasledujúcu signatúru (môžu byť statické alebo nestatické) bez deklarovaných výnimiek: public aclXXXX(Object, String[])</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
