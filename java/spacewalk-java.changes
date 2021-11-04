@@ -11,7 +11,7 @@
   use it in live patching filter template
 - Allow usage of jinja template in Salt config channels
 - Remove NullPointerException in rhn_web_ui.log when building an image (bsc#1185951)
-- mgr-sync refresh logs when a vendor channel is expire and shows how to remove it (bsc#1191222)
+- mgr-sync refresh logs when a vendor channel is expired and shows how to remove it (bsc#1191222)
 
 -------------------------------------------------------------------
 Wed Oct 06 16:25:25 CEST 2021 - jgonzalez@suse.com
@@ -87,7 +87,7 @@ Mon Aug 30 11:57:33 CEST 2021 - jmassaguerpla@suse.de
 - Add Beijing timezone to selectable timezones (bsc#1188193)
 - Fix updating primary net interface on hardware refresh (bsc#1188400)
 - Fix issues when removing archived actions using XMLRPC api (bsc#1181223)
-- Readable error when "mgr-sync add channel" is called with a no-existing label (bsc#1173143)
+- Readable error when "mgr-sync add channel" is called with a non-existing label (bsc#1173143)
 
 -------------------------------------------------------------------
 Fri Jul 30 12:16:57 CEST 2021 - jgonzalez@suse.com
