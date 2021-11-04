@@ -1,3 +1,4 @@
+- Bugfix: Prevent "no session" hibernate error on deleting server
 - Set product name and version in the User-Agent header when connecting to SCC
 - On salt-ssh minions, enforce package list refresh after state apply
 - Improve the API to query system events and history
