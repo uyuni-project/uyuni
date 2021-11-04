@@ -1,3 +1,4 @@
+- Remove NullPointerException in rhn_web_ui.log when building an image (bsc#1185951)
 - Set product name and version in the User-Agent header when connecting to SCC
 - On salt-ssh minions, enforce package list refresh after state apply
 - Improve the API to query system events and history
