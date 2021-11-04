@@ -75,13 +75,13 @@ class RecurringStates extends React.Component<Props, State> {
       "handleResponseError",
       "updateSchedule",
       "toggleActive",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
       schedules: [],
       minionIds:
         (window.minions?.length ?? 0) > 0 && window.minions?.[0].id
-          ? window.minions?.map(minion => minion.id)
+          ? window.minions?.map((minion) => minion.id)
           : undefined,
     };
   }
@@ -110,7 +110,7 @@ class RecurringStates extends React.Component<Props, State> {
     const entityParams = inferEntityParams();
     const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
     return Network.get(endpoint)
-      .then(schedules => {
+      .then((schedules) => {
         this.setState({
           action: undefined,
           selected: undefined,
@@ -143,7 +143,7 @@ class RecurringStates extends React.Component<Props, State> {
 
   updateSchedule(schedule) {
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
-      .then(_ => {
+      .then((_) => {
         const successMsg = (
           <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
         );
@@ -164,13 +164,13 @@ class RecurringStates extends React.Component<Props, State> {
 
   deleteSchedule(item) {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then(_ => {
+      .then((_) => {
         this.setState({
           messages: MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."),
         });
         this.handleForwardAction();
       })
-      .catch(data => {
+      .catch((data) => {
         const taskoErrorMsg = MessagesUtils.error(t("Error when deleting the action. Check if Taskomatic is running"));
         let messages = data && data.status === 503 ? taskoErrorMsg : Network.responseErrorMessage(data);
         this.setState({
@@ -182,7 +182,7 @@ class RecurringStates extends React.Component<Props, State> {
   handleForwardAction = (action?: string) => {
     const loc = window.location;
     if (typeof action === "undefined" || action === "back") {
-      this.getRecurringScheduleList().then(data => {
+      this.getRecurringScheduleList().then((data) => {
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
     } else {
@@ -199,7 +199,7 @@ class RecurringStates extends React.Component<Props, State> {
     });
   }
 
-  handleResponseError = jqXHR => {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });

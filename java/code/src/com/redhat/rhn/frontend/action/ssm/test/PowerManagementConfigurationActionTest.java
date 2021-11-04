@@ -25,10 +25,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
-import servletunit.HttpServletRequestSimulator;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests PowerManagementConfigurationAction

@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.action.cluster;
 
 import com.redhat.rhn.domain.action.Action;
+
 import com.suse.manager.model.clusters.Cluster;
 
 public class BaseClusterAction extends Action {

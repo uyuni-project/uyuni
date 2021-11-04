@@ -18,6 +18,8 @@ package com.suse.manager.gatherer;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 
+import com.suse.manager.model.gatherer.GathererModule;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -25,7 +27,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.suse.manager.model.gatherer.GathererModule;
 
 import java.io.IOException;
 import java.util.Map;

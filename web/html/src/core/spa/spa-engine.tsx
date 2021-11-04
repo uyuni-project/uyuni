@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import App, { HtmlScreen } from "senna";
 import "senna/build/senna.css";
 import "./spa-engine.css";
@@ -7,7 +7,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
-  return allLoginPossiblePaths.some(loginPath => loginPath === pathName);
+  return allLoginPossiblePaths.some((loginPath) => loginPath === pathName);
 }
 
 window.pageRenderers = window.pageRenderers || {};
@@ -19,7 +19,7 @@ window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(
   if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
     onSpaEndNavigationCallbacks.push(callback);
   }
-}
+};
 
 window.pageRenderers.spaengine.init = function init(timeout = 30) {
   // We need this until the login page refactor using a different layout template is completed
@@ -32,7 +32,7 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
     appInstance.addRoutes([
       {
         path: /.*/,
-        handler: function(route, a, b) {
+        handler: function (route, a, b) {
           const screen = new HtmlScreen();
 
           screen.setTimeout(timeout * 1000);
@@ -42,14 +42,14 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
             ...screen.getHttpHeaders(),
             ...{ "Content-type": "application/x-www-form-urlencoded" },
           });
-          screen.getFormData = function(form, submitedButton) {
+          screen.getFormData = function (form, submitedButton) {
             let body = jQuery(form).serialize();
             if (submitedButton && submitedButton.name) {
               body += "&" + encodeURI(submitedButton.name) + "=" + encodeURI(submitedButton.value);
             }
             return body;
           };
-          screen.beforeActivate = function() {
+          screen.beforeActivate = function () {
             // Preparing already for the new DelayedAsyncTransitionSurface(page-body) surface
             SpaRenderer.beforeNavigation();
             SpaRenderer.afterNavigationTransition();
@@ -63,7 +63,7 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
       window.pageRenderers.spaengine.appInstance = appInstance;
     }
 
-    appInstance.on("beforeNavigate", function(navigation) {
+    appInstance.on("beforeNavigate", function (navigation) {
       // Integration with bootstrap 3. We need to make sure all the existing modals get fully removed
       // but we have to do it after the navigation ends unless all form inputs contained in the modal will be dropped
       // before the form serialization happens and they will not submitted because they will not exist anymore
@@ -78,35 +78,35 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
       }
     });
 
-    appInstance.on("endNavigate", function(navigation) {
+    appInstance.on("endNavigate", function (navigation) {
       // Drop everything that was marked to be removed
       jQuery(".modal.removeWhenNavigationEnds").remove();
       jQuery(".modal-backdrop.removeWhenNavigationEnds").remove();
 
       // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
       if (navigation.error) {
-        if (navigation.error.statusCode === 401 ||
-             navigation.error.invalidStatus ||
-             navigation.error.requestError) {
+        if (navigation.error.statusCode === 401 || navigation.error.invalidStatus || navigation.error.requestError) {
           window.location = navigation.path;
         } else if (navigation.error.timeout) {
           // Stop loading bar
-          jQuery(document.documentElement).removeClass('senna-loading')
+          jQuery(document.documentElement).removeClass("senna-loading");
           // Inform user that page must be reloaded
           const message = (
             <>
-                Request has timed out, please
-                <button className="btn-link" onClick={() => window.location = navigation.path}>reload the page</button>
+              Request has timed out, please
+              <button className="btn-link" onClick={() => (window.location = navigation.path)}>
+                reload the page
+              </button>
             </>
           );
-          showErrorToastr(message, {autoHide: false, containerId: 'global'});
+          showErrorToastr(message, { autoHide: false, containerId: "global" });
         }
       }
 
       Loggerhead.info("[" + new Date().toUTCString() + "] - Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();
-      onSpaEndNavigationCallbacks.forEach(callback => callback());
+      onSpaEndNavigationCallbacks.forEach((callback) => callback());
     });
 
     return appInstance;

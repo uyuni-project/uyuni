@@ -17,9 +17,10 @@ package com.suse.manager.webui.utils;
 
 import static java.util.Optional.ofNullable;
 
+import com.suse.salt.netapi.calls.LocalCall;
+
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.List;
 import java.util.Map;

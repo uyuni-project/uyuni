@@ -1,6 +1,8 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle12sp5_terminal
+@sle12sp5_buildhost
 Feature: Prepare prerequisities for SLE12 SP5 terminal deployment
 
   Scenario: Prepare activation keys for SLE12 SP5 retail systems

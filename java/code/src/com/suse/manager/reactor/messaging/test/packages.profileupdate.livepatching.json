@@ -258,7 +258,7 @@
         "__run_num__": 5,
         "changes": {
           "ret": {
-            "mgr_kernel_live_version": "kgraft_patch_2_2_1"
+            "mgr_kernel_live_version": "livepatch_2_2_1"
           }
         },
         "comment": "Module function sumautil.get_kernel_live_version executed",

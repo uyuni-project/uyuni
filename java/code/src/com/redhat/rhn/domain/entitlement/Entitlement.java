@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.entitlement;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.manager.reactor.utils.ValueMap;

@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Tests for {@link SUSEProductFactory}.

@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -101,13 +101,14 @@ BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  hibernate-types
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  jaf
+BuildRequires:  (gnu-jaf or jakarta-activation)
 %if 0%{?rhel} >= 8 || 0%{?fedora}
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
@@ -138,6 +139,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  %{log4j}
+BuildRequires:  slf4j-log4j12
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -184,7 +186,7 @@ Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       (jaf or gnu-jaf)
+Requires:       (gnu-jaf or jakarta-activation)
 %if 0%{?rhel} || 0%{?fedora}
 Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
@@ -194,6 +196,7 @@ Requires:       (glassfish-jaxb-api or jaxb-api)
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
+Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
@@ -235,6 +238,7 @@ Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
+Requires:       slf4j-log4j12
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
@@ -363,6 +367,7 @@ Requires:       classmate
 Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
+Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
@@ -634,11 +639,11 @@ mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jard
 
 # Prettifying symlinks for RHEL
 %if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
+mv $RPM_BUILD_ROOT%{jardir}/jakarta-activationjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
 mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
 mv $RPM_BUILD_ROOT%{jardir}/jta.jar $RPM_BUILD_ROOT%{jardir}/geronimo-jta-1.1-api.jar
 # Removing unused symlinks.
-rm -rf $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation-api.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/jakarta-activationjakarta.activation-api.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamaildsn.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailgimap.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailimap.jar
@@ -787,11 +792,15 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/hibernate-c3p0-5.jar
 %{jardir}/hibernate-ehcache-5.jar
 %{jardir}/hibernate-commons-annotations.jar
+%{jardir}/hibernate-types-52-2.12.1.jar
 %{jardir}/ehcache-core.jar
 %{jardir}/classmate.jar
 %{jardir}/javassist.jar
 %{jardir}/jboss-logging.jar
 %{jardir}/statistics.jar
+%{jardir}/jackson-databind.jar
+%{jardir}/jackson-core.jar
+%{jardir}/jackson-annotations.jar
 
 %{jardir}/jaf.jar
 %if 0%{?sle_version} >= 150200

@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;

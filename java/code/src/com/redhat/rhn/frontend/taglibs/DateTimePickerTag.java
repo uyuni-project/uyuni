@@ -16,10 +16,12 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.html.HtmlTag;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 

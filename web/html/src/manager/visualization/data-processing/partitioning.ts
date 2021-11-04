@@ -5,12 +5,12 @@ function partitioning<T>(initPartitioning?: T) {
   const partitioning = initPartitioning || {};
 
   // get the partitioning functions
-  my.get = function(c) {
+  my.get = function (c) {
     return partitioning;
   };
 
   // compute the partition name
-  my.computePartitionName = function(d) {
+  my.computePartitionName = function (d) {
     return Object.values(partitioning)
       .map((f: any) => f(d) || "")
       .reduce((v1, v2) => v1 + " " + v2, "")

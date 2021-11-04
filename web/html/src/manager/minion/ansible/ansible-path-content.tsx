@@ -31,26 +31,30 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
       pathList: [],
       selectedPlaybook: null,
       errors: [],
-      loading: true
+      loading: true,
     };
 
-    Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.pathContentType + "/" + props.minionServerId)
-    .then(blob => {
+    Network.get(
+      "/rhn/manager/api/systems/details/ansible/paths/" + props.pathContentType + "/" + props.minionServerId
+    ).then((blob) => {
       if (blob.success) {
-        this.setState({ pathList: blob.data, loading: false});
-      }
-      else {
-        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")], loading: false});
+        this.setState({ pathList: blob.data, loading: false });
+      } else {
+        this.setState({
+          errors: [t("An error occurred while loading data. Please check server logs.")],
+          loading: false,
+        });
       }
     });
   }
 
-  render () {
+  render() {
     if (this.state.selectedPlaybook) {
       return (
         <SchedulePlaybook
           playbook={this.state.selectedPlaybook}
-          onBack={() => this.setState({selectedPlaybook: null})} />
+          onBack={() => this.setState({ selectedPlaybook: null })}
+        />
       );
     }
 
@@ -58,28 +62,32 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
     return (
       <div>
         {errors}
-          {
-            this.state.loading ?
-              <Loading text={t("Loading..")} />
-              :
-              this.state.pathList?.length > 0 ?
-                this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} onSelectPlaybook={(p) => this.setState({selectedPlaybook: p})} /> )
-                :
-                <div>
-                  {t("Nothing configured. Please add paths in the ")}
-                  <a href={"/rhn/manager/systems/details/ansible/control-node?sid=" + this.state.minionServerId}>Control Node Configuration</a>
-                </div>
-        }
+        {this.state.loading ? (
+          <Loading text={t("Loading..")} />
+        ) : this.state.pathList?.length > 0 ? (
+          this.state.pathList.map((p) => (
+            <AccordionPathContent
+              key={p.id}
+              path={p}
+              onSelectPlaybook={(p) => this.setState({ selectedPlaybook: p })}
+            />
+          ))
+        ) : (
+          <div>
+            {t("Nothing configured. Please add paths in the ")}
+            <a href={"/rhn/manager/systems/details/ansible/control-node?sid=" + this.state.minionServerId}>
+              Control Node Configuration
+            </a>
+          </div>
+        )}
       </div>
     );
   }
 }
 
-export const renderer = (renderId: string, {id, pathContentType}) => {
+export const renderer = (renderId: string, { id, pathContentType }) => {
   return SpaRenderer.renderNavigationReact(
-    <AnsiblePathContent
-      minionServerId={id}
-      pathContentType={pathContentType} />,
-      document.getElementById(renderId)
+    <AnsiblePathContent minionServerId={id} pathContentType={pathContentType} />,
+    document.getElementById(renderId)
   );
-}
+};

@@ -25,17 +25,17 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
     <>
       <Table
         data={props.data}
-        identifier={row => row.id}
+        identifier={(row) => row.id}
         initialItemsPerPage={window.userPrefPageSize}
         emptyText={t("No schedules created. Use Create to add a schedule.")}
       >
-        <Column columnKey="scheduleName" header={t("Schedule Name")} cell={row => row.name} />
+        <Column columnKey="scheduleName" header={t("Schedule Name")} cell={(row) => row.name} />
         <Column
           columnClass="text-center"
           headerClass="text-center"
           columnKey="calendarName"
           header={t("Calendar")}
-          cell={row =>
+          cell={(row) =>
             row.calendarId && (
               <a className="link-tag" href={"/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId}>
                 {row.calendarName}
@@ -47,7 +47,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}
-          cell={row => (
+          cell={(row) => (
             <div className="btn-group">
               <Button
                 className="btn-default btn-sm"
@@ -73,7 +73,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
                 icon="fa-trash"
                 target="delete-modal"
                 item={row}
-                onClick={i => setScheduleToDelete(i)}
+                onClick={(i) => setScheduleToDelete(i)}
               />
             </div>
           )}

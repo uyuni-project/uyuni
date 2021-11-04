@@ -23,8 +23,8 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
-
 import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
+
 import com.suse.manager.webui.controllers.UserLocalizationDateAdapter;
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.utils.gson.ResultJson;

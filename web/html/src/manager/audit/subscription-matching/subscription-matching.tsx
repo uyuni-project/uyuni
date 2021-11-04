@@ -38,13 +38,13 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   refreshServerData = () => {
     this.refreshRequest = Network.get("/rhn/manager/api/subscription-matching/data");
     this.refreshRequest
-      .then(data => {
+      .then((data) => {
         this.setState({
           serverData: data,
           error: null,
         });
       })
-      .catch(response => {
+      .catch((response) => {
         this.setState({
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
@@ -55,7 +55,7 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
       });
   };
 
-  onPinChanged = pinnedMatches => {
+  onPinChanged = (pinnedMatches) => {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
@@ -99,7 +99,7 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   }
 }
 
-const ErrorMessage = props => (
+const ErrorMessage = (props) => (
   <MessageContainer
     items={
       props.error === "authentication"
@@ -125,7 +125,7 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
     });
   }
 
-  onTabHashChange = hash => {
+  onTabHashChange = (hash) => {
     window.history.pushState(null, "", hash);
     this.setState({ activeTabHash: hash });
   };
@@ -138,7 +138,9 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
     }
 
     const pinLabelIcon =
-      data.pinnedMatches.filter(p => p.status === "unsatisfied").length > 0 ? <WarningIcon iconOnRight={true} /> : null;
+      data.pinnedMatches.filter((p) => p.status === "unsatisfied").length > 0 ? (
+        <WarningIcon iconOnRight={true} />
+      ) : null;
 
     const messageLabelIcon = data.messages.length > 0 ? <WarningIcon iconOnRight={true} /> : null;
 

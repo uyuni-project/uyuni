@@ -15,20 +15,22 @@
 
 package com.suse.manager.webui.controllers.admin;
 
-import com.redhat.rhn.domain.user.User;
-import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.template.jade.JadeTemplateEngine;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
+
+import com.redhat.rhn.domain.user.User;
+
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Spark controller class for admin pages.

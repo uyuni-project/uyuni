@@ -33,6 +33,9 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -103,6 +106,7 @@ import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
+import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
@@ -117,6 +121,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
+import com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.ModulesNotAllowedException;
 import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
@@ -178,6 +183,8 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetter
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -195,6 +202,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2286,7 +2294,365 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * List Events for a given server.
+     * List all the events of a given type for a given server created after the specified date.
+     * @param loggedInUser The current user
+     * @param sid The id of the server you are wanting to lookup
+     * @param actionType type of the action
+     * @param earliestDate the minimum creation date for the events retrieved
+     * @return Returns an array of maps representing a system
+     * @since 10.8
+     *
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server after the
+     * specified date. "actionType" should be exactly the string returned in the action_type field
+     * from the listSystemEvents(sessionKey, serverId) method. For example,
+     * 'Package Install' or 'Initiate a kickstart for a virtual guest.'
+     * Note: see also system.getEventHistory method which returns a history of all events.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      #struct_begin("action")
+     *          #prop_desc("int", "failed_count", "Number of times action failed.")
+     *          #prop_desc("string", "modified", "Date modified. (Deprecated by
+     *                     modified_date)")
+     *          #prop_desc($date, "modified_date", "Date modified.")
+     *          #prop_desc("string", "created", "Date created. (Deprecated by
+     *                     created_date)")
+     *          #prop_desc($date, "created_date", "Date created.")
+     *          #prop("string", "action_type")
+     *          #prop_desc("int", "successful_count",
+     *                     "Number of times action was successful.")
+     *          #prop_desc("string", "earliest_action", "Earliest date this action
+     *                     will occur.")
+     *          #prop_desc("int", "archived", "If this action is archived. (1 or 0)")
+     *          #prop_desc("string", "scheduler_user", "available only if concrete user
+     *                     has scheduled the action")
+     *          #prop_desc("string", "prerequisite", "Pre-requisite action. (optional)")
+     *          #prop_desc("string", "name", "Name of this action.")
+     *          #prop_desc("int", "id", "Id of this action.")
+     *          #prop_desc("string", "version", "Version of action.")
+     *          #prop_desc("string", "completion_time", "The date/time the event was
+     *                     completed. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by completed_date)")
+     *          #prop_desc($date, "completed_date", "The date/time the event was completed.
+     *                     (optional)")
+     *          #prop_desc("string", "pickup_time", "The date/time the action was picked
+     *                     up. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by pickup_date)")
+     *          #prop_desc($date, "pickup_date", "The date/time the action was picked up.
+     *                     (optional)")
+     *          #prop_desc("string", "result_msg", "The result string after the action
+     *                     executes at the client machine. (optional)")
+     *          #prop_array_begin_desc("additional_info", "This array contains additional
+     *              information for the event, if available.")
+     *              #struct_begin("info")
+     *                  #prop_desc("string", "detail", "The detail provided depends on the
+     *                  specific event.  For example, for a package event, this will be the
+     *                  package name, for an errata event, this will be the advisory name
+     *                  and synopsis, for a config file event, this will be path and
+     *                  optional revision information...etc.")
+     *                  #prop_desc("string", "result", "The result (if included) depends
+     *                  on the specific event.  For example, for a package or errata event,
+     *                  no result is included, for a config file event, the result might
+     *                  include an error (if one occurred, such as the file was missing)
+     *                  or in the case of a config file comparison it might include the
+     *                  differences found.")
+     *              #struct_end()
+     *          #prop_array_end()
+     *      #struct_end()
+     *  #array_end()
+     */
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType,
+                                                      Date earliestDate) {
+
+        // Get the logged in user and server
+        Server server = lookupServer(loggedInUser, sid);
+
+        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server, actionType, earliestDate);
+
+        // In order to support bug 501224, this method is being updated to populate
+        // the result vs having the serializer do so.  The reason is that in order to
+        // support this bug, we want to be able to return some additional detail for the
+        // various events in the system history; however, those details are stored in
+        // different database tables depending upon the event type.  This includes
+        // information like, the specific errata applied, pkgs installed/removed/
+        // upgraded/verified, config files uploaded, deployed or compared...etc.
+
+        List<Map<String, Object>> results = new ArrayList<>();
+
+        for (ServerAction sAction : sActions) {
+
+            Map<String, Object> result = new HashMap<>();
+
+            Action action = sAction.getParentAction();
+
+            if (action.getFailedCount() != null) {
+                result.put("failed_count", action.getFailedCount());
+            }
+            if (action.getActionType().getName() != null) {
+                result.put("action_type", action.getActionType().getName());
+            }
+            if (action.getSuccessfulCount() != null) {
+                result.put("successful_count", action.getSuccessfulCount());
+            }
+            if (action.getEarliestAction() != null) {
+                result.put("earliest_action", action.getEarliestAction().toString());
+            }
+            if (action.getArchived() != null) {
+                result.put("archived", action.getArchived());
+            }
+            if ((action.getSchedulerUser() != null) &&
+                    (action.getSchedulerUser().getLogin() != null)) {
+                result.put("scheduler_user", action.getSchedulerUser().getLogin());
+            }
+            if (action.getPrerequisite() != null) {
+                result.put("prerequisite", action.getPrerequisite());
+            }
+            if (action.getName() != null) {
+                result.put("name", action.getName());
+            }
+            if (action.getId() != null) {
+                result.put("id", action.getId());
+            }
+            if (action.getVersion() != null) {
+                result.put("version", action.getVersion().toString());
+            }
+
+            if (sAction.getCompletionTime() != null) {
+                result.put("completion_time", sAction.getCompletionTime().toString());
+            }
+            if (sAction.getPickupTime() != null) {
+                result.put("pickup_time", sAction.getPickupTime().toString());
+            }
+            if (sAction.getModified() != null) {
+                result.put("modified", sAction.getModified().toString());
+                result.put("modified_date", sAction.getModified());
+            }
+            if (sAction.getCreated() != null) {
+                result.put("created", sAction.getCreated().toString());
+                result.put("created_date", sAction.getCreated());
+            }
+            if (sAction.getCompletionTime() != null) {
+                result.put("completed_date", sAction.getCompletionTime());
+            }
+            if (sAction.getPickupTime() != null) {
+                result.put("pickup_date", sAction.getPickupTime());
+            }
+            if (sAction.getResultMsg() != null) {
+                result.put("result_msg", sAction.getResultMsg());
+            }
+
+            final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
+            if (additionalInfo.size() > 0) {
+                result.put("additional_info", additionalInfo);
+            }
+
+            results.add(result);
+        }
+        return results;
+    }
+
+    private List<Map<String, String>> createActionSpecificDetails(Action action, ServerAction serverAction) {
+        // depending on the event type, we need to retrieve additional information
+        // and store that information in the result
+        final ActionType type = action.getActionType();
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
+                type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
+                type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
+
+            // retrieve the list of package names associated with the action...
+            DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
+            for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
+                Map pkg = (Map) itr.next();
+                String detail = (String) pkg.get("nvre");
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", detail);
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_ERRATA)) {
+
+            // retrieve the errata that were associated with the action...
+            DataResult errata = ActionManager.getErrataList(action.getId());
+            for (Iterator itr = errata.iterator(); itr.hasNext();) {
+                Map erratum = (Map) itr.next();
+                String detail = (String) erratum.get("advisory");
+                detail += " (" + erratum.get("synopsis") + ")";
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", detail);
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
+                type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileUploadList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", (String) file.get("path"));
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileDeployList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                String path = (String) file.get("path");
+                path += " (rev. " + file.get("revision") + ")";
+                info.put("detail", path);
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileDiffList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                String path = (String) file.get("path");
+                path += " (rev. " + file.get("revision") + ")";
+                info.put("detail", path);
+
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                else {
+                    // if there wasn't an error, check to see if there was a difference
+                    // detected...
+                    String diffString = HibernateFactory.getBlobContents(
+                            file.get("diff"));
+                    if (diffString != null) {
+                        info.put("result", diffString);
+                    }
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_APPLY_STATES)) {
+            final ApplyStatesActionDetails detail = ActionFactory.lookupApplyStatesActionDetails(action.getId());
+            if (detail != null) {
+                final Optional<ApplyStatesActionResult> serverResult = detail.getResult(serverAction.getServerId());
+
+                final String output = serverResult.flatMap(ApplyStatesActionResult::getResult)
+                                                  .orElse(Collections.emptyList())
+                                                  .stream()
+                                                  .sorted(Comparator.comparing(StateResult::getRunNum))
+                                                  .map(StateResult::toString)
+                                                  .collect(Collectors.joining());
+
+                final String returnCode = serverResult.map(ApplyStatesActionResult::getReturnCode)
+                                                      .map(Object::toString)
+                                                      .orElse("");
+
+                additionalInfo.add(Map.of("detail", output, "result", returnCode));
+            }
+        }
+
+        return additionalInfo;
+    }
+
+    /**
+     * List all the events for a given server.
+     * @param loggedInUser The current user
+     * @param sid The id of the server you are wanting to lookup
+     * @return Returns an array of maps representing a system
+     * @since 10.8
+     *
+     * @xmlrpc.doc List all system actions that were *scheduled* against the given server.
+     * This may require the caller to filter the result to fetch actions with a specific action type or
+     * to use the overloaded system.listSystemEvents method with actionType as a parameter.
+     * Note: see also system.getEventHistory method which returns a history of all events.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      #struct_begin("action")
+     *          #prop_desc("int", "failed_count", "Number of times action failed.")
+     *          #prop_desc("string", "modified", "Date modified. (Deprecated by
+     *                     modified_date)")
+     *          #prop_desc($date, "modified_date", "Date modified.")
+     *          #prop_desc("string", "created", "Date created. (Deprecated by
+     *                     created_date)")
+     *          #prop_desc($date, "created_date", "Date created.")
+     *          #prop("string", "action_type")
+     *          #prop_desc("int", "successful_count",
+     *                     "Number of times action was successful.")
+     *          #prop_desc("string", "earliest_action", "Earliest date this action
+     *                     will occur.")
+     *          #prop_desc("int", "archived", "If this action is archived. (1 or 0)")
+     *          #prop_desc("string", "scheduler_user", "available only if concrete user
+     *                     has scheduled the action")
+     *          #prop_desc("string", "prerequisite", "Pre-requisite action. (optional)")
+     *          #prop_desc("string", "name", "Name of this action.")
+     *          #prop_desc("int", "id", "Id of this action.")
+     *          #prop_desc("string", "version", "Version of action.")
+     *          #prop_desc("string", "completion_time", "The date/time the event was
+     *                     completed. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by completed_date)")
+     *          #prop_desc($date, "completed_date", "The date/time the event was completed.
+     *                     (optional)")
+     *          #prop_desc("string", "pickup_time", "The date/time the action was picked
+     *                     up. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by pickup_date)")
+     *          #prop_desc($date, "pickup_date", "The date/time the action was picked up.
+     *                     (optional)")
+     *          #prop_desc("string", "result_msg", "The result string after the action
+     *                     executes at the client machine. (optional)")
+     *          #prop_array_begin_desc("additional_info", "This array contains additional
+     *              information for the event, if available.")
+     *              #struct_begin("info")
+     *                  #prop_desc("string", "detail", "The detail provided depends on the
+     *                  specific event.  For example, for a package event, this will be the
+     *                  package name, for an errata event, this will be the advisory name
+     *                  and synopsis, for a config file event, this will be path and
+     *                  optional revision information...etc.")
+     *                  #prop_desc("string", "result", "The result (if included) depends
+     *                  on the specific event.  For example, for a package or errata event,
+     *                  no result is included, for a config file event, the result might
+     *                  include an error (if one occurred, such as the file was missing)
+     *                  or in the case of a config file comparison it might include the
+     *                  differences found.")
+     *              #struct_end()
+     *          #prop_array_end()
+     *      #struct_end()
+     *  #array_end()
+     */
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
+        return listSystemEvents(loggedInUser, sid, null, null);
+    }
+
+    /**
+     * List all the events of a given type for a given server.
      * @param loggedInUser The current user
      * @param sid The id of the server you are wanting to lookup
      * @param actionType type of the action
@@ -2351,224 +2717,33 @@ public class SystemHandler extends BaseHandler {
      *                  no result is included, for a config file event, the result might
      *                  include an error (if one occurred, such as the file was missing)
      *                  or in the case of a config file comparison it might include the
-     *                  differenes found.")
+     *                  differences found.")
      *              #struct_end()
      *          #prop_array_end()
      *      #struct_end()
      *  #array_end()
      */
-    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid,
-            String actionType) {
-
-        // Get the logged in user and server
-        Server server = lookupServer(loggedInUser, sid);
-
-        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server);
-
-        // In order to support bug 501224, this method is being updated to populate
-        // the result vs having the serializer do so.  The reason is that in order to
-        // support this bug, we want to be able to return some additional detail for the
-        // various events in the system history; however, those details are stored in
-        // different database tables depending upon the event type.  This includes
-        // information like, the specific errata applied, pkgs installed/removed/
-        // upgraded/verified, config files uploaded, deployed or compared...etc.
-
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-
-        ActionType at = null;
-        if (actionType != null) {
-            at = ActionFactory.lookupActionTypeByName(actionType);
-            if (at == null) {
-                throw new IllegalArgumentException("Action type not found: " + actionType);
-            }
-        }
-
-        for (ServerAction sAction : sActions) {
-
-            Map<String, Object> result = new HashMap<String, Object>();
-
-            Action action = sAction.getParentAction();
-
-            if (at != null && !action.getActionType().equals(at)) {
-                continue;
-            }
-
-            if (action.getFailedCount() != null) {
-                result.put("failed_count", action.getFailedCount());
-            }
-            if (action.getActionType().getName() != null) {
-                result.put("action_type", action.getActionType().getName());
-            }
-            if (action.getSuccessfulCount() != null) {
-                result.put("successful_count", action.getSuccessfulCount());
-            }
-            if (action.getEarliestAction() != null) {
-                result.put("earliest_action", action.getEarliestAction().toString());
-            }
-            if (action.getArchived() != null) {
-                result.put("archived", action.getArchived());
-            }
-            if ((action.getSchedulerUser() != null) &&
-                    (action.getSchedulerUser().getLogin() != null)) {
-                result.put("scheduler_user", action.getSchedulerUser().getLogin());
-            }
-            if (action.getPrerequisite() != null) {
-                result.put("prerequisite", action.getPrerequisite());
-            }
-            if (action.getName() != null) {
-                result.put("name", action.getName());
-            }
-            if (action.getId() != null) {
-                result.put("id", action.getId());
-            }
-            if (action.getVersion() != null) {
-                result.put("version", action.getVersion().toString());
-            }
-
-            if (sAction.getCompletionTime() != null) {
-                result.put("completion_time", sAction.getCompletionTime().toString());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_time", sAction.getPickupTime().toString());
-            }
-            if (sAction.getModified() != null) {
-                result.put("modified", sAction.getModified().toString());
-                result.put("modified_date", sAction.getModified());
-            }
-            if (sAction.getCreated() != null) {
-                result.put("created", sAction.getCreated().toString());
-                result.put("created_date", sAction.getCreated());
-            }
-            if (sAction.getCompletionTime() != null) {
-                result.put("completed_date", sAction.getCompletionTime());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_date", sAction.getPickupTime());
-            }
-            if (sAction.getResultMsg() != null) {
-                result.put("result_msg", sAction.getResultMsg());
-            }
-
-            // depending on the event type, we need to retrieve additional information
-            // and store that information in the result
-            ActionType type = action.getActionType();
-            List<Map<String, String>> additionalInfo = new ArrayList<Map<String, String>>();
-
-            if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
-                    type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                    type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-
-                // retrieve the list of package names associated with the action...
-
-                DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-                for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-                    Map pkg = (Map) itr.next();
-                    String detail = (String) pkg.get("nvre");
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", detail);
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_ERRATA)) {
-
-                // retrieve the errata that were associated with the action...
-                DataResult errata = ActionManager.getErrataList(action.getId());
-                for (Iterator itr = errata.iterator(); itr.hasNext();) {
-                    Map erratum = (Map) itr.next();
-                    String detail = (String) erratum.get("advisory");
-                    detail += " (" + (String) erratum.get("synopsis") + ")";
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", detail);
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
-                    type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileUploadList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", (String) file.get("path"));
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileDeployList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    String path = (String) file.get("path");
-                    path += " (rev. " + file.get("revision") + ")";
-                    info.put("detail", path);
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileDiffList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    String path = (String) file.get("path");
-                    path += " (rev. " + file.get("revision") + ")";
-                    info.put("detail", path);
-
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    else {
-                        // if there wasn't an error, check to see if there was a difference
-                        // detected...
-                        String diffString = HibernateFactory.getBlobContents(
-                                file.get("diff"));
-                        if (diffString != null) {
-                            info.put("result", diffString);
-                        }
-                    }
-                    additionalInfo.add(info);
-                }
-            }
-            if (additionalInfo.size() > 0) {
-                result.put("additional_info", additionalInfo);
-            }
-            results.add(result);
-        }
-        return results;
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType) {
+        return listSystemEvents(loggedInUser, sid, actionType, null);
     }
 
     /**
-     * List Events for a given server.
+     * List all the events for a given server created after the specified date.
      * @param loggedInUser The current user
      * @param sid The id of the server you are wanting to lookup
+     * @param earliestDate the minimum creation date for the events retrieved
      * @return Returns an array of maps representing a system
      * @since 10.8
      *
-     * @xmlrpc.doc List all system actions that were *scheduled* against the given server.
-     * This may require the caller to filter the result to fetch actions with a specific action type or
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server after the
+     * specified date. This may require the caller to filter the result to fetch actions with a specific action type or
      * to use the overloaded system.listSystemEvents method with actionType as a parameter.
      * Note: see also system.getEventHistory method which returns a history of all events.
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
      * @xmlrpc.returntype
      *  #array_begin()
      *      #struct_begin("action")
@@ -2618,14 +2793,14 @@ public class SystemHandler extends BaseHandler {
      *                  no result is included, for a config file event, the result might
      *                  include an error (if one occurred, such as the file was missing)
      *                  or in the case of a config file comparison it might include the
-     *                  differenes found.")
+     *                  differences found.")
      *              #struct_end()
      *          #prop_array_end()
      *      #struct_end()
      *  #array_end()
      */
-    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
-        return listSystemEvents(loggedInUser, sid, null);
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, Date earliestDate) {
+        return listSystemEvents(loggedInUser, sid, null, earliestDate);
     }
 
     /**
@@ -3056,12 +3231,16 @@ public class SystemHandler extends BaseHandler {
      * @return Returns an array of maps representing the server history items
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
+     * @deprecated This version of the method is deprecated and the return value will be changed
+     * in a future API version. Please one of the other overloaded versions of getEventHistory.
      *
      * @xmlrpc.doc Returns a list history items associated with the system, ordered
      *             from newest to oldest. Note that the details may be empty for
      *             events that were scheduled against the system (as compared to instant).
      *             For more information on such events, see the system.listSystemEvents
      *             operation.
+     *             Note: This version of the method is deprecated and the return value will be changed in a
+     *             future API version. Please one of the other overloaded versions of getEventHistory.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
@@ -3069,10 +3248,136 @@ public class SystemHandler extends BaseHandler {
      *           $HistoryEventSerializer
      *      #array_end()
      */
+    @Deprecated
     public Object[] getEventHistory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         List<HistoryEvent> history = ServerFactory.getServerHistory(server);
         return history.toArray();
+    }
+
+    /**
+     * Lists the server history of a system after the date specified. The result list is paged and ordered from oldest
+     * to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param earliestDate the minimum completion date for the events retrieved
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results to return
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
+     *             The list is paged and ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
+     * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate, Integer offset,
+                                                Integer limit) {
+
+        final Server server = lookupServer(loggedInUser, sid);
+        return SystemManager.systemEventHistory(server, loggedInUser.getOrg(), earliestDate, offset, limit);
+    }
+
+    /**
+     * Lists the server history of a system. The result list is paged and ordered from oldest to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results to return
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system.
+     *             The list is paged and ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
+     * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Integer offset, Integer limit) {
+        return getEventHistory(loggedInUser, sid, null, offset, limit);
+    }
+
+    /**
+     * Lists the server history of a system after the date specified. The result list is ordered from oldest
+     * to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param earliestDate the minimum completion date for the events retrieved
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
+     *             The list is ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate) {
+        return getEventHistory(loggedInUser, sid, earliestDate, null, null);
+    }
+
+    /**
+     * Returns the details of a history event.
+     *
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param eid The id of the event in question
+     * @return Returns the details of the requested event
+     * @throws FaultException A FaultException is thrown if the server corresponding to sid or the event corresponding
+     * to the eid cannot be found.
+
+     * @xmlrpc.doc Returns the details of the event associated with the specified server and event.
+     *             The event id must be a value returned by the system.getEventHistory API.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "eventId")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDetailsDtoSerializer
+     *      #array_end()
+    */
+    public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
+
+        final Server server = lookupServer(loggedInUser, sid);
+        final SystemEventDetailsDto eventDetail = SystemManager.systemEventDetails(server.getId(),
+                loggedInUser.getOrg().getId(), eid.longValue());
+
+        if (eventDetail == null) {
+            throw new NoSuchHistoryEventException("No such history event for server - sid = " + sid + ", eid = " + eid);
+        }
+
+        if (eventDetail.getHistoryType() != null) {
+            // This is an action related entry this we can extract additional information
+            final Action action = ActionManager.lookupAction(loggedInUser, eventDetail.getId());
+            final ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+
+            eventDetail.setEarliestAction(action.getEarliestAction());
+            eventDetail.setResultMsg(serverAction.getResultMsg());
+            eventDetail.setResultCode(serverAction.getResultCode());
+
+            eventDetail.setAdditionalInfo(createActionSpecificDetails(action, serverAction));
+        }
+
+        return eventDetail;
     }
 
     /**
@@ -4833,16 +5138,6 @@ public class SystemHandler extends BaseHandler {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
             if (autoUpdate.booleanValue()) {
-                if (server.getAutoUpdate().equals("N")) {
-                    // schedule errata update only it if the value has changed
-                    try {
-                        ActionManager.scheduleAllErrataUpdate(loggedInUser, server,
-                                new Date());
-                    }
-                    catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-                        throw new TaskomaticApiException(e.getMessage());
-                    }
-                }
                 server.setAutoUpdate("Y");
             }
             else {

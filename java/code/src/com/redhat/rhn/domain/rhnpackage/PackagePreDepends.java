@@ -14,9 +14,10 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * PackagePreDepends

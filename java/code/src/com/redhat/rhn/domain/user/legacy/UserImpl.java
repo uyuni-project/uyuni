@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
+
 import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
 

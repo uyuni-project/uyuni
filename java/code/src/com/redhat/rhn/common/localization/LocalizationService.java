@@ -14,6 +14,17 @@
  */
 package com.redhat.rhn.common.localization;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.frontend.context.Context;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.text.Collator;
 import java.text.DateFormat;
@@ -37,17 +48,6 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.frontend.context.Context;
 
 /**
  * Localization service class to simplify the job for producing localized

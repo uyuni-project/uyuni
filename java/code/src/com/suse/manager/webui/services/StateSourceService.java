@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
+
 import com.suse.manager.webui.utils.gson.StateSourceDto;
 
 import java.util.HashSet;

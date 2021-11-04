@@ -67,12 +67,12 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
       "hideRanking",
       "onUpdateRanking",
       "getCurrentAssignment",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.init();
   }
 
   init() {
-    Network.get(this.props.matchUrl()).then(data => {
+    Network.get(this.props.matchUrl()).then((data) => {
       this.setState({
         channels: data,
         search: {
@@ -104,7 +104,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
     const channels = this.state.assigned;
     const request = this.props.saveRequest(channels).then(
       (data, textStatus, jqXHR) => {
-        const newSearchResults = this.state.search.results.map(channel => {
+        const newSearchResults = this.state.search.results.map((channel) => {
           const changed = this.state.changed.get(channelKey(channel));
           if (changed !== undefined) {
             return changed.value;
@@ -141,9 +141,9 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   search() {
-    return Promise.resolve().then( () => {
+    return Promise.resolve().then(() => {
       if (this.state.filter !== this.state.search.filter) {
-        Network.get(this.props.matchUrl(this.state.filter)).then(data => {
+        Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
           this.setState({
             search: {
               filter: this.state.filter,
@@ -158,7 +158,10 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
   addChanged(original, key, selected) {
     const currentChannel = this.state.changed.get(key);
-    if (!DEPRECATED_unsafeEquals(currentChannel, undefined) && DEPRECATED_unsafeEquals(selected, currentChannel.original.assigned)) {
+    if (
+      !DEPRECATED_unsafeEquals(currentChannel, undefined) &&
+      DEPRECATED_unsafeEquals(selected, currentChannel.original.assigned)
+    ) {
       this.state.changed.delete(key);
     } else {
       this.state.changed.set(key, {
@@ -172,7 +175,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   handleSelectionChange(original) {
-    return event => {
+    return (event) => {
       this.addChanged(original, event.target.value, event.target.checked);
     };
   }
@@ -180,7 +183,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   tableBody() {
     const elements: React.ReactNode[] = [];
     let rows: any[] = [];
-    rows = this.state.search.results.map(channel => {
+    rows = this.state.search.results.map((channel) => {
       const changed = this.state.changed.get(channelKey(channel));
       if (changed !== undefined) {
         return changed;
@@ -238,9 +241,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         ) : (
           <tr>
             <td colSpan={3}>
-              <div>
-                {t("No states assigned. Use search to find and assign states.")}
-              </div>
+              <div>{t("No states assigned. Use search to find and assign states.")}</div>
             </td>
           </tr>
         )}
@@ -249,7 +250,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   showPopUp(channel) {
-    Network.get("/rhn/manager/api/states/" + channel.id + "/content").then(data => {
+    Network.get("/rhn/manager/api/states/" + channel.id + "/content").then((data) => {
       this.setState({
         showSaltState: Object.assign({}, channel, { content: data }),
       });
@@ -278,10 +279,10 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   getCurrentAssignment() {
-    const unchanged = this.state.channels.filter(c => !this.state.changed.has(channelKey(c)));
-    const changed = Array.from(this.state.changed.values()).map(c => c.value);
+    const unchanged = this.state.channels.filter((c) => !this.state.changed.has(channelKey(c)));
+    const changed = Array.from(this.state.changed.values()).map((c) => c.value);
 
-    return unchanged.concat(changed).filter(c => c.assigned);
+    return unchanged.concat(changed).filter((c) => c.assigned);
   }
 
   render() {
@@ -354,8 +355,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
                 </div>
               </div>
             </div>
-          ) : null
-          }
+          ) : null}
 
           {this.state.rank ? (
             <div className="col-md-offset-2 col-md-8">

@@ -13,12 +13,12 @@ export default function AppStreams() {
   const enableBrowse = () => {
     setLoading(true);
     Network.get("/rhn/manager/api/channels/modular")
-      .then(channels => {
+      .then((channels) => {
         setChannels(channels.data);
         setLoading(false);
         setBrowse(true);
       })
-      .catch(xhr => showErrorToastr(Network.responseErrorMessage(xhr).map(msg => msg.text)));
+      .catch((xhr) => showErrorToastr(Network.responseErrorMessage(xhr).map((msg) => msg.text)));
   };
 
   return isBrowse ? (

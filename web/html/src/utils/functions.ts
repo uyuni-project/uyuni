@@ -14,7 +14,7 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
     rejectFn = reject;
   });
 
-  const race = Promise.race([promise, cancelPromise]).catch(error => {
+  const race = Promise.race([promise, cancelPromise]).catch((error) => {
     if (isCancelled) {
       onCancel?.(error);
     }
@@ -33,34 +33,6 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
     rejectFn(reason);
   };
   return castRace;
-}
-
-function LocalDateTime(date: Date): string {
-  const padTo = v => {
-    v = v.toString();
-    if (v.length >= 2) return v;
-    else return padTo("0" + v);
-  };
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const days = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  return (
-    "" +
-    year +
-    "-" +
-    padTo(month + 1) +
-    "-" +
-    padTo(days) +
-    "T" +
-    padTo(hours) +
-    ":" +
-    padTo(minutes) +
-    ":" +
-    padTo(seconds)
-  );
 }
 
 function sortById(aRaw: any, bRaw: any): number {
@@ -112,9 +84,17 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
   const unparsableDateRegex = /(\d{2,4}.\d{2}.\d{2,4}.\d{1,2}.\d{2}.\d{2})( \w+)*/g;
 
   const aDate =
-    aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+    aRaw[columnKey] === null
+      ? null
+      : aRaw[columnKey] instanceof Date
+      ? aRaw[columnKey]
+      : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
   const bDate =
-    bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
+    bRaw[columnKey] === null
+      ? null
+      : bRaw[columnKey] instanceof Date
+      ? bRaw[columnKey]
+      : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
   return result * sortDirection;
@@ -129,7 +109,7 @@ function capitalize(str: string): string {
     return str;
   }
 
-  return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function(txt) {
+  return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }
@@ -202,13 +182,9 @@ const Utils = {
   getProductName,
 };
 
-const Formats = {
-  LocalDateTime,
-};
-
 const Formulas = {
   EditGroupSubtype,
   getEditGroupSubtype,
 };
 
-export { Utils, Formats, Formulas };
+export { Utils, Formulas };

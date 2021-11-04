@@ -28,10 +28,10 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.test.MockConnection;
 
-import servletunit.HttpServletRequestSimulator;
-
 import java.util.ArrayList;
 import java.util.Map;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests the Power Management action.

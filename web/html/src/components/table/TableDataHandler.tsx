@@ -160,8 +160,8 @@ export class TableDataHandler extends React.Component<Props, State> {
     );
 
     this.setState({ loading: true }, () => {
-      this.state.provider.get(promise => {
-        promise.then(data => this.updateData(data)).finally(() => this.setState({ loading: false }));
+      this.state.provider.get((promise) => {
+        promise.then((data) => this.updateData(data)).finally(() => this.setState({ loading: false }));
       }, pageControl);
     });
   }
@@ -236,7 +236,7 @@ export class TableDataHandler extends React.Component<Props, State> {
   render() {
     // Skip rendering the headers if no header was provided
     const headers =
-      this.props.columns.filter(column => column.props.header).length > 0 &&
+      this.props.columns.filter((column) => column.props.header).length > 0 &&
       this.props.columns.map((column, index) => {
         if (column.props.header) {
           const sortDirection = column.props.columnKey === this.state.sortColumnKey ? this.state.sortDirection : 0;
@@ -275,22 +275,22 @@ export class TableDataHandler extends React.Component<Props, State> {
     const isEmpty = itemCount === 0;
 
     if (this.props.selectable) {
-      const currIds = currItems.map(item => this.props.identifier(item));
+      const currIds = currItems.map((item) => this.props.identifier(item));
 
-      const handleSelectAll = sel => {
+      const handleSelectAll = (sel) => {
         let arr = selectedItems;
         if (sel) {
-          arr = arr.concat(currIds.filter(id => !arr.includes(id)));
+          arr = arr.concat(currIds.filter((id) => !arr.includes(id)));
         } else {
-          arr = arr.filter(id => !currIds.includes(id));
+          arr = arr.filter((id) => !currIds.includes(id));
         }
         this.setSelection(arr);
       };
 
-      const allSelected = currIds.length > 0 && currIds.every(id => selectedItems.includes(id));
+      const allSelected = currIds.length > 0 && currIds.every((id) => selectedItems.includes(id));
       const checkbox = (
         <Header key="check" width="30px">
-          <input type="checkbox" checked={allSelected} onChange={e => handleSelectAll(e.target.checked)} />
+          <input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)} />
         </Header>
       );
       headers && headers.unshift(checkbox);
@@ -309,7 +309,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       if (sel) {
         arr = arr.concat([id]);
       } else {
-        arr = arr.filter(i => i !== id);
+        arr = arr.filter((i) => i !== id);
       }
       this.setSelection(arr);
     };
@@ -321,11 +321,11 @@ export class TableDataHandler extends React.Component<Props, State> {
     const handleSearchPanelSelectAll = () => {
       this.setState({ loading: true }, () => {
         this.state.provider.getIds(
-          promise =>
+          (promise) =>
             promise
-              .then(data => {
+              .then((data) => {
                 const selected = selectedItems;
-                this.setSelection(selected.concat(data.filter(id => !selected.includes(id))));
+                this.setSelection(selected.concat(data.filter((id) => !selected.includes(id))));
               })
               .finally(() => this.setState({ loading: false })),
           this.state.criteria

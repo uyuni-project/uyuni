@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import java.util.Date;
-
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
+
+import java.util.Date;
 
 /**
  * Simple DTO for transferring data from the DB to the UI through datasource.

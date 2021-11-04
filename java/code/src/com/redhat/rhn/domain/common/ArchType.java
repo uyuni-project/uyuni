@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-
 import com.redhat.rhn.domain.rhnpackage.PackageType;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

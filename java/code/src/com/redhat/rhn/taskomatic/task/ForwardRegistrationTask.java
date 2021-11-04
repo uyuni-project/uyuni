@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.SCCSystemRegistrationManager;
-
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

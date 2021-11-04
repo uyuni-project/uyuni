@@ -119,10 +119,9 @@ class SpacewalkShell(Cmd):
                                     self.history_file)
                 except IOError:
                     logging.error(_N('Could not read history file'))
-        # pylint: disable=W0702
+        # pylint: disable=broad-except
         except Exception as exc:
-            # pylint: disable=W0702
-            logging.error(_N("Exception occurred: {}").format(exc))
+            logging.error(_N("Exception occurred: %s"), exc)
             sys.exit(1)
 
     # handle shell exits and history substitution
@@ -241,7 +240,6 @@ class SpacewalkShell(Cmd):
             except TypeError:
                 # catch methods returning undefined results at least in debug mode
                 logging.debug('Undefined return code from \"%s\"', cmd)
-                pass
 
         return cmdresult
 

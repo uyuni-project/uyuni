@@ -35,6 +35,9 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
@@ -70,6 +73,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -85,6 +89,7 @@ import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
+import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -120,7 +125,10 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -139,6 +147,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -314,7 +323,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String formulaName = "test-formula";
         File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
         FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
-        try (FileChannel outChan = new FileOutputStream(new File(FormulaFactory.getServerDataFile()), true).getChannel()) {
+        try (FileChannel outChan = new FileOutputStream(
+                new File(FormulaFactory.getServerDataFile()), true).getChannel()) {
             outChan.truncate(0);
         }
 
@@ -1295,27 +1305,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
 
-        ch1_1.setParentChannel(base1);
+        ch11.setParentChannel(base1);
 
         server.addChannel(base1);
-        server.addChannel(ch1_1);
+        server.addChannel(ch11);
 
         Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        ch2_1.setParentChannel(base2);
-        ch2_2.setParentChannel(base2);
+        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch21.setParentChannel(base2);
+        ch22.setParentChannel(base2);
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch2_1, ch2_2), null);
+        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22), null);
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(2, server.getChildChannels().size());
-        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2_1.getId())));
-        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2_2.getId())));
+        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch21.getId())));
+        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch22.getId())));
     }
 
     public void testUpdateServerChannelsNoChildren() throws Exception {
@@ -1324,18 +1334,18 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
 
-        ch1_1.setParentChannel(base1);
+        ch11.setParentChannel(base1);
 
         server.addChannel(base1);
-        server.addChannel(ch1_1);
+        server.addChannel(ch11);
 
         Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        ch2_1.setParentChannel(base2);
-        ch2_2.setParentChannel(base2);
+        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch21.setParentChannel(base2);
+        ch22.setParentChannel(base2);
 
         HibernateFactory.getSession().flush();
 
@@ -1351,22 +1361,22 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
 
-        ch1_1.setParentChannel(base1);
+        ch11.setParentChannel(base1);
 
         server.addChannel(base1);
-        server.addChannel(ch1_1);
+        server.addChannel(ch11);
 
         Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        ch2_1.setParentChannel(base2);
-        ch2_2.setParentChannel(base2);
+        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch21.setParentChannel(base2);
+        ch22.setParentChannel(base2);
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch2_1, ch2_2), null);
+        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22), null);
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
@@ -1414,6 +1424,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
+        HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(emptyProfileMinion);
 
         ServerTestUtils.createTestSystem(user);
@@ -1441,6 +1452,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
+        HibernateFactory.getSession().flush();
         HibernateFactory.getSession().createNativeQuery("DELETE FROM suseMinionInfo").executeUpdate();
         HibernateFactory.getSession().evict(emptyProfileMinion);
 
@@ -1473,7 +1485,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         try {
             SystemManager.createSystemProfile(user, "test system 2", data);
             fail("System creation should have failed!");
-        } catch (SystemsExistException e) {
+        }
+        catch (SystemsExistException e) {
             assertEquals(singletonList(profile.getId()), e.getSystemIds());
         }
     }
@@ -1496,7 +1509,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(minion, fromDb.get(0));
 
         // minion with a HW address will also match
-        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("myhost"), singleton("11:22:33:44:55:66"));
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("myhost"),
+                singleton("11:22:33:44:55:66"));
         assertEquals(1, fromDb2.size());
         assertEquals(minion, fromDb2.get(0));
     }
@@ -1686,7 +1700,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // installed on server but unknown to Uyuni (no package id)
         InstalledPackage unknownPackage = new InstalledPackage();
-        unknownPackage.setArch(PackageFactory.lookupPackageArchByLabel("ia32e")); // for this one, name differs from label
+        // for this one, name differs from label
+        unknownPackage.setArch(PackageFactory.lookupPackageArchByLabel("ia32e"));
         unknownPackage.setName(PackageFactory.lookupOrCreatePackageByName("testpak-123"));
         unknownPackage.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
         unknownPackage.setServer(server);
@@ -1703,13 +1718,15 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(knownPackage.getEvr().getEpoch(), known.get("epoch"));
         assertEquals(knownPackage.getEvr().getVersion(), known.get("version"));
         assertEquals(knownPackage.getEvr().getRelease(), known.get("release"));
-        assertEquals(archAsLabel ? knownPackage.getArch().getLabel() : knownPackage.getArch().getName(), known.get("arch"));
+        assertEquals(archAsLabel ? knownPackage.getArch().getLabel() : knownPackage.getArch().getName(),
+                known.get("arch"));
 
         assertEquals(unknownPackage.getName().getName(), unknown.get("name"));
         assertEquals(unknownPackage.getEvr().getEpoch(), unknown.get("epoch"));
         assertEquals(unknownPackage.getEvr().getVersion(), unknown.get("version"));
         assertEquals(unknownPackage.getEvr().getRelease(), unknown.get("release"));
-        assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(), unknown.get("arch"));
+        assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(),
+                unknown.get("arch"));
     }
 
     public void testListDupesByIp() throws Exception {
@@ -1762,6 +1779,106 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         createIfaceForServer(server2, "virbr0", "192.168.178.1", "11:22:33:44:55:78");
 
         assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    public void testSystemEventHistory() throws Exception {
+        final Server server = ServerTestUtils.createTestSystem(user);
+
+        createTestAction(server, ActionFactory.TYPE_CONFIGFILES_UPLOAD);
+        createHistoryEntry(server, "Event 1");
+        createTestAction(server, ActionFactory.TYPE_APPLY_STATES);
+        createTestAction(server, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        createTestAction(server, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        createHistoryEntry(server, "Event 2");
+        createTestAction(server, ActionFactory.TYPE_PACKAGES_UPDATE);
+        createHistoryEntry(server, "Event 3");
+
+        final Org org = user.getOrg();
+
+        // Test pagination
+        final List<SystemEventDto> firstPageEvents = SystemManager.systemEventHistory(server, org, null, 0, 5);
+        assertEquals(5, firstPageEvents.size());
+
+        final List<SystemEventDto> secondPageEvents = SystemManager.systemEventHistory(server, org, null, 5, 5);
+        assertEquals(4, secondPageEvents.size());
+        assertTrue(Collections.disjoint(firstPageEvents, secondPageEvents));
+
+        final List<SystemEventDto> noEvents = SystemManager.systemEventHistory(server, org, null, 10, 5);
+        assertEquals(0, noEvents.size());
+
+        // Extract all events
+        final List<SystemEventDto> allEvents = SystemManager.systemEventHistory(server, org, null, null, null);
+        assertEquals(9, allEvents.size());
+        assertTrue(CollectionUtils.isEqualCollection(allEvents, ListUtils.union(firstPageEvents, secondPageEvents)));
+
+        // Reordering by id is needed since all the events and actions have the same creation date
+        allEvents.sort(Comparator.comparingLong(SystemEventDto::getId));
+
+        assertEquals("added system entitlement ", allEvents.get(0).getSummary());
+        assertEquals("Upload config file data to server", allEvents.get(1).getHistoryTypeName());
+        assertEquals("Event 1", allEvents.get(2).getSummary());
+        assertEquals("Apply states", allEvents.get(3).getHistoryTypeName());
+        assertEquals("Hardware List Refresh", allEvents.get(4).getHistoryTypeName());
+        assertEquals("Package List Refresh", allEvents.get(5).getHistoryTypeName());
+        assertEquals("Event 2", allEvents.get(6).getSummary());
+        assertEquals("Package Install", allEvents.get(7).getHistoryTypeName());
+        assertEquals("Event 3", allEvents.get(8).getSummary());
+    }
+
+    public void testSystemEventDetails() throws Exception {
+        final Server server = ServerTestUtils.createTestSystem(user);
+
+        Long historyEventId = createHistoryEntry(server, "Event 1");
+        Long actionEventId = createTestAction(server, ActionFactory.TYPE_APPLY_STATES, ActionFactory.STATUS_PICKED_UP);
+
+        final Long sid = server.getId();
+        final Long oid = user.getOrg().getId();
+
+        // Retrieve an history event
+        SystemEventDetailsDto eventDetail = SystemManager.systemEventDetails(sid, oid, historyEventId);
+
+        assertNotNull(eventDetail);
+        assertEquals(historyEventId, eventDetail.getId());
+        assertNull(eventDetail.getHistoryTypeName());
+        assertEquals("(n/a)", eventDetail.getHistoryStatus());
+        assertEquals("Event 1", eventDetail.getSummary());
+        assertNull(eventDetail.getCreated());
+        assertNull(eventDetail.getPickedUp());
+        assertNotNull(eventDetail.getCompleted());
+
+        // Retrieve an action event
+        eventDetail = SystemManager.systemEventDetails(sid, oid, actionEventId);
+
+        assertNotNull(eventDetail);
+        assertEquals(actionEventId, eventDetail.getId());
+        assertEquals("Apply states", eventDetail.getHistoryTypeName());
+        assertEquals("Picked Up", eventDetail.getHistoryStatus());
+        assertEquals("RHN-JAVA Test Action scheduled by " + user.getLogin(), eventDetail.getSummary());
+        assertNotNull(eventDetail.getCreated());
+        assertNotNull(eventDetail.getPickedUp());
+        assertNull(eventDetail.getCompleted());
+
+    }
+
+    private Long createHistoryEntry(Server server, String s) {
+        final ServerHistoryEvent historyEvent = SystemManager.addHistoryEvent(server, s, "Test history event entry");
+        ServerFactory.save(server);
+        return historyEvent.getId();
+    }
+
+    private Long createTestAction(Server server, ActionType actionType) throws Exception {
+        return createTestAction(server, actionType, ActionFactory.STATUS_COMPLETED);
+    }
+
+    private Long createTestAction(Server server, ActionType actionType, ActionStatus actionStatus) throws Exception {
+        final Action action = ActionFactoryTest.createAction(user, actionType);
+        final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+
+        serverAction.setStatus(actionStatus);
+
+        ActionFactory.save(action);
+
+        return action.getId();
     }
 
     private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {

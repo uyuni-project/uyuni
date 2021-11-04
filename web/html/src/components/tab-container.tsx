@@ -4,11 +4,11 @@ type Props = {
   labels: React.ReactNode[];
   /** Must start with # */
   hashes: string[];
-  tabs: React.ReactNode[],
-  initialActiveTabHash: string,
+  tabs: React.ReactNode[];
+  initialActiveTabHash: string;
   /** Takes a hash parameter */
-  onTabHashChange: (hash: string) => any,
-}
+  onTabHashChange: (hash: string) => any;
+};
 
 class TabContainer extends React.Component<Props> {
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -18,7 +18,7 @@ class TabContainer extends React.Component<Props> {
   sanitizeHash = (hash: string, hashArr?: string[]) => {
     hashArr = hashArr || this.props.hashes;
 
-    if (hashArr.indexOf(hash ) >= 0) {
+    if (hashArr.indexOf(hash) >= 0) {
       return hash;
     }
     return hashArr[0];
@@ -40,7 +40,7 @@ class TabContainer extends React.Component<Props> {
       const label = this.props.labels[i];
       return (
         <TabLabel
-          onClick={event => this.onActiveTabChange(hash, event)}
+          onClick={(event) => this.onActiveTabChange(hash, event)}
           text={label}
           active={this.state.activeTabHash === hash}
           hash={hash}

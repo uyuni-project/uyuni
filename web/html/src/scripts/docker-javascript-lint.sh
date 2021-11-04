@@ -7,6 +7,7 @@ cd /manager/web/html/src
 
 yarn install
 yarn build
-yarn lint
+yarn lint:production
 yarn test
+yarn tsc
 echo "Javascript linting ran successfully"

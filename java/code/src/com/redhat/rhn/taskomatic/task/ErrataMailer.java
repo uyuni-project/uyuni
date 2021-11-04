@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.OrgFactory;
 
 import com.suse.manager.utils.MailHelper;
+
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

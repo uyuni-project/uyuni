@@ -21,14 +21,13 @@ type Props = {
 };
 
 const ScheduleClusterAction = (props: Props) => {
-
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [earliest, setEarliest] = useState(localizedMoment());
   const [disableSchedule, setDisableSchedule] = useState(false);
 
   const onSchedule = (): Promise<any> => {
     return props.schedule(earliest, actionChain ? actionChain.text : null).then(
-      actionId => {
+      (actionId) => {
         setDisableSchedule(true);
       },
       (error: ErrorMessagesType) => {
@@ -68,7 +67,7 @@ const ScheduleClusterAction = (props: Props) => {
       <ActionSchedule
         earliest={earliest}
         actionType={props.actionType}
-        onDateTimeChanged={date => {
+        onDateTimeChanged={(date) => {
           setEarliest(date);
           setActionChain(null);
         }}

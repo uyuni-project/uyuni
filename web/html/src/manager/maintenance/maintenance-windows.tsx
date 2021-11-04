@@ -64,7 +64,7 @@ const MaintenanceWindows = () => {
   const listMaintenanceWindowItems = () => {
     /* Returns a list of maintenance schedules or calendars depending on the type provided */
     return MaintenanceWindowsApi.list(window.type)
-      .then(newItems => {
+      .then((newItems) => {
         setAction(undefined);
         setSelected(undefined);
         setItems(newItems);
@@ -74,10 +74,10 @@ const MaintenanceWindows = () => {
 
   const getCalendarNames = () => {
     return MaintenanceWindowsApi.calendarNames()
-      .then(newCalendarNames => {
+      .then((newCalendarNames) => {
         /* Convert list of calendar names into ComboboxItem
       Add "<None>" as first element to allow unassigning of calendars */
-        const names = Array.from(Array(newCalendarNames.length + 1).keys()).map(id =>
+        const names = Array.from(Array(newCalendarNames.length + 1).keys()).map((id) =>
           id === 0 ? { id: 0, text: "<None>" } : { id: Number(id), text: newCalendarNames[id - 1] }
         );
         setCalendarNames(names);
@@ -88,7 +88,7 @@ const MaintenanceWindows = () => {
   const getDetails = (row, newAction) => {
     /* Returns the details of given schedule or calendar depending on the type provided */
     return MaintenanceWindowsApi.details(row, window.type)
-      .then(newItem => {
+      .then((newItem) => {
         setSelected(newItem);
         setAction(newAction);
         window.history.pushState(null, "", "#/" + newAction + "/" + newItem.id);
@@ -96,17 +96,17 @@ const MaintenanceWindows = () => {
       .catch(handleResponseError);
   };
 
-  const handleDetailsAction = row => {
+  const handleDetailsAction = (row) => {
     getDetails(row, "details");
   };
 
-  const handleEditAction = row => {
+  const handleEditAction = (row) => {
     getDetails(row, "edit");
   };
 
-  const update = itemIn => {
+  const update = (itemIn) => {
     return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", itemIn)
-      .then(_ => {
+      .then((_) => {
         const successMsg = (
           <span>
             {t(
@@ -125,9 +125,9 @@ const MaintenanceWindows = () => {
       .catch(handleResponseError);
   };
 
-  const deleteItem = itemIn => {
+  const deleteItem = (itemIn) => {
     return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", itemIn)
-      .then(_ => {
+      .then((_) => {
         setMessages(
           MessagesUtils.info(
             (window.type === "schedule" ? "Schedule " : "Calendar ") + "'" + itemIn.name + "' has been deleted."
@@ -135,16 +135,16 @@ const MaintenanceWindows = () => {
         );
         handleForwardAction();
       })
-      .catch(data => {
+      .catch((data) => {
         const errorMsg = MessagesUtils.error(t("Error when deleting the " + window.type));
         const msgs = data && data.status === 400 ? errorMsg : Network.responseErrorMessage(data);
         setMessages(msgs);
       });
   };
 
-  const refreshCalendar = itemIn => {
+  const refreshCalendar = (itemIn) => {
     return Network.post("/rhn/manager/api/maintenance/calendar/refresh", itemIn)
-      .then(_ => {
+      .then((_) => {
         const msgs = messages.concat(MessagesUtils.info(t("Calendar successfully refreshed")));
         setAction(undefined);
         setMessages(msgs.slice(-messagesCounterLimit));
@@ -157,7 +157,7 @@ const MaintenanceWindows = () => {
   const handleForwardAction = (newAction?: string) => {
     const loc = window.location;
     if (newAction === undefined || newAction === "back") {
-      listMaintenanceWindowItems().then(data => {
+      listMaintenanceWindowItems().then((data) => {
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
     } else {
@@ -170,7 +170,7 @@ const MaintenanceWindows = () => {
     setMessages([]);
   };
 
-  const handleResponseError = jqXHR => {
+  const handleResponseError = (jqXHR) => {
     setMessages(Network.responseErrorMessage(jqXHR));
   };
 
@@ -193,7 +193,7 @@ const MaintenanceWindows = () => {
           type={window.type}
           calendarNames={calendarNames}
           selected={selected}
-          messages={i => setMessages(i)}
+          messages={(i) => setMessages(i)}
           onEdit={update}
           onActionChanged={handleForwardAction}
           onRefresh={refreshCalendar}

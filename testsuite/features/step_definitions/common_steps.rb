@@ -64,7 +64,14 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait until I do not see "#{event}" text, refreshing the page
+  )
+  # WORKAROUND against https://bugzilla.suse.com/show_bug.cgi?id=1191444
+  #                    (events stuck in "pending")
+  # Please remove "at most 600 seconds" clause as soon as the bug is fixed,
+  # or better, change it into "at most 60 seconds", because the default
+  # timeout of 250 seconds is way too long from an usability point of view.
+  step %(I wait at most 600 seconds until I do not see "#{event}" text, refreshing the page)
+  steps %(
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
@@ -299,7 +306,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -308,7 +315,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -318,13 +325,14 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   arch, _code = node.run('uname -m')
   arch.chomp!
   dir_file = client_raw_repodata_dir("test-channel-#{arch}")
-  raise "File #{dir_file}/#{file} not exist" unless file_exists?(node, "#{dir_file}/#{file}")
+  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
+  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
   arch, _code = $client.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/updateinfo.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*updateinfo.xml.gz"
   $client.run(cmd, timeout: 500)
 end
 
@@ -334,7 +342,7 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
+  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
 And(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|

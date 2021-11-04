@@ -52,6 +52,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -88,7 +89,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         Date scheduleDate = new Date();
 
         Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", "/path/to/hosts",
-                controlNode.getId().intValue(), scheduleDate, null);
+                controlNode.getId().intValue(), scheduleDate, null, false);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -114,7 +115,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         Date scheduleDate = new Date();
 
         Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null, controlNode.getId().intValue(),
-                scheduleDate, null, true);
+                scheduleDate, null, true, Collections.singletonMap(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true));
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -132,6 +133,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertNull(details.getInventoryPath());
         assertTrue(details.isTestMode());
+        assertTrue(details.isFlushCache());
     }
 
     public void testCreateAndGetAnsiblePath() throws Exception {
@@ -188,7 +190,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 ));
 
         handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("path", "/tmp/new-location"));
-        assertEquals("/tmp/new-location", handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()).getPath().toString());
+        assertEquals("/tmp/new-location",
+                handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()).getPath().toString());
     }
 
     public void testUpdateInvalidAnsiblePath() throws Exception {

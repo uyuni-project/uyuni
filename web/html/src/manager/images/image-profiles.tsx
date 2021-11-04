@@ -43,7 +43,7 @@ class ImageProfiles extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     ["reloadData", "handleSelectItems", "selectProfile", "deleteProfiles"].forEach(
-      method => (this[method] = this[method].bind(this))
+      (method) => (this[method] = this[method].bind(this))
     );
     this.state = {
       messages: [],
@@ -64,7 +64,7 @@ class ImageProfiles extends React.Component<Props, State> {
   }
 
   reloadData() {
-    Network.get("/rhn/manager/api/cm/imageprofiles").then(data => {
+    Network.get("/rhn/manager/api/cm/imageprofiles").then((data) => {
       this.setState({
         imageprofiles: data,
       });
@@ -91,10 +91,7 @@ class ImageProfiles extends React.Component<Props, State> {
   }
 
   deleteProfiles(idList) {
-    return Network.post(
-      "/rhn/manager/api/cm/imageprofiles/delete",
-      idList
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imageprofiles/delete", idList).then((data) => {
       if (data.success) {
         this.setState({
           messages: (
@@ -107,14 +104,14 @@ class ImageProfiles extends React.Component<Props, State> {
               ]}
             />
           ),
-          imageprofiles: this.state.imageprofiles.filter(profile => !idList.includes(profile.profileId)),
-          selectedItems: this.state.selectedItems.filter(item => !idList.includes(item)),
+          imageprofiles: this.state.imageprofiles.filter((profile) => !idList.includes(profile.profileId)),
+          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
         });
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -166,7 +163,7 @@ class ImageProfiles extends React.Component<Props, State> {
           {this.state.messages}
           <Table
             data={this.state.imageprofiles}
-            identifier={profile => profile.profileId}
+            identifier={(profile) => profile.profileId}
             initialSortColumnKey="profileId"
             initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} />}
@@ -179,14 +176,14 @@ class ImageProfiles extends React.Component<Props, State> {
               width="50%"
               comparator={Utils.sortByText}
               header={t("Label")}
-              cell={row => row.label}
+              cell={(row) => row.label}
             />
             <Column
               columnKey="imageType"
               width="35%"
               comparator={Utils.sortByText}
               header={t("Build Type")}
-              cell={row => typeMap[row.imageType]}
+              cell={(row) => typeMap[row.imageType]}
             />
             {window.isAdmin && (
               <Column
@@ -194,7 +191,7 @@ class ImageProfiles extends React.Component<Props, State> {
                 header={t("Actions")}
                 columnClass="text-right"
                 headerClass="text-right"
-                cell={row => {
+                cell={(row) => {
                   return (
                     <div className="btn-group">
                       <LinkButton
@@ -235,7 +232,7 @@ class ImageProfiles extends React.Component<Props, State> {
             </span>
           }
           item={this.state.selected}
-          onConfirm={item => this.deleteProfiles([item.profileId])}
+          onConfirm={(item) => this.deleteProfiles([item.profileId])}
           onClosePopUp={() => this.selectProfile(undefined)}
         />
         <DeleteDialog

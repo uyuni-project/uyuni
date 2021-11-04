@@ -177,8 +177,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.jose4j.lang.JoseException;
 
 import java.io.File;
@@ -277,15 +275,6 @@ public class SaltServerActionService {
         this.saltKeyUtils = saltKeyUtilsIn;
     }
 
-    private Action unproxy(Action entity) {
-        Hibernate.initialize(entity);
-        if (entity instanceof HibernateProxy) {
-            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
-                    .getImplementation();
-        }
-        return entity;
-    }
-
     /**
      * For a given action return the salt call(s) that need to be executed for the minions involved.
      *
@@ -310,7 +299,6 @@ public class SaltServerActionService {
         }
 
         ActionType actionType = actionIn.getActionType();
-        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
@@ -541,7 +529,7 @@ public class SaltServerActionService {
         if (!sshPushMinions.isEmpty()) {
             for (MinionServer sshMinion : sshPushMinions) {
                 try {
-                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion, forcePackageListRefresh);
                 }
                 catch (TaskomaticApiException e) {
                     LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
@@ -1602,8 +1590,8 @@ public class SaltServerActionService {
             Set<Channel> currentChannels = minion.getChannels();
             currentChannels.removeAll(unsubbed);
             currentChannels.addAll(subbed);
-            ServerFactory.save(minion);
             MinionPillarManager.INSTANCE.generatePillar(minion);
+            ServerFactory.save(minion);
         });
 
         Map<String, Object> pillar = new HashMap<>();
@@ -1617,6 +1605,10 @@ public class SaltServerActionService {
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
+
+        if (commitTransaction) {
+            HibernateFactory.commitTransaction();
+        }
 
         LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
                 Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
@@ -2373,6 +2365,7 @@ public class SaltServerActionService {
         pillarData.put("playbook_path", playbookPath);
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
+        pillarData.put("flush_cache", details.isFlushCache());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
     }
@@ -2502,6 +2495,17 @@ public class SaltServerActionService {
      * @param minion minion on which the action will be executed
      */
     public void executeSSHAction(Action action, MinionServer minion) {
+        executeSSHAction(action, minion, false);
+    }
+
+    /**
+     * Execute an action on an ssh-push minion.
+     *
+     * @param action the action to be executed
+     * @param minion minion on which the action will be executed
+     * @param forcePkgRefresh set to true if a package list refresh should be scheduled at the end
+     */
+    public void executeSSHAction(Action action, MinionServer minion, boolean forcePkgRefresh) {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
@@ -2576,7 +2580,7 @@ public class SaltServerActionService {
                     minion.updateServerInfo();
 
                     // Perform a package profile update in the end if necessary
-                    if (saltUtils.shouldRefreshPackageList(function, result)) {
+                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, result)) {
                         LOG.info("Scheduling a package profile update");
                         Action pkgList;
                         try {

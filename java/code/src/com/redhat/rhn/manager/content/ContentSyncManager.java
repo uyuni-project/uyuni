@@ -1953,7 +1953,8 @@ public class ContentSyncManager {
 
         Opt.consume(suseProductSCCRepositories.stream().findFirst(),
                 () -> {
-                    throw new ContentSyncException("No product tree entry found for label: '" + label + "'");
+                    log.warn("Expired Vendor Channel with label '" + label + "' found. To remove it please run: ");
+                    log.warn("spacewalk-remove-channel -c " + label);
                 },
                 productrepo -> {
                     SUSEProduct product = productrepo.getProduct();

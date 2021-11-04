@@ -16,14 +16,14 @@ export function GuestDiskVolumeFields(props: Props) {
 
   const first_pool = props.pools.length > 0 ? props.pools[0].name : "";
 
-  const selected_pool = props.pools.find(pool => pool.name === formContext.model[`disk${props.index}_source_pool`]);
+  const selected_pool = props.pools.find((pool) => pool.name === formContext.model[`disk${props.index}_source_pool`]);
 
   const getPoolFormats = (pool_obj: any): { default: string; formats: Array<string> } => {
     if (!pool_obj) {
       return { default: "", formats: [] };
     }
     const pool_options =
-      ((props.poolCaps.pool_types.find(item => item.name === pool_obj.type) || {}).options || {}).volume || {};
+      ((props.poolCaps.pool_types.find((item) => item.name === pool_obj.type) || {}).options || {}).volume || {};
     const format_values = pool_options.targetFormatType || [];
     const default_format = format_values.includes("qcow2") ? "qcow2" : pool_options.default_format;
 
@@ -36,7 +36,7 @@ export function GuestDiskVolumeFields(props: Props) {
   const { default: default_format, formats: format_values } = getPoolFormats(selected_pool);
 
   const onPoolChange = (name, value: string) => {
-    const new_pool = props.pools.find(pool => pool.name === value);
+    const new_pool = props.pools.find((pool) => pool.name === value);
     const { default: new_default, formats: new_formats } = getPoolFormats(new_pool);
 
     const old_format = formContext.model[`disk${props.index}_format`];
@@ -58,7 +58,7 @@ export function GuestDiskVolumeFields(props: Props) {
 
   let volumes = volume ? [volume] : [];
   if (selected_pool && (selected_pool.volumes || []).length !== 0) {
-    volumes = (selected_pool.volumes || []).map(vol => vol.name);
+    volumes = (selected_pool.volumes || []).map((vol) => vol.name);
   }
 
   return (
@@ -71,9 +71,9 @@ export function GuestDiskVolumeFields(props: Props) {
         divClass="col-md-6"
         disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`)}
         required
-        defaultValue={props.pools.find(pool => pool.name === "default") ? "default" : first_pool}
+        defaultValue={props.pools.find((pool) => pool.name === "default") ? "default" : first_pool}
         onChange={onPoolChange}
-        options={props.pools.map(k => k.name)}
+        options={props.pools.map((k) => k.name)}
       />
       <Select
         key={`disk${props.index}_source_file`}

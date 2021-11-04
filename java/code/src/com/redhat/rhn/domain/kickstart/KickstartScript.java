@@ -17,9 +17,9 @@ package com.redhat.rhn.domain.kickstart;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
-import java.util.Date;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Date;
 
 /**
  * KickstartScript - Class representation of the table rhnKickstartScript.

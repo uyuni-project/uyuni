@@ -14,11 +14,10 @@
  */
 package com.suse.manager.webui.services.test;
 
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
-
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.Config;

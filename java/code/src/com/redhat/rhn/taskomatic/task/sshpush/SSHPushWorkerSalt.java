@@ -30,10 +30,10 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
-
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -89,8 +89,9 @@ public class SSHPushWorkerSalt implements QueueWorker {
     }
 
     /**
-     * Get pending actions for the given minion server and execute those where the schedule
-     * date and time has come.
+     * Looking for minions which either reached the checkin timeout and needs to be
+     * tested if they are still alive or are in "rebooting" state and needs to be checked
+     * if they are up again.
      */
     @Override
     public void run() {
@@ -112,6 +113,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     performCheckin(m);
                 }
 
+                // update uptime, etc and set Reboot Actions to COMPLETED
                 updateSystemInfo(new MinionList(m.getMinionId()));
                 log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
             });

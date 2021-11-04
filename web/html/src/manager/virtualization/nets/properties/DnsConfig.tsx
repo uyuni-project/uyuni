@@ -21,14 +21,14 @@ export function DnsConfig(props: Props) {
             id={"dns_forwarders"}
             title={t("Forwarders")}
             prefix={"dns_forwarders"}
-            onAdd={index => {
+            onAdd={(index) => {
               formContext.setModelValue?.(`dns_forwarders${index}_domain`, "");
               formContext.setModelValue?.(`dns_forwarders${index}_address`, "");
             }}
-            onRemove={index => {
+            onRemove={(index) => {
               Object.keys(model)
-                .filter(key => key.startsWith(`dns_forwarders${index}_`))
-                .forEach(key => formContext.setModelValue?.(key, undefined));
+                .filter((key) => key.startsWith(`dns_forwarders${index}_`))
+                .forEach((key) => formContext.setModelValue?.(key, undefined));
             }}
             header={
               <div className="row multi-input-table-row">
@@ -63,14 +63,14 @@ export function DnsConfig(props: Props) {
             id={"dns_hosts"}
             title={t("Hosts")}
             prefix={"dns_hosts"}
-            onAdd={index => {
+            onAdd={(index) => {
               formContext.setModelValue?.(`dns_hosts${index}_address`, "");
               formContext.setModelValue?.(`dns_hosts${index}_names`, "");
             }}
-            onRemove={index => {
+            onRemove={(index) => {
               Object.keys(model)
-                .filter(key => key.startsWith(`dns_hosts${index}_`))
-                .forEach(key => formContext.setModelValue?.(key, undefined));
+                .filter((key) => key.startsWith(`dns_hosts${index}_`))
+                .forEach((key) => formContext.setModelValue?.(key, undefined));
             }}
             header={
               <div className="row multi-input-table-row">
@@ -104,7 +104,8 @@ export function DnsConfig(props: Props) {
                   title={t(`DNS host ${index} names`)}
                   required
                   validators={[
-                    value => value.split(",").every(item => item === "" || item.match(utils.dnsNamePattern) != null),
+                    (value) =>
+                      value.split(",").every((item) => item === "" || item.match(utils.dnsNamePattern) != null),
                   ]}
                   invalidHint={t("Has to be a comma-separated list of host names")}
                 />
@@ -115,16 +116,16 @@ export function DnsConfig(props: Props) {
             id={"dns_srvs"}
             title={t("SRV records")}
             prefix={"dns_srvs"}
-            onAdd={index => {
+            onAdd={(index) => {
               formContext.setModelValue?.(`dns_srvs${index}_name`, "");
               formContext.setModelValue?.(`dns_srvs${index}_protocol`, "");
             }}
-            onRemove={index => {
+            onRemove={(index) => {
               Object.keys(model)
-                .filter(key => key.startsWith(`dns_srvs${index}_`))
-                .forEach(key => formContext.setModelValue?.(key, undefined));
+                .filter((key) => key.startsWith(`dns_srvs${index}_`))
+                .forEach((key) => formContext.setModelValue?.(key, undefined));
             }}
-            panelTitle={index => {
+            panelTitle={(index) => {
               const name = model[`dns_srvs${index}_name`];
               const protocol = (model[`dns_srvs${index}_protocol`] || "").toUpperCase();
               return `${name} - ${protocol}`;
@@ -202,14 +203,14 @@ export function DnsConfig(props: Props) {
             id={"dns_txts"}
             title={t("TXT records")}
             prefix={"dns_txts"}
-            onAdd={index => {
+            onAdd={(index) => {
               formContext.setModelValue?.(`dns_txts${index}_name`, "");
               formContext.setModelValue?.(`dns_txts${index}_value`, "");
             }}
-            onRemove={index => {
+            onRemove={(index) => {
               Object.keys(model)
-                .filter(key => key.startsWith(`dns_txts${index}_`))
-                .forEach(key => formContext.setModelValue?.(key, undefined));
+                .filter((key) => key.startsWith(`dns_txts${index}_`))
+                .forEach((key) => formContext.setModelValue?.(key, undefined));
             }}
             header={
               <div className="row multi-input-table-row">

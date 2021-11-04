@@ -141,6 +141,7 @@ When(/^I list image store types and image stores via XML-RPC$/) do
   raise "imagestore label type should be 'os_image' but is #{store_typ[1]['label']}" unless store_typ[1]['label'] == 'os_image'
 
   registry_list = cont_op.list_image_stores
+  puts "Image Stores: #{registry_list}"
   raise "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
   raise "URI #{registry_list[0]['uri']} is different than '#{$no_auth_registry}'" unless registry_list[0]['uri'] == $no_auth_registry.to_s
 end

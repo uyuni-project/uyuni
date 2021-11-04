@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:17+0200\n"
+"POT-Creation-Date: 2021-10-29 16:05+0200\n"
 "PO-Revision-Date: 2018-03-16 11:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/spacewalk/language/"
@@ -1442,7 +1442,7 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:426
+#: ../src/bin/rhn_check.py:423
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""

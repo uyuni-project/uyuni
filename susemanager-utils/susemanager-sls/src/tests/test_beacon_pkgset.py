@@ -12,24 +12,10 @@ def test_virtual():
     '''
     Test virtual function.
     '''
-    with patch.object(pkgset.os.path, "exists", MagicMock(return_value=True)):
-        assert pkgset.__virtual__() == pkgset.__virtualname__
-    with patch.object(pkgset.os.path, "exists", MagicMock(return_value=False)):
+    with patch('os.path.exists', MagicMock(return_value=False)):
         assert pkgset.__virtual__() != pkgset.__virtualname__
-
-
-def test_validate():
-    '''
-    Test validate() function
-    '''
-    with patch.object(pkgset.os.path, "exists", MagicMock(return_value=True)):
-        res, msg = pkgset.validate({})
-        assert res is True
-        assert msg == 'Configuration validated'
-    with patch.object(pkgset.os.path, "exists", MagicMock(return_value=False)):
-        res, msg = pkgset.validate({})
-        assert res is False
-        assert msg == 'Cookie path has not been set.'
+    with patch('os.path.exists', MagicMock(return_value=True)):
+        assert pkgset.__virtual__() == pkgset.__virtualname__
 
 
 @patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True))

@@ -32,10 +32,12 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 

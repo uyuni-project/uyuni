@@ -27,10 +27,10 @@ class VirtualizationGuestDefinitionApi extends React.Component<Props, State> {
     Network.get(
       `/rhn/manager/api/systems/details/virtualization/guests/${this.props.hostid}/guest/${this.props.guestUuid}`
     ).then(
-      response => {
+      (response) => {
         this.setState({ definition: response });
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? [

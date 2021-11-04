@@ -15,25 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
-import org.hibernate.HibernateException;
-
-import redstone.xmlrpc.XmlRpcFault;
-import redstone.xmlrpc.XmlRpcInvocationHandler;
-
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
@@ -50,9 +32,27 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import redstone.xmlrpc.XmlRpcFault;
+import redstone.xmlrpc.XmlRpcInvocationHandler;
 
 /**
  * A basic xmlrpc handler class.  Uses reflection + an arbitrary algorithm

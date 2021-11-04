@@ -63,13 +63,14 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -174,12 +175,12 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 will(returnValue(Optional.of(mockResult)));
         }});
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupMgr = new ServerGroupManager();
         SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
-                        serverGroupManager),
+                        serverGroupMgr),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                        new FormulaMonitoringManager(), serverGroupMgr)
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);

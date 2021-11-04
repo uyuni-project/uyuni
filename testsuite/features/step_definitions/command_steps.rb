@@ -123,8 +123,8 @@ When(/^I use spacewalk\-channel to list available channels$/) do
   $command_output, _code = $client.run(command)
 end
 
-When(/^I use spacewalk\-common\-channel to add Debian channel "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-common-channels -u admin -p admin -a amd64-deb #{child_channel}"
+When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
+  command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = $server.run(command)
 end
 
@@ -604,21 +604,24 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
 end
 
 When(/^I start tftp on the proxy$/) do
-  node = get_target('proxy')
   case $product
   # TODO: Should we handle this in Sumaform?
   when 'Uyuni'
     step %(I enable repositories before installing branch server)
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
           'zypper --non-interactive install tftp && ' \
-          'systemctl enable tftp.socket && ' \
-          'systemctl start tftp.socket'
-    node.run(cmd)
+          'systemctl enable tftp.service && ' \
+          'systemctl start tftp.service'
+    $proxy.run(cmd)
     step %(I disable repositories after installing branch server)
   else
-    cmd = "systemctl enable tftp.socket && systemctl start tftp.socket"
-    node.run(cmd)
+    cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
+    $proxy.run(cmd)
   end
+end
+
+When(/^I stop tftp on the proxy$/) do
+  $proxy.run('systemctl stop tftp.service')
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
@@ -642,7 +645,7 @@ end
 
 When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failt' if out.include? 'Push failed'
+  raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
 When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
@@ -926,7 +929,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   else
-    raise "The node #{node.hostname} has not a supported OS Family"
+    raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
@@ -992,6 +995,10 @@ When(/^I install package tftpboot-installation on the server$/) do
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
   $server.run("rpm -i #{package}")
+end
+
+When(/^I reset tftp defaults on the proxy$/) do
+  $proxy.run("echo 'TFTP_USER=\"tftp\"\nTFTP_OPTIONS=\"\"\nTFTP_DIRECTORY=\"/srv/tftpboot\"\n' > /etc/sysconfig/tftp")
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|

@@ -60,7 +60,7 @@ export class ActionConfirm extends React.Component<Props, State> {
                   type="checkbox"
                   id="force"
                   checked={this.state.force}
-                  onChange={event => this.setState({ force: event.target.checked })}
+                  onChange={(event) => this.setState({ force: event.target.checked })}
                 />
                 <label htmlFor="force">{this.props.forceName}</label>
               </p>
@@ -93,7 +93,11 @@ export class ActionConfirm extends React.Component<Props, State> {
           </>
         }
         onConfirm={() =>
-          this.props.onConfirm(this.props.type, this.props.selected, this.props.canForce ? { force: this.state.force } : {})
+          this.props.onConfirm(
+            this.props.type,
+            this.props.selected,
+            this.props.canForce ? { force: this.state.force } : {}
+          )
         }
         onClose={() => this.closePopUp()}
         submitText={this.state.force && this.props.forceName ? this.props.forceName : this.props.name}

@@ -104,10 +104,12 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
@@ -192,7 +194,7 @@ public class SaltUtils {
     /** Package-affecting Salt state module names. */
     private static final List<String> PKG_STATE_MODULES = Arrays.asList(
         "pkg.group_installed", "pkg.installed", "pkg.latest", "pkg.patch_installed",
-        "pkg.purged", "pkg.removed", "pkg.uptodate"
+        "pkg.purged", "pkg.removed", "pkg.uptodate", "product.all_installed"
     );
 
     /** Package-affecting Salt execution module names. */
@@ -535,7 +537,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
+        Action action = serverAction.getParentAction();
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
@@ -1134,8 +1136,8 @@ public class SaltUtils {
 
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction)action;
-        ImageBuildActionDetails details = ba.getDetails();
+        ImageBuildAction ba = (ImageBuildAction) action;
+        Optional<ImageBuildActionDetails> details = Optional.ofNullable(ba.getDetails());
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -1145,53 +1147,62 @@ public class SaltUtils {
         serverAction.setResultMsg(json);
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            Optional<ImageProfile> profileOpt =
-                    ImageProfileFactory.lookupById(details.getImageProfileId());
+            details.ifPresentOrElse(det -> {
+                Optional<ImageProfile> profileOpt =
+                        ImageProfileFactory.lookupById(det.getImageProfileId());
 
-            profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    // Download the built Kiwi image to SUSE Manager server
-                    OSImageInspectSlsResult.Bundle bundleInfo =
-                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet().getBundle();
-                    infoOpt.ifPresent(info -> info.setChecksum(
-                            ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = systemQuery
-                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
-                            .orElseThrow(() -> new RuntimeException("Failed to download image."));
+                profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
+                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                        // Download the built Kiwi image to SUSE Manager server
+                        OSImageInspectSlsResult.Bundle bundleInfo =
+                                Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                        .getKiwiBuildInfo().getChanges().getRet().getBundle();
+                        infoOpt.ifPresent(info -> info.setChecksum(
+                                ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
+                                .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                        OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
+                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                    if (collectResult.getReturnCode() != 0) {
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        serverAction.setResultMsg(StringUtils
-                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()), 1024));
-                    }
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
+                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                            1024));
+                        }
+                    });
+                }));
+                ImageInspectAction iAction = ActionManager.scheduleImageInspect(
+                        action.getSchedulerUser(),
+                        action.getServerActions()
+                                .stream()
+                                .map(ServerAction::getServerId)
+                                .collect(Collectors.toList()),
+                        Optional.of(action.getId()),
+                        det.getVersion(),
+                        profileOpt.map(ImageProfile::getLabel).orElse(null),
+                        profileOpt.map(ImageProfile::getTargetStore).orElse(null),
+                        Date.from(Instant.now())
+                );
+                try {
+                    TASKOMATIC_API.scheduleActionExecution(iAction);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule image inspection");
+                    LOG.error(e);
+                }
+
+                infoOpt.ifPresent(info -> {
+                    info.setRevisionNumber(info.getRevisionNumber() + 1);
+                    info.setInspectAction(iAction);
+                    ImageInfoFactory.save(info);
                 });
-            }));
-            ImageInspectAction iAction = ActionManager.scheduleImageInspect(
-                    action.getSchedulerUser(),
-                    action.getServerActions()
-                            .stream()
-                            .map(ServerAction::getServerId)
-                            .collect(Collectors.toList()),
-                    Optional.of(action.getId()),
-                    details.getVersion(),
-                    profileOpt.map(ImageProfile::getLabel).orElse(null),
-                    profileOpt.map(ImageProfile::getTargetStore).orElse(null),
-                    Date.from(Instant.now())
-            );
-            try {
-                TASKOMATIC_API.scheduleActionExecution(iAction);
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule image inspection");
-                LOG.error(e);
-            }
-
-            infoOpt.ifPresent(info -> {
-                info.setRevisionNumber(info.getRevisionNumber() + 1);
-                info.setInspectAction(iAction);
-                ImageInfoFactory.save(info);
+            }, () -> {
+                LOG.error("Details not found in ImageBuildAction");
+                LOG.error("Name is: " + action.getName());
+                LOG.error("Action ID is: " + action.getId());
+                LOG.error("Earliest action was: " + action.getEarliestAction());
+                LOG.error("Scheduler User is: " + action.getSchedulerUser());
             });
         }
     }
@@ -1952,16 +1963,58 @@ public class SaltUtils {
         });
     }
 
+
     /**
-     * Update the system info of the minion
+     * Update the minion connection path according to master/proxy hostname
+     * @param minion the minion
+     * @param master master/proxy hostname
+     * @return true if the path has changed
+     */
+    public boolean updateMinionConnectionPath(MinionServer minion, String master) {
+        boolean changed = minion.updateServerPaths(master);
+
+        if (changed) {
+            ServerFactory.save(minion);
+
+            // Regenerate the pillar data
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+
+            // push the changed pillar data to the minion
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+
+            ApplyStatesAction action = ActionManager.scheduleApplyStates(minion.getCreator(),
+                    Collections.singletonList(minion.getId()),
+                    Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                    new Date());
+            try {
+                TASKOMATIC_API.scheduleActionExecution(action, false);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule channels state application");
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion " +
+                          minion.getMinionId());
+            }
+
+        }
+        return changed;
+    }
+
+    /**
+     * Update the system info of the minion and set Reboot Actions to completed
      * @param systemInfo response from salt master against util.systeminfo state
      * @param minion  minion for which information should be updated
      */
     public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
-        systemInfo.getKerneRelese().ifPresent(kerneRelese -> {
-            minion.setRunningKernel(kerneRelese);
-            ServerFactory.save(minion);
-        });
+        systemInfo.getKerneRelese().ifPresent(minion::setRunningKernel);
+        systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
+        ServerFactory.save(minion);
+
+        if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
+            systemInfo.getMaster().ifPresent(master -> {
+                updateMinionConnectionPath(minion, master);
+            });
+        }
+
         //Update the uptime
         systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));
     }

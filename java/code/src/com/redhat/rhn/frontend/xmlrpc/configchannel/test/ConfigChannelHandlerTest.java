@@ -185,7 +185,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> labels = new LinkedList<String>();
         labels.add(cc.getLabel());
-        List <ConfigChannel> channels = handler.lookupChannelInfo(admin, labels);
+        List<ConfigChannel> channels = handler.lookupChannelInfo(admin, labels);
         assertEquals(1, channels.size());
         handler.deleteChannels(admin, labels);
         try {
@@ -211,7 +211,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         Map<String, Object> data = new HashMap<>();
         String newContents = "new contents";
         data.put("contents", newContents);
-        handler.updateInitSls(admin, cc.getLabel(),data);
+        handler.updateInitSls(admin, cc.getLabel(), data);
         assertEquals(newContents, initSls.getLatestConfigRevision().getConfigContent().getContentsString());
 
     }
@@ -236,7 +236,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                             String perms, boolean isDir,
                             ConfigChannel cc, String selinuxCtx)
                                         throws ValidatorException {
-        Map <String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put(ConfigRevisionSerializer.GROUP, group);
         data.put(ConfigRevisionSerializer.OWNER, owner);
         data.put(ConfigRevisionSerializer.PERMISSIONS, perms);
@@ -276,7 +276,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private ConfigRevision createSymlinkRevision(String path, String targetPath,
             ConfigChannel cc, String selinuxCtx)
                         throws ValidatorException {
-        Map <String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put(ConfigRevisionSerializer.TARGET_PATH, targetPath);
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
@@ -382,7 +382,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                     "owner" + TestUtils.randomString(),
                     "744",
                     true, cc, "unconfined_u:object_r:tmp_t");
-            fail("InvalidOperationException exception not raised, **Directories/Symlinks are not supported in state channel.**");
+            fail("InvalidOperationException exception not raised, **Directories/Symlinks are not " +
+                    "supported in state channel.**");
 
         }
         catch (InvalidOperationException e) {
@@ -392,7 +393,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         try {
             createSymlinkRevision(path + TestUtils.randomString(),
                     path + TestUtils.randomString(), cc, "root:root");
-            fail("InvalidOperationException exception not raised, **Directories/Symlinks are not supported in state channel.**");
+            fail("InvalidOperationException exception not raised, **Directories/Symlinks are " +
+                    "not supported in state channel.**");
 
         }
         catch (InvalidOperationException e) {
@@ -530,7 +532,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         srv1.subscribeConfigChannels(gccList, regular);
         ServerFactory.save(srv1);
 
-        Map <Long, Set<ConfigRevision>> revisions =
+        Map<Long, Set<ConfigRevision>> revisions =
             new HashMap<Long, Set<ConfigRevision>>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(

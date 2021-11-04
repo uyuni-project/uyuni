@@ -33,13 +33,13 @@ class TaskoTop extends React.Component<Props> {
   refreshServerData = () => {
     var currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
-      .then(data => {
+      .then((data) => {
         currentObject.setState({
           serverData: data,
           error: null,
         });
       })
-      .catch(response => {
+      .catch((response) => {
         currentObject.setState({
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
@@ -84,7 +84,7 @@ class TaskoTop extends React.Component<Props> {
     return true;
   };
 
-  decodeStatus = status => {
+  decodeStatus = (status) => {
     var cell;
     switch (status) {
       case "running":
@@ -141,8 +141,8 @@ class TaskoTop extends React.Component<Props> {
     return cell;
   };
 
-  buildRows = jobs => {
-    return Object.keys(jobs).map(id => jobs[id]);
+  buildRows = (jobs) => {
+    return Object.keys(jobs).map((id) => jobs[id]);
   };
 
   render() {
@@ -188,47 +188,47 @@ class TaskoTop extends React.Component<Props> {
             </p>
             <Table
               data={this.buildRows(data)}
-              identifier={row => row["id"]}
-              cssClassFunction={row => (row["status"] === "skipped" ? "text-muted" : null)}
+              identifier={(row) => row["id"]}
+              cssClassFunction={(row) => (row["status"] === "skipped" ? "text-muted" : null)}
               initialSortColumnKey="status"
               initialItemsPerPage={window.userPrefPageSize}
               searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
             >
-              <Column columnKey="id" comparator={Utils.sortById} header={t("Task Id")} cell={row => row["id"]} />
+              <Column columnKey="id" comparator={Utils.sortById} header={t("Task Id")} cell={(row) => row["id"]} />
               <Column
                 columnKey="name"
                 comparator={Utils.sortByText}
                 header={t("Task Name")}
-                cell={row => row["name"]}
+                cell={(row) => row["name"]}
               />
               <Column
                 columnKey="startTime"
                 comparator={Utils.sortByText}
                 header={t("Start Time")}
-                cell={row => localizedMoment(row["startTime"]).toUserTimeString()}
+                cell={(row) => localizedMoment(row["startTime"]).toUserTimeString()}
               />
               <Column
                 columnKey="endTime"
                 comparator={this.sortByEndTime}
                 header={t("End Time")}
-                cell={row => (row["endTime"] == null ? "" : localizedMoment(row["endTime"]).toUserTimeString())}
+                cell={(row) => (row["endTime"] == null ? "" : localizedMoment(row["endTime"]).toUserTimeString())}
               />
               <Column
                 columnKey="elapsedTime"
                 comparator={this.sortByNumber}
                 header={t("Elapsed Time")}
-                cell={row => (row["elapsedTime"] == null ? "" : row["elapsedTime"] + " seconds")}
+                cell={(row) => (row["elapsedTime"] == null ? "" : row["elapsedTime"] + " seconds")}
               />
               <Column
                 columnKey="status"
                 comparator={this.sortByStatus}
                 header={t("Status")}
-                cell={row => this.decodeStatus(row["status"])}
+                cell={(row) => this.decodeStatus(row["status"])}
               />
               <Column
                 columnKey="data" // comparator={this.sortByText}
                 header={t("Data")}
-                cell={row => row["data"].map((c, index) => <div key={"data-" + index}>{c}</div>)}
+                cell={(row) => row["data"].map((c, index) => <div key={"data-" + index}>{c}</div>)}
               />
             </Table>
           </div>
@@ -253,7 +253,7 @@ class TaskoTop extends React.Component<Props> {
   }
 }
 
-const ErrorMessage = props => (
+const ErrorMessage = (props) => (
   <MessageContainer
     items={
       props.error === "authentication"

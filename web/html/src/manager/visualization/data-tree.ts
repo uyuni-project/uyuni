@@ -47,7 +47,7 @@ function dataTree(data, container) {
     .forceSimulation()
     .force(
       "charge",
-      d3.forceManyBody().strength(d => strengthByType(d))
+      d3.forceManyBody().strength((d) => strengthByType(d))
     )
     .force("link", d3.forceLink())
     .force("x", d3.forceX(dimensions[0] / 2))
@@ -61,29 +61,29 @@ function dataTree(data, container) {
 
   function instance() {}
 
-  instance.data = function(d) {
+  instance.data = function (d) {
     return arguments.length ? ((data = d), instance) : data;
   };
 
-  instance.preprocessor = function(p) {
+  instance.preprocessor = function (p) {
     return arguments.length ? ((preprocessor = p), instance) : preprocessor;
   };
 
-  instance.filters = function(f) {
+  instance.filters = function (f) {
     return arguments.length ? ((filters = f), instance) : filters;
   };
 
-  instance.partitioning = function(p) {
+  instance.partitioning = function (p) {
     return arguments.length ? ((partitioning = p), instance) : partitioning;
   };
 
-  instance.view = function() {
+  instance.view = function () {
     return view;
   };
 
   // Recomputes the data transformation (preprocessor, filters, partitioning),
   // turns the data to tree and refreshes the hierarchy view.
-  instance.refresh = function() {
+  instance.refresh = function () {
     preprocessor.data(data);
     const newRoot = preprocessor();
     treeify(newRoot, dimensions);
@@ -93,7 +93,7 @@ function dataTree(data, container) {
     view.refresh();
   };
 
-  instance.simulation = function(sim) {
+  instance.simulation = function (sim) {
     return arguments.length ? ((simulation = sim), instance) : simulation;
   };
 
@@ -118,7 +118,7 @@ function updateSelectedNode(node) {
 }
 
 function unselectAllNodes() {
-  d3.selectAll("g.node.selected").each(function(d) {
+  d3.selectAll("g.node.selected").each(function (d) {
     const classList = d3.select(this).attr("class");
     d3.select(this).attr("class", classList.replace("selected", ""));
   });
@@ -146,9 +146,7 @@ function appendPatchStatus(cell, patchCountsArray) {
       .append("div")
       .classed("minor-patches", true)
       .html(
-        '<i class="fa spacewalk-icon-enhancement"></i>' +
-          patchCountsArray[1] +
-          t("  product enhancement advisories")
+        '<i class="fa spacewalk-icon-enhancement"></i>' + patchCountsArray[1] + t("  product enhancement advisories")
       );
   }
 }
@@ -168,11 +166,7 @@ function updateDetailBox(d) {
 
   const table = contentWrapper.append("table");
 
-  table
-    .append("tr")
-    .append("th")
-    .attr("colspan", 2)
-    .text(data.name);
+  table.append("tr").append("th").attr("colspan", 2).text(data.name);
 
   if (Utils.isSystemType(d)) {
     table
@@ -187,10 +181,7 @@ function updateDetailBox(d) {
 
   const typeRow = table.append("tr");
   typeRow.append("td").text("Type");
-  typeRow
-    .append("td")
-    .append("strong")
-    .text(data.type);
+  typeRow.append("td").append("strong").text(data.type);
 
   if (Utils.isCompliantToSSM(d)) {
     const row = table.append("tr");
@@ -209,22 +200,21 @@ function updateDetailBox(d) {
   }
 
   if (Utils.isSystemType(d)) {
-    appendSimpleRow("Base entitlement", cell => cell.text(data.base_entitlement));
-    appendSimpleRow("Base channel", cell => cell.text(data.base_channel));
+    appendSimpleRow("Base entitlement", (cell) => cell.text(data.base_entitlement));
+    appendSimpleRow("Base channel", (cell) => cell.text(data.base_channel));
     const checkIn = localizedMoment(data.checkin);
-    appendSimpleRow("Checkin time", cell =>
-      cell
-        .append("time")
-        .attr("title", checkIn.toUserDateTimeString())
-        .text(checkIn.fromNow())
+    appendSimpleRow("Checkin time", (cell) =>
+      cell.append("time").attr("title", checkIn.toUserDateTimeString()).text(checkIn.fromNow())
     );
-    appendSimpleRow("Installed products", cell => cell.text(data.installedProducts));
-    appendSimpleRow("Patch status", cell => appendPatchStatus(cell, data.patch_counts));
+    appendSimpleRow("Installed products", (cell) => cell.text(data.installedProducts));
+    appendSimpleRow("Patch status", (cell) => appendPatchStatus(cell, data.patch_counts));
   }
 
   if (data.type === "group" && !DEPRECATED_unsafeEquals(data.groups, undefined)) {
-    appendSimpleRow("Groups", cell =>
-      cell.text(data.groups.map((g, idx) => (DEPRECATED_unsafeEquals(idx, 0) ? g : " and " + g)).reduce((a, b) => a + b, ""))
+    appendSimpleRow("Groups", (cell) =>
+      cell.text(
+        data.groups.map((g, idx) => (DEPRECATED_unsafeEquals(idx, 0) ? g : " and " + g)).reduce((a, b) => a + b, "")
+      )
     );
   }
 
@@ -249,7 +239,7 @@ function updateDetailBox(d) {
         const idsArray = d
           .leaves()
           .filter(Utils.isCompliantToSSM)
-          .map(system => system.data.rawId);
+          .map((system) => system.data.rawId);
         const uniqueIds = new Set(idsArray);
         addSystemToSSM(Array.from(uniqueIds));
       })
@@ -313,7 +303,7 @@ function myDeriveIconClass(node) {
 function treeify(root, dimensions) {
   const tree = d3.tree().size(dimensions);
   tree(root);
-  root.each(d => {
+  root.each((d) => {
     d._allChildren = d.children; // backup children
   });
 }
@@ -324,7 +314,7 @@ function nodeVisible(node, pred) {
     return pred(node);
   }
 
-  const visibleChildren = node._allChildren.filter(c => nodeVisible(c, pred));
+  const visibleChildren = node._allChildren.filter((c) => nodeVisible(c, pred));
   node.children = visibleChildren;
   return visibleChildren.length > 0 || pred(node);
 }
@@ -334,7 +324,10 @@ function strengthByType(node) {
   let force;
   if (node.data.id === "root") {
     force = -1800;
-  } else if ((window.view === "proxy-hierarchy" && node.data.type === "proxy") || ["vhm", "group"].includes(node.data.type)) {
+  } else if (
+    (window.view === "proxy-hierarchy" && node.data.type === "proxy") ||
+    ["vhm", "group"].includes(node.data.type)
+  ) {
     force = -900;
   } else if (Utils.isSystemType(node)) {
     force = -300;

@@ -15,6 +15,13 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.token.Token;
+import com.redhat.rhn.domain.token.TokenPackage;
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
@@ -24,13 +31,6 @@ import java.util.Map;
 
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
-
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupType;
-import com.redhat.rhn.domain.token.Token;
-import com.redhat.rhn.domain.token.TokenPackage;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
 * ActivationKeySerializer

@@ -17501,7 +17501,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">当前版本</target>
       </trans-unit>
@@ -17509,7 +17509,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">上次修改时间</target>
       </trans-unit>
@@ -17538,7 +17538,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">此频道中没有可部署的订阅系统</target>
       </trans-unit>
@@ -17546,7 +17546,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">操作</target>
       </trans-unit>
@@ -17554,7 +17554,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17562,7 +17562,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署所有文件</target>
       </trans-unit>
@@ -17570,7 +17570,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署所选文件</target>
       </trans-unit>
@@ -17578,7 +17578,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -17586,7 +17586,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">您可以从下面的列表中选择要部署的文件。之后系统会要求您选择要将它们部署到哪些系统。</target>
       </trans-unit>
@@ -17594,7 +17594,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17602,7 +17602,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">确认并部署到所选系统</target>
       </trans-unit>
@@ -17610,7 +17610,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署配置文件：选择部署到的系统</target>
       </trans-unit>
@@ -17618,7 +17618,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">请选择您要将所选文件部署到的系统。</target>
       </trans-unit>
@@ -17626,7 +17626,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您尝试从 {0} 配置频道部署的任何文件被排名更高的频道中的同名文件覆盖或级别比其低，该文件的覆盖/高级别版本（而不是 {0} 配置频道中的版本）将部署到该系统。</target>
       </trans-unit>
@@ -29719,59 +29719,106 @@ given channel.</source>
         <source>Product Migration</source>
         <target state="final">产品迁移</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.title.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.title.repo" xml:space="preserve">
           <source>We're sorry, but the repository could not be found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">抱歉，找不到该储存库。</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.reason1.repo" xml:space="preserve">
           <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">请求的储存库不存在。如果您通过书签或其他某种非链接方式进入此页面，则很有可能会出现这种情况。</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.reason2.repo" xml:space="preserve">
           <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">您没有查看这个储存库的权限。</target>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
         <target state="final">执行 Ansible 剧本</target>
       </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
         <target state="final">可选 OVAL 文件（逗号分隔）</target>
       </trans-unit>
-      <trans-unit id="system.event.scapOvalFiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.event.scapOvalFiles" xml:space="preserve">
           <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="final">&lt;strong&gt;OVAL 文件（逗号分隔）：&lt;/strong&gt; </target>
       </trans-unit>
-      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.channel-modular-data-cleanup" xml:space="preserve">
         <source>Modular Data Cleanup</source>
         <target state="final">模块化数据清理</target>
       </trans-unit>
-      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.mgr-forward-registration" xml:space="preserve">
         <source>Forward Registration</source>
         <target state="final">转发注册</target>
       </trans-unit>
-      <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
         <target state="final">OS 有事务更新：请在任何软件包和/或频道更改后重引导系统。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
+        <source>No Modules</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+	</context-group>
+        <target state="final">无模块</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.streamname" xml:space="preserve">
+        <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+        <target state="final">流名称（如果存在，则为&lt;span class="label label-primary"&gt;默认值&lt;/span&gt;）</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.modulename" xml:space="preserve">
+        <source>Module Name</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+        <target state="final">模块名称</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
+          <source>Optional OVAL Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
+        </context-group>
+        <target state="final">可选 OVAL 文件</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.headerappstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
+        </context-group>
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.create_clm_filter" xml:space="preserve">
+        <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建在线增补过滤器</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.jsp.appstreams" xml:space="preserve">
+        <source>AppStreams</source>
+        <target state="final">AppStream</target>
       </trans-unit>
     </body>
   </file>

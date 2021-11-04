@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.server.MinionServer;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

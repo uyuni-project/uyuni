@@ -67,7 +67,7 @@ const GroupChannels = (props: PropsType) => {
       </h4>
       {
         <div className={props.isOpen ? "col-lg-12" : "hide"}>
-          {recommendedIds.filter(id => id !== props.base.id).length > 0 && (
+          {recommendedIds.filter((id) => id !== props.base.id).length > 0 && (
             <Toggler
               handler={() => toggleRecommended()}
               value={areRecommendedChildrenSelected}

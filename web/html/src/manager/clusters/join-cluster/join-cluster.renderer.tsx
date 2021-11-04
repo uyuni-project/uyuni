@@ -9,7 +9,7 @@ import { ServerMessageType } from "components/messages";
 type RendererProps = {
   cluster?: string;
   flashMessage?: ServerMessageType;
-}
+};
 
 export const renderer = (id: string, { cluster, flashMessage }: RendererProps = {}) => {
   let clusterJson: any = {};

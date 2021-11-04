@@ -36,7 +36,7 @@ const SelectProvider = (props: Props) => {
       }
     >
       <form>
-        {props.providers.map(type => (
+        {props.providers.map((type) => (
           <div>
             <label>
               <input

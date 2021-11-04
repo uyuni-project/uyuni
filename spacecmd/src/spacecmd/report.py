@@ -174,6 +174,8 @@ def do_report_errata(self, args):
         print(_("No errata found for '{}'").format(args))
         return 1
 
+    return None
+
 ####################
 
 

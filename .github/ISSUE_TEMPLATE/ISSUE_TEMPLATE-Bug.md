@@ -2,7 +2,7 @@
 name: Uyuni - Bugreport
 about: Use this issue template for createing bug reports.
 title: Uyuni Bugreport - Uyuni YYYY.MM
-labels: bug
+labels: ["bug", "P5"]
 assignees:
 
 ---

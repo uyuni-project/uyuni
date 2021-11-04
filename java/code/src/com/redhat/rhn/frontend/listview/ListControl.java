@@ -19,10 +19,10 @@ import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.filter.Matcher;
 import com.redhat.rhn.frontend.filter.ResultsFilter;
-import java.util.HashMap;
-import java.util.Map;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * ListControl

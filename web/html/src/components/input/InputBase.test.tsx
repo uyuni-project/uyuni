@@ -39,7 +39,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase name="foo" invalidHint={t("Minimum 2 characters")} validators={[value => value.length > 2]}>
+      <InputBase name="foo" invalidHint={t("Minimum 2 characters")} validators={[(value) => value.length > 2]}>
         {({ setValue }) => {
           if (isFirstFire) {
             // Realistically this should be with a user interaction, but we manually fire it off to see if it propagates
@@ -66,7 +66,7 @@ describe("InputBase", () => {
         name="username"
         label="Username"
         invalidHint={t("Minimum 2 characters")}
-        validators={[value => value.length > 2]}
+        validators={[(value) => value.length > 2]}
       >
         {({ setValue }) => {
           if (isFirstFire) {
@@ -94,7 +94,7 @@ describe("InputBase", () => {
         name={["firstname", "lastname"]}
         label="User"
         invalidHint={t("Minimum 2 characters")}
-        validators={[value => Object.values<typeof model>(value).every(v => v.length > 2)]}
+        validators={[(value) => Object.values<typeof model>(value).every((v) => v.length > 2)]}
       >
         {({ setValue }) => {
           if (isFirstFire) {

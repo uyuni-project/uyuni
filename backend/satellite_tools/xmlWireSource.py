@@ -122,12 +122,9 @@ class BaseWireSource:
             return None
 
         # Check certificate
-        if CFG.ISS_PARENT:
-            caChain = CFG.ISS_CA_CHAIN
-        else:
-            caChain = CFG.CA_CHAIN
+        caChain = CFG.CA_CHAIN
         if caChain:
-            # require RHNS-CA-CERT file to be able to authenticate the SSL
+            # require SSL CA file to be able to authenticate the SSL
             # connections.
             if not os.access(caChain, os.R_OK):
                 message = "ERROR: can not find SUSE Manager CA file: %s" % caChain

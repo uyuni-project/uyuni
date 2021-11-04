@@ -158,9 +158,10 @@ def do_distribution_list(self, args, doreturn=False):
 
     if doreturn:
         return avail_trees
-    else:
-        if avail_trees:
-            print('\n'.join(sorted(avail_trees)))
+    if avail_trees:
+        print('\n'.join(sorted(avail_trees)))
+
+    return None
 
 ####################
 
@@ -174,6 +175,8 @@ def complete_distribution_delete(self, text, line, beg, end):
     if len(line.split(' ')) <= 2:
         return tab_completer(self.do_distribution_list('', True),
                              text)
+
+    return None
 
 
 def do_distribution_delete(self, args):
@@ -265,6 +268,8 @@ def complete_distribution_rename(self, text, line, beg, end):
         return tab_completer(self.do_distribution_list('', True),
                              text)
 
+    return None
+
 
 def do_distribution_rename(self, args):
     arg_parser = get_argument_parser()
@@ -300,6 +305,8 @@ def complete_distribution_update(self, text, line, beg, end):
         return tab_completer(self.do_distribution_list('', True),
                              text)
 
+    return None
+
 
 def do_distribution_update(self, args):
     arguments, _ = parse_command_arguments(args, get_argument_parser())
@@ -307,3 +314,5 @@ def do_distribution_update(self, args):
         self.help_distribution_update()
     else:
         return self.do_distribution_create(args, update=True)
+
+    return None

@@ -29,9 +29,10 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -48,7 +49,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private VirtualInstanceFactory virtualInstanceDAO;
     private User user;
     private GuestBuilder builder;
-    SystemEntitlementManager systemEntitlementManager;
+    private SystemEntitlementManager systemEntitlementManager;
 
     protected void setUp() throws Exception {
         super.setUp();

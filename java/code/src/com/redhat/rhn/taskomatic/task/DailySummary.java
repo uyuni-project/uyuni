@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 import com.redhat.rhn.frontend.dto.ReportingUser;
 
 import com.suse.manager.utils.MailHelper;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.quartz.JobExecutionContext;

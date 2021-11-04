@@ -29,6 +29,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import java.nio.file.Files;
