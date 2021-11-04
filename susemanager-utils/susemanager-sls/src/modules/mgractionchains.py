@@ -26,38 +26,6 @@ __virtualname__ = 'mgractionchains'
 
 SALT_ACTIONCHAIN_BASE = 'actionchains'
 
-EXTRA_FILEREFS = ",".join(
-    map(
-        lambda x: "salt://" + x,
-        [
-            "certs",
-            "channels",
-            "cleanup_ssh_minion",
-            "configuration",
-            "distupgrade",
-            "hardware",
-            "images",
-            "packages/init.sls",
-            "packages/patchdownload.sls",
-            "packages/patchinstall.sls",
-            "packages/pkgdownload.sls",
-            "packages/pkginstall.sls",
-            "packages/pkgremove.sls",
-            "packages/profileupdate.sls",
-            "packages/redhatproductinfo.sls",
-            "remotecommands",
-            "scap",
-            "services",
-            "custom",
-            "custom_groups",
-            "custom_org",
-            "util",
-            "bootstrap",
-            "formulas.sls",
-        ],
-    )
-)
-
 
 def __virtual__():
     '''
@@ -162,7 +130,7 @@ def start(actionchain_id):
 
     inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
     if __grains__.get("transactional") and not inside_transaction:
-        ret = __salt__['transactional_update.sls'](target_sls, queue=True, extra_filerefs=EXTRA_FILEREFS)
+        ret = __salt__['transactional_update.sls'](target_sls, queue=True)
     else:
         ret = __salt__['state.sls'](target_sls, queue=True)
 
@@ -224,7 +192,7 @@ def resume():
 
     inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
     if __grains__.get("transactional") and not inside_transaction:
-        return __salt__['transactional_update.sls'](next_chunk, queue=True, extra_filerefs=EXTRA_FILEREFS)
+        return __salt__['transactional_update.sls'](next_chunk, queue=True)
     else:
         return __salt__['state.sls'](next_chunk, queue=True)
 
