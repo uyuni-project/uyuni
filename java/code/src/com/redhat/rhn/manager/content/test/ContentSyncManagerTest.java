@@ -711,7 +711,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testSwitchingBestAuthItem() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -745,14 +746,22 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
-        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
-        List<SCCProductJson> productsChanged = gson.fromJson(inReaderProducts, new TypeToken<List<SCCProductJson>>() {}.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() {}.getType());
-        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
-        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<ProductTreeEntry>>() {}.getType());
-        InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
-        List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
+        List<SCCProductJson> productsChanged = gson.fromJson(
+                inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
+        List<UpgradePathJson> upgradePaths = gson.fromJson(
+                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
+        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+        InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
+        List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
         //csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
