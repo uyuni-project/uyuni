@@ -28,6 +28,7 @@ from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
+from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import repo
 
