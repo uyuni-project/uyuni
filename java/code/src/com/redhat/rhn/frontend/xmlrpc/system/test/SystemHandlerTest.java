@@ -32,6 +32,8 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -153,6 +155,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionCustomInfoPillarGenerator;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -1009,19 +1012,37 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListAllEvents() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
-        List<Map<String, Object>> results = handler.listSystemEvents(admin,
-                server.getId().intValue());
+        final Server server = ServerFactoryTest.createTestServer(admin);
+
+        List<Map<String, Object>> results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(0, results.size());
 
-        Action a = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
+        Action action = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
+        ActionFactory.save(action);
 
-        ActionFactory.save(a);
-        a = reload(a);
+        // Ensure the other actions are created later
+        commitAndCloseSession();
+        Thread.sleep(2_000);
+        final Date earliestDate = new Date();
 
-        results = handler.listSystemEvents(admin,
-                server.getId().intValue());
+        action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
+                Arrays.asList("channels", "packages"), new Date());
+        ActionFactory.save(action);
 
+        action = ActionManager.schedulePackageRefresh(admin, server);
+        ActionFactory.save(action);
+        commitAndCloseSession();
+
+        results = handler.listSystemEvents(admin, server.getId().intValue());
+        assertEquals(3, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), "Apply states");
+        assertEquals(1, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), earliestDate);
+        assertEquals(2, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), "Package List Refresh", earliestDate);
         assertEquals(1, results.size());
     }
 
@@ -1421,6 +1442,61 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(((HistoryEvent) supposedHistory[0]).getId().longValue(),
                 event.getId().longValue());
+    }
+
+    public void testGetEventDetails() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        ServerHistoryEvent event = new ServerHistoryEvent();
+        event.setServer(server);
+        event.setDetails("details");
+        event.setSummary("summary");
+
+        Set history = server.getHistory();
+        server.setHistory(history);
+        TestUtils.saveAndFlush(event);
+        TestUtils.saveAndFlush(server);
+
+        Action action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
+                Arrays.asList("channels", "packages"), new Date());
+
+        final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+
+        ActionFactory.save(action);
+        commitAndCloseSession();
+
+        // Retrieve the action event detail
+        final int sid = server.getId().intValue();
+
+        SystemEventDetailsDto eventDetail = handler.getEventDetails(admin, sid, event.getId().intValue());
+
+        assertNotNull(eventDetail);
+        assertEquals(eventDetail.getId(), eventDetail.getId());
+        assertNull(eventDetail.getCreated());
+        assertNull(eventDetail.getPickedUp());
+        assertNotNull(eventDetail.getCompleted());
+        assertNull(eventDetail.getHistoryTypeName());
+        assertEquals("summary", eventDetail.getSummary());
+        assertEquals("(n/a)", eventDetail.getHistoryStatus());
+        assertNull(eventDetail.getEarliestAction());
+        assertNull(eventDetail.getResultMsg());
+        assertNull(eventDetail.getResultCode());
+
+        eventDetail = handler.getEventDetails(admin, sid, action.getId().intValue());
+
+        assertNotNull(eventDetail);
+        assertEquals(action.getId(), eventDetail.getId());
+        assertNotNull(eventDetail.getCreated());
+        assertNotNull(eventDetail.getPickedUp());
+        assertNull(eventDetail.getCompleted());
+        assertEquals("states.apply", eventDetail.getHistoryType());
+        assertEquals("Apply states", eventDetail.getHistoryTypeName());
+        assertEquals("Apply states [channels, packages] scheduled by " + admin.getLogin(), eventDetail.getSummary());
+        assertEquals("Picked Up", eventDetail.getHistoryStatus());
+        assertNotNull(eventDetail.getEarliestAction());
+        assertNull(eventDetail.getResultMsg());
+        assertNull(eventDetail.getResultCode());
     }
 
     public void testGetRelevantErrata() throws Exception {

@@ -33,6 +33,7 @@ public class OSImageInspectSlsResult {
 
         private String hash;
         private String compression;
+        private String compressed_hash;
         private String name;
         private String filepath;
         private String type;
@@ -55,6 +56,13 @@ public class OSImageInspectSlsResult {
          */
         public String getCompression() {
             return compression;
+        }
+
+        /**
+         * @return the compression checksum
+         */
+        public String getCompressedHash() {
+            return compressed_hash;
         }
 
         /**

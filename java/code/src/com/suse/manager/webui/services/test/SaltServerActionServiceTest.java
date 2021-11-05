@@ -934,7 +934,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
         testService.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion);
+            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion, false);
             oneOf(saltServiceMock).callAsync(
                     with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
             LocalAsyncResult<?> result = new LocalAsyncResult() {

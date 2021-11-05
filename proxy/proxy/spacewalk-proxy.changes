@@ -1,5 +1,9 @@
-- remove SSLProtocol configuration which should be done in the ssl
-  configuration file
+-------------------------------------------------------------------
+Fri Nov 05 13:51:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * remove SSLProtocol configuration which should be done in the ssl
+    configuration file
 
 -------------------------------------------------------------------
 Mon Aug 09 11:02:14 CEST 2021 - jgonzalez@suse.com

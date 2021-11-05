@@ -6,7 +6,7 @@ select * from (
   SELECT  DISTINCT S.id,
                    S.name,
                    SI.server_id AS IS_RHN_SATELLITE,
-                   PI.server_id AS IS_RHN_PROXY,
+                   PI.server_id AS IS_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
     LEFT OUTER JOIN rhnSatelliteInfo SI ON S.id = SI.server_id
@@ -1286,7 +1286,7 @@ SELECT  DISTINCT ST.element AS ID
   SELECT  DISTINCT S.id,
                    S.name,
                    SI.server_id AS IS_RHN_SATELLITE,
-                   PI.server_id AS IS_RHN_PROXY,
+                   PI.server_id AS IS_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN,
                    SO.SECURITY_ERRATA, SO.BUG_ERRATA, SO.ENHANCEMENT_ERRATA, SO.LOCKED,
                    SO.OUTDATED_PACKAGES, SO.SERVER_NAME, SO.SERVER_ADMINS, SO.GROUP_COUNT,
@@ -1347,7 +1347,7 @@ ORDER BY S.ID
   SELECT SERVER_ID AS ID, OUTDATED_PACKAGES, SERVER_NAME, security_errata, bug_errata, enhancement_errata,
           SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, CHANNEL_ID, HISTORY_COUNT,
           LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
-          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_RHN_PROXY
+          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_PROXY
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
 ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
@@ -2089,7 +2089,7 @@ select s.id as id,
 
 <mode name="system_events_history"
   class="com.redhat.rhn.frontend.dto.SystemEventDto">
-  <query params="sid, oid">
+  <query params="sid, oid, date, limit, offset">
 select event_id as id,
        to_char(all_events.created, 'YYYY-MM-DD HH24:MI:SS') created,
        to_char(all_events.picked_up, 'YYYY-MM-DD HH24:MI:SS') picked_up,
@@ -2132,8 +2132,60 @@ select event_id as id,
            and AStat.id IN (1, 2, 3)
        ) all_events
   left join rhnaction action_details on event_id = action_details.id
+   where completed >= TO_TIMESTAMP(:date, 'YYYY-MM-DD HH24:MI:SS')
+      OR completed IS NULL
 order by completed desc, picked_up desc, all_events.created desc, event_id desc
+   limit :limit
+  offset :offset
+  </query>
+</mode>
 
+<mode name="system_event_details"
+  class="com.suse.manager.xmlrpc.dto.SystemEventDetailsDto">
+  <query params="sid, oid, eid">
+  select event_id as id,
+         to_char(all_events.created, 'YYYY-MM-DD HH24:MI:SS') created,
+         to_char(all_events.picked_up, 'YYYY-MM-DD HH24:MI:SS') picked_up,
+         to_char(all_events.completed, 'YYYY-MM-DD HH24:MI:SS') completed,
+         all_events.summary,
+         all_events.history_type,
+         all_events.history_type_name,
+         all_events.history_status,
+         case when action_details.org_id != :oid then 0 else 1 end as history_visible
+    from (
+              select SH.id event_id,
+                     SH.summary summary,
+                     to_timestamp(NULL, NULL) as created,
+                     to_timestamp(NULL, NULL) as picked_up,
+                     SH.created as completed,  -- view this as the "completed" date for sorting reasons
+                     NULL as history_status,
+                     NULL as history_type,
+                     NULL as history_type_name
+                from rhnServerHistory SH
+               where SH.server_id = :sid
+                     AND SH.id = :eid
+               union
+              select SA.action_id event_id,
+                     COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
+                     SA.created,
+                     SA.pickup_time as picked_up,
+                     SA.completion_time as completed,
+                     AStat.name as history_status,
+                     AType.label as history_type,
+                     AType.name as history_type_name
+                from rhnActionType AType,
+                     rhnActionStatus AStat,
+                     rhnAction A
+           left join web_contact U
+                  on U.id = A.scheduler,
+                     rhnServerAction SA
+               where SA.server_id = :sid
+                 and SA.action_id = A.id
+                 and ATYPE.id = A.action_type
+                 and AStat.id = SA.status
+                 and AStat.id IN (1, 2, 3)
+                 and A.id = :eid
+         ) all_events left join rhnaction action_details on event_id = action_details.id
   </query>
 </mode>
 
