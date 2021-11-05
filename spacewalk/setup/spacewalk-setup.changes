@@ -1,14 +1,18 @@
-- Add postgresql external pillar configuration
-- Simplified perl module dependency.
-- Fixed com.sun.bind issue on package update.
-- Enabled pylint for all builds but don't stop on error.
-- Leave Cobbler bootloader directory at the default (bsc#1187708)
-- Don't delete cobbler.conf contents.
-- Fixed FileNotFoundError on cobbler setup.
-- cobbler20-setup was removed
-- spacewalk-setup-cobbler was reimplemented in Python
-- Config files for Cobbler don't get edited in place anymore, thus the original
-  ones are saved with a ".backup" suffix
+-------------------------------------------------------------------
+Fri Nov 05 13:53:01 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add postgresql external pillar configuration
+  * Simplified perl module dependency.
+  * Fixed com.sun.bind issue on package update.
+  * Enabled pylint for all builds but don't stop on error.
+  * Leave Cobbler bootloader directory at the default (bsc#1187708)
+  * Don't delete cobbler.conf contents.
+  * Fixed FileNotFoundError on cobbler setup.
+  * cobbler20-setup was removed
+  * spacewalk-setup-cobbler was reimplemented in Python
+  * Config files for Cobbler don't get edited in place anymore,
+    thus the original ones are saved with a ".backup" suffix
 
 -------------------------------------------------------------------
 Fri Sep 17 12:11:36 CEST 2021 - jgonzalez@suse.com
