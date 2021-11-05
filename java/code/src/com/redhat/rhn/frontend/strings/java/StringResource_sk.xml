@@ -2028,70 +2028,70 @@
       </trans-unit>
       <trans-unit id="bad-syntax" xml:space="preserve">
         <source>Could not parse ACL statement: "{0}"</source>
-        <target/>
+        <target>Nepodarilo sa spracovať príkaz ACL: "{0}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-handler" xml:space="preserve">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
-        <target/>
+        <target>Nepodarilo sa nájsť obsluhu ACL {0} v príkaze: "{1}". Dostupné obslužné programy ACL: {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="invocation-target-exception" xml:space="preserve">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
-        <target/>
+        <target>IllegalInvocationException volajúce {0} ("{1}"): {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no notes" xml:space="preserve">
         <source>(none)</source>
-        <target/>
+        <target>(žiadne)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.refresh_list" xml:space="preserve">
         <source>Package List Refresh</source>
-        <target/>
+        <target>Obnovenie zoznamu balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hardware.refresh_list" xml:space="preserve">
         <source>Hardware List Refresh</source>
-        <target/>
+        <target>Obnovenie zoznamu hardvéru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.update" xml:space="preserve">
         <source>Package Install</source>
-        <target/>
+        <target>Inštalácia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.remove" xml:space="preserve">
         <source>Package Removal</source>
-        <target/>
+        <target>Odstránenie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.update" xml:space="preserve">
         <source>Patch Update</source>
-        <target/>
+        <target>Aktualizácia opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scap.xccdf_eval" xml:space="preserve">
         <source>OpenSCAP xccdf scanning</source>
-        <target/>
+        <target>Skenovanie OpenSCAP xccdf</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
