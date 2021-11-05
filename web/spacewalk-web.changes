@@ -1,3 +1,4 @@
+- Implement using re-activation keys when bootstrapping with the Web UI
 - Disable the SPA engine for download links (bsc#1190964)
 - Fix CLM filter edit modal opening (bsc#1190867)
 - Display a warning in the login page if the available disk space
