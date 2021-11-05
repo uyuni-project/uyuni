@@ -44,7 +44,6 @@ $|++;
 use constant DEFAULT_CA_CERT_NAME =>
   'RHN-ORG-TRUSTED-SSL-CERT';
 
-use constant COBBLER_20_COMMAND => 'cobbler20-setup > /dev/null';
 use constant COBBLER_COMMAND => 'spacewalk-setup-cobbler';
 
 my %opts = Spacewalk::Setup::parse_options();
@@ -280,34 +279,30 @@ sub setup_cobbler {
   my $opts = shift;
   my $answers = shift;
 
-  my $cobbler_version = `rpm -q --queryformat '%{version}' cobbler`;
+  my %options = ();
+  Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
+  system(COBBLER_COMMAND . " --apache2-config-directory " . $options{'httpd_config_dir'});
 
-  # newer versions of Cobbler don't ship the config templates
-  if ($cobbler_version =~ /2\.0/) {
-    # Cobbler 2.0 can use the old helper script
-    system(COBBLER_20_COMMAND);
-  } else {
-    system(COBBLER_COMMAND, '--macros', "hostname:$answers->{'hostname'}");
+  system(COBBLER_COMMAND, '--macros', "hostname:$answers->{'hostname'}");
 
-    my $skip_rhnconf = 0;
-    open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
-    while (<FILE>) {
-        if ($_ =~ /^cobbler\.host/) {
-          $skip_rhnconf = 1;
-          last;
-        }
-    }
+  my $skip_rhnconf = 0;
+  open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
+  while (<FILE>) {
+      if ($_ =~ /^cobbler\.host/) {
+        $skip_rhnconf = 1;
+        last;
+      }
+  }
+  close(FILE);
+
+  if (!$skip_rhnconf) {
+    open(FILE, ">>" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
+    print FILE "#cobbler host name\n";
+    print FILE "cobbler.host = " . $answers->{'hostname'} . "\n";
     close(FILE);
-
-    if (!$skip_rhnconf) {
-      open(FILE, ">>" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
-      print FILE "#cobbler host name\n";
-      print FILE "cobbler.host = " . $answers->{'hostname'} . "\n";
-      close(FILE);
-    }
-    if ( system("/sbin/checkproc /usr/bin/cobblerd") == 0 ) {
-      system("cobbler sync");
-    }
+  }
+  if ( system("/sbin/checkproc /usr/bin/cobblerd") == 0 ) {
+    system("cobbler sync");
   }
 
   Spacewalk::Setup::ask(
