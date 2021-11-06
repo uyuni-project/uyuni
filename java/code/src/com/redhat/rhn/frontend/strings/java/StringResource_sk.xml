@@ -2098,70 +2098,70 @@
       </trans-unit>
       <trans-unit id="up2date_config.get" xml:space="preserve">
         <source>Get server up2date config</source>
-        <target/>
+        <target>Získať up2date konfiguráciu servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="up2date_config.update" xml:space="preserve">
         <source>Update server up2date config</source>
-        <target/>
+        <target>Aktualizovať up2date konfiguráciu servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.delta" xml:space="preserve">
         <source>Package installation and removal in one RPM transaction</source>
-        <target/>
+        <target>Inštalácia a odstránenie balíkov v jednej transakcii RPM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
-        <target/>
+        <target>Reštart systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="clientcert.update_client_cert" xml:space="preserve">
         <source>Update of system certificate</source>
-        <target/>
+        <target>Aktualizácia systémového certifikátu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.config" xml:space="preserve">
         <source>Enable or Disable RPM Transaction Rollback</source>
-        <target/>
+        <target>Povolenie alebo zakázanie spätného vrátenia transakcie RPM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.listTransactions" xml:space="preserve">
         <source>Refresh server-side transaction list</source>
-        <target/>
+        <target>Obnoviť zoznam transakcií na strane servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.autoupdate" xml:space="preserve">
         <source>Automatic package installation</source>
-        <target/>
+        <target>Automatická inštalácia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.runTransaction" xml:space="preserve">
         <source>Package Synchronization</source>
-        <target/>
+        <target>Synchronizácia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.import.success" xml:space="preserve">
         <source>{0} files &lt;a href="{1}"&gt;scheduled&lt;/a&gt; for upload.</source>
-        <target/>
+        <target>{0} súborov &lt;a href="{1}"&gt;naplánovaných&lt;/a&gt; na nahratie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
