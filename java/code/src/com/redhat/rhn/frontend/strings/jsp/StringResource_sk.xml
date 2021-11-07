@@ -19,70 +19,70 @@
       </trans-unit>
       <trans-unit id="column.basechannel" xml:space="preserve">
           <source>Base Channel</source>
-        <target/>
+        <target>Základný kanál</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.created" xml:space="preserve">
           <source>Created</source>
-        <target/>
+        <target>Vytvorený</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.name" xml:space="preserve">
           <source>Name</source>
-        <target/>
+        <target>Názov</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.package" xml:space="preserve">
           <source>Package</source>
-        <target/>
+        <target>Balík</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/PackageList</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.current-version" xml:space="preserve">
           <source>Current Version</source>
-        <target/>
+        <target>Súčasná verzia</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.snapshot-version" xml:space="preserve">
           <source>Snapshot Version</source>
-        <target/>
+        <target>Verzia snímky</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.difference" xml:space="preserve">
           <source>Difference</source>
-        <target/>
+        <target>Rozdiel</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tag-name" xml:space="preserve">
           <source>Tag Name</source>
-        <target/>
+        <target>Názov značky</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.reason" xml:space="preserve">
           <source>Reason</source>
-        <target/>
+        <target>Dôvod</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tagged-systems" xml:space="preserve">
           <source>Tagged Systems</source>
-        <target/>
+        <target>Označené systémy</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
