@@ -64,6 +64,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   steps %(
     When I follow "Events"
     And I follow "Pending"
+    And I wait at most 60 seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
