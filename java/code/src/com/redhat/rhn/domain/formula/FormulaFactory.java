@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.formula;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -734,7 +736,10 @@ public class FormulaFactory {
         List<String> deletedFormulas = getFormulasByMinion(minion);
         deletedFormulas.removeAll(selectedFormulas);
         for (String deletedFormula : deletedFormulas) {
-            minion.getPillarByCategory(PREFIX + deletedFormula).ifPresent(pillar -> minion.getPillars().remove(pillar));
+            minion.getPillarByCategory(PREFIX + deletedFormula).ifPresent(pillar -> {
+                minion.getPillars().remove(pillar);
+                HibernateFactory.getSession().remove(pillar);
+            });
         }
 
         // Save selected Formulas if we don't have them already
@@ -758,6 +763,7 @@ public class FormulaFactory {
         if (deletedFormulas.contains(PROMETHEUS_EXPORTERS) && !isMemberOfGroupHavingMonitoring(minion)) {
             systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
         }
+        ServerFactory.save(minion);
     }
 
     /**
