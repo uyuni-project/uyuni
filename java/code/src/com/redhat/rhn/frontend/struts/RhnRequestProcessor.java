@@ -21,6 +21,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.manager.acl.AclManager;
 
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
@@ -30,6 +36,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Properties;
 
 /**
  * RhnRequestProcessor a custom Struts RequestProcessor that
@@ -99,6 +107,8 @@ public class RhnRequestProcessor extends RequestProcessor {
                     //exit method
                     return;
                 }
+                // Publish Kafka event
+                publishEvent(request.getRequestURL() + "?" + request.getQueryString());
             }
             //now that we're done with rhn stuff, call RequestProcessor.process()
             super.process(request, response);
@@ -121,6 +131,23 @@ public class RhnRequestProcessor extends RequestProcessor {
             }
             throw re;
         }
+    }
+
+    /**
+     * Publish a Kafka Event
+     *
+     * @param message to publish in Kafka topic
+     */
+    private void publishEvent(final String message){
+        //TODO: Set these properties using a properties file
+        Properties props = new Properties();
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "obarrios.tf.local:9092");
+        props.put("key.serializer", StringSerializer.class.getName());
+        props.put("value.serializer", StringSerializer.class.getName());
+        final Producer<String, String> producer = new KafkaProducer<>(props);
+        final ProducerRecord<String, String> producerRecord = new ProducerRecord<>("suma-events", message);
+        producer.send(producerRecord);
+        producer.close();
     }
 
     private void fixCause(ServletException e) {

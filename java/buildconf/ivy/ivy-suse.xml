@@ -131,5 +131,8 @@
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
         </dependency>
+        <dependency org="org.apache.kafka" name="kafka-streams" rev="3.0.0" transitive="true">
+            <artifact name="" type="jar" url="https://repo1.maven.org/maven2/org/apache/kafka/kafka-streams/3.0.0/kafka-streams-3.0.0.jar"/>
+        </dependency>
     </dependencies>
 </ivy-module>
