@@ -75,12 +75,11 @@ def vm_info(name=None):
     """
     try:
         infos = __salt__["virt.vm_info"](name)
-        all_vms = {
-            vm_name: {
+        all_vms = {}
+        for vm_name in infos.keys():
+            all_vms[vm_name] = {
                 "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
             }
-            for vm_name in infos.keys()
-        }
     except CommandExecutionError as err:
         all_vms = {}
 
@@ -92,11 +91,9 @@ def vm_info(name=None):
                 stdout=subprocess.PIPE,
             ).communicate()[0]
         )
-        resource_states = {
-            resource.get('id'): resource.get('active') == "true"
-            for resource
-            in crm_status.findall(".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']")
-        }
+        resource_states = {}
+        for resource in crm_status.findall(".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']"):
+            resource_states[resource.get('id')] = resource.get('active') == "true"
         crm_conf = ElementTree.fromstring(
             subprocess.Popen(
                 ["crm", "configure", "show", "xml", "type:primitive"],
