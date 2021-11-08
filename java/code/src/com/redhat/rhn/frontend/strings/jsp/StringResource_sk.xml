@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="column.tag-created" xml:space="preserve">
           <source>Tag Created</source>
-        <target/>
+        <target>Značka vytvorená</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
@@ -97,42 +97,42 @@
       <!-- Generic row labels. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="row.name" xml:space="preserve">
           <source>Name</source>
-        <target/>
+        <target>Názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.description" xml:space="preserve">
           <source>Description</source>
-        <target/>
+        <target>Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.ip" xml:space="preserve">
           <source>IP Address</source>
-        <target/>
+        <target>IP adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.ipv6" xml:space="preserve">
           <source>IPv6 Address</source>
-        <target/>
+        <target>IPv6 adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.hostname" xml:space="preserve">
           <source>Hostname</source>
-        <target/>
+        <target>Názov hostiteľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.macaddress" xml:space="preserve">
           <source>MAC Address</source>
-        <target/>
+        <target>MAC adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
@@ -140,21 +140,21 @@
       <!-- Generic buttons. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="button.create" xml:space="preserve">
           <source>Create</source>
-        <target/>
+        <target>Vytvoriť</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/Details</context>
           </context-group>
       </trans-unit>
       <trans-unit id="button.update" xml:space="preserve">
           <source>Update</source>
-        <target/>
+        <target>Aktualizovať</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/Details</context>
           </context-group>
       </trans-unit>
       <trans-unit id="manysystems.message" xml:space="preserve">
         <source>{0} systems</source>
-        <target/>
+        <target>{0} systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"6 systems"</context>
