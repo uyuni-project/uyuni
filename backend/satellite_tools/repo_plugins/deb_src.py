@@ -248,7 +248,7 @@ class ContentSource:
 
     def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
                  org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
-                 client_cert_file=None, client_key_file=None):
+                 client_cert_file=None, client_key_file=None, channel_arch=""):
         # pylint: disable=W0613
         self.url = url
         self.name = name
