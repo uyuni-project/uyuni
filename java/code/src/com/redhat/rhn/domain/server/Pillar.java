@@ -26,6 +26,7 @@ import org.hibernate.annotations.TypeDefs;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 import javax.persistence.Column;
@@ -308,6 +309,28 @@ public class Pillar implements Identifiable {
     @Override
     public String toString() {
         return pillar.toString();
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (oIn == null || getClass() != oIn.getClass()) {
+            return false;
+        }
+        Pillar pillar1 = (Pillar) oIn;
+        return Objects.equals(id, pillar1.id) &&
+                Objects.equals(minion, pillar1.minion) &&
+                Objects.equals(org, pillar1.org) &&
+                Objects.equals(group, pillar1.group) &&
+                category.equals(pillar1.category) &&
+                Objects.equals(pillar, pillar1.pillar);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, minion, org, group, category, pillar);
     }
 }
 
