@@ -162,7 +162,7 @@
       </trans-unit>
       <trans-unit id="onesystem.message" xml:space="preserve">
         <source>1 system</source>
-        <target/>
+        <target>1 systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"1 system"</context>
@@ -170,7 +170,7 @@
       </trans-unit>
       <trans-unit id="nosystems.message" xml:space="preserve">
         <source>No systems.</source>
-        <target/>
+        <target>Žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
@@ -180,7 +180,7 @@
       </trans-unit>
       <trans-unit id="none.message" xml:space="preserve">
         <source>(none)</source>
-        <target/>
+        <target>(žiadne)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -188,7 +188,7 @@
       </trans-unit>
       <trans-unit id="jsp.testMessage" xml:space="preserve">
         <source>ignore me</source>
-        <target/>
+        <target>ignorujte ma</target>
         <context-group name="ctx">
           <context context-type="sourcefile">None.  Test message</context>
         </context-group>
@@ -196,28 +196,28 @@
       <!-- schedule-options.jspf -->
       <trans-unit id="schedule-options.date" xml:space="preserve">
         <source>Schedule action for no sooner than:</source>
-        <target/>
+        <target>Akciu naplánujte nie skôr ako na:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.selection" xml:space="preserve">
         <source>Date Selection</source>
-        <target/>
+        <target>Výber dátumu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.action-chain" xml:space="preserve">
         <source>Add to:</source>
-        <target/>
+        <target>Pridať k:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.placeholder" xml:space="preserve">
         <source>new action chain</source>
-        <target/>
+        <target>nový reťazec akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
@@ -225,11 +225,11 @@
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value" xml:space="preserve">
         <source>Only valid values for {0} are ({1})</source>
-        <target/>
+        <target>Jediné platné hodnoty pre {0} sú ({1})</target>
       </trans-unit>
       <trans-unit id="errors.suffix" xml:space="preserve">
         <source>&lt;/li&gt;</source>
-        <target/>
+        <target>&lt;/li&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All pages</context>
         </context-group>
