@@ -11064,10 +11064,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Invalid filter template</source>
         <target state="final">过滤器模板无效</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
+      <trans-unit id="contentmanagement.modules_error" xml:space="preserve" approved="yes">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">无法获取频道模块。有关详细信息，请查看服务器日志。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
