@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+# Copyright (c) 2023 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# Red Hat trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate Red Hat trademarks that are incorporated
+# in this software or its documentation.
+#
+
+PARAMS=()
+while (("$#")); do
+    case "$1" in
+    -p | --copy)
+        PARAMS+=("$1")
+        shift
+        ;;
+    -d | --dry-run)
+        PARAMS+=("$1")
+        shift
+        ;;
+    *) # unsupported flags
+        echo "Error: Unsupported parameter $1" >&2
+        echo "Usage: $0 [--dry-run]"
+        exit 1
+        ;;
+    esac
+done
+
+echo "1 ┬ branding sources"
+echo -n "  ├─ Migrate main java"
+./mvn-migrate ../../branding/java/code/src/ ../../branding --include "\.java$" --exclude "/test/" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  ├─ Migrate main resources"
+./mvn-migrate ../../branding/java/code/src/ ../../branding --type main/resources --exclude "\(\.java$\|/test/\)" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  ├─ Migrate test java"
+./mvn-migrate ../../branding/java/code/src/ ../../branding --type test/java --include "/test/.*\.java$" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  └─ Migrate test resources"
+./mvn-migrate ../../branding/java/code/src/ ../../branding --type test/resources --include "/test/" --exclude ".java$" --yes "${PARAMS[@]}"
+echo
