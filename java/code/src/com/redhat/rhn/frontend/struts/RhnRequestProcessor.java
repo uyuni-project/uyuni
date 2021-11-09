@@ -15,29 +15,35 @@
 
 package com.redhat.rhn.frontend.struts;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.manager.acl.AclManager;
 
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.common.serialization.StringSerializer;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.RequestProcessor;
-
 import java.io.IOException;
+import java.util.Properties;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.Properties;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.RequestProcessor;
 
 /**
  * RhnRequestProcessor a custom Struts RequestProcessor that
@@ -46,6 +52,8 @@ import java.util.Properties;
  */
 
 public class RhnRequestProcessor extends RequestProcessor {
+
+    private Producer<String, JsonObject> kafkaProducer;
 
     @Override
     protected void processPopulate(HttpServletRequest request, HttpServletResponse response,
@@ -107,8 +115,11 @@ public class RhnRequestProcessor extends RequestProcessor {
                     //exit method
                     return;
                 }
-                // Publish Kafka event
-                publishEvent(request.getRequestURL() + "?" + request.getQueryString());
+                if (Config.get().getBoolean(ConfigDefaults.KAFKA_PRODUCER_ENABLED)) {
+                    // Publish Kafka event
+                    JsonObject jsonRequest = requestToJson(request);
+                    publishEvent(jsonRequest);
+                }
             }
             //now that we're done with rhn stuff, call RequestProcessor.process()
             super.process(request, response);
@@ -134,20 +145,49 @@ public class RhnRequestProcessor extends RequestProcessor {
     }
 
     /**
+     * Generate a JsonObject with request data
+     *
+     * @param request to parse and convert into a JsonObject
+     */
+    private JsonObject requestToJson(HttpServletRequest request) {
+        JsonObject jsonRequest = new JsonObject();
+        jsonRequest.addProperty("uuid", UUID.randomUUID().toString());
+        jsonRequest.addProperty("uri", request.getRequestURI());
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
+        jsonRequest.add("parameters", gson.toJsonTree(request.getParameterMap()));
+        return jsonRequest;
+    }
+
+    /**
      * Publish a Kafka Event
      *
-     * @param message to publish in Kafka topic
+     * @param jsonObject to publish in a Kafka topic
      */
-    private void publishEvent(final String message){
-        //TODO: Set these properties using a properties file
-        Properties props = new Properties();
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "obarrios.tf.local:9092");
-        props.put("key.serializer", StringSerializer.class.getName());
-        props.put("value.serializer", StringSerializer.class.getName());
-        final Producer<String, String> producer = new KafkaProducer<>(props);
-        final ProducerRecord<String, String> producerRecord = new ProducerRecord<>("suma-events", message);
-        producer.send(producerRecord);
-        producer.close();
+    private void publishEvent(final JsonObject jsonObject) {
+        try {
+            if (kafkaProducer == null) {
+                Properties props = new Properties();
+                props.put(
+                        StreamsConfig.APPLICATION_ID_CONFIG,
+                        Config.get().getString(ConfigDefaults.KAFKA_APPLICATION_ID)
+                );
+                props.put(
+                        StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,
+                        Config.get().getString(ConfigDefaults.KAFKA_BOOTSTRAP_SERVERS)
+                );
+                props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+                props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, GsonSerializer.class.getName());
+                kafkaProducer = new KafkaProducer<>(props);
+            }
+            ProducerRecord<String, JsonObject> record = new ProducerRecord<>(
+                    Config.get().getString(ConfigDefaults.KAFKA_TOPIC),
+                    jsonObject
+            );
+            kafkaProducer.send(record);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void fixCause(ServletException e) {
@@ -177,6 +217,11 @@ public class RhnRequestProcessor extends RequestProcessor {
         evt.setRequest(request);
         evt.setException(e);
         MessageQueue.publish(evt);
+    }
+
+    // Close the Kafka Producer connection
+    protected void finalize() {
+        kafkaProducer.close();
     }
 
 }

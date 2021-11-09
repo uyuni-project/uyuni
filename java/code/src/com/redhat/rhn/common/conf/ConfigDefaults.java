@@ -345,6 +345,14 @@ public class ConfigDefaults {
      */
     public static final String DEFAULT_DOCS_LOCALE = "web.docs_locale";
 
+    /**
+     * Kafka properties
+     */
+    public static final String KAFKA_PRODUCER_ENABLED = "kafka.producer.enabled";
+    public static final String KAFKA_APPLICATION_ID = "kafka.application.id";
+    public static final String KAFKA_BOOTSTRAP_SERVERS = "kafka.bootstrap.servers";
+    public static final String KAFKA_TOPIC = "kafka.topic";
+
     private ConfigDefaults() {
     }
 
@@ -1058,5 +1066,37 @@ public class ConfigDefaults {
      */
     public boolean isForwardRegistrationEnabled() {
         return Config.get().getBoolean(FORWARD_REGISTRATION);
+    }
+
+    /**
+     * Get Kafka publishing
+     * @return true if the Kafka Producer is enabled
+     */
+    public boolean isKafkaProducerEnabled() {
+        return Config.get().getBoolean(KAFKA_PRODUCER_ENABLED);
+    }
+
+    /**
+     * Get Kafka Application Id
+     * @return the Kafka application Id
+     */
+    public String getKafkaApplicationId() {
+        return Config.get().getString(KAFKA_APPLICATION_ID, "susemanager");
+    }
+
+    /**
+     * Get Kafka boostrap servers
+     * @return the Kafka boostrap servers
+     */
+    public String getKafkaBootstrapServers() {
+        return Config.get().getString(KAFKA_BOOTSTRAP_SERVERS, "localhost");
+    }
+
+    /**
+     * Get Kafka default topic
+     * @return the Kafka default topic
+     */
+    public String getKafkaTopic() {
+        return Config.get().getString(KAFKA_TOPIC, "suma-events");
     }
 }

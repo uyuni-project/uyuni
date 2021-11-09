@@ -132,7 +132,11 @@
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
         </dependency>
         <dependency org="org.apache.kafka" name="kafka-streams" rev="3.0.0" transitive="true">
-            <artifact name="" type="jar" url="https://repo1.maven.org/maven2/org/apache/kafka/kafka-streams/3.0.0/kafka-streams-3.0.0.jar"/>
+            <artifact name="kafka-streams" type="jar" url="https://repo1.maven.org/maven2/org/apache/kafka/kafka-streams/3.0.0/kafka-streams-3.0.0.jar"/>
+        </dependency>
+        <dependency org="org.apache.kafka" name="connect-json" rev="3.0.0" transitive="true">
+            <artifact name="connect-json" type="jar" url="https://repo1.maven.org/maven2/org/apache/kafka/connect-json/3.0.0/connect-json-3.0.0.jar"/>
+            <exclude org="javax.ws.rs"/>
         </dependency>
     </dependencies>
 </ivy-module>
