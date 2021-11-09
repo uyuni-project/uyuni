@@ -52,6 +52,7 @@ susemanager-frontend/ @uyuni-project/frontend
 .github/workflows/javascript-lint.yml @uyuni-project/frontend
 .github/workflows/javascript-unit-tests.yml @uyuni-project/frontend
 .github/workflows/typescript-compilation.yml @uyuni-project/frontend
+.yarnrc @uyuni-project/frontend
 
 # Testsuite
 testsuite/ @uyuni-project/qe
