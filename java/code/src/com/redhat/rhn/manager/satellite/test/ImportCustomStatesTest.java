@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.satellite;
+package com.redhat.rhn.manager.satellite.test;
 
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
 
@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.manager.satellite.UpgradeCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 

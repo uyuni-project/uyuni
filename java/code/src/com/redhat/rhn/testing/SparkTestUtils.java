@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,10 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils;
-
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpSession;
+package com.redhat.rhn.testing;
 
 import com.mockobjects.servlet.MockServletInputStream;
 

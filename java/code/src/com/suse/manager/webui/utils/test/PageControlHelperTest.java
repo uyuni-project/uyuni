@@ -16,9 +16,9 @@ package com.suse.manager.webui.utils.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.testing.SparkTestUtils;
 
 import com.suse.manager.webui.utils.PageControlHelper;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -43,11 +43,11 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 
