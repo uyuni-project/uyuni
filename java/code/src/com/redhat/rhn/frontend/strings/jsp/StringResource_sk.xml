@@ -236,7 +236,7 @@
       </trans-unit>
       <trans-unit id="errors.required" xml:space="preserve">
         <source>{0} is required.</source>
-        <target/>
+        <target>Vyžaduje sa {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required fields</context>
           <context context-type="paramnotes">Login is required</context>
@@ -244,35 +244,35 @@
       </trans-unit>
       <trans-unit id="errors.ascii" xml:space="preserve">
         <source>{0} contains invalid characters.  Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
-        <target/>
+        <target>{0} obsahuje neplatné znaky.  Povolené sú len alfanumerické znaky, '-', '_', '.' a '@'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required ascii fields</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.username" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', '.', and '@' are allowed. Please try again.</source>
-        <target/>
+        <target>{0} obsahuje neplatné znaky. Okrem alfanumerických znakov sú povolené '-', '_', '.' a '@'. Skúste to prosím znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required username fields</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.posix" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed.</source>
-        <target/>
+        <target>{0} obsahuje neplatné znaky. Okrem alfanumerických znakov sú povolené '-', '_' a '.'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required posix name fields</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
-        <target/>
+        <target>{0} obsahuje neplatné znaky. Okrem alfanumerických znakov sú povolené '-' a '_'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with configuration channel label field</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.minsize" xml:space="preserve">
         <source>{0} cannot be less than {1}.</source>
-        <target/>
+        <target>{0} nemôže byť menej ako {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -280,7 +280,7 @@
       </trans-unit>
       <trans-unit id="errors.maxsize" xml:space="preserve">
         <source>{0} cannot be greater than {1}.</source>
-        <target/>
+        <target>{0} nemôže byť viac ako {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -288,7 +288,7 @@
       </trans-unit>
       <trans-unit id="errors.notanumber" xml:space="preserve">
         <source>{0} must be a valid number.</source>
-        <target/>
+        <target>{0} musí byť platné číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -296,7 +296,7 @@
       </trans-unit>
       <trans-unit id="errors.decimalvalue" xml:space="preserve">
         <source>{0} must not contain decimal values.</source>
-        <target/>
+        <target>{0} nesmie obsahovať desatinné hodnoty.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="errors.minlength" xml:space="preserve">
         <source>{0} cannot be less than {1} characters.</source>
-        <target/>
+        <target>{0} nemôže byť menej ako {1} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
