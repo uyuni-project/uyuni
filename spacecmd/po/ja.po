@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-07 15:32+0100\n"
-"PO-Revision-Date: 2021-11-10 05:12+0000\n"
+"PO-Revision-Date: 2021-11-10 09:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -705,7 +705,7 @@ msgstr ""
 #: ../src/spacecmd/api.py:81
 #, python-format
 msgid "Could not open to write: %s"
-msgstr "書き込むために開くことができません: %s"
+msgstr "書き込むために開くことができませんでした: %s"
 
 #: ../src/spacecmd/api.py:82
 msgid "Fallback output to stdout"
@@ -714,7 +714,7 @@ msgstr "標準出力に出力します"
 #: ../src/spacecmd/api.py:91
 #, python-format
 msgid "No such API: %s"
-msgstr "そのような API はありません: %s"
+msgstr "そのようなAPIはありません: %s"
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "configchannel_list: List all configuration channels"
@@ -7627,7 +7627,7 @@ msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_listeventhistory instead.\n"
 msgstr ""
-"このメソッドは廃止予定であり、 今後のAPI バージョンで削除される予定です。代わりにsystem_listeventhistoryをお使いください。\n"
+"このメソッドは廃止予定であり、 今後のAPIバージョンで削除される予定です。代わりにsystem_listeventhistoryをお使いください。\n"
 
 #: ../src/spacecmd/system.py:3236
 msgid "system_listevents: List the event history for a system"
