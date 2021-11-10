@@ -435,56 +435,6 @@ public class SaltSSHService {
         return Optional.of(proxyCommand.toString());
     }
 
-    /**
-     * Synchronously executes a salt function on given glob using salt-ssh.
-     *
-     * Before the execution, this method creates an one-time roster corresponding all
-     * minions with the ssh contact method and minions being currently bootstrapped.
-     *
-     * @param call the salt call
-     * @param target the minion list target
-     * @param <R> result type of the salt function
-     * @return the result of the call
-     * @throws SaltException if something goes wrong during command execution or
-     * during manipulation the salt-ssh roster
-     */
-    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, Glob target)
-            throws SaltException {
-        SaltRoster roster = createAllServersRoster();
-        return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
-    }
-
-    /**
-     * Helper method for creating a salt roster containing all minions with ssh contact
-     * method and all minions being currently bootstrapped.
-     * @return roster
-     */
-    private SaltRoster createAllServersRoster() {
-        SaltRoster roster = new SaltRoster();
-
-        // Add temporary systems
-        MinionPendingRegistrationService.getSSHMinions().forEach((mid, minion) ->
-                        roster.addHost(mid,
-                                getSSHUser(),
-                                Optional.empty(),
-                                minion.getSSHPushPort(),
-                                remotePortForwarding(minion.getProxyPath(), minion.getContactMethod()),
-                                sshProxyCommandOption(minion.getProxyPath(),
-                                    minion.getContactMethod(),
-                                    mid,
-                                    minion.getSSHPushPort().orElse(SSH_PUSH_PORT)
-                                ),
-                                getSshPushTimeout(),
-                                minionOpts(mid, minion.getContactMethod()))
-                );
-
-        // Add systems from the database, possible duplicates in roster will be overwritten
-        addSaltSSHMinionsFromDb(roster);
-
-        return roster;
-    }
-
     private boolean addSaltSSHMinionsFromDb(SaltRoster roster) {
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
         minions.forEach(minion -> {
