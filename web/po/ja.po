@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-11-09 14:12+0000\n"
+"PO-Revision-Date: 2021-11-10 05:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2161,12 +2161,12 @@ msgstr "アドバイザリキーワード"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
 msgid "Package Provides Name"
-msgstr "パッケージ提供名"
+msgstr "名前を指定するパッケージ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
 msgid "Provides Name"
-msgstr "提供名"
+msgstr "名前を指定する"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
@@ -2372,7 +2372,7 @@ msgstr "指定したエポック／バージョン／リリースよりも新し
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
 msgid "contains package which provides name equal"
-msgstr "等しい名前を提供するパッケージを含む"
+msgstr "指定した名前が等しいパッケージ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
@@ -2392,11 +2392,11 @@ msgstr "正規表現にマッチするもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
 msgid "provides name"
-msgstr "名前を提供する"
+msgstr "名前が指定されているもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
 msgid "provides name equal"
-msgstr "等しい名前を提供する"
+msgstr "指定した名前が等しいもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
@@ -2420,7 +2420,7 @@ msgstr "パッケージ名を含むもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
 msgid "Contains Package Provides Name"
-msgstr "名前を提供するパッケージ名を含むもの"
+msgstr "名前を指定したパッケージを含むもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
