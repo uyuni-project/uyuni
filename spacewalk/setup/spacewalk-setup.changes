@@ -1,3 +1,5 @@
+- Increase "max_event_size" value for the Salt master (bsc#1191340)
+
 -------------------------------------------------------------------
 Fri Nov 05 13:53:01 CET 2021 - jgonzalez@suse.com
 
