@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-11-10 05:12+0000\n"
+"PO-Revision-Date: 2021-11-10 09:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -3810,7 +3810,7 @@ msgstr "playbook が見つかりませんでした。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
 msgid "Playbook File Name"
-msgstr "playbook ファイル名"
+msgstr "playbookファイル名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
 msgid "Full Path"
