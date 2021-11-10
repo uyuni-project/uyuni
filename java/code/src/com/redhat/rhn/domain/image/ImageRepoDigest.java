@@ -39,7 +39,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
 
     private Long id;
     private String repoDigest;
-    private ImageBuildHistory buildHistory;
+    private ImageInfo imageInfo;
 
     /**
      * @return the id
@@ -79,16 +79,16 @@ public class ImageRepoDigest extends BaseDomainHelper {
      * @return the build history
      */
     @ManyToOne
-    @JoinColumn(name = "image_history_id")
-    public ImageBuildHistory getBuildHistory() {
-        return buildHistory;
+    @JoinColumn(name = "image_info_id")
+    public ImageInfo getImageInfo() {
+        return imageInfo;
     }
 
     /**
-     * @param buildHistoryIn the build history
+     * @param imageInfoIn the image info
      */
-    public void setBuildHistory(ImageBuildHistory buildHistoryIn) {
-        this.buildHistory = buildHistoryIn;
+    public void setImageInfo(ImageInfo imageInfoIn) {
+        this.imageInfo = imageInfoIn;
     }
 
     /**
@@ -100,7 +100,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
         }
         ImageRepoDigest castOther = (ImageRepoDigest) other;
         return new EqualsBuilder()
-                .append(buildHistory, castOther.buildHistory)
+                .append(imageInfo, castOther.imageInfo)
                 .append(repoDigest, castOther.repoDigest)
                 .isEquals();
     }
@@ -110,7 +110,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
      */
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(buildHistory)
+                .append(imageInfo)
                 .append(repoDigest)
                 .toHashCode();
     }

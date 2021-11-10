@@ -31,8 +31,11 @@ import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -97,15 +100,14 @@ public enum SaltStateGeneratorService {
      * @param image the OS image resulting image from an inspection
      * @param bundle the OS image bundle resulting image from an inspection
      * @param bootImage the OS image boot image resulting image from an inspection
-     * @param urlBase the OS Image store URL
-     * @param org the OS Image organization
+     * @param imageInfo the image info
      */
     public void generateOSImagePillar(OSImageInspectSlsResult.Image image, OSImageInspectSlsResult.Bundle bundle,
-                                      OSImageInspectSlsResult.BootImage bootImage, String urlBase, Org org) {
-        try {
+                OSImageInspectSlsResult.BootImage bootImage, ImageInfo imageInfo) {
             SaltPillar pillar = new SaltPillar();
             String name = image.getName();
             String version = image.getVersion();
+            Integer revision = imageInfo.getRevisionNumber();
             String bootImageName = name + "-" + version;
             String localPath = "image/" + bundle.getBasename() + "-" + bundle.getId();
             String bootLocalPath = bundle.getBasename() + "-" + bundle.getId();
@@ -113,8 +115,9 @@ public enum SaltStateGeneratorService {
             Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName,
                                                                           localPath, bootLocalPath);
 
-            Map<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase, name, version,
-                    localPath);
+            String urlBase = OSImageStoreUtils.getOSImageStoreURIForOrg(imageInfo.getOrg());
+            Map<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase,
+                                                                  name, version, revision, localPath);
             pillar.add("boot_images", bootImagePillar);
             pillar.add("images", imagePillar);
 
@@ -124,33 +127,15 @@ public enum SaltStateGeneratorService {
                 }
             }
 
-            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
-                    "org" + org.getId().toString()
-            );
-            Path filePath = dirPath.resolve(
-                    getImagePillarFileName(bundle)
-            );
-
-            if (!dirPath.toFile().exists()) {
-                dirPath.toFile().mkdirs();
-            }
-
-            SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pillar);
-            if (!skipSetOwner) {
-                FileUtils.setAttributes(filePath, "tomcat", "susemanager",
-                        Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
-            }
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+            Pillar pillarEntry = new Pillar("Image" + imageInfo.getId(), pillar.getData(), imageInfo.getOrg());
+            HibernateFactory.getSession().save(pillarEntry);
+            imageInfo.setPillar(pillarEntry);
     }
 
     private Map<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image,
-                                                        OSImageInspectSlsResult.Bundle bundle,
-                                                        OSImageInspectSlsResult.BootImage bootImage, String urlBase,
-                                                        String name, String version, String localPath) {
+                                                    OSImageInspectSlsResult.Bundle bundle,
+                                                    OSImageInspectSlsResult.BootImage bootImage, String urlBase,
+                                                    String name, String version, Integer revision, String localPath) {
         Map<String, Object> imagePillar = new TreeMap<>();
         Map<String, Object> imagePillarBase = new TreeMap<>();
         Map<String, Object> imagePillarDetails = new TreeMap<>();
@@ -178,7 +163,7 @@ public enum SaltStateGeneratorService {
         imagePillarDetails.put("type", image.getType());
         imagePillarDetails.put("url", "ftp://ftp/" + localPath + "/" + image.getFilename());
 
-        imagePillarBase.put(version, imagePillarDetails);
+        imagePillarBase.put(version + "-" + revision, imagePillarDetails);
         imagePillar.put(name, imagePillarBase);
         return imagePillar;
     }

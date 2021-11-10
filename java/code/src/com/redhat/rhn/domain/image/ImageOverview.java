@@ -66,11 +66,14 @@ public class ImageOverview {
     private Action buildAction;
     private Action inspectAction;
     private boolean externalImage;
+    private boolean obsolete;
+    private boolean built;
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
     private Set<ImagePackage> packages;
     private Set<Errata> patches;
+    private Set<ImageFile> imageFiles;
     private Org org;
     private Integer securityErrata;
     private Integer bugErrata;
@@ -196,6 +199,24 @@ public class ImageOverview {
     }
 
     /**
+     * @return true if the image is obsolete (has been replaced in the store)
+     */
+    @Column(name = "obsolete")
+    @Type(type = "yes_no")
+    public boolean isObsolete() {
+        return obsolete;
+    }
+
+    /**
+     * @return true if the image has been successfully built
+     */
+    @Column(name = "built")
+    @Type(type = "yes_no")
+    public boolean isBuilt() {
+        return built;
+    }
+
+    /**
      * @return the custom data values
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
@@ -249,6 +270,14 @@ public class ImageOverview {
     )
     public Set<Errata> getPatches() {
         return patches;
+    }
+
+    /**
+     * @return the files
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    public Set<ImageFile> getImageFiles() {
+        return imageFiles;
     }
 
     /**
@@ -428,6 +457,20 @@ public class ImageOverview {
     }
 
     /**
+     * @param obsoleteIn the obsolete flag
+     */
+    public void setObsolete(boolean obsoleteIn) {
+        this.obsolete = obsoleteIn;
+    }
+
+    /**
+     * @param builtIn the built flag
+     */
+    public void setBuilt(boolean builtIn) {
+        this.built = builtIn;
+    }
+
+    /**
      * @param customDataValuesIn the custom data values
      */
     public void setCustomDataValues(Set<ImageInfoCustomDataValue> customDataValuesIn) {
@@ -453,6 +496,13 @@ public class ImageOverview {
      */
     public void setPatches(Set<Errata> patchesIn) {
         this.patches = patchesIn;
+    }
+
+    /**
+     * @param imageFilesIn the image files
+     */
+    public void setImageFiles(Set<ImageFile> imageFilesIn) {
+        this.imageFiles = imageFilesIn;
     }
 
     /**

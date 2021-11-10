@@ -39,6 +39,19 @@ public class OSImageStoreUtils {
     }
 
     /**
+     * Returns a OS Image Store Path for an Image
+     *
+     * @param image the OS image
+     * @return the full local path
+     */
+    public static String getOSImageStorePathForImage(ImageInfo image) {
+        if (!image.getStore().getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+            throw new IllegalArgumentException("Image store is not OS Image Store");
+        }
+        return getOSImageStorePathForOrg(image.getOrg());
+    }
+
+    /**
      * Returns the OS Image Store Path base local path
      *
      * @return the full local path
@@ -75,5 +88,31 @@ public class OSImageStoreUtils {
      */
     public static String getOSImageStoreRelativeURI(Org org) {
         return "/" + osImageWWWDirectory + "/" + org.getId() + "/";
+    }
+
+    /**
+     * Returns a OS Image File local path
+     *
+     * @param file the image file
+     * @return the local path
+     */
+    public static String getOSImageFilePath(ImageFile file) {
+        if (file.isExternal()) {
+            throw new IllegalArgumentException("External file has no local path");
+        }
+        return getOSImageStorePathForImage(file.getImageInfo()) + file.getFile();
+    }
+
+    /**
+     * Returns a OS Image File URI
+     *
+     * @param file the image file
+     * @return the URI
+     */
+    public static String getOSImageFileURI(ImageFile file) {
+        if (file.isExternal()) {
+            return file.getFile();
+        }
+        return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + file.getFile();
     }
 }

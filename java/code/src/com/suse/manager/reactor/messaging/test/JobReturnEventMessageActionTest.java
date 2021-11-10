@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -98,16 +99,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1354,6 +1351,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     // assert initial revision number
                     assertEquals(1, imgInfo.getRevisionNumber());
                 });
+
         doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
                 digest1,
                 (imgInfo) -> {
@@ -1361,54 +1359,42 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             // reload imgInfo to get the build history
             imgInfo = TestUtils.reload(imgInfo);
             assertNotNull(imgInfo);
+
             // test that the history of the build was updated correctly
-            assertEquals(1, imgInfo.getBuildHistory().size());
-            assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(1, imgInfo.getRepoDigests().size());
             assertEquals(
                     "docker-registry:5000/" + imageName + "@sha256:" + digest1,
-                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream())
+                    imgInfo.getRepoDigests().stream()
                             .findFirst().get().getRepoDigest());
-            assertEquals(1,
-                    imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+            assertEquals(1, imgInfo.getRevisionNumber());
         });
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        doTestContainerImageBuild(server, imageName, imageVersion, profile,
+        ImageInfo imgInfoBuild2 = doTestContainerImageBuild(server, imageName, imageVersion, profile,
                 (imgInfo) -> {
                     // assert revision number incremented
                     assertEquals(2, imgInfo.getRevisionNumber());
-                    // assert ImageInfo instance didn't change after second build
-                    assertEquals(imgInfoBuild1.getId(), imgInfo.getId());
                 });
-        doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
+
+        // build of new revision obsoletes the previous one
+        imgInfoBuild1 = TestUtils.reload(imgInfoBuild1);
+        assertTrue(imgInfoBuild1.isObsolete());
+
+        doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild2,
                 digest2,
                 (imgInfo) -> {
             // reload imgInfo to get the build history
             imgInfo = TestUtils.reload(imgInfo);
             assertNotNull(imgInfo);
             // test that history for the second build is present
-            assertEquals(2, imgInfo.getBuildHistory().size());
-            assertEquals(2, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
-            assertEquals(
-                    "docker-registry:5000/" + imageName + "@sha256:" + digest1,
-                    imgInfo.getBuildHistory().stream()
-                            .filter(hist -> hist.getRevisionNumber() == 1)
-                            .flatMap(h -> h.getRepoDigests().stream())
-                            .findFirst().get().getRepoDigest());
+            assertEquals(1, imgInfo.getRepoDigests().size());
             assertEquals(
                     "docker-registry:5000/" + imageName + "@sha256:" + digest2,
-                    imgInfo.getBuildHistory().stream()
-                            .filter(hist -> hist.getRevisionNumber() == 2)
-                            .flatMap(h -> h.getRepoDigests().stream())
+                    imgInfo.getRepoDigests().stream()
                             .findFirst().get().getRepoDigest());
-            assertEquals(2, imgInfo.getBuildHistory().size());
-            assertTrue(
-                    imgInfo.getBuildHistory().stream().anyMatch(h -> h.getRevisionNumber() == 1));
-            assertTrue(
-                    imgInfo.getBuildHistory().stream().anyMatch(h -> h.getRevisionNumber() == 2));
-
+            assertEquals(2, imgInfo.getRevisionNumber());
         });
     }
 
@@ -1443,13 +1429,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             imgInfo = TestUtils.reload(imgInfo);
             assertNotNull(imgInfo);
             // test that the history of the build was updated correctly
-            assertEquals(1, imgInfo.getBuildHistory().size());
-            assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(1, imgInfo.getRepoDigests().stream().count());
             assertEquals(
                     "docker-registry:5000/" + imageName + "@sha256:" + digest,
-                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream())
+                    imgInfo.getRepoDigests().stream()
                             .findFirst().get().getRepoDigest());
-            assertEquals(1, imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+            assertEquals(1, imgInfo.getRevisionNumber());
         });
 
         HibernateFactory.getSession().flush();
@@ -1461,6 +1446,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(1, imgInfo.getRevisionNumber());
                     assertFalse(imgInfoBuild1.getId().equals(imgInfo.getId()));
                 });
+
         doTestContainerImageInspect(server, imageName, imageVersion2, profile, imgInfoBuild2,
                 digest,
                 (imgInfo) -> {
@@ -1468,18 +1454,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             imgInfo = TestUtils.reload(imgInfo);
             assertNotNull(imgInfo);
             // test that history for the second build is present
-            assertEquals(1, imgInfo.getBuildHistory().size());
-            assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(1, imgInfo.getRepoDigests().size());
             assertEquals(
                     "docker-registry:5000/" + imageName + "@sha256:" + digest,
-                    imgInfo.getBuildHistory().stream()
-                            .filter(hist -> hist.getRevisionNumber() == 1)
-                            .flatMap(h -> h.getRepoDigests().stream())
+                    imgInfo.getRepoDigests().stream()
                             .findFirst().get().getRepoDigest());
-            assertEquals(1, imgInfo.getBuildHistory().size());
-            assertTrue(
-                    imgInfo.getBuildHistory().stream().anyMatch(h -> h.getRevisionNumber() == 1));
-
+            assertEquals(1, imgInfo.getRevisionNumber());
         });
     }
 
@@ -1514,15 +1494,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                              String digest,
                                              Consumer<ImageInfo> assertions) throws Exception {
         // schedule an inspect action
-        ImageInspectAction inspectAction = ActionManager.scheduleImageInspect(
-                user,
-                Collections.singletonList(server.getId()),
-                Optional.empty(),
-                imageVersion,
-                profile.getLabel(),
-                profile.getTargetStore(),
-                Date.from(Instant.now()));
+        Long actionId = ImageInfoFactory.scheduleInspect(imgInfo, new Date(), user);
+
+        ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
         TestUtils.reload(inspectAction);
+
         // Process the image inspect return event
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("$IMAGE$", imageName);
@@ -1568,8 +1544,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // other assertions after build
         assertions.accept(imgInfoBuild.get());
-
-        return imgInfoBuild.get();
+        return imgInfo;
     }
 
     private ImageInfo doTestContainerImageImport(MinionServer server, String imageName, String imageVersion,
@@ -1624,12 +1599,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
+
         doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
+            // reload imgInfo to get the files
+            info = TestUtils.reload(info);
+            // name and version is updated from the Kiwi build result
+            assertEquals("POS_Image_JeOS6", info.getName());
+            assertEquals("6.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
-            assertEquals("foo123", info.getVersion());
             assertNotNull(info.getChecksum());
             assertEquals("a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
-                    info.getChecksum().getChecksum());
+                info.getChecksum().getChecksum());
+            assertEquals("POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+                info.getImageFiles().stream().findFirst().get().getFile());
         });
     }
 
@@ -1651,43 +1633,33 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
-        new File("/srv/susemanager/pillar_data/images").mkdirs();
-
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
         doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
-            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() +
-                    "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
 
-            assertTrue(generatedPillar.exists());
-            Map<String, Object> map;
+            Pillar pillar = user.getOrg().getPillars().stream()
+                .filter(item -> ("Image" + info.getId()).equals(item.getCategory()))
+                .findFirst()
+                .get();
 
-            try (FileInputStream fi = new FileInputStream(generatedPillar)) {
-                map = new Yaml().loadAs(fi, Map.class);
-                assertTrue(map.containsKey("boot_images"));
-                Map<String, Map<String, Map<String, Object>>> bootImages =
+            Map<String, Object> map = pillar.getPillar();
+
+            assertTrue(map.containsKey("boot_images"));
+            Map<String, Map<String, Map<String, Object>>> bootImages =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
-                assertEquals(
+            assertEquals(
                     "ftp://ftp/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
                     bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
-                Map<String, Map<String, Map<String, Object>>> images =
+            Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
-                        images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
-                assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
-                assertEquals("a64dbc025c748bde968b888db6b7b9e3",
-                        images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
-            }
-            catch (IOException e) {
-                fail("Cannot find OS Image generated pillar");
-            }
-            finally {
-                generatedPillar.delete();
-                new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId()).delete();
-            }
+            assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+                        images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
+            assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
+            assertEquals("a64dbc025c748bde968b888db6b7b9e3",
+                        images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
         });
     }
 
@@ -1717,34 +1689,30 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
-            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() +
-                    "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
 
-            assertTrue(generatedPillar.exists());
-            Map<String, Object> map;
+            Pillar pillar = user.getOrg().getPillars().stream()
+                .filter(item -> ("Image" + info.getId()).equals(item.getCategory()))
+                .findFirst()
+                .get();
 
-            try (FileInputStream fi = new FileInputStream(generatedPillar)) {
-                map = new Yaml().loadAs(fi, Map.class);
-                assertTrue(map.containsKey("boot_images"));
-                Map<String, Map<String, Map<String, Object>>> bootImages =
+            Map<String, Object> map = pillar.getPillar();
+
+            assertTrue(map.containsKey("boot_images"));
+            Map<String, Map<String, Map<String, Object>>> bootImages =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
-                assertEquals(
+            assertEquals(
                     "ftp://ftp/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
                     bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
-                Map<String, Map<String, Map<String, Object>>> images =
+            Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
-                        images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
-                assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
-                assertEquals("a64dbc025c748bde968b888db6b7b9e3",
-                        images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
-                assertEquals("gzip", images.get("POS_Image_JeOS6").get("6.0.0").get("compressed"));
-                assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
-                        images.get("POS_Image_JeOS6").get("6.0.0").get("compressed_hash"));
-            }
-            catch (IOException e) {
-                fail("Cannot find OS Image generated pillar");
-            }
+            assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+                        images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
+            assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
+            assertEquals("a64dbc025c748bde968b888db6b7b9e3",
+                        images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
+            assertEquals("gzip", images.get("POS_Image_JeOS6").get("6.0.0-1").get("compressed"));
+            assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
+                        images.get("POS_Image_JeOS6").get("6.0.0-1").get("compressed_hash"));
         });
     }
 
@@ -1789,6 +1757,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
         assertTrue(imgInfoBuild.isPresent());
+        imgInfoBuild.get().setRevisionNumber(1);
 
         actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), user);
 

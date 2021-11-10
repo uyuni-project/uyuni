@@ -113,11 +113,12 @@ public class ImageTestUtils {
      * Create an image info.
      * @param channels the channels used for building the image
      * @param user the user
+     * @param built mark the image as built
      * @return the image info
      */
-    public static ImageInfo createImageInfo(Set<Channel> channels, User user) {
+    public static ImageInfo createImageInfo(Set<Channel> channels, User user, boolean built) {
         return createImageInfo("image-" + TestUtils.randomString(), "latest", channels,
-                user);
+                user, built);
     }
 
     /**
@@ -126,10 +127,11 @@ public class ImageTestUtils {
      * @param version the version of the image
      * @param channels the channels used for building the image
      * @param user the user
+     * @param built mark the image as built
      * @return the image info
      */
     public static ImageInfo createImageInfo(String name, String version,
-            Set<Channel> channels, User user) {
+            Set<Channel> channels, User user, boolean built) {
         ImageInfo image = new ImageInfo();
         image.setName(name);
         image.setVersion(version);
@@ -137,6 +139,7 @@ public class ImageTestUtils {
         image.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         image.setOrg(user.getOrg());
         image.setChannels(channels);
+        image.setBuilt(built);
         TestUtils.saveAndFlush(image);
         return image;
     }
@@ -149,7 +152,7 @@ public class ImageTestUtils {
      * @return the image info
      */
     public static ImageInfo createImageInfo(String name, String version, User user) {
-        return createImageInfo(name, version, (Set<Channel>)null, user);
+        return createImageInfo(name, version, (Set<Channel>)null, user, false);
     }
 
     /**

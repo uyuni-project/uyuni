@@ -46,6 +46,17 @@ CREATE TABLE suseImageInfo
                          REFERENCES suseMinionInfo (server_id)
                          ON DELETE SET NULL,
     external_image CHAR(1) DEFAULT ('N') NOT NULL,
+
+    obsolete       CHAR(1) DEFAULT ('N') NOT NULL,
+
+    built          CHAR(1) DEFAULT ('N') NOT NULL,
+
+    pillar_id      NUMERIC
+                     CONSTRAINT suse_imginfo_pillar_fk
+                       REFERENCES suseSaltPillar (id)
+                       ON DELETE SET NULL,
+    log            TEXT,
+
     created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     modified       TIMESTAMPTZ

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.image;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -36,6 +37,7 @@ import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA512Checksum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -84,44 +86,39 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
-     * Schedule an Image Build
+     * Create ImageInfo
      * @param buildHostId The ID of the build host
      * @param version the tag/version of the resulting image
      * @param profile the profile
-     * @param earliest earliest build
-     * @param user the current user
-     * @return the action ID
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @return the ImageInfo
      */
-    public static Long scheduleBuild(long buildHostId, String version, ImageProfile profile,
-            Date earliest, User user) throws TaskomaticApiException {
+    public static ImageInfo createImageInfo(long buildHostId, String version, ImageProfile profile) {
         MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
 
-        if ((!server.hasContainerBuildHostEntitlement() && profile.asDockerfileProfile().isPresent()) ||
-                (!server.hasOSImageBuildHostEntitlement() && profile.asKiwiProfile().isPresent())) {
+        boolean isDocker = profile.asDockerfileProfile().isPresent();
+        boolean isKiwi = profile.asKiwiProfile().isPresent();
+
+        if ((!server.hasContainerBuildHostEntitlement() && isDocker) ||
+                (!server.hasOSImageBuildHostEntitlement() && isKiwi)) {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 
-        if (profile.asDockerfileProfile().isPresent()) {
+        if (isDocker) {
             version = version.isEmpty() ? "latest" : version;
         }
 
-        // Schedule the build
-        ImageBuildAction action = ActionManager.scheduleImageBuild(user,
-                Collections.singletonList(server.getId()), version, profile, earliest);
-        taskomaticApi.scheduleActionExecution(action);
+        // Create an image info entry
+        ImageInfo info = new ImageInfo();
 
-        // Load or create an image info entry
-        ImageInfo info =
-                lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
-                .orElseGet(ImageInfo::new);
-
-        info.setName(profile.getLabel());
-        info.setVersion(version);
+        if (isDocker) {
+            info.setName(profile.getLabel());
+            info.setVersion(version);
+        }
+        if (isKiwi) {
+            info.setName("Building profile: " + profile.getLabel());
+        }
         info.setStore(profile.getTargetStore());
         info.setOrg(server.getOrg());
-        info.setBuildAction(action);
         info.setProfile(profile);
         info.setImageType(profile.getImageType());
         info.setBuildServer(server);
@@ -142,6 +139,33 @@ public class ImageInfoFactory extends HibernateFactory {
                     .add(new ImageInfoCustomDataValue(cdv, info)));
         }
 
+        save(info);
+        return info;
+    }
+
+
+    /**
+     * Schedule an Image Build
+     * @param buildHostId The ID of the build host
+     * @param version the tag/version of the resulting image
+     * @param profile the profile
+     * @param earliest earliest build
+     * @param user the current user
+     * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Long scheduleBuild(long buildHostId, String version, ImageProfile profile,
+            Date earliest, User user) throws TaskomaticApiException {
+
+        ImageInfo info = createImageInfo(buildHostId, version, profile);
+
+        // Schedule the build
+        ImageBuildAction action = ActionManager.scheduleImageBuild(user,
+                Collections.singletonList(buildHostId), version, profile, earliest);
+        taskomaticApi.scheduleActionExecution(action);
+
+        info.setBuildAction(action);
         save(info);
         return action.getId();
     }
@@ -170,10 +194,10 @@ public class ImageInfoFactory extends HibernateFactory {
                 Optional.ofNullable(image.getBuildAction() == null ? null : image.getBuildAction().getId()),
                 image.getVersion(),
                 image.getName(), image.getStore(), earliest);
-        taskomaticApi.scheduleActionExecution(action);
-
         image.setInspectAction(action);
-        ImageInfoFactory.save(image);
+        save(image);
+
+        taskomaticApi.scheduleActionExecution(action);
 
         return action.getId();
     }
@@ -247,13 +271,47 @@ public class ImageInfoFactory extends HibernateFactory {
         instance.saveObject(imageInfo);
     }
 
+    private static void removeImageFile(String path) {
+        GlobalInstanceHolder.SALT_API
+                .removeFile(Paths.get(path))
+                .orElseThrow(() -> new IllegalStateException("Can't remove image file " + path));
+    }
+
     /**
      * Delete a {@link ImageInfo}.
      *
      * @param imageInfo the image info to delete
      */
     public static void delete(ImageInfo imageInfo) {
+        imageInfo.getImageFiles().stream().forEach(f -> {
+            if (!f.isExternal()) {
+                removeImageFile(OSImageStoreUtils.getOSImageFilePath(f));
+            }
+        });
         instance.removeObject(imageInfo);
+    }
+
+    /**
+     * Delete a {@link ImageInfo} and all obsolete image infos with the
+     *  same name, version and store.
+     *
+     * @param image the image info to delete
+     */
+    public static void deleteWithObsoletes(ImageInfo image) {
+        if (!image.isObsolete() && image.isBuilt()) {
+            CriteriaBuilder builder = getSession().getCriteriaBuilder();
+            CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+            Root<ImageInfo> root = query.from(ImageInfo.class);
+            query.where(builder.and(
+                    builder.equal(root.get("name"), image.getName()),
+                    builder.equal(root.get("version"), image.getVersion()),
+                    builder.equal(root.get("store"), image.getStore().getId()),
+                    builder.isTrue(root.get("obsolete"))));
+            getSession().createQuery(query).getResultList().stream().forEach(obsImage -> {
+                delete(obsImage);
+            });
+        }
+        delete(image);
     }
 
     /**
@@ -282,6 +340,21 @@ public class ImageInfoFactory extends HibernateFactory {
 
         Root<ImageInfo> root = query.from(ImageInfo.class);
         query.where(builder.equal(root.get("buildAction"), action));
+
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup an ImageInfo by image inspect action
+     * @param action the inspect action
+     * @return the optional image info
+     */
+    public static Optional<ImageInfo> lookupByInspectAction(ImageInspectAction action) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+
+        Root<ImageInfo> root = query.from(ImageInfo.class);
+        query.where(builder.equal(root.get("inspectAction"), action));
 
         return getSession().createQuery(query).uniqueResultOptional();
     }
@@ -380,9 +453,9 @@ public class ImageInfoFactory extends HibernateFactory {
                 builder.equal(root.get("name"), name),
                 StringUtils.isEmpty(version) ?
                         builder.isNull(root.get("version")) : builder.equal(root.get("version"), version),
-                builder.equal(root.get("store"), imageStoreId)));
-
-        return getSession().createQuery(query).uniqueResultOptional();
+                builder.equal(root.get("store"), imageStoreId)))
+                .orderBy(builder.desc(root.get("revisionNumber")));
+        return getSession().createQuery(query).setMaxResults(1).uniqueResultOptional();
     }
 
     /**
@@ -443,13 +516,63 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
-     * @return the image build history
+     * @return the image repo digests
      */
-    public static List<ImageBuildHistory> listBuildHistory() {
-        CriteriaQuery<ImageBuildHistory> criteria = getSession()
+    public static List<ImageRepoDigest> listImageRepoDigests() {
+        CriteriaQuery<ImageRepoDigest> criteria = getSession()
                 .getCriteriaBuilder()
-                .createQuery(ImageBuildHistory.class);
-        criteria.from(ImageBuildHistory.class);
+                .createQuery(ImageRepoDigest.class);
+        criteria.from(ImageRepoDigest.class);
         return getSession().createQuery(criteria).getResultList();
     }
+
+    /**
+     * Set image revision to a number higher than other images with the same
+     * name and version
+     * @param image the image info.
+     */
+    public static void updateRevision(ImageInfo image) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+        Root<ImageInfo> root = query.from(ImageInfo.class);
+
+        query.where(builder.and(builder.equal(root.get("name"), image.getName()),
+                                builder.equal(root.get("version"), image.getVersion())))
+                .orderBy(builder.desc(root.get("revisionNumber")));
+        ImageInfo found = getSession().createQuery(query).setMaxResults(1).uniqueResult();
+
+        if (found != image) {
+            /* we have found previous revision - increase the number */
+            image.setRevisionNumber(found.getRevisionNumber() + 1);
+        }
+        else {
+            /* this is the first entry with name-version - start counting from 1 */
+            if (image.getRevisionNumber() == 0) {
+                image.setRevisionNumber(1);
+            }
+        }
+    }
+
+    /**
+     * Assuming the new docker image has been written to the store, set
+     * all previous revisions to obsolete.
+     * @param image the image info.
+     */
+    public static void obsoletePreviousRevisions(ImageInfo image) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+        Root<ImageInfo> root = query.from(ImageInfo.class);
+        query.where(builder.and(
+                builder.equal(root.get("name"), image.getName()),
+                builder.equal(root.get("version"), image.getVersion()),
+                builder.equal(root.get("store"), image.getStore().getId()),
+                builder.isFalse(root.get("obsolete")),
+                builder.lessThan(root.get("revisionNumber"), image.getRevisionNumber())
+                ));
+        getSession().createQuery(query).getResultList().stream().forEach(obsImage -> {
+            obsImage.setObsolete(true);
+        });
+    }
+
+
 }

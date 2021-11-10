@@ -365,8 +365,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
                 user);
 
-        // Image info should be reset
-        assertEquals(1, ImageInfoFactory.listImageInfos(user.getOrg()).size());
+        // Image info should be added
+        assertEquals(2, ImageInfoFactory.listImageInfos(user.getOrg()).size());
         ImageInfo info2 = ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store.getId()).get();
 
         // ImageInfo instance is preserved on new builds if it exists already with the same name/version and store
@@ -380,12 +380,12 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v2.0", profile, new Date(),
                 user);
 
-        // We should have two image infos with same labels but different versions
+        // We should have 3 image infos: suma-3.1-base-v1.0-1, suma-3.1-base-v1.0-2, suma-3.1-base-v2.0-1
         List<ImageInfo> infoList = ImageInfoFactory.listImageInfos(user.getOrg());
 
-        assertEquals(2, infoList.size());
+        assertEquals(3, infoList.size());
         infoList.forEach(i -> assertEquals("suma-3.1-base", i.getName()));
-        assertFalse(infoList.get(0).getVersion().equals(infoList.get(1).getVersion()));
+        //assertFalse(infoList.get(0).getVersion().equals(infoList.get(1).getVersion()));
 
         info = ImageInfoFactory.lookupByName("suma-3.1-base", "v2.0", store.getId()).get();
 
@@ -508,6 +508,20 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         lookup = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
         assertEquals(1, lookup.size());
         assertEquals(img1, lookup.get(0));
+    }
+
+    public void testUpdateRevision() throws Exception {
+        ImageStore store = createImageStore("mystore", user);
+        ImageInfo img1 = createImageInfo("test", "1.0.0", user);
+        ImageInfoFactory.updateRevision(img1);
+        assertEquals(1, img1.getRevisionNumber());
+        ImageInfoFactory.updateRevision(img1);
+        assertEquals(1, img1.getRevisionNumber());
+        ImageInfo img2 = createImageInfo("test", "1.0.0", user);
+        ImageInfoFactory.updateRevision(img2);
+        assertEquals(2, img2.getRevisionNumber());
+        ImageInfoFactory.updateRevision(img2);
+        assertEquals(2, img2.getRevisionNumber());
     }
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {

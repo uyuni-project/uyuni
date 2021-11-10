@@ -311,7 +311,7 @@ public class ImageInfoHandler extends BaseHandler {
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
         }
-        ImageInfoFactory.delete(opt.get());
+        ImageInfoFactory.deleteWithObsoletes(opt.get());
         return 1;
     }
 

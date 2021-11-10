@@ -355,6 +355,24 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>-</td>
               )}
             </tr>
+            {data.imageFiles.length ? (
+              <tr>
+                <td>Files:</td>
+                <td>
+                  <ul>
+                    {data.imageFiles.map((f) => (
+                      <li>
+                        <a href={f.url} target="_blank" rel="noopener noreferrer">
+                          {f.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
             <tr>
               <td>Build Host:</td>
               {data.buildServer ? (
