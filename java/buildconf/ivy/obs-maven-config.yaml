@@ -251,9 +251,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: statistics
     repository: Uyuni_Other
-  - artifact: stax-api
-    package: woodstox
-    repository: Uyuni_Other
   - artifact: stax2-api
     package: woodstox
     repository: Uyuni_Other
