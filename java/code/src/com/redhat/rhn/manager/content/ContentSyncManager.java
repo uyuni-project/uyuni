@@ -638,7 +638,7 @@ public class ContentSyncManager {
 
             // check if this auth item is the "best" available auth for this repo
             // if not, switch it over to the best
-            if (!auth.getRepo().getBestAuth().isPresent()) {
+            if (auth.getRepo().getBestAuth().isEmpty()) {
                 log.warn("no best auth available for repo " + auth.getRepo());
                 continue;
             }
