@@ -1624,7 +1624,7 @@ public class SaltServerActionService {
                 .matcher(scapActionDetails.getParametersContents());
         Matcher ruleMatcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)")
                 .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-)+)")
+        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-|\\/)+)")
                 .matcher(scapActionDetails.getParametersContents());
         Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)")
                 .matcher(scapActionDetails.getParametersContents());
