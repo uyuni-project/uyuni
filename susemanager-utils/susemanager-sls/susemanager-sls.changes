@@ -1,3 +1,4 @@
+- fix openscap scan with tailoring options (bsc#1192321)
 - Fix virt_utils module python 2.6 compatibility (bsc#1191123)
 - Implement using re-activation keys when bootstrapping
 - Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
