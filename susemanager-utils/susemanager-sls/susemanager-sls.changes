@@ -1,3 +1,4 @@
+- fix openscap scan with tailoring options (bsc#1192321)
 - Align allow_vendor_change pillar name across SLS files
 - Use venv-salt-minion instead of salt for docker states
 - Fix libvirt engine config destination for Salt Bundle
