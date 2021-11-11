@@ -62,6 +62,7 @@ sqlnet.log
 backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 yarn-error.log
+branding/target
 
 rel-eng/custom/__pycache__
 
