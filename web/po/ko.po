@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-14 08:12+0000\n"
+"PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -2143,15 +2143,13 @@ msgid "Advisory Keywords"
 msgstr "자문 키워드"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
-#, fuzzy
 msgid "Package Provides Name"
-msgstr "패키지 이름"
+msgstr "패키지 이름 제공"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#, fuzzy
 msgid "Provides Name"
-msgstr "모듈 이름"
+msgstr "이름 제공"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
@@ -2237,14 +2235,12 @@ msgid "Content Lifecycle Projects"
 msgstr "컨텐트 라이프싸이클 프로젝트"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
-#, fuzzy
 msgid "Last Build"
-msgstr "빌드"
+msgstr "마지막 빌드"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
-#, fuzzy
 msgid "never"
-msgstr "심각도"
+msgstr "안 함"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
@@ -2352,9 +2348,8 @@ msgid "contains package with epoch/version/release greater than"
 msgstr "다음을 초과하는 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
-#, fuzzy
 msgid "contains package which provides name equal"
-msgstr "이름이 다음과 같은 패키지 포함"
+msgstr "동일한 이름을 제공하는 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
@@ -2373,14 +2368,12 @@ msgid "matches regular expression"
 msgstr "정규식 일치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "provides name"
-msgstr "서비스 이름"
+msgstr "이름 제공"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "provides name equal"
-msgstr "다음과 같은 버전"
+msgstr "동일한 이름 제공"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
@@ -2403,9 +2396,8 @@ msgid "Contains Package Name"
 msgstr "패키지 이름 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
-#, fuzzy
 msgid "Contains Package Provides Name"
-msgstr "패키지 이름 포함"
+msgstr "이름 제공 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
@@ -3410,25 +3402,25 @@ msgstr ""
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
-msgstr ""
+msgstr "디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/login.tsx:66
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
-msgstr ""
+msgstr "일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/login.tsx:71
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
-msgstr ""
+msgstr "서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/login.tsx:76
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
-msgstr ""
+msgstr "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/login.tsx:94
 msgid "Signing in ..."
@@ -3768,19 +3760,16 @@ msgid "No Playbook found."
 msgstr "플레이북을 찾을 수 없습니다."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
-#, fuzzy
 msgid "Playbook File Name"
-msgstr "플레이북 디렉터리"
+msgstr "플레이북 파일 이름"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
-#, fuzzy
 msgid "Full Path"
-msgstr "경로"
+msgstr "전체 경로"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:142
-#, fuzzy
 msgid "Custom Inventory"
-msgstr "인벤토리 경로"
+msgstr "사용자 지정 인벤토리"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:156
 msgid "Inventory file empty."
@@ -4946,18 +4935,16 @@ msgid "Guest is not running"
 msgstr "게스트가 실행 중이 아님"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
-#, fuzzy
 msgid "Unknown guest"
-msgstr "알 수 없음"
+msgstr "알 수 없는 게스트"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:26
 msgid "Retry"
-msgstr ""
+msgstr "재시도"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
-#, fuzzy
 msgid "Connecting..."
-msgstr "연결성"
+msgstr "연결 중..."
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
@@ -4999,17 +4986,16 @@ msgid "Virtual CPU Count"
 msgstr "가상 CPU 수"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:192
-#, fuzzy
 msgid "Enable UEFI"
-msgstr "IPv6 활성화"
+msgstr "UEFI 활성화"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "UEFI firmware path"
-msgstr ""
+msgstr "UEFI 펌웨어 경로"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:204
 msgid "NVRAM template path"
-msgstr ""
+msgstr "NVRAM 템플릿 경로"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:216
 msgid "Auto-installation Profile"
@@ -5021,15 +5007,15 @@ msgstr "커널 옵션"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:245
 msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr ""
+msgstr "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Define as a cluster resource"
-msgstr ""
+msgstr "클러스터 리소스로 정의"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Path to the cluster shared folder for VM definitions"
-msgstr ""
+msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:291
 msgid "Graphics"
@@ -5101,16 +5087,15 @@ msgstr "그래픽 콘솔"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:40
 msgid "Migrate"
-msgstr ""
+msgstr "마이그레이트"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:58
 msgid "Select where to migrate the virtual guest to."
-msgstr ""
+msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
-#, fuzzy
 msgid "Target Host"
-msgstr "대상 호스트 이름"
+msgstr "대상 호스트"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"
