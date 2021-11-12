@@ -61,7 +61,7 @@ public class Notification {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         if (session != null) {
-            Optional.ofNullable(session.getUserProperties().get("webUserID"))
+            Optional.ofNullable(config.getUserProperties().get("webUserID"))
                     .map(webUserID -> (Long) webUserID)
                     .ifPresentOrElse(userId -> {
                         LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
