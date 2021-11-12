@@ -11058,20 +11058,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">가상 도메인 마이그레이션</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
+      <trans-unit approved="yes" id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+        <target state="final">잘못된 필터 템플릿</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.modules_error" xml:space="preserve">
+        <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
+        <target state="final">채널 모듈을 가져올 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오.</target>
+      </trans-unit>
+    <trans-unit id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       <target state="new" />
   </trans-unit>
       <trans-unit id="login.jsp.satbody3" xml:space="preserve">
         <source> </source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
-        <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
       <target state="new" />
   </trans-unit>
       </body>

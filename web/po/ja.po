@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-08-21 10:11+0000\n"
+"PO-Revision-Date: 2021-11-10 09:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5714,8 +5714,56 @@ msgstr "リソースが見つかりませんでした。"
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
 
+#~ msgid "Sunday"
+#~ msgstr "日曜"
+
+#~ msgid "Monday"
+#~ msgstr "月曜"
+
+#~ msgid "Tuesday"
+#~ msgstr "火曜"
+
+#~ msgid "Wednesday"
+#~ msgstr "水曜"
+
+#~ msgid "Thursday"
+#~ msgstr "木曜"
+
+#~ msgid "Friday"
+#~ msgstr "金曜"
+
+#~ msgid "Saturday"
+#~ msgstr "土曜"
+
+#~ msgid "Package Provides Name"
+#~ msgstr "名前を指定するパッケージ"
+
+#~ msgid "Provides Name"
+#~ msgstr "名前を指定する"
+
 #~ msgid "Live patching based on a specific system"
 #~ msgstr "固有のシステムに基づくライブパッチ処理"
+
+#~ msgid "AppStream modules with defaults"
+#~ msgstr "デフォルトのAppStreamモジュール"
+
+#~ msgid "Last Build"
+#~ msgstr "前回のビルド"
+
+#~ msgid "never"
+#~ msgstr "なし"
+
+#~ msgid "contains package which provides name equal"
+#~ msgstr "指定した名前が等しいパッケージ"
+
+#~ msgid "provides name"
+#~ msgstr "名前が指定されているもの"
+
+#~ msgid "provides name equal"
+#~ msgstr "指定した名前が等しいもの"
+
+#~ msgid "Contains Package Provides Name"
+#~ msgstr "名前を指定したパッケージを含むもの"
 
 #~ msgid ""
 #~ "This environment cannot be deleted since it is being used in an {0}"
@@ -5737,9 +5785,99 @@ msgstr "HTTP エラーコード "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwiオプション"
 
-#, fuzzy
+#~ msgid ""
+#~ "Unable to validate the disk space availability. Please contact your "
+#~ "system admistrator if this problem persists."
+#~ msgstr ""
+#~ "ディスクの空き容量を検証できません。この問題が解決しない場合は、システム管"
+#~ "理者に連絡してください。"
+
+#~ msgid ""
+#~ "Some important directories are missing. Please contact your system "
+#~ "administrator to review the configuration."
+#~ msgstr ""
+#~ "いくつかの重要なディレクトリがありません。システム管理者に連絡して、設定を"
+#~ "確認してください。"
+
+#~ msgid ""
+#~ "The available disk space on the server is running low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "サーバの使用可能なディスク容量が不足しています。ディスク容量を追加するに"
+#~ "は、システム管理者に連絡してください。"
+
+#~ msgid ""
+#~ "The available disk space on the server is critically low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追"
+#~ "加するには、システム管理者に連絡してください。"
+
+#~ msgid "Playbook File Name"
+#~ msgstr "playbookファイル名"
+
+#~ msgid "Full Path"
+#~ msgstr "フルパス"
+
+#~ msgid "Custom Inventory"
+#~ msgstr "カスタムインベントリ"
+
+#~ msgid "Flush Ansible fact cache"
+#~ msgstr "Ansibleファクトキャッシュをフラッシュする"
+
+#~ msgid "Clear the fact cache for every host in inventory"
+#~ msgstr "インベントリ内のすべてのホストのファクトキャッシュをクリアする"
+
+#~ msgid ""
+#~ "The below times are displayed in the server time zone {0}. The scheduled "
+#~ "time will be the server time."
+#~ msgstr ""
+#~ "サーバのタイムゾーン {0} には、以下の時間が表示されます。スケジュールされ"
+#~ "た時間はサーバ時間になります。"
+
 #~ msgid "${defaultChannelName}"
-#~ msgstr "チャンネル名"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Unknown guest"
+#~ msgstr "不明ゲスト"
+
+#~ msgid "Retry"
+#~ msgstr "再試行"
+
+#~ msgid "Connecting..."
+#~ msgstr "接続中..."
+
+#~ msgid "Enable UEFI"
+#~ msgstr "UEFIの有効化"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFIファームウェアパス"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAMテンプレートパス"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "VirtualDomainリソースエージェント以降、クラスタのサポートは無効になってい"
+#~ "ます "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "クラスタリソースとして定義"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "VM定義用のクラスタ共有フォルダへのパス"
+
+#~ msgid "Migrate"
+#~ msgstr "移行"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "仮想ゲストの移行先を選択します。"
+
+#~ msgid "Target Host"
+#~ msgstr "ターゲットホスト"
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"

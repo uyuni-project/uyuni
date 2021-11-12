@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-08-23 04:11+0000\n"
+"PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5641,8 +5641,56 @@ msgstr "리소스를 찾을 수 없음"
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
 
+#~ msgid "Sunday"
+#~ msgstr "일요일"
+
+#~ msgid "Monday"
+#~ msgstr "월요일"
+
+#~ msgid "Tuesday"
+#~ msgstr "화요일"
+
+#~ msgid "Wednesday"
+#~ msgstr "수요일"
+
+#~ msgid "Thursday"
+#~ msgstr "목요일"
+
+#~ msgid "Friday"
+#~ msgstr "금요일"
+
+#~ msgid "Saturday"
+#~ msgstr "토요일"
+
+#~ msgid "Package Provides Name"
+#~ msgstr "패키지 이름 제공"
+
+#~ msgid "Provides Name"
+#~ msgstr "이름 제공"
+
 #~ msgid "Live patching based on a specific system"
 #~ msgstr "특정 시스템 기반 라이브 패치"
+
+#~ msgid "AppStream modules with defaults"
+#~ msgstr "기본값이 있는 앱 스트림 모듈"
+
+#~ msgid "Last Build"
+#~ msgstr "마지막 빌드"
+
+#~ msgid "never"
+#~ msgstr "안 함"
+
+#~ msgid "contains package which provides name equal"
+#~ msgstr "동일한 이름을 제공하는 패키지 포함"
+
+#~ msgid "provides name"
+#~ msgstr "이름 제공"
+
+#~ msgid "provides name equal"
+#~ msgstr "동일한 이름 제공"
+
+#~ msgid "Contains Package Provides Name"
+#~ msgstr "이름 제공 패키지 포함"
 
 #~ msgid ""
 #~ "This environment cannot be deleted since it is being used in an {0}"
@@ -5662,9 +5710,98 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 옵션"
 
-#, fuzzy
+#~ msgid ""
+#~ "Unable to validate the disk space availability. Please contact your "
+#~ "system admistrator if this problem persists."
+#~ msgstr ""
+#~ "디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자"
+#~ "에게 문의하십시오."
+
+#~ msgid ""
+#~ "Some important directories are missing. Please contact your system "
+#~ "administrator to review the configuration."
+#~ msgstr ""
+#~ "일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에"
+#~ "게 문의하십시오."
+
+#~ msgid ""
+#~ "The available disk space on the server is running low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시"
+#~ "스템 관리자에게 문의하십시오."
+
+#~ msgid ""
+#~ "The available disk space on the server is critically low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려"
+#~ "면 시스템 관리자에게 문의하십시오."
+
+#~ msgid "Playbook File Name"
+#~ msgstr "플레이북 파일 이름"
+
+#~ msgid "Full Path"
+#~ msgstr "전체 경로"
+
+#~ msgid "Custom Inventory"
+#~ msgstr "사용자 지정 인벤토리"
+
+#~ msgid "Flush Ansible fact cache"
+#~ msgstr "Ansible 팩트 캐시 플러시"
+
+#~ msgid "Clear the fact cache for every host in inventory"
+#~ msgstr "인벤토리의 모든 호스트에 대한 팩트 캐시 지우기"
+
+#~ msgid ""
+#~ "The below times are displayed in the server time zone {0}. The scheduled "
+#~ "time will be the server time."
+#~ msgstr ""
+#~ "아래 시간은 서버 시간대 {0}에 표시됩니다. 예약된 시간은 서버 시간이 됩니"
+#~ "다."
+
 #~ msgid "${defaultChannelName}"
-#~ msgstr "채널 이름"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Unknown guest"
+#~ msgstr "알 수 없는 게스트"
+
+#~ msgid "Retry"
+#~ msgstr "재시도"
+
+#~ msgid "Connecting..."
+#~ msgstr "연결 중..."
+
+#~ msgid "Enable UEFI"
+#~ msgstr "UEFI 활성화"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFI 펌웨어 경로"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAM 템플릿 경로"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "클러스터 리소스로 정의"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
+
+#~ msgid "Migrate"
+#~ msgstr "마이그레이트"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
+
+#~ msgid "Target Host"
+#~ msgstr "대상 호스트"
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"

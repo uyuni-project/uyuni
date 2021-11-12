@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-08-23 04:11+0000\n"
+"PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8153,6 +8153,14 @@ msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 
+#, python-format
+#~ msgid "Could not open to write: %s"
+#~ msgstr "쓰기 위해 열 수 없음: %s"
+
+#, python-format
+#~ msgid "No such API: %s"
+#~ msgstr "해당 API 없음: %s"
+
 #~ msgid ""
 #~ "usage: distribution_create [options]\n"
 #~ "\n"
@@ -8235,56 +8243,179 @@ msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 #~ msgid "Retracted: %s"
 #~ msgstr "철회됨: %s"
 
-#, fuzzy
 #~ msgid ""
 #~ "schedule_deletearchived: Delete all archived actions older than given "
 #~ "date."
-#~ msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"
+#~ msgstr ""
+#~ "schedule_deletearchived: 지정된 날짜보다 오래된 보관된 모든 작업을 삭제합"
+#~ "니다."
 
-#, fuzzy
 #~ msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
-#~ msgstr "사용법: schedule_deletearchived"
+#~ msgstr "사용법: schedule_deletearchived [yyyymmdd] [옵션]"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "options:\n"
 #~ "  -y, --yes   Confirm without prompt"
 #~ msgstr ""
-#~ "사용법: repo_clearfilters repo <options>\n"
 #~ "\n"
 #~ "옵션:\n"
-#~ "  -y, --yes   메시지 없이 확인\n"
-#~ "\n"
+#~ "  -y, --yes   메시지 없이 확인"
 
-#, fuzzy
 #~ msgid "If no date is provided it will delete all archived actions"
-#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+#~ msgstr "날짜가 제공되지 않으면 보관된 모든 작업이 삭제됩니다."
 
-#, fuzzy
 #~ msgid "Do you want to delete ({}) archived actions? [y/N]"
-#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+#~ msgstr "보관된 작업({})을 삭제하시겠습니까? [예/아니요]"
 
 #~ msgid "No archived actions found."
 #~ msgstr "보관된 작업을 찾을 수 없습니다."
 
-#, fuzzy
 #~ msgid ""
 #~ "schedule_archivecompleted: Archive all completed actions older than given "
 #~ "date."
-#~ msgstr "schedule_listcompleted: 완료된 작업 나열"
+#~ msgstr ""
+#~ "schedule_listcompleted: 지정된 날짜보다 오래된 완료된 모든 작업을 보관합니"
+#~ "다."
 
-#, fuzzy
 #~ msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
-#~ msgstr "사용법: schedule_listcompleted [BEGINDATE] [ENDDATE]"
+#~ msgstr "사용법: schedule_archivecompleted [yyyymmdd] [옵션]"
 
-#, fuzzy
+#~ msgid "If no date is provided it will archive all completed actions"
+#~ msgstr "날짜가 제공되지 않으면 완료된 모든 작업을 보관합니다."
+
 #~ msgid "Do you want to archive ({}) completed actions? [y/N]"
-#~ msgstr "모든({}) 보관된 작업을 삭제하시겠습니까? [예/아니요]"
+#~ msgstr "완료된 작업({})을 보관하시겠습니까? [예/아니요]"
 
-#, fuzzy
 #~ msgid "No completed actions found."
-#~ msgstr "보관된 작업을 찾을 수 없습니다."
+#~ msgstr "완료된 작업을 찾을 수 없습니다."
+
+#, python-format
+#~ msgid "Exception occurred: %s"
+#~ msgstr "발생한 예외: %s"
+
+#~ msgid ""
+#~ "This method is deprecated and will be removed in a future API version. "
+#~ "Please use system_listeventhistory instead.\n"
+#~ msgstr ""
+#~ "이 메서드는 더 이상 사용되지 않으며 향후 API 버전에서 제거될 예정입니다. "
+#~ "대신 system_listeventhistory를 사용하십시오.\n"
+
+#~ msgid "system_listeventhistory: List the event history for a system"
+#~ msgstr "system_listeventhistory: 시스템에 대한 이벤트 이력 나열"
+
+#~ msgid ""
+#~ "usage: system_listeventhistory <SYSTEMS> [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -s START_TIME list only the events happened after the specified time. "
+#~ "[Default: returns all events]\n"
+#~ "  -o OFFSET skip the first events. Ignored if -l is not specified as "
+#~ "well. [Default: 0]\n"
+#~ "  -l LIMIT limit the results to the specified number of events. [Default: "
+#~ "no limit]"
+#~ msgstr ""
+#~ "사용법: system_listeventhistory <SYSTEMS> [옵션]\n"
+#~ "\n"
+#~ "옵션:\n"
+#~ "  -s START_TIME은 지정된 시간 이후에 발생한 이벤트만 나열합니다. [기본값: "
+#~ "모든 이벤트 반환]\n"
+#~ "  -o OFFSET은 첫 번째 이벤트를 건너뜁니다. -l이 지정되지 않은 경우에도 무"
+#~ "시됩니다. [기본값: 0]\n"
+#~ "  -l LIMIT는 결과를 지정된 이벤트 수로 제한합니다. [기본값: 제한 없음]"
+
+#~ msgid "Invalid offset"
+#~ msgstr "유효하지 않은 오프셋"
+
+#~ msgid "Invalid limit"
+#~ msgstr "유효하지 않은 제한"
+
+#, python-format
+#~ msgid "Id:           %s"
+#~ msgstr "Id:           %s"
+
+#, python-format
+#~ msgid "History type: %s"
+#~ msgstr "이력 유형: %s"
+
+#, python-format
+#~ msgid "Status:       %s"
+#~ msgstr "상태:       %s"
+
+#, python-format
+#~ msgid "Summary:      %s"
+#~ msgstr "요약:      %s"
+
+#, python-format
+#~ msgid "Completed:    %s"
+#~ msgstr "완료:    %s"
+
+#~ msgid "system_eventdetails: Retrieve the details of an event for a system"
+#~ msgstr "system_eventdetails: 시스템에 대한 이벤트 세부 사항 검색"
+
+#~ msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
+#~ msgstr "사용법: system_eventdetails <SYSTEM> <EVENT>"
+
+#~ msgid "No event specified"
+#~ msgstr "이벤트가 지정되지 않음"
+
+#~ msgid "Invalid event id"
+#~ msgstr "유효하지 않은 이벤트 id"
+
+#, python-format
+#~ msgid "No event %s found in the history of system %s"
+#~ msgstr "시스템 %s의 이력에서 %s 이벤트를 찾을 수 없습니다."
+
+#, python-format
+#~ msgid "Id:              %s"
+#~ msgstr "Id:              %s"
+
+#, python-format
+#~ msgid "History type:    %s"
+#~ msgstr "이력 유형:    %s"
+
+#, python-format
+#~ msgid "Status:          %s"
+#~ msgstr "상태:          %s"
+
+#, python-format
+#~ msgid "Summary:         %s"
+#~ msgstr "요약:         %s"
+
+#, python-format
+#~ msgid "Created:         %s"
+#~ msgstr "생성됨:         %s"
+
+#, python-format
+#~ msgid "Picked up:       %s"
+#~ msgstr "선택됨:        %s"
+
+#, python-format
+#~ msgid "Completed:       %s"
+#~ msgstr "완료됨:       %s"
+
+#, python-format
+#~ msgid "Earliest action: %s"
+#~ msgstr "가장 빠른 동작: %s"
+
+#, python-format
+#~ msgid "Result message:  %s"
+#~ msgstr "결과 메시지:  %s"
+
+#, python-format
+#~ msgid "Result code:     %s"
+#~ msgstr "결과 코드:     %s"
+
+#~ msgid "Additional info:"
+#~ msgstr "추가 정보:"
+
+#, python-format
+#~ msgid "    Result:          %s"
+#~ msgstr "    결과:          %s"
+
+#, python-format
+#~ msgid "    Detail:          %s"
+#~ msgstr "    세부 사항:              %s"
 
 #~ msgid "schedule_deletearchived: Delete all archived actions"
 #~ msgstr "schedule_deletearchived: 보관된 모든 작업 삭제"

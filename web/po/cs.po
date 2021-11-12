@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-08-09 19:10+0000\n"
+"PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5666,8 +5666,56 @@ msgstr "Zdroj nebyl nalezen."
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
+#~ msgid "Sunday"
+#~ msgstr "Neděle"
+
+#~ msgid "Monday"
+#~ msgstr "Pondělí"
+
+#~ msgid "Tuesday"
+#~ msgstr "Úterý"
+
+#~ msgid "Wednesday"
+#~ msgstr "Středa"
+
+#~ msgid "Thursday"
+#~ msgstr "Čtvrtek"
+
+#~ msgid "Friday"
+#~ msgstr "Pátek"
+
+#~ msgid "Saturday"
+#~ msgstr "Sobota"
+
+#~ msgid "Package Provides Name"
+#~ msgstr "Balíček poskytuje název"
+
+#~ msgid "Provides Name"
+#~ msgstr "Poskytuje název"
+
 #~ msgid "Live patching based on a specific system"
 #~ msgstr "Aktivní záplatování založené na tom kterém systému"
+
+#~ msgid "AppStream modules with defaults"
+#~ msgstr "Moduly AppStream s výchozími hodnotami"
+
+#~ msgid "Last Build"
+#~ msgstr "Poslední sestavení"
+
+#~ msgid "never"
+#~ msgstr "nikdy"
+
+#~ msgid "contains package which provides name equal"
+#~ msgstr "obsahuje balíček poskytující shodný název"
+
+#~ msgid "provides name"
+#~ msgstr "poskytuje název"
+
+#~ msgid "provides name equal"
+#~ msgstr "poskytuje shodný název"
+
+#~ msgid "Contains Package Provides Name"
+#~ msgstr "Obsahuje balíček poskytující název"
 
 #~ msgid ""
 #~ "This environment cannot be deleted since it is being used in an {0}"
@@ -5689,9 +5737,98 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Kiwi options"
 #~ msgstr "Volby kiwi"
 
-#, fuzzy
+#~ msgid ""
+#~ "Unable to validate the disk space availability. Please contact your "
+#~ "system admistrator if this problem persists."
+#~ msgstr ""
+#~ "Nelze ověřit dostupnost místa na disku. Pokud tento problém přetrvává, "
+#~ "obraťte se na správce systému."
+
+#~ msgid ""
+#~ "Some important directories are missing. Please contact your system "
+#~ "administrator to review the configuration."
+#~ msgstr ""
+#~ "Chybí některé důležité adresáře. Obraťte se na správce systému a "
+#~ "zkontrolujte konfiguraci."
+
+#~ msgid ""
+#~ "The available disk space on the server is running low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "Na serveru je málo volného místa na disku. Obraťte se na správce systému, "
+#~ "aby přidal více místa na disku."
+
+#~ msgid ""
+#~ "The available disk space on the server is critically low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "Dostupné místo na disku serveru je kriticky malé. Obraťte se na správce "
+#~ "systému, aby přidal více místa na disku."
+
+#~ msgid "Playbook File Name"
+#~ msgstr "Název souboru scénáře"
+
+#~ msgid "Full Path"
+#~ msgstr "Úplná cesta"
+
+#~ msgid "Custom Inventory"
+#~ msgstr "Vlastní inventář"
+
+#~ msgid "Flush Ansible fact cache"
+#~ msgstr "Vyprázdnění mezipaměti faktů Ansible"
+
+#~ msgid "Clear the fact cache for every host in inventory"
+#~ msgstr "Vymazání mezipaměti faktů pro každého hostitele v inventáři"
+
+#~ msgid ""
+#~ "The below times are displayed in the server time zone {0}. The scheduled "
+#~ "time will be the server time."
+#~ msgstr ""
+#~ "Níže uvedené časy jsou zobrazeny v časovém pásmu serveru {0}. Naplánovaný "
+#~ "čas bude časem serveru."
+
 #~ msgid "${defaultChannelName}"
-#~ msgstr "Název kanálu"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Unknown guest"
+#~ msgstr "Neznámý host"
+
+#~ msgid "Retry"
+#~ msgstr "Další pokus"
+
+#~ msgid "Connecting..."
+#~ msgstr "Připojování..."
+
+#~ msgid "Enable UEFI"
+#~ msgstr "Povolit UEFI"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "Cesta firmwaru UEFI"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "Cesta šablony NVRAM"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "Podpora clusteru je zakázána, protože agent prostředků VirtualDomain "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "Definovat jako klastrový prostředek"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "Cesta ke sdílené složce clusteru pro definice virtuálních počítačů"
+
+#~ msgid "Migrate"
+#~ msgstr "Migrovat"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "Zvolte, kam migrovat virtuální host."
+
+#~ msgid "Target Host"
+#~ msgstr "Cílový hostitel"
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "Jediný virtuální stroj využívající téměř všechny zdroje hostitele"

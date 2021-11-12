@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-08-03 19:10+0000\n"
+"PO-Revision-Date: 2021-10-31 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -2260,11 +2260,11 @@ msgstr "regulárny výraz sa zhoduje s názvom balíka"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
 msgid "equals"
-msgstr "rovná sa"
+msgstr "zhoduje sa"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
 msgid "contains package name equals"
-msgstr "obsahuje názov balíka rovný"
+msgstr "obsahuje názov balíka rovnaký"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 msgid "version lower than"
@@ -2284,7 +2284,7 @@ msgstr "obsahuje balík s obdobím/verziou/vydaním nižším alebo rovným ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "version equal"
-msgstr "verzia rovnaká"
+msgstr "rovnaká verzia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
 msgid "contains package with epoch/version/release equal than"
@@ -2304,7 +2304,7 @@ msgstr "obsahuje balík s obdobím/verziou/vydaním väčším ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
 msgid "equal"
-msgstr "rovnaké"
+msgstr "rovnaký"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "later or equal"
@@ -5232,7 +5232,7 @@ msgstr "Názov domény služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
 msgid "Target hostname"
-msgstr "Názov hostiteľa cieľa"
+msgstr "Názov cieľového hostiteľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
 #: ../html/src/manager/virtualization/pools/pool-properties.js:214
@@ -5692,8 +5692,56 @@ msgstr "Zdroj sa nenašiel."
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
+#~ msgid "Sunday"
+#~ msgstr "Nedeľa"
+
+#~ msgid "Monday"
+#~ msgstr "Pondelok"
+
+#~ msgid "Tuesday"
+#~ msgstr "Utorok"
+
+#~ msgid "Wednesday"
+#~ msgstr "Streda"
+
+#~ msgid "Thursday"
+#~ msgstr "Štvrtok"
+
+#~ msgid "Friday"
+#~ msgstr "Piatok"
+
+#~ msgid "Saturday"
+#~ msgstr "Sobota"
+
+#~ msgid "Package Provides Name"
+#~ msgstr "Balík poskytuje názov"
+
+#~ msgid "Provides Name"
+#~ msgstr "Poskytuje názov"
+
 #~ msgid "Live patching based on a specific system"
 #~ msgstr "Opravy za chodu na základe konkrétneho systému"
+
+#~ msgid "AppStream modules with defaults"
+#~ msgstr "Moduly AppStream s predvolenými nastaveniami"
+
+#~ msgid "Last Build"
+#~ msgstr "Posledné zostavenie"
+
+#~ msgid "never"
+#~ msgstr "nikdy"
+
+#~ msgid "contains package which provides name equal"
+#~ msgstr "obsahuje balík, ktorý poskytuje rovnaký názov"
+
+#~ msgid "provides name"
+#~ msgstr "poskytuje názov"
+
+#~ msgid "provides name equal"
+#~ msgstr "poskytuje rovnaký názov"
+
+#~ msgid "Contains Package Provides Name"
+#~ msgstr "Obsahuje balík poskytujúci názov"
 
 #~ msgid ""
 #~ "This environment cannot be deleted since it is being used in an {0}"
@@ -5715,9 +5763,99 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Kiwi options"
 #~ msgstr "Voľby kiwi"
 
-#, fuzzy
+#~ msgid ""
+#~ "Unable to validate the disk space availability. Please contact your "
+#~ "system admistrator if this problem persists."
+#~ msgstr ""
+#~ "Nie je možné overiť dostupnosť miesta na disku. Prosím, kontaktujte "
+#~ "svojho systémového administrátora, ak tento problém pretrváva."
+
+#~ msgid ""
+#~ "Some important directories are missing. Please contact your system "
+#~ "administrator to review the configuration."
+#~ msgstr ""
+#~ "Chýbajú niektoré dôležité adresáre. Prosím, kontaktujte svojho "
+#~ "systémového administrátora, aby skontroloval konfiguráciu."
+
+#~ msgid ""
+#~ "The available disk space on the server is running low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "Dostupné miesto na disku na serveri je nedostatočné. Prosím, kontaktuje "
+#~ "svojho systémového administrátora, aby pridal viac miesta na disku."
+
+#~ msgid ""
+#~ "The available disk space on the server is critically low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "Dostupné miesto na disku na serveri je kriticky nízke. Prosíme, "
+#~ "kontaktuje svojho systémového administrátora, aby pridal viac miesta na "
+#~ "disku."
+
+#~ msgid "Playbook File Name"
+#~ msgstr "Názov súboru scenára"
+
+#~ msgid "Full Path"
+#~ msgstr "Úplná cesta"
+
+#~ msgid "Custom Inventory"
+#~ msgstr "Vlastný inventár"
+
+#~ msgid "Flush Ansible fact cache"
+#~ msgstr "Vyprázdniť vyrovnávaciu pamäť faktov Ansible"
+
+#~ msgid "Clear the fact cache for every host in inventory"
+#~ msgstr "Vymazať vyrovnávaciu pamäť faktov pre každého hostiteľa v inventári"
+
+#~ msgid ""
+#~ "The below times are displayed in the server time zone {0}. The scheduled "
+#~ "time will be the server time."
+#~ msgstr ""
+#~ "Nižšie uvedené časy sa zobrazujú v časovom pásme servera {0}. Naplánovaný "
+#~ "čas bude časom servera."
+
 #~ msgid "${defaultChannelName}"
-#~ msgstr "Názov kanála"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Unknown guest"
+#~ msgstr "Neznámy hosť"
+
+#~ msgid "Retry"
+#~ msgstr "Znovu"
+
+#~ msgid "Connecting..."
+#~ msgstr "Pripájanie..."
+
+#~ msgid "Enable UEFI"
+#~ msgstr "Povoliť UEFI"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "Cesta k firmvéru UEFI"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "Cesta k šablóne NVRAM"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "Podpora klastra je vypnutá, pretože agent prostriedkov VirtualDomain "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "Definovať ako prostriedok klastra"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
+
+#~ msgid "Migrate"
+#~ msgstr "Migrovať"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
+
+#~ msgid "Target Host"
+#~ msgstr "Cieľový hostiteľ"
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"

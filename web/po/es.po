@@ -5671,12 +5671,48 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
+#~ msgid "Provides Name"
+#~ msgstr "Nombre del filtro"
+
+#, fuzzy
+#~ msgid "Last Build"
+#~ msgstr "Última modificación"
+
+#, fuzzy
+#~ msgid "never"
+#~ msgstr "Gravedad"
+
+#, fuzzy
+#~ msgid "provides name"
+#~ msgstr "Tipo de fuente"
+
+#, fuzzy
 #~ msgid "This channel is mandatory"
 #~ msgstr "Este canal está recomendado"
 
 #, fuzzy
+#~ msgid "Playbook File Name"
+#~ msgstr "Nombre del filtro"
+
+#, fuzzy
+#~ msgid "Full Path"
+#~ msgstr "Ruta"
+
+#, fuzzy
 #~ msgid "${defaultChannelName}"
 #~ msgstr "Nombre del canal"
+
+#, fuzzy
+#~ msgid "Unknown guest"
+#~ msgstr "Nombre de anfitrión del nodo"
+
+#, fuzzy
+#~ msgid "Enable UEFI"
+#~ msgstr "Activar"
+
+#, fuzzy
+#~ msgid "Target Host"
+#~ msgstr "Tipo de fuente"
 
 #, fuzzy
 #~ msgid "Virtual Storage Pool"

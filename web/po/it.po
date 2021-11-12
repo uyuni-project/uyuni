@@ -419,8 +419,9 @@ msgid "Expert"
 msgstr ""
 
 #: ../html/src/components/input/Range.stories.js:34
+#, fuzzy
 msgid "Port range"
-msgstr ""
+msgstr "Nessuna modifica"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
@@ -5523,6 +5524,10 @@ msgstr ""
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr ""
+
+#, fuzzy
+#~ msgid "Last Build"
+#~ msgstr "Crea"
 
 #, fuzzy
 #~ msgid "Virtual Storage Pool"
