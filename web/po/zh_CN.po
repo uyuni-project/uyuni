@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-08-20 05:12+0000\n"
+"PO-Revision-Date: 2021-11-09 09:11+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5550,8 +5550,56 @@ msgstr "未找到资源。"
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
+#~ msgid "Sunday"
+#~ msgstr "星期日"
+
+#~ msgid "Monday"
+#~ msgstr "星期一"
+
+#~ msgid "Tuesday"
+#~ msgstr "星期二"
+
+#~ msgid "Wednesday"
+#~ msgstr "星期三"
+
+#~ msgid "Thursday"
+#~ msgstr "星期四"
+
+#~ msgid "Friday"
+#~ msgstr "星期五"
+
+#~ msgid "Saturday"
+#~ msgstr "星期六"
+
+#~ msgid "Package Provides Name"
+#~ msgstr "软件包提供名称"
+
+#~ msgid "Provides Name"
+#~ msgstr "提供名称"
+
 #~ msgid "Live patching based on a specific system"
 #~ msgstr "根据特定系统在线增补"
+
+#~ msgid "AppStream modules with defaults"
+#~ msgstr "含默认值的 AppStream 模块"
+
+#~ msgid "Last Build"
+#~ msgstr "上次构建"
+
+#~ msgid "never"
+#~ msgstr "从不"
+
+#~ msgid "contains package which provides name equal"
+#~ msgstr "包含所提供名称等于以下值的软件包"
+
+#~ msgid "provides name"
+#~ msgstr "提供名称"
+
+#~ msgid "provides name equal"
+#~ msgstr "提供的名称等于"
+
+#~ msgid "Contains Package Provides Name"
+#~ msgstr "包含提供以下名称的软件包"
 
 #~ msgid ""
 #~ "This environment cannot be deleted since it is being used in an {0}"
@@ -5569,9 +5617,88 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 选项"
 
-#, fuzzy
+#~ msgid ""
+#~ "Unable to validate the disk space availability. Please contact your "
+#~ "system admistrator if this problem persists."
+#~ msgstr "无法验证磁盘空间可用性。如果此问题持续出现，请联系您的系统管理员。"
+
+#~ msgid ""
+#~ "Some important directories are missing. Please contact your system "
+#~ "administrator to review the configuration."
+#~ msgstr "缺少一些重要目录。请联系您的系统管理员查看配置。"
+
+#~ msgid ""
+#~ "The available disk space on the server is running low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr "服务器上的可用磁盘空间不足。请联系您的系统管理员添加更多磁盘空间。"
+
+#~ msgid ""
+#~ "The available disk space on the server is critically low. Please contact "
+#~ "your system administrator to add more disk space."
+#~ msgstr ""
+#~ "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
+
+#~ msgid "Playbook File Name"
+#~ msgstr "剧本文件名"
+
+#~ msgid "Full Path"
+#~ msgstr "完整路径"
+
+#~ msgid "Custom Inventory"
+#~ msgstr "自定义库存"
+
+#~ msgid "Flush Ansible fact cache"
+#~ msgstr "刷新 Ansible 事实缓存"
+
+#~ msgid "Clear the fact cache for every host in inventory"
+#~ msgstr "为正在库存的每个主机清除事实缓存"
+
+#~ msgid ""
+#~ "The below times are displayed in the server time zone {0}. The scheduled "
+#~ "time will be the server time."
+#~ msgstr "服务器时区 {0} 中会显示以下时间。安排的时间将会是服务器时间。"
+
 #~ msgid "${defaultChannelName}"
-#~ msgstr "频道名称"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Unknown guest"
+#~ msgstr "未知 Guest"
+
+#~ msgid "Retry"
+#~ msgstr "重试"
+
+#~ msgid "Connecting..."
+#~ msgstr "正在连接..."
+
+#~ msgid "Enable UEFI"
+#~ msgstr "启用 UEFI"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFI 固件路径"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAM 模板路径"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr "已禁用群集支持，因为 VirtualDomain 资源代理 "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "定义为群集资源"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "群集 VM 定义共享文件夹路径"
+
+#~ msgid "Migrate"
+#~ msgstr "迁移"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "选择要将虚拟 Guest 迁移到哪台主机。"
+
+#~ msgid "Target Host"
+#~ msgstr "目标主机"
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "单个虚拟机几乎使用了所有主机资源"

@@ -5,91 +5,91 @@
       <!-- Generic column headings. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="column.architecture" xml:space="preserve">
           <source>Architecture</source>
-        <target />
+        <target>Architektúra</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/PackageList</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.release" xml:space="preserve">
           <source>Release</source>
-        <target />
+        <target>Vydanie</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channels/manage/DistChannelMap</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.basechannel" xml:space="preserve">
           <source>Base Channel</source>
-        <target />
+        <target>Základný kanál</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.created" xml:space="preserve">
           <source>Created</source>
-        <target />
+        <target>Vytvorený</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.name" xml:space="preserve">
           <source>Name</source>
-        <target />
+        <target>Názov</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.package" xml:space="preserve">
           <source>Package</source>
-        <target />
+        <target>Balík</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/PackageList</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.current-version" xml:space="preserve">
           <source>Current Version</source>
-        <target />
+        <target>Súčasná verzia</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.snapshot-version" xml:space="preserve">
           <source>Snapshot Version</source>
-        <target />
+        <target>Verzia snímky</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.difference" xml:space="preserve">
           <source>Difference</source>
-        <target />
+        <target>Rozdiel</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tag-name" xml:space="preserve">
           <source>Tag Name</source>
-        <target />
+        <target>Názov značky</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.reason" xml:space="preserve">
           <source>Reason</source>
-        <target />
+        <target>Dôvod</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tagged-systems" xml:space="preserve">
           <source>Tagged Systems</source>
-        <target />
+        <target>Označené systémy</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tag-created" xml:space="preserve">
           <source>Tag Created</source>
-        <target />
+        <target>Značka vytvorená</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
@@ -97,42 +97,42 @@
       <!-- Generic row labels. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="row.name" xml:space="preserve">
           <source>Name</source>
-        <target />
+        <target>Názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.description" xml:space="preserve">
           <source>Description</source>
-        <target />
+        <target>Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.ip" xml:space="preserve">
           <source>IP Address</source>
-        <target />
+        <target>IP adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.ipv6" xml:space="preserve">
           <source>IPv6 Address</source>
-        <target />
+        <target>IPv6 adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.hostname" xml:space="preserve">
           <source>Hostname</source>
-        <target />
+        <target>Názov hostiteľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="row.macaddress" xml:space="preserve">
           <source>MAC Address</source>
-        <target />
+        <target>MAC adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
@@ -140,21 +140,21 @@
       <!-- Generic buttons. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="button.create" xml:space="preserve">
           <source>Create</source>
-        <target />
+        <target>Vytvoriť</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/Details</context>
           </context-group>
       </trans-unit>
       <trans-unit id="button.update" xml:space="preserve">
           <source>Update</source>
-        <target />
+        <target>Aktualizovať</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/Details</context>
           </context-group>
       </trans-unit>
       <trans-unit id="manysystems.message" xml:space="preserve">
         <source>{0} systems</source>
-        <target />
+        <target>{0} systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"6 systems"</context>
@@ -162,7 +162,7 @@
       </trans-unit>
       <trans-unit id="onesystem.message" xml:space="preserve">
         <source>1 system</source>
-        <target />
+        <target>1 systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"1 system"</context>
@@ -170,7 +170,7 @@
       </trans-unit>
       <trans-unit id="nosystems.message" xml:space="preserve">
         <source>No systems.</source>
-        <target />
+        <target>Žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
@@ -180,7 +180,7 @@
       </trans-unit>
       <trans-unit id="none.message" xml:space="preserve">
         <source>(none)</source>
-        <target />
+        <target>(žiadne)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -188,7 +188,7 @@
       </trans-unit>
       <trans-unit id="jsp.testMessage" xml:space="preserve">
         <source>ignore me</source>
-        <target />
+        <target>ignorujte ma</target>
         <context-group name="ctx">
           <context context-type="sourcefile">None.  Test message</context>
         </context-group>
@@ -196,28 +196,28 @@
       <!-- schedule-options.jspf -->
       <trans-unit id="schedule-options.date" xml:space="preserve">
         <source>Schedule action for no sooner than:</source>
-        <target />
+        <target>Akciu naplánujte nie skôr ako na:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.selection" xml:space="preserve">
         <source>Date Selection</source>
-        <target />
+        <target>Výber dátumu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.action-chain" xml:space="preserve">
         <source>Add to:</source>
-        <target />
+        <target>Pridať k:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule-options.placeholder" xml:space="preserve">
         <source>new action chain</source>
-        <target />
+        <target>nový reťazec akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
@@ -225,18 +225,18 @@
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value" xml:space="preserve">
         <source>Only valid values for {0} are ({1})</source>
-        <target />
+        <target>Jediné platné hodnoty pre {0} sú ({1})</target>
       </trans-unit>
       <trans-unit id="errors.suffix" xml:space="preserve">
         <source>&lt;/li&gt;</source>
-        <target />
+        <target>&lt;/li&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.required" xml:space="preserve">
         <source>{0} is required.</source>
-        <target />
+        <target>Vyžaduje sa {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required fields</context>
           <context context-type="paramnotes">Login is required</context>
@@ -244,35 +244,35 @@
       </trans-unit>
       <trans-unit id="errors.ascii" xml:space="preserve">
         <source>{0} contains invalid characters.  Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
-        <target />
+        <target>{0} obsahuje neplatné znaky.  Povolené sú len alfanumerické znaky, '-', '_', '.' a '@'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required ascii fields</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.username" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', '.', and '@' are allowed. Please try again.</source>
-        <target />
+        <target>{0} obsahuje neplatné znaky. Okrem alfanumerických znakov sú povolené '-', '_', '.' a '@'. Skúste to prosím znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required username fields</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.posix" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed.</source>
-        <target />
+        <target>{0} obsahuje neplatné znaky. Okrem alfanumerických znakov sú povolené '-', '_' a '.'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required posix name fields</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
-        <target />
+        <target>{0} obsahuje neplatné znaky. Okrem alfanumerických znakov sú povolené '-' a '_'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with configuration channel label field</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errors.minsize" xml:space="preserve">
         <source>{0} cannot be less than {1}.</source>
-        <target />
+        <target>{0} nemôže byť menej ako {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -280,7 +280,7 @@
       </trans-unit>
       <trans-unit id="errors.maxsize" xml:space="preserve">
         <source>{0} cannot be greater than {1}.</source>
-        <target />
+        <target>{0} nemôže byť viac ako {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -288,7 +288,7 @@
       </trans-unit>
       <trans-unit id="errors.notanumber" xml:space="preserve">
         <source>{0} must be a valid number.</source>
-        <target />
+        <target>{0} musí byť platné číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -296,7 +296,7 @@
       </trans-unit>
       <trans-unit id="errors.decimalvalue" xml:space="preserve">
         <source>{0} must not contain decimal values.</source>
-        <target />
+        <target>{0} nesmie obsahovať desatinné hodnoty.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="errors.minlength" xml:space="preserve">
         <source>{0} cannot be less than {1} characters.</source>
-        <target />
+        <target>{0} nemôže byť menej ako {1} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
@@ -24635,8 +24635,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.header" xml:space="preserve">
-        <source>System Activation Key</source>
-        <target />
+        <source>System Reactivation Key</source>
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -29465,79 +29465,79 @@ given channel.</source>
         </context-group>
         <target state="new" />
       </trans-unit>
-    <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
+      <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
           <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
         <source>Modular Data Cleanup</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
         <source>Forward Registration</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
-	<context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
 	</context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="appstream.jsp.streamname" xml:space="preserve">
         <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="appstream.jsp.modulename" xml:space="preserve">
         <source>Module Name</source>
-         <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-    <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
           <source>Optional OVAL Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         <target state="new" />
-  </trans-unit>
-        <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="sdc.details.overview.create_clm_filter" xml:space="preserve">
         <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
         <source>AppStreams</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new" />
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2020-08-24 21:26+0000\n"
+"PO-Revision-Date: 2021-11-07 18:12+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -25,17 +25,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "übrig"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
+"Der Browser Internet Explorer wird nicht unterstützt. Bitte versuchen sie "
+"Firefox, Chrome oder Edge"
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -50,19 +52,19 @@ msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:199
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "Keine anstehendes Wartungsfenster"
 
 #: ../html/src/components/action-schedule.tsx:246
 msgid "Earliest:"
-msgstr ""
+msgstr "Frühestens:"
 
 #: ../html/src/components/action-schedule.tsx:246
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "Wartungsfenster:"
 
 #: ../html/src/components/action-schedule.tsx:276
 msgid "Add to:"
-msgstr ""
+msgstr "Hinzufügen zu:"
 
 #: ../html/src/components/action-schedule.tsx:294
 msgid "Loading the scheduler..."
@@ -82,7 +84,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:88
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "Es gibt nicht gespeicherte Änderungen. Möchten sie fortfahren?"
 
 #: ../html/src/components/config-channels.tsx:123
 msgid "State assignments have been saved."
@@ -90,7 +92,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:130
 msgid "An error occurred on save."
-msgstr ""
+msgstr "Beim speichern ist ein Fehler aufgetreten."
 
 #: ../html/src/components/config-channels.tsx:242
 msgid "No states assigned. Use search to find and assign states."
@@ -115,7 +117,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:185
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: ../html/src/components/config-channels.tsx:297
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
@@ -123,13 +125,13 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:669
 msgid "Confirm"
-msgstr ""
+msgstr "Bestätigen"
 
 #: ../html/src/components/config-channels.tsx:305
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:180
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 msgid "Save Changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 #: ../html/src/components/config-channels.tsx:318
 msgid "Execute States"
@@ -137,7 +139,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
-msgstr ""
+msgstr "Umsortieren"
 
 #: ../html/src/components/config-channels.tsx:337
 msgid "Configuration Channels"
@@ -151,7 +153,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
-msgstr ""
+msgstr "Suchen"
 
 #: ../html/src/components/config-channels.tsx:363
 msgid "Edit the ranking of the configuration channels by dragging them."
@@ -171,7 +173,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:377
 msgid "Assign"
-msgstr ""
+msgstr "Zuweisen"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:71
 msgid "Are you sure you want to {0} {1} "
@@ -197,7 +199,7 @@ msgstr ""
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
@@ -229,15 +231,15 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "Projekt löschen"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
 
 #: ../html/src/components/FormulaForm.tsx:19
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -247,7 +249,7 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "Pflichtfelder bitte ausfüllen: {0}"
 
 #: ../html/src/components/FormulaForm.tsx:155
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
@@ -267,7 +269,7 @@ msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
-msgstr ""
+msgstr " Keine Gruppe"
 
 #: ../html/src/components/formula-selection.tsx:283
 msgid ""
@@ -285,26 +287,26 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ../html/src/components/formula-selection.tsx:310
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
-msgstr ""
+msgstr "Formulare"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: ../html/src/components/formulas/PasswordInput.tsx:72
 msgid "Generate new password"
-msgstr ""
+msgstr "Neues Passwort generieren"
 
 #: ../html/src/components/formulas/PasswordInput.tsx:79
 msgid "Show/hide password"
-msgstr ""
+msgstr "Passwort anzeigen/verstecken"
 
 #: ../html/src/components/formulas/SectionToggle.tsx:23
 msgid "Toggle section visibility"
@@ -327,24 +329,24 @@ msgstr ""
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
-msgstr ""
+msgstr "Einreichen"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "Zeit"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 #: ../html/src/components/input/FormMultiInput.stories.js:94
 #: ../html/src/components/input/FormMultiInput.stories.js:151
 #: ../html/src/components/input/FormMultiInput.stories.js:207
 msgid "Users"
-msgstr ""
+msgstr "Benutzer"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "Vorname"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
@@ -358,36 +360,36 @@ msgstr ""
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "Mindestens 2 Zeichen"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "Nachname"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:118
 #: ../html/src/manager/login/login.tsx:126
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
-msgstr ""
+msgstr "Löschen"
 
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
-msgstr ""
+msgstr "notwendig"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
 #: ../html/src/manager/login/login.tsx:137
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "Mindestens 4 Zeichen"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -395,28 +397,28 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:27
 msgid "Level"
-msgstr ""
+msgstr "Niveau"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "Anfänger"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "Experte"
 
 #: ../html/src/components/input/Range.stories.js:34
 msgid "Port range"
@@ -425,11 +427,11 @@ msgstr ""
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "Beide Werte müssen eine positive Zahl sein"
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
-msgstr ""
+msgstr "Variante"
 
 #: ../html/src/components/input/Select.stories.js:64
 #: ../html/src/components/input/Select.test.tsx:57
@@ -438,15 +440,15 @@ msgstr ""
 
 #: ../html/src/components/input/Select.stories.js:65
 msgid "No flavors"
-msgstr ""
+msgstr "Keine Varianten"
 
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
-msgstr ""
+msgstr "Keine Variante"
 
 #: ../html/src/components/pagination.tsx:19
 msgid "First"
-msgstr ""
+msgstr "Erste"
 
 #: ../html/src/components/pagination.tsx:23
 #: ../html/src/manager/admin/setup/products/products.tsx:392
@@ -454,7 +456,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:662
 msgid "Prev"
-msgstr ""
+msgstr "Vorherige"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/setup/products/products.tsx:398
@@ -467,25 +469,25 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1106
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:557
 msgid "Next"
-msgstr ""
+msgstr "Nächste"
 
 #: ../html/src/components/pagination.tsx:33
 msgid "Last"
-msgstr ""
+msgstr "Letzte"
 
 #: ../html/src/components/pagination.tsx:88
 msgid "Page"
-msgstr ""
+msgstr "Seite"
 
 #: ../html/src/components/pagination.tsx:103
 #: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:869
 msgid "of"
-msgstr ""
+msgstr "von"
 
 #: ../html/src/components/pagination.tsx:109
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "Seite {0} von {1}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
@@ -500,7 +502,7 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:331
 msgid "Hourly:"
-msgstr ""
+msgstr "Stündlich:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:348
 msgid "The action will be executed every hour at the specified minute"
@@ -508,15 +510,15 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:363
 msgid "Daily:"
-msgstr ""
+msgstr "Täglich:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:387
 msgid "Weekly:"
-msgstr ""
+msgstr "Wöchentlich:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:421
 msgid "Monthly:"
-msgstr ""
+msgstr "Monatlich:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:446
 msgid ""
@@ -555,7 +557,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:183
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:106
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 msgid "Edit Configuration Channel"
@@ -564,11 +566,11 @@ msgstr ""
 #: ../html/src/components/systems.tsx:43
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Security Advisory"
-msgstr ""
+msgstr "Sicherheitshinweis"
 
 #: ../html/src/components/systems.tsx:56
 msgid "System Locked"
-msgstr ""
+msgstr "System gesperrt"
 
 #: ../html/src/components/table/SearchPanel.tsx:52
 msgid "Items {0} - {1} of {2}"
@@ -576,16 +578,16 @@ msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:55
 msgid "({0} selected)"
-msgstr ""
+msgstr "({0} ausgewählt)"
 
 #: ../html/src/components/table/SearchPanel.tsx:57
 #: ../html/src/manager/admin/setup/products/products.tsx:320
 msgid "Clear"
-msgstr ""
+msgstr "Leeren"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 msgid "Select All"
-msgstr ""
+msgstr "Alles auswählen"
 
 #: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
@@ -595,23 +597,23 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/network-properties.js:502
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
-msgstr ""
+msgstr "Laden..."
 
 #: ../html/src/components/table/TableDataHandler.tsx:370
 msgid "items per page"
-msgstr ""
+msgstr "Einträge pro Seite"
 
 #: ../html/src/components/tree/tree.tsx:109
 msgid "Invalid data"
-msgstr ""
+msgstr "Ungültige Daten"
 
 #: ../html/src/components/tree/tree.tsx:117
 msgid "No data"
-msgstr ""
+msgstr "Keine Daten"
 
 #: ../html/src/components/utils/HelpLink.tsx:20
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:13
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:6
@@ -638,7 +640,7 @@ msgstr ""
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:31
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:35
 msgid "none"
-msgstr ""
+msgstr "keine"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:33
 msgid "Require this channel"
@@ -720,19 +722,19 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:92
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:58
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "PostgreSQL Datenbank"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:59
 msgid "Server self monitoring"
@@ -741,12 +743,12 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:75
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:77
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiviert"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:86
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:88
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiviert"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:147
 msgid "Server Monitoring"
@@ -758,7 +760,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:151
 msgid "Prometheus"
-msgstr ""
+msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:153
 msgid " exporters to expose metrics about your environment."
@@ -770,7 +772,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:162
 msgid "documentation"
-msgstr ""
+msgstr "Dokumentation"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:164
 msgid " to learn how to to consume these metrics."
@@ -781,14 +783,14 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:282
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:304
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:249
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:269
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:289
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:312
 msgid "Disable"
-msgstr ""
+msgstr "Deaktivieren"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:325
 msgid "SUSE Manager Configuration - Monitoring"
@@ -804,7 +806,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/network-properties.js:224
 #: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "Bootstrap Script"
@@ -812,16 +814,16 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:346
 msgid "Organizations"
-msgstr ""
+msgstr "Organisationen"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
-msgstr ""
+msgstr "Neustart"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:356
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:361
 msgid "Bare-metal systems"
@@ -5521,3 +5523,24 @@ msgstr ""
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr ""
+
+#~ msgid "Sunday"
+#~ msgstr "Sonntag"
+
+#~ msgid "Monday"
+#~ msgstr "Montag"
+
+#~ msgid "Tuesday"
+#~ msgstr "Dienstag"
+
+#~ msgid "Wednesday"
+#~ msgstr "Mittwoch"
+
+#~ msgid "Thursday"
+#~ msgstr "Donnerstag"
+
+#~ msgid "Friday"
+#~ msgstr "Freitag"
+
+#~ msgid "Saturday"
+#~ msgstr "Samstag"

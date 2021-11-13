@@ -24,16 +24,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2018-03-16 11:00+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/spacewalk/"
-"language/de/)\n"
+"PO-Revision-Date: 2021-11-07 18:12+0000\n"
+"Last-Translator: Michael Calmer <mc@suse.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -989,7 +989,7 @@ msgstr "Fehler"
 
 #: ../src/up2date_client/rhnreg_constants.py:307
 msgid "Next"
-msgstr "Weiter"
+msgstr "Nächste"
 
 #: ../src/up2date_client/rhnreg_constants.py:308
 msgid "Back"

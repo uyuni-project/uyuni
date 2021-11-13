@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-08-20 05:12+0000\n"
+"PO-Revision-Date: 2021-11-09 09:11+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8100,6 +8100,14 @@ msgstr "参数 {} 不是字符串类型，而是 {}。"
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "获取 FQDN 时发生未经处理的异常："
 
+#, python-format
+#~ msgid "Could not open to write: %s"
+#~ msgstr "无法打开以写入：%s"
+
+#, python-format
+#~ msgid "No such API: %s"
+#~ msgstr "没有这种 API：%s"
+
 #~ msgid ""
 #~ "usage: distribution_create [options]\n"
 #~ "\n"
@@ -8182,56 +8190,173 @@ msgstr "获取 FQDN 时发生未经处理的异常："
 #~ msgid "Retracted: %s"
 #~ msgstr "已收回：%s"
 
-#, fuzzy
 #~ msgid ""
 #~ "schedule_deletearchived: Delete all archived actions older than given "
 #~ "date."
-#~ msgstr "schedule_deletearchived：删除所有存档的操作"
+#~ msgstr "schedule_deletearchived：删除所有早于给定日期的已存档操作。"
 
-#, fuzzy
 #~ msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
-#~ msgstr "用法：schedule_deletearchived"
+#~ msgstr "用法：schedule_deletearchived [yyyymmdd] [选项]"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "options:\n"
 #~ "  -y, --yes   Confirm without prompt"
 #~ msgstr ""
-#~ "用法：repo_clearfilters repo <选项>\n"
 #~ "\n"
 #~ "选项：\n"
-#~ "  -y、--yes   确认且不提示\n"
-#~ "\n"
+#~ "  -y、--yes   不提示即确认"
 
-#, fuzzy
 #~ msgid "If no date is provided it will delete all archived actions"
-#~ msgstr "您要删除全部 ({}) 个存档的操作吗？[y/N]"
+#~ msgstr "如果不提供日期，将删除所有存档的操作"
 
-#, fuzzy
 #~ msgid "Do you want to delete ({}) archived actions? [y/N]"
-#~ msgstr "您要删除全部 ({}) 个存档的操作吗？[y/N]"
+#~ msgstr "您要删除 ({}) 个存档的操作吗？[y/N]"
 
 #~ msgid "No archived actions found."
 #~ msgstr "未找到存档的操作。"
 
-#, fuzzy
 #~ msgid ""
 #~ "schedule_archivecompleted: Archive all completed actions older than given "
 #~ "date."
-#~ msgstr "schedule_listcompleted：列出已完成的操作"
+#~ msgstr "schedule_archivecompleted：存档所有早于给定日期的已完成操作。"
 
-#, fuzzy
 #~ msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
-#~ msgstr "用法：schedule_listcompleted [开始日期] [结束日期]"
+#~ msgstr "用法：schedule_archivecompleted [yyyymmdd] [选项]"
 
-#, fuzzy
+#~ msgid "If no date is provided it will archive all completed actions"
+#~ msgstr "如果不提供日期，将存档所有已完成操作"
+
 #~ msgid "Do you want to archive ({}) completed actions? [y/N]"
-#~ msgstr "您要删除全部 ({}) 个存档的操作吗？[y/N]"
+#~ msgstr "您要删除 ({}) 个已完成操作吗？[y/N]"
 
-#, fuzzy
 #~ msgid "No completed actions found."
-#~ msgstr "未找到存档的操作。"
+#~ msgstr "未找到已完成操作。"
+
+#, python-format
+#~ msgid "Exception occurred: %s"
+#~ msgstr "发生异常：%s"
+
+#~ msgid ""
+#~ "This method is deprecated and will be removed in a future API version. "
+#~ "Please use system_listeventhistory instead.\n"
+#~ msgstr ""
+#~ "此方法已弃用并会从将来的 API 版本中去除。请改为使用 "
+#~ "system_listeventhistory。\n"
+
+#~ msgid "system_listeventhistory: List the event history for a system"
+#~ msgstr "system_listeventhistory：列出系统的事件历史记录"
+
+#~ msgid ""
+#~ "usage: system_listeventhistory <SYSTEMS> [options]\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -s START_TIME list only the events happened after the specified time. "
+#~ "[Default: returns all events]\n"
+#~ "  -o OFFSET skip the first events. Ignored if -l is not specified as "
+#~ "well. [Default: 0]\n"
+#~ "  -l LIMIT limit the results to the specified number of events. [Default: "
+#~ "no limit]"
+#~ msgstr ""
+#~ "用法：system_listeventhistory <系统> [选项]\n"
+#~ "\n"
+#~ "选项：\n"
+#~ "  -s START_TIME 仅列出在指定的时间之后发生的事件。[默认值：返回所有事件]\n"
+#~ "  -o OFFSET 跳过第一个事件。如果未同时指定 -l，则忽略该选项。[默认值：0]\n"
+#~ "  -l LIMIT 将结果限定为指定数量的事件。[默认值：无限制]"
+
+#~ msgid "Invalid offset"
+#~ msgstr "偏移无效"
+
+#~ msgid "Invalid limit"
+#~ msgstr "限制无效"
+
+#, python-format
+#~ msgid "Id:           %s"
+#~ msgstr "ID：           %s"
+
+#, python-format
+#~ msgid "History type: %s"
+#~ msgstr "历史记录类型：%s"
+
+#, python-format
+#~ msgid "Status:       %s"
+#~ msgstr "状态：            %s"
+
+#, python-format
+#~ msgid "Summary:      %s"
+#~ msgstr "摘要：             %s"
+
+#, python-format
+#~ msgid "Completed:    %s"
+#~ msgstr "完成时间：       %s"
+
+#~ msgid "system_eventdetails: Retrieve the details of an event for a system"
+#~ msgstr "system_eventdetails：检索系统事件的细节"
+
+#~ msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
+#~ msgstr "用法：system_eventdetails <系统> <事件>"
+
+#~ msgid "No event specified"
+#~ msgstr "未指定事件"
+
+#~ msgid "Invalid event id"
+#~ msgstr "事件 ID 无效"
+
+#, python-format
+#~ msgid "No event %s found in the history of system %s"
+#~ msgstr "在系统 %s 的历史记录中找不到事件 %s"
+
+#, python-format
+#~ msgid "Id:              %s"
+#~ msgstr "ID：               %s"
+
+#, python-format
+#~ msgid "History type:    %s"
+#~ msgstr "历史记录类型：%s"
+
+#, python-format
+#~ msgid "Status:          %s"
+#~ msgstr "状态：            %s"
+
+#, python-format
+#~ msgid "Summary:         %s"
+#~ msgstr "摘要：              %s"
+
+#, python-format
+#~ msgid "Created:         %s"
+#~ msgstr "创建时间：       %s"
+
+#, python-format
+#~ msgid "Picked up:       %s"
+#~ msgstr "提取时间：      %s"
+
+#, python-format
+#~ msgid "Completed:       %s"
+#~ msgstr "完成时间：      %s"
+
+#, python-format
+#~ msgid "Earliest action: %s"
+#~ msgstr "最早的操作：%s"
+
+#, python-format
+#~ msgid "Result message:  %s"
+#~ msgstr "结果消息：%s"
+
+#, python-format
+#~ msgid "Result code:     %s"
+#~ msgstr "结果代码：%s"
+
+#~ msgid "Additional info:"
+#~ msgstr "其他信息："
+
+#, python-format
+#~ msgid "    Result:          %s"
+#~ msgstr "    结果：          %s"
+
+#, python-format
+#~ msgid "    Detail:          %s"
+#~ msgstr "    细节：          %s"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search：查找符合给定准则的软件包"
