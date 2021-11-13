@@ -352,17 +352,18 @@ public abstract class AbstractMinionBootstrapper {
      * @return Optional with error message or empty if validation succeeds
      */
     private Optional<String> validateReactivationKey(Optional<String> reactivationKeyLabel) {
-        if (!reactivationKeyLabel.isPresent()) {
+        if (reactivationKeyLabel.isEmpty()) {
             return Optional.empty();
         }
-
-        ActivationKey reactivationKey = ActivationKeyFactory.lookupByKey(reactivationKeyLabel.get());
+        String rLabel = reactivationKeyLabel.get();
+        ActivationKey reactivationKey = ActivationKeyFactory.lookupByKey(rLabel);
 
         if (reactivationKey == null) {
-            return Optional.of("Selected reactivation key not found.");
+            return Optional.of(String.format("Selected reactivation '%s' key not found.", rLabel));
         }
         if (reactivationKey.getServer() == null) {
-            return Optional.of("Selected reactivation key has no server set for reactivation.");
+            return Optional.of(String.format("Selected reactivation key '%s' has no server set for reactivation.",
+                    rLabel));
         }
         return Optional.empty();
     }
