@@ -16,6 +16,8 @@ package com.suse.manager.webui.utils.gson;
 
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson.AuthMethod;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -287,5 +289,16 @@ public class BootstrapParameters {
      */
     public Optional<Long> getProxyId() {
         return proxyId;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("host", host)
+                .append("port", port)
+                .append("activationKeys", activationKeys)
+                .append("proxyId", proxyId)
+                .append("reactivationKey", reactivationKey)
+                .toString();
     }
 }
