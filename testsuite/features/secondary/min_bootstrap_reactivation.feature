@@ -61,6 +61,13 @@ Feature: bootstrapping with reactivation key
      And I follow "History" in the content area
      Then I wait until I see "Server reactivated as Salt minion" text, refreshing the page
 
+  Scenario: Cleanup: delete SLES minion system profile
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap a SLES minion after reactivation tests
      When I follow the left menu "Systems > Bootstrapping"
