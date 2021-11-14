@@ -46,7 +46,9 @@ class XMLRPCSystemTest < XMLRPCBaseTest
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, salt_ssh)
     else
       proxy = @connection.call('system.search_by_name', @sid, $proxy.ip)
-      proxy_id = Integer(proxy.map { |s| s['id'] }.first, 10)
+      # rubocop:disable Lint/NumberConversion
+      proxy_id = proxy.map { |s| s['id'] }.first.to_i
+      # rubocop:enable Lint/NumberConversion
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, proxy_id, salt_ssh)
     end
   end
