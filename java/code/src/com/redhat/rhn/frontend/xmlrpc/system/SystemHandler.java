@@ -7442,7 +7442,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, empty());
-        log.warn("bootstrap called: " + params);
+        log.debug("bootstrap called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7480,7 +7480,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
-        log.warn("bootstrapWithPrivateSshKey called: " + params);
+        log.debug("bootstrapWithPrivateSshKey called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7516,7 +7516,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, of(proxyId.longValue()));
-        log.warn("bootstrap called with proxyId: " + params);
+        log.debug("bootstrap called with proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7556,7 +7556,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
-        log.warn("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7592,7 +7592,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, empty());
-        log.warn("bootstrap called with re-activation key: " + params);
+        log.debug("bootstrap called with re-activation key: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7633,7 +7633,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
-        log.warn("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7672,7 +7672,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, of(proxyId.longValue()));
-        log.warn("bootstrap called with re-activation key and proxyId: " + params);
+        log.debug("bootstrap called with re-activation key and proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7716,7 +7716,7 @@ public class SystemHandler extends BaseHandler {
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
                 of(proxyId.longValue()));
-        log.warn("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
