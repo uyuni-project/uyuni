@@ -1,3 +1,5 @@
+- Fix traceback on handling sslerror (bsc#1187673)
+
 -------------------------------------------------------------------
 Wed Oct 06 09:35:16 CEST 2021 - jgonzalez@suse.com
 
