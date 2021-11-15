@@ -22,12 +22,6 @@ export class PopUp extends React.Component<Props> {
     }
   }
 
-  close() {
-    jQuery("#" + this.props.id)
-      .modal()
-      .hide();
-  }
-
   render() {
     let bootStrapModalOptionalProps: any = {};
 

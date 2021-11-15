@@ -28,22 +28,11 @@ export type DialogProps = {
   content?: React.ReactNode;
   buttons?: React.ReactNode;
   closableModal?: boolean;
-  /** Whether to automatically focus the first input in the opened modal, true by default */
-  autoFocus?: boolean;
   onClosePopUp?: (...args: any[]) => any;
 };
 
 export function Dialog(props: DialogProps) {
   const { onClosePopUp, buttons, ...OtherProps } = props;
-
-  React.useEffect(() => {
-    if (props.autoFocus === false) {
-      return;
-    }
-    jQuery("#" + props.id).on("shown.bs.modal", function () {
-      jQuery("#" + props.id + " :input:visible:enabled:first").focus();
-    });
-  }, []);
 
   return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...OtherProps} />;
 }
