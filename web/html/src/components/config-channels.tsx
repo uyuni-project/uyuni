@@ -7,7 +7,7 @@ import { Utils as MessagesUtils } from "../components/messages";
 import Network from "../utils/network";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { RankingTable } from "../components/ranking-table";
-import { SaltStatePopup } from "../components/salt-state-popup";
+import { SaltStateDialog } from "../components/salt-state-dialog";
 
 function channelKey(channel) {
   return channel.label;
@@ -210,7 +210,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
             <a
               href="#"
               data-toggle="modal"
-              data-target="#saltStatePopUp"
+              data-target="#saltStateDialog"
               onClick={() => {
                 this.showPopUp(currentChannel);
               }}
@@ -382,7 +382,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
             </span>
           )}
 
-          <SaltStatePopup saltState={this.state.showSaltState} onClosePopUp={this.onClosePopUp} />
+          <SaltStateDialog saltState={this.state.showSaltState} onClosePopUp={this.onClosePopUp} />
         </InnerPanel>
       </span>
     );

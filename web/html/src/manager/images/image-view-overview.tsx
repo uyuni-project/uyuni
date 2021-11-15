@@ -4,7 +4,7 @@ import { FromNow } from "components/datetime";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { PopUp } from "components/popup";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { Form } from "components/input/Form";
 import { DateTime as InputDateTime } from "components/input/DateTime";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
@@ -412,7 +412,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
             </tr>
           </tbody>
         </table>
-        <PopUp
+        <LegacyDialog
           id="instance-details-popup"
           title={t("Instance Details for '{0}'", this.state.instancePopupContent.name)}
           content={this.state.instancePopupContent.content}
@@ -717,7 +717,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
       </div>
     );
 
-    return <PopUp id="build-modal" content={form} title={t("Rebuild Image")} footer={buttons} />;
+    return <LegacyDialog id="build-modal" content={form} title={t("Rebuild Image")} footer={buttons} />;
   }
 }
 
@@ -790,7 +790,7 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
       </div>
     );
 
-    return <PopUp id="inspect-modal" content={form} title={t("Reinspect Image")} footer={buttons} />;
+    return <LegacyDialog id="inspect-modal" content={form} title={t("Reinspect Image")} footer={buttons} />;
   }
 }
 

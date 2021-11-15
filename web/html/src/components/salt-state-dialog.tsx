@@ -1,10 +1,10 @@
 import * as React from "react";
 import { AceEditor } from "./ace-editor";
 import { LinkButton } from "./buttons";
-import { PopUp } from "./popup";
+import { LegacyDialog } from "./dialog/LegacyDialog";
 
 function channelIcon(channel) {
-  let iconClass, iconTitle;
+  let iconClass: string, iconTitle: string;
   if (channel.type === "state") {
     iconClass = "fa spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
@@ -16,21 +16,21 @@ function channelIcon(channel) {
   return <i className={iconClass} title={iconTitle} />;
 }
 
-type SaltStatePopupProps = {
+type SaltStateDialogProps = {
   saltState?: {
     id: string;
     name: string;
     content: React.ReactNode;
   };
-  onClosePopUp: () => any;
+  onClosePopUp: () => void;
 };
 
-class SaltStatePopup extends React.Component<SaltStatePopupProps> {
+export class SaltStateDialog extends React.Component<SaltStateDialogProps> {
   render() {
-    let popUpContent, icon, title, footer;
+    let content, icon, title, footer;
 
     if (this.props.saltState) {
-      popUpContent = (
+      content = (
         <AceEditor
           className="form-control"
           id="content-state"
@@ -64,16 +64,14 @@ class SaltStatePopup extends React.Component<SaltStatePopupProps> {
     }
 
     return (
-      <PopUp
+      <LegacyDialog
         title={title}
         className="modal-lg"
-        id="saltStatePopUp"
-        content={popUpContent}
+        id="saltStateDialog"
+        content={content}
         onClosePopUp={this.props.onClosePopUp}
         footer={footer}
       />
     );
   }
 }
-
-export { SaltStatePopup };

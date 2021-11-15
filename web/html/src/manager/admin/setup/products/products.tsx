@@ -10,7 +10,7 @@ import { SearchField } from "components/table/SearchField";
 import { ModalLink } from "components/dialog/ModalLink";
 import { Button, AsyncButton } from "components/buttons";
 import { SCCDialog } from "./products-scc-dialog";
-import { PopUp } from "components/popup";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { CustomDiv } from "components/custom-objects";
 import { Toggler } from "components/toggler";
 import { HelpLink } from "components/utils/HelpLink";
@@ -1066,7 +1066,7 @@ const ChannelsPopUp = (props) => {
         />
       </div>
     ) : null;
-  return <PopUp id="show-channels-popup" title={titlePopup} content={contentPopup} className="modal-xs" />;
+  return <LegacyDialog id="show-channels-popup" title={titlePopup} content={contentPopup} className="modal-xs" />;
 };
 
 const decodeChannelStatus = (status) => {

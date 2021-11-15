@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CsvLink, SystemLabel } from "./subscription-matching-util";
-import { PopUp } from "components/popup";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
@@ -152,7 +152,7 @@ class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
     );
 
     return (
-      <PopUp
+      <LegacyDialog
         title={t("Unmatched systems")}
         id="unmatchedProductsPopUp"
         content={popUpContent}

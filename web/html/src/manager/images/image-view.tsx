@@ -11,7 +11,7 @@ import { Utils as MessagesUtils } from "components/messages";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { PopUp } from "components/popup";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { TabContainer } from "components/tab-container";
 import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPatches } from "./image-view-patches";
@@ -731,7 +731,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
           }
           onConfirm={() => this.props.onDelete(this.state.selectedItems)}
         />
-        <PopUp
+        <LegacyDialog
           id="instance-details-popup"
           title={t("Instance Details for '{0}'", this.state.instancePopupContent.name)}
           content={this.state.instancePopupContent.content}

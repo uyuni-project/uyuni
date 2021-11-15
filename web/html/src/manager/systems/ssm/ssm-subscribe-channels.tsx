@@ -9,7 +9,7 @@ import { Column } from "components/table/Column";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Utils as MessagesUtils } from "components/messages";
 import { ChannelLink, ActionLink, ActionChainLink, SystemLink } from "components/links";
-import { PopUp } from "components/popup";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { Toggler } from "components/toggler";
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import SpaRenderer from "core/spa/spa-renderer";
@@ -61,7 +61,7 @@ type ServersListPopupProps = {
 class ServersListPopup extends React.Component<ServersListPopupProps> {
   render() {
     return (
-      <PopUp
+      <LegacyDialog
         title={this.props.title + " " + this.props.channelName}
         className="modal-lg"
         id="channelServersPopup"

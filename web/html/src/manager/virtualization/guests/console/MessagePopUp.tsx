@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PopUp } from "components/popup";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { Loading } from "components/utils/Loading";
 import { Form } from "components/input/Form";
 import { Password } from "components/input/Password";
@@ -42,7 +42,7 @@ export function MessagePopUp(props: Props) {
   };
 
   return (
-    <PopUp
+    <LegacyDialog
       id={props.id}
       hideHeader
       content={popupContent()}
