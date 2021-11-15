@@ -1,3 +1,6 @@
+- Use EL8 Client Tools for EL8 clones, as CentOS8 will be end of
+  life by the end of the year
+
 -------------------------------------------------------------------
 Fri Sep 17 12:12:12 CEST 2021 - jgonzalez@suse.com
 
