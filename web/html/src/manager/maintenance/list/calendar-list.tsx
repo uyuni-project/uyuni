@@ -105,7 +105,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           </Form>
         }
         onConfirm={() => props.onDelete(addStrategy())}
-        onClosePopUp={() => setCalendarToDelete({})}
+        onClose={() => setCalendarToDelete({})}
       />
     </div>
   );

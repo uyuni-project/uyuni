@@ -66,7 +66,7 @@ export function DangerDialog(props: Props) {
       content={props.content}
       title={props.title}
       footer={buttons}
-      onClosePopUp={props.onClosePopUp}
+      onClose={props.onClose}
     />
   );
 }

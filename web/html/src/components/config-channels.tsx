@@ -382,7 +382,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
             </span>
           )}
 
-          <SaltStateDialog saltState={this.state.showSaltState} onClosePopUp={this.onClosePopUp} />
+          <SaltStateDialog saltState={this.state.showSaltState} onClose={this.onClosePopUp} />
         </InnerPanel>
       </span>
     );

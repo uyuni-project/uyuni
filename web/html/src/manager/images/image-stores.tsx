@@ -226,7 +226,7 @@ class ImageStores extends React.Component<Props, State> {
           }
           item={this.state.selected}
           onConfirm={(item) => this.deleteStores([item.id])}
-          onClosePopUp={() => this.selectStore(undefined)}
+          onClose={() => this.selectStore(undefined)}
         />
         <DeleteDialog
           id="delete-selected-modal"

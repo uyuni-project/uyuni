@@ -12,13 +12,13 @@ type DeleteDialogProps = LegacyDialogProps & {
  * A pop-up dialog for delete confirmation.
  * It contains a 'Delete' and a 'Cancel' button.
  * Related data may be passed with the 'item' property.
- * This 'item' will be passed to the 'onConfirm' and 'onClosePopUp' handlers.
+ * This 'item' will be passed to the 'onConfirm' and 'onClose' handlers.
  */
 export function DeleteDialog(props: DeleteDialogProps) {
   return (
     <DangerDialog
       id={props.id}
-      onClosePopUp={props.onClosePopUp}
+      onClose={props.onClose}
       className={props.className}
       title={props.title}
       content={props.content}

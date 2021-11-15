@@ -65,7 +65,7 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
         title={this.props.title + " " + this.props.channelName}
         className="modal-lg"
         id="channelServersPopup"
-        onClosePopUp={this.props.onClosePopUp}
+        onClose={this.props.onClosePopUp}
         content={
           <Table
             data={this.props.servers}

@@ -8,7 +8,6 @@ declare global {
 }
 
 export type LegacyDialogProps = {
-  /** The id of the html div tag */
   id: string;
   /** The css className for the 'modal-dialog' div */
   className?: string;
@@ -19,8 +18,8 @@ export type LegacyDialogProps = {
   footer?: React.ReactNode;
   hideHeader?: boolean;
   closableModal?: boolean;
-  /** A callback function with no parameters */
-  onClosePopUp?: () => void;
+  /** Callback for when the dialog is closed */
+  onClose?: () => void;
 };
 
 export function openLegacyDialog(dialogId: string) {
@@ -33,8 +32,8 @@ export function closeLegacyDialog(dialogId: string) {
 
 export const LegacyDialog = (props: LegacyDialogProps) => {
   useEffect(() => {
-    if (props.onClosePopUp) {
-      jQuery("#" + props.id).on("hidden.bs.modal", () => props.onClosePopUp?.());
+    if (props.onClose) {
+      jQuery("#" + props.id).on("hidden.bs.modal", () => props.onClose?.());
     }
   }, []);
 

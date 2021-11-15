@@ -84,7 +84,7 @@ const CreatorPanel = (props: Props) => {
             setItem: setStateItem,
             errors,
           })}
-          onClosePopUp={() => setOpen(false)}
+          onClose={() => setOpen(false)}
           footer={
             <React.Fragment>
               <div className="btn-group col-lg-6">

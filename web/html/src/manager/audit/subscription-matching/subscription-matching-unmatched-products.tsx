@@ -156,7 +156,7 @@ class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
         title={t("Unmatched systems")}
         id="unmatchedProductsPopUp"
         content={popUpContent}
-        onClosePopUp={this.props.onClosePopUp}
+        onClose={this.props.onClosePopUp}
       />
     );
   }

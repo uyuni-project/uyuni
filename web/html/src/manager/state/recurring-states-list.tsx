@@ -140,7 +140,7 @@ class RecurringStatesList extends React.Component<Props, State> {
               title={t("Delete Recurring State Schedule")}
               content={t("Are you sure you want to delete the selected item?")}
               onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
-              onClosePopUp={() => this.selectToDelete(null)}
+              onClose={() => this.selectToDelete(null)}
             />
           </div>
         </div>

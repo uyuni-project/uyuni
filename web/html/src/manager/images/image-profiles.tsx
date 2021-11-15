@@ -233,7 +233,7 @@ class ImageProfiles extends React.Component<Props, State> {
           }
           item={this.state.selected}
           onConfirm={(item) => this.deleteProfiles([item.profileId])}
-          onClosePopUp={() => this.selectProfile(undefined)}
+          onClose={() => this.selectProfile(undefined)}
         />
         <DeleteDialog
           id="delete-selected-modal"

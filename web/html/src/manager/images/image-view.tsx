@@ -714,7 +714,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
           }
           item={this.state.selected}
           onConfirm={(item) => this.props.onDelete([item.id])}
-          onClosePopUp={() => this.selectImage(undefined)}
+          onClose={() => this.selectImage(undefined)}
         />
         <DeleteDialog
           id="delete-selected-modal"

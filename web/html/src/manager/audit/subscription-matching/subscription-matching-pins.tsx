@@ -179,7 +179,7 @@ class Pins extends React.Component<PinsProps> {
           className="modal-lg"
           id="addPinPopUp"
           content={popUpContent}
-          onClosePopUp={this.closePopUp}
+          onClose={this.closePopUp}
         />
       </div>
     );

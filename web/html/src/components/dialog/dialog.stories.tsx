@@ -21,7 +21,7 @@ storiesOf("Dialogs", module)
           </span>
         }
         onConfirm={() => alert("deleted pressed")}
-        onClosePopUp={() => alert("modal closed")}
+        onClose={() => alert("modal closed")}
       />
     </div>
   ))

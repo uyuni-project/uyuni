@@ -89,7 +89,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
           </>
         }
         onConfirm={() => props.onDelete(scheduleToDelete)}
-        onClosePopUp={() => setScheduleToDelete({})}
+        onClose={() => setScheduleToDelete({})}
       />
     </>
   );

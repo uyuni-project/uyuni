@@ -22,7 +22,7 @@ type SaltStateDialogProps = {
     name: string;
     content: React.ReactNode;
   };
-  onClosePopUp: () => void;
+  onClose: () => void;
 };
 
 export class SaltStateDialog extends React.Component<SaltStateDialogProps> {
@@ -69,7 +69,7 @@ export class SaltStateDialog extends React.Component<SaltStateDialogProps> {
         className="modal-lg"
         id="saltStateDialog"
         content={content}
-        onClosePopUp={this.props.onClosePopUp}
+        onClose={this.props.onClose}
         footer={footer}
       />
     );

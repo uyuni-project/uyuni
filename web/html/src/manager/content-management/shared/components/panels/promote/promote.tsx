@@ -67,7 +67,7 @@ const Promote = (props: Props) => {
         id={modalNameId}
         closableModal={false}
         className="modal-lg"
-        onClosePopUp={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         content={
           isLoading ? (
             <Loading text={t("Promoting project..")} />

@@ -82,7 +82,7 @@ const Build = ({
         title={t("Build Project")}
         closableModal={false}
         className="modal-lg"
-        onClosePopUp={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         content={
           isLoading ? (
             <Loading text={t("Building project..")} />
