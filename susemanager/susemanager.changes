@@ -1,3 +1,5 @@
+- Reorganize bootstrap SSL state
+- Add missing packages on SSL bootstrap of Debian-10 and SLES-15
 - Update translation strings
 
 -------------------------------------------------------------------
