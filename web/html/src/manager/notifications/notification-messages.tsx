@@ -10,7 +10,7 @@ import { Utils } from "utils/functions";
 import { AsyncButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
 import escapeHtml from "html-react-parser";
-import { Dialog } from "components/dialog/LegacyDialog";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -541,7 +541,11 @@ class NotificationMessages extends React.Component<Props, State> {
               )}
             />
           </Table>
-          <Dialog id="notifications-popup-dialog" title={this.buildPopupSummary()} content={this.buildPopupDetails()} />
+          <LegacyDialog
+            id="notifications-popup-dialog"
+            title={this.buildPopupSummary()}
+            content={this.buildPopupDetails()}
+          />
         </TopPanel>
       );
     } else {

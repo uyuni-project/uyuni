@@ -21,7 +21,7 @@ export function closeDialog(modalId: string) {
   return closeModalPromise;
 }
 
-export type DialogProps = {
+export type LegacyDialogProps = {
   id: string;
   className?: string;
   title?: React.ReactNode;
@@ -31,7 +31,7 @@ export type DialogProps = {
   onClosePopUp?: (...args: any[]) => any;
 };
 
-export function Dialog(props: DialogProps) {
+export function LegacyDialog(props: LegacyDialogProps) {
   const { onClosePopUp, buttons, ...OtherProps } = props;
 
   return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...OtherProps} />;

@@ -15,6 +15,7 @@ type Props = {
   onClosePopUp?: () => any;
 };
 
+// PopUp is not shown by default and must be opened by a util
 export class PopUp extends React.Component<Props> {
   componentDidMount() {
     if (this.props.onClosePopUp) {

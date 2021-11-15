@@ -3,7 +3,7 @@ import { AsyncButton, Button } from "components/buttons";
 import Network from "utils/network";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { Dialog } from "components/dialog/LegacyDialog";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
 
 const msgMap = {
@@ -84,7 +84,7 @@ class DeleteSystem extends React.Component<Props, State> {
     );
     return (
       <span>
-        <Dialog
+        <LegacyDialog
           id={"delete-errors-" + this.props.serverId}
           title={t("An error occurred during cleanup")}
           content={this.state.messages.length > 0 && <Messages items={this.state.messages} />}

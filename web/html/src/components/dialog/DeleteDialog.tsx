@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DangerDialog } from "./LegacyDangerDialog";
-import { DialogProps } from "./LegacyDialog";
+import { LegacyDialogProps } from "./LegacyDialog";
 
-type DeleteDialogProps = DialogProps & {
+type DeleteDialogProps = LegacyDialogProps & {
   item?: any;
   onConfirm?: (...args: any[]) => any;
   onConfirmAsync?: (...args: any[]) => Promise<any>;

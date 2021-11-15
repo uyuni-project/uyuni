@@ -1,8 +1,8 @@
 import * as React from "react";
 import { AsyncButton, Button } from "../buttons";
-import { Dialog, DialogProps } from "./LegacyDialog";
+import { LegacyDialog, LegacyDialogProps } from "./LegacyDialog";
 
-type Props = DialogProps & {
+type Props = LegacyDialogProps & {
   submitText: string;
   submitIcon: string;
   btnClass?: string;
@@ -60,7 +60,7 @@ export function DangerDialog(props: Props) {
   );
 
   return (
-    <Dialog
+    <LegacyDialog
       id={props.id}
       className={props.className}
       content={props.content}

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { ModalButton } from "components/dialog/ModalButton";
 import DownArrow from "../../down-arrow/down-arrow";
-import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
+import { closeDialog, LegacyDialog } from "components/dialog/LegacyDialog";
 import { Button } from "components/buttons";
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type/project.type";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
@@ -63,7 +63,7 @@ const Promote = (props: Props) => {
         />
       </div>
 
-      <Dialog
+      <LegacyDialog
         id={modalNameId}
         closableModal={false}
         className="modal-lg"

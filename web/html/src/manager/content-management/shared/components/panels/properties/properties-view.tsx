@@ -4,7 +4,7 @@ import produce from "utils/produce";
 import { ProjectPropertiesType } from "../../../type/project.type";
 import { getVersionMessage } from "./properties.utils";
 import { ModalLink } from "components/dialog/ModalLink";
-import { Dialog } from "components/dialog/LegacyDialog";
+import { LegacyDialog } from "components/dialog/LegacyDialog";
 import BuildVersion from "../build/build-version";
 
 type Props = {
@@ -65,7 +65,7 @@ const PropertiesView = (props: Props) => {
                   text={t("show more")}
                   target="properties-longlist-modal-content"
                 />
-                <Dialog
+                <LegacyDialog
                   id="properties-longlist-modal-content"
                   content={<PropertiesHistoryEntries id="longlist" entries={propertiesToShow.historyEntries} />}
                   title={t("Versions history")}
