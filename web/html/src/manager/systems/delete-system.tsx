@@ -3,7 +3,7 @@ import { AsyncButton, Button } from "components/buttons";
 import Network from "utils/network";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { LegacyDialog } from "components/dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "components/dialog/LegacyDialog";
 import { openLegacyDialog } from "components/dialog/LegacyDialog";
 
 const msgMap = {
@@ -77,7 +77,7 @@ class DeleteSystem extends React.Component<Props, State> {
           title={t("Cancel")}
           icon="fa-close"
           handler={() => {
-            jQuery("#delete-errors-" + this.props.serverId).modal("hide");
+            closeLegacyDialog("delete-errors-" + this.props.serverId);
           }}
         />
       </span>

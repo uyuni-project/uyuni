@@ -4,7 +4,7 @@ import { FromNow } from "components/datetime";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { LegacyDialog } from "components/dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "components/dialog/LegacyDialog";
 import { Form } from "components/input/Form";
 import { DateTime as InputDateTime } from "components/input/DateTime";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
@@ -685,7 +685,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
                 this.props.data.buildServer.id,
                 this.state.model.earliest
               );
-            jQuery("#build-modal").modal("hide");
+            closeLegacyDialog("build-modal");
           }}
         />
         <Button
@@ -694,7 +694,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
           title={t("Cancel")}
           icon="fa-close"
           handler={() => {
-            jQuery("#build-modal").modal("hide");
+            closeLegacyDialog("build-modal");
           }}
         />
       </div>
@@ -758,7 +758,7 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
           icon="fa-search"
           handler={() => {
             if (this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
-            jQuery("#inspect-modal").modal("hide");
+            closeLegacyDialog("inspect-modal");
           }}
         />
         <Button
@@ -767,7 +767,7 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
           title={t("Cancel")}
           icon="fa-close"
           handler={() => {
-            jQuery("#inspect-modal").modal("hide");
+            closeLegacyDialog("inspect-modal");
           }}
         />
       </div>

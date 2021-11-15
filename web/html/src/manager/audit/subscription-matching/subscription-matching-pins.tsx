@@ -2,7 +2,7 @@ import * as React from "react";
 import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { LegacyDialog } from "components/dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { SystemLabel, ToolTip, humanReadablePolicy } from "./subscription-matching-util";
 import { WarningIcon } from "./subscription-matching-util";
@@ -71,7 +71,7 @@ class Pins extends React.Component<PinsProps> {
       system_id: systemId,
       subscription_id: subscriptionId,
     }).then((data) => this.props.onPinChanged(data));
-    jQuery("#addPinPopUp").modal("hide"); //to trigger popup close action
+    closeLegacyDialog("addPinPopUp");
     this.closePopUp();
   };
 
