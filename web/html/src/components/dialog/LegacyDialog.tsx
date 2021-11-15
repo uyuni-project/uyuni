@@ -23,7 +23,6 @@ export type LegacyDialogProps = {
   onClosePopUp?: () => void;
 };
 
-// TODO: Make this consistent with `onClosePopUp` or the other way around
 export function openLegacyDialog(dialogId: string) {
   jQuery("#" + dialogId).modal("show");
 }

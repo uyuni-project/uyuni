@@ -25,8 +25,6 @@ export type DialogProps = {
 ReactModal.setAppElement(document.body);
 
 export function Dialog(props: DialogProps) {
-  const isControlled = typeof props.isOpen === "boolean";
-
   const closableModal = props.closableModal ?? true;
 
   return (
