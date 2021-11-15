@@ -25,7 +25,7 @@
     "migrate": "node build/migrate-ts/index.js"
   },
   "engines": {
-    "node": ">=10.0.0",
+    "node": ">=14.0.0",
     "yarn": ">=1.0.0"
   }
 }

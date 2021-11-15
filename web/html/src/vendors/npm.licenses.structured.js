@@ -76,7 +76,7 @@ const npmDependencies = [
   { name: "timers-browserify", license: "MIT",  version: "2.0.11" }, 
   { name: "tslib", license: "0BSD",  version: "2.1.0" }, 
   { name: "use-immer", license: "MIT",  version: "0.3.5" }, 
-  { name: "validator", license: "MIT",  version: "13.5.2" }, 
+  { name: "validator", license: "MIT",  version: "13.7.0" }, 
   { name: "warning", license: "MIT",  version: "4.0.3" }, 
   { name: "webpack", license: "MIT",  version: "4.41.4" }, 
   
