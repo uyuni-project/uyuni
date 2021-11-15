@@ -88,7 +88,7 @@ class DeleteSystem extends React.Component<Props, State> {
           id={"delete-errors-" + this.props.serverId}
           title={t("An error occurred during cleanup")}
           content={this.state.messages.length > 0 && <Messages items={this.state.messages} />}
-          buttons={buttons}
+          footer={buttons}
         />
         <AsyncButton
           id={"btn-delete-" + this.props.serverId}

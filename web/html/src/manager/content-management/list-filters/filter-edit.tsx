@@ -149,7 +149,7 @@ const FilterEdit = (props: FilterEditProps) => {
           />
         }
         onClosePopUp={() => setOpen(false)}
-        buttons={
+        footer={
           <React.Fragment>
             <div className="btn-group col-lg-6">
               {props.editing && (

@@ -8,18 +8,18 @@ type Props = {
   title?: React.ReactNode;
   /** The body of the popup */
   content?: React.ReactNode;
+  /** The footer of the popup */
   footer?: React.ReactNode;
   hideHeader?: boolean;
   closableModal?: boolean;
   /** A callback function with no parameters */
-  onClosePopUp?: () => any;
+  onClosePopUp?: () => void;
 };
 
-// PopUp is not shown by default and must be opened by a util
 export class PopUp extends React.Component<Props> {
   componentDidMount() {
     if (this.props.onClosePopUp) {
-      jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
+      jQuery("#" + this.props.id).on("hidden.bs.modal", () => this.props.onClosePopUp?.());
     }
   }
 

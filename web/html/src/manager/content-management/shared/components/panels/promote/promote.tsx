@@ -94,7 +94,7 @@ const Promote = (props: Props) => {
           )
         }
         title={t("Promote version {0} into {1}", props.environmentPromote.version, props.environmentTarget.name)}
-        buttons={
+        footer={
           <div className="col-lg-12">
             <div className="pull-right btn-group">
               <Button

@@ -20,13 +20,13 @@ export type LegacyDialogProps = {
   className?: string;
   title?: React.ReactNode;
   content?: React.ReactNode;
-  buttons?: React.ReactNode;
+  footer?: React.ReactNode;
   closableModal?: boolean;
-  onClosePopUp?: (...args: any[]) => any;
+  onClosePopUp?: () => void;
 };
 
 export function LegacyDialog(props: LegacyDialogProps) {
-  const { onClosePopUp, buttons, ...rest } = props;
+  const { onClosePopUp, footer, ...rest } = props;
 
-  return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...rest} />;
+  return <PopUp footer={footer} onClosePopUp={() => onClosePopUp?.()} {...rest} />;
 }

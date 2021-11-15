@@ -117,7 +117,7 @@ const Build = ({
             </div>
           )
         }
-        buttons={
+        footer={
           <React.Fragment>
             <div className="col-lg-offset-6 col-lg-6">
               <div className="pull-right btn-group">

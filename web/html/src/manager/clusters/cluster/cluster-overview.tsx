@@ -189,7 +189,7 @@ const ClusterOverview = (props: Props) => {
         closableModal={true}
         className="modal-lg"
         content={editContent}
-        buttons={editButtons}
+        footer={editButtons}
       />
 
       <SectionToolbar>
