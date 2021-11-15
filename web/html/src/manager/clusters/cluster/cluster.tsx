@@ -12,7 +12,7 @@ import useRoles from "core/auth/use-roles";
 import { isClusterAdmin } from "core/auth/auth.utils";
 import { LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { showDialog } from "components/dialog/util";
+import { openLegacyDialog } from "components/dialog/LegacyDialog";
 import { fromServerMessage } from "components/messages";
 import { ActionLink, ActionChainLink } from "components/links";
 
@@ -55,7 +55,7 @@ const Cluster = (props: Props) => {
   const [name, setName] = useState<string>(props.cluster.name);
 
   const onShowDelete = () => {
-    showDialog("delete-cluster");
+    openLegacyDialog("delete-cluster");
   };
 
   const onDelete = () => {

@@ -11,7 +11,7 @@ import { AsyncButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
 import escapeHtml from "html-react-parser";
 import { LegacyDialog } from "components/dialog/LegacyDialog";
-import { showDialog } from "components/dialog/util";
+import { openLegacyDialog } from "components/dialog/LegacyDialog";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 declare global {
@@ -310,7 +310,7 @@ class NotificationMessages extends React.Component<Props, State> {
 
   showDetailsPopup = (row) => {
     this.setState({ popupItem: row });
-    showDialog("notifications-popup-dialog");
+    openLegacyDialog("notifications-popup-dialog");
   };
 
   buildSummary = (row) => {

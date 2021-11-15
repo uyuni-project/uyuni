@@ -12,7 +12,7 @@ import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Label } from "components/input/Label";
 import { Messages } from "components/messages";
 import { ModalLink } from "components/dialog/ModalLink";
-import { closeDialog, LegacyDialog } from "../../../components/dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "../../../components/dialog/LegacyDialog";
 import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
 import { Loading } from "components/utils/Loading";
@@ -111,7 +111,7 @@ const ClusterOverview = (props: Props) => {
   const onSaveClusterProps = () => {
     return saveClusterProps(props.cluster.id, editModel)
       .then((_) => {
-        closeDialog("cluster-edit-dialog");
+        closeLegacyDialog("cluster-edit-dialog");
         props.setMessages([Messages.success(t("Cluster properties updated successfully"))]);
         onFetchClusterProps();
       })
@@ -165,7 +165,7 @@ const ClusterOverview = (props: Props) => {
             text={t("Cancel")}
             className="gap-right btn-default"
             handler={() => {
-              closeDialog("cluster-edit-dialog");
+              closeLegacyDialog("cluster-edit-dialog");
             }}
           />
           <AsyncButton

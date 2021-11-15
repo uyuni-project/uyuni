@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, ButtonProps } from "../buttons";
-import { showDialog } from "./util";
+import { openLegacyDialog } from "./LegacyDialog";
 
 type Props = ButtonProps & {
   target: string;
@@ -22,7 +22,7 @@ export function ModalButton(props: Props) {
       disabled={props.disabled}
       handler={() => {
         props.onClick?.(props.item);
-        showDialog(props.target);
+        openLegacyDialog(props.target);
       }}
     />
   );

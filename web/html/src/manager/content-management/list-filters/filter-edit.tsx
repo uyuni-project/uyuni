@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { ModalLink } from "components/dialog/ModalLink";
-import { closeDialog, LegacyDialog } from "components/dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "components/dialog/LegacyDialog";
 import { Button } from "components/buttons";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { Loading } from "components/utils/Loading";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import FilterForm from "./filter-form";
-import { showDialog } from "components/dialog/util";
+import { openLegacyDialog } from "components/dialog/LegacyDialog";
 import { mapFilterFormToRequest } from "./filter.utils";
 import { FilterFormType } from "../shared/type/filter.type";
 
@@ -73,7 +73,7 @@ const FilterEdit = (props: FilterEditProps) => {
     const openWithInitial = props.initialFilterForm.id && props.initialFilterForm.id === props.openFilterId;
     const openCreateWithParams = props.openFilterId === -1 && !props.editing;
     if (openWithInitial || openCreateWithParams) {
-      showDialog(modalNameId);
+      openLegacyDialog(modalNameId);
       setOpen(true);
       setFormData(props.initialFilterForm);
     }
@@ -89,7 +89,7 @@ const FilterEdit = (props: FilterEditProps) => {
             if (props.projectLabel) {
               redirectToProject(props.projectLabel);
             } else {
-              closeDialog(modalNameId);
+              closeLegacyDialog(modalNameId);
               showSuccessToastr(t("Filter updated successfully"));
               props.onChange(updatedListOfFilters);
             }
@@ -104,7 +104,7 @@ const FilterEdit = (props: FilterEditProps) => {
             if (props.projectLabel) {
               redirectToProject(props.projectLabel);
             } else {
-              closeDialog(modalNameId);
+              closeLegacyDialog(modalNameId);
               showSuccessToastr(t("Filter created successfully"));
               props.onChange(updatedListOfFilters);
             }
@@ -161,7 +161,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   handler={() => {
                     onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
                       .then((updatedListOfFilters) => {
-                        closeDialog(modalNameId);
+                        closeLegacyDialog(modalNameId);
                         showSuccessToastr(t("Filter deleted successfully"));
                         props.onChange(updatedListOfFilters);
                       })
@@ -183,7 +183,7 @@ const FilterEdit = (props: FilterEditProps) => {
                     if (props.projectLabel) {
                       redirectToProject(props.projectLabel);
                     } else {
-                      closeDialog(modalNameId);
+                      closeLegacyDialog(modalNameId);
                     }
                   }}
                 />

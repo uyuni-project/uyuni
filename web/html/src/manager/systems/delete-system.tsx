@@ -4,7 +4,7 @@ import Network from "utils/network";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 import { LegacyDialog } from "components/dialog/LegacyDialog";
-import { showDialog } from "components/dialog/util";
+import { openLegacyDialog } from "components/dialog/LegacyDialog";
 
 const msgMap = {
   minion_unreachable: t("Cleanup timed out. Please check if the machine is reachable."),
@@ -57,7 +57,7 @@ class DeleteSystem extends React.Component<Props, State> {
   };
 
   showErrorDialog = () => {
-    showDialog("delete-errors-" + this.props.serverId);
+    openLegacyDialog("delete-errors-" + this.props.serverId);
   };
 
   render() {

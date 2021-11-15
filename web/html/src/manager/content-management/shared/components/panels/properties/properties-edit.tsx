@@ -59,10 +59,10 @@ const PropertiesEdit = (props: Props) => {
         setErrors(null);
       }}
       disableOperations={isLoading}
-      onSave={({ item, closeDialog, setErrors }) => {
+      onSave={({ item, closeLegacyDialog, setErrors }) => {
         return onAction(item, "update", props.projectId)
           .then((editedProject) => {
-            closeDialog();
+            closeLegacyDialog();
             showSuccessToastr(t("Project properties updated successfully"));
             props.onChange(editedProject);
           })

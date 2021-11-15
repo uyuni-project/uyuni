@@ -1,5 +1,5 @@
 import * as React from "react";
-import { showDialog } from "./util";
+import { openLegacyDialog } from "./LegacyDialog";
 
 type Props = {
   target: string;
@@ -28,7 +28,7 @@ export function ModalLink(props: Props) {
       className={"btn-link " + (props.className || "")}
       onClick={() => {
         if (props.onClick) props.onClick(props.item);
-        showDialog(props.target);
+        openLegacyDialog(props.target);
       }}
     >
       {icon}

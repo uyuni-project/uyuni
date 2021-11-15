@@ -45,10 +45,10 @@ const EnvironmentLifecycle = (props: Props) => {
       collapsible
       customIconClass="fa-small"
       disableOperations={isLoading}
-      onSave={({ item, closeDialog, setErrors }) =>
+      onSave={({ item, closeLegacyDialog, setErrors }) =>
         onAction(mapAddEnvironmentRequest(item, props.environments, props.projectId), "create", props.projectId)
           .then((projectWithCreatedEnvironment) => {
-            closeDialog();
+            closeLegacyDialog();
             showSuccessToastr(t("Environment created successfully"));
             props.onChange(projectWithCreatedEnvironment);
           })
@@ -93,11 +93,11 @@ const EnvironmentLifecycle = (props: Props) => {
                     panelLevel="3"
                     disableEditing={!hasEditingPermissions}
                     disableOperations={isLoading}
-                    onSave={({ item, closeDialog, setErrors }) =>
+                    onSave={({ item, closeLegacyDialog, setErrors }) =>
                       onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update", props.projectId)
                         .then((projectWithUpdatedEnvironment) => {
                           props.onChange(projectWithUpdatedEnvironment);
-                          closeDialog();
+                          closeLegacyDialog();
                           showSuccessToastr(t("Environment updated successfully"));
                         })
                         .catch((error) => {
@@ -108,10 +108,10 @@ const EnvironmentLifecycle = (props: Props) => {
                     onOpen={({ setItem }) => setItem(environment)}
                     onCancel={() => cancelAction()}
                     disableDelete={environment.hasProfiles}
-                    onDelete={({ item, closeDialog }) => {
+                    onDelete={({ item, closeLegacyDialog }) => {
                       return onAction(item, "delete", props.projectId)
                         .then((projectWithDeleteddEnvironment) => {
-                          closeDialog().then(() => {
+                          closeLegacyDialog().then(() => {
                             props.onChange(projectWithDeleteddEnvironment);
                           });
                           showSuccessToastr(t("Environment {0} deleted successfully", environment.label));

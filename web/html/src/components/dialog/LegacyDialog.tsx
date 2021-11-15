@@ -1,24 +1,18 @@
 import * as React from "react";
 import { PopUp } from "../popup";
 
-// TODO: Move to popup once that gets migrated
-type Instance = JQuery & {
-  modal(...args: any[]): any;
-};
-type Modal = (...args: any[]) => Instance;
-
 declare global {
   interface JQuery {
-    modal: Modal;
+    modal: (command: "show" | "hide") => JQuery;
   }
 }
 
-export function closeDialog(modalId: string) {
-  const closeModalPromise = new Promise((resolve) => {
-    jQuery("#" + modalId).on("hidden.bs.modal", () => resolve(undefined));
-  });
-  jQuery("#" + modalId).modal("hide");
-  return closeModalPromise;
+export function openLegacyDialog(dialogId: string) {
+  jQuery("#" + dialogId).modal("show");
+}
+
+export function closeLegacyDialog(dialogId: string) {
+  jQuery("#" + dialogId).modal("hide");
 }
 
 export type LegacyDialogProps = {
@@ -32,7 +26,7 @@ export type LegacyDialogProps = {
 };
 
 export function LegacyDialog(props: LegacyDialogProps) {
-  const { onClosePopUp, buttons, ...OtherProps } = props;
+  const { onClosePopUp, buttons, ...rest } = props;
 
-  return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...OtherProps} />;
+  return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...rest} />;
 }

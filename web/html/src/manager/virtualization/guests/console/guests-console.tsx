@@ -2,8 +2,7 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import Network from "utils/network";
 import { Button } from "components/buttons";
-import { showDialog } from "components/dialog/util";
-import { hideDialog } from "components/dialog/util";
+import { openLegacyDialog, closeLegacyDialog } from "components/dialog/LegacyDialog";
 import { VncClient } from "./vnc-client";
 import { ConsoleClientType } from "./guests-console-types";
 import { SpiceClient } from "./spice-client";
@@ -158,7 +157,7 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   onConnect = () => {
-    hideDialog("popup");
+    closeLegacyDialog("popup");
     this.setState({
       expanded: false,
       connected: true,
@@ -196,13 +195,13 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   showPopup = () => {
-    showDialog("popup");
+    openLegacyDialog("popup");
   };
 
   askPassword = () =>
     new Promise((resolve) => {
       this.popupSubmit = () => {
-        hideDialog("popup");
+        closeLegacyDialog("popup");
         resolve(this.state.password);
       };
       this.setState({ popupState: "askPassword" }, this.showPopup);

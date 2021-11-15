@@ -95,7 +95,7 @@ const FiltersProject = (props: FiltersProps) => {
       disableEditing={!hasEditingPermissions}
       onCancel={() => cancelAction()}
       onOpen={({ setItem }) => setItem(props.selectedFilters.map((filter) => filter.id))}
-      onSave={({ closeDialog, item, setErrors }) => {
+      onSave={({ closeLegacyDialog, item, setErrors }) => {
         const requestParam = {
           projectLabel: props.projectId,
           filtersIds: item,
@@ -103,7 +103,7 @@ const FiltersProject = (props: FiltersProps) => {
 
         onAction(requestParam, "update", props.projectId)
           .then((projectWithUpdatedSources) => {
-            closeDialog();
+            closeLegacyDialog();
             showSuccessToastr(t("Filter edited successfully"));
             props.onChange(projectWithUpdatedSources);
           })

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Panel } from "./Panel";
 import { ModalLink } from "../dialog/ModalLink";
-import { closeDialog, LegacyDialog } from "../dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "../dialog/LegacyDialog";
 import { Button } from "../buttons";
 
 type Props = {
@@ -98,7 +98,7 @@ const CreatorPanel = (props: Props) => {
                       props.onDelete &&
                       props.onDelete({
                         item,
-                        closeDialog: () => closeDialog(modalNameId),
+                        closeLegacyDialog: () => closeLegacyDialog(modalNameId),
                       })
                     }
                   />
@@ -114,7 +114,7 @@ const CreatorPanel = (props: Props) => {
                       if (props.onCancel) {
                         props.onCancel();
                       }
-                      closeDialog(modalNameId);
+                      closeLegacyDialog(modalNameId);
                     }}
                   />
                   <Button
@@ -125,7 +125,7 @@ const CreatorPanel = (props: Props) => {
                     handler={() =>
                       props.onSave({
                         item,
-                        closeDialog: () => closeDialog(modalNameId),
+                        closeLegacyDialog: () => closeLegacyDialog(modalNameId),
                         setErrors: setStateErrors,
                       })
                     }

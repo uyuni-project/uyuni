@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "components/buttons";
-import { closeDialog, LegacyDialog } from "components/dialog/LegacyDialog";
+import { closeLegacyDialog, LegacyDialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Messages, Utils as MsgUtils } from "components/messages";
 
@@ -125,7 +125,7 @@ const Build = ({
                   id={`cm-build-modal-cancel-button`}
                   className="btn-default"
                   text={t("Cancel")}
-                  handler={() => closeDialog(modalNameId)}
+                  handler={() => closeLegacyDialog(modalNameId)}
                 />
                 <Button
                   id={`cm-build-modal-save-button`}
@@ -141,7 +141,7 @@ const Build = ({
                       projectId
                     )
                       .then((projectWithUpdatedSources: any) => {
-                        closeDialog(modalNameId);
+                        closeLegacyDialog(modalNameId);
                         showSuccessToastr(
                           t(
                             "Version {0} successfully built into {1}",
@@ -153,7 +153,7 @@ const Build = ({
                       })
                       .catch((error) => {
                         showErrorToastr(error.messages, { autoHide: false });
-                        closeDialog(modalNameId);
+                        closeLegacyDialog(modalNameId);
                       });
                   }}
                 />

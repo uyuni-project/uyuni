@@ -4,7 +4,7 @@ import { Loading } from "components/utils/Loading";
 import { Form } from "components/input/Form";
 import { Password } from "components/input/Password";
 import { Button } from "components/buttons";
-import { hideDialog } from "components/dialog/util";
+import { closeLegacyDialog } from "components/dialog/LegacyDialog";
 
 export type PopupState = "wait" | "askPassword" | "errors";
 
@@ -60,7 +60,7 @@ export function MessagePopUp(props: Props) {
             className="btn-default"
             text={t("Cancel")}
             title={t("Cancel")}
-            handler={() => hideDialog("popup")}
+            handler={() => closeLegacyDialog("popup")}
           />,
         ]
       }

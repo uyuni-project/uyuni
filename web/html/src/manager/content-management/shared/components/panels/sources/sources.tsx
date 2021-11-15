@@ -99,7 +99,7 @@ const Sources = (props: SourcesProps) => {
       customIconClass="fa-small"
       onCancel={() => cancelAction()}
       onOpen={({ setItem }) => setItem(props.softwareSources.map((source) => source.label))}
-      onSave={({ closeDialog, item }) => {
+      onSave={({ closeLegacyDialog, item }) => {
         const requestParam = {
           projectLabel: props.projectId,
           softwareSources: item.map((label) => ({ label })),
@@ -107,7 +107,7 @@ const Sources = (props: SourcesProps) => {
 
         onAction(requestParam, "update", props.projectId)
           .then((projectWithUpdatedSources) => {
-            closeDialog();
+            closeLegacyDialog();
             showSuccessToastr(t("Sources edited successfully"));
             props.onChange(projectWithUpdatedSources);
           })
