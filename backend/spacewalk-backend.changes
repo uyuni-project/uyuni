@@ -1,5 +1,9 @@
-- Fix a possible traceback when sync non-flat deb repositories
-  with no architecture specified
+-------------------------------------------------------------------
+Tue Nov 16 10:03:10 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Fix a possible traceback when sync non-flat deb repositories
+    with no architecture specified
 
 -------------------------------------------------------------------
 Fri Nov 05 13:36:01 CET 2021 - jgonzalez@suse.com
