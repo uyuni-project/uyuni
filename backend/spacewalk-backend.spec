@@ -241,7 +241,7 @@ Requires:       (python3-dateutil or python3-python-dateutil)
 %if 0%{?suse_version}
 Requires(pre):  libzypp(plugin:system) >= 0
 Requires:       apache2-prefork
-Requires:       zypp-plugin-python
+Requires:       python3-zypp-plugin
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
