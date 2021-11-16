@@ -1,4 +1,8 @@
-- Implement using re-activation keys when bootstrapping with the Web UI
+-------------------------------------------------------------------
+Tue Nov 16 10:08:45 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Implement using re-activation keys when bootstrapping with the Web UI
 
 -------------------------------------------------------------------
 Fri Nov 05 14:04:09 CET 2021 - jgonzalez@suse.com
