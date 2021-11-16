@@ -1,3 +1,4 @@
+- update last boot time of SSH Minions after bootstrapping (bsc#1191899)
 - Fix package update action with shared channels (bsc#1191313)
 - Implement using re-activation keys when bootstrapping with the Web UI
   or XMLRPC API

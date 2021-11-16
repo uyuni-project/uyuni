@@ -1815,6 +1815,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             catch (IOException e) {
                 fail("Cannot find OS Image generated pillar");
             }
+            finally {
+                generatedPillar.delete();
+                new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId()).delete();
+            }
         });
     }
 
