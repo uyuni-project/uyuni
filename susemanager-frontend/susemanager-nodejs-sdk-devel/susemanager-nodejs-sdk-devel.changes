@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 05 14:05:13 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Standardize frontend code style
+
+-------------------------------------------------------------------
 Fri Sep 17 12:14:16 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.2-1

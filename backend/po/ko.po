@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:12+0200\n"
+"POT-Creation-Date: 2021-10-30 11:55+0200\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -37,11 +37,38 @@ msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하�
 msgid "declined proxy authentication"
 msgstr "거부된 프록시 인증"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"중요 메시지:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"'%s' 실행 중: 다음이 catch됨:\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "유효하지 않은 URI %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -66,10 +93,6 @@ msgstr "이 서버에서 ISS가 비활성화되었습니다."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "유효하지 않은 system_id/action_id 쌍입니다."
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -93,6 +116,16 @@ msgstr "유효하지 않은 세션 키"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "이 서버 ID는 더 이상 존재하지 않음"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "유효하지 않은 작업 값 유형 %s(%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "%s 작업은 %s 서버에 속하지 않음"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -135,20 +168,14 @@ msgstr "제품 인수로 딕셔너리가 필요함"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "%s(%s)에 유효하지 않은 값 '%s'"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "유효하지 않은 system_id/action_id 쌍입니다."
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "유효하지 않은 값 %s(%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "유효하지 않은 작업 값 유형 %s(%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "%s 작업은 %s 서버에 속하지 않음"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -179,92 +206,6 @@ msgstr ""
 "\n"
 "               %s 계정이 이 서버에서 비활성화되었습니다.\n"
 "               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "'%s' 아키텍처는 지원되지 않습니다."
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "기본 채널 충돌"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "%s 그룹에 서버를 추가하지 못했습니다."
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "%s의 최대 사용 횟수에 도달했습니다."
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "'%s' 토큰을 찾을 수 없음"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "일치하지 않는 조직에서 제공된 토큰"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "킥스타트 세션 불일치"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "재등록 토큰 스택은 지원되지 않습니다."
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"중요 메시지:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"'%s' 실행 중: 다음이 catch됨:\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "유효하지 않은 URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -334,6 +275,15 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -343,6 +293,55 @@ msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "패키지를 찾을 수 없음"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "'%s' 아키텍처는 지원되지 않습니다."
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "기본 채널 충돌"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "%s 그룹에 서버를 추가하지 못했습니다."
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "%s의 최대 사용 횟수에 도달했습니다."
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "'%s' 토큰을 찾을 수 없음"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "일치하지 않는 조직에서 제공된 토큰"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "킥스타트 세션 불일치"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "재등록 토큰 스택은 지원되지 않습니다."
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -403,16 +402,6 @@ msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "오류: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "역추적: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1057,33 +1046,21 @@ msgstr "오류 클래스 정보: %s\n"
 msgid "Explanation: %s"
 msgstr "설명: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "오류: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "역추적: %s"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s의 형식은 YYYYMMDD여야 합니다.\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\"(명령줄에 지정됨)\n"
-"열거나 읽을 수 없음:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\"을(를) 열거나\n"
-"쓸 수 없는 대상:\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1286,6 +1263,28 @@ msgstr "%s의 %s 동기화 보고서"
 #: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\"(명령줄에 지정됨)\n"
+"열거나 읽을 수 없음:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\"을(를) 열거나\n"
+"쓸 수 없는 대상:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format

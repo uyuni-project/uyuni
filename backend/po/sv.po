@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:12+0200\n"
+"POT-Creation-Date: 2021-10-30 11:55+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/"
@@ -38,11 +38,38 @@ msgstr "Skickad proxy-signatur %s stämmer inte med våran %s."
 msgid "declined proxy authentication"
 msgstr "nekad proxy-autenticering"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Ogiltig begäran mottagen (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"VIKTIGT MEDDELANDE FÖLJER:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"När \"%s\" kördes: fångade\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Ogiltig URI %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -68,11 +95,6 @@ msgstr "ISS är inaktiverat på denna satellit."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Servern \"%s\" har inte ISS aktiverat."
 
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Ogiltiga systemrättigheter."
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -95,6 +117,16 @@ msgstr "Ogiltig sessionsnyckel"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "Denna server-ID finns inte längre"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Otiltig typ på åtgärsvärde %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Åtgärd %s hör inte till server %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -136,20 +168,15 @@ msgstr "Förväntade ett lexikon som ett produktargument"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Ogiltigt värde \"%s\" på %s (%s)"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Ogiltiga systemrättigheter."
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Ogiltigt värde %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Otiltig typ på åtgärsvärde %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Åtgärd %s hör inte till server %s"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -181,94 +208,6 @@ msgstr ""
 "\n"
 "                   %s-kontot har avaktiverats på denna server.\n"
 "                   Kontakta din organisationsadministratör för mer hjälp."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Drift ej aktiverat för systemprofilen: \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arkitekturen \"%s\" stöds inte"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Nyckeln \"%s\" har mer än en baskanal tilldelad"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Baskanaler i konflikt"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Kunde inte lägga till en server till gruppen %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Maximalt antal användingar på %s uppnått"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Att lägga samman omregistreringsnycklar med olika baskanalrättigheter stöds "
-"inte"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Nyckeln \"%s\" finns inte"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Nycklar från organisationer som inte stämmer överens"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Kickstart-sessioner stämmer inte överens"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Att lägga samman omregistreringsnycklar stöds inte"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Ogiltig begäran mottagen (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"VIKTIGT MEDDELANDE FÖLJER:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"När \"%s\" kördes: fångade\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Ogiltig URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -340,6 +279,15 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Drift ej aktiverat för systemprofilen: \"%s\""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -349,6 +297,57 @@ msgstr "Ogiltigt RPM-paket %s begärt"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Paketet finns inte"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arkitekturen \"%s\" stöds inte"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Nyckeln \"%s\" har mer än en baskanal tilldelad"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Baskanaler i konflikt"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Kunde inte lägga till en server till gruppen %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Maximalt antal användingar på %s uppnått"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Att lägga samman omregistreringsnycklar med olika baskanalrättigheter stöds "
+"inte"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Nyckeln \"%s\" finns inte"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Nycklar från organisationer som inte stämmer överens"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Kickstart-sessioner stämmer inte överens"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Att lägga samman omregistreringsnycklar stöds inte"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -409,16 +408,6 @@ msgstr "användarnamn skall vara åtminstone %d tecken långa"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Det går inte att registrera användarnamn som slutar med %s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr ""
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1072,26 +1061,20 @@ msgstr "Felklassinformation: %s\n"
 msgid "Explanation: %s"
 msgstr "Förklaring: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr ""
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr ""
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
 msgstr ""
 
 #: ../satellite_tools/messages.py:26
@@ -1267,6 +1250,22 @@ msgstr ""
 
 #: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258

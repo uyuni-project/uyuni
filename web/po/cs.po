@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-09-28 22:12+0000\n"
+"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -2148,15 +2148,13 @@ msgid "Advisory Keywords"
 msgstr "Klíčová slova poradenství"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
-#, fuzzy
 msgid "Package Provides Name"
-msgstr "Název balíčku"
+msgstr "Balíček poskytuje název"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#, fuzzy
 msgid "Provides Name"
-msgstr "Název modulu"
+msgstr "Poskytuje název"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
@@ -2243,14 +2241,12 @@ msgid "Content Lifecycle Projects"
 msgstr "Projekty životního cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
-#, fuzzy
 msgid "Last Build"
-msgstr "Sestavení"
+msgstr "Poslední sestavení"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
-#, fuzzy
 msgid "never"
-msgstr "Závažnost"
+msgstr "nikdy"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
@@ -2357,9 +2353,8 @@ msgid "contains package with epoch/version/release greater than"
 msgstr "obsahuje balíček s epochou/verzí/vydáním větší/-m než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
-#, fuzzy
 msgid "contains package which provides name equal"
-msgstr "obsahuje shodný název balíčku"
+msgstr "obsahuje balíček poskytující shodný název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
@@ -2378,14 +2373,12 @@ msgid "matches regular expression"
 msgstr "vyhovuje regulárnímu výrazu"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "provides name"
-msgstr "Název služby"
+msgstr "poskytuje název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "provides name equal"
-msgstr "verze se rovná"
+msgstr "poskytuje shodný název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
@@ -2408,9 +2401,8 @@ msgid "Contains Package Name"
 msgstr "Obsahuje název balíčku"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
-#, fuzzy
 msgid "Contains Package Provides Name"
-msgstr "Obsahuje název balíčku"
+msgstr "Obsahuje balíček poskytující název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
@@ -3421,24 +3413,32 @@ msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
 msgstr ""
+"Nelze ověřit dostupnost místa na disku. Pokud tento problém přetrvává, "
+"obraťte se na správce systému."
 
 #: ../html/src/manager/login/login.tsx:66
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
 msgstr ""
+"Chybí některé důležité adresáře. Obraťte se na správce systému a "
+"zkontrolujte konfiguraci."
 
 #: ../html/src/manager/login/login.tsx:71
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
 msgstr ""
+"Na serveru je málo volného místa na disku. Obraťte se na správce systému, "
+"aby přidal více místa na disku."
 
 #: ../html/src/manager/login/login.tsx:76
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
 msgstr ""
+"Dostupné místo na disku serveru je kriticky malé. Obraťte se na správce "
+"systému, aby přidal více místa na disku."
 
 #: ../html/src/manager/login/login.tsx:94
 msgid "Signing in ..."
@@ -3778,19 +3778,16 @@ msgid "No Playbook found."
 msgstr "Scénář nenalezen."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
-#, fuzzy
 msgid "Playbook File Name"
-msgstr "Adresáře scénáře"
+msgstr "Název souboru scénáře"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
-#, fuzzy
 msgid "Full Path"
-msgstr "Cesta"
+msgstr "Úplná cesta"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:142
-#, fuzzy
 msgid "Custom Inventory"
-msgstr "Cesta inventáře"
+msgstr "Vlastní inventář"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:156
 msgid "Inventory file empty."
@@ -4961,18 +4958,16 @@ msgid "Guest is not running"
 msgstr "Hostitel není spuštěn"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
-#, fuzzy
 msgid "Unknown guest"
-msgstr "Neznámý"
+msgstr "Neznámý host"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:26
 msgid "Retry"
-msgstr ""
+msgstr "Další pokus"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
-#, fuzzy
 msgid "Connecting..."
-msgstr "Připojení"
+msgstr "Připojování..."
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
@@ -5014,17 +5009,16 @@ msgid "Virtual CPU Count"
 msgstr "Počet virtuálních CPU"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:192
-#, fuzzy
 msgid "Enable UEFI"
-msgstr "Povolit IPv6"
+msgstr "Povolit UEFI"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "UEFI firmware path"
-msgstr ""
+msgstr "Cesta firmwaru UEFI"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:204
 msgid "NVRAM template path"
-msgstr ""
+msgstr "Cesta šablony NVRAM"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:216
 msgid "Auto-installation Profile"
@@ -5036,15 +5030,15 @@ msgstr "Volby jádra"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:245
 msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr ""
+msgstr "Podpora clusteru je zakázána, protože agent prostředků VirtualDomain "
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Define as a cluster resource"
-msgstr ""
+msgstr "Definovat jako klastrový prostředek"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Path to the cluster shared folder for VM definitions"
-msgstr ""
+msgstr "Cesta ke sdílené složce clusteru pro definice virtuálních počítačů"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:291
 msgid "Graphics"
@@ -5118,16 +5112,15 @@ msgstr "Grafická konzole"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:40
 msgid "Migrate"
-msgstr ""
+msgstr "Migrovat"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:58
 msgid "Select where to migrate the virtual guest to."
-msgstr ""
+msgstr "Zvolte, kam migrovat virtuální host."
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
-#, fuzzy
 msgid "Target Host"
-msgstr "Název hostitele cíle"
+msgstr "Cílový hostitel"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"

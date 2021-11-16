@@ -195,6 +195,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
         return new EqualsBuilder()
             .append(getCredentials(), otherSCCRepository.getCredentials())
             .append(getRepo(), otherSCCRepository.getRepo())
+            .append(getUrl(), otherSCCRepository.getUrl())
             .isEquals();
     }
 

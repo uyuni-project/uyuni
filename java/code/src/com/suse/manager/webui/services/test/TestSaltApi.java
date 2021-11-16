@@ -266,7 +266,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+    public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
         throw new UnsupportedOperationException();
     }
 

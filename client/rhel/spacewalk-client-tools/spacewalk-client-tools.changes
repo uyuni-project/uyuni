@@ -1,3 +1,11 @@
+- Update translation strings
+
+-------------------------------------------------------------------
+Fri Nov 05 13:37:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Remove unused legacy code
+
 -------------------------------------------------------------------
 Fri Sep 17 12:03:34 CEST 2021 - jgonzalez@suse.com
 

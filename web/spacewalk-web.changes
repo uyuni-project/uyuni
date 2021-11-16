@@ -1,14 +1,20 @@
-- Disable the SPA engine for download links (bsc#1190964)
-- Fix datetime format parsing with moment (bsc#1191348)
-- add Content Lifecycle Management filter for package provides
-- Fix CLM filter edit modal opening (bsc#1190867)
-- Add 'Last build date' column to CLM project list (jsc#PM-2644)
-  (jsc#SUMA-61)
-- Display a warning in the login page if the available disk space
-  on the server is running out
-- Add 'Flush cache' checkbox to Ansible playbook execution page
-  (bsc#1190405)
-- Fix 'Type' input in CLM source edit form (bsc#1190820)
+- Implement using re-activation keys when bootstrapping with the Web UI
+
+-------------------------------------------------------------------
+Fri Nov 05 14:04:09 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Disable the SPA engine for download links (bsc#1190964)
+  * Fix datetime format parsing with moment (bsc#1191348)
+  * add Content Lifecycle Management filter for package provides
+  * Fix CLM filter edit modal opening (bsc#1190867)
+  * Add 'Last build date' column to CLM project list (jsc#PM-2644)
+    (jsc#SUMA-61)
+  * Display a warning in the login page if the available disk space
+    on the server is running out
+  * Add 'Flush cache' checkbox to Ansible playbook execution page
+    (bsc#1190405)
+  * Fix 'Type' input in CLM source edit form (bsc#1190820)
 
 -------------------------------------------------------------------
 Fri Sep 17 14:58:41 CEST 2021 - jgonzalez@suse.com

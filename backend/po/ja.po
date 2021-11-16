@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:12+0200\n"
+"POT-Creation-Date: 2021-10-30 11:55+0200\n"
 "PO-Revision-Date: 2021-08-21 07:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -41,11 +41,38 @@ msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致し�
 msgid "declined proxy authentication"
 msgstr "プロキシ認証が拒否されました"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "無効な要求を受け取りました (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要なメッセージです:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"「%s」の実行中: 次をキャッチしました\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "無効な URI %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -71,10 +98,6 @@ msgstr "このサーバでは ISS が無効化されています。"
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "サーバー「%s」は ISS に有効になっていません。"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "system_id/action_id の対が正しくありません。"
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -99,6 +122,16 @@ msgstr "無効なセッションキー"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "このサーバー ID は既になくなりました"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "無効な動作値タイプ %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "動作 %s はサーバー %s に属していません"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -141,20 +174,14 @@ msgstr "製品の引数としてディクショナリが期待されています
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "無効な値 '%s' − %s (%s)"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "system_id/action_id の対が正しくありません。"
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "無効な値 %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "無効な動作値タイプ %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "動作 %s はサーバー %s に属していません"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -187,95 +214,6 @@ msgstr ""
 "\n"
 "               %s アカウントは本サーバー上では無効化されています。\n"
 "                   詳しくは組織の管理者にお問い合わせください。"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "アーキテクチャ `%s' はサポートされていません"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "トークン `%s' には複数のベースチャンネルが割り当てられています"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "競合しているベースチャンネル"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "グループ %s へのサーバーの追加に失敗しました"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "最大使用数 %s に達しました"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
-"ん"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "トークン「%s」は見つかりませんでした"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "不一致の org からのトークンです"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "キックスタートセッションの不一致です"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "再登録トークンの積み重ねには対応していません"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "無効な要求を受け取りました (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要なメッセージです:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"「%s」の実行中: 次をキャッチしました\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "無効な URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -352,6 +290,16 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -361,6 +309,57 @@ msgstr "無効な RPM パッケージ %s を要求しています"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "パッケージが見つかりません"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "アーキテクチャ `%s' はサポートされていません"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "トークン `%s' には複数のベースチャンネルが割り当てられています"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "競合しているベースチャンネル"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "グループ %s へのサーバーの追加に失敗しました"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "最大使用数 %s に達しました"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
+"ん"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "トークン「%s」は見つかりませんでした"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "不一致の org からのトークンです"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "キックスタートセッションの不一致です"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "再登録トークンの積み重ねには対応していません"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -421,16 +420,6 @@ msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてく�
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "%s で終わるユーザー名は登録できません"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "エラー: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "トレースバック: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1092,33 +1081,21 @@ msgstr "エラークラス情報: %s\n"
 msgid "Explanation: %s"
 msgstr "説明: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "エラー: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "トレースバック: %s"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s の書式は少なくとも YYYYMMDD であるべきです。\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1325,6 +1302,28 @@ msgstr "%s 同期。 %s からのレポート"
 #: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format

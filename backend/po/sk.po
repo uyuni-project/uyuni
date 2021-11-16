@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:12+0200\n"
+"POT-Creation-Date: 2021-10-30 11:55+0200\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
@@ -34,11 +34,38 @@ msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
 msgid "declined proxy authentication"
 msgstr "zamietnuté overenie proxy"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Prijatá neplatná požiadavka (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Počas behu '%s': zachytené\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Neplatné URI %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -64,10 +91,6 @@ msgstr "Na tomto serveri je ISS zakázané."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nie je povolený pre ISS."
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Neplatný pár system_id/action_id."
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -90,6 +113,16 @@ msgstr "Neplatný kľúč sedenia"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "Toto ID servera už neexistuje"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Neplatný typ hodnoty akcie %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Akcia %s nepatrí k serveru %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -131,20 +164,14 @@ msgstr "Očakávaný slovník ako argument produktu"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pre %s (%s)"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Neplatný pár system_id/action_id."
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Neplatná hodnota %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Neplatný typ hodnoty akcie %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Akcia %s nepatrí k serveru %s"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -176,94 +203,6 @@ msgstr ""
 "               Na tomto serveri bol účet %s deaktivovaný.\n"
 "               Pre ďalšiu pomoc kontaktujte administrátora svojej "
 "organizácie."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Služba nie je povolená pre systémový profil: \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Architektúra `%s' nie je podporovaná"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token `%s' má priradený viac ako jeden základný kanál"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Konfliktné základné kanály"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Zlyhalo pridanie servera do skupiny %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Dosiahol sa maximálny počet použití %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami "
-"nie je podporované"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Nepodarilo sa nájsť token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Žetóny z nezhodujúcich sa organizácií"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Nesúlad sedenia kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Skladanie tokenov opätovnej registrácie nie je podporované"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Prijatá neplatná požiadavka (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Počas behu '%s': zachytené\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Neplatné URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -336,6 +275,15 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Služba nie je povolená pre systémový profil: \"%s\""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -345,6 +293,57 @@ msgstr "Požaduje sa neplatný balík RPM %s"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Balík nebol nájdený"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Architektúra `%s' nie je podporovaná"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token `%s' má priradený viac ako jeden základný kanál"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Konfliktné základné kanály"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Zlyhalo pridanie servera do skupiny %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Dosiahol sa maximálny počet použití %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami "
+"nie je podporované"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Nepodarilo sa nájsť token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Žetóny z nezhodujúcich sa organizácií"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Nesúlad sedenia kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Skladanie tokenov opätovnej registrácie nie je podporované"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -405,16 +404,6 @@ msgstr "používateľské meno by malo byť najmenej %d znakov dlhé"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nie je možné zaregistrovať používateľské mená končiace s %s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "CHYBA: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1065,33 +1054,21 @@ msgstr "Informácia o triede chýb: %s\n"
 msgid "Explanation: %s"
 msgstr "Vysvetlenie: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "CHYBA: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "TRACEBACK: %s"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "formát %s by mal byť aspoň RRRRMMDD.\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (uvedené v príkazovom riadku)\n"
-"sa nepodarilo otvoriť a čítať:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" sa nepodarilo otvoriť\n"
-"a/alebo zapísať do:\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1296,6 +1273,28 @@ msgstr "%s sync. správa od %s"
 #: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ požadovaný e-mail, ale nie je čo +++"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (uvedené v príkazovom riadku)\n"
+"sa nepodarilo otvoriť a čítať:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" sa nepodarilo otvoriť\n"
+"a/alebo zapísať do:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format

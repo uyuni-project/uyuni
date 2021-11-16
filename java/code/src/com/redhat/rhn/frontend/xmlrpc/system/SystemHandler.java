@@ -7746,7 +7746,8 @@ public class SystemHandler extends BaseHandler {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
-                true, empty());
+                empty(), true, empty());
+        log.debug("bootstrap called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7783,7 +7784,8 @@ public class SystemHandler extends BaseHandler {
             String sshPrivKey, String sshPrivKeyPass, String activationKey, boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
-                maybeString(sshPrivKeyPass), activationKeys, true, empty());
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
+        log.debug("bootstrapWithPrivateSshKey called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7818,7 +7820,8 @@ public class SystemHandler extends BaseHandler {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
-                true, of(proxyId.longValue()));
+                empty(), true, of(proxyId.longValue()));
+        log.debug("bootstrap called with proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7857,7 +7860,168 @@ public class SystemHandler extends BaseHandler {
             String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
-                maybeString(sshPrivKeyPass), activationKeys, true, of(proxyId.longValue()));
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, empty());
+        log.debug("bootstrap called with re-activation key: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * Use SSH private key for authentication.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @xmlrpc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, Integer proxyId,
+            boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, of(proxyId.longValue()));
+        log.debug("bootstrap called with re-activation key and proxyId: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * Use SSH private key for authentication.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @xmlrpc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            Integer proxyId, boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
+                of(proxyId.longValue()));
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 

@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-15 20:12+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"PO-Revision-Date: 2021-11-09 09:11+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
 "Language: zh_CN\n"
@@ -2099,15 +2099,13 @@ msgid "Advisory Keywords"
 msgstr "建议关键字"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
-#, fuzzy
 msgid "Package Provides Name"
-msgstr "软件包名称"
+msgstr "软件包提供名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#, fuzzy
 msgid "Provides Name"
-msgstr "模块名称"
+msgstr "提供名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
@@ -2193,14 +2191,12 @@ msgid "Content Lifecycle Projects"
 msgstr "内容生命周期项目"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
-#, fuzzy
 msgid "Last Build"
-msgstr "构建"
+msgstr "上次构建"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
-#, fuzzy
 msgid "never"
-msgstr "严重性"
+msgstr "从不"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
@@ -2306,9 +2302,8 @@ msgid "contains package with epoch/version/release greater than"
 msgstr "包含纪元/版本/发行版高于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
-#, fuzzy
 msgid "contains package which provides name equal"
-msgstr "包含等于以下值的软件包名称"
+msgstr "包含所提供名称等于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
@@ -2327,14 +2322,12 @@ msgid "matches regular expression"
 msgstr "匹配正则表达式"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "provides name"
-msgstr "服务名称"
+msgstr "提供名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "provides name equal"
-msgstr "版本等于"
+msgstr "提供的名称等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
@@ -2357,9 +2350,8 @@ msgid "Contains Package Name"
 msgstr "包含软件包名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
-#, fuzzy
 msgid "Contains Package Provides Name"
-msgstr "包含软件包名称"
+msgstr "包含提供以下名称的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
@@ -3350,25 +3342,25 @@ msgstr ""
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
-msgstr ""
+msgstr "无法验证磁盘空间可用性。如果此问题持续出现，请联系您的系统管理员。"
 
 #: ../html/src/manager/login/login.tsx:66
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
-msgstr ""
+msgstr "缺少一些重要目录。请联系您的系统管理员查看配置。"
 
 #: ../html/src/manager/login/login.tsx:71
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
-msgstr ""
+msgstr "服务器上的可用磁盘空间不足。请联系您的系统管理员添加更多磁盘空间。"
 
 #: ../html/src/manager/login/login.tsx:76
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
-msgstr ""
+msgstr "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
 
 #: ../html/src/manager/login/login.tsx:94
 msgid "Signing in ..."
@@ -3702,19 +3694,16 @@ msgid "No Playbook found."
 msgstr "未找到剧本。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
-#, fuzzy
 msgid "Playbook File Name"
-msgstr "剧本目录"
+msgstr "剧本文件名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
-#, fuzzy
 msgid "Full Path"
-msgstr "路径"
+msgstr "完整路径"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:142
-#, fuzzy
 msgid "Custom Inventory"
-msgstr "库存路径"
+msgstr "自定义库存"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:156
 msgid "Inventory file empty."
@@ -4858,18 +4847,16 @@ msgid "Guest is not running"
 msgstr "Guest 未运行"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
-#, fuzzy
 msgid "Unknown guest"
-msgstr "未知"
+msgstr "未知 Guest"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:26
 msgid "Retry"
-msgstr ""
+msgstr "重试"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
-#, fuzzy
 msgid "Connecting..."
-msgstr "连接"
+msgstr "正在连接..."
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
@@ -4911,17 +4898,16 @@ msgid "Virtual CPU Count"
 msgstr "虚拟 CPU 计数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:192
-#, fuzzy
 msgid "Enable UEFI"
-msgstr "启用 IPv6"
+msgstr "启用 UEFI"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "UEFI firmware path"
-msgstr ""
+msgstr "UEFI 固件路径"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:204
 msgid "NVRAM template path"
-msgstr ""
+msgstr "NVRAM 模板路径"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:216
 msgid "Auto-installation Profile"
@@ -4933,15 +4919,15 @@ msgstr "内核选项"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:245
 msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr ""
+msgstr "已禁用群集支持，因为 VirtualDomain 资源代理 "
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Define as a cluster resource"
-msgstr ""
+msgstr "定义为群集资源"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Path to the cluster shared folder for VM definitions"
-msgstr ""
+msgstr "群集 VM 定义共享文件夹路径"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:291
 msgid "Graphics"
@@ -5013,16 +4999,15 @@ msgstr "图形控制台"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:40
 msgid "Migrate"
-msgstr ""
+msgstr "迁移"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:58
 msgid "Select where to migrate the virtual guest to."
-msgstr ""
+msgstr "选择要将虚拟 Guest 迁移到哪台主机。"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
-#, fuzzy
 msgid "Target Host"
-msgstr "目标主机名"
+msgstr "目标主机"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"

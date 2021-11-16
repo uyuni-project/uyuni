@@ -22,7 +22,7 @@ jmx_taskomatic_java_config:
 
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:
-    - name: grep -q 'prometheus_monitoring_enabled\s*=\s*1\s*$' /etc/rhn/rhn.conf
+    - name: grep -q -E 'prometheus_monitoring_enabled\s*=\s*(1|y|true|yes|on)\s*$' /etc/rhn/rhn.conf
 
 include:
   - util.syncstates

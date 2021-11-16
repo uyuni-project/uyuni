@@ -64,14 +64,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   steps %(
     When I follow "Events"
     And I follow "Pending"
-  )
-  # WORKAROUND against https://bugzilla.suse.com/show_bug.cgi?id=1191444
-  #                    (events stuck in "pending")
-  # Please remove "at most 600 seconds" clause as soon as the bug is fixed,
-  # or better, change it into "at most 60 seconds", because the default
-  # timeout of 250 seconds is way too long from an usability point of view.
-  step %(I wait at most 600 seconds until I do not see "#{event}" text, refreshing the page)
-  steps %(
+    And I wait at most 60 seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
@@ -1310,4 +1303,14 @@ When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host
   target = get_target(host)
   dest = "/srv/playbooks/"
   target.run("rm -rf #{dest}")
+end
+
+When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  node_id = retrieve_server_id(system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  react_key = @system_api.obtain_reactivation_key(node_id)
+  puts "Reactivation Key: #{react_key}"
+  step %(I enter "#{react_key}" as "reactivationKey")
 end

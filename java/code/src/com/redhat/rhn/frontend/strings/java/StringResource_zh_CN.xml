@@ -10991,14 +10991,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em />不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em />不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
@@ -11064,10 +11064,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Invalid filter template</source>
         <target state="final">过滤器模板无效</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
+      <trans-unit approved="yes" id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="final">无法获取频道模块。有关详细信息，请查看服务器日志。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

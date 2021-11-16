@@ -1,41 +1,60 @@
 - update last boot time of SSH Minions after bootstrapping (bsc#1191899)
-- On salt-ssh minions, enforce package list refresh after state apply
-- Improve the API to query system events and history
-- Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
-- Fix Service Package migration with pillar in database
-- Run Prometheus JMX exporter as Java agent (bsc#1184617)
-- Allow usage of jinja template in Salt config channels
-- Store Salt minion pillars in database
-- Fix datetime format parsing with moment (bsc#1191348)
-- trigger reboot needed message also when installhint is available
-  on package level
-- add Content Lifecycle Management filter for package provides and
-  use it in live patching filter template
-- Update proxy path on minion connection
-- mgr-sync refresh logs when a vendor channel is expired and shows how to remove it (bsc#1191222)
-- Hide link to CLM live patching template in system details for
-  products that don't support live patching (bsc#1190866)
-- fix logging of the spark framework and map requests to media.1
-  directory in the download controller (bsc#1189933)
-- Add 'Last build date' column to CLM project list (jsc#PM-2644)
-  (jsc#SUMA-61)
-- Improve exception handling and logging for mgr-libmod calls
-- Execute the diskcheck script at login to validate the available space
-- Add checksums to repository metadata filenames (bsc#1188315)
-- Fix ISE in product migration if base product is missing (bsc#1190151)
-- Add 'Flush cache' option to Ansible playbook execution
-  (bsc#1190405)
-- Update kernel live patch version on minion startup (bsc#1190276)
-- use TLSv1.3 if it is a supported Protocol
-- Adapt auto errata update to skip during CLM build (bsc#1189609)
-- Adapt auto errata update to respect maintenance windows
-- fix ISE in SSM when scheduling patches on multiple systems (bsc#1190396, bsc#1190275)
-- Add new endpoints to saltkeys API: acceptedList, pendingList, rejectedList, deniedList, accept and reject
-- add CentOS 7/8 aarch64
-- add Oracle Linux 7/8 aarch64
-- add Rocky Linux 8 aarch64
-- add AlmaLinux 8 aarch64
-- add Amazon Linux 2 aarch64
+- Fix package update action with shared channels (bsc#1191313)
+- Implement using re-activation keys when bootstrapping with the Web UI
+  or XMLRPC API
+- Show salt ssh error message in failed action details
+- switch to best repo auth item for contentsources (bsc#1191442)
+- Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
+
+-------------------------------------------------------------------
+Fri Nov 05 13:49:19 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Remove NullPointerException in rhn_web_ui.log when building an
+    image (bsc#1185951)
+  * Bugfix: Prevent "no session" hibernate error on deleting server
+  * Set product name and version in the User-Agent header when
+    connecting to SCC
+  * On salt-ssh minions, enforce package list refresh after state apply
+  * Improve the API to query system events and history
+  * Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
+  * Fix Service Package migration with pillar in database
+  * Run Prometheus JMX exporter as Java agent (bsc#1184617)
+  * Allow usage of jinja template in Salt config channels
+  * Store Salt minion pillars in database
+  * Fix datetime format parsing with moment (bsc#1191348)
+  * trigger reboot needed message also when installhint is available
+    on package level
+  * add Content Lifecycle Management filter for package provides and
+    use it in live patching filter template
+  * Update proxy path on minion connection
+  * mgr-sync refresh logs when a vendor channel is expired and shows
+    how to remove it (bsc#1191222)
+  * Hide link to CLM live patching template in system details for
+    products that don't support live patching (bsc#1190866)
+  * fix logging of the spark framework and map requests to media.1
+    directory in the download controller (bsc#1189933)
+  * Add 'Last build date' column to CLM project list (jsc#PM-2644)
+    (jsc#SUMA-61)
+  * Improve exception handling and logging for mgr-libmod calls
+  * Execute the diskcheck script at login to validate the available space
+  * Add checksums to repository metadata filenames (bsc#1188315)
+  * Fix ISE in product migration if base product is missing (bsc#1190151)
+  * Add 'Flush cache' option to Ansible playbook execution
+    (bsc#1190405)
+  * Update kernel live patch version on minion startup (bsc#1190276)
+  * use TLSv1.3 if it is a supported Protocol
+  * Adapt auto errata update to skip during CLM build (bsc#1189609)
+  * Adapt auto errata update to respect maintenance windows
+  * fix ISE in SSM when scheduling patches on multiple
+    systems (bsc#1190396, bsc#1190275)
+  * Add new endpoints to saltkeys API: acceptedList, pendingList,
+    rejectedList, deniedList, accept and reject
+  * add CentOS 7/8 aarch64
+  * add Oracle Linux 7/8 aarch64
+  * add Rocky Linux 8 aarch64
+  * add AlmaLinux 8 aarch64
+  * add Amazon Linux 2 aarch64
 
 -------------------------------------------------------------------
 Fri Sep 17 12:18:34 CEST 2021 - jgonzalez@suse.com
