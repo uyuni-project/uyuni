@@ -1,3 +1,5 @@
+- Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
+
 -------------------------------------------------------------------
 Tue Nov 16 10:06:56 CET 2021 - jgonzalez@suse.com
 
