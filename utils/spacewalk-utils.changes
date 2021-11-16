@@ -1,4 +1,8 @@
-- Enable aarch64 for AlmaLinux 8
+-------------------------------------------------------------------
+Tue Nov 16 10:07:42 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Enable aarch64 for AlmaLinux 8
 
 -------------------------------------------------------------------
 Fri Sep 17 12:12:12 CEST 2021 - jgonzalez@suse.com
