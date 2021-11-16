@@ -1,3 +1,5 @@
+- exchange zypp-plugin dependency to use the python3 version
+
 -------------------------------------------------------------------
 Tue Nov 16 10:03:10 CET 2021 - jgonzalez@suse.com
 
