@@ -1,9 +1,13 @@
-- Reposync: replace architecture variables in mirror lists
-- Minor spec update.
-- Added RHN config parameter httpd_config_dir.
-- Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
-- Improved the diskcheck script to return an exit value and to
-  allow performing the check without sending notification
+-------------------------------------------------------------------
+Wed Nov 17 12:35:42 CET 2021 - jmassaguerpla@suse.de
+
+- version 4.2.18-1
+  * Reposync: replace architecture variables in mirror lists
+  * Minor spec update.
+  * Added RHN config parameter httpd_config_dir.
+  * Avoid GPG errors messages in reposync caused by rpm not understanding signatures (bsc#1191538)
+  * Improved the diskcheck script to return an exit value and to
+    allow performing the check without sending notification
 
 -------------------------------------------------------------------
 Wed Oct 06 09:31:39 CEST 2021 - jgonzalez@suse.com
