@@ -1,6 +1,6 @@
 import * as React from "react";
 import Select from "react-select";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Loading } from "components/utils/Loading";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
@@ -18,6 +18,7 @@ import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
+import { useOnClosestScroll } from "utils/hooks";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
@@ -26,6 +27,18 @@ type PropsType = {
 };
 
 const ChannelsSelection = (props: PropsType) => {
+  const pageSize = window.userPrefPageSize || 50;
+  const container = useRef(null);
+
+  useOnClosestScroll(container, (event) => {
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+
+    const currentScroll = target.scrollTop;
+    const maxScroll = target.scrollHeight - target.clientHeight;
+    console.log("onscroll", currentScroll, maxScroll);
+  });
+
   const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
   const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
     useMandatoryChannelsApi();
@@ -74,7 +87,7 @@ const ChannelsSelection = (props: PropsType) => {
   let orderedBaseChannels = orderBaseChannels(channelsTree, state.selectedBaseChannelId);
 
   return (
-    <div>
+    <div ref={container}>
       <div className="form-group">
         <label className="col-lg-3 control-label">{t("New Base Channel")}</label>
         <div className="col-lg-8">

@@ -16,20 +16,20 @@ const msgMap = {
 };
 
 type FetchMandatoryChannelsProps = {
-  base: any;
+  base?: { id: number };
   channels: Array<ChannelType>;
 };
 
 export type RequiredChannelsResultType = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
-  dependenciesTooltip: Function;
+  dependenciesTooltip: (channelId: number, channels: Array<ChannelType>) => string | null;
 };
 
 export type UseMandatoryChannelsApiReturnType = {
   requiredChannelsResult: RequiredChannelsResultType;
   isDependencyDataLoaded: boolean;
-  fetchMandatoryChannelsByChannelIds: Function;
+  fetchMandatoryChannelsByChannelIds: (props: FetchMandatoryChannelsProps) => void;
 };
 
 const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
