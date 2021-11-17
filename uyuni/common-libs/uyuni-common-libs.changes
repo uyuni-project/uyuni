@@ -1,3 +1,4 @@
+- Read modularity data from DISTTAG tag as fallback (bsc#1192487)
 - require python macros for building
 
 -------------------------------------------------------------------
