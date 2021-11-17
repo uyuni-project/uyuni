@@ -1,6 +1,10 @@
-- Reorganize bootstrap SSL state
-- Add missing packages on SSL bootstrap of Debian-10 and SLES-15
-- Update translation strings
+-------------------------------------------------------------------
+Wed Nov 17 12:40:32 CET 2021 - jmassaguerpla@suse.de
+
+- version 4.2.26-1
+  * Reorganize bootstrap SSL state
+  * Add missing packages on SSL bootstrap of Debian-10 and SLES-15
+  * Update translation strings
 
 -------------------------------------------------------------------
 Thu Oct 21 16:30:55 CEST 2021 - jgonzalez@suse.com
