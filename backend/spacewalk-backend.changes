@@ -1,3 +1,4 @@
+- Retrieve and store copyright information about patches
 - SLES PAYG client support on cloud
 - Add headers to update proxy auth token in listChannels (bsc#1193585)
 - require python macros for building

@@ -236,6 +236,7 @@ class OracleBackend(Backend):
                   'synopsis': DBstring(4000),
                   'topic': DBstring(4000),
                   'solution': DBstring(4000),
+                  'rights': DBstring(100),
                   'notes': DBstring(4000),
                   'refers_to': DBstring(4000),
                   'org_id': DBint(),

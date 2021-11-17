@@ -1,3 +1,4 @@
+- Added rights column to rhnerrata to handle copyright information
 - Add support for custom SSH port for SSH minions
 - add ubuntu errata data and install handling
 - SLES PAYG client support on cloud
