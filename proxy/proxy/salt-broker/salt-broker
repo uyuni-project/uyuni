@@ -54,14 +54,6 @@ SUPERVISOR_TIMEOUT = 5
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-loghandler = logging.handlers.RotatingFileHandler(
-    SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
-
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-loghandler.setFormatter(formatter)
-log.addHandler(loghandler)
-
-
 class AbstractChannelProxy(multiprocessing.Process):
     '''
     Abstract class for ChannelProxy objects
@@ -333,6 +325,7 @@ if __name__ == "__main__":
         "tcp_keepalive_idle": 300,
         "tcp_keepalive_cnt": -1,
         "tcp_keepalive_intvl": -1,
+        "log_to_file": 1,
     }
 
     try:
@@ -348,6 +341,19 @@ if __name__ == "__main__":
             saltbroker_opts.update({"master": rhn_parent})
 
         saltbroker_opts.update(config)
+
+        # log to file or to standard output and error depending on the configuration
+        if saltbroker_opts.get('log_to_file'):
+           loghandler = logging.handlers.RotatingFileHandler(
+               SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
+        else:
+           loghandler = logging.StreamHandler()
+
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        loghandler.setFormatter(formatter)
+        log.addHandler(loghandler)
+
+
         proxy = SaltBroker(opts=saltbroker_opts)
         proxy.start()
 
