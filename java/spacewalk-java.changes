@@ -1,32 +1,36 @@
-- Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
-- Fix package update action with shared channels (bsc#1191313)
-- fix openscap scan with tailoring-file option (bsc#1192321)
-- switch to best repo auth item for contentsources (bsc#1191442)
-- Implement using re-activation keys when bootstrapping with the Web UI
-  or XMLRPC API
-- update last boot time of SSH Minions after bootstrapping
-  (bsc#1191899)
-- Add compressed flag to image pillars when kiwi image is compressed
-  (bsc#1191702)
-- Use an 'allow' filter for the kernel packages with live patching
-  filter templates (bsc#1191460)
-- Move pickedup actions to history as soon as they are pickedup
-  (bsc#1191444)
-- fix issue with empty action chains getting deleted too early (bsc#1191377)
-- Set product name and version in the User-Agent header when connecting to SCC
-- On salt-ssh minions, enforce package list refresh after state apply
-- Run Prometheus JMX exporter as Java agent (bsc#1184617)
-- Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
-- Hide link to CLM live patching template in system details for
-  products that don't support live patching (bsc#1190866)
-- Execute the diskcheck script at login to validate the available space
-- trigger reboot needed message also when installhint is available
-  on package level
-- add Content Lifecycle Management filter for package provides and
-  use it in live patching filter template
-- Allow usage of jinja template in Salt config channels
-- Remove NullPointerException in rhn_web_ui.log when building an image (bsc#1185951)
-- mgr-sync refresh logs when a vendor channel is expired and shows how to remove it (bsc#1191222)
+-------------------------------------------------------------------
+Wed Nov 17 12:37:49 CET 2021 - jmassaguerpla@suse.de
+
+- version 4.2.31-1
+  * Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
+  * Fix package update action with shared channels (bsc#1191313)
+  * fix openscap scan with tailoring-file option (bsc#1192321)
+  * switch to best repo auth item for contentsources (bsc#1191442)
+  * Implement using re-activation keys when bootstrapping with the Web UI
+    or XMLRPC API
+  * update last boot time of SSH Minions after bootstrapping
+    (bsc#1191899)
+  * Add compressed flag to image pillars when kiwi image is compressed
+    (bsc#1191702)
+  * Use an 'allow' filter for the kernel packages with live patching
+    filter templates (bsc#1191460)
+  * Move pickedup actions to history as soon as they are pickedup
+    (bsc#1191444)
+  * fix issue with empty action chains getting deleted too early (bsc#1191377)
+  * Set product name and version in the User-Agent header when connecting to SCC
+  * On salt-ssh minions, enforce package list refresh after state apply
+  * Run Prometheus JMX exporter as Java agent (bsc#1184617)
+  * Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
+  * Hide link to CLM live patching template in system details for
+    products that don't support live patching (bsc#1190866)
+  * Execute the diskcheck script at login to validate the available space
+  * trigger reboot needed message also when installhint is available
+    on package level
+  * add Content Lifecycle Management filter for package provides and
+    use it in live patching filter template
+  * Allow usage of jinja template in Salt config channels
+  * Remove NullPointerException in rhn_web_ui.log when building an image (bsc#1185951)
+  * mgr-sync refresh logs when a vendor channel is expired and shows how to remove it (bsc#1191222)
 
 -------------------------------------------------------------------
 Wed Oct 06 16:25:25 CEST 2021 - jgonzalez@suse.com
