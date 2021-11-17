@@ -27,4 +27,4 @@ cont_perm_squid:
 
 cont_pre_start_squid:
   cmd.run:
-    - name: /usr/lib64/squid/initialize_cache_if_needed.sh
+    - name: /usr/lib/squid/initialize_cache_if_needed.sh
