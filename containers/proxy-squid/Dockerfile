@@ -1,4 +1,4 @@
-# rebuild with: docker build -t proxy .
+# rebuild with: docker build -t proxy-squid .
 
 FROM registry.opensuse.org/opensuse/leap:15.3
 
