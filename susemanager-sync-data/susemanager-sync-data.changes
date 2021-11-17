@@ -1,5 +1,9 @@
-- add SLES15 SP2 LTSS
-- use mirrorlist URLs for Alma Linux 8
+-------------------------------------------------------------------
+Wed Nov 17 12:42:58 CET 2021 - jmassaguerpla@suse.de
+
+- version 4.2.10-1
+  * add SLES15 SP2 LTSS
+  * use mirrorlist URLs for Alma Linux 8
 
 -------------------------------------------------------------------
 Wed Oct 06 09:41:53 CEST 2021 - jgonzalez@suse.com
