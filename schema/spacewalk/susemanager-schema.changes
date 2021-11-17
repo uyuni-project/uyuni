@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Wed Nov 17 12:41:45 CET 2021 - jmassaguerpla@suse.de
 
-- Add schema directory for susemanager-schema-4.2.18
+- version 4.2.19-1
+
+  * Add schema directory for susemanager-schema-4.2.18
 
 -------------------------------------------------------------------
 Wed Oct 06 09:40:04 CEST 2021 - jgonzalez@suse.com
