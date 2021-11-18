@@ -14,7 +14,7 @@ Feature: Build image with authenticated registry
     And I check "useCredentials"
     And I enter URI, username and password for registry
     And I click on "create-btn"
-    Then I wait until I see "registry" text
+    Then I wait until I see "auth_registry" text
 
   Scenario: Create a profile for the authenticated image store as Docker admin
     When I follow the left menu "Images > Profiles"
@@ -33,25 +33,24 @@ Feature: Build image with authenticated registry
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "auth_registry_profile" text
-    # Verify the status of images in the authenticated image store
-    When I wait at most 660 seconds until container "auth_registry_profile" is built successfully
-    And I refresh the page
-    Then table row for "auth_registry_profile" should contain "1"
+    And I wait until the image build "build auth_registry_profile" with version "latest" scheduled by "admin" is completed
+    And I wait at most 1000 seconds until all "1" container images are built correctly in the GUI
 
   Scenario: Cleanup: remove Docker profile for the authenticated image store
     When I follow the left menu "Images > Profiles"
     And I check the row with the "auth_registry_profile" text
     And I click on "Delete"
     And I click on the red confirmation button
-    And I should see a "Image profile has been deleted." text
+    Then I should see a "Image profile has been deleted." text
 
   Scenario: Cleanup: remove authenticated image store
     When I follow the left menu "Images > Stores"
     And I check the row with the "auth_registry" text
     And I click on "Delete"
     And I click on the red confirmation button
-    And I should see a "Image store has been deleted." text
+    Then I should see a "Image store has been deleted." text
 
   Scenario: Cleanup: delete registry image
     Given I am authorized as "admin" with password "admin"
     When I delete the image "auth_registry_profile" with version "latest" via XML-RPC calls
+    Then the image "auth_registry_profile" with version "latest" doesn't exist via XML-RPC calls

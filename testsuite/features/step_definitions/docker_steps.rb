@@ -30,6 +30,13 @@ Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
   )
 end
 
+Then(/^I wait until the image build "([^"]*)" with version "([^"]*)" scheduled by "([^"]*)" is completed$/) do |image_name, image_tag, current_user|
+  steps %(
+    When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by #{current_user}" is completed
+    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:#{image_tag} scheduled by #{current_user}" is completed
+  )
+end
+
 Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
   # It doesn't exist any navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
   visit("https://#{$server.full_hostname}/os-images/#{org}/")
