@@ -1,7 +1,6 @@
 {% set machine_id = salt['environ.get']('UYUNI_MACHINE_ID') %}
 {% set master = salt['environ.get']('UYUNI_MASTER') %}
 {% set minion_id = salt['environ.get']('UYUNI_MINION_ID') %}
-{% set activation_key = salt['environ.get']('UYUNI_ACTIVATION_KEY') %}
 {% set ca_certs = salt['environ.get']('UYUNI_CA_CERTS') %}
 {% set srv_cert_rpm = salt['environ.get']('UYUNI_SRV_CERT') %}
 {% set email = salt['environ.get']('UYUNI_EMAIL', 'root@localhost') %}
@@ -41,11 +40,6 @@ cont_minion_conf:
         server_id_use_crc: adler32
         enable_legacy_startup_events: False
         enable_fqdns_grains: False
-        {% if activation_key %}
-        grains:
-          susemanager:
-            activation_key: {{ activation_key }}
-        {% endif %}
         start_event_grains:
           - machine_id
           - saltboot_initrd
