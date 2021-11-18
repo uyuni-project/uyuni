@@ -79,9 +79,9 @@ type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"
    */
   loadOptions: (
     searchString: string,
-    previouslyLoaded: unknown[],
-    additional?: unknown
-  ) => Promise<{ options: unknown[]; hasMore: boolean; additional?: unknown }>;
+    previouslyLoaded: any[],
+    additional?: any
+  ) => Promise<{ options: any[]; hasMore: boolean; additional?: any }>;
 };
 
 type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;

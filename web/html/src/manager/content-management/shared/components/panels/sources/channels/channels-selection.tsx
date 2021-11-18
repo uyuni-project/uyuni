@@ -18,6 +18,7 @@ import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
+import { ChannelType } from "core/channels/type/channels.type";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
@@ -74,14 +75,14 @@ const ChannelsSelection = (props: PropsType) => {
   let orderedBaseChannels = orderBaseChannels(channelsTree, state.selectedBaseChannelId);
 
   const pageSize = window.userPrefPageSize || 15;
-  // TODO: Move this to the API side instead
-  const loadSelectOptions = async (searchString: string, previouslyLoaded: unknown[]) => {
+  // TODO: Move this to the server instead
+  const loadSelectOptions = async (searchString: string, previouslyLoaded: ChannelType[]) => {
     const offset = previouslyLoaded.length;
 
     const filteredChannels = orderedBaseChannels.filter((channel) =>
       channel.name.toLocaleLowerCase().includes(searchString.toLocaleLowerCase())
     );
-    // All of this should come from the server instead
+    // This is what we would expect to get back from the server given a search string and offset
     const options = filteredChannels.slice(offset, offset + pageSize);
     const hasMore = previouslyLoaded.length + options.length < filteredChannels.length;
     return {
