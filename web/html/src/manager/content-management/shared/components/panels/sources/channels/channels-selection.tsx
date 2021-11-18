@@ -1,7 +1,7 @@
 import * as React from "react";
-import Select from "react-select";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Loading } from "components/utils/Loading";
+import { Select } from "components/input/Select";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
@@ -18,7 +18,6 @@ import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
-import { useOnClosestScroll } from "utils/hooks";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
@@ -27,18 +26,6 @@ type PropsType = {
 };
 
 const ChannelsSelection = (props: PropsType) => {
-  const pageSize = window.userPrefPageSize || 50;
-  const container = useRef(null);
-
-  useOnClosestScroll(container, (event) => {
-    const target = event.target as HTMLElement | null;
-    if (!target) return;
-
-    const currentScroll = target.scrollTop;
-    const maxScroll = target.scrollHeight - target.clientHeight;
-    console.log("onscroll", currentScroll, maxScroll);
-  });
-
   const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
   const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
     useMandatoryChannelsApi();
@@ -86,42 +73,55 @@ const ChannelsSelection = (props: PropsType) => {
   // Order all base channels by id and set the lead base channel as first
   let orderedBaseChannels = orderBaseChannels(channelsTree, state.selectedBaseChannelId);
 
+  // TODO: Only for testing
+  if (false) {
+    const testCount = 5000;
+    while (orderedBaseChannels.length < testCount) {
+      orderedBaseChannels.push(...orderedBaseChannels);
+    }
+    orderedBaseChannels = orderedBaseChannels.slice(0, testCount);
+  }
+
+  const pageSize = window.userPrefPageSize || 15;
+  // TODO: Move this to the API side instead
+  const loadSelectOptions = async (searchString: string, previouslyLoaded: unknown[]) => {
+    const offset = previouslyLoaded.length;
+
+    const filteredChannels = orderedBaseChannels.filter((channel) =>
+      channel.name.toLocaleLowerCase().includes(searchString.toLocaleLowerCase())
+    );
+    // All of this should come from the server instead
+    const options = filteredChannels.slice(offset, offset + pageSize);
+    const hasMore = previouslyLoaded.length + options.length < filteredChannels.length;
+    return {
+      options,
+      hasMore,
+    };
+  };
+
   return (
-    <div ref={container}>
-      <div className="form-group">
-        <label className="col-lg-3 control-label">{t("New Base Channel")}</label>
-        <div className="col-lg-8">
-          <Select
-            name="selectedBaseChannel"
-            id="selectedBaseChannel"
-            value={orderedBaseChannels.find((item) => item.id === state.selectedBaseChannelId)}
-            onChange={(value) => {
-              if (typeof value === "object" && !Array.isArray(value)) {
-                dispatchChannelsSelection({
-                  type: "lead_channel",
-                  newBaseId: parseInt(value.id, 10),
-                });
-              }
-            }}
-            options={orderedBaseChannels}
-            getOptionLabel={(option) => option.name}
-            getOptionValue={(option) => option.id}
-            menuPortalTarget={document.body}
-            classNamePrefix={`class-selectedBaseChannel`}
-            styles={{
-              menu: (styles: {}) => ({
-                ...styles,
-                zIndex: 3,
-              }),
-              menuPortal: (styles: {}) => ({
-                ...styles,
-                zIndex: 9999,
-              }),
-            }}
-          />
-          <span className="help-block">{t("Choose the channel to be elected as the new base channel")}</span>
-        </div>
-      </div>
+    <div>
+      <Select
+        name="selectedBaseChannel"
+        loadOptions={loadSelectOptions}
+        paginate={true}
+        label={t("New Base Channel")}
+        labelClass="col-md-3"
+        divClass="col-md-8"
+        hint={t("Choose the channel to be elected as the new base channel")}
+        getOptionLabel={(option) => option.name}
+        getOptionValue={(option) => option.id}
+        onChange={(name, rawValue) => {
+          const value = parseInt(rawValue, 10);
+          if (isNaN(value)) {
+            return;
+          }
+          dispatchChannelsSelection({
+            type: "lead_channel",
+            newBaseId: value,
+          });
+        }}
+      />
       {state.selectedBaseChannelId && (
         <div className="form-group">
           <label className="col-lg-3 control-label">
