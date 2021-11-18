@@ -745,15 +745,18 @@ public class SaltServerActionService {
                                                         sa.getServer().asMinionServer().get()
                                                                 .getMinionId().equals(minionId))
                                                 .findFirst();
-                                if (rebootServerAction.isPresent()) {
-                                    rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
-                                    rebootServerAction.get().setPickupTime(new Date());
-                                }
-                                else {
-                                    LOG.error("Action of type " + SYSTEM_REBOOT +
-                                            " found in action chain result but not in actions for minion " +
-                                            minionId);
-                                }
+                                rebootServerAction.ifPresentOrElse(
+                                        ract -> {
+                                            if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                                                rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
+                                                rebootServerAction.get().setPickupTime(new Date());
+                                            }
+                                        },
+                                        () -> {
+                                            LOG.error("Action of type " + SYSTEM_REBOOT +
+                                                    " found in action chain result but not in actions for minion " +
+                                                    minionId);
+                                        });
                             }
                         }
 
@@ -2484,7 +2487,10 @@ public class SaltServerActionService {
                         String function = (String) call.getPayload().get("fun");
 
                         // reboot needs special handling in case of ssh push
-                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT) &&
+                            sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                        // if the status is already PICKED_UP, don't change it
+                        // if the status is FAILED or COMPLETED, don't change it
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
                         }
@@ -2626,7 +2632,7 @@ public class SaltServerActionService {
                             // In action chains at this point the action is still queued so we have
                             // to set it to picked up.
                             // This could still lead to the race condition on when event processing is slow.
-                            if (sa.getPickupTime() == null) {
+                            if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                                 sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                                 sa.setPickupTime(new Date());
                             }
