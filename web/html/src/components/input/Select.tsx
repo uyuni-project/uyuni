@@ -53,9 +53,10 @@ type SelectProps = CommonSelectProps & {
   options: Array<Object | string>;
 };
 
-// 'value' and 'defaultValue' are not currently supported with the async Select
-// because string => Object value conversion is not possible with dynamic options
 type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
+  // 'value' and 'defaultValue' are not currently supported with the async Select
+  // because string => Object value conversion is not possible with dynamic options
+
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
   defaultValueOption?: Object;
 
@@ -64,7 +65,7 @@ type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
   /**
    * Function that returns a promise, which is the set of options to be used once the promise resolves.
    */
-  loadOptions: (inputValue: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
+  loadOptions: (searchString: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
   cacheOptions?: boolean;
 };
 type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
@@ -73,14 +74,14 @@ type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"
 
   paginate: true;
   /**
-   * Function that returns a promise, which is the set of options to be used once the promise resolves.
+   * Function that returns a promise with pagination data and a set of options matching the search string
    * See: https://github.com/vtaits/react-select-async-paginate/tree/master/packages/react-select-async-paginate#loadoptions
    */
   loadOptions: (
     searchString: string,
     previouslyLoaded: unknown[],
     additional?: unknown
-  ) => Promise<{ options: any[]; hasMore: boolean; additional?: any }>;
+  ) => Promise<{ options: unknown[]; hasMore: boolean; additional?: unknown }>;
 };
 
 type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
