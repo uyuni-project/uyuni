@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
+import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
@@ -52,12 +53,13 @@ type SelectProps = CommonSelectProps & {
   options: Array<Object | string>;
 };
 
+// 'value' and 'defaultValue' are not currently supported with the async Select
+// because string => Object value conversion is not possible with dynamic options
 type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
-  // 'value' and 'defaultValue' are not currently supported with the async Select
-  // because string => Object value conversion is not possible with dynamic options
-
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
   defaultValueOption?: Object;
+
+  paginate?: boolean;
 
   /**
    * Function that returns a promise, which is the set of options to be used once the promise resolves.
@@ -65,8 +67,25 @@ type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
   loadOptions: (inputValue: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
   cacheOptions?: boolean;
 };
+type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
+  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
+  defaultValueOption?: Object;
 
-export function Select(props: SelectProps | AsyncSelectProps) {
+  paginate: true;
+  /**
+   * Function that returns a promise, which is the set of options to be used once the promise resolves.
+   * See: https://github.com/vtaits/react-select-async-paginate/tree/master/packages/react-select-async-paginate#loadoptions
+   */
+  loadOptions: (
+    searchString: string,
+    previouslyLoaded: unknown[],
+    additional?: unknown
+  ) => Promise<{ options: any[]; hasMore: boolean; additional?: any }>;
+};
+
+type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
+
+export function Select(props: Props) {
   const {
     inputClass,
     getOptionLabel,
@@ -80,7 +99,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   } = props;
 
   const formContext = React.useContext(FormContext);
-  const isAsync = (props: SelectProps | AsyncSelectProps): props is AsyncSelectProps => {
+  const isAsync = (props: Props): props is AsyncSelectProps | AsyncPaginateSelectProps => {
     return (props as AsyncSelectProps).loadOptions !== undefined;
   };
 
@@ -162,6 +181,22 @@ export function Select(props: SelectProps | AsyncSelectProps) {
         };
 
         if (isAsync(props)) {
+          if (props.paginate) {
+            return (
+              <AsyncPaginateSelect
+                loadOptions={props.loadOptions}
+                defaultOptions
+                aria-label={props.title}
+                defaultValue={defaultValueOption}
+                shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
+                  // Load more items before we hit the complete bottom of the dropdown
+                  const threshold = 200; //px
+                  return scrollHeight - clientHeight - scrollTop < threshold;
+                }}
+                {...commonProps}
+              />
+            );
+          }
           return (
             <AsyncSelect
               loadOptions={props.loadOptions}
