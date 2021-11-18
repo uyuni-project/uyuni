@@ -15,18 +15,19 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -61,6 +63,11 @@ public class RebootActionCleanup extends RhnJavaJob {
         if (failedRebootActions.size() > 0) {
             log.info("Set " + failedRebootActions.size() +
                     " reboot action(s) to failed. Running longer than 6 hours.");
+            if (log.isDebugEnabled()) {
+                log.debug("failed (server,action) ids" + failedRebootActions.stream()
+                    .map(a -> "(" + a.get("server_id") + ", " + a.get("action_id") + ")")
+                    .collect(Collectors.joining(", ")));
+            }
         }
     }
 
