@@ -448,9 +448,14 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I run "zypper -n mr -e --all" on "kvm_server" without error control
     And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm_server" without error control
     And I run "systemctl stop salt-minion" on "kvm_server" without error control
+    And I run "systemctl stop venv-salt-minion" on "kvm_server" without error control
     And I run "rm /etc/salt/minion.d/susemanager*" on "kvm_server" without error control
     And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm_server" without error control
     And I run "rm /etc/salt/pki/minion/minion_master.pub" on "kvm_server" without error control
+    # Now in case of venv-salt-minion
+    And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
+    And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control
+    And I run "rm /etc/venv-salt-minion/pki/minion/minion_master.pub" on "kvm_server" without error control
     # In case the delete VM test failed we need to clean up ourselves.
     And I run "virsh undefine --remove-all-storage test-vm" on "kvm_server" without error control
     And I run "virsh destroy test-vm2" on "kvm_server" without error control
