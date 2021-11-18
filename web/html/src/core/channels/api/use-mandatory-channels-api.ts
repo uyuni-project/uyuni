@@ -2,6 +2,7 @@ import { useState } from "react";
 import { JsonResult } from "utils/network";
 import Network from "utils/network";
 import { ChannelType } from "core/channels/type/channels.type";
+import { ChannelDto } from "manager/systems/activation-key/activation-key-channels-api";
 import { ChannelsDependencies } from "core/channels/utils/channels-dependencies.utils";
 import {
   processChannelDependencies,
@@ -23,7 +24,7 @@ type FetchMandatoryChannelsProps = {
 export type RequiredChannelsResultType = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
-  dependenciesTooltip: (channelId: number, channels: Array<ChannelType>) => string | null;
+  dependenciesTooltip: (channelId: number, channels: (ChannelType | ChannelDto)[]) => string | undefined;
 };
 
 export type UseMandatoryChannelsApiReturnType = {
@@ -67,12 +68,12 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
     }
   };
 
-  const dependenciesTooltip = (channelId: number, channels: Array<ChannelType>) => {
+  const dependenciesTooltip = (channelId: number, channels: (ChannelType | ChannelDto)[]) => {
     const resolveChannelNames: Function = (channelIds: Array<number>): Array<string | null | undefined> => {
       return Array.from(channelIds || new Set())
-        .map((channelId: number): ChannelType | null | undefined => channels.find((c) => c.id === channelId))
-        .filter((channel: ChannelType | null | undefined): boolean => channel != null)
-        .map((channel: ChannelType | null | undefined): string | null | undefined => channel && channel.name);
+        .map((channelId: number) => channels.find((c) => c.id === channelId))
+        .filter((channel): boolean => channel != null)
+        .map((channel): string | null | undefined => channel && channel.name);
     };
     return dependenciesTooltipInternal(
       resolveChannelNames(requiredChannels.get(channelId)),

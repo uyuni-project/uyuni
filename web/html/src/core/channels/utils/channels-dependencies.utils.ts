@@ -10,9 +10,9 @@ export type ChannelsDependencies = {
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
 // return null if the channel is not involved in any dependencies
-function dependenciesTooltip(requiredChannels: Array<string>, requiredByChannels: Array<string>): string | null {
+function dependenciesTooltip(requiredChannels: Array<string>, requiredByChannels: Array<string>): string | undefined {
   if (requiredChannels.length === 0 && requiredByChannels.length === 0) {
-    return null;
+    return undefined;
   }
 
   const channelLines = (channelNames: string[]) => {
