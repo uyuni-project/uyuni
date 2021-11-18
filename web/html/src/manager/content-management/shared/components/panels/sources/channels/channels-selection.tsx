@@ -73,15 +73,6 @@ const ChannelsSelection = (props: PropsType) => {
   // Order all base channels by id and set the lead base channel as first
   let orderedBaseChannels = orderBaseChannels(channelsTree, state.selectedBaseChannelId);
 
-  // TODO: Only for testing
-  if (false) {
-    const testCount = 5000;
-    while (orderedBaseChannels.length < testCount) {
-      orderedBaseChannels.push(...orderedBaseChannels);
-    }
-    orderedBaseChannels = orderedBaseChannels.slice(0, testCount);
-  }
-
   const pageSize = window.userPrefPageSize || 15;
   // TODO: Move this to the API side instead
   const loadSelectOptions = async (searchString: string, previouslyLoaded: unknown[]) => {
