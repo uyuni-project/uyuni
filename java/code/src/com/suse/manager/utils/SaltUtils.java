@@ -1875,23 +1875,35 @@ public class SaltUtils {
 
     private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
+        boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() != null) {
-                return bootTime.after(sa.getPickupTime());
+                result = bootTime.after(sa.getPickupTime());
             }
             else if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() == null) {
-                return bootTime.after(action.getEarliestAction());
+                result = bootTime.after(action.getEarliestAction());
             }
             else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                 if (action.getPrerequisite() != null) {
                     // queued reboot actions that do not complete in 12 hours will
                     // be cleaned up by MinionActionUtils.cleanupMinionActions()
-                    return false;
+                    result = false;
                 }
-                return bootTime.after(sa.getParentAction().getEarliestAction());
+                else {
+                    result = bootTime.after(sa.getParentAction().getEarliestAction());
+                }
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("shouldCleanupAction" +
+                        " Server:" + sa.getServer().getId() +
+                        " Action: " + sa.getParentAction().getId() +
+                        " BootTime: " + bootTime +
+                        " PickupTime: " + sa.getPickupTime() +
+                        " EarliestAction " + action.getEarliestAction() +
+                        " Result: " + result);
             }
         }
-        return false;
+        return result;
     }
 
     /**
