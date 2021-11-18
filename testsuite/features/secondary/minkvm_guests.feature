@@ -447,7 +447,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Cleanup: Cleanup KVM virtualization host
     When I run "zypper -n mr -e --all" on "kvm_server" without error control
     And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm_server" without error control
-    And I run "systemctl stop salt-minion" on "kvm_server" without error control
     And I stop salt-minion on "kvm_server"
     And I run "rm /etc/salt/minion.d/susemanager*" on "kvm_server" without error control
     And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm_server" without error control
