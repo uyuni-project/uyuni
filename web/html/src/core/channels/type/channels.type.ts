@@ -1,6 +1,7 @@
 export type ChannelType = {
   id: number;
   name: string;
+  label: string;
   archLabel: string;
   custom: boolean;
   isCloned: boolean;

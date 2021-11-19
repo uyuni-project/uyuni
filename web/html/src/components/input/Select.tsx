@@ -177,6 +177,7 @@ export function Select(props: Props) {
           isClearable: isClearable,
           styles: bootstrapStyles,
           isMulti: props.isMulti,
+          // TODO: Create a separate div in body so we don't invalidate the layout every time
           menuPortalTarget: document.body,
           classNamePrefix: `class-${props.name}`,
         };

@@ -7,10 +7,11 @@ import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
 import GroupChannels from "./group-channels";
 import { useImmerReducer } from "use-immer";
+import { VirtualList } from "components/virtual-list";
 
 import { ActionChannelsSelectionType, FilterType, StateChannelsSelectionType } from "./channels-selection.state";
 import {
-  getChannelsFiltersAvailableValues,
+  channelsFiltersAvailableValues,
   initialStateChannelsSelection,
   reducerChannelsSelection,
 } from "./channels-selection.state";
@@ -23,7 +24,7 @@ import { ChannelType } from "core/channels/type/channels.type";
 type PropsType = {
   isSourcesApiLoading: boolean;
   initialSelectedIds: Array<number>;
-  onChange: Function;
+  onChange: (channels: ChannelType[]) => void;
 };
 
 const ChannelsSelection = (props: PropsType) => {
@@ -40,7 +41,28 @@ const ChannelsSelection = (props: PropsType) => {
 
   useEffect(() => {
     fetchChannelsTree().then((channelsTree: ChannelsTreeType) => {
+      // TODO: Can this `Object.values()` call be avoided?
       fetchMandatoryChannelsByChannelIds({ channels: Object.values(channelsTree.channelsById) });
+
+      // TODO: Only for testing
+      if (true) {
+        const testCount = 5000;
+        for (var ii = 0; ii < testCount; ii++) {
+          const id = 10000000 + ii;
+          channelsTree.baseIds.push(id);
+          channelsTree.channelsById[id] = {
+            id,
+            name: `mock channel ${ii}`,
+            label: `mock_channel_${ii}`,
+            archLabel: "channel-x86_64",
+            custom: true,
+            isCloned: false,
+            subscribable: true,
+            recommended: false,
+            children: [],
+          };
+        }
+      }
     });
   }, []);
 
@@ -92,30 +114,33 @@ const ChannelsSelection = (props: PropsType) => {
   };
 
   return (
-    <div>
-      <Select
-        name="selectedBaseChannel"
-        loadOptions={loadSelectOptions}
-        paginate={true}
-        label={t("New Base Channel")}
-        labelClass="col-md-3"
-        divClass="col-md-8"
-        hint={t("Choose the channel to be elected as the new base channel")}
-        getOptionLabel={(option) => option.name}
-        getOptionValue={(option) => option.id}
-        onChange={(name, rawValue) => {
-          const value = parseInt(rawValue, 10);
-          if (isNaN(value)) {
-            return;
-          }
-          dispatchChannelsSelection({
-            type: "lead_channel",
-            newBaseId: value,
-          });
-        }}
-      />
+    <React.Fragment>
+      <div className="row">
+        <Select
+          name="selectedBaseChannel"
+          loadOptions={loadSelectOptions}
+          paginate={true}
+          label={t("New Base Channel")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          hint={t("Choose the channel to be elected as the new base channel")}
+          getOptionLabel={(option) => option.name}
+          getOptionValue={(option) => option.id}
+          onChange={(name, rawValue) => {
+            const value = parseInt(rawValue, 10);
+            if (isNaN(value)) {
+              return;
+            }
+            dispatchChannelsSelection({
+              type: "lead_channel",
+              newBaseId: value,
+            });
+          }}
+        />
+      </div>
       {state.selectedBaseChannelId && (
-        <div className="form-group">
+        // TODO: Move to styles
+        <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
             <div className="row" style={{ marginBottom: "30px" }}>
               {`${t("Child Channels")} (${state.selectedChannelsIds.length})`}
@@ -138,7 +163,7 @@ const ChannelsSelection = (props: PropsType) => {
                 </span>
               </div>
               <hr />
-              {getChannelsFiltersAvailableValues().map((filter: FilterType) => (
+              {channelsFiltersAvailableValues.map((filter: FilterType) => (
                 <div key={filter.id} className="checkbox">
                   <input
                     type="checkbox"
@@ -157,8 +182,9 @@ const ChannelsSelection = (props: PropsType) => {
               ))}
             </div>
           </label>
-          <div className="col-lg-8">
-            <div>
+          {/** className="col-lg-8" */}
+          <VirtualList />
+          {/** TODO: Rebuild
               {orderedBaseChannels.map((baseChannel) => {
                 const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(
                   state.selectedChannelsIds,
@@ -217,11 +243,10 @@ const ChannelsSelection = (props: PropsType) => {
                   />
                 );
               })}
-            </div>
-          </div>
+              */}
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

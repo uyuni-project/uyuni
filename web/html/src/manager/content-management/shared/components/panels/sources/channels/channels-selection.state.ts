@@ -38,13 +38,10 @@ export const channelsFiltersAvailable: FiltersType = {
   },
 };
 
-export const getChannelsFiltersAvailableValues = (): Array<FilterType> =>
-  Object.values(channelsFiltersAvailable) as any;
+export const channelsFiltersAvailableValues = Object.values(channelsFiltersAvailable);
 
-export const getInitialFiltersState = (): Array<string> =>
-  getChannelsFiltersAvailableValues()
-    .filter((filter) => filter.selectedByDefault)
-    .map((filter) => filter.id) || [];
+export const getInitialFiltersState = () =>
+  channelsFiltersAvailableValues.filter((filter) => filter.selectedByDefault).map((filter) => filter.id) || [];
 
 export type StateChannelsSelectionType = {
   activeFilters: Array<string>;
