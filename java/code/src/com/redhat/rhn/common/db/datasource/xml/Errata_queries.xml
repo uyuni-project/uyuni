@@ -436,7 +436,7 @@ SELECT DISTINCT E.id
 <query name="simple_errata_overview" class="com.redhat.rhn.frontend.dto.ErrataOverview">
 select e.id, e.advisory, e.advisory_name, e.advisory_type, e.advisory_rel,
        e.synopsis as advisory_synopsis, e.advisory_status,
-       e.description, e.issue_date, e.update_date, e.errata_from
+       e.description, e.issue_date, e.update_date, e.errata_from, e.rights
   from rhnErrata e
  where e.id in (%s)
 </query>
