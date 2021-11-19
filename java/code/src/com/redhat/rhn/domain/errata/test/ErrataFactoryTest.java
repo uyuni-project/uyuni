@@ -261,6 +261,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setSynopsis("Test synopsis");
         e.setSolution("Test solution");
         e.setNotes("Test notes for test errata");
+        e.setRights("Copyright for test errata");
         e.setTopic("test topic");
         e.setRefersTo("rhn unit tests");
         e.setUpdateDate(new Date());
