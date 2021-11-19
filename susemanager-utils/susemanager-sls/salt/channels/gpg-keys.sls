@@ -47,6 +47,7 @@ install_gnupg_debian:
   pkg.latest:
     - pkgs:
       - gnupg
+    - refresh: False
 
 trust_suse_manager_tools_deb_gpg_key:
   mgrcompat.module_run:

@@ -119,6 +119,23 @@ bootstrap_repo:
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
 
+mgr_repository_refresh:
+{%- if grains['os_family'] == 'Suse' %}
+  cmd.run:
+    - name: zypper -n clean --all; zypper -n refresh || /bin/true
+{%- elif grains['os_family'] == 'Debian' %}
+  cmd.run:
+    - name: apt-get -q update || /bin/true
+{%- elif grains['os_family'] == 'RedHat' %}
+  mgrcompat.module_run:
+    - name: pkg.refresh_db
+  {%- if grains['osmajorrelease']|int >= 8 %}
+    - setopt: skip_if_unavailable=true
+  {%- else %}
+    - setopt: cr.skip_if_unavailable=true
+  {%- endif %}
+{%- endif %}
+
 {% include 'channels/gpg-keys.sls' %}
 
 {%- set salt_minion_name = 'salt-minion' %}
@@ -135,6 +152,7 @@ salt-minion-package:
   pkg.installed:
     - name: {{ salt_minion_name }}
     - install_recommends: False
+    - refresh: False
     - require:
       - file: bootstrap_repo
 
@@ -169,6 +187,7 @@ mgr_update_basic_pkgs:
 {%- elif grains['os_family'] == 'RedHat' %}
       - yum
 {%- endif %}
+    - refresh: False
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
