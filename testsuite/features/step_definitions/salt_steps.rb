@@ -70,8 +70,9 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
-    output, _code = target.run('salt-call -lquiet saltutil.running')
+    output, _code = target.run("#{salt_call} -lquiet saltutil.running")
     break if output == "local:\n"
     sleep 3
   end
@@ -589,7 +590,8 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  output, _code = node.run('salt-call --local key.finger')
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
 end

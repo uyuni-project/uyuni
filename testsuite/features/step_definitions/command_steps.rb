@@ -841,8 +841,9 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   # use sumaform states to migrate to latest SP the system repositories:
-  node.run('salt-call --local --file-root /root/salt/ state.apply repos')
+  node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
   node.run("for repo in $(zypper lr | awk 'NR>7 && !/susemanager:/ {print $3}'); do zypper mr -d $repo; done")
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
@@ -1672,11 +1673,12 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
-  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+  node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
