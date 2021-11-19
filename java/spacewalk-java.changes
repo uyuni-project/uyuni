@@ -1,3 +1,5 @@
+- provide static configuration key name for SSHMinionActionExecutor
+  parallel threads
 - Add support for custom SSH port for SSH minions
 - add ubuntu errata data and install handling
 - Fix stack overflow when building a CLM project from modular sources (bsc#1194990)
