@@ -50,6 +50,12 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
+When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
+  node = get_target(minion)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  node.run("#{salt_call} saltutil.refresh_grains")
+end
+
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
