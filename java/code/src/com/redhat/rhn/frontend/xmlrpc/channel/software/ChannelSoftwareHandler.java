@@ -2048,7 +2048,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype  #return_int_success()
      *
      */
-    public int regenerateYumCache(User loggedInUser, String channelLabel, boolean force) {
+    public int regenerateYumCache(User loggedInUser, String channelLabel, Boolean force) {
         channelAdminPermCheck(loggedInUser);
         lookupChannelByLabel(loggedInUser, channelLabel);
 
