@@ -1014,7 +1014,7 @@ public class ActivationKeyHandler extends BaseHandler {
       * @xmlrpc.returntype #return_int_success()
       */
      public int addConfigChannels(User loggedInUser,  List<String> keys,
-                             List<String> configChannelLabels, boolean addToTop) {
+                             List<String> configChannelLabels, Boolean addToTop) {
          XmlRpcActivationKeysHelper helper = XmlRpcActivationKeysHelper.getInstance();
          List<ActivationKey> activationKeys = helper.lookupKeys(loggedInUser, keys);
          XmlRpcConfigChannelHelper configHelper =
