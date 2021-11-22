@@ -1,3 +1,6 @@
+- Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
+  in order to force venv-salt-minion installation
+
 -------------------------------------------------------------------
 Tue Nov 16 10:09:40 CET 2021 - jgonzalez@suse.com
 
