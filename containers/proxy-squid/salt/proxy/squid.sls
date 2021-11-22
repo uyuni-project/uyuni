@@ -16,8 +16,12 @@ cont_perm_squid:
   file.directory:
     - name: /var/cache/squid
     - user: squid
-    - group: root
+    - group: squid
     - dir_mode: 750
+    - recurse:
+      - user
+      - group
+      - mode
 
 cont_pre_start_squid:
   cmd.run:

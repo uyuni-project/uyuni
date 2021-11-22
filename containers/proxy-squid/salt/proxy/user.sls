@@ -1,8 +1,3 @@
-cont_force_gid_squid:
-  group.present:
-    - name: squid
-    - gid: 477
-
 cont_force_gid_salt:
   group.present:
     - name: salt
@@ -12,18 +7,6 @@ cont_force_gid_mgrsshtunnel:
   group.present:
     - name: mgrsshtunnel
     - gid: 474
-
-cont_force_uid_squid:
-  user.present:
-    - name: squid
-    - uid: 477
-    - gid: 477
-    - allow_uid_change: True
-    - allow_gid_change: True
-    - home: /var/cache/squid
-    - createhome: False
-    - shell: /sbin/nologin
-    - fullname: WWW-proxy squid
 
 cont_force_uid_salt:
   user.present:
