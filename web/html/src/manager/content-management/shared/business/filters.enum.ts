@@ -134,7 +134,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
       filterMatchers.LOWEREQ,
       filterMatchers.EQUALS,
       filterMatchers.GREATER,
-      filterMatchers.GREATEREQ
+      filterMatchers.GREATEREQ,
     ],
   },
   PROVIDES_NAME: {
