@@ -1,3 +1,4 @@
+- Use flat repositories format for Debian based systems
 - Add checking for libvirtd binary to grains.virt module
 - Fix errors on calling sed -E ... by force_restart_minion
   with action chains

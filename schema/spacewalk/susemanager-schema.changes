@@ -1,3 +1,5 @@
+- Force metadata files regeneration for Debian based repos
+  to change the format of the repos to flat
 - Added rights column to rhnerrata to handle copyright information
 - Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
 - Change rhnPackageCapability name data type to TEXT
