@@ -1,5 +1,4 @@
 base:
   '*':
-    - proxy.user
-    - proxy
+    - proxy.broker
 

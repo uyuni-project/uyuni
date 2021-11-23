@@ -12,9 +12,20 @@ cont_squid_conf:
     - source: salt://proxy/squid.conf.templ
     - template: jinja
 
-cont_perm_squid:
+cont_perm_squid_cache:
   file.directory:
     - name: /var/cache/squid
+    - user: squid
+    - group: squid
+    - dir_mode: 750
+    - recurse:
+      - user
+      - group
+      - mode
+
+cont_perm_squid_logs:
+  file.directory:
+    - name: /var/log/squid
     - user: squid
     - group: squid
     - dir_mode: 750
