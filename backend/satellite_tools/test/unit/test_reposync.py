@@ -318,13 +318,16 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.RepoSync._update_keywords(notice),
                          [])
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_send_error_mail(self):
         rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
-        self.reposync.CFG.TRACEBACK_MAIL = 'recipient'
         self.reposync.hostname = 'testhost'
+        CFG = Mock()
+        CFG.TRACEBACK_MAIL = 'recipient'
 
-        rs.sendErrorMail('email body')
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            rs.sendErrorMail('email body')
 
         self.assertEqual(self.reposync.rhnMail.send.call_args, (
                 ({'To': 'recipient',
