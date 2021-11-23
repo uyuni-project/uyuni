@@ -1,3 +1,5 @@
+- fix pg-migrate to check version of postgresql??-server (bsc#1192368)
+
 -------------------------------------------------------------------
 Tue Nov 16 10:09:13 CET 2021 - jgonzalez@suse.com
 
