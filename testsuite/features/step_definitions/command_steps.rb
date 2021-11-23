@@ -180,7 +180,11 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
+  salt = 'salt'
+  if host != 'server' && host != 'proxy'
+    salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  end
+  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -189,7 +193,8 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  result, return_code = node.run("zcat /usr/share/doc/#{salt}/changelog.Debian.gz")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
