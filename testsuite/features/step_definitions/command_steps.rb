@@ -180,9 +180,9 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = 'salt'
-  if host != 'server' && host != 'proxy'
-    salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  if host == 'server'
+    salt = 'salt'
   end
   result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
