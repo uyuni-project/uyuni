@@ -94,12 +94,10 @@ os.mkdir(config_path + "/sysconfig/rhn")
 with open(config_path + "/sysconfig/rhn/systemid", "w") as file:
     file.write(sid)
 
-# Print some output and environment variables
-print("\n=======================================================\n\n")
-print("\nThe proxy config files were created, environment variables:")
-print("UYUNI_MASTER='{}'".format(socket.getfqdn()))
-print("UYUNI_MINION_ID='{}'".format(fqdn))
-print("UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT'")
-print("UYUNI_SRV_CERT='/config/{}'".format(os.path.basename(srvcert_pkg)))
-print("UYUNI_EMAIL='{}'".format(email))
-
+# Save the environment variable file
+with open(config_path + "environment", "w") as file:
+    file.write("UYUNI_MASTER={}\n".format(socket.getfqdn()))
+    file.write("UYUNI_MINION_ID={}\n".format(fqdn))
+    file.write("UYUNI_CA_CERTS=/config/RHN-ORG-TRUSTED-SSL-CERT\n")
+    file.write("UYUNI_SRV_CERT=/config/{}\n".format(os.path.basename(srvcert_pkg)))
+    file.write("UYUNI_EMAIL={}\n".format(email))
