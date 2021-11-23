@@ -1,3 +1,5 @@
+- apache config: Adjust rewrite rules for flat repositories format
+  for Debian based systems
 - add migration for changed rhn.conf values
 
 -------------------------------------------------------------------
