@@ -1,5 +1,4 @@
-- Salt-broker logs to be optionally sent to file or to standard
-  output by the `log_to_file` config parameter
+- add an option to send salt-broker logs to standard output/error instead of files
 
 -------------------------------------------------------------------
 Fri Nov 05 13:51:07 CET 2021 - jgonzalez@suse.com

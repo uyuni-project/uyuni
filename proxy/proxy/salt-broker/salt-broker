@@ -352,7 +352,7 @@ if __name__ == "__main__":
             # prepare two log handlers, 1 for stdout and 1 for stderr
             stdout_handler = logging.StreamHandler(sys.stdout)
             stderr_handler = logging.StreamHandler(sys.stderr)
-            # stdout handler filters out everything above the ERROR level
+            # stdout handler filters out everything above the ERROR level included
             stdout_handler.addFilter(lambda record: record.levelno < logging.ERROR)
             # stderror handler looks only for everything above the ERROR level included
             stderr_handler.setLevel(logging.ERROR)

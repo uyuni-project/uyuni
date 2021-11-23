@@ -29,7 +29,7 @@
 # /proc/sys/net/ipv4/tcp_keepalive_intvl.
 #tcp_keepalive_intvl: \-1
 
-# Logs can be sent either to standard outputs or to file
+# Logs can be sent either to standard output/error or to file
 # default: 1 to send logs to file
-# 0 to send logs to standard outputs
+# 0 to send logs to standard output/error
 log_to_file: 1
