@@ -23,13 +23,8 @@ import socket
 import subprocess
 import sys
 import tempfile
-import time
 import traceback
 from datetime import datetime
-try:
-    from html.parser import HTMLParser
-except ImportError:
-    from HTMLParser import HTMLParser
 from dateutil.parser import parse as parse_date
 from xml.dom import minidom
 import gzip
@@ -44,7 +39,7 @@ from uyuni.common.usix import raise_with_tb
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from uyuni.common import fileutils
-from spacewalk.common import rhnLog, rhnCache, rhnMail, suseLib
+from spacewalk.common import rhnLog, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common import repo
 from uyuni.common.rhnLib import isSUSE, utc
