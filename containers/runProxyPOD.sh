@@ -18,7 +18,6 @@ $RUNNER run --rm=true -dt --pod uyuni_proxy_pod \
 	-e UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT' \
 	-e UYUNI_SRV_CERT='/config/rhn-org-httpd-ssl-key-pair-lesch-1.0-1.noarch.rpm' \
 	-e UYUNI_EMAIL='galaxy-noise@suse.de' \
-	-e UYUNI_MACHINE_ID='488de1bd7b08472cba12c6e3c775d4bc' \
 	-v $CONFIG_DIR:/config \
 	-v proxy_www:/srv/www/htdocs/pub \
 	-v proxy_squid:/var/cache/squid \
@@ -33,7 +32,6 @@ $RUNNER run --rm=true -dt --pod uyuni_proxy_pod \
         -e UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT' \
         -e UYUNI_SRV_CERT='/config/rhn-org-httpd-ssl-key-pair-lesch-1.0-1.noarch.rpm' \
         -e UYUNI_EMAIL='galaxy-noise@suse.de' \
-        -e UYUNI_MACHINE_ID='488de1bd7b08472cba12c6e3c775d4bc' \
 	-v proxy_log:/var/log \
         --name uyuni_proxy_salt_broker \
 	localhost/proxy-salt-broker
@@ -44,7 +42,6 @@ $RUNNER run --rm=true -dt --pod uyuni_proxy_pod \
         -e UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT' \
         -e UYUNI_SRV_CERT='/config/rhn-org-httpd-ssl-key-pair-lesch-1.0-1.noarch.rpm' \
         -e UYUNI_EMAIL='galaxy-noise@suse.de' \
-        -e UYUNI_MACHINE_ID='488de1bd7b08472cba12c6e3c775d4bc' \
 	-v proxy_squid:/var/cache/squid \
 	-v proxy_log:/var/log \
         --name uyuni_proxy_squid \

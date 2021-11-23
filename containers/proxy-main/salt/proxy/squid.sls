@@ -1,4 +1,3 @@
-{% set machine_id = salt['environ.get']('UYUNI_MACHINE_ID') %}
 {% set minion_id = salt['environ.get']('UYUNI_MINION_ID') %}
 
 cont_set_fqdn:
@@ -6,11 +5,6 @@ cont_set_fqdn:
     - name: hosts.add_host
     - ip: {{ salt['grains.get']('ip4_interfaces:eth0').pop() }}
     - alias: {{ minion_id }}
-
-cont_setup_machine_id:
-  file.managed:
-    - name: /etc/machine-id
-    - contents: {{ machine_id }}
 
 cont_squid_conf:
   file.managed:

@@ -1,4 +1,3 @@
-{% set machine_id = salt['environ.get']('UYUNI_MACHINE_ID') %}
 {% set master = salt['environ.get']('UYUNI_MASTER') %}
 {% set minion_id = salt['environ.get']('UYUNI_MINION_ID') %}
 {% set ca_certs = salt['environ.get']('UYUNI_CA_CERTS') %}
@@ -20,10 +19,6 @@ cont_check_srv_cert:
   file.exists:
     - name: {{ srv_cert_rpm }}
 
-cont_setup_machine_id:
-  file.managed:
-    - name: /etc/machine-id
-    - contents: {{ machine_id }}
 
 cont_setup_minion_id:
   file.managed:
