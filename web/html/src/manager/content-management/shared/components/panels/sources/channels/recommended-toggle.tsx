@@ -5,7 +5,6 @@ import { ChannelType } from "core/channels/type/channels.type";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 
-// TODO: Narrow props as much as possible
 type Props = {
   parent: ChannelType;
   channelsTree: ChannelsTreeType;

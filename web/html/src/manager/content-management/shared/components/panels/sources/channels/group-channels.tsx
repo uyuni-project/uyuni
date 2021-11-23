@@ -17,7 +17,7 @@ type PropsType = {
 };
 
 // TODO: Rename to ParentChannel or something similar
-const GroupChannels = (props: PropsType) => {
+const ParentChannel = (props: PropsType) => {
   const channel = props.channel;
   const nrOfSelectedChilds = props.selectedChannelsIdsInGroup.length;
 
@@ -55,4 +55,4 @@ const GroupChannels = (props: PropsType) => {
   );
 };
 
-export default GroupChannels;
+export default ParentChannel;

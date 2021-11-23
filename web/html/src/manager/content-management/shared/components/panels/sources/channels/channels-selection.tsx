@@ -1,31 +1,24 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
-import GroupChannels from "./group-channels";
+import ParentChannel from "./group-channels";
 import { useImmerReducer } from "use-immer";
 import { VirtualList } from "components/virtual-list";
 
-import { ActionChannelsSelectionType, FilterType, StateChannelsSelectionType } from "./channels-selection.state";
-import {
-  channelsFiltersAvailableValues,
-  initialStateChannelsSelection,
-  reducerChannelsSelection,
-} from "./channels-selection.state";
+import { ActionChannelsSelectionType, StateChannelsSelectionType } from "./channels-selection.state";
+import { initialStateChannelsSelection, reducerChannelsSelection } from "./channels-selection.state";
 import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
-import {
-  getAllRecommentedIdsByBaseId,
-  getSelectedChannelsIdsInGroup,
-  hasRecommendedChildren,
-} from "core/channels/utils/channels-state.utils";
+import { getSelectedChannelsIdsInGroup, hasRecommendedChildren } from "core/channels/utils/channels-state.utils";
 import { ChannelType } from "core/channels/type/channels.type";
-import ChildChannels from "./child-channels";
+import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
+import ChannelsFilters from "./channels-filters";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
@@ -147,6 +140,7 @@ const ChannelsSelection = (props: PropsType) => {
     };
   };
 
+  // console.log("recalculate rows");
   // TODO: Move this into state so we don't recompute this all the time
   const rows = orderedBaseChannels.reduce((result, baseChannel) => {
     // If this group matches current filters etc, append it
@@ -202,37 +196,33 @@ const ChannelsSelection = (props: PropsType) => {
   }, [] as RowDefinition[]);
 
   const Row = (definition: RowDefinition) => {
-    // TODO: Rename base to parent everywhere?
-    const baseChannel = definition.type === ChannelRenderType.Parent ? definition.channel : definition.parent;
-
-    // TODO: This and rest of below should be based on the base, not on the child
-    const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
+    const parentChannel = definition.type === ChannelRenderType.Parent ? definition.channel : definition.parent;
+    const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, parentChannel);
 
     const isOpen = state.openGroupsIds.some(
-      (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
+      (openId) => openId === parentChannel.id || parentChannel.children.includes(openId)
     );
 
     switch (definition.type) {
       case ChannelRenderType.Parent:
         return (
-          <GroupChannels
-            channel={baseChannel}
+          <ParentChannel
+            channel={parentChannel}
             search={state.search}
             selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
             selectedBaseChannelId={state.selectedBaseChannelId}
             isOpen={isOpen}
             onChannelToggle={(channelId) => {
-              console.log("toggle", { channelId, baseChannelId: baseChannel.id });
               return dispatchChannelsSelection({
                 type: "toggle_channel",
-                baseId: baseChannel.id,
+                baseId: parentChannel.id,
                 channelId,
               });
             }}
             onOpenGroup={(open) =>
               dispatchChannelsSelection({
                 type: "open_group",
-                baseId: baseChannel.id,
+                baseId: parentChannel.id,
                 open,
               })
             }
@@ -242,17 +232,15 @@ const ChannelsSelection = (props: PropsType) => {
         );
       case ChannelRenderType.Child:
         return (
-          <ChildChannels
+          <ChildChannel
             channel={definition.channel}
-            parent={baseChannel}
+            parent={parentChannel}
             search={state.search}
             selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
             onChannelToggle={(channelId) => {
-              // TODO: This seems bugged
-              console.log("toggle", { channelId, baseChannelId: baseChannel.id });
               return dispatchChannelsSelection({
                 type: "toggle_channel",
-                baseId: baseChannel.id,
+                baseId: parentChannel.id,
                 channelId,
               });
             }}
@@ -263,13 +251,13 @@ const ChannelsSelection = (props: PropsType) => {
       case ChannelRenderType.RecommendedToggle:
         return (
           <RecommendedToggle
-            parent={definition.parent}
+            parent={parentChannel}
             channelsTree={channelsTree}
             selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
             setAllRecommentedChannels={(enable) => {
               dispatchChannelsSelection({
                 type: "set_recommended",
-                baseId: baseChannel.id,
+                baseId: parentChannel.id,
                 enable,
               });
             }}
@@ -279,8 +267,8 @@ const ChannelsSelection = (props: PropsType) => {
         throw new RangeError("Incorrect channel render type in renderer");
     }
   };
+
   const rowHeight = (channel: RowDefinition) => {
-    // TODO: Switch based on type
     switch (channel.type) {
       // TODO: Update all styles so there's no wrapping allowed
       case ChannelRenderType.Parent:
@@ -320,7 +308,6 @@ const ChannelsSelection = (props: PropsType) => {
         />
       </div>
       {state.selectedBaseChannelId && (
-        // TODO: Move to styles
         <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
             <div className="row" style={{ marginBottom: "30px" }}>
@@ -344,92 +331,23 @@ const ChannelsSelection = (props: PropsType) => {
                 </span>
               </div>
               <hr />
-              {/** TODO: Move this out and memo or sth */}
-              {channelsFiltersAvailableValues.map((filter: FilterType) => (
-                <div key={filter.id} className="checkbox">
-                  <input
-                    type="checkbox"
-                    value={filter.id}
-                    checked={state.activeFilters.includes(filter.id)}
-                    id={`filter_${filter.id}`}
-                    onChange={(event) =>
-                      dispatchChannelsSelection({
-                        type: "toggle_filter",
-                        filter: event.target.value,
-                      })
-                    }
-                  />
-                  <label htmlFor={`filter_${filter.id}`}>{filter.text}</label>
-                </div>
-              ))}
+              <ChannelsFilters
+                activeFilters={state.activeFilters}
+                dispatchChannelsSelection={dispatchChannelsSelection}
+              />
             </div>
           </label>
-          {/** className="col-lg-8" */}
           <VirtualList items={rows} renderRow={Row} rowHeight={rowHeight} />
-          {/** TODO: Rebuild
-              {orderedBaseChannels.map((baseChannel) => {
-                const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(
-                  state.selectedChannelsIds,
-                  baseChannel
-                );
-
-                if (
-                  !isGroupVisible(
-                    baseChannel,
-                    channelsTree,
-                    visibleChannels,
-                    selectedChannelsIdsInGroup,
-                    state.selectedBaseChannelId,
-                    state.search
-                  )
-                ) {
-                  return null;
-                }
-
-                const isOpen = state.openGroupsIds.some(
-                  (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
-                );
-
-                return (
-                  <GroupChannels
-                    key={`group_${baseChannel.id}`}
-                    base={baseChannel}
-                    search={state.search}
-                    childChannelsId={baseChannel.children}
-                    selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
-                    selectedBaseChannelId={state.selectedBaseChannelId}
-                    isOpen={isOpen}
-                    setAllRecommentedChannels={(enable) => {
-                      dispatchChannelsSelection({
-                        type: "set_recommended",
-                        baseId: baseChannel.id,
-                        enable,
-                      });
-                    }}
-                    onChannelToggle={(channelId) =>
-                      dispatchChannelsSelection({
-                        type: "toggle_channel",
-                        baseId: baseChannel.id,
-                        channelId,
-                      })
-                    }
-                    onOpenGroup={(open) =>
-                      dispatchChannelsSelection({
-                        type: "open_group",
-                        baseId: baseChannel.id,
-                        open,
-                      })
-                    }
-                    channelsTree={channelsTree}
-                    requiredChannelsResult={requiredChannelsResult}
-                  />
-                );
-              })}
-              */}
         </div>
       )}
     </React.Fragment>
   );
 };
 
-export default ChannelsSelection;
+// This whole view is expensive with large lists, so rerender only when we really need to
+export default memo(ChannelsSelection, (prevProps, nextProps) => {
+  return (
+    prevProps.isSourcesApiLoading === nextProps.isSourcesApiLoading &&
+    prevProps.initialSelectedIds.join() === nextProps.initialSelectedIds.join()
+  );
+});

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useMemo } from "react";
 import { Select } from "components/input";
 import { Panel } from "components/panels/Panel";
 import CreatorPanel from "components/panels/CreatorPanel";
@@ -21,6 +22,11 @@ type SourcesProps = {
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
+  const initialSelectedIds = useMemo(
+    () => softwareSources.filter((source) => !statesEnum.isDeletion(source.state)).map((source) => source.channelId),
+    [softwareSources]
+  );
+
   return (
     <form className="form-horizontal">
       <div className="row">
@@ -35,9 +41,7 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
       </div>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
-        initialSelectedIds={softwareSources
-          .filter((source) => !statesEnum.isDeletion(source.state))
-          .map((source) => source.channelId)}
+        initialSelectedIds={initialSelectedIds}
         onChange={(selectedChannels) => {
           onChange(selectedChannels.map((c) => c.label));
         }}

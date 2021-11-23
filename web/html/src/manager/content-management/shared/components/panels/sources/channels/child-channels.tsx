@@ -15,7 +15,7 @@ type PropsType = {
   requiredChannelsResult: RequiredChannelsResultType;
 };
 
-const ChildChannels = (props: PropsType) => {
+const ChildChannel = (props: PropsType) => {
   if (!props.channel) {
     return <span>&nbsp;{t("no child channels")}</span>;
   }
@@ -64,4 +64,4 @@ const ChildChannels = (props: PropsType) => {
   );
 };
 
-export default ChildChannels;
+export default ChildChannel;
