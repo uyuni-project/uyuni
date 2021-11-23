@@ -1,7 +1,5 @@
 import * as React from "react";
 import { Highlight } from "components/table/Highlight";
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 import { ChannelType } from "core/channels/type/channels.type";
 
 type PropsType = {
@@ -12,11 +10,8 @@ type PropsType = {
   isOpen: boolean;
   onChannelToggle: (id: number) => void;
   onOpenGroup: (isOpen: boolean) => void;
-  channelsTree: ChannelsTreeType;
-  requiredChannelsResult: RequiredChannelsResultType;
 };
 
-// TODO: Rename to ParentChannel or something similar
 const ParentChannel = (props: PropsType) => {
   const channel = props.channel;
   const nrOfSelectedChilds = props.selectedChannelsIdsInGroup.length;

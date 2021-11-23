@@ -1,5 +1,7 @@
 import * as React from "react";
-import { memo, useEffect } from "react";
+import { memo, useMemo, useEffect, useState } from "react";
+import debounce from "lodash/debounce";
+
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
@@ -54,7 +56,7 @@ type RowDefinition = {
 } & (ParentDefinition | ChildDefinition | RecommendedToggleDefinition);
 
 const ChannelsSelection = (props: PropsType) => {
-  // TODO: All of this is too tangled, refactor these api uses
+  // TODO: All of this is too tangled, refactor these hooks
   const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
   const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
     useMandatoryChannelsApi();
@@ -63,6 +65,17 @@ const ChannelsSelection = (props: PropsType) => {
       (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
       initialStateChannelsSelection(props.initialSelectedIds)
     );
+
+  // Reimplement the search variable to reduce full list rerenders
+  const [search, setSearch] = useState("");
+  const debouncedDispatch = debounce(dispatchChannelsSelection, 100);
+  const onSearch = (newSearch: string) => {
+    setSearch(newSearch);
+    debouncedDispatch({
+      type: "search",
+      search: newSearch,
+    });
+  };
 
   const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
 
@@ -105,23 +118,18 @@ const ChannelsSelection = (props: PropsType) => {
       );
   }, [state.selectedChannelsIds]);
 
-  if (!isAllApiDataLoaded || props.isSourcesApiLoading) {
-    return (
-      <div className="form-group">
-        <Loading text={props.isSourcesApiLoading ? "Adding sources..." : "Loading.."} />
-      </div>
-    );
-  }
-
-  const onSearch = (search: string) =>
-    dispatchChannelsSelection({
-      type: "search",
-      search,
-    });
-
-  const visibleChannels = getVisibleChannels(channelsTree, state.activeFilters);
+  // TODO: There's a _lot_ of unnecessary work here, someone familiar with the business logic should look to remove unnecessary full iterations over the data set
+  // TODO: All of this logic is currently very tightly coupled, but would be nice to refactor most of it out of here
+  // Here and below, memoization is for users who have thousands of channels
+  const visibleChannels = useMemo(
+    () => getVisibleChannels(channelsTree, state.activeFilters),
+    [channelsTree, state.activeFilters]
+  );
   // Order all base channels by id and set the lead base channel as first
-  let orderedBaseChannels = orderBaseChannels(channelsTree, state.selectedBaseChannelId);
+  const orderedBaseChannels = useMemo(
+    () => orderBaseChannels(channelsTree, state.selectedBaseChannelId),
+    [channelsTree, state.selectedBaseChannelId]
+  );
 
   const pageSize = window.userPrefPageSize || 15;
   // TODO: Move this to the server instead
@@ -140,60 +148,62 @@ const ChannelsSelection = (props: PropsType) => {
     };
   };
 
-  // console.log("recalculate rows");
-  // TODO: Move this into state so we don't recompute this all the time
-  const rows = orderedBaseChannels.reduce((result, baseChannel) => {
-    // If this group matches current filters etc, append it
-    const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
-    const isVisible = isGroupVisible(
-      baseChannel,
-      channelsTree,
-      visibleChannels,
-      selectedChannelsIdsInGroup,
-      state.selectedBaseChannelId,
-      state.search
-    );
-    if (!isVisible) {
-      return result;
-    }
+  const rows = useMemo(
+    () =>
+      orderedBaseChannels.reduce((result, baseChannel) => {
+        // If this group matches current filters etc, append it
+        const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
+        const isVisible = isGroupVisible(
+          baseChannel,
+          channelsTree,
+          visibleChannels,
+          selectedChannelsIdsInGroup,
+          state.selectedBaseChannelId,
+          state.search
+        );
+        if (!isVisible) {
+          return result;
+        }
 
-    // TODO: Move all of this to the data layer or sth
-    result.push({
-      type: ChannelRenderType.Parent,
-      id: baseChannel.id,
-      channel: baseChannel,
-    });
-
-    // If the group is open, append all of its children
-    const isGroupOpen = state.openGroupsIds.some(
-      (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
-    );
-    if (isGroupOpen) {
-      // TODO: If no children, push an empty child or w/e and break out early
-
-      // Recommended channels toggle, if applicable
-      if (hasRecommendedChildren(baseChannel, channelsTree)) {
+        // TODO: Move all data modification logic to the data fetching layer or sth so it's only done once
         result.push({
-          type: ChannelRenderType.RecommendedToggle,
-          id: `recommended_for_${baseChannel.id}`,
-          parent: baseChannel,
+          type: ChannelRenderType.Parent,
+          id: baseChannel.id,
+          channel: baseChannel,
         });
-      }
 
-      baseChannel.children.forEach((childId) => {
-        // TODO: This lookup would be obsolete if the incoming data logic was untangled
-        const childChannel = channelsTree.channelsById[childId];
-        result.push({
-          type: ChannelRenderType.Child,
-          id: childChannel.id,
-          channel: childChannel,
-          parent: baseChannel,
-        });
-      });
-    }
+        // If the group is open, append all of its children
+        const isGroupOpen = state.openGroupsIds.some(
+          (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
+        );
+        if (isGroupOpen) {
+          // TODO: If no children, push an empty child or w/e and break out early
 
-    return result;
-  }, [] as RowDefinition[]);
+          // Recommended channels toggle, if applicable
+          if (hasRecommendedChildren(baseChannel, channelsTree)) {
+            result.push({
+              type: ChannelRenderType.RecommendedToggle,
+              id: `recommended_for_${baseChannel.id}`,
+              parent: baseChannel,
+            });
+          }
+
+          baseChannel.children.forEach((childId) => {
+            // TODO: This lookup would be obsolete if the incoming data logic was untangled
+            const childChannel = channelsTree.channelsById[childId];
+            result.push({
+              type: ChannelRenderType.Child,
+              id: childChannel.id,
+              channel: childChannel,
+              parent: baseChannel,
+            });
+          });
+        }
+
+        return result;
+      }, [] as RowDefinition[]),
+    [orderedBaseChannels, visibleChannels, state.selectedBaseChannelId, state.selectedChannelsIds, state.search]
+  );
 
   const Row = (definition: RowDefinition) => {
     const parentChannel = definition.type === ChannelRenderType.Parent ? definition.channel : definition.parent;
@@ -226,8 +236,6 @@ const ChannelsSelection = (props: PropsType) => {
                 open,
               })
             }
-            channelsTree={channelsTree}
-            requiredChannelsResult={requiredChannelsResult}
           />
         );
       case ChannelRenderType.Child:
@@ -282,6 +290,14 @@ const ChannelsSelection = (props: PropsType) => {
     }
   };
 
+  if (!isAllApiDataLoaded || props.isSourcesApiLoading) {
+    return (
+      <div className="form-group">
+        <Loading text={props.isSourcesApiLoading ? "Adding sources..." : "Loading.."} />
+      </div>
+    );
+  }
+
   return (
     <React.Fragment>
       <div className="row">
@@ -319,7 +335,7 @@ const ChannelsSelection = (props: PropsType) => {
                   type="text"
                   className="form-control"
                   placeholder="Search a channel"
-                  value={state.search}
+                  value={search}
                   onChange={(event) => onSearch(event.target.value)}
                 />
                 <span className={`${styles.search_icon_container} clear`}>
