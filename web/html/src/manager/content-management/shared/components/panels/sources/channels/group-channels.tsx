@@ -1,37 +1,27 @@
 import * as React from "react";
-import { Toggler } from "components/toggler";
 import { Highlight } from "components/table/Highlight";
-import ChildChannels from "./child-channels";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
-import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
+import { ChannelType } from "core/channels/type/channels.type";
 
 type PropsType = {
-  base: any;
+  channel: ChannelType;
   search: string;
-  childChannelsId: Array<number>;
-  selectedChannelsIdsInGroup: Array<number>;
+  selectedChannelsIdsInGroup: number[];
   selectedBaseChannelId: number | null | undefined;
   isOpen: boolean;
-  setAllRecommentedChannels: Function;
-  onChannelToggle: Function;
-  onOpenGroup: Function;
+  onChannelToggle: (id: number) => void;
+  onOpenGroup: (isOpen: boolean) => void;
   channelsTree: ChannelsTreeType;
   requiredChannelsResult: RequiredChannelsResultType;
 };
 
+// TODO: Rename to ParentChannel or something similar
 const GroupChannels = (props: PropsType) => {
+  const channel = props.channel;
   const nrOfSelectedChilds = props.selectedChannelsIdsInGroup.length;
 
-  const { recommendedIds, areRecommendedChildrenSelected } = getAllRecommentedIdsByBaseId(
-    props.base.id,
-    props.channelsTree,
-    props.selectedChannelsIdsInGroup
-  );
-  const toggleRecommended = () =>
-    areRecommendedChildrenSelected ? props.setAllRecommentedChannels(false) : props.setAllRecommentedChannels(true);
-
-  const isNewLeaderChannel = props.base.id === props.selectedBaseChannelId;
+  const isNewLeaderChannel = channel.id === props.selectedBaseChannelId;
 
   return (
     <div className="row" {...(isNewLeaderChannel ? { title: "New base channel" } : {})}>
@@ -44,39 +34,23 @@ const GroupChannels = (props: PropsType) => {
       >
         <input
           type="checkbox"
-          id={"base_" + props.base.id}
+          id={"base_" + channel.id}
           name="childChannels"
-          checked={props.selectedChannelsIdsInGroup.includes(props.base.id)}
-          value={props.base.id}
+          checked={props.selectedChannelsIdsInGroup.includes(channel.id)}
+          value={channel.id}
           onChange={() => {
-            props.onChannelToggle(props.base.id);
+            props.onChannelToggle(channel.id);
           }}
-          disabled={props.base.id === props.selectedBaseChannelId}
+          disabled={channel.id === props.selectedBaseChannelId}
         />
         &nbsp; &nbsp;
         <div style={{ display: "inline" }} onClick={() => props.onOpenGroup(!props.isOpen)}>
           <i className={"fa " + (props.isOpen ? "fa-angle-down" : "fa-angle-right")} />
           &nbsp;
-          <Highlight
-            enabled={(props.search || "").length > 0}
-            text={props.base.name}
-            highlight={props.search}
-          ></Highlight>
+          <Highlight enabled={props.search.length > 0} text={channel.name} highlight={props.search}></Highlight>
           {nrOfSelectedChilds > 0 && <b>{` (${nrOfSelectedChilds})`}</b>}
         </div>
       </h4>
-      {props.isOpen ? (
-        <div className="col-lg-12" key={`base_${props.base.id}_children`}>
-          {recommendedIds.filter((id) => id !== props.base.id).length > 0 && (
-            <Toggler
-              handler={() => toggleRecommended()}
-              value={areRecommendedChildrenSelected}
-              text={t("include recommended")}
-            />
-          )}
-          <ChildChannels {...props} />
-        </div>
-      ) : null}
     </div>
   );
 };

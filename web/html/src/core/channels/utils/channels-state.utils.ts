@@ -42,3 +42,15 @@ export function getAllRecommentedIdsByBaseId(
     areRecommendedChildrenSelected,
   };
 }
+
+export function hasRecommendedChildren(baseChannel: ChannelType, channelsTree: ChannelsTreeType) {
+  return (
+    baseChannel.children
+      .map(
+        (cId) =>
+          // TODO: This lookup is obsolete
+          channelsTree.channelsById[cId]
+      )
+      .filter((c) => c.recommended).length > 0
+  );
+}

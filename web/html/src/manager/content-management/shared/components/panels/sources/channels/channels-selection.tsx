@@ -18,14 +18,47 @@ import {
 import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
-import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
+import {
+  getAllRecommentedIdsByBaseId,
+  getSelectedChannelsIdsInGroup,
+  hasRecommendedChildren,
+} from "core/channels/utils/channels-state.utils";
 import { ChannelType } from "core/channels/type/channels.type";
+import ChildChannels from "./child-channels";
+import RecommendedToggle from "./recommended-toggle";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
   initialSelectedIds: Array<number>;
   onChange: (channels: ChannelType[]) => void;
 };
+
+enum ChannelRenderType {
+  Parent,
+  Child,
+  RecommendedToggle,
+}
+
+type ParentDefinition = {
+  type: ChannelRenderType.Parent;
+  channel: ChannelType;
+};
+
+type ChildDefinition = {
+  type: ChannelRenderType.Child;
+  channel: ChannelType;
+  parent: ChannelType;
+};
+
+type RecommendedToggleDefinition = {
+  type: ChannelRenderType.RecommendedToggle;
+  parent: ChannelType;
+};
+
+type RowDefinition = {
+  // This identifier is used as the key in the list
+  id: string | number;
+} & (ParentDefinition | ChildDefinition | RecommendedToggleDefinition);
 
 const ChannelsSelection = (props: PropsType) => {
   // TODO: All of this is too tangled, refactor these api uses
@@ -114,69 +147,151 @@ const ChannelsSelection = (props: PropsType) => {
     };
   };
 
-  // TODO: There's a _lot_ of redundancy here, someone who understands this business logic should look into this
-  const visibleBaseChannels = orderedBaseChannels.filter((baseChannel) => {
+  // TODO: Move this into state so we don't recompute this all the time
+  const rows = orderedBaseChannels.reduce((result, baseChannel) => {
+    // If this group matches current filters etc, append it
     const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
-
-    if (
-      !isGroupVisible(
-        baseChannel,
-        channelsTree,
-        visibleChannels,
-        selectedChannelsIdsInGroup,
-        state.selectedBaseChannelId,
-        state.search
-      )
-    ) {
-      return false;
+    const isVisible = isGroupVisible(
+      baseChannel,
+      channelsTree,
+      visibleChannels,
+      selectedChannelsIdsInGroup,
+      state.selectedBaseChannelId,
+      state.search
+    );
+    if (!isVisible) {
+      return result;
     }
 
-    return true;
-  });
+    // TODO: Move all of this to the data layer or sth
+    result.push({
+      type: ChannelRenderType.Parent,
+      id: baseChannel.id,
+      channel: baseChannel,
+    });
 
-  const Row = (baseChannel: ChannelType) => {
+    // If the group is open, append all of its children
+    const isGroupOpen = state.openGroupsIds.some(
+      (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
+    );
+    if (isGroupOpen) {
+      // TODO: If no children, push an empty child or w/e and break out early
+
+      // Recommended channels toggle, if applicable
+      if (hasRecommendedChildren(baseChannel, channelsTree)) {
+        result.push({
+          type: ChannelRenderType.RecommendedToggle,
+          id: `recommended_for_${baseChannel.id}`,
+          parent: baseChannel,
+        });
+      }
+
+      baseChannel.children.forEach((childId) => {
+        // TODO: This lookup would be obsolete if the incoming data logic was untangled
+        const childChannel = channelsTree.channelsById[childId];
+        result.push({
+          type: ChannelRenderType.Child,
+          id: childChannel.id,
+          channel: childChannel,
+          parent: baseChannel,
+        });
+      });
+    }
+
+    return result;
+  }, [] as RowDefinition[]);
+
+  const Row = (definition: RowDefinition) => {
+    // TODO: Rename base to parent everywhere?
+    const baseChannel = definition.type === ChannelRenderType.Parent ? definition.channel : definition.parent;
+
+    // TODO: This and rest of below should be based on the base, not on the child
     const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
 
     const isOpen = state.openGroupsIds.some(
       (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
     );
-    return (
-      <GroupChannels
-        key={`group_${baseChannel.id}`}
-        base={baseChannel}
-        search={state.search}
-        childChannelsId={baseChannel.children}
-        selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
-        selectedBaseChannelId={state.selectedBaseChannelId}
-        isOpen={isOpen}
-        setAllRecommentedChannels={(enable) => {
-          dispatchChannelsSelection({
-            type: "set_recommended",
-            baseId: baseChannel.id,
-            enable,
-          });
-        }}
-        onChannelToggle={(channelId) =>
-          dispatchChannelsSelection({
-            type: "toggle_channel",
-            baseId: baseChannel.id,
-            channelId,
-          })
-        }
-        onOpenGroup={(open) =>
-          dispatchChannelsSelection({
-            type: "open_group",
-            baseId: baseChannel.id,
-            open,
-          })
-        }
-        channelsTree={channelsTree}
-        requiredChannelsResult={requiredChannelsResult}
-      />
-    );
+
+    switch (definition.type) {
+      case ChannelRenderType.Parent:
+        return (
+          <GroupChannels
+            channel={baseChannel}
+            search={state.search}
+            selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
+            selectedBaseChannelId={state.selectedBaseChannelId}
+            isOpen={isOpen}
+            onChannelToggle={(channelId) => {
+              console.log("toggle", { channelId, baseChannelId: baseChannel.id });
+              return dispatchChannelsSelection({
+                type: "toggle_channel",
+                baseId: baseChannel.id,
+                channelId,
+              });
+            }}
+            onOpenGroup={(open) =>
+              dispatchChannelsSelection({
+                type: "open_group",
+                baseId: baseChannel.id,
+                open,
+              })
+            }
+            channelsTree={channelsTree}
+            requiredChannelsResult={requiredChannelsResult}
+          />
+        );
+      case ChannelRenderType.Child:
+        return (
+          <ChildChannels
+            channel={definition.channel}
+            parent={baseChannel}
+            search={state.search}
+            selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
+            onChannelToggle={(channelId) => {
+              // TODO: This seems bugged
+              console.log("toggle", { channelId, baseChannelId: baseChannel.id });
+              return dispatchChannelsSelection({
+                type: "toggle_channel",
+                baseId: baseChannel.id,
+                channelId,
+              });
+            }}
+            channelsTree={channelsTree}
+            requiredChannelsResult={requiredChannelsResult}
+          />
+        );
+      case ChannelRenderType.RecommendedToggle:
+        return (
+          <RecommendedToggle
+            parent={definition.parent}
+            channelsTree={channelsTree}
+            selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
+            setAllRecommentedChannels={(enable) => {
+              dispatchChannelsSelection({
+                type: "set_recommended",
+                baseId: baseChannel.id,
+                enable,
+              });
+            }}
+          />
+        );
+      default:
+        throw new RangeError("Incorrect channel render type in renderer");
+    }
   };
-  const rowHeight = (channel: ChannelType) => {
-    return 50;
+  const rowHeight = (channel: RowDefinition) => {
+    // TODO: Switch based on type
+    switch (channel.type) {
+      // TODO: Update all styles so there's no wrapping allowed
+      case ChannelRenderType.Parent:
+        return 30;
+      case ChannelRenderType.Child:
+        return 25;
+      case ChannelRenderType.RecommendedToggle:
+        return 10;
+      default:
+        throw new RangeError("Incorrect channel render type in height");
+    }
   };
 
   return (
@@ -229,6 +344,7 @@ const ChannelsSelection = (props: PropsType) => {
                 </span>
               </div>
               <hr />
+              {/** TODO: Move this out and memo or sth */}
               {channelsFiltersAvailableValues.map((filter: FilterType) => (
                 <div key={filter.id} className="checkbox">
                   <input
@@ -249,7 +365,7 @@ const ChannelsSelection = (props: PropsType) => {
             </div>
           </label>
           {/** className="col-lg-8" */}
-          <VirtualList items={visibleBaseChannels} renderRow={Row} rowHeight={rowHeight} />
+          <VirtualList items={rows} renderRow={Row} rowHeight={rowHeight} />
           {/** TODO: Rebuild
               {orderedBaseChannels.map((baseChannel) => {
                 const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(

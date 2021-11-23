@@ -12,6 +12,7 @@ type ListProps<T> = {
 };
 
 const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
+  // The viewport of the virtual list needs to be strictly sized so it can precompute layouts
   const { width, height, ref } = useResizeDetector({
     refreshMode: "debounce",
     refreshRate: 100,
@@ -20,7 +21,7 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
   const Row = memo((rowProps: ListChildComponentProps<T[]>) => {
     const item = rowProps.data[rowProps.index];
     return (
-      // react-window doesn't type `props.style` completely correctly
+      // react-window has outdated type declarations for React.CSSProperties, the values are correct for our use case
       <div style={rowProps.style as React.CSSProperties}>{props.renderRow(item)}</div>
     );
   }, areEqual);
@@ -47,7 +48,7 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
           itemSize={itemSize}
           itemKey={itemKey}
           children={Row}
-          // See https://react-window.vercel.app/#/api/FixedSizeList
+          // How many items to prerender outside of the viewport, see https://react-window.vercel.app/#/api/FixedSizeList
           overscanCount={10}
         />
       ) : null}
