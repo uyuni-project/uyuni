@@ -29,15 +29,16 @@ export function isGroupVisible(
   channelsTree: ChannelsTreeType,
   visibleChannels: Array<number>,
   selectedChannelsIdsInGroup: Array<number>,
-  selectedBaseChannelId: number,
+  selectedBaseChannelId: number | undefined,
   search: string
 ) {
   const isSearchPresentInGroup =
     baseChannel.name.toLowerCase().includes(search.toLowerCase()) ||
     baseChannel.children.some((cId) =>
-      channelsTree.channelsById[cId].name.toLowerCase().includes(search.toLowerCase())
+      channelsTree.channelsById[cId]?.name.toLowerCase().includes(search.toLowerCase())
     );
-  const isSameArchAsSelectedBase = baseChannel.archLabel === channelsTree.channelsById[selectedBaseChannelId].archLabel;
+  const isSameArchAsSelectedBase =
+    selectedBaseChannelId && baseChannel.archLabel === channelsTree.channelsById[selectedBaseChannelId].archLabel;
   const hasAtLeastOneSelection = selectedChannelsIdsInGroup.length > 0;
 
   // We want to show the group either it's compatible with the selected channel or has at least one selection

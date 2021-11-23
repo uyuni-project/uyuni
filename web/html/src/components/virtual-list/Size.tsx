@@ -5,12 +5,7 @@ type Props = {
   children: ({ width, height }) => JSX.Element;
 };
 
-/**
- * TODO: This doesn't account for stuff like parent resizes and should be replaced by something a-la
- *  - https://github.com/maslianok/react-resize-detector
- *  - https://github.com/crimx/react-resize-reporter
- *  - etc
- */
+// TODO: This is obsolete
 const Size = (props: Props) => {
   const container = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);

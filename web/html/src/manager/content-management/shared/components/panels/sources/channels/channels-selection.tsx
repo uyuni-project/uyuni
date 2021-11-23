@@ -28,6 +28,7 @@ type PropsType = {
 };
 
 const ChannelsSelection = (props: PropsType) => {
+  // TODO: All of this is too tangled, refactor these api uses
   const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
   const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
     useMandatoryChannelsApi();
@@ -45,7 +46,7 @@ const ChannelsSelection = (props: PropsType) => {
       fetchMandatoryChannelsByChannelIds({ channels: Object.values(channelsTree.channelsById) });
 
       // TODO: Only for testing
-      if (true) {
+      if (false) {
         const testCount = 5000;
         for (var ii = 0; ii < testCount; ii++) {
           const id = 10000000 + ii;
@@ -111,6 +112,71 @@ const ChannelsSelection = (props: PropsType) => {
       options,
       hasMore,
     };
+  };
+
+  // TODO: There's a _lot_ of redundancy here, someone who understands this business logic should look into this
+  const visibleBaseChannels = orderedBaseChannels.filter((baseChannel) => {
+    const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
+
+    if (
+      !isGroupVisible(
+        baseChannel,
+        channelsTree,
+        visibleChannels,
+        selectedChannelsIdsInGroup,
+        state.selectedBaseChannelId,
+        state.search
+      )
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  const Row = (baseChannel: ChannelType) => {
+    const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
+
+    const isOpen = state.openGroupsIds.some(
+      (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
+    );
+    return (
+      <GroupChannels
+        key={`group_${baseChannel.id}`}
+        base={baseChannel}
+        search={state.search}
+        childChannelsId={baseChannel.children}
+        selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
+        selectedBaseChannelId={state.selectedBaseChannelId}
+        isOpen={isOpen}
+        setAllRecommentedChannels={(enable) => {
+          dispatchChannelsSelection({
+            type: "set_recommended",
+            baseId: baseChannel.id,
+            enable,
+          });
+        }}
+        onChannelToggle={(channelId) =>
+          dispatchChannelsSelection({
+            type: "toggle_channel",
+            baseId: baseChannel.id,
+            channelId,
+          })
+        }
+        onOpenGroup={(open) =>
+          dispatchChannelsSelection({
+            type: "open_group",
+            baseId: baseChannel.id,
+            open,
+          })
+        }
+        channelsTree={channelsTree}
+        requiredChannelsResult={requiredChannelsResult}
+      />
+    );
+  };
+  const rowHeight = (channel: ChannelType) => {
+    return 50;
   };
 
   return (
@@ -183,7 +249,7 @@ const ChannelsSelection = (props: PropsType) => {
             </div>
           </label>
           {/** className="col-lg-8" */}
-          <VirtualList />
+          <VirtualList items={visibleBaseChannels} renderRow={Row} rowHeight={rowHeight} />
           {/** TODO: Rebuild
               {orderedBaseChannels.map((baseChannel) => {
                 const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(
