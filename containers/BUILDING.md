@@ -42,3 +42,9 @@ rm /run/user/$(id -u)/libpod/pause.pid
 ```sh
 sh build-proxy.sh
 ```
+
+## Running
+
+Copy `run-proxy.sh` and execute it.
+
+To kill all containers use `podman pod kill uyuni-proxy`.
