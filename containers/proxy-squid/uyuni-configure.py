@@ -11,7 +11,9 @@ with open("/etc/uyuni/config.yaml") as source:
         fileContent = dest.read()
 
         # replace the target string
-        fileContent = fileContent.replace('_SQUID_SIZE_', str(config["squid_size"]))
+        fileContent = fileContent.replace(
+            'cache_dir ufs /var/cache/squid 15000 16 256',
+            f"cache_dir ufs /var/cache/squid {str(config['squid_size'])} 16 256")
 
         # write to file
         with open("/etc/squid/squid.conf", "w") as dest:
