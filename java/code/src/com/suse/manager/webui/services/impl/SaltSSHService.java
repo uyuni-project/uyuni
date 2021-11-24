@@ -649,7 +649,10 @@ public class SaltSSHService {
                     .refreshCache(true);
             roster.ifPresentOrElse(
                     r -> sshConfigBuilder.rosterFile(rosterPath.getFileName().toString()),
-                    () -> sshConfigBuilder.roster("uyuni"));
+                    () -> {
+                        sshConfigBuilder.roster("uyuni");
+                        LOG.info("No roster file used, using Uyuni roster module!");
+                    });
             extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
