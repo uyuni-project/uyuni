@@ -166,6 +166,10 @@ CLIENT_REPOS_ROOT=
 # even if it available in the bootstrap repo
 AVOID_VENV_SALT_MINION={avoid_venv}
 
+# Force installing venv-salt-minion instead salt-minion
+# even if it is NOT available in the bootstrap repo
+FORCE_VENV_SALT_MINION={force_venv}
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -266,6 +270,7 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
                           avoid_venv=1 if bool(options.no_bundle) else 0,
+                          force_venv=1 if bool(options.force_bundle) else 0,
                           using_ssl=1,
                           using_gpg=0 if bool(options.no_gpg) else 1,
                           allow_config_actions=options.allow_config_actions,
@@ -351,7 +356,9 @@ function test_repo_exists() {{
 }}
 
 function test_venv_enabled() {{
-    if [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
+    if [ $FORCE_VENV_SALT_MINION -eq 1 ]; then
+        VENV_ENABLED=1
+    elif [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
         local repourl="$CLIENT_REPO_URL"
         if [ "$INSTALLER" == "zypper" ] || [ "$INSTALLER" == "yum" ]; then
             ARCH=$(rpm --eval "%{{_host_cpu}}")
