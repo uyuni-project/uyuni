@@ -5,6 +5,10 @@ title: 'Package version bump/rename for SUSE Manager/Uyuni: XXXXXXX'
 labels: vega-squad
 assignees: ''
 ---
+# Reason
+
+Provide the reason why we need to rename/bump the version. This would help all the involved parties in ECO to understand the reason behind it and could help speed up the process.
+
 
 # Affected package
 

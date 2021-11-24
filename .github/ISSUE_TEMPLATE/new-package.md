@@ -5,6 +5,9 @@ title: 'New package: XXXXXX'
 labels: vega-squad
 assignees: ''
 ---
+# Reason
+
+Provide the reason why we need this new package. This would help all involved parties in ECO to understand the reason behind it and could help speed up the process.
 
 # New package name
 
