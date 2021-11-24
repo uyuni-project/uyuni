@@ -1,3 +1,5 @@
+- during setup detect venv-salt-minion
+
 -------------------------------------------------------------------
 Fri Nov 05 13:51:44 CET 2021 - jgonzalez@suse.com
 
