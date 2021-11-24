@@ -341,7 +341,7 @@ function test_repo_exists() {{
 }}
 
 function test_venv_enabled() {{
-    if [ $FORCE_VENV_SALT_MINION -e 1 ]; then
+    if [ $FORCE_VENV_SALT_MINION -eq 1 ]; then
         VENV_ENABLED=1
     elif [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
         local repourl="$CLIENT_REPO_URL"
