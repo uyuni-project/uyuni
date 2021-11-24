@@ -1680,6 +1680,8 @@ end
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
   salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  if host == 'server'
+    salt_call = 'salt-call'
   source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
