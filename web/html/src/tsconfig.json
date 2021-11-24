@@ -30,7 +30,9 @@
       "es2019.array",
       "es2019.object",
       // For: String.replaceAll()
-      "ESNext.String"
+      "ESNext.String",
+      // TODO: Test this, see https://blog.johnnyreilly.com/2020/02/21/web-workers-comlink-typescript-and-react/
+      "webworker"
     ],
     "strict": true,
     // Should eventually be false

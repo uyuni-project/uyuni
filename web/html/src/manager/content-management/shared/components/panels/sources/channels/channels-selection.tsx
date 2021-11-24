@@ -17,10 +17,14 @@ import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import { getSelectedChannelsIdsInGroup, hasRecommendedChildren } from "core/channels/utils/channels-state.utils";
-import { ChannelType } from "core/channels/type/channels.type";
+import { ChannelType, RawChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
+
+import Network from "utils/network";
+import Worker from "./channels-selection.worker.ts";
+import WorkerMessages from "./channels-selection-messages";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
@@ -78,6 +82,46 @@ const ChannelsSelection = (props: PropsType) => {
   };
 
   const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
+
+  // TODO: Make sure this gets destroyed correctly?
+  useEffect(() => {
+    // TODO: This needs to be shared with search etc, the scope is wrong
+    let worker: Worker | undefined = new Worker();
+
+    // TODO: Move this to a separate file
+    Network.get(`/rhn/manager/api/channels?filterClm=true`)
+      .then(Network.unwrap)
+      .then((channels) => {
+        const channelIds = (channels as RawChannelType[]).reduce((ids, channel) => {
+          ids.push(channel.base.id, ...channel.children.map((child) => child.id));
+          return ids;
+        }, [] as number[]);
+
+        return Network.post("/rhn/manager/api/admin/mandatoryChannels", channelIds)
+          .then(Network.unwrap)
+          .then((mandatoryChannelsMap) => {
+            // TODO: Test this, what if we unmount before we get here etc
+            if (!worker) {
+              return;
+            }
+            // console.log(channels);
+            worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
+          });
+      });
+
+    worker.addEventListener("message", async ({ data }) => {
+      switch (data.type) {
+        case WorkerMessages.VIEW_UPDATED:
+          // TODO: Implement, set state based on the view etc
+          return;
+        default:
+          throw new RangeError("Unknown message type");
+      }
+    });
+    return () => {
+      worker = undefined;
+    };
+  }, []);
 
   useEffect(() => {
     fetchChannelsTree().then((channelsTree: ChannelsTreeType) => {

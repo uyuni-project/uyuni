@@ -76,6 +76,11 @@ module.exports = (env, argv) => {
       module: {
         rules: [
           {
+            test: /\.worker\.(ts|js)$/,
+            loader: "worker-loader",
+            // If you get CORS issues, see https://github.com/webpack-contrib/worker-loader#cross-origin-policy
+          },
+          {
             test: /\.(ts|js)x?$/,
             exclude: /node_modules/,
             use: {
