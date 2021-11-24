@@ -1,3 +1,5 @@
+- Correctly detect salt-bundle (bsc#1208306)
+
 -------------------------------------------------------------------
 Wed Feb 15 13:41:05 CET 2023 - jgonzalez@suse.com
 
