@@ -1,0 +1,2 @@
+server: server.tf.local
+squid_size: 20000
