@@ -246,7 +246,7 @@ end
 
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
   salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
-  step %(I store "#{content}" into file "#{salt_config}#{filename}" from "#{host}")
+  step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
