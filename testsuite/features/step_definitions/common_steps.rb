@@ -609,7 +609,8 @@ When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$
 end
 
 When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  $proxy.run('mgr-bootstrap')
+  force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+  $proxy.run("mgr-bootstrap #{force_bundle}")
   $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise "Key: #{key} not included" unless output.include? key
@@ -640,9 +641,11 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{client} &&
+  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
