@@ -98,12 +98,15 @@ function onChange(partialState: Partial<typeof state>) {
     }
 
     // TODO: Compute visible groups, isOpen, etc
+
+    // TODO: Flatten to a flat list with types for rendering and then return
   });
 
   console.log(baseChannels);
 
   context.postMessage({
-    type: WorkerMessages.VIEW_UPDATED,
-    baseChannels,
+    type: WorkerMessages.ROWS_CHANGED,
+    // TODO: Actual rows
+    rows: [],
   });
 }

@@ -1,6 +1,6 @@
 enum Messages {
   SET_CHANNELS,
-  VIEW_UPDATED,
+  ROWS_CHANGED,
   // TODO: Do we need a reset message? Or initialize or something similar?
 }
 

@@ -21,8 +21,9 @@ import { ChannelType, RawChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
+import { loadSelectOptions } from "./channels-selection-select-options";
 
-import Network from "utils/network";
+import Network, { JsonResult } from "utils/network";
 import Worker from "./channels-selection.worker.ts";
 import WorkerMessages from "./channels-selection-messages";
 
@@ -60,36 +61,22 @@ type RowDefinition = {
 } & (ParentDefinition | ChildDefinition | RecommendedToggleDefinition);
 
 const ChannelsSelection = (props: PropsType) => {
-  // TODO: All of this is too tangled, refactor these hooks
-  const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
-  const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
-    useMandatoryChannelsApi();
-  const [state, dispatchChannelsSelection]: [StateChannelsSelectionType, (arg0: ActionChannelsSelectionType) => void] =
-    useImmerReducer(
-      (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
-      initialStateChannelsSelection(props.initialSelectedIds)
-    );
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Reimplement the search variable to reduce full list rerenders
+  // TODO: Make sure this gets destroyed correctly
+  const [worker] = useState(new Worker());
+
   const [search, setSearch] = useState("");
-  const debouncedDispatch = debounce(dispatchChannelsSelection, 100);
   const onSearch = (newSearch: string) => {
     setSearch(newSearch);
-    debouncedDispatch({
-      type: "search",
-      search: newSearch,
-    });
+    // TODO: Notify worker
   };
 
-  const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
+  const [rows, setRows] = useState([]);
 
-  // TODO: Make sure this gets destroyed correctly?
   useEffect(() => {
-    // TODO: This needs to be shared with search etc, the scope is wrong
-    let worker: Worker | undefined = new Worker();
-
     // TODO: Move this to a separate file
-    Network.get(`/rhn/manager/api/channels?filterClm=true`)
+    Network.get<JsonResult<RawChannelType[]>>(`/rhn/manager/api/channels?filterClm=true`)
       .then(Network.unwrap)
       .then((channels) => {
         const channelIds = (channels as RawChannelType[]).reduce((ids, channel) => {
@@ -100,10 +87,38 @@ const ChannelsSelection = (props: PropsType) => {
         return Network.post("/rhn/manager/api/admin/mandatoryChannels", channelIds)
           .then(Network.unwrap)
           .then((mandatoryChannelsMap) => {
+            console.log("done?");
+            // TODO: Here or somewhere else?
+            if (isLoading) {
+              setIsLoading(false);
+            }
+
             // TODO: Test this, what if we unmount before we get here etc
             if (!worker) {
               return;
             }
+
+            /// TODO: Only for testing
+            if (false) {
+              const testCount = 5000;
+              for (var ii = 0; ii < testCount; ii++) {
+                const id = 10000000 + ii;
+                channels.push({
+                  base: {
+                    id,
+                    name: `mock channel ${ii}`,
+                    label: `mock_channel_${ii}`,
+                    archLabel: "channel-x86_64",
+                    custom: true,
+                    isCloned: false,
+                    subscribable: true,
+                    recommended: false,
+                  },
+                  children: [],
+                });
+              }
+            }
+
             // console.log(channels);
             worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
           });
@@ -111,144 +126,21 @@ const ChannelsSelection = (props: PropsType) => {
 
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
-        case WorkerMessages.VIEW_UPDATED:
-          // TODO: Implement, set state based on the view etc
+        case WorkerMessages.ROWS_CHANGED:
+          if (!Array.isArray(data.rows)) {
+            throw new RangeError("Received no valid rows");
+          }
+          setRows(data.rows);
           return;
         default:
           throw new RangeError("Unknown message type");
       }
     });
-    return () => {
-      worker = undefined;
-    };
+
+    // TODO: Do we need to remove event listeners from the worker in the cleanup?
   }, []);
 
-  useEffect(() => {
-    fetchChannelsTree().then((channelsTree: ChannelsTreeType) => {
-      // TODO: Can this `Object.values()` call be avoided?
-      fetchMandatoryChannelsByChannelIds({ channels: Object.values(channelsTree.channelsById) });
-
-      // TODO: Only for testing
-      if (false) {
-        const testCount = 5000;
-        for (var ii = 0; ii < testCount; ii++) {
-          const id = 10000000 + ii;
-          channelsTree.baseIds.push(id);
-          channelsTree.channelsById[id] = {
-            id,
-            name: `mock channel ${ii}`,
-            label: `mock_channel_${ii}`,
-            archLabel: "channel-x86_64",
-            custom: true,
-            isCloned: false,
-            subscribable: true,
-            recommended: false,
-            children: [],
-          };
-        }
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    // set lead base channel as first and notify
-    const sortedSelectedChannelsId = state.selectedChannelsIds.filter((cId) => cId !== state.selectedBaseChannelId);
-    sortedSelectedChannelsId.unshift(state.selectedBaseChannelId);
-    isAllApiDataLoaded &&
-      props.onChange(
-        sortedSelectedChannelsId
-          .filter((cId) => channelsTree.channelsById[cId])
-          .map((cId) => channelsTree.channelsById[cId])
-      );
-  }, [state.selectedChannelsIds]);
-
-  // TODO: There's a _lot_ of unnecessary work here, someone familiar with the business logic should look to remove unnecessary full iterations over the data set
-  // TODO: All of this logic is currently very tightly coupled, but would be nice to refactor most of it out of here
-  // Here and below, memoization is for users who have thousands of channels
-  const visibleChannels = useMemo(
-    () => getVisibleChannels(channelsTree, state.activeFilters),
-    [channelsTree, state.activeFilters]
-  );
-  // Order all base channels by id and set the lead base channel as first
-  const orderedBaseChannels = useMemo(
-    () => orderBaseChannels(channelsTree, state.selectedBaseChannelId),
-    [channelsTree, state.selectedBaseChannelId]
-  );
-
-  const pageSize = window.userPrefPageSize || 15;
-  // TODO: Move this to the server instead
-  const loadSelectOptions = async (searchString: string, previouslyLoaded: ChannelType[]) => {
-    const offset = previouslyLoaded.length;
-
-    const filteredChannels = orderedBaseChannels.filter((channel) =>
-      channel.name.toLocaleLowerCase().includes(searchString.toLocaleLowerCase())
-    );
-    // This is what we would expect to get back from the server given a search string and offset
-    const options = filteredChannels.slice(offset, offset + pageSize);
-    const hasMore = previouslyLoaded.length + options.length < filteredChannels.length;
-    return {
-      options,
-      hasMore,
-    };
-  };
-
-  const rows = useMemo(
-    () =>
-      orderedBaseChannels.reduce((result, baseChannel) => {
-        // If this group matches current filters etc, append it
-        const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, baseChannel);
-        const isVisible = isGroupVisible(
-          baseChannel,
-          channelsTree,
-          visibleChannels,
-          selectedChannelsIdsInGroup,
-          state.selectedBaseChannelId,
-          state.search
-        );
-        if (!isVisible) {
-          return result;
-        }
-
-        // TODO: Move all data modification logic to the data fetching layer or sth so it's only done once
-        result.push({
-          type: ChannelRenderType.Parent,
-          id: baseChannel.id,
-          channel: baseChannel,
-        });
-
-        // If the group is open, append all of its children
-        const isGroupOpen = state.openGroupsIds.some(
-          (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
-        );
-        if (isGroupOpen) {
-          // TODO: If no children, push an empty child or w/e and break out early
-
-          // Recommended channels toggle, if applicable
-          if (hasRecommendedChildren(baseChannel, channelsTree)) {
-            result.push({
-              type: ChannelRenderType.RecommendedToggle,
-              id: `recommended_for_${baseChannel.id}`,
-              parent: baseChannel,
-            });
-          }
-
-          baseChannel.children.forEach((childId) => {
-            // TODO: This lookup would be obsolete if the incoming data logic was untangled
-            const childChannel = channelsTree.channelsById[childId];
-            result.push({
-              type: ChannelRenderType.Child,
-              id: childChannel.id,
-              channel: childChannel,
-              parent: baseChannel,
-            });
-          });
-        }
-
-        return result;
-      }, [] as RowDefinition[]),
-    [orderedBaseChannels, visibleChannels, state.selectedBaseChannelId, state.selectedChannelsIds, state.search]
-  );
-
+  /*
   const Row = (definition: RowDefinition) => {
     const parentChannel = definition.type === ChannelRenderType.Parent ? definition.channel : definition.parent;
     const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, parentChannel);
@@ -262,7 +154,7 @@ const ChannelsSelection = (props: PropsType) => {
         return (
           <ParentChannel
             channel={parentChannel}
-            search={state.search}
+            search={search}
             selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
             selectedBaseChannelId={state.selectedBaseChannelId}
             isOpen={isOpen}
@@ -287,7 +179,7 @@ const ChannelsSelection = (props: PropsType) => {
           <ChildChannel
             channel={definition.channel}
             parent={parentChannel}
-            search={state.search}
+            search={search}
             selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
             onChannelToggle={(channelId) => {
               return dispatchChannelsSelection({
@@ -334,7 +226,9 @@ const ChannelsSelection = (props: PropsType) => {
     }
   };
 
-  if (!isAllApiDataLoaded || props.isSourcesApiLoading) {
+  */
+
+  if (isLoading || props.isSourcesApiLoading) {
     return (
       <div className="form-group">
         <Loading text={props.isSourcesApiLoading ? "Adding sources..." : "Loading.."} />
@@ -353,20 +247,25 @@ const ChannelsSelection = (props: PropsType) => {
           labelClass="col-md-3"
           divClass="col-md-8"
           hint={t("Choose the channel to be elected as the new base channel")}
-          getOptionLabel={(option) => option.name}
-          getOptionValue={(option) => option.id}
+          getOptionLabel={(option) => option.base.name}
+          getOptionValue={(option) => option.base.id}
           onChange={(name, rawValue) => {
             const value = parseInt(rawValue, 10);
             if (isNaN(value)) {
               return;
             }
+            // TODO: Implement
+            /*
             dispatchChannelsSelection({
               type: "lead_channel",
               newBaseId: value,
             });
+            */
           }}
         />
       </div>
+      {/** TODO: Implement */}
+      {/**
       {state.selectedBaseChannelId && (
         <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
@@ -400,6 +299,7 @@ const ChannelsSelection = (props: PropsType) => {
           <VirtualList items={rows} renderRow={Row} rowHeight={rowHeight} />
         </div>
       )}
+       */}
     </React.Fragment>
   );
 };

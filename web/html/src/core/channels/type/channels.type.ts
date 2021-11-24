@@ -19,7 +19,6 @@ export type ServerChannelType = {
   custom: boolean;
   isCloned: boolean;
   label: string;
-  mandatory: unknown[];
   name: string;
   recommended: boolean;
   subscribable: boolean;
