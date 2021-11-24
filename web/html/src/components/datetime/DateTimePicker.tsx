@@ -155,14 +155,11 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
     this._input?.timepicker({
       roundingFunction: (seconds, options) => seconds,
     });
-    this._input?.on("change", () => {
-      // Do nothing
-    });
     this._input?.on("timeFormatError", () => {
       // Do nothing
     });
     this._input?.timepicker("setTime", this.toFauxBrowserDate(this.props));
-    this._input?.on("changeTime", () => {
+    this._input?.on("change", () => {
       const unsafeDate: Date | undefined = this._input?.timepicker("getTime");
 
       // Only if value has actually changed
