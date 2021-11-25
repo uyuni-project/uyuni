@@ -796,6 +796,20 @@ public class FormulaFactory {
     }
 
     /**
+     * Ensure all legacy formulas data for the minion are wiped.
+     *
+     * @param minion the minion to remove the formula data from
+     *
+     * @throws IOException if anything bad happens while removing the files.
+     */
+    public static void deleteLegacyFormulas(MinionServer minion) throws IOException {
+        FormulaFactory.getFormulasByMinion(minion).forEach(formula -> {
+            FormulaFactory.deleteServerFormulaData(minion.getMinionId(), formula);
+        });
+        removeEntryFromFormulaFile(minion.getMinionId(), getServerDataFile());
+    }
+
+    /**
      * Deletes all saved values of a given server for a given formula
      * @param minionId the minion id
      * @param formulaName the name of the formula

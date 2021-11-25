@@ -65,6 +65,7 @@ import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
@@ -310,10 +311,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
+        HibernateFactory.commitTransaction();
 
-        assertTrue(FormulaFactory.getFormulasByMinion(minion).isEmpty());
-        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion).isPresent());
+        assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
         assertFalse(formulaValues.exists());
+        assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
 
     public void testEmptyFormulaDataCleanUp() throws Exception {
@@ -331,8 +333,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }});
         systemManager.deleteServer(user, minion.getId());
 
-        assertTrue(FormulaFactory.getFormulasByMinion(minion).isEmpty());
-        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion).isPresent());
+        HibernateFactory.commitTransaction();
+
+        assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
         assertFalse(formulaValues.exists());
         assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
