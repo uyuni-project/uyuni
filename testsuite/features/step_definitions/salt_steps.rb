@@ -294,32 +294,8 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
                'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
                'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
-               'first A address'          => 'bind#available_zones#0#records#A#0#1',
-               'second A address'         => 'bind#available_zones#0#records#A#1#1',
-               'third A address'          => 'bind#available_zones#0#records#A#2#1',
-               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'tftpd#listen_ip',
                'vsftpd internal network address' => 'vsftpd_config#listen_address' }
-  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
-end
-
-When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
-  fieldids = { 'IP'                       => 'branch_network#ip',
-               'domain name server'       => 'dhcpd#domain_name_servers#0',
-               'network IP'               => 'dhcpd#subnets#0#$key',
-               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
-               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
-               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
-               'routers'                  => 'dhcpd#subnets#0#routers#0',
-               'next server'              => 'dhcpd#subnets#0#next_server',
-               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
-               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
-               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
-               'first A address'          => 'bind#available_zones#0#records#A#0#1',
-               'second A address'         => 'bind#available_zones#0#records#A#1#1',
-               'third A address'          => 'bind#available_zones#0#records#A#2#1',
-               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
-               'internal network address' => 'vsftpd_config#listen_address' }
   fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
 end
 
@@ -344,29 +320,10 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'third value'                     => 'bind#config#options#2#1',
                'first configured zone name'      => 'bind#configured_zones#0#$key',
                'first available zone name'       => 'bind#available_zones#0#$key',
-               'first file name'                 => 'bind#available_zones#0#file',
-               'first name server'               => 'bind#available_zones#0#soa#ns',
-               'first contact'                   => 'bind#available_zones#0#soa#contact',
-               'first A name'                    => 'bind#available_zones#0#records#A#0#0',
-               'second A name'                   => 'bind#available_zones#0#records#A#1#0',
-               'third A name'                    => 'bind#available_zones#0#records#A#2#0',
-               'fourth A name'                   => 'bind#available_zones#0#records#A#3#0',
-               'first NS'                        => 'bind#available_zones#0#records#NS#@#0',
-               'first CNAME alias'               => 'bind#available_zones#0#records#CNAME#0#0',
-               'first CNAME name'                => 'bind#available_zones#0#records#CNAME#0#1',
-               'second CNAME alias'              => 'bind#available_zones#0#records#CNAME#1#0',
-               'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
-               'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
-               'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
-               'second name server'              => 'bind#available_zones#1#soa#ns',
-               'second contact'                  => 'bind#available_zones#1#soa#contact',
-               'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
-               'second for zones'                => 'bind#available_zones#1#generate_reverse#for_zones#0',
+               'second configured zone name'     => 'bind#configured_zones#1#$key',
+               'second available zone name'      => 'bind#available_zones#1#$key',
                'third configured zone name'      => 'bind#configured_zones#2#$key',
                'third available zone name'       => 'bind#available_zones#2#$key',
-               'third file name'                 => 'bind#available_zones#2#file',
-               'third name server'               => 'bind#available_zones#2#soa#ns',
-               'third contact'                   => 'bind#available_zones#2#soa#contact',
                'TFTP base directory'             => 'tftpd#root_dir',
                'branch id'                       => 'pxe#branch_id',
                'disk id'                         => 'partitioning#0#$key',
@@ -392,19 +349,52 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
 end
 # rubocop:enable Metrics/BlockLength
 
-When(/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
+When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
+  fieldids = {
+    'file name'                       => '#file',
+    'SOA name server'                 => '#soa#ns',
+    'SOA contact'                     => '#soa#contact',
+    'first A name'                    => '#records#A#0#0',
+    'first A address'                 => '#records#A#0#1',
+    'second A name'                   => '#records#A#1#0',
+    'second A address'                => '#records#A#1#1',
+    'third A name'                    => '#records#A#2#0',
+    'third A address'                 => '#records#A#2#1',
+    'fourth A name'                   => '#records#A#3#0',
+    'fourth A address'                => '#records#A#3#1',
+    'first NS'                        => '#records#NS#@#0',
+    'first CNAME alias'               => '#records#CNAME#0#0',
+    'first CNAME name'                => '#records#CNAME#0#1',
+    'second CNAME alias'              => '#records#CNAME#1#0',
+    'second CNAME name'               => '#records#CNAME#1#1',
+    'third CNAME alias'               => '#records#CNAME#2#0',
+    'third CNAME name'                => '#records#CNAME#2#1',
+    'first for zones'                 => '#generate_reverse#for_zones#0',
+    'generate reverse network'        => '#generate_reverse#net'
+  }
+  zone_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]"
+
+  find(:xpath, "#{zone_xpath}//input[contains(@id, '#{fieldids[field]}')]").set(value)
+end
+
+When(/^I enter the hostname of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
   system_name = get_system_name(host)
-  fieldids = { 'third CNAME name'   => 'bind#available_zones#0#records#CNAME#2#1',
-               'third name server'  => 'bind#available_zones#2#soa#ns',
-               'fifth A name'       => 'bind#available_zones#2#records#A#0#0',
-               'sixth A name'       => 'bind#available_zones#2#records#A#1#0',
-               'third NS'           => 'bind#available_zones#2#records#NS#@#0' }
-  fill_in fieldids[field], with: "#{system_name}."
+  step %(I enter "#{system_name}." in #{field} field of #{zone} zone)
 end
 
 When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
   fill_in FIELD_IDS[field], with: node.public_ip
+end
+
+When(/^I enter the IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
+  node = get_target(host)
+  step %(I enter "#{node.public_ip}" in #{field} field of #{zone} zone)
+end
+
+When(/^I enter the local IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  step %(I enter "#{net_prefix + ADDRESSES[host]}" in #{field} field of #{zone} zone)
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -426,17 +416,22 @@ end
 When(/^I enter the local zone name in (.*) field$/) do |field|
   reverse_net = get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_net}"
-  fill_in FIELD_IDS[field], with: reverse_net
+  step %(I enter "#{reverse_net}" in #{field} field)
 end
 
-When(/^I enter the local file name in (.*) field$/) do |field|
+When(/^I enter the local file name in (.*) field of zone with local name$/) do |field|
   reverse_filename = 'master/db.' + get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_filename}"
-  fill_in FIELD_IDS[field], with: reverse_filename
+  step %(I enter "#{reverse_filename}" in #{field} field of zone with local name)
 end
 
-When(/^I enter the local network in (.*) field$/) do |field|
-  fill_in FIELD_IDS[field], with: $private_net
+When(/^I enter "([^"]*)" in (.*) field of zone with local name$/) do |value, field|
+  reverse_net = get_reverse_net($private_net)
+  step %(I enter "#{value}" in #{field} field of #{reverse_net} zone)
+end
+
+When(/^I enter the local network in (.*) field of zone with local name$/) do |field|
+  step %(I enter "#{$private_net}" in #{field} field of zone with local name)
 end
 
 When(/^I enter the image name in (.*) field$/) do |field|
@@ -449,30 +444,36 @@ When(/^I press "Add Item" in (.*) section$/) do |section|
                  'config options'    => 'bind#config#options#add_item',
                  'configured zones'  => 'bind#configured_zones#add_item',
                  'available zones'   => 'bind#available_zones#add_item',
-                 'first A'           => 'bind#available_zones#0#records#A#add_item',
-                 'first NS'          => 'bind#available_zones#0#records#NS#@#add_item',
-                 'first CNAME'       => 'bind#available_zones#0#records#CNAME#add_item',
-                 'second NS'         => 'bind#available_zones#1#records#NS#@#add_item',
-                 'second for zones'  => 'bind#available_zones#1#generate_reverse#for_zones#add_item',
-                 'third A'           => 'bind#available_zones#2#records#A#add_item',
-                 'third NS'          => 'bind#available_zones#2#records#NS#@#add_item',
                  'partitions'        => 'partitioning#0#partitions#add_item' }
   find(:xpath, "//i[@id='#{sectionids[section]}']").click
 end
 
-When(/^I press "Remove Item" in (.*) section$/) do |section|
-  sectionids = { 'first CNAME'       => 'bind#available_zones#0#records#CNAME#0',
-                 'second CNAME'      => 'bind#available_zones#0#records#CNAME#1',
-                 'third CNAME'       => 'bind#available_zones#0#records#CNAME#2',
-                 'fourth CNAME'      => 'bind#available_zones#0#records#CNAME#3',
-                 'fifth CNAME'       => 'bind#available_zones#0#records#CNAME#4' }
-  find(:xpath, "//div[@id='#{sectionids[section]}']/button").click
+When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of (.*) zone$/) do |field, zone|
+  sectionids = {
+    'for zones' => 'for_zones',
+    'NS'       => 'NS#@',
+    'CNAME'    => 'CNAME',
+    'A'        => 'A'
+  }
+  xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//i[contains(@id, '##{sectionids[field]}#add_item')]"
+  find(:xpath, xpath).click
+end
+
+When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of zone with local name$/) do |field|
+  reverse_net = get_reverse_net($private_net)
+  step %(I press "Add Item" in #{field} section of #{reverse_net} zone)
+end
+
+When(/^I press "Remove Item" in (.*) CNAME of (.*) zone section$/) do |alias_name, zone|
+  cname_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//input[@name='Alias' and @value='#{alias_name}']/ancestor::div[@class='form-group']"
+  find(:xpath, "#{cname_xpath}/button").click
 end
 
 When(/^I press minus sign in (.*) section$/) do |section|
-  sectionids = { 'third configured zone' => 'bind#configured_zones#2',
-                 'third available zone'  => 'bind#available_zones#2' }
-  find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
+  section_xpath = '//input[@name="Name" and @value="%s"]/ancestor::div[starts-with(@id, "bind#%s_zones#")]'
+  sectionids = { 'tf.local configured zone' => format(section_xpath, "tf.local", "configured"),
+                 'tf.local available zone'  => format(section_xpath, "tf.local", "available") }
+  find(:xpath, "#{sectionids[section]}/div[1]/i[@class='fa fa-minus']").click
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
