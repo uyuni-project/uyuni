@@ -1,10 +1,10 @@
 import * as React from "react";
 import { memo } from "react";
-import { ActionChannelsSelectionType, channelsFiltersAvailableValues, FilterType } from "./channels-selection.state";
+import { channelsFiltersAvailableValues, FilterType } from "./channels-selection.state";
 
 type Props = {
   activeFilters: string[];
-  dispatchChannelsSelection: (arg0: ActionChannelsSelectionType) => void;
+  onChange: (value: string) => void;
 };
 
 const ChannelsFilters = (props: Props) => {
@@ -17,12 +17,7 @@ const ChannelsFilters = (props: Props) => {
             value={filter.id}
             checked={props.activeFilters.includes(filter.id)}
             id={`filter_${filter.id}`}
-            onChange={(event) =>
-              props.dispatchChannelsSelection({
-                type: "toggle_filter",
-                filter: event.target.value,
-              })
-            }
+            onChange={(event) => props.onChange(event.target.value)}
           />
           <label htmlFor={`filter_${filter.id}`}>{filter.text}</label>
         </div>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { memo, useMemo, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
+import xor from "lodash/xor";
 
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
@@ -21,7 +22,7 @@ import { ChannelType, RawChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
-import { loadSelectOptions } from "./channels-selection-select-options";
+import { useChannelsApi, useLoadSelectOptions } from "./channels-selection-select-api";
 
 import Network, { JsonResult } from "utils/network";
 import Worker from "./channels-selection.worker.ts";
@@ -65,64 +66,43 @@ const ChannelsSelection = (props: PropsType) => {
 
   // TODO: Make sure this gets destroyed correctly
   const [worker] = useState(new Worker());
+  // TODO: Make sure this gets destroyed correctly
+  const [loadSelectOptions] = useLoadSelectOptions();
+  const [channelsPromise] = useChannelsApi();
 
+  const [rows, setRows] = useState<unknown[] | undefined>(undefined);
   const [search, setSearch] = useState("");
-  const onSearch = (newSearch: string) => {
-    setSearch(newSearch);
-    // TODO: Notify worker
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const onSearch = (value: string) => {
+    setSearch(value);
+    // TODO: Debounce this so we don't overload the worker
+    worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: value });
   };
-
-  const [rows, setRows] = useState([]);
+  const [selectedChannelIds] = useState(new Set());
 
   useEffect(() => {
     // TODO: Move this to a separate file
-    Network.get<JsonResult<RawChannelType[]>>(`/rhn/manager/api/channels?filterClm=true`)
-      .then(Network.unwrap)
-      .then((channels) => {
-        const channelIds = (channels as RawChannelType[]).reduce((ids, channel) => {
-          ids.push(channel.base.id, ...channel.children.map((child) => child.id));
-          return ids;
-        }, [] as number[]);
+    channelsPromise.then((channels) => {
+      const channelIds = (channels as RawChannelType[]).reduce((ids, channel) => {
+        ids.push(channel.base.id, ...channel.children.map((child) => child.id));
+        return ids;
+      }, [] as number[]);
 
-        return Network.post("/rhn/manager/api/admin/mandatoryChannels", channelIds)
-          .then(Network.unwrap)
-          .then((mandatoryChannelsMap) => {
-            console.log("done?");
-            // TODO: Here or somewhere else?
-            if (isLoading) {
-              setIsLoading(false);
-            }
+      return Network.post("/rhn/manager/api/admin/mandatoryChannels", channelIds)
+        .then(Network.unwrap)
+        .then((mandatoryChannelsMap) => {
+          if (isLoading) {
+            setIsLoading(false);
+          }
 
-            // TODO: Test this, what if we unmount before we get here etc
-            if (!worker) {
-              return;
-            }
+          // TODO: Test this, what if we unmount before we get here etc
+          if (!worker) {
+            return;
+          }
 
-            /// TODO: Only for testing
-            if (false) {
-              const testCount = 5000;
-              for (var ii = 0; ii < testCount; ii++) {
-                const id = 10000000 + ii;
-                channels.push({
-                  base: {
-                    id,
-                    name: `mock channel ${ii}`,
-                    label: `mock_channel_${ii}`,
-                    archLabel: "channel-x86_64",
-                    custom: true,
-                    isCloned: false,
-                    subscribable: true,
-                    recommended: false,
-                  },
-                  children: [],
-                });
-              }
-            }
-
-            // console.log(channels);
-            worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
-          });
-      });
+          worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
+        });
+    });
 
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
@@ -133,11 +113,16 @@ const ChannelsSelection = (props: PropsType) => {
           setRows(data.rows);
           return;
         default:
-          throw new RangeError("Unknown message type");
+          throw new RangeError(`Unknown message type, got ${data.type}`);
       }
     });
 
-    // TODO: Do we need to remove event listeners from the worker in the cleanup?
+    // When the component unmounts, SIGKILL the worker
+    // TODO: Double-triple-quadruple test this
+    return () => {
+      console.log("terminating worker");
+      worker.terminate();
+    };
   }, []);
 
   /*
@@ -254,23 +239,15 @@ const ChannelsSelection = (props: PropsType) => {
             if (isNaN(value)) {
               return;
             }
-            // TODO: Implement
-            /*
-            dispatchChannelsSelection({
-              type: "lead_channel",
-              newBaseId: value,
-            });
-            */
+            worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: value });
           }}
         />
       </div>
-      {/** TODO: Implement */}
-      {/**
-      {state.selectedBaseChannelId && (
+      {rows && (
         <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
             <div className="row" style={{ marginBottom: "30px" }}>
-              {`${t("Child Channels")} (${state.selectedChannelsIds.length})`}
+              {`${t("Child Channels")} (${selectedChannelIds.size})`}
             </div>
             <div className="row panel panel-default panel-body text-left">
               <div style={{ position: "relative" }}>
@@ -291,15 +268,20 @@ const ChannelsSelection = (props: PropsType) => {
               </div>
               <hr />
               <ChannelsFilters
-                activeFilters={state.activeFilters}
-                dispatchChannelsSelection={dispatchChannelsSelection}
+                activeFilters={activeFilters}
+                onChange={(value) => {
+                  setActiveFilters(xor(activeFilters, [value]));
+                  // TODO: Notify worker
+                  // worker.postMessage({ type: WorkerMessages.SET_ACTIVE_FILTERS, activeFilters });
+                }}
               />
             </div>
           </label>
+          {/**
           <VirtualList items={rows} renderRow={Row} rowHeight={rowHeight} />
+           */}
         </div>
       )}
-       */}
     </React.Fragment>
   );
 };

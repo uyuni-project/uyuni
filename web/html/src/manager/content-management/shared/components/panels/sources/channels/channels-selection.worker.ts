@@ -13,6 +13,14 @@ import { DerivedBaseChannel, RawChannelType } from "core/channels/type/channels.
 // eslint-disable-next-line no-restricted-globals
 const context: Worker = self as any;
 
+const initialState = () => ({
+  baseChannels: undefined as DerivedBaseChannel[] | undefined,
+  selectedBaseChannelId: undefined as number | undefined,
+  openBaseChannelIds: new Set<number>(),
+  search: "",
+});
+const state = initialState();
+
 // Respond to message from parent thread
 context.addEventListener("message", async ({ data }) => {
   switch (data.type) {
@@ -20,9 +28,10 @@ context.addEventListener("message", async ({ data }) => {
     case WorkerMessages.SET_CHANNELS:
       // TODO: Also get required and mandatory etc information and then merge it all together
       if (!Array.isArray(data.channels) || !data.mandatoryChannelsMap) {
-        throw new RangeError("Insufficient channel data");
+        throw new TypeError("Insufficient channel data");
       }
 
+      // TODO: Lift all of this out into a function and add tests
       // TODO: Type all of this
       // NB! The data we receive here is already a copy since we're in a worker so it's safe to modify it directly
       const baseChannels = data.channels.map((rawChannel: RawChannelType) => {
@@ -31,8 +40,8 @@ context.addEventListener("message", async ({ data }) => {
         const baseChannel: DerivedBaseChannel = rawChannel.base as DerivedBaseChannel;
         baseChannel.isOpen = false;
         // This should always be available, but just in case
-        baseChannel.mandatory = baseChannel.id ? data.mandatoryChannelsMap[baseChannel.id] : [];
-        // TODO: Precompute filtering values so we only do this once
+        baseChannel.mandatory = data.mandatoryChannelsMap[baseChannel.id] || [];
+        // Precompute filtering values so we only do this once
         baseChannel.standardizedName = baseChannel.name.toLocaleLowerCase();
 
         baseChannel.children = rawChannel.children.map((child) => ({
@@ -47,20 +56,33 @@ context.addEventListener("message", async ({ data }) => {
 
       onChange({ baseChannels });
       return;
+    case WorkerMessages.SET_SEARCH:
+      const search = data.search;
+      if (typeof search !== "string") {
+        throw new TypeError("No search string");
+      }
+      onChange({ search });
+      return;
+    case WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID:
+      const selectedBaseChannelId = data.selectedBaseChannelId;
+      if (typeof selectedBaseChannelId !== "number" || isNaN(selectedBaseChannelId)) {
+        throw new TypeError("No base channel id");
+      }
+      onChange({ selectedBaseChannelId });
+      return;
+    default:
+      throw new RangeError(`Unknown message type, got ${data.type}`);
   }
 });
-
-const initialState = () => ({
-  baseChannels: [] as DerivedBaseChannel[],
-  selectedBaseChannelId: undefined as number | undefined,
-  openBaseChannelIds: new Set<number>(),
-  search: "",
-});
-const state = initialState();
 
 // Whenever we receive new inputs or data, compute and return an updated result
 function onChange(partialState: Partial<typeof state>) {
   Object.assign(state, partialState);
+
+  // If we don't have channels or a selected base channel id yet, there's nothing to do
+  if (typeof state.baseChannels === "undefined" || typeof state.selectedBaseChannelId === "undefined") {
+    return;
+  }
 
   /**
    * This object wrap-unwrap is only required so we can filter and modify the draft in immer at the same time.
