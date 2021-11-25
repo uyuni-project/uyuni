@@ -35,7 +35,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
@@ -127,6 +126,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -739,10 +739,10 @@ public class SystemManager extends BaseManager {
 
             // cleanup server formulas
             try {
-                FormulaFactory.saveServerFormulas(minion, emptyList());
+                FormulaFactory.deleteLegacyFormulas(minion);
             }
-            catch (ValidatorException e) {
-                log.warn("Couldn't clean up formula data and assignment for " + minion);
+            catch (IOException e) {
+                log.error(String.format("Failed to cleanup formula files for minion %s: %s", minion.getMinionId() + e));
             }
         });
 
