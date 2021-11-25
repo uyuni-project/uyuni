@@ -1,5 +1,6 @@
 #!/usr/bin/python3
  
+import os
 import yaml
 
 # read from file
@@ -18,3 +19,6 @@ with open("/etc/uyuni/config.yaml") as source:
         # write to file
         with open("/etc/squid/squid.conf", "w") as dest:
             dest.write(fileContent)
+
+# make sure "squid" is the user and group owner of the cache squid path
+os.system('chown -R squid:squid /var/cache/squid')
