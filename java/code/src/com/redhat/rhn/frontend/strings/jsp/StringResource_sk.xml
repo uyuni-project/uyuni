@@ -312,7 +312,7 @@
       </trans-unit>
       <trans-unit id="errors.maxlength" xml:space="preserve">
         <source>{0} cannot be greater than {1} characters (Note: double byte chars are not supported).</source>
-        <target/>
+        <target>{0} nemôže byť viac ako {1} znakov (Poznámka: dvojbajtové znaky nie sú podporované).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be greater than 4 characters</context>
@@ -320,7 +320,7 @@
       </trans-unit>
       <trans-unit id="errors.invalid" xml:space="preserve">
         <source>{0} is invalid.</source>
-        <target/>
+        <target>{0} je neplatné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Email is invalid</context>
@@ -328,7 +328,7 @@
       </trans-unit>
       <trans-unit id="errors.integer" xml:space="preserve">
         <source>{0} must be a whole number.</source>
-        <target/>
+        <target>{0} musí byť celé číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
@@ -336,7 +336,7 @@
       </trans-unit>
       <trans-unit id="errors.integer.minmax" xml:space="preserve">
         <source>{0} must be a whole number between {1} and {2}.</source>
-        <target/>
+        <target>{0} musí byť celé číslo medzi {1} a {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="errors.float" xml:space="preserve">
         <source>{0} must be a decimal number.</source>
-        <target/>
+        <target>{0} musí byť desatinné číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
@@ -352,7 +352,7 @@
       </trans-unit>
       <trans-unit id="errors.float.minmax" xml:space="preserve">
         <source>{0} must be a decimal number between {1} and {2}.</source>
-        <target/>
+        <target>{0} musí byť desatinné číslo medzi {1} a {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
@@ -360,28 +360,28 @@
       </trans-unit>
       <trans-unit id="errors.unexpected" xml:space="preserve">
         <source>An unexpected error has occurred during the request.</source>
-        <target/>
+        <target>Počas požiadavky sa vyskytla neočakávaná chyba.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page where an unexpected error occurred.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.jsp.helpicon.alt" xml:space="preserve">
         <source>Help Icon</source>
-        <target/>
+        <target>Ikona Pomocníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that contains a help bubble icon</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.actionchain" xml:space="preserve">
           <source>We're sorry, but the Action Chain could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale reťazec akcií sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.user" xml:space="preserve">
           <source>We're sorry, but the user could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale používateľa sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
