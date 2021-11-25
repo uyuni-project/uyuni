@@ -88,10 +88,13 @@ const ChannelsSelection = (props: PropsType) => {
   useEffect(() => {
     // TODO: Move this to a separate file
     channelsPromise.then((channels) => {
-      const channelIds = (channels as RawChannelType[]).reduce((ids, channel) => {
-        ids.push(channel.base.id, ...channel.children.map((child) => child.id));
-        return ids;
-      }, [] as number[]);
+      const channelIds = (channels as RawChannelType[])
+        .reduce((ids, channel) => {
+          ids.push(channel.base.id, ...channel.children.map((child) => child.id));
+          return ids;
+        }, [] as number[])
+        // TODO: This is only for testing values, remove later
+        .filter((id) => id < 10000000);
 
       return Network.post<JsonResult<MandatoryChannelsResponse>>("/rhn/manager/api/admin/mandatoryChannels", channelIds)
         .then(Network.unwrap)
