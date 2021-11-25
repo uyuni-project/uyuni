@@ -1,3 +1,5 @@
+- Detect salt bundle when fetching certificate using salt event (bsc#1208306)
+
 -------------------------------------------------------------------
 Wed Feb 15 13:53:53 CET 2023 - jgonzalez@suse.com
 
