@@ -20,7 +20,7 @@ do
 done
 
 podman pod create --name proxy-pod \
-        --publish 80:80 \
+        --publish 8080:8080 \
         --publish 443:443 \
         --publish 4505:4505 \
         --publish 4506:4506 \
