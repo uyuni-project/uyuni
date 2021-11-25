@@ -34,6 +34,11 @@ type PropsType = {
   onChange: (channels: ChannelType[]) => void;
 };
 
+// TODO: Move somewhere else
+type MandatoryChannelsResponse = {
+  [key: number]: unknown[] | undefined;
+};
+
 enum ChannelRenderType {
   Parent,
   Child,
@@ -88,16 +93,11 @@ const ChannelsSelection = (props: PropsType) => {
         return ids;
       }, [] as number[]);
 
-      return Network.post("/rhn/manager/api/admin/mandatoryChannels", channelIds)
+      return Network.post<JsonResult<MandatoryChannelsResponse>>("/rhn/manager/api/admin/mandatoryChannels", channelIds)
         .then(Network.unwrap)
         .then((mandatoryChannelsMap) => {
           if (isLoading) {
             setIsLoading(false);
-          }
-
-          // TODO: Test this, what if we unmount before we get here etc
-          if (!worker) {
-            return;
           }
 
           worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
@@ -106,12 +106,13 @@ const ChannelsSelection = (props: PropsType) => {
 
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
-        case WorkerMessages.ROWS_CHANGED:
+        case WorkerMessages.ROWS_CHANGED: {
           if (!Array.isArray(data.rows)) {
             throw new RangeError("Received no valid rows");
           }
           setRows(data.rows);
           return;
+        }
         default:
           throw new RangeError(`Unknown message type, got ${data.type}`);
       }
@@ -120,7 +121,6 @@ const ChannelsSelection = (props: PropsType) => {
     // When the component unmounts, SIGKILL the worker
     // TODO: Double-triple-quadruple test this
     return () => {
-      console.log("terminating worker");
       worker.terminate();
     };
   }, []);
@@ -270,9 +270,9 @@ const ChannelsSelection = (props: PropsType) => {
               <ChannelsFilters
                 activeFilters={activeFilters}
                 onChange={(value) => {
-                  setActiveFilters(xor(activeFilters, [value]));
-                  // TODO: Notify worker
-                  // worker.postMessage({ type: WorkerMessages.SET_ACTIVE_FILTERS, activeFilters });
+                  const newActiveFilters = xor(activeFilters, [value]);
+                  setActiveFilters(newActiveFilters);
+                  worker.postMessage({ type: WorkerMessages.SET_ACTIVE_FILTERS, activeFilters: newActiveFilters });
                 }}
               />
             </div>

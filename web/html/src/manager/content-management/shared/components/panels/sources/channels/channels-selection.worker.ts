@@ -9,6 +9,7 @@ import produce from "utils/produce";
 // If we want to use more workers in the future, using a dedicated library such as Comlink or something similar might make sense
 import WorkerMessages from "./channels-selection-messages";
 import { DerivedBaseChannel, RawChannelType } from "core/channels/type/channels.type";
+import { channelsFiltersAvailable } from "./channels-selection.state";
 
 // eslint-disable-next-line no-restricted-globals
 const context: Worker = self as any;
@@ -16,8 +17,10 @@ const context: Worker = self as any;
 const initialState = () => ({
   baseChannels: undefined as DerivedBaseChannel[] | undefined,
   selectedBaseChannelId: undefined as number | undefined,
-  openBaseChannelIds: new Set<number>(),
+  // TODO: Do we need this at all?
+  // openBaseChannelIds: new Set<number>(),
   search: "",
+  activeFilters: [] as string[],
 });
 const state = initialState();
 
@@ -25,7 +28,7 @@ const state = initialState();
 context.addEventListener("message", async ({ data }) => {
   switch (data.type) {
     // The worker can't currently integrate with our network layer due to its reliance on jQuery, in the future the worker could do the request itself
-    case WorkerMessages.SET_CHANNELS:
+    case WorkerMessages.SET_CHANNELS: {
       // TODO: Also get required and mandatory etc information and then merge it all together
       if (!Array.isArray(data.channels) || !data.mandatoryChannelsMap) {
         throw new TypeError("Insufficient channel data");
@@ -56,20 +59,31 @@ context.addEventListener("message", async ({ data }) => {
 
       onChange({ baseChannels });
       return;
-    case WorkerMessages.SET_SEARCH:
+    }
+    case WorkerMessages.SET_SEARCH: {
       const search = data.search;
       if (typeof search !== "string") {
         throw new TypeError("No search string");
       }
       onChange({ search });
       return;
-    case WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID:
+    }
+    case WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID: {
       const selectedBaseChannelId = data.selectedBaseChannelId;
       if (typeof selectedBaseChannelId !== "number" || isNaN(selectedBaseChannelId)) {
         throw new TypeError("No base channel id");
       }
       onChange({ selectedBaseChannelId });
       return;
+    }
+    case WorkerMessages.SET_ACTIVE_FILTERS: {
+      const activeFilters = data.activeFilters;
+      if (!Array.isArray(activeFilters)) {
+        throw new TypeError("No valid active filters");
+      }
+      onChange({ activeFilters });
+      return;
+    }
     default:
       throw new RangeError(`Unknown message type, got ${data.type}`);
   }
@@ -89,7 +103,17 @@ function onChange(partialState: Partial<typeof state>) {
    * Immer doesn't allow you to return a new draft value and modify the draft at the same time since it's usually a bug.
    */
   const { baseChannels } = produce({ baseChannels: state.baseChannels }, (draft): void => {
-    // Filter first so everything else is cheaper
+    // Filter by categories and search strings first if possible so everything else is cheaper
+    // TODO: See https://github.com/uyuni-project/uyuni/blob/c88fc74f9d6ff81d9fcfa32347d4b5d75a579dd5/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.utils.ts#L19
+    if (state.activeFilters.length) {
+      const filters = state.activeFilters.map((name) => channelsFiltersAvailable[name].isVisible);
+      draft.baseChannels = draft.baseChannels.filter((channel) => {
+        // TODO: Do we need the parent-child logic here?
+        // TODO: Fix types
+        return filters.some((filter) => filter(channel as any));
+      });
+    }
+
     if (state.search) {
       const search = state.search.toLocaleLowerCase();
       draft.baseChannels = draft.baseChannels.filter((channel) => {
@@ -98,9 +122,11 @@ function onChange(partialState: Partial<typeof state>) {
         // If the base channel name matches search or we have any children left after the above, include the base channel
         const matchesSearch = channel.standardizedName.includes(search) || channel.children.length > 0;
 
-        // TODO: See how this matches other open-close logic
-        // If the channel matched the search, open it as well
-        channel.isOpen = matchesSearch;
+        // TODO: If the search _changed_ then open groups that match, otherwise leave user's selection be
+        // TODO: See how this matches other open-close logic and test
+        if (partialState.search) {
+          channel.isOpen = matchesSearch;
+        }
 
         return matchesSearch;
       });
