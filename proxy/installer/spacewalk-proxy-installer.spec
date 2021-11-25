@@ -57,6 +57,7 @@ Requires:       rhn-client-tools > 2.8.4
 Requires:       rhnlib
 %endif
 Requires:       libxslt
+Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
 %if 0%{?pylint_check}
 BuildRequires:  python3-rhn-client-tools
