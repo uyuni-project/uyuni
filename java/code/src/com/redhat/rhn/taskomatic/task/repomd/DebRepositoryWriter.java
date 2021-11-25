@@ -14,6 +14,17 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.frontend.dto.PackageDto;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.satellite.Executor;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
+import com.redhat.rhn.manager.task.TaskManager;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,16 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.frontend.dto.PackageDto;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
-import com.redhat.rhn.manager.task.TaskManager;
 
 /**
 *
@@ -48,7 +49,17 @@ public class DebRepositoryWriter extends RepositoryWriter {
      * @param mountPointIn mount point package resides
      */
     public DebRepositoryWriter(String pathPrefixIn, String mountPointIn) {
-        super(pathPrefixIn, mountPointIn);
+        this(pathPrefixIn, mountPointIn, new SystemCommandExecutor());
+    }
+
+    /**
+     * Constructor takes in pathprefix and mountpoint
+     * @param pathPrefixIn prefix to package path
+     * @param mountPointIn mount point package resides
+     * @param cmdExecutorIn {@link Executor} instance to run system commands
+     */
+    public DebRepositoryWriter(String pathPrefixIn, String mountPointIn, Executor cmdExecutorIn) {
+        super(pathPrefixIn, mountPointIn, cmdExecutorIn);
     }
 
     /**
@@ -131,8 +142,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
         releaseWriter.generateRelease();
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
-            SystemCommandExecutor sce = new SystemCommandExecutor();
-            int exitCode = sce.execute(
+            int exitCode = cmdExecutor.execute(
                     new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg",
                             prefix + "InRelease"});
             if (exitCode != 0) {

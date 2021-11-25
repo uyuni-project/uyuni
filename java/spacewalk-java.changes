@@ -1,3 +1,4 @@
+- Fix disappearing metadata key files after channel change (bsc#1192822)
 - Pass only selected servers to taskomatic for cancelation (bsc#1194044)
 
 -------------------------------------------------------------------
