@@ -25,6 +25,10 @@ def __virtual__():
     return __virtualname__
 
 
+def validate(config):
+    return True, "There is nothing to validate"
+
+
 def beacon(config):
     """
     Watch the cookie file from package manager plugin.
