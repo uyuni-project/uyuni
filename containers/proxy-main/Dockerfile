@@ -11,12 +11,8 @@ RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
  salt-minion openssh \
  python3-rhnlib spacewalk-proxy-broker \
- spacewalk-proxy-common spacewalk-proxy-management spacewalk-proxy-package-manager \
- spacewalk-proxy-redirect spacewalk-ssl-cert-check \
- Uyuni-Proxy-release
-
-# we have dependencies on spacewalk-proxy packages
-RUN rpm -e --nodeps squid
+ spacewalk-proxy-common spacewalk-proxy-package-manager \
+ spacewalk-proxy-redirect spacewalk-ssl-cert-check
 
 # only for development
 RUN zypper --gpg-auto-import-keys --non-interactive install vim less iputils
