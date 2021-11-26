@@ -17,23 +17,8 @@ type Props = {
 };
 
 function VirtualSystems(props: Props) {
-
-  const fetchURL = "/rhn/manager/api/systems/list/virtual";
-  const [items, setItems] = useState([]);
-  const [error, setError] = useState(null);
   const [selectedSystems, setSelectedSystems] = useState([]);
   const [selectedSystemsCount, setCount] = useState(0);
-
-  useEffect(() => {
-    Network.get(fetchURL)
-      .then(res => {
-        setItems(res)
-      })
-      .catch(err => {
-        setError(err);
-        console.log(error);
-      })
-  }, [])
 
   const handleSelectedSystems = (data) => {
     setSelectedSystems(data);
@@ -73,9 +58,9 @@ function VirtualSystems(props: Props) {
       </div>
 
       <Table
-        data={items}
+        data="/rhn/manager/api/systems/list/virtual"
         identifier={items => items.uuid}
-        initialSortColumnKey="vHost"
+        initialSortColumnKey="hostServerName"
         selectable
         isSelectEnabled={items => items.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
@@ -85,7 +70,7 @@ function VirtualSystems(props: Props) {
         emptyText={t("No Virtual Systems.")}
       >
         <Column
-          columnKey="vHost"
+          columnKey="hostServerName"
           comparator={Utils.sortByText}
           header={t("Virtual Host")}
           cell={(items) => {
@@ -96,7 +81,7 @@ function VirtualSystems(props: Props) {
           }}
         />
         <Column
-          columnKey="vm"
+          columnKey="name"
           comparator={Utils.sortByText}
           header={t("Virtual System")}
           cell={(item) => {
@@ -107,7 +92,7 @@ function VirtualSystems(props: Props) {
           }}
         />
         <Column
-          columnKey="status"
+          columnKey="stateName"
           comparator={Utils.sortByText}
           header={t("Status")}
           cell={(items) => items.stateName}
@@ -124,7 +109,7 @@ function VirtualSystems(props: Props) {
         }}
         />
         <Column
-          columnKey="baseSoftwareChannel"
+          columnKey="channelLabels"
           comparator={Utils.sortByText}
           header={t("Base Software Channel")}
           cell={(item) => {

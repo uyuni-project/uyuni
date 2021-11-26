@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -50,7 +51,9 @@ import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
 import com.suse.manager.webui.utils.gson.VirtualSystem;
@@ -129,18 +132,28 @@ public class SystemsController {
 
     private Object virtualSystems(Request request, Response response, User user) {
         response.type("application/json");
+        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+
         DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
-        virtual.elaborate();
+        if ("id".equals(pageHelper.getFunction())) {
+            return json(response, virtual.stream()
+                    .filter(SystemOverview::isSelectable)
+                    .map(VirtualSystemOverview::getUuid)
+                    .collect(Collectors.toList())
+            );
+        }
+
+        virtual = pageHelper.processPageControl(virtual, new HashMap<>());
         List<VirtualSystem> systems = virtual.stream()
                 .map(system -> {
                     system.setSystemId(system.getVirtualSystemId());
-                if (system.getSystemId() != null) {
-                    system.updateStatusType(user);
-                }
-                return new VirtualSystem(system);
-              })
-              .collect(Collectors.toList());
-        return json(response, systems);
+                    if (system.getSystemId() != null) {
+                        system.updateStatusType(user);
+                    }
+                    return new VirtualSystem(system);
+                })
+                .collect(Collectors.toList());
+        return json(response, new PagedDataResultJson<VirtualSystem>(systems, virtual.getTotalSize()));
     }
 
     /**
