@@ -56,7 +56,10 @@ type Props = {
   /** enables item selection */
   selectable: boolean;
 
-  /** tells if a row is selectable */
+  /**
+   * tells if a row is selectable.
+   * If using an asynchronous provider, the selectAll filtering has to be implemented on the server side too.
+   */
   isSelectEnabled?: (row: any) => boolean;
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
@@ -139,7 +142,8 @@ export class TableDataHandler extends React.Component<Props, State> {
         this.props.identifier,
         this.props.searchField?.props.filter,
         comparators,
-        this.props.loading
+        this.props.loading,
+        this.props.isSelectEnabled
       );
     } else if (typeof data === "string") {
       return new AsyncDataProvider(data);
