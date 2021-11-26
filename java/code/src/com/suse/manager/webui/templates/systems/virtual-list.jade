@@ -8,8 +8,10 @@ script(type='text/javascript').
 script(type='text/javascript').
     spaImportReactPage('systems/list/virtual')
         .then(function(module) {
-            module.renderer('systems-virtual-list', '#{docsLocale}',
-                           {
-                            isAdmin: #{is_admin}
-                           }
-                           )});
+            module.renderer(
+                'systems-virtual-list', '#{docsLocale}',
+                {
+                    isAdmin: #{is_admin}
+                }
+            )
+        });

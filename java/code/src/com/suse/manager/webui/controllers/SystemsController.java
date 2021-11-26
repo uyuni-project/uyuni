@@ -129,7 +129,7 @@ public class SystemsController {
 
     private Object virtualSystems(Request request, Response response, User user) {
         response.type("application/json");
-        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsListNew(user, null);
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
         virtual.elaborate();
         List<VirtualSystem> systems = virtual.stream()
                 .map(system -> {
