@@ -3,6 +3,7 @@ import { memo, useMemo, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import xor from "lodash/xor";
 
+import Network, { JsonResult } from "utils/network";
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
@@ -22,9 +23,9 @@ import { ChannelType, RawChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
-import { useChannelsApi, useLoadSelectOptions } from "./channels-selection-select-api";
+import { useChannelsApi, useLoadSelectOptions } from "./channels-selection-api";
+import { RowType, RowDefinition } from "./channels-selection-rows";
 
-import Network, { JsonResult } from "utils/network";
 import Worker from "./channels-selection.worker.ts";
 import WorkerMessages from "./channels-selection-messages";
 
@@ -39,33 +40,6 @@ type MandatoryChannelsResponse = {
   [key: number]: unknown[] | undefined;
 };
 
-enum ChannelRenderType {
-  Parent,
-  Child,
-  RecommendedToggle,
-}
-
-type ParentDefinition = {
-  type: ChannelRenderType.Parent;
-  channel: ChannelType;
-};
-
-type ChildDefinition = {
-  type: ChannelRenderType.Child;
-  channel: ChannelType;
-  parent: ChannelType;
-};
-
-type RecommendedToggleDefinition = {
-  type: ChannelRenderType.RecommendedToggle;
-  parent: ChannelType;
-};
-
-type RowDefinition = {
-  // This identifier is used as the key in the list
-  id: string | number;
-} & (ParentDefinition | ChildDefinition | RecommendedToggleDefinition);
-
 const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -75,7 +49,7 @@ const ChannelsSelection = (props: PropsType) => {
   const [loadSelectOptions] = useLoadSelectOptions();
   const [channelsPromise] = useChannelsApi();
 
-  const [rows, setRows] = useState<unknown[] | undefined>(undefined);
+  const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
   const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const onSearch = (value: string) => {
@@ -83,6 +57,7 @@ const ChannelsSelection = (props: PropsType) => {
     // TODO: Debounce this so we don't overload the worker
     worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: value });
   };
+  // TODO: See https://stackoverflow.com/questions/58806883/how-to-use-set-with-reacts-usestate and perhaps use something else than a Set here
   const [selectedChannelIds] = useState(new Set());
 
   useEffect(() => {
@@ -128,9 +103,45 @@ const ChannelsSelection = (props: PropsType) => {
     };
   }, []);
 
-  /*
+  // TODO: Move this to a component and add padding
+  const NoChildren = <span>&nbsp;{t("no child channels")}</span>;
   const Row = (definition: RowDefinition) => {
-    const parentChannel = definition.type === ChannelRenderType.Parent ? definition.channel : definition.parent;
+    switch (definition.type) {
+      case RowType.Parent:
+        return (
+          <ParentChannel
+            channel={definition.channel}
+            isOpen={definition.isOpen}
+            isSelectedBaseChannel={definition.isSelectedBaseChannel}
+            search={search}
+            // TODO: Implement
+            selectedChannelsIdsInGroup={[]}
+            onToggleChannelSelect={(channelId) => {}}
+            onToggleChannelOpen={(channelId) => {
+              worker.postMessage({ type: WorkerMessages.TOGGLE_CHANNEL_IS_OPEN, channelId });
+            }}
+          />
+        );
+      case RowType.Child:
+        return (
+          <ChildChannel
+            channel={definition.channel}
+            search={search}
+            // TODO: Implement
+            selectedChannelsIdsInGroup={[]}
+            onChannelToggle={(channelId) => {
+              // TODO: Implement
+            }}
+          />
+        );
+      case RowType.EmptyChild:
+        return NoChildren;
+      default:
+        throw new RangeError("Incorrect channel render type in renderer");
+    }
+
+    /*
+    const parentChannel = definition.type === RowType.Parent ? definition.channel : definition.parent;
     const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, parentChannel);
 
     const isOpen = state.openGroupsIds.some(
@@ -138,7 +149,7 @@ const ChannelsSelection = (props: PropsType) => {
     );
 
     switch (definition.type) {
-      case ChannelRenderType.Parent:
+      case RowType.Parent:
         return (
           <ParentChannel
             channel={parentChannel}
@@ -162,7 +173,7 @@ const ChannelsSelection = (props: PropsType) => {
             }
           />
         );
-      case ChannelRenderType.Child:
+      case RowType.Child:
         return (
           <ChildChannel
             channel={definition.channel}
@@ -180,7 +191,7 @@ const ChannelsSelection = (props: PropsType) => {
             requiredChannelsResult={requiredChannelsResult}
           />
         );
-      case ChannelRenderType.RecommendedToggle:
+      case RowType.RecommendedToggle:
         return (
           <RecommendedToggle
             parent={parentChannel}
@@ -198,23 +209,22 @@ const ChannelsSelection = (props: PropsType) => {
       default:
         throw new RangeError("Incorrect channel render type in renderer");
     }
+    */
   };
 
   const rowHeight = (channel: RowDefinition) => {
     switch (channel.type) {
       // TODO: Update all styles so there's no wrapping allowed
-      case ChannelRenderType.Parent:
+      case RowType.Parent:
         return 30;
-      case ChannelRenderType.Child:
+      case RowType.Child:
         return 25;
-      case ChannelRenderType.RecommendedToggle:
+      case RowType.RecommendedToggle:
         return 10;
       default:
         throw new RangeError("Incorrect channel render type in height");
     }
   };
-
-  */
 
   if (isLoading || props.isSourcesApiLoading) {
     return (
@@ -280,9 +290,7 @@ const ChannelsSelection = (props: PropsType) => {
               />
             </div>
           </label>
-          {/**
           <VirtualList items={rows} renderRow={Row} rowHeight={rowHeight} />
-           */}
         </div>
       )}
     </React.Fragment>

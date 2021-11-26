@@ -42,9 +42,12 @@ export type DerivedChannelPartial = {
   subscribable: boolean;
 };
 
+export type DerivedChildChannel = DerivedChannelPartial & {
+  parent: DerivedBaseChannel;
+};
+
 export type DerivedBaseChannel = DerivedChannelPartial & {
-  isOpen: boolean;
-  children: (DerivedChannelPartial & {
-    parent: DerivedBaseChannel;
-  })[];
+  // TODO: Check
+  // isOpen: boolean;
+  children: DerivedChildChannel[];
 };

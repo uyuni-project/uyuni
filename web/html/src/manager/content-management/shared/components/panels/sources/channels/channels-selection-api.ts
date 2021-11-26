@@ -4,7 +4,7 @@ import Network, { JsonResult } from "utils/network";
 import { RawChannelType } from "core/channels/type/channels.type";
 
 export const useChannelsApi = () => {
-  // TODO: This is an utter hack, but will suffice for now
+  // This is a hack, but will suffice for now
   const [channelsPromise, setChannelsPromise] = useState<Promise<RawChannelType[]> | undefined>(undefined);
   if (channelsPromise) {
     return [channelsPromise];
@@ -29,7 +29,18 @@ export const useChannelsApi = () => {
               subscribable: true,
               recommended: false,
             },
-            children: [],
+            children: [
+              {
+                id: id * 2,
+                name: `mock channel child ${ii}`,
+                label: `mock_channel_child_${ii}`,
+                archLabel: "channel-x86_64",
+                custom: true,
+                isCloned: false,
+                subscribable: true,
+                recommended: false,
+              },
+            ],
           });
         }
       }
@@ -49,9 +60,11 @@ export const useLoadSelectOptions = () => {
     const rawChannels = await channelsPromise;
 
     const offset = previouslyLoaded.length;
-    const filteredChannels = rawChannels.filter((channel) =>
-      channel.base.name.toLocaleLowerCase().includes(searchString.toLocaleLowerCase())
-    );
+    const filteredChannels = searchString
+      ? rawChannels.filter((channel) =>
+          channel.base.name.toLocaleLowerCase().includes(searchString.toLocaleLowerCase())
+        )
+      : rawChannels;
     // This is what we would expect to get back from the server given a search string and offset
     const options = filteredChannels.slice(offset, offset + pageSize);
     const hasMore = previouslyLoaded.length + options.length < filteredChannels.length;

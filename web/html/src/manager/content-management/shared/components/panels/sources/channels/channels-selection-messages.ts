@@ -3,8 +3,8 @@ enum Messages {
   SET_SEARCH,
   SET_SELECTED_BASE_CHANNEL_ID,
   SET_ACTIVE_FILTERS,
+  TOGGLE_CHANNEL_IS_OPEN,
   ROWS_CHANGED,
-  // TODO: Do we need a reset message? Or initialize or something similar?
 }
 
 export default Messages;

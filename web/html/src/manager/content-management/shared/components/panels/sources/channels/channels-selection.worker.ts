@@ -10,54 +10,30 @@ import produce from "utils/produce";
 import WorkerMessages from "./channels-selection-messages";
 import { DerivedBaseChannel, RawChannelType } from "core/channels/type/channels.type";
 import { channelsFiltersAvailable } from "./channels-selection.state";
+import { RowType, RowDefinition } from "./channels-selection-rows";
 
 // eslint-disable-next-line no-restricted-globals
 const context: Worker = self as any;
 
-const initialState = () => ({
+const state = {
   baseChannels: undefined as DerivedBaseChannel[] | undefined,
+  baseChannelsMap: {} as { [key: number]: DerivedBaseChannel | undefined },
+  openBaseChannelIds: new Set<number>(),
   selectedBaseChannelId: undefined as number | undefined,
-  // TODO: Do we need this at all?
-  // openBaseChannelIds: new Set<number>(),
   search: "",
   activeFilters: [] as string[],
-});
-const state = initialState();
+};
 
 // Respond to message from parent thread
 context.addEventListener("message", async ({ data }) => {
   switch (data.type) {
     // The worker can't currently integrate with our network layer due to its reliance on jQuery, in the future the worker could do the request itself
     case WorkerMessages.SET_CHANNELS: {
-      // TODO: Also get required and mandatory etc information and then merge it all together
       if (!Array.isArray(data.channels) || !data.mandatoryChannelsMap) {
         throw new TypeError("Insufficient channel data");
       }
-
-      // TODO: Lift all of this out into a function and add tests
-      // TODO: Type all of this
-      // NB! The data we receive here is already a copy since we're in a worker so it's safe to modify it directly
-      const baseChannels = data.channels.map((rawChannel: RawChannelType) => {
-        // TODO: This cast is not correct
-        // If we want to reduce copy overhead we could only pick the fields we need here
-        const baseChannel: DerivedBaseChannel = rawChannel.base as DerivedBaseChannel;
-        baseChannel.isOpen = false;
-        // This should always be available, but just in case
-        baseChannel.mandatory = data.mandatoryChannelsMap[baseChannel.id] || [];
-        // Precompute filtering values so we only do this once
-        baseChannel.standardizedName = baseChannel.name.toLocaleLowerCase();
-
-        baseChannel.children = rawChannel.children.map((child) => ({
-          ...child,
-          parent: baseChannel,
-          mandatory: data.mandatoryChannelsMap[child.id] || [],
-          standardizedName: child.name.toLocaleLowerCase(),
-        }));
-
-        return baseChannel;
-      });
-
-      onChange({ baseChannels });
+      const { baseChannels, baseChannelsMap } = rawChannelsToDerivedChannels(data.channels, data.mandatoryChannelsMap);
+      onChange({ baseChannels, baseChannelsMap });
       return;
     }
     case WorkerMessages.SET_SEARCH: {
@@ -84,14 +60,27 @@ context.addEventListener("message", async ({ data }) => {
       onChange({ activeFilters });
       return;
     }
+    case WorkerMessages.TOGGLE_CHANNEL_IS_OPEN: {
+      const channelId = data.channelId;
+      if (typeof channelId === "undefined") {
+        throw new TypeError("Channel not found");
+      }
+      if (state.openBaseChannelIds.has(channelId)) {
+        state.openBaseChannelIds.delete(channelId);
+      } else {
+        state.openBaseChannelIds.add(channelId);
+      }
+      onChange();
+      return;
+    }
     default:
       throw new RangeError(`Unknown message type, got ${data.type}`);
   }
 });
 
 // Whenever we receive new inputs or data, compute and return an updated result
-function onChange(partialState: Partial<typeof state>) {
-  Object.assign(state, partialState);
+function onChange(stateChange: Partial<typeof state> = {}) {
+  Object.assign(state, stateChange);
 
   // If we don't have channels or a selected base channel id yet, there's nothing to do
   if (typeof state.baseChannels === "undefined" || typeof state.selectedBaseChannelId === "undefined") {
@@ -124,8 +113,13 @@ function onChange(partialState: Partial<typeof state>) {
 
         // TODO: If the search _changed_ then open groups that match, otherwise leave user's selection be
         // TODO: See how this matches other open-close logic and test
-        if (partialState.search) {
-          channel.isOpen = matchesSearch;
+        if (stateChange.search) {
+          if (matchesSearch) {
+            state.openBaseChannelIds.add(channel.id);
+          } else {
+            state.openBaseChannelIds.delete(channel.id);
+          }
+          // channel.isOpen = matchesSearch;
         }
 
         return matchesSearch;
@@ -133,7 +127,7 @@ function onChange(partialState: Partial<typeof state>) {
     }
 
     // If channels changed or the selected base changed, ensure channels are properly sorted
-    if (partialState.baseChannels || partialState.selectedBaseChannelId) {
+    if (stateChange.baseChannels || stateChange.selectedBaseChannelId) {
       draft.baseChannels = draft.baseChannels.sort((a, b) => {
         // If a base has been selected, sort it to the beginning...
         if (state.selectedBaseChannelId) {
@@ -145,16 +139,89 @@ function onChange(partialState: Partial<typeof state>) {
       });
     }
 
-    // TODO: Compute visible groups, isOpen, etc
-
-    // TODO: Flatten to a flat list with types for rendering and then return
+    // TODO: Initial isOpen value based on selected base channel id?
+    // if (stateChange.selectedBaseChannelId) { ... }
   });
 
-  console.log(baseChannels);
+  // console.log(baseChannels);
 
+  // Convert whatever we have remaining after all the filters etc into renderable row definitions
+  const rows = derivedChannelsToRowDefinitions(baseChannels, state.selectedBaseChannelId);
   context.postMessage({
     type: WorkerMessages.ROWS_CHANGED,
-    // TODO: Actual rows
-    rows: [],
+    rows,
   });
+}
+
+// TODO: Export and add tests to this
+function rawChannelsToDerivedChannels(
+  rawChannels: RawChannelType[],
+  mandatoryChannelsMap: Map<unknown, unknown[] | undefined>
+) {
+  const baseChannelsMap: Record<number, DerivedBaseChannel | undefined> = {};
+  // TODO: Type all of this
+  // NB! The data we receive here is already a copy since we're in a worker so it's safe to modify it directly
+  const baseChannels = rawChannels.map((rawChannel: RawChannelType) => {
+    // TODO: Make an object from scratch instead since rawChannels are read-only?
+    // Or make separate state to track isOpen etc
+
+    // TODO: This cast is not correct
+    // If we want to reduce copy overhead we could only pick the fields we need here
+    const baseChannel: DerivedBaseChannel = rawChannel.base as DerivedBaseChannel;
+    // baseChannel.isOpen = false;
+
+    // This should always be available, but just in case
+    baseChannel.mandatory = mandatoryChannelsMap[baseChannel.id] || [];
+    // Precompute filtering values so we only do this once
+    baseChannel.standardizedName = baseChannel.name.toLocaleLowerCase();
+
+    baseChannel.children = rawChannel.children.map((child) => ({
+      ...child,
+      parent: baseChannel,
+      mandatory: mandatoryChannelsMap[child.id] || [],
+      standardizedName: child.name.toLocaleLowerCase(),
+    }));
+
+    baseChannelsMap[baseChannel.id] = baseChannel;
+
+    return baseChannel;
+  });
+  return { baseChannels, baseChannelsMap };
+}
+
+function derivedChannelsToRowDefinitions(
+  derivedChannels: DerivedBaseChannel[],
+  selectedBaseChannelId: number
+): RowDefinition[] {
+  // TODO: Here and elsewhere, this reduce can become just a regular for loop if we want to go faster
+  // TODO: Implement
+  return derivedChannels.reduce((result, channel) => {
+    const isOpen = state.openBaseChannelIds.has(channel.id);
+    result.push({
+      type: RowType.Parent,
+      id: channel.id,
+      isOpen,
+      isSelectedBaseChannel: channel.id === selectedBaseChannelId,
+      channel,
+    });
+
+    if (isOpen) {
+      if (channel.children.length) {
+        channel.children.forEach((child) => {
+          result.push({
+            type: RowType.Child,
+            id: child.id,
+            channel: child,
+          });
+        });
+      } else {
+        result.push({
+          type: RowType.EmptyChild,
+          id: `empty_child_${channel.id}`,
+        });
+      }
+    }
+
+    return result;
+  }, [] as RowDefinition[]);
 }

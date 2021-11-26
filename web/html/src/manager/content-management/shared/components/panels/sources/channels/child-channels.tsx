@@ -2,31 +2,28 @@ import * as React from "react";
 import { Highlight } from "components/table/Highlight";
 import { ChannelAnchorLink } from "components/links";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import { ChannelType } from "core/channels/type/channels.type";
+import { ChannelType, DerivedChildChannel } from "core/channels/type/channels.type";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 
-type PropsType = {
-  channel?: ChannelType;
-  parent: ChannelType;
+type Props = {
+  channel: DerivedChildChannel;
   search: string;
   selectedChannelsIdsInGroup: Array<number>;
   onChannelToggle: Function;
-  channelsTree: ChannelsTreeType;
-  requiredChannelsResult: RequiredChannelsResultType;
 };
 
-const ChildChannel = (props: PropsType) => {
-  if (!props.channel) {
-    return <span>&nbsp;{t("no child channels")}</span>;
-  }
-
-  const { requiredChannels, dependenciesTooltip } = props.requiredChannelsResult;
+const ChildChannel = (props: Props) => {
+  // TODO: Tack on in worker
+  // const { requiredChannels, dependenciesTooltip } = props.requiredChannelsResult;
+  const requiredChannels = new Map();
 
   const channel = props.channel;
   const childId = "child_" + channel.id;
-  const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
+  // TODO: Tack on in worker
+  // const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
+  const toolTip = undefined;
 
-  const mandatoryChannelsForBaseId = requiredChannels.get(props.parent.id);
+  const mandatoryChannelsForBaseId = requiredChannels.get(channel.parent.id);
   const isMandatory = Boolean(mandatoryChannelsForBaseId?.has(channel.id));
 
   return (

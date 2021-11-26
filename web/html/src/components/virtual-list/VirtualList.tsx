@@ -18,13 +18,15 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
     refreshRate: 100,
   });
 
-  const Row = memo((rowProps: ListChildComponentProps<T[]>) => {
+  // TODO: We could also provide our own comparator function perhaps?
+  // const Row = memo((rowProps: ListChildComponentProps<T[]>) => { ... }, areEqual);
+  const Row = (rowProps: ListChildComponentProps<T[]>) => {
     const item = rowProps.data[rowProps.index];
     return (
       // react-window has outdated type declarations for React.CSSProperties, the values are correct for our use case
       <div style={rowProps.style as React.CSSProperties}>{props.renderRow(item)}</div>
     );
-  }, areEqual);
+  };
 
   const itemSize = (index: number) => {
     const item = props.items[index];

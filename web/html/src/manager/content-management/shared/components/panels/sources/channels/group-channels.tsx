@@ -1,45 +1,47 @@
 import * as React from "react";
 import { Highlight } from "components/table/Highlight";
-import { ChannelType } from "core/channels/type/channels.type";
+import { DerivedBaseChannel } from "core/channels/type/channels.type";
 
 type PropsType = {
-  channel: ChannelType;
+  channel: DerivedBaseChannel;
+  isOpen: boolean;
+  isSelectedBaseChannel: boolean;
   search: string;
   selectedChannelsIdsInGroup: number[];
-  selectedBaseChannelId: number | null | undefined;
-  isOpen: boolean;
-  onChannelToggle: (id: number) => void;
-  onOpenGroup: (isOpen: boolean) => void;
+  onToggleChannelSelect: (id: number) => void;
+  onToggleChannelOpen: (id: number) => void;
 };
 
+// TODO: Rename
 const ParentChannel = (props: PropsType) => {
   const channel = props.channel;
   const nrOfSelectedChilds = props.selectedChannelsIdsInGroup.length;
-
-  const isNewLeaderChannel = channel.id === props.selectedBaseChannelId;
+  const identifier = "base_" + channel.id;
 
   return (
-    <div className="row" {...(isNewLeaderChannel ? { title: "New base channel" } : {})}>
+    <div className="row" {...(props.isSelectedBaseChannel ? { title: "New base channel" } : {})}>
       <h4
         style={{
-          color: isNewLeaderChannel ? "#02A49C" : "",
+          color: props.isSelectedBaseChannel ? "#02A49C" : "",
           marginBottom: "0px",
         }}
+        // TODO: Why is this a pointer, it doesn't toggle anything?
         className="pointer"
       >
         <input
           type="checkbox"
-          id={"base_" + channel.id}
-          name="childChannels"
+          id={identifier}
+          name={identifier}
+          // TODO: Or with props.isSelectedBaseChannel?
           checked={props.selectedChannelsIdsInGroup.includes(channel.id)}
           value={channel.id}
           onChange={() => {
-            props.onChannelToggle(channel.id);
+            props.onToggleChannelSelect(channel.id);
           }}
-          disabled={channel.id === props.selectedBaseChannelId}
+          disabled={props.isSelectedBaseChannel}
         />
         &nbsp; &nbsp;
-        <div style={{ display: "inline" }} onClick={() => props.onOpenGroup(!props.isOpen)}>
+        <div style={{ display: "inline" }} onClick={() => props.onToggleChannelOpen(channel.id)}>
           <i className={"fa " + (props.isOpen ? "fa-angle-down" : "fa-angle-right")} />
           &nbsp;
           <Highlight enabled={props.search.length > 0} text={channel.name} highlight={props.search}></Highlight>
