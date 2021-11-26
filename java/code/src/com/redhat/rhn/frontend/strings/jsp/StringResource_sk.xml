@@ -388,70 +388,70 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.title.profile" xml:space="preserve">
           <source>We're sorry, but the system profile could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale systémový profil sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.channel" xml:space="preserve">
           <source>We're sorry, but the channel could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale kanál sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.action" xml:space="preserve">
           <source>We're sorry, but the action could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale akciu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.errata" xml:space="preserve">
           <source>We're sorry, but the patch could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale opravu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.system" xml:space="preserve">
           <source>We're sorry, but the system could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale systém sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.title" xml:space="preserve">
           <source>We're sorry, but a required data object could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný dátový objekt sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.title" xml:space="preserve">
           <source>We're sorry, but the configuration channel could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale konfiguračný kanál sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.title" xml:space="preserve">
           <source>We're sorry, but the configuration file could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale konfiguračný súbor sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.title" xml:space="preserve">
           <source>We're sorry, but the configuration revision could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale konfiguračnú revíziu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.title" xml:space="preserve">
           <source>We're sorry, but the activation key could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale aktivačný kľúč sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
