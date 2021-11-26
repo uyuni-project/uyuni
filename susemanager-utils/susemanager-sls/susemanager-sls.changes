@@ -1,3 +1,4 @@
+- Fix libvirt engine config destination for Salt Bundle
 - Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
   in order to force venv-salt-minion installation
 
