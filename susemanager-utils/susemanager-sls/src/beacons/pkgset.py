@@ -55,5 +55,6 @@ def beacon(config):
             if __context__[__virtualname__] != ck_data:
                 ret.append({"tag": "changed"})
                 __context__[__virtualname__] = ck_data
+                break
 
     return ret
