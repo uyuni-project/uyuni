@@ -62,7 +62,7 @@ public class VirtualSystemSetupAction extends RhnAction
     public List<VirtualSystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
 
-        DataResult<VirtualSystemOverview> dr = SystemManager.virtualSystemsListNew(user, null);
+        DataResult<VirtualSystemOverview> dr = SystemManager.virtualSystemsList(user, null);
 
         for (VirtualSystemOverview current : dr) {
             if (current.isFakeNode()) {

@@ -54,9 +54,9 @@ public class CSVDownloadController {
      * @return the json response
      */
     public static String virtualSystemsCSV(Request request, Response response, User user) {
-        // TODO Querying the data again may not be optimal... but caching them in the
+        // Querying the data again may not be optimal... but caching them in the
         // session may grow big!
-        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsListNew(user, null);
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
         virtual.elaborate();
 
         // write data to csv file using csvWriter
