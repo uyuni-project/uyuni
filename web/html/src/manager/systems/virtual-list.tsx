@@ -7,7 +7,6 @@ import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
 import SpaRenderer from "core/spa/spa-renderer";
 import { IconTag } from "components/icontag";
-import errors from "manager/errors";
 import { SearchField } from "components/table/SearchField"
 
 // See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
@@ -100,7 +99,12 @@ function VirtualSystems(props: Props) {
           columnKey="vm"
           comparator={Utils.sortByText}
           header={t("Virtual System")}
-          cell={(items) => items.name}
+          cell={(item) => {
+            if (item.systemId != null) {
+              return <a href={`/rhn/systems/details/Overview.do?sid=${item.systemId}`}>{item.name}</a>;
+            }
+            return item.name;
+          }}
         />
         <Column
           columnKey="status"
@@ -123,7 +127,12 @@ function VirtualSystems(props: Props) {
           columnKey="baseSoftwareChannel"
           comparator={Utils.sortByText}
           header={t("Base Software Channel")}
-          cell={(items) => items.channelLabels}
+          cell={(item) => {
+            if (item.channelId != null) {
+              return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>
+            }
+            return item.channelLabels;
+          }}
         />
       </Table>
 
