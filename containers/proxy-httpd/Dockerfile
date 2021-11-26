@@ -17,10 +17,7 @@ RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
  python3-rhnlib spacewalk-proxy-broker \
- spacewalk-proxy-common spacewalk-proxy-management spacewalk-proxy-package-manager \
+ spacewalk-proxy-common spacewalk-proxy-package-manager \
  spacewalk-proxy-redirect spacewalk-ssl-cert-check
-
-# we have dependencies on spacewalk-proxy packages
-RUN rpm -e --nodeps squid
 
 CMD sh /root/salt/proxy/run.sh
