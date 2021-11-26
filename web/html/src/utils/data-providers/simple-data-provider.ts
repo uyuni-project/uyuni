@@ -62,10 +62,9 @@ export default class SimpleDataProvider {
   }
 
   getIds(callback: (promise: Promise<Array<any>>) => any, criteria?: string) {
-    const ids = this.getFilteredData(criteria)
-      .filter((item) => this.isSelectEnabled?.(item) ?? true)
-      .map(this.identifier);
-    callback(Promise.resolve(ids));
+    const filtered = this.getFilteredData(criteria);
+    const selectable = this.isSelectEnabled != null ? filtered.filter((item) => this.isSelectEnabled(item)) : filtered;
+    callback(Promise.resolve(selectable.map(this.identifier)));
   }
 
   getFilteredData(criteria: string | null | undefined): Array<any> {

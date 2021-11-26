@@ -280,7 +280,10 @@ export class TableDataHandler extends React.Component<Props, State> {
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const isEmpty = itemCount === 0;
-    const selectEnabledItems = currItems.filter((curr) => this.props.isSelectEnabled?.(curr) ?? true);
+    const selectEnabledItems =
+      this.props.isSelectEnabled != null
+        ? currItems.filter((curr) => this.props.isSelectEnabled?.(curr) ?? true)
+        : currItems;
 
     if (this.props.selectable) {
       const currIds = selectEnabledItems.map((item) => this.props.identifier(item));
