@@ -458,70 +458,70 @@
       </trans-unit>
       <trans-unit id="lookup.servergroup.title" xml:space="preserve">
           <source>We're sorry, but the system group could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale systémovú skupinu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.xccdfscan.title" xml:space="preserve">
           <source>We're sorry, but the XCCDF scan could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale skenovanie XCCDF sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.scapfile.title" xml:space="preserve">
           <source>We're sorry, but the requested SCAP results file could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný súbor výsledkov SCAP sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.header" xml:space="preserve">
           <source>Missing Capabilities</source>
-        <target/>
+        <target>Chýbajúce schopnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.title" xml:space="preserve">
           <source>An operation could not be completed on a system due to a missing capability.</source>
-        <target/>
+        <target>Operáciu na systéme nebolo možné dokončiť z dôvodu chýbajúcej schopnosti.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.summary" xml:space="preserve">
           <source>The server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; client capability. Please enable the capability before proceeding with the operation.</source>
-        <target/>
+        <target>Server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; nedisponuje &lt;strong&gt;{2}&lt;/strong&gt; schopnosťou klienta. Prosím, povoľte túto schopnosť pred pokračovaním v operácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.summary" xml:space="preserve">
           <source>This error may have occurred in one of three ways:</source>
-        <target/>
+        <target>K tejto chybe mohlo dôjsť jedným z troch spôsobov:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.actionchain.reason1" xml:space="preserve">
           <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source>
-        <target/>
+        <target>Požadovaný reťazec akcií neexistuje. Je to veľmi prevdepodobné, ak bol reťazec akcií už naplánovaný a odstránený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.user" xml:space="preserve">
           <source>The user requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný používateľ neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.reason1" xml:space="preserve">
           <source>The activation key requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný aktivačný kľúč neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
