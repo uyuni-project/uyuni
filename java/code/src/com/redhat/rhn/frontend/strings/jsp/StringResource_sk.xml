@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="lookup.configrev.title" xml:space="preserve">
           <source>We're sorry, but the configuration revision could not be found.</source>
-        <target>Je nám ľúto, ale konfiguračnú revíziu sa nepodarilo nájsť.</target>
+        <target>Je nám ľúto, ale revíziu konfigurácie sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -528,70 +528,70 @@
       </trans-unit>
       <trans-unit id="lookup.servergroup.reason1" xml:space="preserve">
           <source>The system group requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná systémová skupina neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.profile" xml:space="preserve">
           <source>The system profile requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný systémový profil neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.channel" xml:space="preserve">
           <source>The channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný kanál neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.errata" xml:space="preserve">
           <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná oprava neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.action" xml:space="preserve">
           <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná akcia neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.system" xml:space="preserve">
           <source>The system requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný systém neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.reason1" xml:space="preserve">
           <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný dátový objekt neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.reason1" xml:space="preserve">
           <source>The configuration channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný konfiguračný kanál neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.reason1" xml:space="preserve">
           <source>The configuration file requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný konfiguračný súbor neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.reason1" xml:space="preserve">
           <source>The configuration revision requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná revízia konfigurácie neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
