@@ -7,9 +7,9 @@ use Spacewalk::Setup ();
 use IPC::Open3 ();
 use File::Basename;
 
-my $MIN_PG_DB_VERSION = 140001;
+my $MIN_PG_DB_VERSION = 130001;
 my $MAX_PG_DB_VERSION = 149999;
-my $MIN_PG_DB_VERSION_STRING = "14";
+my $MIN_PG_DB_VERSION_STRING = "13";
 my $MAX_PG_DB_VERSION_STRING = "14";
 my $OS_VERSION_CHECK = 15.4;
 my $OS_VERSION_MIN_DB_VERSION = 140000;
