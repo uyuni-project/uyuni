@@ -5,9 +5,9 @@ import { DerivedBaseChannel } from "core/channels/type/channels.type";
 type PropsType = {
   channel: DerivedBaseChannel;
   isOpen: boolean;
+  selectedChannelIds: Set<number>;
   isSelectedBaseChannel: boolean;
   search: string;
-  selectedChannelsIdsInGroup: number[];
   onToggleChannelSelect: (id: number) => void;
   onToggleChannelOpen: (id: number) => void;
 };
@@ -15,8 +15,10 @@ type PropsType = {
 // TODO: Rename
 const ParentChannel = (props: PropsType) => {
   const channel = props.channel;
-  const nrOfSelectedChilds = props.selectedChannelsIdsInGroup.length;
   const identifier = "base_" + channel.id;
+  const selectedChildCount = channel.children.reduce((count, child) => {
+    return count + Number(props.selectedChannelIds.has(child.id));
+  }, 0);
 
   return (
     <div className="row" {...(props.isSelectedBaseChannel ? { title: "New base channel" } : {})}>
@@ -33,11 +35,9 @@ const ParentChannel = (props: PropsType) => {
           id={identifier}
           name={identifier}
           // TODO: Or with props.isSelectedBaseChannel?
-          checked={props.selectedChannelsIdsInGroup.includes(channel.id)}
+          checked={props.selectedChannelIds.has(channel.id)}
           value={channel.id}
-          onChange={() => {
-            props.onToggleChannelSelect(channel.id);
-          }}
+          onChange={() => props.onToggleChannelSelect(channel.id)}
           disabled={props.isSelectedBaseChannel}
         />
         &nbsp; &nbsp;
@@ -45,7 +45,7 @@ const ParentChannel = (props: PropsType) => {
           <i className={"fa " + (props.isOpen ? "fa-angle-down" : "fa-angle-right")} />
           &nbsp;
           <Highlight enabled={props.search.length > 0} text={channel.name} highlight={props.search}></Highlight>
-          {nrOfSelectedChilds > 0 && <b>{` (${nrOfSelectedChilds})`}</b>}
+          {selectedChildCount > 0 && <b>{` (${selectedChildCount})`}</b>}
         </div>
       </h4>
     </div>

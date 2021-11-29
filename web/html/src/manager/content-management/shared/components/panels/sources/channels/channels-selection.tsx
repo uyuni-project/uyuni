@@ -42,23 +42,34 @@ type MandatoryChannelsResponse = {
 
 const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);
-
-  // TODO: Make sure this gets destroyed correctly
-  const [worker] = useState(new Worker());
-  // TODO: Make sure this gets destroyed correctly
   const [loadSelectOptions] = useLoadSelectOptions();
   const [channelsPromise] = useChannelsApi();
 
+  const [worker] = useState(new Worker());
   const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
-  const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+
+  const [search, setSearch] = useState("");
   const onSearch = (value: string) => {
     setSearch(value);
     // TODO: Debounce this so we don't overload the worker
     worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: value });
   };
-  // TODO: See https://stackoverflow.com/questions/58806883/how-to-use-set-with-reacts-usestate and perhaps use something else than a Set here
-  const [selectedChannelIds] = useState(new Set());
+
+  // TODO: Add selected base channel id to this set and remove etc?
+  // See https://dev.to/ganes1410/using-javascript-sets-with-react-usestate-39eo
+  const [[selectedChannelIds], setSelectedChannelIds] = useState<[Set<number>]>([new Set()]);
+  const onToggleChannelSelect = (channelId: number) => {
+    if (selectedChannelIds.has(channelId)) {
+      selectedChannelIds.delete(channelId);
+    } else {
+      selectedChannelIds.add(channelId);
+    }
+
+    // TODO: Figure out what we need to do with mandatory channels
+
+    setSelectedChannelIds([selectedChannelIds]);
+  };
 
   useEffect(() => {
     // TODO: Move this to a separate file
@@ -112,11 +123,10 @@ const ChannelsSelection = (props: PropsType) => {
           <ParentChannel
             channel={definition.channel}
             isOpen={definition.isOpen}
+            selectedChannelIds={selectedChannelIds}
             isSelectedBaseChannel={definition.isSelectedBaseChannel}
             search={search}
-            // TODO: Implement
-            selectedChannelsIdsInGroup={[]}
-            onToggleChannelSelect={(channelId) => {}}
+            onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
             onToggleChannelOpen={(channelId) => {
               worker.postMessage({ type: WorkerMessages.TOGGLE_CHANNEL_IS_OPEN, channelId });
             }}
@@ -126,12 +136,9 @@ const ChannelsSelection = (props: PropsType) => {
         return (
           <ChildChannel
             channel={definition.channel}
+            selectedChannelIds={selectedChannelIds}
             search={search}
-            // TODO: Implement
-            selectedChannelsIdsInGroup={[]}
-            onChannelToggle={(channelId) => {
-              // TODO: Implement
-            }}
+            onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
           />
         );
       case RowType.EmptyChild:
