@@ -14,6 +14,9 @@ export const useChannelsApi = () => {
   const promise = Network.get<JsonResult<ChannelsResponse>>(`/rhn/manager/api/channels?filterClm=true`)
     .then(Network.unwrap)
     .then((channels) => {
+      // TODO: This matches the current behavior but this should already be done on the server side, with a separate flag if necessary
+      channels = channels.sort((a, b) => a.base.id - b.base.id);
+
       // TODO: Only for testing
       if (false) {
         const testCount = 5000;

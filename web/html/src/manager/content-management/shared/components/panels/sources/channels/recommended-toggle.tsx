@@ -1,15 +1,14 @@
 import * as React from "react";
 import { Toggler } from "components/toggler";
 
-import { ChannelType } from "core/channels/type/channels.type";
+import { DerivedBaseChannel } from "core/channels/type/channels.type";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 
 type Props = {
-  parent: ChannelType;
-  channelsTree: ChannelsTreeType;
-  selectedChannelsIdsInGroup: number[];
-  setAllRecommentedChannels: (areSelected: boolean) => void;
+  channel: DerivedBaseChannel;
+  selectedChannelIds: Set<number>;
+  onToggleRecommended: (areSelected: boolean) => void;
 };
 
 const RecommendedToggle = (props: Props) => {
@@ -24,7 +23,7 @@ const RecommendedToggle = (props: Props) => {
     return null;
   }
   const toggleRecommended = () =>
-    areRecommendedChildrenSelected ? props.setAllRecommentedChannels(false) : props.setAllRecommentedChannels(true);
+    areRecommendedChildrenSelected ? props.onToggleRecommended(false) : props.onToggleRecommended(true);
   return (
     <div style={{ paddingLeft: 15, paddingTop: 5 }}>
       <Toggler

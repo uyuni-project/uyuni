@@ -8,17 +8,19 @@ type PropsType = {
   selectedChannelIds: Set<number>;
   isSelectedBaseChannel: boolean;
   search: string;
-  onToggleChannelSelect: (id: number) => void;
+  onToggleChannelSelect: (channel: DerivedBaseChannel) => void;
   onToggleChannelOpen: (id: number) => void;
 };
 
-// TODO: Rename
+// TODO: Rename to BaseChannel
 const ParentChannel = (props: PropsType) => {
   const channel = props.channel;
   const identifier = "base_" + channel.id;
+  const isSelected = props.selectedChannelIds.has(channel.id);
   const selectedChildCount = channel.children.reduce((count, child) => {
     return count + Number(props.selectedChannelIds.has(child.id));
   }, 0);
+  const totalSelectedCount = Number(isSelected) + selectedChildCount;
 
   return (
     <div className="row" {...(props.isSelectedBaseChannel ? { title: "New base channel" } : {})}>
@@ -27,25 +29,23 @@ const ParentChannel = (props: PropsType) => {
           color: props.isSelectedBaseChannel ? "#02A49C" : "",
           marginBottom: "0px",
         }}
-        // TODO: Why is this a pointer, it doesn't toggle anything?
-        className="pointer"
       >
         <input
           type="checkbox"
           id={identifier}
           name={identifier}
           // TODO: Or with props.isSelectedBaseChannel?
-          checked={props.selectedChannelIds.has(channel.id)}
+          checked={isSelected}
           value={channel.id}
-          onChange={() => props.onToggleChannelSelect(channel.id)}
+          onChange={() => props.onToggleChannelSelect(channel)}
           disabled={props.isSelectedBaseChannel}
         />
         &nbsp; &nbsp;
-        <div style={{ display: "inline" }} onClick={() => props.onToggleChannelOpen(channel.id)}>
+        <div style={{ display: "inline" }} className="pointer" onClick={() => props.onToggleChannelOpen(channel.id)}>
           <i className={"fa " + (props.isOpen ? "fa-angle-down" : "fa-angle-right")} />
           &nbsp;
           <Highlight enabled={props.search.length > 0} text={channel.name} highlight={props.search}></Highlight>
-          {selectedChildCount > 0 && <b>{` (${selectedChildCount})`}</b>}
+          {totalSelectedCount > 0 && <b>{` (${totalSelectedCount})`}</b>}
         </div>
       </h4>
     </div>

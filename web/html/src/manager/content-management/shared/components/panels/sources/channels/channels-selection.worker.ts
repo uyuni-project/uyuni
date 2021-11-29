@@ -49,6 +49,7 @@ context.addEventListener("message", async ({ data }) => {
       if (typeof selectedBaseChannelId !== "number" || isNaN(selectedBaseChannelId)) {
         throw new TypeError("No base channel id");
       }
+      state.openBaseChannelIds.add(selectedBaseChannelId);
       onChange({ selectedBaseChannelId });
       return;
     }
@@ -85,6 +86,22 @@ function onChange(stateChange: Partial<typeof state> = {}) {
   // If we don't have channels or a selected base channel id yet, there's nothing to do
   if (typeof state.baseChannels === "undefined" || typeof state.selectedBaseChannelId === "undefined") {
     return;
+  }
+
+  /**
+   * If channels changed or the chosen base channel has changed, ensure channels are properly sorted
+   * We store the sorting and only do this on changes so we don't resort for other basic operations
+   */
+  if (stateChange.baseChannels || stateChange.selectedBaseChannelId) {
+    state.baseChannels = state.baseChannels.sort((a, b) => {
+      // If a base has been selected, sort it to the beginning...
+      if (state.selectedBaseChannelId) {
+        if (a.id === state.selectedBaseChannelId) return -1;
+        if (b.id === state.selectedBaseChannelId) return +1;
+      }
+      // ...otherwise sort by id
+      return a.id - b.id;
+    });
   }
 
   /**
@@ -125,25 +142,9 @@ function onChange(stateChange: Partial<typeof state> = {}) {
         return matchesSearch;
       });
     }
-
-    // If channels changed or the selected base changed, ensure channels are properly sorted
-    if (stateChange.baseChannels || stateChange.selectedBaseChannelId) {
-      draft.baseChannels = draft.baseChannels.sort((a, b) => {
-        // If a base has been selected, sort it to the beginning...
-        if (state.selectedBaseChannelId) {
-          if (a.id === state.selectedBaseChannelId) return -1;
-          if (b.id === state.selectedBaseChannelId) return +1;
-        }
-        // ...otherwise sort by id
-        return a.id - b.id;
-      });
-    }
-
-    // TODO: Initial isOpen value based on selected base channel id?
-    // if (stateChange.selectedBaseChannelId) { ... }
   });
 
-  // console.log(baseChannels);
+  console.log(baseChannels);
 
   // Convert whatever we have remaining after all the filters etc into renderable row definitions
   const rows = derivedChannelsToRowDefinitions(baseChannels, state.selectedBaseChannelId);

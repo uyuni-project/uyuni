@@ -35,7 +35,7 @@ export type DerivedChannelPartial = {
   custom: boolean;
   isCloned: boolean;
   label: string;
-  mandatory: unknown[];
+  mandatory: number[];
   name: string;
   standardizedName: string;
   recommended: boolean;

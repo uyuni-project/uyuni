@@ -9,11 +9,11 @@ type Props = {
   channel: DerivedChildChannel;
   selectedChannelIds: Set<number>;
   search: string;
-  onToggleChannelSelect: (id: number) => void;
+  onToggleChannelSelect: (channel: DerivedChildChannel) => void;
 };
 
 const ChildChannel = (props: Props) => {
-  // TODO: Tack on in worker
+  // TODO: Tack on in worker?
   // const { requiredChannels, dependenciesTooltip } = props.requiredChannelsResult;
   const requiredChannels = new Map();
 
@@ -22,9 +22,7 @@ const ChildChannel = (props: Props) => {
   // TODO: Tack on in worker
   // const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
   const toolTip = undefined;
-
-  const mandatoryChannelsForBaseId = requiredChannels.get(channel.parent.id);
-  const isMandatory = Boolean(mandatoryChannelsForBaseId?.has(channel.id));
+  const isMandatory = Boolean(channel.parent.mandatory.includes(channel.id));
 
   return (
     <div className="checkbox" style={{ paddingLeft: 35 }}>
@@ -34,7 +32,7 @@ const ChildChannel = (props: Props) => {
         id={childId}
         name="childChannels"
         checked={props.selectedChannelIds.has(channel.id)}
-        onChange={() => props.onToggleChannelSelect(channel.id)}
+        onChange={() => props.onToggleChannelSelect(channel)}
       />
       <label title={toolTip || undefined} htmlFor={childId}>
         <Highlight enabled={props.search?.length > 0} text={channel.name} highlight={props.search}></Highlight>

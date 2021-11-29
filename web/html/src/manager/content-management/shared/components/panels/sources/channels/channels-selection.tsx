@@ -19,7 +19,7 @@ import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import { getSelectedChannelsIdsInGroup, hasRecommendedChildren } from "core/channels/utils/channels-state.utils";
-import { ChannelType, RawChannelType } from "core/channels/type/channels.type";
+import { ChannelType, DerivedBaseChannel, DerivedChildChannel, RawChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
@@ -51,18 +51,24 @@ const ChannelsSelection = (props: PropsType) => {
     worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: value });
   };
 
+  // TODO: This needs to move to the worker just like rows, otherwise selection is ass
   // TODO: What do we need to do when attach/detach is called with previously existing values?
-  // TODO: Add selected base channel id to this set and remove etc?
   // See https://dev.to/ganes1410/using-javascript-sets-with-react-usestate-39eo
   const [[selectedChannelIds], setSelectedChannelIds] = useState<[Set<number>]>([new Set()]);
-  const onToggleChannelSelect = (channelId: number) => {
-    if (selectedChannelIds.has(channelId)) {
-      selectedChannelIds.delete(channelId);
-    } else {
-      selectedChannelIds.add(channelId);
-    }
+  const onToggleChannelSelect = (channel: DerivedBaseChannel | DerivedChildChannel, forceSelect?: true) => {
+    if (forceSelect || !selectedChannelIds.has(channel.id)) {
+      selectedChannelIds.add(channel.id);
 
-    // TODO: Figure out what we need to do with mandatory channels
+      // If there's anything required along with the selection, select that as well
+      if (channel.mandatory.length) {
+        channel.mandatory.forEach((mandatoryChannelId) => selectedChannelIds.add(mandatoryChannelId));
+        // If we selected anything additional, open the relevant group too
+        // TODO: Implement
+      }
+    } else {
+      selectedChannelIds.delete(channel.id);
+      // TODO: Do we need to unselect anything additional?
+    }
 
     setSelectedChannelIds([selectedChannelIds]);
   };
@@ -109,7 +115,7 @@ const ChannelsSelection = (props: PropsType) => {
             selectedChannelIds={selectedChannelIds}
             isSelectedBaseChannel={definition.isSelectedBaseChannel}
             search={search}
-            onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
+            onToggleChannelSelect={(channel) => onToggleChannelSelect(channel)}
             onToggleChannelOpen={(channelId) => {
               worker.postMessage({ type: WorkerMessages.TOGGLE_CHANNEL_IS_OPEN, channelId });
             }}
@@ -121,11 +127,21 @@ const ChannelsSelection = (props: PropsType) => {
             channel={definition.channel}
             selectedChannelIds={selectedChannelIds}
             search={search}
-            onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
+            onToggleChannelSelect={(channel) => onToggleChannelSelect(channel)}
           />
         );
       case RowType.EmptyChild:
         return NoChildren;
+      case RowType.RecommendedToggle:
+        return (
+          <RecommendedToggle
+            channel={definition.channel}
+            selectedChannelIds={selectedChannelIds}
+            onToggleRecommended={(enable) => {
+              // TODO: Implement
+            }}
+          />
+        );
       default:
         throw new RangeError("Incorrect channel render type in renderer");
     }
@@ -209,6 +225,8 @@ const ChannelsSelection = (props: PropsType) => {
         return 30;
       case RowType.Child:
         return 25;
+      case RowType.EmptyChild:
+        return 25;
       case RowType.RecommendedToggle:
         return 10;
       default:
@@ -243,6 +261,8 @@ const ChannelsSelection = (props: PropsType) => {
               return;
             }
             worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: value });
+            // Ensure the new base channel is selected
+            onToggleChannelSelect(value, true);
           }}
         />
       </div>
