@@ -3,14 +3,15 @@ import Network, { JsonResult } from "utils/network";
 
 import { RawChannelType } from "core/channels/type/channels.type";
 
+type ChannelsResponse = RawChannelType[];
+
 export const useChannelsApi = () => {
-  // This is a hack, but will suffice for now
-  const [channelsPromise, setChannelsPromise] = useState<Promise<RawChannelType[]> | undefined>(undefined);
+  const [channelsPromise, setChannelsPromise] = useState<Promise<ChannelsResponse> | undefined>(undefined);
   if (channelsPromise) {
     return [channelsPromise];
   }
 
-  const promise = Network.get<JsonResult<RawChannelType[]>>(`/rhn/manager/api/channels?filterClm=true`)
+  const promise = Network.get<JsonResult<ChannelsResponse>>(`/rhn/manager/api/channels?filterClm=true`)
     .then(Network.unwrap)
     .then((channels) => {
       // TODO: Only for testing
@@ -75,4 +76,36 @@ export const useLoadSelectOptions = () => {
   };
 
   return [loadSelectOptions];
+};
+
+type MandatoryChannelsResponse = {
+  [key: number]: unknown[] | undefined;
+};
+type ChannelsWithMandatory = { channels: ChannelsResponse; mandatoryChannelsMap: MandatoryChannelsResponse };
+
+export const useChannelsWithMandatoryApi = () => {
+  const [responsePromise, setResponsePromise] = useState<Promise<ChannelsWithMandatory> | undefined>(undefined);
+  const [channelsPromise] = useChannelsApi();
+
+  if (responsePromise) {
+    return [responsePromise];
+  }
+
+  const promise = channelsPromise.then((channels) => {
+    const channelIds = (channels as RawChannelType[])
+      .reduce((ids, channel) => {
+        ids.push(channel.base.id, ...channel.children.map((child) => child.id));
+        return ids;
+      }, [] as number[])
+      // TODO: This is only for testing values, remove later
+      .filter((id) => id < 10000000);
+
+    return Network.post<JsonResult<MandatoryChannelsResponse>>("/rhn/manager/api/admin/mandatoryChannels", channelIds)
+      .then(Network.unwrap)
+      .then((mandatoryChannelsMap) => {
+        return { channels, mandatoryChannelsMap };
+      });
+  });
+  setResponsePromise(promise);
+  return [promise];
 };

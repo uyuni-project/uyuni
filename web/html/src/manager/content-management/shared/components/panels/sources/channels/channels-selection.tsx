@@ -23,7 +23,7 @@ import { ChannelType, RawChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
-import { useChannelsApi, useLoadSelectOptions } from "./channels-selection-api";
+import { useChannelsApi, useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-selection-api";
 import { RowType, RowDefinition } from "./channels-selection-rows";
 
 import Worker from "./channels-selection.worker.ts";
@@ -35,15 +35,10 @@ type PropsType = {
   onChange: (channels: ChannelType[]) => void;
 };
 
-// TODO: Move somewhere else
-type MandatoryChannelsResponse = {
-  [key: number]: unknown[] | undefined;
-};
-
 const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadSelectOptions] = useLoadSelectOptions();
-  const [channelsPromise] = useChannelsApi();
+  const [channelsWithMandatoryPromise] = useChannelsWithMandatoryApi();
 
   const [worker] = useState(new Worker());
   const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
@@ -56,6 +51,7 @@ const ChannelsSelection = (props: PropsType) => {
     worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: value });
   };
 
+  // TODO: What do we need to do when attach/detach is called with previously existing values?
   // TODO: Add selected base channel id to this set and remove etc?
   // See https://dev.to/ganes1410/using-javascript-sets-with-react-usestate-39eo
   const [[selectedChannelIds], setSelectedChannelIds] = useState<[Set<number>]>([new Set()]);
@@ -72,25 +68,12 @@ const ChannelsSelection = (props: PropsType) => {
   };
 
   useEffect(() => {
-    // TODO: Move this to a separate file
-    channelsPromise.then((channels) => {
-      const channelIds = (channels as RawChannelType[])
-        .reduce((ids, channel) => {
-          ids.push(channel.base.id, ...channel.children.map((child) => child.id));
-          return ids;
-        }, [] as number[])
-        // TODO: This is only for testing values, remove later
-        .filter((id) => id < 10000000);
+    channelsWithMandatoryPromise.then(({ channels, mandatoryChannelsMap }) => {
+      if (isLoading) {
+        setIsLoading(false);
+      }
 
-      return Network.post<JsonResult<MandatoryChannelsResponse>>("/rhn/manager/api/admin/mandatoryChannels", channelIds)
-        .then(Network.unwrap)
-        .then((mandatoryChannelsMap) => {
-          if (isLoading) {
-            setIsLoading(false);
-          }
-
-          worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
-        });
+      worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
     });
 
     worker.addEventListener("message", async ({ data }) => {
