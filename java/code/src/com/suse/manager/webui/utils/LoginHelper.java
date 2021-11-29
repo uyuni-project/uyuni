@@ -68,9 +68,9 @@ public class LoginHelper {
 
     private static Logger log = Logger.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
-    private static final Long MIN_PG_DB_VERSION = 120001L;
+    private static final Long MIN_PG_DB_VERSION = 130001L;
     private static final Long MAX_PG_DB_VERSION = 149999L;
-    private static final String MIN_PG_DB_VERSION_STRING = "12";
+    private static final String MIN_PG_DB_VERSION_STRING = "13";
     private static final String MAX_PG_DB_VERSION_STRING = "14";
     private static final Double OS_VERSION_CHECK = 15.4;
     private static final Long OS_VERSION_MIN_DB_VERSION = 140000L;
