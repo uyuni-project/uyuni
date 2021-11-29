@@ -422,12 +422,12 @@ class TestSCGroup:
             side_effect = [[], ['pxe']]
             )
         shell.client.formula.getGroupFormulaData = MagicMock(
-            side_effect = [{"pxe": {
+            return_value = {"pxe": {
                 "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
                 "initrd_name": "initrd",
                 "kernel_name": "linux",
                 "pxe_root_directory": "/srv/saltboot"
-            }}])
+            }})
         mprint = MagicMock()
         logger = MagicMock()
         dumper = MagicMock()

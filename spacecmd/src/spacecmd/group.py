@@ -278,9 +278,10 @@ def do_group_backup(self, args):
         print(_("Backup Group: %s") % group)
         details = self.client.systemgroup.getDetails(self.session, group)
         formulas = self.client.formula.getFormulasByGroupId(self.session, details['id'])
-        formula_data = {}
-        for f in formulas:
-            formula_data[f] = self.client.formula.getGroupFormulaData(self.session, details['id'], f)
+        formula_data = {
+            f: self.client.formula.getGroupFormulaData(self.session, details['id'], f)
+            for f in formulas
+        }
 
         outputpath = outputpath_base + "/" + group
         print(_("Output File: %s") % outputpath)
@@ -398,15 +399,15 @@ def do_group_restore(self, args):
                 if is_interactive(options):
                     if current[groupname]['description'] != backup['description']:
                         print(_("Changing description from:"))
-                        print("\n\"%s\"\nto\n\"%s\"\n" % (current[groupname]['description'], backup['description']))
+                        print('\n"%s"\nto\n"%s"\n' % (current[groupname]['description'], backup['description']))
                         userinput = prompt_user(_('Continue [y/N]:'))
 
-                        if re.match('y', userinput, re.I):
+                        if userinput.lower() == 'y':
                             logging.info(_N("Updating description for group: %s") % groupname)
                             self.client.systemgroup.update(self.session, groupname, backup['description'])
                     if current[groupname]['formulas'] != backup['formulas']:
                         userinput = prompt_user(_('Update formula data from backup? [y/N]:'))
-                        if re.match('y', userinput, re.I):
+                        if userinput.lower() == 'y':
                             formulas = list(backup['formulas'].keys())
                             self.client.formula.setFormulasOfGroup(self.session, current[groupname]['id'], formulas)
                             for f, v in backup['formulas'].items():
