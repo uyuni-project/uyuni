@@ -19,6 +19,7 @@ const state = {
   baseChannels: undefined as DerivedBaseChannel[] | undefined,
   baseChannelsMap: {} as { [key: number]: DerivedBaseChannel | undefined },
   openBaseChannelIds: new Set<number>(),
+  selectedChannelIds: new Set<number>(),
   selectedBaseChannelId: undefined as number | undefined,
   search: "",
   activeFilters: [] as string[],
@@ -61,7 +62,7 @@ context.addEventListener("message", async ({ data }) => {
       onChange({ activeFilters });
       return;
     }
-    case WorkerMessages.TOGGLE_CHANNEL_IS_OPEN: {
+    case WorkerMessages.TOGGLE_IS_CHANNEL_OPEN: {
       const channelId = data.channelId;
       if (typeof channelId === "undefined") {
         throw new TypeError("Channel not found");
@@ -70,6 +71,20 @@ context.addEventListener("message", async ({ data }) => {
         state.openBaseChannelIds.delete(channelId);
       } else {
         state.openBaseChannelIds.add(channelId);
+      }
+      onChange();
+      return;
+    }
+    case WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED: {
+      const channelId = data.channelId;
+      if (typeof channelId === "undefined") {
+        throw new TypeError("Channel not found");
+      }
+      if (state.selectedChannelIds.has(channelId)) {
+        state.selectedChannelIds.delete(channelId);
+      } else {
+        state.selectedChannelIds.add(channelId);
+        // TODO: Add mandatory channel logic
       }
       onChange();
       return;
@@ -198,30 +213,41 @@ function derivedChannelsToRowDefinitions(
   // TODO: Implement
   return derivedChannels.reduce((result, channel) => {
     const isOpen = state.openBaseChannelIds.has(channel.id);
+    const isSelected = state.selectedChannelIds.has(channel.id);
+
+    // We need to figure out what state the children are in before we can store the parent state
+    let children: RowDefinition[] = [];
+    let selectedChildrenCount = 0;
+    if (channel.children.length) {
+      channel.children.forEach((child) => {
+        const isChildSelected = state.selectedChannelIds.has(child.id);
+        selectedChildrenCount += Number(isChildSelected);
+        if (isOpen) {
+          children.push({
+            type: RowType.Child,
+            id: child.id,
+            isSelected: isChildSelected,
+            channel: child,
+          });
+        }
+      });
+    } else if (isOpen) {
+      children.push({
+        type: RowType.EmptyChild,
+        id: `empty_child_${channel.id}`,
+      });
+    }
+
     result.push({
       type: RowType.Parent,
       id: channel.id,
       isOpen,
+      isSelected,
       isSelectedBaseChannel: channel.id === selectedBaseChannelId,
+      selectedChildrenCount,
       channel,
     });
-
-    if (isOpen) {
-      if (channel.children.length) {
-        channel.children.forEach((child) => {
-          result.push({
-            type: RowType.Child,
-            id: child.id,
-            channel: child,
-          });
-        });
-      } else {
-        result.push({
-          type: RowType.EmptyChild,
-          id: `empty_child_${channel.id}`,
-        });
-      }
-    }
+    result.push(...children);
 
     return result;
   }, [] as RowDefinition[]);

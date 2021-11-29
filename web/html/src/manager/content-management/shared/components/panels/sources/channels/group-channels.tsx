@@ -5,10 +5,11 @@ import { DerivedBaseChannel } from "core/channels/type/channels.type";
 type PropsType = {
   channel: DerivedBaseChannel;
   isOpen: boolean;
-  selectedChannelIds: Set<number>;
+  isSelected: boolean;
   isSelectedBaseChannel: boolean;
+  selectedChildrenCount: number;
   search: string;
-  onToggleChannelSelect: (channel: DerivedBaseChannel) => void;
+  onToggleChannelSelect: (id: number) => void;
   onToggleChannelOpen: (id: number) => void;
 };
 
@@ -16,11 +17,7 @@ type PropsType = {
 const ParentChannel = (props: PropsType) => {
   const channel = props.channel;
   const identifier = "base_" + channel.id;
-  const isSelected = props.selectedChannelIds.has(channel.id);
-  const selectedChildCount = channel.children.reduce((count, child) => {
-    return count + Number(props.selectedChannelIds.has(child.id));
-  }, 0);
-  const totalSelectedCount = Number(isSelected) + selectedChildCount;
+  const totalSelectedCount = Number(props.isSelected) + props.selectedChildrenCount;
 
   return (
     <div className="row" {...(props.isSelectedBaseChannel ? { title: "New base channel" } : {})}>
@@ -34,10 +31,9 @@ const ParentChannel = (props: PropsType) => {
           type="checkbox"
           id={identifier}
           name={identifier}
-          // TODO: Or with props.isSelectedBaseChannel?
-          checked={isSelected}
+          checked={props.isSelected}
           value={channel.id}
-          onChange={() => props.onToggleChannelSelect(channel)}
+          onChange={() => props.onToggleChannelSelect(channel.id)}
           disabled={props.isSelectedBaseChannel}
         />
         &nbsp; &nbsp;

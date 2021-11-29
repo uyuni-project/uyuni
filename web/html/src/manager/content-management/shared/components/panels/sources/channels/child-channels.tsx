@@ -7,9 +7,9 @@ import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-chan
 
 type Props = {
   channel: DerivedChildChannel;
-  selectedChannelIds: Set<number>;
+  isSelected: boolean;
   search: string;
-  onToggleChannelSelect: (channel: DerivedChildChannel) => void;
+  onToggleChannelSelect: (id: number) => void;
 };
 
 const ChildChannel = (props: Props) => {
@@ -31,8 +31,8 @@ const ChildChannel = (props: Props) => {
         value={channel.id}
         id={childId}
         name="childChannels"
-        checked={props.selectedChannelIds.has(channel.id)}
-        onChange={() => props.onToggleChannelSelect(channel)}
+        checked={props.isSelected}
+        onChange={() => props.onToggleChannelSelect(channel.id)}
       />
       <label title={toolTip || undefined} htmlFor={childId}>
         <Highlight enabled={props.search?.length > 0} text={channel.name} highlight={props.search}></Highlight>

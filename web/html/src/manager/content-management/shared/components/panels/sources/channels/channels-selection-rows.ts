@@ -12,11 +12,14 @@ type ParentDefinition = {
   type: RowType.Parent;
   channel: DerivedBaseChannel;
   isOpen: boolean;
+  isSelected: boolean;
   isSelectedBaseChannel: boolean;
+  selectedChildrenCount: number;
 };
 
 type ChildDefinition = {
   type: RowType.Child;
+  isSelected: boolean;
   channel: DerivedChildChannel;
 };
 

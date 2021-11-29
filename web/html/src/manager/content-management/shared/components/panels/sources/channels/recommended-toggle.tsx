@@ -7,7 +7,6 @@ import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state
 
 type Props = {
   channel: DerivedBaseChannel;
-  selectedChannelIds: Set<number>;
   onToggleRecommended: (areSelected: boolean) => void;
 };
 
@@ -19,7 +18,7 @@ const RecommendedToggle = (props: Props) => {
     props.selectedChannelsIdsInGroup
   );
 
-  if (recommendedIds.filter((id) => id !== props.parent.id).length === 0) {
+  if (recommendedIds.filter((id) => id !== props.channel.id).length === 0) {
     return null;
   }
   const toggleRecommended = () =>
