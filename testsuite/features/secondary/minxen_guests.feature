@@ -30,7 +30,10 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And I restart salt-minion on "xen_server"
+
+  Scenario: Allow minion to finish the current tasks
+    Then I wait for "5" seconds
+    Then I restart salt-minion on "xen_server"
 
   Scenario: Enable the virtualization host formula for Xen
     When I follow "Formulas" in the content area
