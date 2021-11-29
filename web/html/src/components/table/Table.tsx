@@ -39,11 +39,8 @@ type TableProps = {
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
 
-  /** enables item selection */
-  selectable: boolean;
-
-  /** tells if a row is selectable */
-  isSelectEnabled?: (row: any) => boolean;
+  /** enables item selection. */
+  selectable: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;
@@ -91,7 +88,8 @@ export function Table(props: TableProps) {
             .filter(isColumn)
             .map((column) => React.cloneElement(column, { data: datum, criteria: criteria }));
 
-          if (selectable && (props.isSelectEnabled?.(datum) ?? true)) {
+          const isSelectable = typeof selectable === "boolean" ? () => selectable : selectable;
+          if (selectable && isSelectable(datum)) {
             const checkbox = (
               <Column
                 key="check"
@@ -105,19 +103,8 @@ export function Table(props: TableProps) {
               />
             );
             cells.unshift(checkbox);
-          } else if (selectable && (!props.isSelectEnabled?.(datum) ?? true)) {
-            const checkbox = (
-              <Column
-                key="check"
-                cell={
-                  <input
-                    type="checkbox"
-                    disabled
-                    checked={false}
-                  />
-                }
-              />
-            );
+          } else if (selectable && !isSelectable(datum)) {
+            const checkbox = <Column key="check" cell={<input type="checkbox" disabled checked={false} />} />;
             cells.unshift(checkbox);
           }
 
@@ -175,5 +162,5 @@ export function Table(props: TableProps) {
   );
 }
 Table.defaultProps = {
-  selectable: false,
+  selectable: () => false,
 };
