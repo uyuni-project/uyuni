@@ -65,8 +65,7 @@ export function VirtualSystems(props: Props) {
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.uuid}
         initialSortColumnKey="hostServerName"
-        selectable
-        isSelectEnabled={(item) => item.hasOwnProperty("virtualSystemId")}
+        selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         initialItemsPerPage={window.userPrefPageSize}

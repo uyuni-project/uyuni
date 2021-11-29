@@ -13,7 +13,7 @@ export default class SimpleDataProvider {
     | null
     | undefined;
   loading: boolean | null | undefined;
-  isSelectEnabled: (row: any) => boolean | null | undefined;
+  selectable?: boolean | ((row: any) => boolean);
 
   constructor(
     data: Array<any>,
@@ -23,14 +23,14 @@ export default class SimpleDataProvider {
       [key: string]: Comparator;
     },
     loading?: boolean,
-    isSelectEnabled?: (row: any) => boolean
+    selectable: boolean | ((row: any) => boolean) = false
   ) {
     this.data = data;
     this.identifier = identifier;
     this.filter = filter;
     this.comparators = comparators;
     this.loading = loading;
-    this.isSelectEnabled = isSelectEnabled;
+    this.selectable = selectable;
   }
 
   get(callback: (promise: Promise<PagedData>) => any, pageControl?: PageControl): void {
@@ -63,7 +63,8 @@ export default class SimpleDataProvider {
 
   getIds(callback: (promise: Promise<Array<any>>) => any, criteria?: string) {
     const filtered = this.getFilteredData(criteria);
-    const selectable = this.isSelectEnabled != null ? filtered.filter((item) => this.isSelectEnabled(item)) : filtered;
+    const isSelectable = typeof this.selectable === "boolean" ? undefined : this.selectable;
+    const selectable = isSelectable != null ? filtered.filter((item) => isSelectable(item)) : filtered;
     callback(Promise.resolve(selectable.map(this.identifier)));
   }
 
