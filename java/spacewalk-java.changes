@@ -1,3 +1,4 @@
+- Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
 - UI and API call for changing proxy
 - require postgresql14 on SLE15 SP4
 - Update proxy path on minion connection
