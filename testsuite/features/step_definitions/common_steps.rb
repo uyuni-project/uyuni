@@ -26,7 +26,7 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   node = get_target(host)
   step %(I should see a "#{node.hostname}" text)
   kernel_version, _code = node.run('uname -r')
-  puts 'i should see kernel version: ' + kernel_version
+  puts 'I should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
   os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
@@ -64,7 +64,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait at most 60 seconds until I do not see "#{event}" text, refreshing the page
+    And I wait at most 90 seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
