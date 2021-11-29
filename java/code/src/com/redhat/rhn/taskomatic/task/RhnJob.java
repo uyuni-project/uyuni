@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.quartz.Job;
@@ -26,6 +27,32 @@ import org.quartz.JobExecutionException;
 public interface RhnJob extends Job {
 
     String DEFAULT_LOGGING_LAYOUT = "%d [%t] %-5p %c %x - %m%n";
+
+    /**
+     * @return a string representing the namespace from which job specific
+     * configuration parameters are read
+     */
+    String getConfigNamespace();
+
+    default int getDefaultParallelThreads() {
+        return 1;
+    }
+
+    default int getParallelThreads() {
+        return Config.get().getInt("taskomatic." + getConfigNamespace() + "." + "parallel_threads",
+                Config.get().getInt("taskomatic." + this.getClass().getCanonicalName() + ".parallel_threads",
+                 getDefaultParallelThreads()));
+    }
+
+    default int getDefaultRescheduleTime() {
+       return 10;
+    }
+
+    default int getRescheduleTime() {
+        return Config.get().getInt("taskomatic." + getConfigNamespace() + "." + "reschedule_time",
+                Config.get().getInt("taskomatic." + this.getClass().getCanonicalName() + ".reschedule_time",
+                 getDefaultRescheduleTime()));
+    }
 
     /**
      * execute method to be called

@@ -28,6 +28,11 @@ public class ErrataCacheTask extends RhnQueueJob {
     private static Logger log = null;
 
     @Override
+    public String getConfigNamespace() {
+        return "errata_cache";
+    }
+
+    @Override
     protected Logger getLogger() {
         if (log == null) {
             log = Logger.getLogger(ErrataCacheTask.class);

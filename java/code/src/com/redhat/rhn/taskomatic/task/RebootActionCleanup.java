@@ -44,6 +44,11 @@ import java.util.Map;
  */
 public class RebootActionCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "reboot_action_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

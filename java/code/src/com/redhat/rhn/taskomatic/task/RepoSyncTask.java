@@ -42,6 +42,11 @@ import java.util.Optional;
  */
 public class RepoSyncTask extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "reposync";
+    }
+
     /**
      * {@inheritDoc}
      */

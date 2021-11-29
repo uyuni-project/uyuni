@@ -33,6 +33,11 @@ import java.util.Optional;
  */
 public class SSHMinionActionExecutor extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "sshminion_action_executor";
+    }
+
     /**
      * @param context the job execution context
      * @see org.quartz.Job#execute(JobExecutionContext)

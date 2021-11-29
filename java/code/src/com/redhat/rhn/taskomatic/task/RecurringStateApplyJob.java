@@ -35,6 +35,11 @@ public class RecurringStateApplyJob extends RhnJavaJob {
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
+    @Override
+    public String getConfigNamespace() {
+        return "recurring_state_apply";
+    }
+
     /**
      * Schedule highstate application.
      *
