@@ -2203,7 +2203,7 @@ select count(action_id) as count
   <query params="sid">
 select SA.action_id as ID,
                COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
-               to_char(A.earliest_action, 'YYYY-MM-DD HH24:MI:SS') as scheduled_for,
+               A.earliest_action as scheduled_for,
                AType.label as history_type,
                AType.name as history_type_name,
                A.prerequisite as prereq_aid,
@@ -2232,7 +2232,7 @@ order by scheduled_for desc, prereq_aid nulls first
    and ST.label = :set_label-->
 select SA.action_id as ID,
                COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
-               to_char(A.earliest_action, 'YYYY-MM-DD HH24:MI:SS') as scheduled_for,
+               A.earliest_action as scheduled_for,
                AType.label as history_type,
                AType.name as history_type_name,
                A.prerequisite as prereq_aid,
