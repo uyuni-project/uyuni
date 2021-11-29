@@ -47,7 +47,5 @@ export type DerivedChildChannel = DerivedChannelPartial & {
 };
 
 export type DerivedBaseChannel = DerivedChannelPartial & {
-  // TODO: Check
-  // isOpen: boolean;
   children: DerivedChildChannel[];
 };

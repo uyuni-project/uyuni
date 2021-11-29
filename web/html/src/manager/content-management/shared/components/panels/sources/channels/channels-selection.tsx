@@ -42,6 +42,7 @@ const ChannelsSelection = (props: PropsType) => {
 
   const [worker] = useState(new Worker());
   const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
+  const [selectedChannelsCount, setSelectedChannelsCount] = useState<number>(0);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
   const [search, setSearch] = useState("");
@@ -57,7 +58,7 @@ const ChannelsSelection = (props: PropsType) => {
   // const [[selectedChannelIds], setSelectedChannelIds] = useState<[Set<number>]>([new Set()]);
   const onToggleChannelSelect = (channelId: number, forceSelect?: true) => {
     // TODO: Implement force select and/or untoggle
-    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId });
+    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId, forceSelect });
 
     /*
     if (forceSelect || !selectedChannelIds.has(channel.id)) {
@@ -90,10 +91,11 @@ const ChannelsSelection = (props: PropsType) => {
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
         case WorkerMessages.ROWS_CHANGED: {
-          if (!Array.isArray(data.rows)) {
+          if (!Array.isArray(data.rows) || typeof data.selectedChannelsCount !== "number") {
             throw new RangeError("Received no valid rows");
           }
           setRows(data.rows);
+          setSelectedChannelsCount(data.selectedChannelsCount);
           return;
         }
         default:
@@ -102,7 +104,6 @@ const ChannelsSelection = (props: PropsType) => {
     });
 
     // When the component unmounts, SIGKILL the worker
-    // TODO: Double-triple-quadruple test this
     return () => {
       worker.terminate();
     };
@@ -150,77 +151,6 @@ const ChannelsSelection = (props: PropsType) => {
       default:
         throw new RangeError("Incorrect channel render type in renderer");
     }
-
-    /*
-    const parentChannel = definition.type === RowType.Parent ? definition.channel : definition.parent;
-    const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(state.selectedChannelsIds, parentChannel);
-
-    const isOpen = state.openGroupsIds.some(
-      (openId) => openId === parentChannel.id || parentChannel.children.includes(openId)
-    );
-
-    switch (definition.type) {
-      case RowType.Parent:
-        return (
-          <ParentChannel
-            channel={parentChannel}
-            search={search}
-            selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
-            selectedBaseChannelId={state.selectedBaseChannelId}
-            isOpen={isOpen}
-            onChannelToggle={(channelId) => {
-              return dispatchChannelsSelection({
-                type: "toggle_channel",
-                baseId: parentChannel.id,
-                channelId,
-              });
-            }}
-            onOpenGroup={(open) =>
-              dispatchChannelsSelection({
-                type: "open_group",
-                baseId: parentChannel.id,
-                open,
-              })
-            }
-          />
-        );
-      case RowType.Child:
-        return (
-          <ChildChannel
-            channel={definition.channel}
-            parent={parentChannel}
-            search={search}
-            selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
-            onChannelToggle={(channelId) => {
-              return dispatchChannelsSelection({
-                type: "toggle_channel",
-                baseId: parentChannel.id,
-                channelId,
-              });
-            }}
-            channelsTree={channelsTree}
-            requiredChannelsResult={requiredChannelsResult}
-          />
-        );
-      case RowType.RecommendedToggle:
-        return (
-          <RecommendedToggle
-            parent={parentChannel}
-            channelsTree={channelsTree}
-            selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
-            setAllRecommentedChannels={(enable) => {
-              dispatchChannelsSelection({
-                type: "set_recommended",
-                baseId: parentChannel.id,
-                enable,
-              });
-            }}
-          />
-        );
-      default:
-        throw new RangeError("Incorrect channel render type in renderer");
-    }
-    */
   };
 
   const rowHeight = (channel: RowDefinition) => {
@@ -275,10 +205,7 @@ const ChannelsSelection = (props: PropsType) => {
         <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
             <div className="row" style={{ marginBottom: "30px" }}>
-              {/** TODO: Implement */}
-              {/**
-              {`${t("Child Channels")} (${selectedChannelIds.size})`}
-               */}
+              {`${t("Child Channels")} (${selectedChannelsCount})`}
             </div>
             <div className="row panel panel-default panel-body text-left">
               <div style={{ position: "relative" }}>

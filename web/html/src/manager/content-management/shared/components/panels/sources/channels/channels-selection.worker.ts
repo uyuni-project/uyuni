@@ -8,7 +8,7 @@ import produce from "utils/produce";
 
 // If we want to use more workers in the future, using a dedicated library such as Comlink or something similar might make sense
 import WorkerMessages from "./channels-selection-messages";
-import { DerivedBaseChannel, RawChannelType } from "core/channels/type/channels.type";
+import { DerivedBaseChannel, DerivedChildChannel, RawChannelType } from "core/channels/type/channels.type";
 import { channelsFiltersAvailable } from "./channels-selection.state";
 import { RowType, RowDefinition } from "./channels-selection-rows";
 
@@ -17,12 +17,20 @@ const context: Worker = self as any;
 
 const state = {
   baseChannels: undefined as DerivedBaseChannel[] | undefined,
-  baseChannelsMap: {} as { [key: number]: DerivedBaseChannel | undefined },
+  channelsMap: {} as { [key: number]: DerivedBaseChannel | DerivedChildChannel | undefined },
   openBaseChannelIds: new Set<number>(),
   selectedChannelIds: new Set<number>(),
   selectedBaseChannelId: undefined as number | undefined,
   search: "",
   activeFilters: [] as string[],
+};
+
+const isBase = (input: DerivedBaseChannel | DerivedChildChannel | undefined): input is DerivedBaseChannel => {
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "children"));
+};
+
+const isChild = (input: DerivedBaseChannel | DerivedChildChannel | undefined): input is DerivedChildChannel => {
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parent"));
 };
 
 // Respond to message from parent thread
@@ -33,8 +41,8 @@ context.addEventListener("message", async ({ data }) => {
       if (!Array.isArray(data.channels) || !data.mandatoryChannelsMap) {
         throw new TypeError("Insufficient channel data");
       }
-      const { baseChannels, baseChannelsMap } = rawChannelsToDerivedChannels(data.channels, data.mandatoryChannelsMap);
-      onChange({ baseChannels, baseChannelsMap });
+      const { baseChannels, channelsMap } = rawChannelsToDerivedChannels(data.channels, data.mandatoryChannelsMap);
+      onChange({ baseChannels, channelsMap });
       return;
     }
     case WorkerMessages.SET_SEARCH: {
@@ -77,14 +85,29 @@ context.addEventListener("message", async ({ data }) => {
     }
     case WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED: {
       const channelId = data.channelId;
-      if (typeof channelId === "undefined") {
+      const channel = state.channelsMap[channelId];
+      if (typeof channel === "undefined") {
         throw new TypeError("Channel not found");
       }
-      if (state.selectedChannelIds.has(channelId)) {
-        state.selectedChannelIds.delete(channelId);
-      } else {
+
+      if (data.forceSelect || !state.selectedChannelIds.has(channelId)) {
         state.selectedChannelIds.add(channelId);
-        // TODO: Add mandatory channel logic
+
+        // If there's anything required along with the selection, select that as well
+        channel.mandatory.forEach((mandatoryChannelId) => {
+          state.selectedChannelIds.add(mandatoryChannelId);
+
+          // If we selected anything, open the parent if applicable
+          const mandatoryChannel = state.channelsMap[mandatoryChannelId];
+          if (isChild(mandatoryChannel)) {
+            state.openBaseChannelIds.add(mandatoryChannel.parent.id);
+          }
+        });
+      } else {
+        state.selectedChannelIds.delete(channelId);
+        if (isBase(channel)) {
+          channel.children.forEach((child) => state.selectedChannelIds.delete(child.id));
+        }
       }
       onChange();
       return;
@@ -166,6 +189,7 @@ function onChange(stateChange: Partial<typeof state> = {}) {
   context.postMessage({
     type: WorkerMessages.ROWS_CHANGED,
     rows,
+    selectedChannelsCount: state.selectedChannelIds.size,
   });
 }
 
@@ -174,35 +198,35 @@ function rawChannelsToDerivedChannels(
   rawChannels: RawChannelType[],
   mandatoryChannelsMap: Map<unknown, unknown[] | undefined>
 ) {
-  const baseChannelsMap: Record<number, DerivedBaseChannel | undefined> = {};
+  const channelsMap: Record<number, DerivedBaseChannel | DerivedChildChannel | undefined> = {};
   // TODO: Type all of this
   // NB! The data we receive here is already a copy since we're in a worker so it's safe to modify it directly
   const baseChannels = rawChannels.map((rawChannel: RawChannelType) => {
-    // TODO: Make an object from scratch instead since rawChannels are read-only?
-    // Or make separate state to track isOpen etc
-
     // TODO: This cast is not correct
     // If we want to reduce copy overhead we could only pick the fields we need here
     const baseChannel: DerivedBaseChannel = rawChannel.base as DerivedBaseChannel;
-    // baseChannel.isOpen = false;
 
     // This should always be available, but just in case
     baseChannel.mandatory = mandatoryChannelsMap[baseChannel.id] || [];
     // Precompute filtering values so we only do this once
     baseChannel.standardizedName = baseChannel.name.toLocaleLowerCase();
 
-    baseChannel.children = rawChannel.children.map((child) => ({
-      ...child,
-      parent: baseChannel,
-      mandatory: mandatoryChannelsMap[child.id] || [],
-      standardizedName: child.name.toLocaleLowerCase(),
-    }));
+    baseChannel.children = rawChannel.children.map((child) => {
+      const derivedChild = {
+        ...child,
+        parent: baseChannel,
+        mandatory: mandatoryChannelsMap[child.id] || [],
+        standardizedName: child.name.toLocaleLowerCase(),
+      };
+      channelsMap[child.id] = derivedChild;
+      return derivedChild;
+    });
 
-    baseChannelsMap[baseChannel.id] = baseChannel;
+    channelsMap[baseChannel.id] = baseChannel;
 
     return baseChannel;
   });
-  return { baseChannels, baseChannelsMap };
+  return { baseChannels, channelsMap };
 }
 
 function derivedChannelsToRowDefinitions(
