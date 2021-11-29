@@ -38,6 +38,11 @@ public class TokenCleanup extends RhnJavaJob {
 
     private final SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
+    @Override
+    public String getConfigNamespace() {
+        return "token_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -37,6 +37,11 @@ import java.util.List;
  */
 public class KickstartFileSyncTask extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "kickstart_filesync";
+    }
+
     /**
      * {@inheritDoc}
      */

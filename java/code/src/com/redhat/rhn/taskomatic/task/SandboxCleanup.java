@@ -32,6 +32,11 @@ import java.util.Map;
  */
 public class SandboxCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "sandbox_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -43,6 +43,11 @@ import java.util.Map;
  */
 public class ErrataMailer extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "errata_mailer";
+    }
+
     /**
      * {@inheritDoc}
      */

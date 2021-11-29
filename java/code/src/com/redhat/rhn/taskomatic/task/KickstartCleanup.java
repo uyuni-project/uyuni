@@ -39,6 +39,11 @@ import java.util.Map;
 
 public class KickstartCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "kickstart_cleanup";
+    }
+
     /**
      * Primarily a convenience method to make testing easier
      * @param ctx Quartz job runtime environment

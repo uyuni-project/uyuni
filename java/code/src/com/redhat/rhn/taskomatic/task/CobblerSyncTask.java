@@ -55,6 +55,11 @@ public class CobblerSyncTask extends RhnJavaJob {
         distroWarnCount = 0;
     }
 
+    @Override
+    public String getConfigNamespace() {
+        return "cobbler_sync";
+    }
+
     /**
      * {@inheritDoc}
      */

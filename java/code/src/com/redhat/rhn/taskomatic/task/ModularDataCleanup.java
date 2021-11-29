@@ -41,6 +41,11 @@ public class ModularDataCleanup extends RhnJavaJob {
     private static final String MODULES_REL_PATH = "rhn/modules";
 
     @Override
+    public String getConfigNamespace() {
+        return "modular_data_cleanup";
+    }
+
+    @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         Set<String> usedModularDataPaths = HibernateFactory.getSession()
                 .createQuery("SELECT DISTINCT(m.relativeFilename) FROM Modules m", String.class)

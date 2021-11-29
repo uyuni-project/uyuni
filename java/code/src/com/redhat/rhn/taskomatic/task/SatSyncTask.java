@@ -26,6 +26,11 @@ import java.util.List;
  */
 public class SatSyncTask extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "satsync";
+    }
+
     /**
      * {@inheritDoc}
      */

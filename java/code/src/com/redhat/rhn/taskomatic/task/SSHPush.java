@@ -26,6 +26,11 @@ public class SSHPush extends RhnQueueJob {
     public static final String QUEUE_NAME = "ssh_push";
     private static Logger log = null;
 
+    @Override
+    public String getConfigNamespace() {
+        return "sshpush";
+    }
+
     /**
      * {@inheritDoc}
      */

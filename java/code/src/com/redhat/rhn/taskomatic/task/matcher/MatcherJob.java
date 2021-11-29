@@ -32,6 +32,11 @@ public class MatcherJob extends RhnJavaJob {
 
     public static final String CSV_SEPARATOR = "server.susemanager.matchercsvseparator";
 
+    @Override
+    public String getConfigNamespace() {
+        return "matcher";
+    }
+
     /**
      * {@inheritDoc}
      */

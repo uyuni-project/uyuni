@@ -37,6 +37,11 @@ import java.util.Map;
 
 public class PackageCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "package_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

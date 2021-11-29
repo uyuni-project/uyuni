@@ -31,6 +31,11 @@ import java.util.Map;
  */
 public class SessionCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "session_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -40,6 +40,11 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
     private final SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
 
+    @Override
+    public String getConfigNamespace() {
+        return "minion_actionchain_executor";
+    }
+
     /**
      * @param context the job execution context
      * @see org.quartz.Job#execute(JobExecutionContext)

@@ -34,6 +34,12 @@ import java.util.List;
 public class ClearLogHistory extends RhnJavaJob {
 
     private static final Integer DEFAULT_DAYS_VALUE = 7;
+
+    @Override
+    public String getConfigNamespace() {
+        return "clear_log_history";
+    }
+
     /**
      * {@inheritDoc}
      */

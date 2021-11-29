@@ -29,6 +29,11 @@ public class ErrataQueue extends RhnQueueJob {
     private static Logger log = null;
 
     @Override
+    public String getConfigNamespace() {
+        return "errata_queue";
+    }
+
+    @Override
     protected Logger getLogger() {
         if (log == null) {
             log = Logger.getLogger(ErrataQueue.class);

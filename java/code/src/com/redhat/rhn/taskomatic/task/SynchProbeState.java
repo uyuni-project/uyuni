@@ -21,6 +21,11 @@ import org.quartz.JobExecutionContext;
  */
 public class SynchProbeState extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "sync_probe_state";
+    }
+
     /**
      * {@inheritDoc}
      */

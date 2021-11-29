@@ -47,6 +47,11 @@ public class CompareConfigFilesTask extends RhnJavaJob {
     public CompareConfigFilesTask() {
     }
 
+    @Override
+    public String getConfigNamespace() {
+        return "compare_config_files";
+    }
+
     /**
      * {@inheritDoc}
      */

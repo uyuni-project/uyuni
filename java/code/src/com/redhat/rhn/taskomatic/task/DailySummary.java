@@ -55,6 +55,11 @@ public class DailySummary extends RhnJavaJob {
     private static final String ERRATA_UPDATE = "Errata Update";
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
 
+    @Override
+    public String getConfigNamespace() {
+        return "daily_summary";
+    }
+
     /**
      * {@inheritDoc}
      */

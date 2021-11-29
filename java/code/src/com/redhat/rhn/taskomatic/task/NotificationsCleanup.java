@@ -30,6 +30,11 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 public class NotificationsCleanup extends RhnJavaJob {
 
     @Override
+    public String getConfigNamespace() {
+        return "notification_cleanup";
+    }
+
+    @Override
     public void execute(JobExecutionContext arg0In) throws JobExecutionException {
         if (log.isDebugEnabled()) {
             log.debug("start notifications cleanup");

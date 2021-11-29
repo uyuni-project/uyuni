@@ -45,6 +45,11 @@ import java.util.stream.Collectors;
  */
 public class RebootActionCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "reboot_action_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */
