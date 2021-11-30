@@ -30,7 +30,11 @@ mgr_docker_service:
 mgr_min_salt:
   pkg.installed:
     - pkgs:
+{%- if salt['pkg.version']('venv-salt-minion') %}
+      - venv-salt-minion
+{%- else %}
       - salt: '>=2016.11.1'
       - salt-minion: '>=2016.11.1'
+{%- endif %}
     - order: last
 {% endif %}
