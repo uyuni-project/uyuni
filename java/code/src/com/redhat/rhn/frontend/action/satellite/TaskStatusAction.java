@@ -52,8 +52,7 @@ public class TaskStatusAction extends RhnAction {
             String name = "task.status." + info.get("name");
             info.put("name", name);
             Date startTime = (Date) info.get("start_time");
-            info.put("start_time",
-                    LocalizationService.getInstance().formatCustomDate(startTime));
+            info.put("start_time", startTime);
         }
 
         TaskomaticApi taskomatic = new TaskomaticApi();
