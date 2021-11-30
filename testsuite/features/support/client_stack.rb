@@ -83,8 +83,3 @@ def get_gpg_keys(node, target = $server)
   end
   gpg_keys.lines.map(&:strip)
 end
-
-def sle11family?(node)
-  _out, code = node.run('pidof systemd', check_errors: false)
-  code.nonzero?
-end

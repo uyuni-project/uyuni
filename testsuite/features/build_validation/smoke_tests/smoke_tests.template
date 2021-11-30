@@ -34,7 +34,8 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
     When I force picking pending events on "<client>" if necessary
-    Then I wait until event "Patch Update:" is completed
+    And I wait until event "Patch Update:" is completed
+    And I regenerate the boot RAM disk on "<client>" if necessary
 
   Scenario: Install a package on the <client>
     When I follow "Software" in the content area

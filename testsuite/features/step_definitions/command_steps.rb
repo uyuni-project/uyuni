@@ -1633,3 +1633,12 @@ And(/^I copy vCenter configuration file on server$/) do
   return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
   raise 'File injection failed' unless return_code.zero?
 end
+
+When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  # HACK: initrd is not regenerated after patching SLES 11 kernel
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('mkinitrd')
+  end
+end

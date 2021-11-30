@@ -63,7 +63,9 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
 end
 
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
-  def ck_container_imgs(timeout, count)
+  os_version, os_family = get_os_version($build_host)
+  # don't run this for sles11 (docker feature is not there)
+  unless os_family =~ /^sles/ && os_version =~ /^11/
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
       step %(I follow the left menu "Images > Image List")
       step %(I wait until I do not see "There are no entries to show." text)
@@ -72,8 +74,6 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
       sleep 5
     end
   end
-  # don't run this for sles11 (docker feature is not there)
-  ck_container_imgs(timeout, count) unless sle11family?($build_host)
 end
 
 When(/^I check the first image$/) do
