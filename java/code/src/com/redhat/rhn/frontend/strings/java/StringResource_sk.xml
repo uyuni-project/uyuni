@@ -2168,43 +2168,43 @@
       </trans-unit>
       <trans-unit id="configfiles.upload" xml:space="preserve">
         <source>Import config file data from system</source>
-        <target/>
+        <target>Importovať údaje konfiguračného súboru zo systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.deploy" xml:space="preserve">
         <source>Deploy config files to system</source>
-        <target/>
+        <target>Nasadiť konfiguračné súbory do systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.deployed" xml:space="preserve">
         <source>Files successfully deployed</source>
-        <target/>
+        <target>Súbory úspešne nasadené</target>
       </trans-unit>
       <trans-unit id="configfiles.verify" xml:space="preserve">
         <source>Verify deployed config files</source>
-        <target/>
+        <target>Overiť nasadené konfiguračné súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.diff" xml:space="preserve">
         <source>Show differences between profiled config files and deployed config files</source>
-        <target/>
+        <target>Zobraziť rozdiely medzi profilovanými konfiguračnými súbormi a nasadenými konfiguračnými súbormi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.diffed" xml:space="preserve">
         <source>Files successfully compared</source>
-        <target/>
+        <target>Súbory úspešne porovnané</target>
       </trans-unit>
       <trans-unit id="config.actionnote" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>
-        <target/>
+        <target>&lt;a href="{0}"&gt;Revízia {1}&lt;/a&gt; {2} z &lt;a href="{3}"&gt;{4}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
@@ -2212,7 +2212,7 @@
       </trans-unit>
       <trans-unit id="config.upload.onechannel" xml:space="preserve">
         <source>Destination Configuration Channel: {0}</source>
-        <target/>
+        <target>Cieľový konfiguračný kanál: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Destination Configuration Channel: sandbox for postmaster.devel</context>
@@ -2220,14 +2220,14 @@
       </trans-unit>
       <trans-unit id="config.upload.channels" xml:space="preserve">
         <source>Destination Configuration Channels:</source>
-        <target/>
+        <target>Cieľové konfiguračné kanály:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.upload.filenames" xml:space="preserve">
         <source>Files for Upload:</source>
-        <target/>
+        <target>Súbory na nahratie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
