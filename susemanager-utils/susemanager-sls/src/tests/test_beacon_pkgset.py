@@ -8,13 +8,6 @@ from ..beacons import pkgset
 pkgset.__context__ = dict()
 
 
-def test_virtual():
-    '''
-    Test virtual function.
-    '''
-    assert pkgset.__virtual__() == pkgset.__virtualname__
-
-
 @patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True))
 @patch.object(pkgset, '__context__', {pkgset.__virtualname__: ""})
 def test_beacon():
