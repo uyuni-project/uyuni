@@ -26,6 +26,11 @@ def __virtual__():
 
 
 def validate(config):
+    """
+    The absence of this function could cause noisy logging,
+    when logging level set to DEBUG or TRACE.
+    So we need to have it with no any validation inside.
+    """
     return True, "There is nothing to validate"
 
 
