@@ -33,6 +33,11 @@ import java.util.Optional;
 public class SSHMinionActionExecutor extends RhnJavaJob {
 
     @Override
+    public int getDefaultParallelThreads() {
+        return 20;
+    }
+
+    @Override
     public String getConfigNamespace() {
         return "sshminion_action_executor";
     }
