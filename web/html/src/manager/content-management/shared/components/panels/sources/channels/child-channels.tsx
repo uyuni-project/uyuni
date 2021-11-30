@@ -8,6 +8,7 @@ import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-chan
 type Props = {
   channel: DerivedChildChannel;
   isSelected: boolean;
+  isRequired: boolean;
   search: string;
   onToggleChannelSelect: (id: number) => void;
 };
@@ -22,7 +23,8 @@ const ChildChannel = (props: Props) => {
   // TODO: Tack on in worker
   // const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
   const toolTip = undefined;
-  const isMandatory = Boolean(channel.parent.mandatory.includes(channel.id));
+  // TODO: Fix
+  // const isMandatory = Boolean(channel.parent.mandatory.includes(channel.id));
 
   return (
     <div className="checkbox" style={{ paddingLeft: 35 }}>
@@ -49,7 +51,7 @@ const ChildChannel = (props: Props) => {
           {t("recommended")}
         </span>
       ) : null}
-      {isMandatory ? (
+      {props.isRequired ? (
         <span className="mandatory-tag-base" title={t("This channel is mandatory")}>
           {t("mandatory")}
         </span>

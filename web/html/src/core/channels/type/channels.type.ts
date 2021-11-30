@@ -35,7 +35,8 @@ export type DerivedChannelPartial = {
   custom: boolean;
   isCloned: boolean;
   label: string;
-  mandatory: number[];
+  // requires: Set<number> | undefined;
+  // requiredBy: Set<number> | undefined;
   name: string;
   standardizedName: string;
   recommended: boolean;
@@ -49,3 +50,5 @@ export type DerivedChildChannel = DerivedChannelPartial & {
 export type DerivedBaseChannel = DerivedChannelPartial & {
   children: DerivedChildChannel[];
 };
+
+export type DerivedChannel = DerivedBaseChannel | DerivedChildChannel;

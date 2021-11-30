@@ -20,6 +20,7 @@ type ParentDefinition = {
 type ChildDefinition = {
   type: RowType.Child;
   isSelected: boolean;
+  isRequired: boolean;
   channel: DerivedChildChannel;
 };
 
@@ -30,6 +31,7 @@ type EmptyChildDefinition = {
 type RecommendedToggleDefinition = {
   type: RowType.RecommendedToggle;
   channel: DerivedBaseChannel;
+  areAllRecommendedChildrenSelected: boolean;
 };
 
 export type RowDefinition = {

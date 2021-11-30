@@ -56,7 +56,7 @@ const ChannelsSelection = (props: PropsType) => {
   // TODO: What do we need to do when attach/detach is called with previously existing values?
   // See https://dev.to/ganes1410/using-javascript-sets-with-react-usestate-39eo
   // const [[selectedChannelIds], setSelectedChannelIds] = useState<[Set<number>]>([new Set()]);
-  const onToggleChannelSelect = (channelId: number, forceSelect?: true) => {
+  const onToggleChannelSelect = (channelId: number, forceSelect?: boolean) => {
     // TODO: Implement force select and/or untoggle
     worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId, forceSelect });
 
@@ -77,6 +77,10 @@ const ChannelsSelection = (props: PropsType) => {
 
     setSelectedChannelIds([selectedChannelIds]);
     */
+  };
+
+  const onToggleChannelOpen = (channelId: number) => {
+    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_OPEN, channelId });
   };
 
   useEffect(() => {
@@ -112,6 +116,7 @@ const ChannelsSelection = (props: PropsType) => {
   // TODO: Move this to a component and add padding
   const NoChildren = <span>&nbsp;{t("no child channels")}</span>;
   const Row = (definition: RowDefinition) => {
+    // TODO: Move all required fields into the definition and then just pass that and methods
     switch (definition.type) {
       case RowType.Parent:
         return (
@@ -123,9 +128,7 @@ const ChannelsSelection = (props: PropsType) => {
             selectedChildrenCount={definition.selectedChildrenCount}
             search={search}
             onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
-            onToggleChannelOpen={(channelId) => {
-              worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_OPEN, channelId });
-            }}
+            onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId)}
           />
         );
       case RowType.Child:
@@ -133,6 +136,7 @@ const ChannelsSelection = (props: PropsType) => {
           <ChildChannel
             channel={definition.channel}
             isSelected={definition.isSelected}
+            isRequired={definition.isRequired}
             search={search}
             onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
           />
@@ -143,8 +147,11 @@ const ChannelsSelection = (props: PropsType) => {
         return (
           <RecommendedToggle
             channel={definition.channel}
-            onToggleRecommended={(enable) => {
-              // TODO: Implement
+            areAllRecommendedChildrenSelected={definition.areAllRecommendedChildrenSelected}
+            onToggleRecommendedChildrenSelected={() => {
+              // TODO: Based on select-unselect
+              // Force-select the parent
+              onToggleChannelSelect(definition.channel.id, true);
             }}
           />
         );

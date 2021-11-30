@@ -3,14 +3,14 @@ import _xor from "lodash/xor";
 import _difference from "lodash/difference";
 import _union from "lodash/union";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
-import { ChannelType } from "core/channels/type/channels.type";
+import { DerivedChannel } from "core/channels/type/channels.type";
 import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 import { getChannelsToToggleWithDependencies } from "core/channels/utils/channels-dependencies.utils";
 
 export type FilterType = {
   id: string;
   text: string;
-  isVisible: (arg0: ChannelType) => boolean;
+  isVisible: (arg0: DerivedChannel) => boolean;
   selectedByDefault: boolean;
 };
 export type FiltersType = {
@@ -21,19 +21,19 @@ export const channelsFiltersAvailable: FiltersType = {
   vendors: {
     id: "vendors",
     text: "Vendors",
-    isVisible: (c: ChannelType) => !c.custom,
+    isVisible: (c: DerivedChannel) => !c.custom,
     selectedByDefault: true,
   },
   custom: {
     id: "custom",
     text: "Custom",
-    isVisible: (c: ChannelType) => c.custom && !c.isCloned,
+    isVisible: (c: DerivedChannel) => c.custom && !c.isCloned,
     selectedByDefault: true,
   },
   clones: {
     id: "clones",
     text: "Clones",
-    isVisible: (c: ChannelType) => c.isCloned,
+    isVisible: (c: DerivedChannel) => c.isCloned,
     selectedByDefault: false,
   },
 };
