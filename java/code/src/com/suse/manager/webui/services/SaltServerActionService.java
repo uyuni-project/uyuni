@@ -1087,7 +1087,7 @@ public class SaltServerActionService {
                         .sorted()
                         .collect(Collectors.toList())
                 );
-                params.put("allowVendorChange", allowVendorChange);
+                params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
                     entry.getKey().stream()
                         .filter(e -> e.isUpdateStack())
