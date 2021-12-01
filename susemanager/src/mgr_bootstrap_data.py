@@ -755,7 +755,28 @@ PKGLISTDEBIAN10 = [
 ]
 
 PKGLISTDEBIAN11 = [
+    # gnupg dependencies
+    "dirmngr",
     "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.4-2",
+    "libldap-common",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    # end of gnupg dependencies
     "venv-salt-minion"
 ]
 
