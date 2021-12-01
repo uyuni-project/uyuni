@@ -1,6 +1,7 @@
 #!/usr/bin/python3
- 
+
 import os
+import re
 import yaml
 
 # read from file
@@ -11,14 +12,9 @@ with open("/etc/uyuni/config.yaml") as source:
     with open("/etc/squid/squid.conf", "r") as dest:
         fileContent = dest.read()
 
-        # replace the target string
-        fileContent = fileContent.replace(
-            'cache_dir ufs /var/cache/squid 15000 16 256',
-            f"cache_dir ufs /var/cache/squid {str(config['squid_size'])} 16 256")
-        fileContent = fileContent.replace(
-            'access_log /var/log/squid/access.log squid',
-            'access_log stdio:/proc/self/fd/1 squid'
-        )
+        # adapt the config file
+        fileContent = re.sub(r"cache_dir ufs .*", f"cache_dir ufs /var/cache/squid {str(config['squid_size'])} 16 256", fileContent)
+        fileContent = re.sub(r"access_log .*", "access_log stdio:/proc/self/fd/1 squid", fileContent)
 
         # write to file
         with open("/etc/squid/squid.conf", "w") as dest:
