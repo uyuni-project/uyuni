@@ -16,6 +16,8 @@ package com.redhat.rhn.manager.audit.scap.xml;
 
 import org.simpleframework.xml.Attribute;
 
+import java.util.Optional;
+
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
@@ -78,8 +80,8 @@ public class Profile {
     /**
      * @return description to get
      */
-    public String getDescription() {
-        return description;
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
     }
 
     /**
