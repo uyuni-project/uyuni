@@ -157,7 +157,7 @@ public class NotificationMessageController {
 
         UserNotificationFactory.delete(notifications);
 
-        Notification.spreadUpdate();
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", "success");
@@ -193,7 +193,7 @@ public class NotificationMessageController {
             }
         });
 
-        Notification.spreadUpdate();
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", "success");

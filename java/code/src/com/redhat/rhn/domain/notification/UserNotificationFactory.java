@@ -118,7 +118,7 @@ public class UserNotificationFactory extends HibernateFactory {
             forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
 
         // Update Notification WebSocket Sessions right now
-        Notification.spreadUpdate();
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
     }
 
     /**
@@ -147,7 +147,7 @@ public class UserNotificationFactory extends HibernateFactory {
         }
 
         // Update Notification WebSocket Sessions right now
-        Notification.spreadUpdate();
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
     }
 
     /**
