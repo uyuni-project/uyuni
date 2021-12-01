@@ -11,7 +11,7 @@ import {
   DerivedChildChannel,
   RawChannelType,
 } from "core/channels/type/channels.type";
-import { channelsFiltersAvailable } from "./channels-selection.state";
+import { channelsFiltersAvailable, FiltersType } from "./channels-selection.state";
 import { RowType, RowDefinition } from "./channels-selection-rows";
 
 // eslint-disable-next-line no-restricted-globals
@@ -35,7 +35,7 @@ const state = {
   /** User search string */
   search: "",
   /** User-selected filters such as vendors, custom, clones */
-  activeFilters: [] as string[],
+  activeFilters: [] as (keyof FiltersType)[],
 };
 
 const isBase = (input: DerivedChannel | undefined): input is DerivedBaseChannel => {
@@ -107,6 +107,7 @@ context.addEventListener("message", async ({ data }) => {
         throw new TypeError("No base channel id");
       }
       state.openBaseChannelIds.add(selectedBaseChannelId);
+      selectRecursively(selectedBaseChannelId);
       onChange({ selectedBaseChannelId });
       return;
     }
@@ -350,11 +351,11 @@ function derivedChannelsToRowDefinitions(
     result.push({
       type: RowType.Parent,
       id: channel.id,
+      channelName: channel.name,
       isOpen,
       isSelected,
       isSelectedBaseChannel: channel.id === selectedBaseChannelId,
       selectedChildrenCount,
-      channel,
     });
     if (isOpen && recommendedChildrenCount) {
       result.push({

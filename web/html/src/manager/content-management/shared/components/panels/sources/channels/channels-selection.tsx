@@ -8,13 +8,16 @@ import { Select } from "components/input/Select";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
-import ParentChannel from "./group-channels";
+import BaseChannel from "./base-channel";
 import { VirtualList } from "components/virtual-list";
 
-import { ActionChannelsSelectionType, StateChannelsSelectionType } from "./channels-selection.state";
+import {
+  ActionChannelsSelectionType,
+  getInitialFiltersState,
+  StateChannelsSelectionType,
+} from "./channels-selection.state";
 import { initialStateChannelsSelection, reducerChannelsSelection } from "./channels-selection.state";
 import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
-import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import { getSelectedChannelsIdsInGroup, hasRecommendedChildren } from "core/channels/utils/channels-state.utils";
 import { ChannelType, DerivedBaseChannel, DerivedChildChannel, RawChannelType } from "core/channels/type/channels.type";
@@ -29,7 +32,8 @@ import WorkerMessages from "./channels-selection-messages";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
-  /** TODO: Implement this */
+  // TODO: Implement
+  // TODO: These can be bound only _after_ we have passed initial data to the worker
   initialSelectedIds: Array<number>;
   onChange: (channels: ChannelType[]) => void;
 };
@@ -42,7 +46,7 @@ const ChannelsSelection = (props: PropsType) => {
   const [worker] = useState(new Worker());
   const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
   const [selectedChannelsCount, setSelectedChannelsCount] = useState<number>(0);
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState<string[]>(getInitialFiltersState());
   const [search, setSearch] = useState("");
 
   const onSelectedBaseChannelIdChange = (channelId: number) => {
@@ -57,7 +61,6 @@ const ChannelsSelection = (props: PropsType) => {
     []
   );
 
-  // TODO: What do we need to do when attach/detach is called with previously existing values?
   const onToggleChannelSelect = (channelId: number) => {
     worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId });
   };
@@ -71,6 +74,10 @@ const ChannelsSelection = (props: PropsType) => {
   };
 
   useEffect(() => {
+    // Ensure the worker knows about our initial configuration
+    worker.postMessage({ type: WorkerMessages.SET_ACTIVE_FILTERS, activeFilters });
+    // TODO: What do we need to do when attach/detach is called with previously existing values?
+
     channelsWithMandatoryPromise.then(({ channels, mandatoryChannelsMap }) => {
       if (isLoading) {
         setIsLoading(false);
@@ -107,12 +114,8 @@ const ChannelsSelection = (props: PropsType) => {
     switch (definition.type) {
       case RowType.Parent:
         return (
-          <ParentChannel
-            channel={definition.channel}
-            isOpen={definition.isOpen}
-            isSelected={definition.isSelected}
-            isSelectedBaseChannel={definition.isSelectedBaseChannel}
-            selectedChildrenCount={definition.selectedChildrenCount}
+          <BaseChannel
+            rowDefinition={definition}
             search={search}
             onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
             onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId)}

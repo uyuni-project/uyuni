@@ -8,33 +8,38 @@ export enum RowType {
 }
 
 // TODO: Rename to Base
-type ParentDefinition = {
+export type ParentRowDefinition = {
   type: RowType.Parent;
-  channel: DerivedBaseChannel;
+  id: number;
+  channelName: string;
   isOpen: boolean;
   isSelected: boolean;
   isSelectedBaseChannel: boolean;
   selectedChildrenCount: number;
 };
 
-type ChildDefinition = {
+export type ChildRowDefinition = {
   type: RowType.Child;
+  id: number;
   isSelected: boolean;
   isRequired: boolean;
   channel: DerivedChildChannel;
 };
 
-type EmptyChildDefinition = {
+export type EmptyChildRowDefinition = {
   type: RowType.EmptyChild;
+  id: string; // The id is a merged string here to avoid collisions
 };
 
-type RecommendedToggleDefinition = {
+export type RecommendedToggleRowDefinition = {
   type: RowType.RecommendedToggle;
+  id: string; // The id is a merged string here to avoid collisions
   channel: DerivedBaseChannel;
   areAllRecommendedChildrenSelected: boolean;
 };
 
-export type RowDefinition = {
-  // This identifier is used as the key in the list
-  id: string | number;
-} & (ParentDefinition | ChildDefinition | EmptyChildDefinition | RecommendedToggleDefinition);
+export type RowDefinition =
+  | ParentRowDefinition
+  | ChildRowDefinition
+  | EmptyChildRowDefinition
+  | RecommendedToggleRowDefinition;

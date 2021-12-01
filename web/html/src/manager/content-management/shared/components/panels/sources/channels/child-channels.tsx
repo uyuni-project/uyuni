@@ -14,17 +14,11 @@ type Props = {
 };
 
 const ChildChannel = (props: Props) => {
-  // TODO: Tack on in worker?
-  // const { requiredChannels, dependenciesTooltip } = props.requiredChannelsResult;
-  const requiredChannels = new Map();
-
   const channel = props.channel;
   const childId = "child_" + channel.id;
   // TODO: Tack on in worker
   // const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
   const toolTip = undefined;
-  // TODO: Fix
-  // const isMandatory = Boolean(channel.parent.mandatory.includes(channel.id));
 
   return (
     <div className="checkbox" style={{ paddingLeft: 35 }}>
