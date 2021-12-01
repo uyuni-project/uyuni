@@ -94,7 +94,10 @@ const ChannelsSelection = (props: PropsType) => {
           setSelectedChannelsCount(data.selectedChannelsCount);
           return;
         }
-        // TODO: On selection change, fire props.onChange(), see https://github.com/uyuni-project/uyuni/blob/master/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx#L51
+        case WorkerMessages.SELECTED_CHANNELS_CHANGED: {
+          // TODO: On selection change, fire props.onChange(), see https://github.com/uyuni-project/uyuni/blob/master/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx#L51
+          return;
+        }
         default:
           throw new RangeError(`Unknown message type, got ${data.type}`);
       }
