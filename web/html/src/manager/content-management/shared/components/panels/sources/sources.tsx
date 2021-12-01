@@ -42,8 +42,8 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
         initialSelectedIds={initialSelectedIds}
-        onChange={(selectedChannels) => {
-          onChange(selectedChannels.map((c) => c.label));
+        onChange={(selectedChannelLabels) => {
+          onChange(selectedChannelLabels);
         }}
       />
     </form>

@@ -31,9 +31,8 @@ type PropsType = {
   // TODO: Implement
   // TODO: These can be bound only _after_ we have passed initial data to the worker
   initialSelectedIds: Array<number>;
-  // TODO: Where should this be used?!
-  // TODO: This wants labels, not channels as input?
-  onChange: (channels: ChannelType[]) => void;
+  // For some reason, the wrapper expects labels, not channels, that's fine by us
+  onChange: (channelLabels: string[]) => void;
 };
 
 const ChannelsSelection = (props: PropsType) => {
@@ -96,6 +95,12 @@ const ChannelsSelection = (props: PropsType) => {
         }
         case WorkerMessages.SELECTED_CHANNELS_CHANGED: {
           // TODO: On selection change, fire props.onChange(), see https://github.com/uyuni-project/uyuni/blob/master/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx#L51
+          const selectedChannelLabels = data.selectedChannelLabels;
+          if (!Array.isArray(selectedChannelLabels)) {
+            throw new RangeError("Received no valid labels");
+          }
+          console.log("selected", selectedChannelLabels);
+          props.onChange(selectedChannelLabels);
           return;
         }
         default:

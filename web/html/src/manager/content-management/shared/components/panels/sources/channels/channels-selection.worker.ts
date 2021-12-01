@@ -42,6 +42,35 @@ const isChild = (input: DerivedChannel | undefined): input is DerivedChildChanne
   return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parent"));
 };
 
+const sortChannels = <T extends DerivedChannel>(channels: T[], selectedBaseChannelId?: number) => {
+  return channels.sort((a, b) => {
+    // If a base has been selected, sort it to the beginning...
+    if (selectedBaseChannelId) {
+      if (a.id === selectedBaseChannelId) return -1;
+      if (b.id === selectedBaseChannelId) return +1;
+    }
+    // ...otherwise sort by id
+    return a.id - b.id;
+  });
+};
+
+/** When selected channels have changed, notify the main thread */
+const onSelectionChange = () => {
+  const selectedChannels = Array.from(state.selectedChannelIds).map((id) => {
+    const channel = state.channelsMap.get(id);
+    if (!channel) {
+      throw new TypeError("No channel in map");
+    }
+    return channel;
+  });
+  const sorted = sortChannels(selectedChannels);
+  context.postMessage({
+    type: WorkerMessages.SELECTED_CHANNELS_CHANGED,
+    selectedChannelLabels: sorted.map((channel) => channel?.label),
+  });
+};
+
+/** Resolve and select all channels that are required along with this channel */
 const selectRecursively = (channelId: number) => {
   if (state.selectedChannelIds.has(channelId)) {
     return;
@@ -58,6 +87,7 @@ const selectRecursively = (channelId: number) => {
   state.requiresMap.get(channelId)?.forEach((id) => selectRecursively(id));
 };
 
+/** Resolve and deselect all channels that require this channel */
 const deselectRecursively = (channelId: number) => {
   if (!state.selectedChannelIds.has(channelId)) {
     return;
@@ -105,6 +135,7 @@ context.addEventListener("message", async ({ data }) => {
       state.openBaseChannelIds.add(selectedBaseChannelId);
       selectRecursively(selectedBaseChannelId);
       onChange({ selectedBaseChannelId });
+      onSelectionChange();
       return;
     }
     case WorkerMessages.SET_ACTIVE_FILTERS: {
@@ -150,6 +181,7 @@ context.addEventListener("message", async ({ data }) => {
         }
       }
       onChange();
+      onSelectionChange();
       return;
     }
     case WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED: {
@@ -165,6 +197,7 @@ context.addEventListener("message", async ({ data }) => {
         channel.recommendedChildrenIds.forEach((id) => deselectRecursively(id));
       }
       onChange();
+      onSelectionChange();
       return;
     }
     default:
@@ -186,15 +219,7 @@ function onChange(stateChange: Partial<typeof state> = {}) {
    * We store the sorting and only do this on changes so we don't resort for other basic operations
    */
   if (typeof stateChange.baseChannels !== "undefined" || typeof stateChange.selectedBaseChannelId !== "undefined") {
-    state.baseChannels = state.baseChannels.sort((a, b) => {
-      // If a base has been selected, sort it to the beginning...
-      if (state.selectedBaseChannelId) {
-        if (a.id === state.selectedBaseChannelId) return -1;
-        if (b.id === state.selectedBaseChannelId) return +1;
-      }
-      // ...otherwise sort by id
-      return a.id - b.id;
-    });
+    state.baseChannels = sortChannels(state.baseChannels);
   }
 
   /**
