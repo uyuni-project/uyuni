@@ -1156,6 +1156,21 @@ And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do 
   end
 end
 
+When(/^I wait until radio button "([^"]*)" is unchecked, refreshing the page$/) do |button|
+  unless has_unchecked_field?(button)
+    repeat_until_timeout(message: "I can still find checked radio button #{button}") do
+      break if has_unchecked_field?(button)
+      begin
+        accept_prompt do
+          execute_script 'window.location.reload()'
+        end
+      rescue Capybara::ModalNotFound
+        # ignored
+      end
+    end
+  end
+end
+
 Then(/^I check the first notification message$/) do
   if count_table_items == '0'
     puts "There are no notification messages, nothing to do then"
