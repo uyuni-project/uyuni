@@ -370,7 +370,8 @@ public class FormatDateTag extends TagSupport {
         dateStyle = null;
         timeStyle = null;
         type = null;
-        pattern = null;
+        // default to RHN_CUSTOM_DATEFORMAT (consistency with the ReactJS frontend)
+        pattern = LocalizationService.RHN_CUSTOM_DATEFORMAT;
     }
 
 }
