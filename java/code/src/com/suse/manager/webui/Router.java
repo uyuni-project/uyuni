@@ -47,6 +47,7 @@ import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
@@ -210,6 +211,9 @@ public class Router implements SparkApplication {
 
         // Ansible Control Node
         AnsibleController.initRoutes(jade);
+
+        // Rhn Set API
+        SetController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
