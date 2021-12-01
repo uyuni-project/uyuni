@@ -5,8 +5,6 @@ import xor from "lodash/xor";
 
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
 import BaseChannel from "./base-channel";
 import { VirtualList } from "components/virtual-list";
@@ -16,15 +14,13 @@ import {
   getInitialFiltersState,
   StateChannelsSelectionType,
 } from "./channels-selection.state";
-import { initialStateChannelsSelection, reducerChannelsSelection } from "./channels-selection.state";
-import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
-import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
-import { getSelectedChannelsIdsInGroup, hasRecommendedChildren } from "core/channels/utils/channels-state.utils";
-import { ChannelType, DerivedBaseChannel, DerivedChildChannel, RawChannelType } from "core/channels/type/channels.type";
+// TODO: Replicate this logic
+import { initialStateChannelsSelection } from "./channels-selection.state";
+import { ChannelType } from "core/channels/type/channels.type";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
-import { useChannelsApi, useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-selection-api";
+import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-selection-api";
 import { RowType, RowDefinition } from "./channels-selection-rows";
 
 import Worker from "./channels-selection.worker.ts";
@@ -35,6 +31,8 @@ type PropsType = {
   // TODO: Implement
   // TODO: These can be bound only _after_ we have passed initial data to the worker
   initialSelectedIds: Array<number>;
+  // TODO: Where should this be used?!
+  // TODO: This wants labels, not channels as input?
   onChange: (channels: ChannelType[]) => void;
 };
 
@@ -96,6 +94,7 @@ const ChannelsSelection = (props: PropsType) => {
           setSelectedChannelsCount(data.selectedChannelsCount);
           return;
         }
+        // TODO: On selection change, fire props.onChange(), see https://github.com/uyuni-project/uyuni/blob/master/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx#L51
         default:
           throw new RangeError(`Unknown message type, got ${data.type}`);
       }

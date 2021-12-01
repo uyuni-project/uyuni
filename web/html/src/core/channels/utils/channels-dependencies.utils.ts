@@ -69,26 +69,4 @@ function processChannelDependencies(requiredChannelsRaw): ChannelsDependencies {
   };
 }
 
-function getChannelsToToggleWithDependencies(
-  channelsId: Array<number>,
-  requiredChannelsResult: RequiredChannelsResultType,
-  isSelection: boolean
-): Array<number> {
-  let channelsToToggle: Array<number> = [...channelsId];
-  channelsId.forEach((channelId) => {
-    if (isSelection) {
-      channelsToToggle = _union(
-        channelsToToggle,
-        Array.from(requiredChannelsResult.requiredChannels.get(channelId) || [])
-      );
-    } else {
-      channelsToToggle = _union(
-        channelsToToggle,
-        Array.from(requiredChannelsResult.requiredByChannels.get(channelId) || [])
-      );
-    }
-  });
-  return channelsToToggle;
-}
-
-export { dependenciesTooltip, processChannelDependencies, getChannelsToToggleWithDependencies };
+export { dependenciesTooltip, processChannelDependencies };

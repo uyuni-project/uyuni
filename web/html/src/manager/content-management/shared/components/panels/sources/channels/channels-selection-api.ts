@@ -7,7 +7,7 @@ type ChannelsResponse = RawChannelType[];
 
 const MOCK_ID_START = 10000000;
 
-export const useChannelsApi = () => {
+const useChannelsApi = () => {
   const [channelsPromise, setChannelsPromise] = useState<Promise<ChannelsResponse> | undefined>(undefined);
   if (channelsPromise) {
     return [channelsPromise];

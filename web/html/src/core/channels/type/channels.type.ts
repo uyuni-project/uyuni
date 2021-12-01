@@ -1,4 +1,3 @@
-// TODO: This is obsolete
 export type ChannelType = {
   id: number;
   name: string;
@@ -35,8 +34,6 @@ export type DerivedChannelPartial = {
   custom: boolean;
   isCloned: boolean;
   label: string;
-  // requires: Set<number> | undefined;
-  // requiredBy: Set<number> | undefined;
   name: string;
   standardizedName: string;
   recommended: boolean;
