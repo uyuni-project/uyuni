@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.testing;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
@@ -24,8 +26,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 
 /**
  * Basic test class class with a User
@@ -48,6 +48,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
         MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
