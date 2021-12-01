@@ -1,3 +1,5 @@
+- fix parsing error by making SCAP Profile description attribute optional
+  (bsc#1192321)
 - fix openscap scan with tailoring-file option (bsc#1192321)
 - Pass the "allow_vendor_change" flag using the right name when installing patches
 - Fix legacy timepicker passing wrong time to the backend if server and
