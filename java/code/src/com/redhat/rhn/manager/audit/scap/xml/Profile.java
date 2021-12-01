@@ -27,7 +27,7 @@ public class Profile {
     @Attribute
     private String id;
 
-    @Attribute
+    @Attribute(required = false)
     private String description;
 
     /**
