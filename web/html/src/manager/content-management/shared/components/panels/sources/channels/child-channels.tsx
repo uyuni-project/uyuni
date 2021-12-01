@@ -1,21 +1,17 @@
 import * as React from "react";
 import { Highlight } from "components/table/Highlight";
 import { ChannelAnchorLink } from "components/links";
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import { ChannelType, DerivedChildChannel } from "core/channels/type/channels.type";
-import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
+import { ChildRowDefinition } from "./channels-selection-rows";
 
 type Props = {
-  channel: DerivedChildChannel;
-  isSelected: boolean;
-  isRequired: boolean;
+  definition: ChildRowDefinition;
   search: string;
   onToggleChannelSelect: (id: number) => void;
 };
 
 const ChildChannel = (props: Props) => {
-  const channel = props.channel;
-  const childId = "child_" + channel.id;
+  const { id, channelName, isSelected, isRequired, isRecommended } = props.definition;
+  const identifier = "child_" + id;
   // TODO: Tack on in worker
   // const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
   const toolTip = undefined;
@@ -24,14 +20,14 @@ const ChildChannel = (props: Props) => {
     <div className="checkbox" style={{ paddingLeft: 35 }}>
       <input
         type="checkbox"
-        value={channel.id}
-        id={childId}
+        value={id}
+        id={identifier}
         name="childChannels"
-        checked={props.isSelected}
-        onChange={() => props.onToggleChannelSelect(channel.id)}
+        checked={isSelected}
+        onChange={() => props.onToggleChannelSelect(id)}
       />
-      <label title={toolTip || undefined} htmlFor={childId}>
-        <Highlight enabled={props.search?.length > 0} text={channel.name} highlight={props.search}></Highlight>
+      <label title={toolTip || undefined} htmlFor={identifier}>
+        <Highlight enabled={props.search?.length > 0} text={channelName} highlight={props.search}></Highlight>
       </label>
       &nbsp;
       {toolTip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
@@ -40,17 +36,17 @@ const ChildChannel = (props: Props) => {
         </a>
       ) : null}
       &nbsp;
-      {channel.recommended ? (
+      {isRecommended ? (
         <span className="recommended-tag-base" title={t("This channel is recommended")}>
           {t("recommended")}
         </span>
       ) : null}
-      {props.isRequired ? (
+      {isRequired ? (
         <span className="mandatory-tag-base" title={t("This channel is mandatory")}>
           {t("mandatory")}
         </span>
       ) : null}
-      <ChannelAnchorLink id={channel.id} newWindow={true} />
+      <ChannelAnchorLink id={id} newWindow={true} />
     </div>
   );
 };

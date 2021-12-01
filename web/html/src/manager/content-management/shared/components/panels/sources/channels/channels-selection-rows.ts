@@ -7,6 +7,11 @@ export enum RowType {
   RecommendedToggle,
 }
 
+// TODO: Extend this
+type BaseRowDefinition = {
+  id: string | number; // This id is used as a key in the virtual list
+};
+
 // TODO: Rename to Base
 export type ParentRowDefinition = {
   type: RowType.Parent;
@@ -21,9 +26,10 @@ export type ParentRowDefinition = {
 export type ChildRowDefinition = {
   type: RowType.Child;
   id: number;
+  channelName: string;
   isSelected: boolean;
+  isRecommended: boolean;
   isRequired: boolean;
-  channel: DerivedChildChannel;
 };
 
 export type EmptyChildRowDefinition = {
@@ -34,7 +40,7 @@ export type EmptyChildRowDefinition = {
 export type RecommendedToggleRowDefinition = {
   type: RowType.RecommendedToggle;
   id: string; // The id is a merged string here to avoid collisions
-  channel: DerivedBaseChannel;
+  channelId: number; // TODO: Make this obsolete
   areAllRecommendedChildrenSelected: boolean;
 };
 

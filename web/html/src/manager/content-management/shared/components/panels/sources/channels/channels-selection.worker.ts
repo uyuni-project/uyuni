@@ -335,9 +335,10 @@ function derivedChannelsToRowDefinitions(
           children.push({
             type: RowType.Child,
             id: child.id,
+            channelName: channel.name,
             isSelected: isChildSelected,
             isRequired: Boolean(parentRequires?.has(child.id)),
-            channel: child,
+            isRecommended: child.recommended,
           });
         }
       });
@@ -361,7 +362,7 @@ function derivedChannelsToRowDefinitions(
       result.push({
         type: RowType.RecommendedToggle,
         id: `recommended_toggle_${channel.id}`,
-        channel,
+        channelId: channel.id,
         areAllRecommendedChildrenSelected: recommendedChildrenCount === selectedRecommendedChildrenCount,
       });
     }

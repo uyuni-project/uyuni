@@ -124,9 +124,7 @@ const ChannelsSelection = (props: PropsType) => {
       case RowType.Child:
         return (
           <ChildChannel
-            channel={definition.channel}
-            isSelected={definition.isSelected}
-            isRequired={definition.isRequired}
+            definition={definition}
             search={search}
             onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
           />
@@ -136,7 +134,7 @@ const ChannelsSelection = (props: PropsType) => {
       case RowType.RecommendedToggle:
         return (
           <RecommendedToggle
-            channel={definition.channel}
+            definition={definition}
             areAllRecommendedChildrenSelected={definition.areAllRecommendedChildrenSelected}
             onSetRecommendedChildrenSelected={(channelId, selected) =>
               onSetRecommendedChildrenSelected(channelId, selected)
