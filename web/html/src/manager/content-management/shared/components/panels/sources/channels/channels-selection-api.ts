@@ -5,6 +5,8 @@ import { RawChannelType } from "core/channels/type/channels.type";
 
 type ChannelsResponse = RawChannelType[];
 
+const MOCK_ID_START = 10000000;
+
 export const useChannelsApi = () => {
   const [channelsPromise, setChannelsPromise] = useState<Promise<ChannelsResponse> | undefined>(undefined);
   if (channelsPromise) {
@@ -18,10 +20,10 @@ export const useChannelsApi = () => {
       channels = channels.sort((a, b) => a.base.id - b.base.id);
 
       // TODO: Only for testing
-      if (true) {
+      if (false) {
         const testCount = 5000;
         for (var ii = 0; ii < testCount; ii++) {
-          const id = 10000000 + ii;
+          const id = MOCK_ID_START + ii;
           channels.push({
             base: {
               id,
@@ -100,8 +102,8 @@ export const useChannelsWithMandatoryApi = () => {
         ids.push(channel.base.id, ...channel.children.map((child) => child.id));
         return ids;
       }, [] as number[])
-      // TODO: This is only for testing values, remove later
-      .filter((id) => id < 10000000);
+      // TODO: This is only for testing mock values, remove later
+      .filter((id) => id < MOCK_ID_START);
 
     return Network.post<JsonResult<MandatoryChannelsResponse>>("/rhn/manager/api/admin/mandatoryChannels", channelIds)
       .then(Network.unwrap)
