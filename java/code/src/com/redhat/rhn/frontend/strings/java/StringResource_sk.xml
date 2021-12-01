@@ -2266,7 +2266,32 @@ available for this kickstart profile to function properly.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;Ak chcete tento problém vyriešiť, skontrolujte nasledujúce veci:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Je kanál nástrojov klienta pre základný kanál tohto profilu kickstart dostupný
+pre vašu organizáciu? Ak nie je, budete musieť požiadať administrátora
+@@PRODUCT_NAME@@ o oprávnenia pre kanál klientskych nástrojov.
+&lt;/li&gt;
+&lt;li&gt;
+Uistite sa, že kanál klientskych nástrojov pre základný kanál tohto profilu kickstart
+je dostupný pre váš @@PRODUCT_NAME@@. Ak nie je, prosím, kontaktujte svojho
+administrátora @@PRODUCT_NAME@@ a požiadajte o mgr-inter-sync pre kanál 
+nástrojov klienta a skúste to znova.
+&lt;/li&gt;
+&lt;li&gt;
+Uistite sa, že balík spacewalk-koan zodpovedajúci tomuto kickstart je k dispozícii
+v kanáli nástrojov základného kanála kickstart. Ak nie je, budete musieť ho sprístupniť,
+aby tento profil kickstart správne fungoval.
+&lt;/li&gt;
+&lt;li&gt;
+Sú vyššie uvedené balíky k dispozícii v tomto základnom kanáli kickstart? Ak nie, budete ich musieť
+sprístupniť, aby tento profil kickstart správne fungoval.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2289,56 +2314,72 @@ and try again.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;Ak chcete tento problém vyriešiť, skontrolujte nasledujúce veci:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Je softvérový kanál potomka 'appstream' pre základný kanál tohto profilu kickstart
+dostupný pre vašu organizáciu? Ak nie je, budete musieť požiadať o oprávnenia
+pre softvérový kanál 'appstream' od svojho administrátora @@PRODUCT_NAME@@.
+&lt;/li&gt;
+&lt;li&gt;
+Uistite sa, že kanál potomka 'appstream' pre základný kanál tohto profilu kickstart
+je dostupný pre váš @@PRODUCT_NAME@@. Ak nie je, prosím, kontaktujte svojho
+administrátora @@PRODUCT_NAME@@ a požiadajte o cdn-sync pre kanál appstream
+a skúste to znova.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation</source>
-        <target/>
+        <target>Spustiť automatickú inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart_guest.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation of a guest system</source>
-        <target/>
+        <target>Spustiť automatickú inštaláciu hosťovského systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule_sync" xml:space="preserve">
         <source>Schedule a package sync for autoinstallations</source>
-        <target/>
+        <target>Naplánovať synchronizáciu balíkov pre automatické inštalácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel" xml:space="preserve">
         <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
-        <target/>
+        <target>Vami vybrané označenie automatickej inštalácie je neplatné, musí mať aspoň {0} znakov a obsahovať len nasledujúce znaky : A-Z, a-z, 0-9, _, - </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
-        <target/>
+        <target>Označenie automatickej inštalácie už existuje: '{0}'. Prosím, zvoľte si jedinečné označenie kickstart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.success" xml:space="preserve">
         <source>Autoinstallation details successfully updated.</source>
-        <target/>
+        <target>Podrobnosti automatickej inštalácie boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.duplicatefile" xml:space="preserve">
         <source>Please specify only file contents or a file to upload but not both.</source>
-        <target/>
+        <target>Prosím, určte len obsah súboru alebo súbor, ktorý chcete nahrať, ale nie oboje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
