@@ -1,3 +1,4 @@
+- Align allow_vendor_change pillar name across SLS files
 - Use venv-salt-minion instead of salt for docker states
 - Fix libvirt engine config destination for Salt Bundle
 - Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
