@@ -34,20 +34,34 @@ public interface RhnJob extends Job {
      */
     String getConfigNamespace();
 
+    /**
+     * @return default fallback value for number of parallel threads used
+     */
     default int getDefaultParallelThreads() {
         return 1;
     }
 
+    /**
+     * Gets the number of parallel threads for this job either from config or a fallback value
+     * @return number of parallel
+     */
     default int getParallelThreads() {
         return Config.get().getInt("taskomatic." + getConfigNamespace() + "." + "parallel_threads",
                 Config.get().getInt("taskomatic." + this.getClass().getCanonicalName() + ".parallel_threads",
                  getDefaultParallelThreads()));
     }
 
+    /**
+     * @return default fallback reschedule time for jobs
+     */
     default int getDefaultRescheduleTime() {
        return 10;
     }
 
+    /**
+     * Gets the reschedule time for this job either from config or a fallback value
+     * @return reschedule time
+     */
     default int getRescheduleTime() {
         return Config.get().getInt("taskomatic." + getConfigNamespace() + "." + "reschedule_time",
                 Config.get().getInt("taskomatic." + this.getClass().getCanonicalName() + ".reschedule_time",
