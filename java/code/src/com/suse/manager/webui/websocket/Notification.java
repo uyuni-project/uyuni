@@ -16,8 +16,10 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,6 +59,7 @@ import javax.websocket.server.ServerEndpoint;
 public class Notification {
 
     public static final String USER_NOTIFICATIONS = "user-notifications";
+    public static final String SSM_COUNT = "ssm-count";
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(Notification.class);
@@ -200,7 +203,8 @@ public class Notification {
 
     private static void sendData(Session session, User user, Set<String> properties) {
         Map<String, BiFunction<Session, User, Object>> preparers = Map.of(
-                USER_NOTIFICATIONS, Notification::prepareUserNotifications
+                USER_NOTIFICATIONS, Notification::prepareUserNotifications,
+                SSM_COUNT, Notification::prepareSsmCount
         );
         try {
             Map<String, Object> data = properties.stream()
@@ -218,6 +222,11 @@ public class Notification {
 
     private static Object prepareUserNotifications(Session session, User user) {
         return UserNotificationFactory.unreadUserNotificationsSize(user);
+    }
+
+    private static Object prepareSsmCount(Session session, User user) {
+        RhnSet systemSet = RhnSetDecl.SYSTEMS.lookup(user);
+        return systemSet != null ? systemSet.size() : 0;
     }
 
     /**

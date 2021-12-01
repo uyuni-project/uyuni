@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
 import Network from "utils/network";
 import * as Systems from "components/systems";
 import { Utils } from "utils/functions";
@@ -16,23 +15,16 @@ type Props = {
 };
 
 export function VirtualSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = useState([]);
-  const [selectedSystemsCount, setCount] = useState(0);
+  const [selectedSystems, setSelectedSystems] = React.useState<String[]>([]);
 
-  const handleSelectedSystems = (data) => {
-    setSelectedSystems(data);
+  const handleSelectedSystems = (items: String[]) => {
+    const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
+    const added = items.filter((item) => !selectedSystems.includes(item)).map((item) => [item, true]);
+    const data = Object.assign({}, Object.fromEntries(added), Object.fromEntries(removed));
+    Network.post("/rhn/manager/api/sets/system_list", data);
+
+    setSelectedSystems(items);
   };
-
-  useEffect(()=> {
-    setCount(selectedSystems.length);
-    document.getElementById("header_selcount").innerHTML =
-      "<span id='spacewalk-set-system_list-counter' class='badge'>" +
-      selectedSystemsCount.toString() +
-      "</span>" +
-      (selectedSystemsCount === 1 ? "system selected" : "systems selected");
-  }, [handleSelectedSystems]);
-
-  const addToSSM = () => Network.post("/rhn/manager/systems/addToSsm", selectedSystems);
 
   const searchData = (datum, criteria) => {
     if (criteria) {
@@ -55,15 +47,9 @@ export function VirtualSystems(props: Props) {
         </a>
       </h1>
 
-      <div>
-        <button className="btn btn-default" onClick={addToSSM}>
-          {t("Add Selected to SSM")}
-        </button>
-      </div>
-
       <Table
         data="/rhn/manager/api/systems/list/virtual"
-        identifier={(item) => item.uuid}
+        identifier={(item) => item.virtualSystemId || item.uuid}
         initialSortColumnKey="hostServerName"
         selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
