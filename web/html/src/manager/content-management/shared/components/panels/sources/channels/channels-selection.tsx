@@ -1,16 +1,14 @@
 import * as React from "react";
-import { memo, useMemo, useEffect, useState } from "react";
+import { memo, useEffect, useState, useCallback } from "react";
 import debounce from "lodash/debounce";
 import xor from "lodash/xor";
 
-import Network, { JsonResult } from "utils/network";
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
 import ParentChannel from "./group-channels";
-import { useImmerReducer } from "use-immer";
 import { VirtualList } from "components/virtual-list";
 
 import { ActionChannelsSelectionType, StateChannelsSelectionType } from "./channels-selection.state";
@@ -31,6 +29,7 @@ import WorkerMessages from "./channels-selection-messages";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
+  /** TODO: Implement this */
   initialSelectedIds: Array<number>;
   onChange: (channels: ChannelType[]) => void;
 };
@@ -50,10 +49,13 @@ const ChannelsSelection = (props: PropsType) => {
     worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: channelId });
   };
 
-  // TODO: Debounce/throttle/w/e this so we don't overload the worker
-  const onSearch = (newSearch: string) => {
-    worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: newSearch });
-  };
+  // Debounce searching so the worker is not overloaded during typing when working with large data sets
+  const onSearch = useCallback(
+    debounce((newSearch: string) => {
+      worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: newSearch });
+    }, 50),
+    []
+  );
 
   // TODO: What do we need to do when attach/detach is called with previously existing values?
   const onToggleChannelSelect = (channelId: number) => {
@@ -210,7 +212,10 @@ const ChannelsSelection = (props: PropsType) => {
                 />
                 <span className={`${styles.search_icon_container} clear`}>
                   <i
-                    onClick={() => onSearch("")}
+                    onClick={() => {
+                      setSearch("");
+                      onSearch("");
+                    }}
                     className="fa fa-times-circle-o no-margin"
                     title={t("Clear Search")}
                   />

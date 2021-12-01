@@ -18,7 +18,7 @@ export const useChannelsApi = () => {
       channels = channels.sort((a, b) => a.base.id - b.base.id);
 
       // TODO: Only for testing
-      if (false) {
+      if (true) {
         const testCount = 5000;
         for (var ii = 0; ii < testCount; ii++) {
           const id = 10000000 + ii;

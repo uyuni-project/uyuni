@@ -188,7 +188,7 @@ function onChange(stateChange: Partial<typeof state> = {}) {
    * If channels changed or the chosen base channel has changed, ensure channels are properly sorted
    * We store the sorting and only do this on changes so we don't resort for other basic operations
    */
-  if (stateChange.baseChannels || stateChange.selectedBaseChannelId) {
+  if (typeof stateChange.baseChannels !== "undefined" || typeof stateChange.selectedBaseChannelId !== "undefined") {
     state.baseChannels = state.baseChannels.sort((a, b) => {
       // If a base has been selected, sort it to the beginning...
       if (state.selectedBaseChannelId) {
@@ -221,8 +221,8 @@ function onChange(stateChange: Partial<typeof state> = {}) {
         // If the base channel name matches search or we have any children left after the above, include the base channel
         const matchesSearch = channel.standardizedName.includes(search) || channel.children.length > 0;
 
-        // If the search _changed_ then open groups that match, otherwise leave user's selection be
-        if (stateChange.search) {
+        // If the search _changed_ then open base channels that match, otherwise leave user's selection be
+        if (typeof stateChange.search !== "undefined") {
           if (matchesSearch) {
             state.openBaseChannelIds.add(channel.id);
           } else {
@@ -232,6 +232,9 @@ function onChange(stateChange: Partial<typeof state> = {}) {
 
         return matchesSearch;
       });
+    } else if (typeof stateChange.search !== "undefined") {
+      // If the search was cleared, close all base channels
+      state.openBaseChannelIds.clear();
     }
   });
 
