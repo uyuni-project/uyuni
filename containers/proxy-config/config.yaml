@@ -1,2 +1,2 @@
 server: server.tf.local
-squid_size: 20000
+max_cache_size_mb: 20000
