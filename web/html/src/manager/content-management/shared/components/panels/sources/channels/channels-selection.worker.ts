@@ -1,7 +1,4 @@
-// TODO: Does all of this work with HMR?
-
 // NB! Workers must import polyfills
-// TODO: Find a pattern to ensure this always happens
 import "manager/polyfills.ts";
 
 import produce from "utils/produce";
@@ -20,16 +17,24 @@ import { RowType, RowDefinition } from "./channels-selection-rows";
 // eslint-disable-next-line no-restricted-globals
 const context: Worker = self as any;
 
-// TODO: Add commentary to all of these
 const state = {
+  /** An array of all base channels after they've passed initial processing */
   baseChannels: undefined as DerivedBaseChannel[] | undefined,
+  /** A map from a channel id to any known channel */
   channelsMap: new Map<number, DerivedChannel>(),
+  /** A map from a channel id to a set of channel ids this channel requires */
   requiresMap: new Map<number, Set<number> | undefined>(),
+  /** A map from a channel id to a set of channels that require this channel */
   requiredByMap: new Map<number, Set<number> | undefined>(),
+  /** Set of currently open base channel ids */
   openBaseChannelIds: new Set<number>(),
+  /** Set of currently selected channel ids */
   selectedChannelIds: new Set<number>(),
+  /** Currently selected base channel id */
   selectedBaseChannelId: undefined as number | undefined,
+  /** User search string */
   search: "",
+  /** User-selected filters such as vendors, custom, clones */
   activeFilters: [] as string[],
 };
 
@@ -39,6 +44,38 @@ const isBase = (input: DerivedChannel | undefined): input is DerivedBaseChannel 
 
 const isChild = (input: DerivedChannel | undefined): input is DerivedChildChannel => {
   return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parent"));
+};
+
+const selectRecursively = (channelId: number) => {
+  if (state.selectedChannelIds.has(channelId)) {
+    return;
+  }
+  state.selectedChannelIds.add(channelId);
+
+  const channel = state.channelsMap.get(channelId);
+  if (isChild(channel)) {
+    // If we selected a child, open the parent
+    state.openBaseChannelIds.add(channel.parent.id);
+  }
+
+  // Also select any channels that this channel requires
+  state.requiresMap.get(channelId)?.forEach((id) => selectRecursively(id));
+};
+
+const deselectRecursively = (channelId: number) => {
+  if (!state.selectedChannelIds.has(channelId)) {
+    return;
+  }
+  state.selectedChannelIds.delete(channelId);
+
+  // If we deselected a parent, deselect all of its children
+  const channel = state.channelsMap.get(channelId);
+  if (isBase(channel)) {
+    channel.children.forEach((child) => deselectRecursively(child.id));
+  }
+
+  // Also deselect any channels that require this channel
+  state.requiredByMap.get(channelId)?.forEach((id) => deselectRecursively(id));
 };
 
 // Respond to message from parent thread
@@ -101,48 +138,11 @@ context.addEventListener("message", async ({ data }) => {
         throw new TypeError("Channel not found");
       }
 
-      const selectRecursively = (channelId: number) => {
-        if (state.selectedChannelIds.has(channelId)) {
-          return;
-        }
-        state.selectedChannelIds.add(channelId);
-
-        const channel = state.channelsMap.get(channelId);
-        if (isChild(channel)) {
-          // If we selected a child, open the parent
-          state.openBaseChannelIds.add(channel.parent.id);
-        }
-
-        // Also select any channels that this channel requires
-        state.requiresMap.get(channelId)?.forEach((id) => selectRecursively(id));
-      };
-
-      const deselectRecursively = (channelId: number) => {
-        if (!state.selectedChannelIds.has(channelId)) {
-          return;
-        }
-        state.selectedChannelIds.delete(channelId);
-
-        // If we deselected a parent, deselect all of its children
-        const channel = state.channelsMap.get(channelId);
-        if (isBase(channel)) {
-          channel.children.forEach((child) => deselectRecursively(child.id));
-        }
-
-        // Also deselect any channels that require this channel
-        state.requiredByMap.get(channelId)?.forEach((id) => deselectRecursively(id));
-      };
-
-      /**
-       * TODO:
-       * forceSelect = true -> select
-       * forceSelect = false -> deselect
-       * otherwise toggle based on flag
-       */
-
-      if (data.forceSelect || !state.selectedChannelIds.has(channelId)) {
+      if (state.selectedChannelIds.has(channelId)) {
+        deselectRecursively(channelId);
+      } else {
         selectRecursively(channelId);
-        // If we selected a parent on the first level, also select all recommended children by default
+        // If we selected a parent on the first level, also select all recommended children
         const channel = state.channelsMap.get(channelId);
         if (isBase(channel)) {
           channel.children.forEach((child) => {
@@ -151,8 +151,21 @@ context.addEventListener("message", async ({ data }) => {
             }
           });
         }
+      }
+      onChange();
+      return;
+    }
+    case WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED: {
+      const channelId = data.channelId;
+      const channel = state.channelsMap.get(channelId);
+      if (typeof channel === "undefined" || !isBase(channel)) {
+        throw new TypeError("Channel is not a base channel or is not found");
+      }
+
+      if (data.selected) {
+        channel.recommendedChildrenIds.forEach((id) => selectRecursively(id));
       } else {
-        deselectRecursively(channelId);
+        channel.recommendedChildrenIds.forEach((id) => deselectRecursively(id));
       }
       onChange();
       return;
@@ -193,13 +206,10 @@ function onChange(stateChange: Partial<typeof state> = {}) {
    */
   const { baseChannels } = produce({ baseChannels: state.baseChannels }, (draft): void => {
     // Filter by categories and search strings first if possible so everything else is cheaper
-    // TODO: See https://github.com/uyuni-project/uyuni/blob/c88fc74f9d6ff81d9fcfa32347d4b5d75a579dd5/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.utils.ts#L19
     if (state.activeFilters.length) {
       const filters = state.activeFilters.map((name) => channelsFiltersAvailable[name].isVisible);
       draft.baseChannels = draft.baseChannels.filter((channel) => {
-        // TODO: Do we need the parent-child logic here?
-        // TODO: Fix types
-        return filters.some((filter) => filter(channel as any));
+        return filters.some((filter) => filter(channel));
       });
     }
 
@@ -211,23 +221,19 @@ function onChange(stateChange: Partial<typeof state> = {}) {
         // If the base channel name matches search or we have any children left after the above, include the base channel
         const matchesSearch = channel.standardizedName.includes(search) || channel.children.length > 0;
 
-        // TODO: If the search _changed_ then open groups that match, otherwise leave user's selection be
-        // TODO: See how this matches other open-close logic and test
+        // If the search _changed_ then open groups that match, otherwise leave user's selection be
         if (stateChange.search) {
           if (matchesSearch) {
             state.openBaseChannelIds.add(channel.id);
           } else {
             state.openBaseChannelIds.delete(channel.id);
           }
-          // channel.isOpen = matchesSearch;
         }
 
         return matchesSearch;
       });
     }
   });
-
-  // console.log(baseChannels);
 
   // Convert whatever we have remaining after all the filters etc into renderable row definitions
   const rows = derivedChannelsToRowDefinitions(baseChannels, state.selectedBaseChannelId);
@@ -264,7 +270,7 @@ function rawChannelsToDerivedChannels(
     }
   }
 
-  // Create a map of all channels
+  // Keep track of all channels we store
   const channelsMap = new Map<number, DerivedChannel>();
   // TODO: Type all of this
   // NB! The data we receive here is already a copy since we're in a worker so it's safe to modify it directly
@@ -276,6 +282,7 @@ function rawChannelsToDerivedChannels(
     // Precompute filtering values so we only do this once
     baseChannel.standardizedName = baseChannel.name.toLocaleLowerCase();
 
+    baseChannel.recommendedChildrenIds = new Set<number>();
     baseChannel.children = rawChannel.children.map((child) => {
       const derivedChild = {
         ...child,
@@ -283,6 +290,9 @@ function rawChannelsToDerivedChannels(
         standardizedName: child.name.toLocaleLowerCase(),
       };
       channelsMap.set(child.id, derivedChild);
+      if (child.recommended) {
+        baseChannel.recommendedChildrenIds.add(child.id);
+      }
       return derivedChild;
     });
 

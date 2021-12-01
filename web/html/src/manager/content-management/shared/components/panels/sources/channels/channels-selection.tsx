@@ -44,39 +44,24 @@ const ChannelsSelection = (props: PropsType) => {
   const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
   const [selectedChannelsCount, setSelectedChannelsCount] = useState<number>(0);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
-
   const [search, setSearch] = useState("");
-  const onSearch = (value: string) => {
-    setSearch(value);
-    // TODO: Debounce this so we don't overload the worker
-    worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: value });
+
+  const onSelectedBaseChannelIdChange = (channelId: number) => {
+    worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: channelId });
   };
 
-  // TODO: This needs to move to the worker just like rows, otherwise selection is ass
+  // TODO: Debounce/throttle/w/e this so we don't overload the worker
+  const onSearch = (newSearch: string) => {
+    worker.postMessage({ type: WorkerMessages.SET_SEARCH, search: newSearch });
+  };
+
   // TODO: What do we need to do when attach/detach is called with previously existing values?
-  // See https://dev.to/ganes1410/using-javascript-sets-with-react-usestate-39eo
-  // const [[selectedChannelIds], setSelectedChannelIds] = useState<[Set<number>]>([new Set()]);
-  const onToggleChannelSelect = (channelId: number, forceSelect?: boolean) => {
-    // TODO: Implement force select and/or untoggle
-    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId, forceSelect });
+  const onToggleChannelSelect = (channelId: number) => {
+    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId });
+  };
 
-    /*
-    if (forceSelect || !selectedChannelIds.has(channel.id)) {
-      selectedChannelIds.add(channel.id);
-
-      // If there's anything required along with the selection, select that as well
-      if (channel.mandatory.length) {
-        channel.mandatory.forEach((mandatoryChannelId) => selectedChannelIds.add(mandatoryChannelId));
-        // If we selected anything additional, open the relevant group too
-        // TODO: Implement
-      }
-    } else {
-      selectedChannelIds.delete(channel.id);
-      // TODO: Do we need to unselect anything additional?
-    }
-
-    setSelectedChannelIds([selectedChannelIds]);
-    */
+  const onSetRecommendedChildrenSelected = (channelId: number, selected: boolean) => {
+    worker.postMessage({ type: WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED, channelId, selected });
   };
 
   const onToggleChannelOpen = (channelId: number) => {
@@ -148,11 +133,9 @@ const ChannelsSelection = (props: PropsType) => {
           <RecommendedToggle
             channel={definition.channel}
             areAllRecommendedChildrenSelected={definition.areAllRecommendedChildrenSelected}
-            onToggleRecommendedChildrenSelected={() => {
-              // TODO: Based on select-unselect
-              // Force-select the parent
-              onToggleChannelSelect(definition.channel.id, true);
-            }}
+            onSetRecommendedChildrenSelected={(channelId, selected) =>
+              onSetRecommendedChildrenSelected(channelId, selected)
+            }
           />
         );
       default:
@@ -202,9 +185,7 @@ const ChannelsSelection = (props: PropsType) => {
             if (isNaN(value)) {
               return;
             }
-            worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: value });
-            // Ensure the new base channel is selected
-            onToggleChannelSelect(value, true);
+            onSelectedBaseChannelIdChange(value);
           }}
         />
       </div>
@@ -221,7 +202,11 @@ const ChannelsSelection = (props: PropsType) => {
                   className="form-control"
                   placeholder="Search a channel"
                   value={search}
-                  onChange={(event) => onSearch(event.target.value)}
+                  onChange={(event) => {
+                    const newSearch = event.target.value;
+                    setSearch(newSearch);
+                    onSearch(newSearch);
+                  }}
                 />
                 <span className={`${styles.search_icon_container} clear`}>
                   <i

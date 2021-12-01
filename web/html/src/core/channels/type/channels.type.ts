@@ -49,6 +49,7 @@ export type DerivedChildChannel = DerivedChannelPartial & {
 
 export type DerivedBaseChannel = DerivedChannelPartial & {
   children: DerivedChildChannel[];
+  recommendedChildrenIds: Set<number>;
 };
 
 export type DerivedChannel = DerivedBaseChannel | DerivedChildChannel;
