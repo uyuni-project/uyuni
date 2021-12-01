@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Highlight } from "components/table/Highlight";
-import { ParentRowDefinition } from "./channels-selection-rows";
+import { BaseRowDefinition } from "./channels-selection-rows";
 
 type Props = {
-  rowDefinition: ParentRowDefinition;
+  rowDefinition: BaseRowDefinition;
   search: string;
   onToggleChannelSelect: (id: number) => void;
   onToggleChannelOpen: (id: number) => void;

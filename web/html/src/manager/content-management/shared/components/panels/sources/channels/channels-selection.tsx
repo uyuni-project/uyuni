@@ -135,7 +135,6 @@ const ChannelsSelection = (props: PropsType) => {
         return (
           <RecommendedToggle
             definition={definition}
-            areAllRecommendedChildrenSelected={definition.areAllRecommendedChildrenSelected}
             onSetRecommendedChildrenSelected={(channelId, selected) =>
               onSetRecommendedChildrenSelected(channelId, selected)
             }

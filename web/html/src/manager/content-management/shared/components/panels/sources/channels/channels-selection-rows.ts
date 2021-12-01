@@ -1,3 +1,5 @@
+// Every row must be directly identifiable by the virtual list
+import { Identifiable } from "components/virtual-list/VirtualList";
 import { DerivedBaseChannel, DerivedChildChannel } from "core/channels/type/channels.type";
 
 export enum RowType {
@@ -7,13 +9,7 @@ export enum RowType {
   RecommendedToggle,
 }
 
-// TODO: Extend this
-type BaseRowDefinition = {
-  id: string | number; // This id is used as a key in the virtual list
-};
-
-// TODO: Rename to Base
-export type ParentRowDefinition = {
+export type BaseRowDefinition = Identifiable & {
   type: RowType.Parent;
   id: number;
   channelName: string;
@@ -23,7 +19,7 @@ export type ParentRowDefinition = {
   selectedChildrenCount: number;
 };
 
-export type ChildRowDefinition = {
+export type ChildRowDefinition = Identifiable & {
   type: RowType.Child;
   id: number;
   channelName: string;
@@ -32,12 +28,12 @@ export type ChildRowDefinition = {
   isRequired: boolean;
 };
 
-export type EmptyChildRowDefinition = {
+export type EmptyChildRowDefinition = Identifiable & {
   type: RowType.EmptyChild;
   id: string; // The id is a merged string here to avoid collisions
 };
 
-export type RecommendedToggleRowDefinition = {
+export type RecommendedToggleRowDefinition = Identifiable & {
   type: RowType.RecommendedToggle;
   id: string; // The id is a merged string here to avoid collisions
   channelId: number; // TODO: Make this obsolete
@@ -45,7 +41,7 @@ export type RecommendedToggleRowDefinition = {
 };
 
 export type RowDefinition =
-  | ParentRowDefinition
+  | BaseRowDefinition
   | ChildRowDefinition
   | EmptyChildRowDefinition
   | RecommendedToggleRowDefinition;

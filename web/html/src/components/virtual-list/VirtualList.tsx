@@ -3,7 +3,7 @@ import { memo } from "react";
 import { VariableSizeList as List, ListChildComponentProps, areEqual } from "react-window";
 import { useResizeDetector } from "react-resize-detector";
 
-type Identifiable = { id: number | string };
+export type Identifiable = { id: number | string };
 
 type ListProps<T> = {
   renderRow: (item: T) => JSX.Element;
