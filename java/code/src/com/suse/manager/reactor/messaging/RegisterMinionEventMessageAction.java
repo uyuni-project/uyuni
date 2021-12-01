@@ -876,7 +876,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err2 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err3 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err4 -> rpmErrQueryRHELProvidesRelease(minionId)),
+                            err4 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err5 -> rpmErrQueryRHELProvidesRelease(minionId)),
                     r -> of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
             ))
             .flatMap(pkgStr -> {
@@ -912,7 +913,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         err1 -> rpmErrQueryRHELRelease(err1, minionId),
                                         err2 -> rpmErrQueryRHELRelease(err2, minionId),
                                         err3 -> rpmErrQueryRHELRelease(err3, minionId),
-                                        err4 -> rpmErrQueryRHELRelease(err4, minionId)),
+                                        err4 -> rpmErrQueryRHELRelease(err4, minionId),
+                                        err5 -> rpmErrQueryRHELRelease(err5, minionId)),
                                 r -> of(r)
                         ))
                         .map(result -> {

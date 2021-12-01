@@ -17,6 +17,9 @@ repositories:
   4.2:
     project: SUSE:SLE-15-SP3:Update:Products:Manager42
     repository: standard
+  D_G_M_4.2:
+    project: Devel:Galaxy:Manager:4.2
+    repository: SLE_15_SP3
 artifacts:
   - artifact: asm
     package: asm3
@@ -191,7 +194,7 @@ artifacts:
     package: redstone-xmlrpc
     repository: 4.2
   - artifact: salt-netapi-client
-    repository: 4.2
+    repository: D_G_M_4.2
   - artifact: simpleclient
     package: prometheus-client-java
     jar: simpleclient-[0-9.]+
