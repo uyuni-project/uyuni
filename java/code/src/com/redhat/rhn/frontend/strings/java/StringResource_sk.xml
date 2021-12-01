@@ -2234,7 +2234,7 @@
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.message" xml:space="preserve">
         <source>The following packages are not available in any of the channels associated to this kickstart profile: {0}. In order for all kickstart functionality to work correctly, these packages should be present in at least one channel associated to this profile.</source>
-        <target/>
+        <target>Nasledujúce balíky nie sú k dispozícii v žiadnom z kanálov spojených s týmto profilom kickstart: {0}. Aby všetky funkcie kickstart fungovali správne, tieto balíky by mali byť prítomné aspoň v jednom kanáli priradenom k tomuto profilu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
