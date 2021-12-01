@@ -101,7 +101,14 @@
     </li>
     <li id="ssm-box" class="ssm-box">
       <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
-        <div id="header_selcount"><rhn:setdisplay user="${requestScope.session.user}" /></div>
+        <div id="ssm-counter"></div>
+        <script type="text/javascript">
+          window.csrfToken = '<c:out value="${csrf_token}" />';
+          spaImportReactPage('systems/ssm/ssm-counter')
+            .then(function(module) {
+              module.renderer("ssm-counter", {})
+            });
+        </script>
       </a>
       <%--
         -- Make sure we set the return_url variable correctly here. This will make is to

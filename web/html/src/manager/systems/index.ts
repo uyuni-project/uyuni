@@ -3,6 +3,7 @@ export default {
   "systems/bootstrap/bootstrap-minions": () => import("./bootstrap/bootstrap-minions"),
   "systems/proxy": () => import("./proxy.renderer"),
   "systems/ssm/ssm-subscribe-channels": () => import("./ssm/ssm-subscribe-channels"),
+  "systems/ssm/ssm-counter": () => import("./ssm/ssm-counter.renderer"),
   "systems/subscribe-channels/subscribe-channels": () => import("./subscribe-channels/subscribe-channels.renderer"),
   "systems/virtualhostmanager/virtualhostmanager": () => import("./virtualhostmanager/virtualhostmanager"),
   "systems/delete-system-confirm": () => import("./delete-system-confirm"),
