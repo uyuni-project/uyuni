@@ -220,10 +220,7 @@ public class FormatDateTag extends TagSupport {
     protected String getFormattedDate() {
         String fmtDate;
         // use spacewalk defaults if the formatter is not customized
-        if (!isFormatCustomized()) {
-            fmtDate = LocalizationService.getInstance().formatDate(getValue());
-        }
-        else {
+        if (isFormatCustomized()) {
             DateFormat fmt = getFormatter();
             fmt.setTimeZone(LocalizationService.getInstance().determineTimeZone());
             if (getPattern() != null) {
@@ -231,6 +228,8 @@ public class FormatDateTag extends TagSupport {
                 simplefmt.applyPattern(pattern);
             }
             fmtDate = fmt.format(value);
+        } else {
+            fmtDate = LocalizationService.getInstance().formatDate(getValue());
         }
         return fmtDate;
     }
