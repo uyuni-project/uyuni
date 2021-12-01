@@ -755,6 +755,7 @@ PKGLISTDEBIAN10 = [
 ]
 
 PKGLISTDEBIAN11 = [
+    "gnupg",
     "venv-salt-minion"
 ]
 
