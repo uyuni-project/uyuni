@@ -24,4 +24,4 @@ COPY proxy/installer/squid.conf /etc/squid/squid.conf
 COPY containers/proxy-squid/uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
-CMD uyuni-configure.py && squid -FC --foreground
+CMD uyuni-configure.py && squid -z --foreground && squid -FC --foreground

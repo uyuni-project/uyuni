@@ -15,6 +15,10 @@ with open("/etc/uyuni/config.yaml") as source:
         fileContent = fileContent.replace(
             'cache_dir ufs /var/cache/squid 15000 16 256',
             f"cache_dir ufs /var/cache/squid {str(config['squid_size'])} 16 256")
+        fileContent = fileContent.replace(
+            'access_log /var/log/squid/access.log squid',
+            'access_log stdio:/dev/pts/0 squid \ncache_log stdio:/dev/pts/0 squid'
+        )
 
         # write to file
         with open("/etc/squid/squid.conf", "w") as dest:
@@ -22,3 +26,4 @@ with open("/etc/uyuni/config.yaml") as source:
 
 # make sure "squid" is the user and group owner of the cache squid path
 os.system('chown -R squid:squid /var/cache/squid')
+os.system('chown -R squid:squid /dev/pts')
