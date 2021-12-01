@@ -36,7 +36,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    public void testXccdfEvalTransform_xccdf11() throws Exception {
+    public void testXccdfEvalTransformXccdf11() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
@@ -67,7 +67,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Default vanilla kernel hardening", result.getProfile().getTitle());
     }
 
-    public void testXccdfEvalTransform_xccdf_with_tailoring() throws Exception {
+    public void testXccdfEvalTransformXccdfWithTailoring() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
