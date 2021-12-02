@@ -315,7 +315,6 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .map(ident -> ident.getIdentifier())
                 .collect(Collectors.toSet());
         assertEquals(ruleIds.size(), resultIds.size());
-        resultIds.stream().filter(r -> ruleIds.contains(r)).collect(Collectors.toList());
         assertTrue("Expected but missing rules: " + resultIds.stream()
                      .filter(r -> !ruleIds.contains(r)).collect(Collectors.toList()),
             resultIds.containsAll(ruleIds));
