@@ -45,14 +45,6 @@ export type StateChannelsSelectionType = {
   search: string;
 };
 
-export type ActionChannelsSelectionType =
-  | { type: "search"; search: string }
-  | { type: "toggle_filter"; filter: string }
-  | { type: "toggle_channel"; channelId: number; baseId: number }
-  | { type: "set_recommended"; enable: boolean; baseId: number }
-  | { type: "open_group"; open: boolean; baseId: number }
-  | { type: "lead_channel"; newBaseId: number };
-
 export const initialStateChannelsSelection = (initialSelectedIds: Array<number>) => ({
   activeFilters: getInitialFiltersState(),
   selectedBaseChannelId: initialSelectedIds[0],

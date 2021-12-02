@@ -2,7 +2,7 @@ import produce from "utils/produce";
 
 import { DerivedBaseChannel, DerivedChannel, isBaseChannel, isChildChannel } from "core/channels/type/channels.type";
 
-import { channelsFiltersAvailable } from "./channels-selection.state";
+import { channelsFiltersAvailable } from "./channels-filters-types";
 import { derivedChannelsToRowDefinitions } from "./channels-selection-transforms";
 
 export type StateChange = Partial<State> & {

@@ -9,14 +9,9 @@ import styles from "./channels-selection.css";
 import BaseChannel from "./base-channel";
 import { VirtualList } from "components/virtual-list";
 
-import {
-  ActionChannelsSelectionType,
-  getInitialFiltersState,
-  StateChannelsSelectionType,
-} from "./channels-selection.state";
+import { getInitialFiltersState, StateChannelsSelectionType } from "./channels-filters-types";
 // TODO: Replicate this logic
-import { initialStateChannelsSelection } from "./channels-selection.state";
-import { ChannelType } from "core/channels/type/channels.type";
+import { initialStateChannelsSelection } from "./channels-filters-types";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
@@ -112,7 +107,6 @@ const ChannelsSelection = (props: PropsType) => {
   // TODO: Move this to a component and add padding
   const NoChildren = <span>&nbsp;{t("no child channels")}</span>;
   const Row = (definition: RowDefinition) => {
-    // TODO: Move all required fields into the definition and then just pass that and methods
     switch (definition.type) {
       case RowType.Parent:
         return (

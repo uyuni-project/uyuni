@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { channelsFiltersAvailableValues, FilterType } from "./channels-selection.state";
+import { channelsFiltersAvailableValues, FilterType } from "./channels-filters-types";
 
 type Props = {
   activeFilters: string[];
