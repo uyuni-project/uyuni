@@ -177,10 +177,7 @@ const ChannelsSelection = (props: PropsType) => {
   return (
     <React.Fragment>
       <div className="row">
-        {/** TODO: This doesn't have an initial value */}
         <Select
-          /** TODO: Is this used anywhere? */
-          // name="selectedBaseChannel"
           loadOptions={loadSelectOptions}
           defaultValueOption={defaultValueOption}
           paginate={true}
@@ -247,11 +244,11 @@ const ChannelsSelection = (props: PropsType) => {
   );
 };
 
-// TODO: Review this
 // This whole view is expensive with large lists, so rerender only when we really need to
 export default memo(ChannelsSelection, (prevProps, nextProps) => {
   return (
     prevProps.isSourcesApiLoading === nextProps.isSourcesApiLoading &&
-    prevProps.initialSelectedSources.join() === nextProps.initialSelectedSources.join()
+    // This prop is a filtet result but memoed so this works fine
+    prevProps.initialSelectedSources === nextProps.initialSelectedSources
   );
 });
