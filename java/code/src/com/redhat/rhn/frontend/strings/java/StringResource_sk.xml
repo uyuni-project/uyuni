@@ -1652,21 +1652,21 @@
       </trans-unit>
       <trans-unit id="desiredpassword" xml:space="preserve">
         <source>Desired Password</source>
-        <target/>
+        <target>Požadované heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredpasswordConfirm" xml:space="preserve">
         <source>Confirm Password</source>
-        <target/>
+        <target>Potvrdiť heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address1" xml:space="preserve">
         <source>Street Address</source>
-        <target/>
+        <target>Adresa ulice</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1675,7 +1675,7 @@
       </trans-unit>
       <trans-unit id="address2" xml:space="preserve">
         <source>Street Address 2</source>
-        <target/>
+        <target>Adresa ulice 2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1683,7 +1683,7 @@
       </trans-unit>
       <trans-unit id="city" xml:space="preserve">
         <source>City</source>
-        <target/>
+        <target>Mesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1692,7 +1692,7 @@
       </trans-unit>
       <trans-unit id="state" xml:space="preserve">
         <source>State/Province</source>
-        <target/>
+        <target>Štát/Provincia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1701,7 +1701,7 @@
       </trans-unit>
       <trans-unit id="country" xml:space="preserve">
         <source>Country</source>
-        <target/>
+        <target>Krajina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1710,7 +1710,7 @@
       </trans-unit>
       <trans-unit id="building" xml:space="preserve">
         <source>Building</source>
-        <target/>
+        <target>Budova</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1718,7 +1718,7 @@
       </trans-unit>
       <trans-unit id="room" xml:space="preserve">
         <source>Room</source>
-        <target/>
+        <target>Miestnosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1726,7 +1726,7 @@
       </trans-unit>
       <trans-unit id="rack" xml:space="preserve">
         <source>Rack</source>
-        <target/>
+        <target>Rack</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1734,154 +1734,154 @@
       </trans-unit>
       <trans-unit id="system_name" xml:space="preserve">
         <source>System Name</source>
-        <target/>
+        <target>Názov systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="zip" xml:space="preserve">
         <source>Zip / Postal Code</source>
-        <target/>
+        <target>PSČ / Poštové smerovacie číslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="phone" xml:space="preserve">
         <source>Phone</source>
-        <target/>
+        <target>Telefón</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.subjecttoolong" xml:space="preserve">
         <source>Subject too long (80 character maximum)</source>
-        <target/>
+        <target>Príliš dlhý predmet (maximálne 80 znakov)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.subjecttooshort" xml:space="preserve">
         <source>Subject must not be empty</source>
-        <target/>
+        <target>Predmet nesmie byť prázdny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.notetoolong" xml:space="preserve">
         <source>Note details must be 4000 characters or less</source>
-        <target/>
+        <target>Podrobnosti v poznámke musia mať nie viac ako 4000 znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sid" xml:space="preserve">
         <source>System ID</source>
-        <target/>
+        <target>Systémové ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="to_org" xml:space="preserve">
         <source>Destination Organization</source>
-        <target/>
+        <target>Cieľová organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="params" xml:space="preserve">
         <source>Command-line Arguments</source>
-        <target/>
+        <target>Argumenty príkazového riadka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="path" xml:space="preserve">
         <source>Path to XCCDF document</source>
-        <target/>
+        <target>Cesta k dokumentu XCCDF</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="first" xml:space="preserve">
           <source>First Scan Id</source>
-        <target/>
+        <target>Id prvého skenovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="second" xml:space="preserve">
           <source>Second Scan Id</source>
-        <target/>
+        <target>Id druhého skenovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.perms_updated" xml:space="preserve">
         <source>Permissions Updated</source>
-        <target/>
+        <target>Oprávnenia aktualizované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.refeshScheduled" xml:space="preserve">
         <source>You have successfully &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; a hardware profile refresh for &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Úspešne ste &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;naplánovali&lt;/a&gt; obnovenie hardvérového profilu pre &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
         <source>Networking properties updated.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Vlastnosti siete sú aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
-        <target/>
+        <target>Predpona</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="position" xml:space="preserve">
         <source>Position</source>
-        <target/>
+        <target>Pozícia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usertype" xml:space="preserve">
         <source>User Type</source>
-        <target/>
+        <target>Typ používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="created" xml:space="preserve">
         <source>Created</source>
-        <target/>
+        <target>Vytvorený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="last_sign_in" xml:space="preserve">
         <source>Last Sign In</source>
-        <target/>
+        <target>Naposledy prihlásený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address_record" xml:space="preserve">
         <source>Address Record:</source>
-        <target/>
+        <target>Záznam adresy:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.defaultSystemGroups" xml:space="preserve">
         <source>Default system groups updated for &lt;strong&gt;{0}&lt;/strong&gt;</source>
-        <target/>
+        <target>Predvolené systémové skupiny aktualizované pre &lt;strong&gt;{0}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
           <context context-type="paramnotes">
@@ -1891,49 +1891,49 @@
       </trans-unit>
       <trans-unit id="message.preferencesModified" xml:space="preserve">
         <source>Preferences modified</source>
-        <target/>
+        <target>Predvoľby upravené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.addressChanged" xml:space="preserve">
         <source>Address changed</source>
-        <target/>
+        <target>Adresa zmenená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userInfoUpdated" xml:space="preserve">
         <source>User information updated</source>
-        <target/>
+        <target>Informácie o používateľovi aktualizované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no user loggedin" xml:space="preserve">
         <source>No User logged in.</source>
-        <target/>
+        <target>Nie je prihlásený žiadny používateľ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headers" xml:space="preserve">
         <source>Headers</source>
-        <target/>
+        <target>Hlavičky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="form variables" xml:space="preserve">
         <source>Form Variables</source>
-        <target/>
+        <target>Premenné formulára</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userCreated" xml:space="preserve">
         <source>Account &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Účet &lt;strong&gt;{0}&lt;/strong&gt; vytvorený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
@@ -1943,21 +1943,21 @@
       </trans-unit>
       <trans-unit id="message.filterby" xml:space="preserve">
         <source>Filter by {0}: </source>
-        <target/>
+        <target>Filtrovať podľa {0}: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.filterby.multiple" xml:space="preserve">
         <source>Filter by: </source>
-        <target/>
+        <target>Filtrovať podľa: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.range" xml:space="preserve">
         <source>{0} - {1} of {2}</source>
-        <target/>
+        <target>{0} - {1} z {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
@@ -1965,14 +1965,15 @@
       <trans-unit id="message.range.withtypedescription" xml:space="preserve">
         <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
 {3} displayed</source>
-        <target/>
+        <target>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
+{3} zobrazené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
-        <target/>
+        <target>({0} vybrané)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
           <context context-type="paramnotes">
@@ -1982,14 +1983,14 @@
       </trans-unit>
       <trans-unit id="message.items.per.page" xml:space="preserve">
         <source>{0} items per page</source>
-        <target/>
+        <target>{0} položiek na stránku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userCreatedIntoOrg" xml:space="preserve">
         <source>Account &lt;strong&gt;{0}&lt;/strong&gt; created, login information sent to &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target>Účet &lt;strong&gt;{0}&lt;/strong&gt; vytvorený, prihlasovacie údaje odoslané na &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
@@ -1999,168 +2000,168 @@
       </trans-unit>
       <trans-unit id="show.all" xml:space="preserve">
         <source>Show All</source>
-        <target/>
+        <target>Zobraziť všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hide.all" xml:space="preserve">
         <source>Hide All</source>
-        <target/>
+        <target>Skryť všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-class" xml:space="preserve">
         <source>Class does not implement AclHandler: {0}</source>
-        <target/>
+        <target>Trieda neimplementuje AclHandler: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-signature" xml:space="preserve">
         <source>Bad ACL handler method [{0}]. ACL handler methods must have the following signature (may be static or non-static), with no declared exceptions: public aclXXXX(Object, String[])</source>
-        <target/>
+        <target>Zlá metóda obsluhy ACL [{0}]. Metódy obsluhy ACL musia mať nasledujúcu signatúru (môžu byť statické alebo nestatické) bez deklarovaných výnimiek: public aclXXXX(Object, String[])</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-syntax" xml:space="preserve">
         <source>Could not parse ACL statement: "{0}"</source>
-        <target/>
+        <target>Nepodarilo sa spracovať príkaz ACL: "{0}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-handler" xml:space="preserve">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
-        <target/>
+        <target>Nepodarilo sa nájsť obsluhu ACL {0} v príkaze: "{1}". Dostupné obslužné programy ACL: {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="invocation-target-exception" xml:space="preserve">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
-        <target/>
+        <target>IllegalInvocationException volajúce {0} ("{1}"): {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no notes" xml:space="preserve">
         <source>(none)</source>
-        <target/>
+        <target>(žiadne)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.refresh_list" xml:space="preserve">
         <source>Package List Refresh</source>
-        <target/>
+        <target>Obnovenie zoznamu balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hardware.refresh_list" xml:space="preserve">
         <source>Hardware List Refresh</source>
-        <target/>
+        <target>Obnovenie zoznamu hardvéru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.update" xml:space="preserve">
         <source>Package Install</source>
-        <target/>
+        <target>Inštalácia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.remove" xml:space="preserve">
         <source>Package Removal</source>
-        <target/>
+        <target>Odstránenie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.update" xml:space="preserve">
         <source>Patch Update</source>
-        <target/>
+        <target>Aktualizácia opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scap.xccdf_eval" xml:space="preserve">
         <source>OpenSCAP xccdf scanning</source>
-        <target/>
+        <target>Skenovanie OpenSCAP xccdf</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="up2date_config.get" xml:space="preserve">
         <source>Get server up2date config</source>
-        <target/>
+        <target>Získať up2date konfiguráciu servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="up2date_config.update" xml:space="preserve">
         <source>Update server up2date config</source>
-        <target/>
+        <target>Aktualizovať up2date konfiguráciu servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.delta" xml:space="preserve">
         <source>Package installation and removal in one RPM transaction</source>
-        <target/>
+        <target>Inštalácia a odstránenie balíkov v jednej transakcii RPM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
-        <target/>
+        <target>Reštart systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="clientcert.update_client_cert" xml:space="preserve">
         <source>Update of system certificate</source>
-        <target/>
+        <target>Aktualizácia systémového certifikátu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.config" xml:space="preserve">
         <source>Enable or Disable RPM Transaction Rollback</source>
-        <target/>
+        <target>Povolenie alebo zakázanie spätného vrátenia transakcie RPM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.listTransactions" xml:space="preserve">
         <source>Refresh server-side transaction list</source>
-        <target/>
+        <target>Obnoviť zoznam transakcií na strane servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.autoupdate" xml:space="preserve">
         <source>Automatic package installation</source>
-        <target/>
+        <target>Automatická inštalácia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.runTransaction" xml:space="preserve">
         <source>Package Synchronization</source>
-        <target/>
+        <target>Synchronizácia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.import.success" xml:space="preserve">
         <source>{0} files &lt;a href="{1}"&gt;scheduled&lt;/a&gt; for upload.</source>
-        <target/>
+        <target>{0} súborov &lt;a href="{1}"&gt;naplánovaných&lt;/a&gt; na nahratie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
@@ -10971,7 +10972,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
     </body>
   </file>

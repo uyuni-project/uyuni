@@ -1,4 +1,15 @@
-- Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
+- Align allow_vendor_change pillar name across SLS files
+- Use venv-salt-minion instead of salt for docker states
+- Fix libvirt engine config destination for Salt Bundle
+- Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
+  in order to force venv-salt-minion installation
+
+-------------------------------------------------------------------
+Tue Nov 16 10:09:40 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Implement using re-activation keys when bootstrapping
+  * Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
 
 -------------------------------------------------------------------
 Fri Nov 05 14:07:05 CET 2021 - jgonzalez@suse.com

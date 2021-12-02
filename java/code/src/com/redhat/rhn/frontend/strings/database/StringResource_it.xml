@@ -3631,7 +3631,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
+      <target state="new"/>
   </trans-unit>
       </body>
   </file>

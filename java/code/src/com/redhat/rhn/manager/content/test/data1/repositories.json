@@ -7727,7 +7727,7 @@
     "id": 1724,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -7737,7 +7737,7 @@
     "id": 1725,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -7747,7 +7747,7 @@
     "id": 1726,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -7757,7 +7757,7 @@
     "id": 1727,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -7767,7 +7767,7 @@
     "id": 1728,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -7777,7 +7777,7 @@
     "id": 1729,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -7787,7 +7787,7 @@
     "id": 1730,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -7797,7 +7797,7 @@
     "id": 1731,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -7807,7 +7807,7 @@
     "id": 1732,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -7817,7 +7817,7 @@
     "id": 1733,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -7827,7 +7827,7 @@
     "id": 1734,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -7837,7 +7837,7 @@
     "id": 1735,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -11547,7 +11547,7 @@
     "id": 2179,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -11557,7 +11557,7 @@
     "id": 2180,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -11567,7 +11567,7 @@
     "id": 2181,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -11577,7 +11577,7 @@
     "id": 2182,
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -15187,7 +15187,7 @@
     "id": 2705,
     "installer_updates": false,
     "name": "SLE-Product-SLES15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15/x86_64/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15/x86_64/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -15197,7 +15197,7 @@
     "id": 2706,
     "installer_updates": true,
     "name": "SLE15-Installer-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-INSTALLER/15/x86_64/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-INSTALLER/15/x86_64/update/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -15207,7 +15207,7 @@
     "id": 2707,
     "installer_updates": false,
     "name": "SLE-Product-SLES15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16537,7 +16537,7 @@
     "id": 2917,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/aarch64/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/aarch64/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16547,7 +16547,7 @@
     "id": 2918,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/aarch64/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/aarch64/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16557,7 +16557,7 @@
     "id": 2919,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/aarch64/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/aarch64/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16567,7 +16567,7 @@
     "id": 2920,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/aarch64/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/aarch64/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16577,7 +16577,7 @@
     "id": 2921,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/aarch64/product_source/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/aarch64/product_source/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16587,7 +16587,7 @@
     "id": 2922,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/ppc64le/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/ppc64le/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16597,7 +16597,7 @@
     "id": 2923,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/ppc64le/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/ppc64le/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16607,7 +16607,7 @@
     "id": 2924,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/ppc64le/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/ppc64le/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16617,7 +16617,7 @@
     "id": 2925,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/ppc64le/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/ppc64le/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16627,7 +16627,7 @@
     "id": 2926,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/ppc64le/product_source/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/ppc64le/product_source/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16637,7 +16637,7 @@
     "id": 2927,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/s390x/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/s390x/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16647,7 +16647,7 @@
     "id": 2928,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/s390x/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/s390x/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16657,7 +16657,7 @@
     "id": 2929,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/s390x/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/s390x/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16667,7 +16667,7 @@
     "id": 2930,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/s390x/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/s390x/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16677,7 +16677,7 @@
     "id": 2931,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/s390x/product_source/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/s390x/product_source/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16687,7 +16687,7 @@
     "id": 2932,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/?my-fake-token2"
   },
   {
     "autorefresh": true,
@@ -16697,7 +16697,7 @@
     "id": 2933,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16707,7 +16707,7 @@
     "id": 2934,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/x86_64/product/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/x86_64/product/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16717,7 +16717,7 @@
     "id": 2935,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/x86_64/product_debug/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/x86_64/product_debug/?my-fake-token2"
   },
   {
     "autorefresh": false,
@@ -16727,7 +16727,7 @@
     "id": 2936,
     "installer_updates": false,
     "name": "SLE-Manager-Tools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/x86_64/product_source/?my-fake-token"
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/15/x86_64/product_source/?my-fake-token2"
   },
   {
     "autorefresh": true,
