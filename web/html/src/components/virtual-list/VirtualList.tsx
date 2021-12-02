@@ -1,6 +1,5 @@
 import * as React from "react";
-import { memo } from "react";
-import { VariableSizeList as List, ListChildComponentProps, areEqual } from "react-window";
+import { VariableSizeList as List, ListChildComponentProps } from "react-window";
 import { useResizeDetector } from "react-resize-detector";
 
 export type Identifiable = { id: number | string };
@@ -18,8 +17,6 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
     refreshRate: 100,
   });
 
-  // TODO: We could also provide our own comparator function perhaps?
-  // const Row = memo((rowProps: ListChildComponentProps<T[]>) => { ... }, areEqual);
   const Row = (rowProps: ListChildComponentProps<T[]>) => {
     const item = rowProps.data[rowProps.index];
     return (
