@@ -7,27 +7,6 @@ export function rawChannelsToDerivedChannels(
   rawChannels: RawChannelType[],
   rawRequiresMap: { [key: string]: number[] | undefined }
 ) {
-  // Create a two-way mapping of what channels require what channels, and what channels are required by what channels
-  const requiresMap = new Map<number, Set<number> | undefined>();
-  const requiredByMap = new Map<number, Set<number> | undefined>();
-  for (const channelIdString in rawRequiresMap) {
-    const channelId = parseInt(channelIdString, 10);
-    if (isNaN(channelId)) {
-      throw new RangeError("Invalid channel id");
-    }
-    const requiredChannelIds = rawRequiresMap[channelIdString];
-    if (requiredChannelIds?.length) {
-      requiresMap.set(channelId, new Set(requiredChannelIds));
-      requiredChannelIds.forEach((requiredChannelId) => {
-        if (requiredByMap.has(requiredChannelId)) {
-          requiredByMap.get(requiredChannelId)?.add(channelId);
-        } else {
-          requiredByMap.set(requiredChannelId, new Set([channelId]));
-        }
-      });
-    }
-  }
-
   // Keep track of all channels we store
   const channelsMap = new Map<number, DerivedChannel>();
   // TODO: Type all of this
@@ -58,8 +37,47 @@ export function rawChannelsToDerivedChannels(
 
     return baseChannel;
   });
+
+  // Create a two-way mapping of what channels require what channels, and what channels are required by what channels
+  const requiresMap = new Map<number, Set<DerivedChannel> | undefined>();
+  const requiredByMap = new Map<number, Set<DerivedChannel> | undefined>();
+  for (const channelIdString in rawRequiresMap) {
+    const channelId = parseInt(channelIdString, 10);
+    if (isNaN(channelId)) {
+      throw new RangeError("Invalid channel id");
+    }
+
+    // The original data includes the channel's own id, don't include it in the set
+    const requiredChannelIds = rawRequiresMap[channelIdString]
+      ?.map((id) => channelsMap.get(id) as DerivedChannel) // We know these values exist
+      .filter((channel) => channel.id !== channelId);
+    if (requiredChannelIds?.length) {
+      requiresMap.set(channelId, new Set(requiredChannelIds));
+      requiredChannelIds.forEach((channel) => {
+        if (requiredByMap.has(channel.id)) {
+          requiredByMap.get(channel.id)?.add(channel);
+        } else {
+          requiredByMap.set(channel.id, new Set([channel]));
+        }
+      });
+    }
+  }
+
   return { baseChannels, channelsMap, requiresMap, requiredByMap };
 }
+
+const getTooltipData = (channelId: number, state: State) => {
+  const [requiresNames, requiredByNames] = [state.requiresMap.get(channelId), state.requiredByMap.get(channelId)].map(
+    (maybeSet) =>
+      Array.from(maybeSet || [])
+        .filter(Boolean)
+        .map((channel) => channel.name)
+  );
+  return {
+    requiresNames,
+    requiredByNames,
+  };
+};
 
 // TODO: Add tests
 export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChannel[], state: State): RowDefinition[] {
@@ -84,13 +102,15 @@ export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChan
         selectedRecommendedChildrenCount += Number(isChildSelected && isChildRecommended);
 
         if (isOpen) {
+          // const tooltip
           children.push({
             type: RowType.Child,
             id: child.id,
             channelName: child.name,
             isSelected: isChildSelected,
-            isRequired: Boolean(parentRequires?.has(child.id)),
+            isRequired: Boolean(parentRequires?.has(child)),
             isRecommended: child.recommended,
+            tooltipData: getTooltipData(child.id, state),
           });
         }
       });

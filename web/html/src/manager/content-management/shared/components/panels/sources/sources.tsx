@@ -22,8 +22,8 @@ type SourcesProps = {
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
-  const initialSelectedIds = useMemo(
-    () => softwareSources.filter((source) => !statesEnum.isDeletion(source.state)).map((source) => source.channelId),
+  const initialSelectedSources = useMemo(
+    () => softwareSources.filter((source) => !statesEnum.isDeletion(source.state)),
     [softwareSources]
   );
 
@@ -41,7 +41,7 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
       </div>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
-        initialSelectedIds={initialSelectedIds}
+        initialSelectedSources={initialSelectedSources}
         onChange={(selectedChannelLabels) => {
           onChange(selectedChannelLabels);
         }}

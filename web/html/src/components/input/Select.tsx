@@ -137,8 +137,11 @@ export function Select(props: Props) {
     defaultValueOption = props.defaultValueOption;
   }
   useEffect(() => {
+    // Since defaultValueOption is not bound to the model, ensure sanity, but only if there is a model binding to begin with
+    if (!props.name) {
+      return;
+    }
     const value = (formContext.model || {})[props.name || ""];
-    // Since defaultValueOption is not bound to the model, ensure sanity
     if (isAsync(props) && typeof defaultValueOption !== "undefined" && getOptionValue(defaultValueOption) !== value) {
       console.error(
         `Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(

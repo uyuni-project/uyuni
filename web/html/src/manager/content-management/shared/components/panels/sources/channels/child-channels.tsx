@@ -9,12 +9,24 @@ type Props = {
   onToggleChannelSelect: (id: number) => void;
 };
 
+const getTooltip = (tooltipData: ChildRowDefinition["tooltipData"]) => {
+  let tooltip = "";
+  if (tooltipData.requiresNames.length) {
+    tooltip += `${t("This channel requires:")}\n\n${tooltipData.requiresNames.join("\n")}`;
+  }
+  if (tooltip) {
+    tooltip += "\n\n";
+  }
+  if (tooltipData.requiredByNames.length) {
+    tooltip += `${t("This channel is required by:")}\n\n${tooltipData.requiredByNames.join("\n")}`;
+  }
+  return tooltip;
+};
+
 const ChildChannel = (props: Props) => {
-  const { id, channelName, isSelected, isRequired, isRecommended } = props.definition;
+  const { id, channelName, isSelected, isRequired, isRecommended, tooltipData } = props.definition;
   const identifier = "child_" + id;
-  // TODO: Tack on in worker
-  // const toolTip = dependenciesTooltip(channel.id, Object.values(props.channelsTree.channelsById));
-  const toolTip = undefined;
+  const tooltip = getTooltip(tooltipData);
 
   return (
     <div className="checkbox" style={{ paddingLeft: 35 }}>
@@ -26,13 +38,13 @@ const ChildChannel = (props: Props) => {
         checked={isSelected}
         onChange={() => props.onToggleChannelSelect(id)}
       />
-      <label title={toolTip || undefined} htmlFor={identifier}>
+      <label title={tooltip || undefined} htmlFor={identifier}>
         <Highlight enabled={props.search?.length > 0} text={channelName} highlight={props.search}></Highlight>
       </label>
       &nbsp;
-      {toolTip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
+      {tooltip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <a href="#">
-          <i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i>
+          <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
         </a>
       ) : null}
       &nbsp;

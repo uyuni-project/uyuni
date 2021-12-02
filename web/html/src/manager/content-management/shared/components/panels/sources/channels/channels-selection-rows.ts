@@ -1,6 +1,5 @@
 // Every row must be directly identifiable by the virtual list
 import { Identifiable } from "components/virtual-list/VirtualList";
-import { DerivedBaseChannel, DerivedChildChannel } from "core/channels/type/channels.type";
 
 export enum RowType {
   Parent,
@@ -26,6 +25,10 @@ export type ChildRowDefinition = Identifiable & {
   isSelected: boolean;
   isRecommended: boolean;
   isRequired: boolean;
+  tooltipData: {
+    requiresNames: string[];
+    requiredByNames: string[];
+  };
 };
 
 export type EmptyChildRowDefinition = Identifiable & {

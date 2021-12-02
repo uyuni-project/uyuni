@@ -36,19 +36,3 @@ export const channelsFiltersAvailableValues = Object.values(channelsFiltersAvail
 
 export const getInitialFiltersState = () =>
   channelsFiltersAvailableValues.filter((filter) => filter.selectedByDefault).map((filter) => filter.id) || [];
-
-export type StateChannelsSelectionType = {
-  activeFilters: Array<string>;
-  selectedBaseChannelId: number;
-  selectedChannelsIds: Array<number>;
-  openGroupsIds: Array<number>;
-  search: string;
-};
-
-export const initialStateChannelsSelection = (initialSelectedIds: Array<number>) => ({
-  activeFilters: getInitialFiltersState(),
-  selectedBaseChannelId: initialSelectedIds[0],
-  selectedChannelsIds: initialSelectedIds,
-  openGroupsIds: initialSelectedIds,
-  search: "",
-});

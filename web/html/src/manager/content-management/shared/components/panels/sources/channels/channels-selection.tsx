@@ -5,13 +5,12 @@ import xor from "lodash/xor";
 
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
-import styles from "./channels-selection.css";
-import BaseChannel from "./base-channel";
 import { VirtualList } from "components/virtual-list";
+import { ProjectSoftwareSourceType } from "manager/content-management/shared/type";
 
-import { getInitialFiltersState, StateChannelsSelectionType } from "./channels-filters-types";
-// TODO: Replicate this logic
-import { initialStateChannelsSelection } from "./channels-filters-types";
+import styles from "./channels-selection.css";
+import { getInitialFiltersState } from "./channels-filters-types";
+import BaseChannel from "./base-channel";
 import ChildChannel from "./child-channels";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
@@ -23,10 +22,8 @@ import WorkerMessages from "./channels-selection-messages";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
-  // TODO: Implement
-  // TODO: These can be bound only _after_ we have passed initial data to the worker
-  initialSelectedIds: Array<number>;
-  // For some reason, the wrapper expects labels, not channels, that's fine by us
+  initialSelectedSources: ProjectSoftwareSourceType[];
+  // For some reason, the wrapper expects labels, not channels, but that's fine by us
   onChange: (channelLabels: string[]) => void;
 };
 
@@ -68,14 +65,20 @@ const ChannelsSelection = (props: PropsType) => {
   useEffect(() => {
     // Ensure the worker knows about our initial configuration
     worker.postMessage({ type: WorkerMessages.SET_ACTIVE_FILTERS, activeFilters });
-    // TODO: What do we need to do when attach/detach is called with previously existing values?
 
     channelsWithMandatoryPromise.then(({ channels, mandatoryChannelsMap }) => {
       if (isLoading) {
         setIsLoading(false);
       }
 
-      worker.postMessage({ type: WorkerMessages.SET_CHANNELS, channels, mandatoryChannelsMap });
+      worker.postMessage({
+        type: WorkerMessages.SET_CHANNELS,
+        channels,
+        mandatoryChannelsMap,
+        // These will hold no values if the initial selection is empty
+        initialSelectedBaseChannelId: props.initialSelectedSources[0]?.channelId,
+        initialSelectedChannelIds: props.initialSelectedSources.map((channel) => channel.channelId),
+      });
     });
 
     worker.addEventListener("message", async ({ data }) => {
@@ -165,12 +168,21 @@ const ChannelsSelection = (props: PropsType) => {
     );
   }
 
+  const defaultValueOption = props.initialSelectedSources[0]
+    ? {
+        base: props.initialSelectedSources[0],
+      }
+    : undefined;
+
   return (
     <React.Fragment>
       <div className="row">
+        {/** TODO: This doesn't have an initial value */}
         <Select
-          name="selectedBaseChannel"
+          /** TODO: Is this used anywhere? */
+          // name="selectedBaseChannel"
           loadOptions={loadSelectOptions}
+          defaultValueOption={defaultValueOption}
           paginate={true}
           label={t("New Base Channel")}
           labelClass="col-md-3"
@@ -235,10 +247,11 @@ const ChannelsSelection = (props: PropsType) => {
   );
 };
 
+// TODO: Review this
 // This whole view is expensive with large lists, so rerender only when we really need to
 export default memo(ChannelsSelection, (prevProps, nextProps) => {
   return (
     prevProps.isSourcesApiLoading === nextProps.isSourcesApiLoading &&
-    prevProps.initialSelectedIds.join() === nextProps.initialSelectedIds.join()
+    prevProps.initialSelectedSources.join() === nextProps.initialSelectedSources.join()
   );
 });

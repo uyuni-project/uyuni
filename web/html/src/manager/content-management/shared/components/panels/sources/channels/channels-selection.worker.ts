@@ -24,11 +24,20 @@ context.addEventListener("message", async ({ data }) => {
       if (!Array.isArray(data.channels) || !data.mandatoryChannelsMap) {
         throw new TypeError("Insufficient channel data");
       }
+      const selectedBaseChannelId: number | undefined = data.initialSelectedBaseChannelId;
+      const select: number[] | undefined = data.initialSelectedChannelIds;
       const { baseChannels, channelsMap, requiresMap, requiredByMap } = rawChannelsToDerivedChannels(
         data.channels,
         data.mandatoryChannelsMap
       );
-      stateChange = { baseChannels, channelsMap, requiresMap, requiredByMap };
+      stateChange = {
+        baseChannels,
+        channelsMap,
+        requiresMap,
+        requiredByMap,
+        selectedBaseChannelId,
+        select,
+      };
       break;
     }
     case WorkerMessages.SET_SEARCH: {

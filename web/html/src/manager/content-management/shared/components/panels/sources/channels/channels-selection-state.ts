@@ -19,9 +19,9 @@ export default class State {
   /** A map from a channel id to any known channel */
   channelsMap: Map<number, DerivedChannel> = new Map();
   /** A map from a channel id to a set of channel ids this channel requires */
-  requiresMap: Map<number, Set<number> | undefined> = new Map();
+  requiresMap: Map<number, Set<DerivedChannel> | undefined> = new Map();
   /** A map from a channel id to a set of channels that require this channel */
-  requiredByMap: Map<number, Set<number> | undefined> = new Map();
+  requiredByMap: Map<number, Set<DerivedChannel> | undefined> = new Map();
   /** Set of currently open base channel ids */
   openBaseChannelIds: Set<number> = new Set();
   /** Set of currently selected channel ids */
@@ -140,7 +140,7 @@ export default class State {
     }
 
     // Also select any channels that this channel requires
-    this.requiresMap.get(channel.id)?.forEach((id) => this.selectRecursively(this.channelsMap.get(id)));
+    this.requiresMap.get(channel.id)?.forEach((requiresChannel) => this.selectRecursively(requiresChannel));
   };
 
   /** Resolve and deselect all channels that require this channel */
@@ -152,11 +152,11 @@ export default class State {
 
     // If we deselected a parent, deselect all of its children
     if (isBaseChannel(channel)) {
-      channel.children.forEach((child) => this.deselectRecursively(this.channelsMap.get(child.id)));
+      channel.children.forEach((child) => this.deselectRecursively(child));
     }
 
     // Also deselect any channels that require this channel
-    this.requiredByMap.get(channel.id)?.forEach((id) => this.deselectRecursively(this.channelsMap.get(id)));
+    this.requiredByMap.get(channel.id)?.forEach((requiredByChannel) => this.deselectRecursively(requiredByChannel));
   };
 
   private sortChannels = <T extends DerivedChannel>(channels: T[]) => {
