@@ -228,7 +228,8 @@ public class FormatDateTag extends TagSupport {
                 simplefmt.applyPattern(pattern);
             }
             fmtDate = fmt.format(value);
-        } else {
+        }
+        else {
             fmtDate = LocalizationService.getInstance().formatDate(getValue());
         }
         return fmtDate;
