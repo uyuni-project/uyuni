@@ -41,7 +41,7 @@ def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
   when 'sles15sp3', 'sles15sp3o'
     # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
-    $product == 'Uyuni' ? "Kiwi/POS_Image-JeOS7_uyuni" : "Kiwi/POS_Image-JeOS7_head"
+    $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
     'Kiwi/POS_Image-JeOS7_41'
   when 'sles15sp1', 'sles15sp1o'
