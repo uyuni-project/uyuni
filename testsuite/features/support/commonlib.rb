@@ -60,6 +60,7 @@ def compute_image_name
   when 'sles15sp3', 'sles15sp3o'
     # 'POS_Image_JeOS7_42' for 4.2 branch
     'POS_Image_JeOS7_head'
+    $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
     'POS_Image_JeOS7_41'
   when 'sles15sp1', 'sles15sp1o'
