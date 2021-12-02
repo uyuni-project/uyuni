@@ -31,7 +31,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
-import com.suse.manager.clusters.ClusterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.utils.Maps;
 import com.suse.utils.Opt;
@@ -521,29 +520,6 @@ public class FormulaFactory {
         return Optional.empty();
     }
 
-    private static Optional<Map<String, Object>> getClusterGroupFormulaValues(String formulaName,
-                                                                              Map<String, Object> data,
-                                                                              Long groupId) {
-        // find cluster for this group
-        return ClusterFactory.findClusterByGroupId(groupId).map(cluster -> {
-            // load cluster provider metadata and look for the key of this formula
-            Map<String, Object> metadata = getClusterProviderMetadata(cluster.getProvider());
-            Map<String, Object> formulas = (Map<String, Object>) metadata.get("formulas");
-            Optional<String> formulaKey = formulas.entrySet().stream()
-                    .filter(e -> e.getValue() instanceof Map)
-                    .filter(e -> ((Map) e.getValue()).get("name").equals(formulaName))
-                    .map(Map.Entry::getKey)
-                    .findFirst();
-
-            return formulaKey.map(key ->
-                    Maps.getValueByPath(data, "mgr_clusters:" + cluster.getLabel() + ":" + key)
-                            .filter(Map.class::isInstance)
-                            .map(o -> (Map<String, Object>)o)
-                            .orElse(null))
-                    .orElse(null);
-        });
-    }
-
     /**
      * Returns the saved values of a given group for a given formula.
      * @param name the name of the formula
@@ -565,14 +541,6 @@ public class FormulaFactory {
             catch (FileNotFoundException e) {
             }
         }
-
-        // Look for the cluster formulas if needed
-        data.map(values -> {
-            if (formulaHasType(name, "cluster-formula")) {
-                return getClusterGroupFormulaValues(name, values, group.getId()).orElse(null);
-            }
-            return values;
-        });
         return data;
     }
 
