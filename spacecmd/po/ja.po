@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-07 15:32+0100\n"
-"PO-Revision-Date: 2021-10-15 04:12+0000\n"
+"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"PO-Revision-Date: 2021-11-10 09:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -703,18 +703,18 @@ msgstr ""
 "      channel.software.listAllPackages\n"
 
 #: ../src/spacecmd/api.py:81
-#, fuzzy, python-format
+#, python-format
 msgid "Could not open to write: %s"
-msgstr "書き込むために開くことができません: "
+msgstr "書き込むために開くことができませんでした: %s"
 
 #: ../src/spacecmd/api.py:82
 msgid "Fallback output to stdout"
 msgstr "標準出力に出力します"
 
 #: ../src/spacecmd/api.py:91
-#, fuzzy, python-format
+#, python-format
 msgid "No such API: %s"
-msgstr "そのような API はありません: "
+msgstr "そのようなAPIはありません: %s"
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "configchannel_list: List all configuration channels"
@@ -3125,8 +3125,7 @@ msgstr ""
 "                      プロファイルを指定しない (全てをエクスポートする) 場合"
 "は ks_all.json)\n"
 "\n"
-"注意 : <プロファイル> を指定しない場合、全てのキックスタートをエクスポートし"
-"ます"
+"注意 : プロファイルを指定しない場合、全てのキックスタートをエクスポートします"
 
 #: ../src/spacecmd/kickstart.py:2351
 #, python-format
@@ -4874,9 +4873,9 @@ msgid "Could not read history file"
 msgstr "履歴ファイルを読み込めませんでした"
 
 #: ../src/spacecmd/shell.py:124
-#, fuzzy, python-format
+#, python-format
 msgid "Exception occurred: %s"
-msgstr "例外が発生しました: {}"
+msgstr "例外が発生しました: %s"
 
 #: ../src/spacecmd/shell.py:188 ../src/spacecmd/shell.py:227
 #, python-format
@@ -7627,13 +7626,12 @@ msgstr ""
 "  -s (開始時刻)"
 
 #: ../src/spacecmd/system.py:3233 ../src/spacecmd/system.py:3256
-#, fuzzy
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_listeventhistory instead.\n"
 msgstr ""
-"このメソッドは廃止予定であり、 API バージョン %s で削除される予定です。代わり"
-"に system_scheduleproductmigration をお使いください。"
+"このメソッドは廃止予定であり、 今後のAPIバージョンで削除される予定です。代わ"
+"りにsystem_listeventhistoryをお使いください。\n"
 
 #: ../src/spacecmd/system.py:3236
 msgid "system_listevents: List the event history for a system"
@@ -7654,9 +7652,8 @@ msgid "Details:   %s"
 msgstr "詳細:   %s"
 
 #: ../src/spacecmd/system.py:3297
-#, fuzzy
 msgid "system_listeventhistory: List the event history for a system"
-msgstr "system_listevents: システムに対するイベント履歴を表示"
+msgstr "system_listeventhistory: システムに対するイベント履歴を表示"
 
 #: ../src/spacecmd/system.py:3298
 msgid ""
@@ -7670,130 +7667,132 @@ msgid ""
 "  -l LIMIT limit the results to the specified number of events. [Default: no "
 "limit]"
 msgstr ""
+"使用方法: system_listeventhistory <システム> [オプション]\n"
+"\n"
+"オプション:\n"
+"  -s START_TIMEは、指定された時間以降に発生したイベントのみを一覧にします。"
+"[デフォルト: すべてのイベントを返す]\n"
+"  -o OFFSETは、最初のイベントをスキップします。-lも指定されていない場合は無視"
+"されます。[デフォルト: 0]\n"
+"  -l LIMITは、結果を指定されたイベント数に制限します。[デフォルト: 制限なし]"
 
 #: ../src/spacecmd/system.py:3351
-#, fuzzy
 msgid "Invalid offset"
-msgstr "タイムアウトの値が正しくありません"
+msgstr "無効なオフセットです"
 
 #: ../src/spacecmd/system.py:3358
-#, fuzzy
 msgid "Invalid limit"
-msgstr "タイムアウトの値が正しくありません"
+msgstr "制限が無効です"
 
 #: ../src/spacecmd/system.py:3383
-#, fuzzy, python-format
+#, python-format
 msgid "Id:           %s"
-msgstr "モード:            %s"
+msgstr "Id:           %s"
 
 #: ../src/spacecmd/system.py:3384
 #, python-format
 msgid "History type: %s"
-msgstr ""
+msgstr "履歴タイプ: %s"
 
 #: ../src/spacecmd/system.py:3385
-#, fuzzy, python-format
+#, python-format
 msgid "Status:       %s"
-msgstr "ステータス:     %s"
+msgstr "ステータス:       %s"
 
 #: ../src/spacecmd/system.py:3386
-#, fuzzy, python-format
+#, python-format
 msgid "Summary:      %s"
-msgstr "概要:   %s"
+msgstr "概要:      %s"
 
 #: ../src/spacecmd/system.py:3387
-#, fuzzy, python-format
+#, python-format
 msgid "Completed:    %s"
-msgstr "完了済み: %s"
+msgstr "完了済み:    %s"
 
 #: ../src/spacecmd/system.py:3395
-#, fuzzy
 msgid "system_eventdetails: Retrieve the details of an event for a system"
-msgstr "system_details: システムプロファイルの詳細を表示"
+msgstr "system_eventdetails: システムのイベントの詳細を取得"
 
 #: ../src/spacecmd/system.py:3396
-#, fuzzy
 msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
-msgstr "使用方法: system_details <システム>"
+msgstr "使用方法: system_eventdetails <システム> <イベント>"
 
 #: ../src/spacecmd/system.py:3435
-#, fuzzy
 msgid "No event specified"
-msgstr "サーバを指定していません"
+msgstr "イベントを指定していません"
 
 #: ../src/spacecmd/system.py:3441
-#, fuzzy
 msgid "Invalid event id"
-msgstr "資格情報が正しくありません"
+msgstr "イベントIDが無効です"
 
 #: ../src/spacecmd/system.py:3463
 #, python-format
 msgid "No event %s found in the history of system %s"
-msgstr ""
+msgstr "システム%sの履歴にイベント%sが見つかりません"
 
 #: ../src/spacecmd/system.py:3466
-#, fuzzy, python-format
+#, python-format
 msgid "Id:              %s"
-msgstr "名前:              %s"
+msgstr "ID:              %s"
 
 #: ../src/spacecmd/system.py:3468
-#, fuzzy, python-format
+#, python-format
 msgid "History type:    %s"
-msgstr "名:    %s"
+msgstr "履歴タイプ:    %s"
 
 #: ../src/spacecmd/system.py:3469
-#, fuzzy, python-format
+#, python-format
 msgid "Status:          %s"
-msgstr "ステータス:     %s"
+msgstr "ステータス:          %s"
 
 #: ../src/spacecmd/system.py:3470
-#, fuzzy, python-format
+#, python-format
 msgid "Summary:         %s"
-msgstr "概要:          %s"
+msgstr "概要:         %s"
 
 #: ../src/spacecmd/system.py:3472
-#, fuzzy, python-format
+#, python-format
 msgid "Created:         %s"
-msgstr "作成日時:       %s"
+msgstr "作成日時:         %s"
 
 #: ../src/spacecmd/system.py:3473
-#, fuzzy, python-format
+#, python-format
 msgid "Picked up:       %s"
-msgstr "ロック済み:        %s"
+msgstr "ピックアップ済み:       %s"
 
 #: ../src/spacecmd/system.py:3474
-#, fuzzy, python-format
+#, python-format
 msgid "Completed:       %s"
-msgstr "作成日時:       %s"
+msgstr "完了済み:       %s"
 
 #: ../src/spacecmd/system.py:3478
-#, fuzzy, python-format
+#, python-format
 msgid "Earliest action: %s"
-msgstr "失敗したアクション: %s"
+msgstr "最も早いアクション: %s"
 
 #: ../src/spacecmd/system.py:3479
-#, fuzzy, python-format
+#, python-format
 msgid "Result message:  %s"
-msgstr "リリース:   %s"
+msgstr "結果メッセージ:  %s"
 
 #: ../src/spacecmd/system.py:3480
-#, fuzzy, python-format
+#, python-format
 msgid "Result code:     %s"
-msgstr "姓:     %s"
+msgstr "結果コード:     %s"
 
 #: ../src/spacecmd/system.py:3485
 msgid "Additional info:"
-msgstr ""
+msgstr "追加情報:"
 
 #: ../src/spacecmd/system.py:3494
-#, fuzzy, python-format
+#, python-format
 msgid "    Result:          %s"
-msgstr "名前:              %s"
+msgstr "    結果:          %s"
 
 #: ../src/spacecmd/system.py:3495
-#, fuzzy, python-format
+#, python-format
 msgid "    Detail:          %s"
-msgstr "名前:              %s"
+msgstr "    詳細:          %s"
 
 #: ../src/spacecmd/system.py:3503
 msgid "system_listentitlements: List the entitlements for a system"

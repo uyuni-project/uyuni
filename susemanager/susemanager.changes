@@ -1,3 +1,12 @@
+- Add Salt Bundle (venv-salt-minion) to bootstrap repositories
+  definitions for all relevant system types
+
+-------------------------------------------------------------------
+Tue Nov 16 10:09:13 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Add missing aarch64 bootstrap definition for AlmaLinux 8
+
 -------------------------------------------------------------------
 Fri Nov 05 14:04:35 CET 2021 - jgonzalez@suse.com
 

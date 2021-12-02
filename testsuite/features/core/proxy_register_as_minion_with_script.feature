@@ -20,8 +20,17 @@ Feature: Setup Uyuni proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 
+  @susemanager
   Scenario: Create the bootstrap script for the proxy and use it
     When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date"
+    Then I should get "* bootstrap script (written):"
+    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
+    When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
+    And I run "sh ./bootstrap-proxy.sh" on "proxy"
+
+  @uyuni
+  Scenario: Create the bootstrap script for the proxy and use it
+    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"

@@ -179,7 +179,8 @@ PKGLIST12 = [
 ONLYSLE12 = [
     "libzmq3",
     "gio-branding-SLE",
-    "wallpaper-branding-SLE"
+    "wallpaper-branding-SLE",
+    "venv-salt-minion",
 ]
 
 PKGLIST12_X86_ARM = [
@@ -352,7 +353,8 @@ RES7 = [
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
-    "python2-hwdata"
+    "python2-hwdata",
+    "venv-salt-minion",
 ]
 
 RES7_X86 = [
@@ -382,7 +384,8 @@ RES8 = [
     "python3-pysocks",
     "python3-pytz",
     "python3-setuptools",
-    "python3-distro"
+    "python3-distro",
+    "venv-salt-minion",
 ]
 
 RES8_X86 = [
@@ -451,6 +454,7 @@ PKGLIST15_SALT = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "venv-salt-minion",
 ]
 
 PKGLIST15SP0SP1_SALT = [
@@ -605,6 +609,7 @@ PKGLISTUBUNTU1804 = [
     "python3-distro",
     "python3-gnupg",
     "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTUBUNTU2004 = [
@@ -624,6 +629,7 @@ PKGLISTUBUNTU2004 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTDEBIAN9 = [
@@ -685,6 +691,7 @@ PKGLISTDEBIAN9 = [
     "dmidecode",
     "gnupg",
     "gnupg1",
+    "venv-salt-minion",
 ]
 
 
@@ -744,6 +751,7 @@ PKGLISTDEBIAN10 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTASTRALINUXOREL = [
@@ -1389,11 +1397,15 @@ DATA = {
     'almalinux-8-aarch64' : {
         'PDID' : [-26, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
-    },    
+    },
     'almalinux-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
-    },    
+    },
+    'almalinux-8-aarch64-uyuni' : {
+        'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
+    },
     'rockylinux-8-x86_64' : {
         'PDID' : [-24, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
