@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC
+# Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt_ssh
@@ -24,7 +24,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-SUSE-SSH-TUNNEL-KEY-x86_64" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text

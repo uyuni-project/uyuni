@@ -25,7 +25,7 @@ Feature: Build OS images
     And I enter "suse_os_image" as "label"
     And I select "Kiwi" from "imageType"
     And I select "1-KIWI-TEST" from "activationKey"
-    And I enter the image filename relative to profiles as "path"
+    And I enter the image filename for "pxeboot_minion" relative to profiles as "path"
     And I click on "create-btn"
 
   # WORKAROUND
@@ -43,12 +43,12 @@ Feature: Build OS images
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Check the OS image built
+  Scenario: Check the built OS image
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed
     And I am on the image store of the Kiwi image for organization "1"
-    Then I should see the name of the image
+    Then I should see the name of the image for "pxeboot_minion"
 
 @proxy
 @private_net
@@ -57,7 +57,7 @@ Feature: Build OS images
     And I enable repositories before installing branch server
     And I synchronize all Salt dynamic modules on "proxy"
     And I apply state "image-sync" to "proxy"
-    Then the image should exist on "proxy"
+    Then the image for "pxeboot_minion" should exist on the branch server
 
 @proxy
 @private_net

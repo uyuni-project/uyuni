@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC
+# Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new CentOS minion via salt-ssh
@@ -20,7 +20,7 @@ Feature: Bootstrap a CentOS 8 Salt SSH minion
     And I enter the hostname of "ceos8_ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I select "1-ceos8_ssh_minion_key" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos8_ssh_minion"

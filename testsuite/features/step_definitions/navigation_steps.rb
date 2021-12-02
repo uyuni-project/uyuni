@@ -434,23 +434,22 @@ Given(/^I am on the "([^"]*)" page of this "([^"]*)"$/) do |page, host|
   )
 end
 
-When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
+When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, field|
   system_name = get_system_name(host)
   log "The hostname of #{host} is #{system_name}"
-  step %(I enter "#{system_name}" as "#{hostname}")
+  step %(I enter "#{system_name}" as "#{field}")
 end
 
-When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
-  case host
-  when 'proxy'
-    # don't select anything if not in the list
-    next if $proxy.nil?
-    step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
-  when 'sle_minion'
-    step %(I select "#{$minion.full_hostname}" from "#{hostname}")
-  when 'build_host'
-    step %(I select "#{$build_host.full_hostname}" from "#{hostname}")
+When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do |host, field, if_present|
+  begin
+    node = get_target(host)
+  rescue
+    raise "Host #{host} not found" if if_present.empty?
+
+    log "Host #{host} is not deployed, not trying to select it"
+    return
   end
+  step %(I select "#{node.full_hostname}" from "#{field}")
 end
 
 When(/^I follow this "([^"]*)" link$/) do |host|
