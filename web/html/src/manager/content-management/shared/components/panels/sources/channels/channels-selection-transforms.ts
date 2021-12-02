@@ -1,5 +1,6 @@
 import { DerivedBaseChannel, DerivedChannel, RawChannelType } from "core/channels/type/channels.type";
 import { RowDefinition, RowType } from "./channels-selection-rows";
+import State from "./channels-selection-state";
 
 // TODO: Add tests
 export function rawChannelsToDerivedChannels(
@@ -61,12 +62,12 @@ export function rawChannelsToDerivedChannels(
 }
 
 // TODO: Add tests
-// TODO: Type state
-export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChannel[], state: any): RowDefinition[] {
+export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChannel[], state: State): RowDefinition[] {
   // TODO: Here and elsewhere, this reduce can become just a regular for loop if we want to go faster
   return derivedChannels.reduce((result, channel) => {
-    const isOpen = state.openBaseChannelIds.has(channel.id);
-    const isSelected = state.selectedChannelIds.has(channel.id);
+    // TODO: Either is open or matches search
+    const isOpen = state.isOpen(channel.id);
+    const isSelected = state.isSelected(channel.id);
 
     // We need to figure out what state the children are in before we can store the parent state
     let children: RowDefinition[] = [];
@@ -76,7 +77,7 @@ export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChan
     const parentRequires = state.requiresMap.get(channel.id);
     if (channel.children.length) {
       channel.children.forEach((child) => {
-        const isChildSelected = state.selectedChannelIds.has(child.id);
+        const isChildSelected = state.isSelected(child.id);
         selectedChildrenCount += Number(isChildSelected);
         const isChildRecommended = child.recommended;
         recommendedChildrenCount += Number(isChildRecommended);
@@ -86,7 +87,7 @@ export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChan
           children.push({
             type: RowType.Child,
             id: child.id,
-            channelName: channel.name,
+            channelName: child.name,
             isSelected: isChildSelected,
             isRequired: Boolean(parentRequires?.has(child.id)),
             isRecommended: child.recommended,

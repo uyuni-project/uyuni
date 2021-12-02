@@ -1,3 +1,4 @@
+// TODO: Rename this file
 import { DerivedChannel } from "core/channels/type/channels.type";
 
 export type FilterType = {

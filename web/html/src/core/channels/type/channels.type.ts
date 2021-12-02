@@ -50,3 +50,11 @@ export type DerivedBaseChannel = DerivedChannelPartial & {
 };
 
 export type DerivedChannel = DerivedBaseChannel | DerivedChildChannel;
+
+export const isBaseChannel = (input: DerivedChannel | undefined): input is DerivedBaseChannel => {
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "children"));
+};
+
+export const isChildChannel = (input: DerivedChannel | undefined): input is DerivedChildChannel => {
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parent"));
+};

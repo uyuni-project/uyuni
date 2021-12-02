@@ -85,22 +85,17 @@ const ChannelsSelection = (props: PropsType) => {
 
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
-        case WorkerMessages.ROWS_CHANGED: {
-          if (!Array.isArray(data.rows) || typeof data.selectedChannelsCount !== "number") {
+        case WorkerMessages.STATE_CHANGED: {
+          if (
+            !Array.isArray(data.rows) ||
+            typeof data.selectedChannelsCount !== "number" ||
+            !Array.isArray(data.selectedChannelLabels)
+          ) {
             throw new RangeError("Received no valid rows");
           }
           setRows(data.rows);
           setSelectedChannelsCount(data.selectedChannelsCount);
-          return;
-        }
-        case WorkerMessages.SELECTED_CHANNELS_CHANGED: {
-          // TODO: On selection change, fire props.onChange(), see https://github.com/uyuni-project/uyuni/blob/master/web/html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx#L51
-          const selectedChannelLabels = data.selectedChannelLabels;
-          if (!Array.isArray(selectedChannelLabels)) {
-            throw new RangeError("Received no valid labels");
-          }
-          console.log("selected", selectedChannelLabels);
-          props.onChange(selectedChannelLabels);
+          props.onChange(data.selectedChannelLabels);
           return;
         }
         default:
