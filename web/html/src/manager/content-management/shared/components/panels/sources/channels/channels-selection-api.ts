@@ -27,7 +27,7 @@ const useChannelsApi = () => {
           channels.push({
             base: {
               id,
-              name: `mock channel ${ii}`,
+              name: `mock channel ${ii} ${"filler ".repeat(100)}`,
               label: `mock_channel_${ii}`,
               archLabel: "channel-x86_64",
               custom: true,
@@ -38,7 +38,7 @@ const useChannelsApi = () => {
             children: [
               {
                 id: id * 2,
-                name: `mock channel child ${ii}`,
+                name: `mock channel child ${ii} ${"filler ".repeat(100)}`,
                 label: `mock_channel_child_${ii}`,
                 archLabel: "channel-x86_64",
                 custom: true,

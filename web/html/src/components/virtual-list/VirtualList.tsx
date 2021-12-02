@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRef, useEffect } from "react";
 import { VariableSizeList as List, ListChildComponentProps } from "react-window";
 import { useResizeDetector } from "react-resize-detector";
 
@@ -17,12 +18,22 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
     refreshRate: 100,
   });
 
+  // When the number of items changes, we may need to update layouts
+  const listRef = useRef<List>(null);
+  useEffect(() => {
+    listRef.current?.resetAfterIndex(0);
+  }, [props.items.length]);
+
   const Row = (rowProps: ListChildComponentProps<T[]>) => {
     const item = rowProps.data[rowProps.index];
-    return (
+    const style: React.CSSProperties = {
+      whiteSpace: "nowrap",
+      maxWidth: "100%",
+      overflow: "hidden",
       // react-window has outdated type declarations for React.CSSProperties, the values are correct for our use case
-      <div style={rowProps.style as React.CSSProperties}>{props.renderRow(item)}</div>
-    );
+      ...(rowProps.style as Partial<React.CSSProperties>),
+    };
+    return <div style={style}>{props.renderRow(item)}</div>;
   };
 
   const itemSize = (index: number) => {
@@ -40,6 +51,7 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
     <div ref={ref} style={{ flex: "1 1 auto" }}>
       {typeof width !== "undefined" && typeof height !== "undefined" ? (
         <List
+          ref={listRef}
           width={width}
           height={height}
           itemData={props.items}
@@ -48,7 +60,7 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
           itemKey={itemKey}
           children={Row}
           // How many items to prerender outside of the viewport, see https://react-window.vercel.app/#/api/FixedSizeList
-          overscanCount={5}
+          overscanCount={3}
         />
       ) : null}
     </div>

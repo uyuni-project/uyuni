@@ -3,6 +3,8 @@ import { Toggler } from "components/toggler";
 
 import { RecommendedToggleRowDefinition } from "./channels-selection-rows";
 
+import styles from "./channels-selection.css";
+
 type Props = {
   definition: RecommendedToggleRowDefinition;
   onSetRecommendedChildrenSelected: (id: number, selected: boolean) => void;
@@ -11,7 +13,7 @@ type Props = {
 const RecommendedToggle = (props: Props) => {
   const { channelId, areAllRecommendedChildrenSelected } = props.definition;
   return (
-    <div style={{ paddingLeft: 15, paddingTop: 5 }}>
+    <div className={styles.nested_row}>
       <Toggler
         value={areAllRecommendedChildrenSelected}
         handler={() => props.onSetRecommendedChildrenSelected(channelId, !areAllRecommendedChildrenSelected)}

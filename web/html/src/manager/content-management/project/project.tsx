@@ -8,6 +8,8 @@ import Build from "../shared/components/panels/build/build";
 import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import _isEmpty from "lodash/isEmpty";
+import _isEqual from "lodash/isEqual";
+
 import "./project.css";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
@@ -36,8 +38,11 @@ const Project = (props: Props) => {
   const hasEditingPermissions = isOrgAdmin(roles);
 
   useInterval(() => {
-    onAction({}, "get", project.properties.label).then((project) => {
-      setProject(project);
+    onAction({}, "get", project.properties.label).then((newProject) => {
+      // Only propagate the received value if something has changed
+      if (!_isEqual(project, newProject)) {
+        setProject(newProject);
+      }
     });
   }, 5000);
 

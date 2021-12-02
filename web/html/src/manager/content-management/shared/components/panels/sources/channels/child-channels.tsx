@@ -3,6 +3,8 @@ import { Highlight } from "components/table/Highlight";
 import { ChannelAnchorLink } from "components/links";
 import { ChildRowDefinition } from "./channels-selection-rows";
 
+import styles from "./channels-selection.css";
+
 type Props = {
   definition: ChildRowDefinition;
   search: string;
@@ -29,36 +31,37 @@ const ChildChannel = (props: Props) => {
   const tooltip = getTooltip(tooltipData);
 
   return (
-    <div className="checkbox" style={{ paddingLeft: 35 }}>
+    <div className={styles.nested_row}>
       <input
         type="checkbox"
         value={id}
         id={identifier}
         name="childChannels"
+        readOnly
         checked={isSelected}
-        onChange={() => props.onToggleChannelSelect(id)}
+        onClick={() => props.onToggleChannelSelect(id)}
       />
-      <label title={tooltip || undefined} htmlFor={identifier}>
+      <label className={`${styles.collapsible} ${styles.child_name}`} title={tooltip || undefined} htmlFor={identifier}>
         <Highlight enabled={props.search?.length > 0} text={channelName} highlight={props.search}></Highlight>
       </label>
-      &nbsp;
-      {tooltip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
-        <a href="#">
-          <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
-        </a>
-      ) : null}
-      &nbsp;
-      {isRecommended ? (
-        <span className="recommended-tag-base" title={t("This channel is recommended")}>
-          {t("recommended")}
-        </span>
-      ) : null}
-      {isRequired ? (
-        <span className="mandatory-tag-base" title={t("This channel is mandatory")}>
-          {t("mandatory")}
-        </span>
-      ) : null}
-      <ChannelAnchorLink id={id} newWindow={true} />
+      <span>
+        {tooltip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
+          <a href="#">
+            <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
+          </a>
+        ) : null}
+        {isRecommended ? (
+          <span className="recommended-tag-base" title={t("This channel is recommended")}>
+            {t("recommended")}
+          </span>
+        ) : null}
+        {isRequired ? (
+          <span className="mandatory-tag-base" title={t("This channel is mandatory")}>
+            {t("mandatory")}
+          </span>
+        ) : null}
+        <ChannelAnchorLink id={id} newWindow={true} />
+      </span>
     </div>
   );
 };

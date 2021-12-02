@@ -2,6 +2,8 @@ import * as React from "react";
 import { Highlight } from "components/table/Highlight";
 import { BaseRowDefinition } from "./channels-selection-rows";
 
+import styles from "./channels-selection.css";
+
 type Props = {
   rowDefinition: BaseRowDefinition;
   search: string;
@@ -15,31 +17,39 @@ const BaseChannel = (props: Props) => {
   const totalSelectedCount = Number(isSelected) + selectedChildrenCount;
 
   return (
-    <div className="row" {...(isSelectedBaseChannel ? { title: "New base channel" } : {})}>
-      <h4
-        style={{
-          color: isSelectedBaseChannel ? "#02A49C" : "",
-          marginBottom: "0px",
+    <h4
+      className={styles.row}
+      style={{
+        color: isSelectedBaseChannel ? "#02A49C" : "",
+        cursor: "pointer",
+      }}
+      {...(isSelectedBaseChannel ? { title: "New base channel" } : {})}
+      onClick={() => props.onToggleChannelOpen(id)}
+    >
+      <input
+        type="checkbox"
+        id={identifier}
+        name={identifier}
+        className={styles.toggle}
+        readOnly
+        checked={isSelected}
+        value={id}
+        onClick={(event) => {
+          // Since this element is in another clickable element, don't propagate the event
+          event.stopPropagation();
+          props.onToggleChannelSelect(id);
         }}
-      >
-        <input
-          type="checkbox"
-          id={identifier}
-          name={identifier}
-          checked={isSelected}
-          value={id}
-          onChange={() => props.onToggleChannelSelect(id)}
-          disabled={isSelectedBaseChannel}
-        />
-        &nbsp; &nbsp;
-        <div style={{ display: "inline" }} className="pointer" onClick={() => props.onToggleChannelOpen(id)}>
-          <i className={"fa " + (isOpen ? "fa-angle-down" : "fa-angle-right")} />
-          &nbsp;
-          <Highlight enabled={props.search.length > 0} text={channelName} highlight={props.search}></Highlight>
-          {totalSelectedCount > 0 && <b>{` (${totalSelectedCount})`}</b>}
-        </div>
-      </h4>
-    </div>
+        disabled={isSelectedBaseChannel}
+      />
+      <i className={`${styles.arrow} fa ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
+      <Highlight
+        className={styles.collapsible}
+        enabled={props.search.length > 0}
+        text={channelName}
+        highlight={props.search}
+      />
+      {totalSelectedCount > 0 && <b className={styles.count}>{`(${totalSelectedCount})`}</b>}
+    </h4>
   );
 };
 

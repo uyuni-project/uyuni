@@ -154,7 +154,7 @@ const ChannelsSelection = (props: PropsType) => {
       case RowType.EmptyChild:
         return 25;
       case RowType.RecommendedToggle:
-        return 10;
+        return 20;
       default:
         throw new RangeError("Incorrect channel render type in height");
     }
