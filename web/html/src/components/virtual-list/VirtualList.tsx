@@ -18,11 +18,11 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
     refreshRate: 100,
   });
 
-  // When the number of items changes, we may need to update layouts
+  // When the items change, we may need to update layouts
   const listRef = useRef<List>(null);
   useEffect(() => {
     listRef.current?.resetAfterIndex(0);
-  }, [props.items.length]);
+  }, [props.items]);
 
   const Row = (rowProps: ListChildComponentProps<T[]>) => {
     const item = rowProps.data[rowProps.index];
