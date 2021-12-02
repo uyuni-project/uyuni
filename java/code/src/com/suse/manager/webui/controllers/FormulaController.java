@@ -38,7 +38,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.formula.FormulaUtil;
 
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -73,15 +72,12 @@ public class FormulaController {
             .serializeNulls()
             .create();
 
-    private final SystemQuery systemQuery;
     private final SaltApi saltApi;
 
     /**
-     * @param systemQueryIn instance to use.
      * @param saltApiIn Salt API instance to use.
      */
-    public FormulaController(SystemQuery systemQueryIn, SaltApi saltApiIn) {
-        this.systemQuery = systemQueryIn;
+    public FormulaController(SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
     }
 
