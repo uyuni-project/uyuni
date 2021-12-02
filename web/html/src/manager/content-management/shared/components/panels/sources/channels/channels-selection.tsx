@@ -11,11 +11,12 @@ import { ProjectSoftwareSourceType } from "manager/content-management/shared/typ
 import styles from "./channels-selection.css";
 import { getInitialFiltersState } from "./channels-filters-types";
 import BaseChannel from "./base-channel";
-import ChildChannel from "./child-channels";
+import ChildChannel from "./child-channel";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
 import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-selection-api";
 import { RowType, RowDefinition } from "./channels-selection-rows";
+import EmptyChild from "./empty-child";
 
 import Worker from "./channels-selection.worker.ts";
 import WorkerMessages from "./channels-selection-messages";
@@ -107,8 +108,6 @@ const ChannelsSelection = (props: PropsType) => {
     };
   }, []);
 
-  // TODO: Move this to a component and add padding
-  const NoChildren = <span>&nbsp;{t("no child channels")}</span>;
   const Row = (definition: RowDefinition) => {
     switch (definition.type) {
       case RowType.Parent:
@@ -129,7 +128,7 @@ const ChannelsSelection = (props: PropsType) => {
           />
         );
       case RowType.EmptyChild:
-        return NoChildren;
+        return <EmptyChild />;
       case RowType.RecommendedToggle:
         return (
           <RecommendedToggle
@@ -146,7 +145,6 @@ const ChannelsSelection = (props: PropsType) => {
 
   const rowHeight = (channel: RowDefinition) => {
     switch (channel.type) {
-      // TODO: Update all styles so there's no wrapping allowed
       case RowType.Parent:
         return 30;
       case RowType.Child:
