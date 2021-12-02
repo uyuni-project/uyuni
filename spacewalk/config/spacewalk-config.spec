@@ -190,4 +190,16 @@ if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
 fi
 rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
 
+### TO-REMOVE AFTER: 2023-12-01
+if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+    sed -i "s/taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=\(.\+\)/taskomatic.sshminion_action_executor.parallel_threads =\1/" /etc/rhn/rhn.conf
+fi
+if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.MinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+    sed -i "s/taskomatic.com.redhat.rhn.taskomatic.task.MinionActionExecutor.parallel_threads[[:space:]]*=\(.\+\)/taskomatic.minion_action_executor.parallel_threads =\1/" /etc/rhn/rhn.conf
+fi
+if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task" /etc/rhn/rhn.conf >/dev/null; then
+    echo "WARNING: Found deprecated configuration items in /etc/rhn/rhn.conf"
+fi
+### END
+
 %changelog
