@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion
@@ -86,7 +86,7 @@ Feature: Negative tests for bootstrapping normal minions
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I select the hostname of "proxy" from "proxies"
+     And I select the hostname of "proxy" from "proxies" if present
      And I click on "Bootstrap"
      And I wait until I see "Successfully bootstrapped host!" text
      And I follow the left menu "Systems > Overview"
