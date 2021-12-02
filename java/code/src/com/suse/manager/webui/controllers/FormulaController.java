@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -45,10 +46,10 @@ import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,44 +149,38 @@ public class FormulaController {
         StateTargetType type = StateTargetType.valueOf(request.params("targetType"));
         int formulaId = Integer.parseInt(request.params("formula_id"));
 
-        response.type("application/json");
         List<String> formulas;
-        switch (type) {
-            case SERVER:
-                try {
+        try {
+            switch (type) {
+                case SERVER:
                     Server server = ServerFactory.lookupById(id);
                     FormulaUtil.ensureUserHasPermissionsOnServer(user, server);
                     MinionServer minion = server.asMinionServer()
                             .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id));
                     formulas = new LinkedList<>(FormulaFactory.getCombinedFormulasByServer(minion));
-                }
-                catch (PermissionException e) {
-                    return deniedResponse(response);
-                }
-                break;
-            case GROUP:
-                try {
+                    break;
+                case GROUP:
                     ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
                     FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
                     formulas = FormulaFactory.getFormulasByGroup(group);
-                }
-                catch (PermissionException | LookupException e) {
-                    return deniedResponse(response);
-                }
-                break;
-            default:
-                return errorResponse(response, Arrays.asList("Invalid target type!"));
+                    break;
+                default:
+                    return errorResponse(response, Collections.singletonList("Invalid target type!"));
+            }
+        }
+        catch (PermissionException | LookupException e) {
+            return deniedResponse(response);
         }
 
         if (formulas.isEmpty()) {
-            return "null";
+            return json(response, null);
         }
 
         Map<String, Object> map = new HashMap<>();
         map.put("formula_list", formulas);
 
         if (formulaId < 0 || formulaId >= formulas.size()) {
-            return GSON.toJson(map);
+            return json(response, map);
         }
 
         String formulaName = formulas.get(formulaId);
@@ -208,14 +203,14 @@ public class FormulaController {
                         .orElseGet(Collections::emptyMap));
                 break;
             default:
-                return errorResponse(response, Arrays.asList("Invalid target type!"));
+                return errorResponse(response, Collections.singletonList("Invalid target type!"));
         }
         map.put("formula_name", formulaName);
         map.put("layout", FormulaFactory
                 .getFormulaLayoutByName(formulaName)
                 .orElseGet(Collections::emptyMap));
         map.put("metadata", FormulaFactory.getMetadata(formulaName));
-        return GSON.toJson(map);
+        return json(response, map);
     }
 
     /**
@@ -247,36 +242,24 @@ public class FormulaController {
      */
     public String saveFormula(Request request, Response response, User user) {
         // Get data from request
-        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+        Map<String, Object> map = GSON.fromJson(request.body(), new TypeToken<Map<String, Object>>() { }.getType());
         convertIntegers(map);
         Long id = Long.valueOf((String) map.get("id"));
         String formulaName = (String) map.get("formula_name");
         StateTargetType type = StateTargetType.valueOf((String) map.get("type"));
         Map<String, Object> formData = (Map<String, Object>) map.get("content");
 
-        response.type("application/json");
-
         try {
             switch (type) {
                 case SERVER:
                     MinionServer minion = MinionServerFactory.lookupById(id).get();
-                    try {
-                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
-                    }
-                    catch (PermissionException e) {
-                        return deniedResponse(response);
-                    }
+                    FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     FormulaFactory.saveServerFormulaData(formData, minion, formulaName);
                     saltApi.refreshPillar(new MinionList(minion.getMinionId()));
                     break;
                 case GROUP:
                     ManagedServerGroup group = ServerGroupFactory.lookupById(id);
-                    try {
-                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
-                    }
-                    catch (PermissionException | LookupException e) {
-                        return deniedResponse(response);
-                    }
+                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
                     FormulaFactory.saveGroupFormulaData(formData, group, formulaName);
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
@@ -284,19 +267,23 @@ public class FormulaController {
                     saltApi.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
-                    return errorResponse(response, Arrays.asList("error_invalid_target")); //Invalid target type!
+                    //Invalid target type!
+                    return errorResponse(response, Collections.singletonList("error_invalid_target"));
             }
         }
         catch (UnsupportedOperationException e) {
             return errorResponse(response,
-                    Arrays.asList("Error while saving formula data: " +
+                    Collections.singletonList("Error while saving formula data: " +
                             e.getMessage()));
+        }
+        catch (PermissionException | LookupException e) {
+            return deniedResponse(response);
         }
         Map<String, Object> metadata = FormulaFactory.getMetadata(formulaName);
         if (Boolean.TRUE.equals(metadata.get("pillar_only"))) {
-            return GSON.toJson(Arrays.asList("pillar_only_formula_saved"));
+            return json(response, Collections.singletonList("pillar_only_formula_saved"));
         }
-        return GSON.toJson(Arrays.asList("formula_saved")); // Formula saved!
+        return json(response, Collections.singletonList("formula_saved")); // Formula saved!
     }
 
     /**
@@ -330,40 +317,34 @@ public class FormulaController {
      */
     public String listSelectedFormulas(Request request, Response response,
             User user) {
-        response.type("application/json");
         Long id = Long.valueOf(request.params("id"));
         StateTargetType type = StateTargetType.valueOf(request.params("targetType"));
 
-        Map<String, Object> data = new HashMap<>();
-        switch (type) {
-            case SERVER:
-                Server server = ServerFactory.lookupById(id);
-                try {
+        try {
+            Map<String, Object> data = new HashMap<>();
+            switch (type) {
+                case SERVER:
+                    Server server = ServerFactory.lookupById(id);
                     FormulaUtil.ensureUserHasPermissionsOnServer(user, server);
-                }
-                catch (PermissionException e) {
-                    return deniedResponse(response);
-                }
-                MinionServer minion = server.asMinionServer()
-                        .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id));
-                data.put("selected", FormulaFactory.getFormulasByMinion(minion));
-                data.put("active", FormulaFactory.getCombinedFormulasByServer(minion));
-                break;
-            case GROUP:
-                try {
+                    MinionServer minion = server.asMinionServer()
+                            .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + id));
+                    data.put("selected", FormulaFactory.getFormulasByMinion(minion));
+                    data.put("active", FormulaFactory.getCombinedFormulasByServer(minion));
+                    break;
+                case GROUP:
                     ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
                     FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
                     data.put("selected", FormulaFactory.getFormulasByGroup(group));
-                }
-               catch (PermissionException | LookupException e) {
-                    return deniedResponse(response);
-               }
-                break;
-            default:
-                return errorResponse(response, Arrays.asList("Invalid target type!"));
+                    break;
+                default:
+                    return errorResponse(response, Collections.singletonList("Invalid target type!"));
+            }
+            data.put("formulas", FormulaFactory.listFormulas());
+            return json(response, data);
         }
-        data.put("formulas", FormulaFactory.listFormulas());
-        return GSON.toJson(data);
+        catch (PermissionException | LookupException e) {
+            return deniedResponse(response);
+        }
     }
 
     /**
@@ -376,12 +357,10 @@ public class FormulaController {
     public String saveSelectedFormulas(Request request, Response response,
             User user) {
         // Get data from request
-        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+        Map<String, Object> map = GSON.fromJson(request.body(), new TypeToken<Map<String, Object>>() { }.getType());
         Long id = Long.valueOf((String) map.get("id"));
         StateTargetType type = StateTargetType.valueOf((String) map.get("type"));
         List<String> selectedFormulas = (List<String>) map.get("selected");
-
-        response.type("application/json");
 
         try {
             switch (type) {
@@ -389,32 +368,26 @@ public class FormulaController {
                     MinionServer minion = MinionServerFactory.lookupById(id)
                             .orElseThrow(() -> new InvalidParameterException(
                                     "Provided systemId does not correspond to a minion"));
-                    try {
-                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
-                    }
-                    catch (PermissionException e) {
-                        return deniedResponse(response);
-                    }
+                    FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     FormulaFactory.saveServerFormulas(minion, selectedFormulas);
                     break;
                 case GROUP:
-                    try {
-                        ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
-                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
-                        FormulaFactory.saveGroupFormulas(group, selectedFormulas);
-                    }
-                    catch (PermissionException | LookupException e) {
-                        return deniedResponse(response);
-                    }
+                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                    FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
+                    FormulaFactory.saveGroupFormulas(group, selectedFormulas);
                     break;
                 default:
-                    return errorResponse(response, Arrays.asList("error_invalid_target"));
+                    return errorResponse(response, Collections.singletonList("error_invalid_target"));
             }
         }
         catch (ValidatorException | UnsupportedOperationException e) {
-            return errorResponse(response, Arrays.asList("Error while saving formula data: " + e.getMessage()));
+            return errorResponse(response,
+                    Collections.singletonList("Error while saving formula data: " + e.getMessage()));
         }
-        return GSON.toJson(Arrays.asList("formulas_saved"));
+        catch (PermissionException | LookupException e) {
+            return deniedResponse(response);
+        }
+        return json(response, Collections.singletonList("formulas_saved"));
     }
 
     /**
