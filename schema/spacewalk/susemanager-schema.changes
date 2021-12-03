@@ -1,6 +1,10 @@
-- Use Almalinux Mirror List
-- Use EL8 Client Tools for EL8 clones, as CentOS8 will be end of
-  life by the end of the year
+-------------------------------------------------------------------
+Fri Dec 03 12:32:54 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Use Almalinux Mirror List
+  * Use EL8 Client Tools for EL8 clones, as CentOS8 will be end of
+    life by the end of the year
 
 -------------------------------------------------------------------
 Fri Nov 05 14:06:37 CET 2021 - jgonzalez@suse.com
