@@ -609,8 +609,11 @@ When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$
 end
 
 When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
-  $proxy.run("mgr-bootstrap #{force_bundle}")
+  #FIXME: Remove once pxeboot autoinstallation contains venv-salt-minion
+  # force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+  # $proxy.run("mgr-bootstrap #{force_bundle}")
+  $proxy.run("mgr-bootstrap ")
+
   $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise "Key: #{key} not included" unless output.include? key
