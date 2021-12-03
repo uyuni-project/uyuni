@@ -263,7 +263,9 @@ def load_legacy_pillars(minion_id, pillar):
     for global_pillar in MANAGER_GLOBAL_PILLAR:
         global_pillar_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, global_pillar)
         try:
-            pillar.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read(), Loader=yaml.FullLoader))
+            # Global pillars may no longer exist once they have been migrated to the database
+            if os.path.exists(global_pillar_filename):
+                pillar.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read(), Loader=yaml.FullLoader))
         except Exception as exc:
             log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
 
