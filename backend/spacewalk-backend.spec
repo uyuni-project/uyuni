@@ -238,7 +238,7 @@ Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
 %if 0%{?suse_version}
 Requires(pre):  libzypp(plugin:system) >= 0
-Requires:       zypp-plugin-python
+Requires:       python3-zypp-plugin
 Requires:       apache2-prefork
 %endif
 %if 0%{?fedora} || 0%{?rhel}
