@@ -1,4 +1,8 @@
-- Allow "--force-bundle" attribute when generating bootstrap script
+-------------------------------------------------------------------
+Fri Dec 03 12:21:24 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Allow "--force-bundle" attribute when generating bootstrap script
 
 -------------------------------------------------------------------
 Fri Nov 05 13:36:40 CET 2021 - jgonzalez@suse.com
