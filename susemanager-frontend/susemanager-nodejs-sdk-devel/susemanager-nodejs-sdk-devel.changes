@@ -1,4 +1,5 @@
-- Add react-resize-detector 6.7.6, add react-select-async-paginate 0.0.6, add react-window 1.8.6, add worker-loader 3.0.8
+- Add react-resize-detector 6.7.6, add react-select-async-paginate
+  0.0.6, add react-window 1.8.6, add worker-loader 3.0.8
 
 -------------------------------------------------------------------
 Fri Nov 05 14:05:13 CET 2021 - jgonzalez@suse.com
