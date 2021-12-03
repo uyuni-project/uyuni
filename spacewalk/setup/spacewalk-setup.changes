@@ -1,4 +1,8 @@
-- Allow configuration of Cobbler > 3.2.0
+-------------------------------------------------------------------
+Fri Dec 03 13:10:28 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Allow configuration of Cobbler > 3.2.0
 
 -------------------------------------------------------------------
 Fri Nov 05 13:53:01 CET 2021 - jgonzalez@suse.com

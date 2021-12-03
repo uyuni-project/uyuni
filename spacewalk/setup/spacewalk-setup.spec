@@ -36,7 +36,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.3
+Version:        4.3.4
 Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
