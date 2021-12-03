@@ -1,3 +1,5 @@
+- exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
+
 -------------------------------------------------------------------
 Wed Nov 17 12:35:42 CET 2021 - jmassaguerpla@suse.de
 
