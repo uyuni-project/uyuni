@@ -2386,28 +2386,28 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="kickstart.details.nolabel" xml:space="preserve">
         <source>Autoinstallation profile label is required.</source>
-        <target/>
+        <target>Vyžaduje sa označenie profilu automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.delete.success" xml:space="preserve">
         <source>Autoinstallation was deleted successfully.</source>
-        <target/>
+        <target>Automatická inštalácia bola úspešne vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.success" xml:space="preserve">
         <source>Kickstart advanced options successfully updated.</source>
-        <target/>
+        <target>Pokročilé možnosti kickstart boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.url.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Default @@PRODUCT_NAME@@ kickstart URLs are stored with just the file path, allowing @@PRODUCT_NAME@@ to know when to dynamically adjust the hostname in the URL rendered in the kickstart file. (for proxies, etc) You may customize this value by changing it to a fully qualified URL, which will appear in the kickstart file as is.</source>
-        <target/>
+        <target>&lt;strong&gt;NOTE:&lt;/strong&gt; Predvolené adresy URL kickstart @@PRODUCT_NAME@@ sú uložené len s cestou k súboru, čo umožňuje, aby @@PRODUCT_NAME@@ vedel, kedy dynamicky upraviť názov hostiteľa v adrese URL uvedenej v súbore kickstart. (pre proxy servery atď.) Túto hodnotu môžete upraviť tak, že ju zmeníte na plne kvalifikovanú adresu URL, ktorá sa v súbore kickstart zobrazí tak, ako je.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
@@ -2421,42 +2421,42 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="kickstart.iprange_add.success" xml:space="preserve">
         <source>Successfully added IP Range to Autoinstallation Profile {0}</source>
-        <target/>
+        <target>Úspešne pridaný IP rozsah do profilu automatickej inštalácie {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_conflict.failure" xml:space="preserve">
         <source>Error: The IP range you entered conflicts with another IP range. Please choose a different IP range.</source>
-        <target/>
+        <target>Chyba: Zadaný rozsah IP koliduje s iným rozsahom IP. Prosím, vyberte iný rozsah IP.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_validate.failure" xml:space="preserve">
         <source>Error: IP range values must be between 0 and 255. Please check IP range you just entered and try again.</source>
-        <target/>
+        <target>Chyba: Hodnoty rozsahu IP musia byť v rozmedzí od 0 do 255. Prosím, skontrolujte rozsah IP, ktorý ste práve zadali, a skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.success" xml:space="preserve">
         <source>Successfully deleted IP Range from Autoinstallation Profile {0}</source>
-        <target/>
+        <target>Úspešne vymazaný IP rozsah z profilu automatickej inštalácie {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure" xml:space="preserve">
         <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
-        <target/>
+        <target>Pri vymazávaní rozsahu IP z profilu automatickej inštalácie {0} došlo k chybe. Prosím, skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.update.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
-        <target/>
+        <target>Úryvok automatickej inštalácie &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
