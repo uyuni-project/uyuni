@@ -23,7 +23,7 @@
 %global __python /usr/bin/python3
 %endif
 
-%if !(0%{?rhel} >= 8)
+%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
 %global build_py2   1
 %endif
 
@@ -677,7 +677,9 @@ rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gui.*
 %endif
 
 %if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
