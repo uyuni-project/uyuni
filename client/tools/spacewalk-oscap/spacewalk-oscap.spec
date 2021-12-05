@@ -22,7 +22,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?suse_version} < 1500)
 %global build_py2   1
 %endif
 
