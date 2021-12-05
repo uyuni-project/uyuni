@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
+import org.hibernate.Session;
+
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.
  *
@@ -31,11 +33,12 @@ public abstract class BaseMode implements Mode {
 
     /**
      * Construct a new BaseMode instance.
-     * @param parsedMode
+     * @param session hibernate database session
+     * @param parsedMode the mode
      */
-    /*package*/ BaseMode(ParsedMode parsedMode) {
+    /*package*/ BaseMode(Session session, ParsedMode parsedMode) {
         this.name = parsedMode.getName();
-        this.query = new CachedStatement(parsedMode.getParsedQuery());
+        this.query = new CachedStatement(session, parsedMode.getParsedQuery());
     }
 
     /** {@inheritDoc} */
