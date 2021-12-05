@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
+import org.hibernate.Session;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,12 +40,17 @@ public class SelectMode extends BaseMode implements Serializable {
      */
     protected SelectMode() { }
 
-    /*package*/ SelectMode(ParsedMode parsedMode) {
-        super(parsedMode);
+    /**
+     * Creates an instance
+     * @param session hibernate database session to be used
+     * @param parsedMode the mode
+     */
+    /*package*/ SelectMode(Session session, ParsedMode parsedMode) {
+        super(session, parsedMode);
         if (parsedMode != null) {
             this.clazz = parsedMode.getClassname();
             for (ParsedQuery parsedQuery : parsedMode.getElaborators()) {
-                elaborators.add(new CachedStatement(parsedQuery));
+                elaborators.add(new CachedStatement(session, parsedQuery));
             }
         }
     }
