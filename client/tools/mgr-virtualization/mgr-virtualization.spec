@@ -215,18 +215,9 @@ sed -i 's,@PYTHON@,/usr/bin/python,; s,@PYTHONPATH@,%{python_sitelib},;' \
 
 %if 0%{?suse_version}
 rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
-%endif
-
-%if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
-%if 0%{?build_py3}
-%py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
-%endif
-
-%if 0%{?suse_version}
-rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
-%py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
