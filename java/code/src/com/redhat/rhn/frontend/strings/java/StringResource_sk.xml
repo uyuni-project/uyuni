@@ -2414,7 +2414,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
-        <target/>
+        <target>&lt;strong&gt;NOTE:&lt;/strong&gt; Do tohto poľa môžete nastaviť heslo zahašované ľubovoľným algoritmom (ktorý tento operačný systém podporuje). Hašovací algoritmus &lt;strong&gt;auth&lt;/strong&gt; v tejto voľbe ovplyvní budúce vytvorené heslá, môžete chcieť, aby bol rovnaký ako tu použitý algoritmus. Ak zadáte heslo v podobe obyčajného textu, musíte vybrať &lt;strong&gt;Encrypt&lt;/strong&gt; vyššie jeho zašifrovanie, ak tak neurobíte, nebudete sa môcť prihlásiť po dokončení procesu kickstart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
@@ -2463,63 +2463,63 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="cobblersnippet.create.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
-        <target/>
+        <target>Úryvok automatickej inštalácie &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne vytvorený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.delete.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
-        <target/>
+        <target>Úryvok automatickej inštalácie &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.couldnotdelete.message" xml:space="preserve">
         <source>An error occurred when attempting to delete the snippet &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Došlo k chybe pri pokuse o odstránenie úryvku &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart snippet Delete Confirm pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.rename-error" xml:space="preserve">
         <source>An error occurred when attempting to rename the snippet &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Došlo k chybe pri pokuse o premenovanie úryvku &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.filenameexists.message" xml:space="preserve">
         <source>Snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
-        <target/>
+        <target>Úryvok s názvom &lt;strong&gt;{0}&lt;/strong&gt; už existuje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message" xml:space="preserve">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
-        <target/>
+        <target>Požadovaný názov súboru úryvku nie je platný. Názov súboru úryvku kickstart nesmie obsahovať lomítko (/) alebo začínať s bodkou (.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.details" xml:space="preserve">
         <source>Delete or rename the offending snippet from {0}</source>
-        <target/>
+        <target>Odstrániť alebo premenovať problémový úryvok z {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Snippet Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
         <source>delete snippet</source>
-        <target/>
+        <target>vymazať úryvok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
-        <target/>
+        <target>Nové systémy možno automaticky nainštalovať na základe ich ip adresy pridaním &lt;code&gt;{0}&lt;/code&gt; parametrov jadra pre automatickú inštaláciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
