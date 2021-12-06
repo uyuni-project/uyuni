@@ -95,9 +95,9 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         try {
             if (result.isSuccess()) {
                 Optional<List<String>> proxyPath = params.getProxyId()
-                        .map(proxyId -> ServerFactory.lookupById(proxyId))
-                        .map(proxy -> SaltSSHService.proxyPathToHostnames(
-                                proxy.getServerPaths(), proxy));
+                                                         .map(ServerFactory::lookupById)
+                                                         .map(SaltSSHService::proxyPathToHostnames);
+
                 MinionPendingRegistrationService.addMinion(user, minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
                         proxyPath);

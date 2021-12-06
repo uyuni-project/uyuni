@@ -64,7 +64,6 @@ import com.suse.salt.netapi.utils.Xor;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -79,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -141,7 +141,7 @@ public class SaltSSHService {
             "services.salt-minion",
             "services.docker");
     private final String SALT_USER = "admin";
-    private final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");;
+    private final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");
     private final AuthModule AUTH_MODULE = AuthModule.FILE;
 
     private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.FILE));
@@ -340,15 +340,12 @@ public class SaltSSHService {
     }
 
     /**
-     * @param serverPaths a set ot {@link ServerPath}
-     * @param lastProxy the last proxy in the chain
+     * @param proxy the proxy server
      * @return a list of proxy hostnames, the last one being connected
      * directly to the minion
      */
-    public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths,
-                                                    Server lastProxy) {
-        String lastProxyHostname = lastProxy.getHostname();
-        return proxyPathToHostnames(serverPaths, Optional.of(lastProxyHostname));
+    public static List<String> proxyPathToHostnames(Server proxy) {
+        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getHostname()));
     }
 
     /**
@@ -357,26 +354,27 @@ public class SaltSSHService {
      * @return a list of proxy hostnames, the last one being connected
      * directly to the minion
      */
-    public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths,
-                                                    Optional<String> lastProxy) {
-        if (CollectionUtils.isEmpty(serverPaths) && !lastProxy.isPresent()) {
+    public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths, Optional<String> lastProxy) {
+        if (CollectionUtils.isEmpty(serverPaths) && lastProxy.isEmpty()) {
             return Collections.emptyList();
         }
+
         List<ServerPath> proxyPath = sortServerPaths(serverPaths);
-        List<String> hostnamePath = new ArrayList<>();
-        hostnamePath.addAll(proxyPath.stream().map(p -> p.getHostname())
-                .collect(Collectors.toList()));
-        lastProxy.ifPresent(p -> hostnamePath.add(p));
+        List<String> hostnamePath = proxyPath.stream().map(ServerPath::getHostname).collect(Collectors.toList());
+
+        lastProxy.ifPresent(hostnamePath::add);
+
         return hostnamePath;
     }
 
     private static List<ServerPath> sortServerPaths(Set<ServerPath> serverPaths) {
-        List<ServerPath> proxyPath = Optional.ofNullable(serverPaths)
-                .map(p -> new ArrayList<>(p))
-                .orElseGet(ArrayList<ServerPath>::new);
-        Collections.sort(proxyPath, (p1, p2) ->
-                -ObjectUtils.compare(p1.getPosition(), p2.getPosition()));
-        return proxyPath;
+        if (CollectionUtils.isEmpty(serverPaths)) {
+            return new ArrayList<>();
+        }
+
+        return serverPaths.stream()
+                          .sorted(Comparator.comparing(ServerPath::getPosition).reversed())
+                          .collect(Collectors.toList());
     }
 
     /**
@@ -533,10 +531,10 @@ public class SaltSSHService {
         List<String> bootstrapProxyPath;
         if (parameters.getProxyId().isPresent()) {
             bootstrapProxyPath = parameters.getProxyId()
-                    .map(proxyId -> ServerFactory.lookupById(proxyId))
-                    .map(proxy -> proxyPathToHostnames(proxy.getServerPaths(), proxy))
-                    .orElseThrow(() -> new SaltException(
-                            "Proxy not found for id: " + parameters.getProxyId().get()));
+                                           .map(ServerFactory::lookupById)
+                                           .map(SaltSSHService::proxyPathToHostnames)
+                                           .orElseThrow(() -> new SaltException(
+                                                   "Proxy not found for id: " + parameters.getProxyId().get()));
         }
         else {
             bootstrapProxyPath = Collections.emptyList();
