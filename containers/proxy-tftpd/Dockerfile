@@ -1,3 +1,5 @@
+#!BuildTag: proxy-tftpd:latest proxy-tftpd:%PKG_VERSION% proxy-tftpd:%PKG_VERSION%.%RELEASE%
+
 FROM suse/sle15:15.3
 
 # tftp

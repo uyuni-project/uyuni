@@ -1,3 +1,5 @@
+#!BuildTag: proxy-squid:latest proxy-squid:%PKG_VERSION% proxy-squid:%PKG_VERSION%.%RELEASE%
+
 FROM suse/sle15:15.3
 
 # Squid
