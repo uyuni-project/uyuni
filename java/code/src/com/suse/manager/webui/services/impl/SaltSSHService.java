@@ -228,12 +228,8 @@ public class SaltSSHService {
                     MinionPendingRegistrationService.get(mid).ifPresent(minion -> {
                         roster.addHost(mid, getSSHUser(), Optional.empty(),
                                 Optional.of(SSH_PUSH_PORT),
-                                remotePortForwarding(minion.getProxyPath().orElse(null),
-                                        minion.getContactMethod()),
-                                sshProxyCommandOption(
-                                        minion.getProxyPath().orElse(null),
-                                        minion.getContactMethod(),
-                                        mid),
+                                remotePortForwarding(minion.getProxyPath(), minion.getContactMethod()),
+                                sshProxyCommandOption(minion.getProxyPath(), minion.getContactMethod(), mid),
                                 sshTimeout,
                                 minionOpts(mid, minion.getContactMethod())
                         );
@@ -470,12 +466,8 @@ public class SaltSSHService {
                                 getSSHUser(),
                                 Optional.empty(),
                                 Optional.of(SSH_PUSH_PORT),
-                                remotePortForwarding(minion.getProxyPath().orElse(null),
-                                        minion.getContactMethod()),
-                                sshProxyCommandOption(
-                                        minion.getProxyPath().orElse(null),
-                                        minion.getContactMethod(),
-                                        mid),
+                                remotePortForwarding(minion.getProxyPath(), minion.getContactMethod()),
+                                sshProxyCommandOption(minion.getProxyPath(), minion.getContactMethod(), mid),
                                 getSshPushTimeout(),
                                 minionOpts(mid, minion.getContactMethod()))
                 );

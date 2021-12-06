@@ -92,8 +92,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     protected BootstrapResult bootstrapInternal(BootstrapParameters input, User user,
                                                 String defaultContactMethod) {
         String minionId = input.getHost();
-        MinionPendingRegistrationService.addMinion(
-                user, minionId, defaultContactMethod, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, minionId, defaultContactMethod);
 
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
