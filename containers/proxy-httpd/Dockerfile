@@ -1,3 +1,5 @@
+#!BuildTag: proxy-httpd:latest proxy-httpd:%PKG_VERSION% proxy-httpd:%PKG_VERSION%.%RELEASE%
+
 FROM suse/sle15:15.3
 
 # http(s)
