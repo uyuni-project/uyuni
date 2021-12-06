@@ -1,4 +1,4 @@
-FROM registry.suse.com/suse/sle15:15.3
+FROM suse/sle15:15.3
 
 # http(s)
 EXPOSE 80/tcp
