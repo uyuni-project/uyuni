@@ -31,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -92,9 +93,10 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         String minionId = params.getHost();
         try {
             if (result.isSuccess()) {
-                Optional<List<String>> proxyPath = params.getProxyId()
-                                                         .map(ServerFactory::lookupById)
-                                                         .map(SaltSSHService::proxyPathToHostnames);
+                List<String> proxyPath = params.getProxyId()
+                                               .map(ServerFactory::lookupById)
+                                               .map(SaltSSHService::proxyPathToHostnames)
+                                               .orElse(Collections.emptyList());
 
                 MinionPendingRegistrationService.addMinion(user, minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
