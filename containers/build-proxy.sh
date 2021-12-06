@@ -6,6 +6,9 @@ REGISTRY=registry.tf.local
 
 IMAGES=(proxy-httpd proxy-salt-broker proxy-squid proxy-tftpd)
 
+echo "**** PULLING BASE IMAGE ****"
+podman pull registry.suse.com/suse/sle15:15.3
+
 for image in "${IMAGES[@]}"
 do
     echo "**** BUILDING $image ****"
