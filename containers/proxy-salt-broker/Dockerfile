@@ -1,3 +1,5 @@
+#!BuildTag: proxy-salt-broker:latest proxy-salt-broker:%PKG_VERSION% proxy-salt-broker:%PKG_VERSION%.%RELEASE%
+
 FROM suse/sle15:15.3
 
 # Salt
