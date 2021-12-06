@@ -17,8 +17,6 @@ package com.redhat.rhn.frontend.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-
 /**
  * DTO for a com.redhat.rhn.frontend.action..systems.sdc.SystemPendingEventsAction
  */

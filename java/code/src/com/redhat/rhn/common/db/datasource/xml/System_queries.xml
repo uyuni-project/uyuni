@@ -2091,9 +2091,9 @@ select s.id as id,
   class="com.redhat.rhn.frontend.dto.SystemEventDto">
   <query params="sid, oid">
 select event_id as id,
-       to_char(all_events.created, 'YYYY-MM-DD HH24:MI:SS') created,
-       to_char(all_events.picked_up, 'YYYY-MM-DD HH24:MI:SS') picked_up,
-       to_char(all_events.completed, 'YYYY-MM-DD HH24:MI:SS') completed,
+       all_events.created created,
+       all_events.picked_up picked_up,
+       all_events.completed completed,
        all_events.summary,
        all_events.history_type,
        all_events.history_type_name,
