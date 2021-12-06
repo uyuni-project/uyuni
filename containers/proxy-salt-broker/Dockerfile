@@ -9,6 +9,15 @@ RUN zypper addrepo http://download.opensuse.org/update/leap/15.3/sle/ updates
 # Product repos
 RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/images/repo/Uyuni-Proxy-POOL-x86_64-Media1/ product
 
+# Build Service required labels
+# labelprefix=org.opensuse.uyuni.proxy-salt-broker
+LABEL org.opencontainers.image.title="Proxy salt-broker container"
+LABEL org.opencontainers.image.description="Image contains a Proxy component to forward Salt connections"
+LABEL org.opensuse.reference="registry.opensuse.org/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+# endlabelprefix
+
 # Salt
 EXPOSE 4505/tcp
 EXPOSE 4506/tcp
