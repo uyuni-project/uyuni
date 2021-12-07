@@ -2526,70 +2526,70 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
-        <target/>
+        <target>Možnosti profilu kickstart boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPartitionEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.updated" xml:space="preserve">
         <source>Kickstart profile package groups updated successfully.</source>
-        <target/>
+        <target>Skupiny balíkov profilu kickstart boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation.schedule_pkg_install" xml:space="preserve">
         <source>Schedule a package install for activation key</source>
-        <target/>
+        <target>Naplánovať inštaláciu balíka pre aktivačný kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation.schedule_deploy" xml:space="preserve">
         <source>Schedule a config deploy for activation key</source>
-        <target/>
+        <target>Naplánovať nasadenie konfigurácie pre aktivačný kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.mtime_upload" xml:space="preserve">
         <source>Upload config file data based upon mtime to server</source>
-        <target/>
+        <target>Nahrať údaje konfiguračného súboru založené na mtime na server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="script.run" xml:space="preserve">
         <source>Run an arbitrary script</source>
-        <target/>
+        <target>Spustiť ľubovoľný skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhnsd.configure" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daemon Configuration</source>
-        <target/>
+        <target>Konfigurácia démonov @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.verify" xml:space="preserve">
         <source>Verify deployed packages</source>
-        <target/>
+        <target>Overiť nasadené balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhn_applet.use_satellite" xml:space="preserve">
         <source>Allows for rhn-applet use with an @@PRODUCT_NAME@@</source>
-        <target/>
+        <target>Umožňuje použitie rhn-applet s @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.rollback" xml:space="preserve">
         <source>Rollback a transaction</source>
-        <target/>
+        <target>Vrátiť späť transakciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
