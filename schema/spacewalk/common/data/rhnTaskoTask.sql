@@ -122,4 +122,7 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-forward-registration', 'com.redhat.rhn.taskomatic.task.ForwardRegistrationTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-update-reporting', 'com.redhat.rhn.taskomatic.task.ReportDbUpdateTask');
+
 commit;
