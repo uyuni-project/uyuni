@@ -138,12 +138,10 @@ public class TaskoJob implements Job {
                     (previousRun.getStatus().equals(template.getStartIf()))) {
                 TaskoTask task = template.getTask();
 
-                if (isTaskSingleThreaded(task)) {
-                    if (isTaskRunning(task)) {
-                        log.debug(schedule.getJobLabel() + ":" + " task " + task.getName() +
-                                " already running ... LEAVING");
-                        previousRun = null;
-                    }
+                if (isTaskSingleThreaded(task) && isTaskRunning(task)) {
+                    log.debug(schedule.getJobLabel() + ":" + " task " + task.getName() +
+                            " already running ... LEAVING");
+                    previousRun = null;
                 }
                 else {
 
