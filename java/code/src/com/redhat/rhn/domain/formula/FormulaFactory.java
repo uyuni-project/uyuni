@@ -264,7 +264,12 @@ public class FormulaFactory {
         }
     }
 
-    private static void convertServerFormulasFromFiles(MinionServer server) {
+    /**
+     * Convert legacy server formulas to DB
+     *
+     * @param server the server
+     */
+    public static void convertServerFormulasFromFiles(MinionServer server) {
         Map<String, List<String>> serverFormulas = readFormulaFile(getServerDataFile());
         List<String> legacyFormulas = new LinkedList<>(serverFormulas.getOrDefault(server.getMinionId(),
                 new LinkedList<>()));
@@ -561,7 +566,12 @@ public class FormulaFactory {
                 .map(data -> (String)data.get("name"));
     }
 
-    private static void convertGroupFormulasFromFiles(ServerGroup group) {
+    /**
+     * Convert the legacy formulas of a group.
+     *
+     * @param group the group
+     */
+    public static void convertGroupFormulasFromFiles(ServerGroup group) {
         Map<String, List<String>> groupFormulas = readFormulaFile(getGroupDataFile());
         List<String> legacyFormulas = new LinkedList<>(groupFormulas.getOrDefault(group.getId().toString(),
                 new LinkedList<>()));
