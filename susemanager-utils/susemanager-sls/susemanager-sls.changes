@@ -1,3 +1,4 @@
+- Add state for changing proxy
 - Update proxy path on minion connection
 - Fix problem installing/removing packages using action chains
   in transactional systems
