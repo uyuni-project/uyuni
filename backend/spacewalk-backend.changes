@@ -1,3 +1,4 @@
+- Add headers to update proxy auth token in listChannels (bsc#1193585)
 - require python macros for building
 - Fix the IS_SUSE variable in spacewalk-debug
 - exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
