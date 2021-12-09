@@ -1,3 +1,4 @@
+- UI and API call for changing proxy
 - require postgresql14 on SLE15 SP4
 
 -------------------------------------------------------------------
