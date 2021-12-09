@@ -2596,7 +2596,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="action.failedlink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systém&lt;/a&gt;&lt;/strong&gt; zlyhal pri dokončení tejto akcie.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">
@@ -2606,7 +2606,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="action.failedlink.plural" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systémov&lt;/a&gt;&lt;/strong&gt; zlyhalo pri dokončení tejto akcie.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
           <context context-type="paramnotes">
