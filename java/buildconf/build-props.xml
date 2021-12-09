@@ -129,7 +129,7 @@
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
              ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
-             bcprov bcpg jcommon stringtree-json postgresql-jdbc
+             bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              logdriver quartz dwr slf4j-api slf4j-log4j12
              concurrent velocity simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
@@ -188,7 +188,7 @@
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
              ${tomcat-jars} ${javamail} jdom jsch dwr
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
-             jcommon stringtree-json postgresql-jdbc
+             jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
              ${suse-common-jars} velocity
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
@@ -203,7 +203,7 @@
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             postgresql-jdbc snakeyaml simple-xml
+             postgresql-jdbc ongres-scram/client ongres-scram/common snakeyaml simple-xml
              ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
 

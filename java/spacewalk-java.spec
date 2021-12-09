@@ -898,6 +898,8 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
 %{jardir}/postgresql-jdbc.jar
+%{jardir}/ongres-scram_client.jar
+%{jardir}/ongres-scram_common.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
