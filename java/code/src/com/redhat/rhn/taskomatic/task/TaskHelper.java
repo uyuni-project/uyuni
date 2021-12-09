@@ -25,15 +25,17 @@ import com.redhat.rhn.taskomatic.InvalidParamException;
 import com.redhat.rhn.taskomatic.NoSuchBunchTaskException;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.utils.MailHelper;
+
+import org.apache.log4j.Logger;
+
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 /**
  * TaskHelper

@@ -54,7 +54,7 @@ class VirtualHostManager extends React.Component<Props, State> {
       "handleEditAction",
       "handleResponseError",
       "getAvailableModules",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       vhms: [],
       messages: [],
@@ -71,7 +71,7 @@ class VirtualHostManager extends React.Component<Props, State> {
 
   updateView(action, id) {
     if ((action === "edit" || action === "details") && id)
-      this.getVhmDetails(id, action).then(data => this.setState({ selected: data.data, action: action }));
+      this.getVhmDetails(id, action).then((data) => this.setState({ selected: data.data, action: action }));
     else if (!action) {
       this.getAvailableModules();
       this.getVhmList();
@@ -99,13 +99,13 @@ class VirtualHostManager extends React.Component<Props, State> {
 
   getVhmList() {
     return Network.get("/rhn/manager/api/vhms")
-      .then(data => this.setState({ action: undefined, selected: undefined, vhms: data.data }))
+      .then((data) => this.setState({ action: undefined, selected: undefined, vhms: data.data }))
       .catch(this.handleResponseError);
   }
 
   getAvailableModules() {
     return Network.get("/rhn/manager/api/vhms/modules")
-      .then(data => this.setState({ availableModules: data }))
+      .then((data) => this.setState({ availableModules: data }))
       .catch(this.handleResponseError);
   }
 
@@ -116,7 +116,7 @@ class VirtualHostManager extends React.Component<Props, State> {
   deleteVhm(item) {
     if (!item) return false;
     return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
-      .then(data => {
+      .then((data) => {
         this.handleBackAction();
         this.setState({
           messages: MessagesUtils.info("Virtual Host Manager has been deleted."),
@@ -131,7 +131,7 @@ class VirtualHostManager extends React.Component<Props, State> {
   }
 
   handleBackAction() {
-    this.getVhmList().then(data => {
+    this.getVhmList().then((data) => {
       const loc = window.location;
       window.history.pushState(null, "", loc.pathname + loc.search);
     });
@@ -139,14 +139,14 @@ class VirtualHostManager extends React.Component<Props, State> {
   }
 
   handleDetailsAction(row) {
-    this.getVhmDetails(row.id).then(data => {
+    this.getVhmDetails(row.id).then((data) => {
       this.setState({ selected: data.data, action: "details" });
       window.history.pushState(null, "", "#/details/" + row.id);
     });
   }
 
   handleEditAction(row) {
-    this.getVhmDetails(row.id).then(data => {
+    this.getVhmDetails(row.id).then((data) => {
       this.setState({ selected: data.data, action: "edit" });
       window.history.pushState(null, "", "#/edit/" + row.id);
     });
@@ -173,7 +173,7 @@ class VirtualHostManager extends React.Component<Props, State> {
             icon="fa-plus"
             title={t("Add a virtual host manager")}
             className="btn-default"
-            items={this.state.availableModules.map(name => (
+            items={this.state.availableModules.map((name) => (
               <a data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
                 {msgModuleTypes[name.toLocaleLowerCase()]}
               </a>

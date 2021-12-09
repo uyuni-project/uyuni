@@ -15,15 +15,15 @@
 
 package com.redhat.rhn.frontend.taglibs;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
+import com.redhat.rhn.frontend.html.HiddenInputTag;
+import com.redhat.rhn.frontend.html.HtmlTag;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.redhat.rhn.frontend.html.HiddenInputTag;
-import com.redhat.rhn.frontend.html.HtmlTag;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * RhnHiddenTag: renders a hidden-input entity, insures value is htmlEscaped

@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2015--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.matcher.test;
 
 import static java.util.Collections.singleton;
@@ -33,9 +47,8 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.virtualization.test.TestVirtManager;
-import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
@@ -583,7 +596,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         return cpu;
     }
 
-    private InstalledProduct createInstalledProduct(String name, String version, String release, String archLabel, boolean base) {
+    private InstalledProduct createInstalledProduct(String name, String version,
+                                                    String release, String archLabel, boolean base) {
         InstalledProduct instProd = new InstalledProduct();
         instProd.setName(name);
         instProd.setVersion(version);

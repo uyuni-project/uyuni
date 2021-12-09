@@ -15,17 +15,19 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import static java.util.Optional.of;
+
 import com.redhat.rhn.domain.channel.Channel;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Optional;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import static java.util.Optional.of;
 
 /**
  * Software Project Source

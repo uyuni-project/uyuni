@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-branding-oss
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
@@ -26,12 +26,12 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-%if 0%{?is_opensuse}
-ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
-%else
+%if 0%{?sle_version} && !0%{?is_opensuse}
 # SUSE Manager does not support aarch64 for the server
 ExcludeArch:    aarch64
 BuildRequires:  SUSE-Manager-Server-release
+%else
+ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %endif
 Provides:       susemanager-branding = %{version}
 Conflicts:      otherproviders(susemanager-branding)

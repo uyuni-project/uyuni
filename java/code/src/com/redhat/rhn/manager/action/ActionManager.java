@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.manager.action;
 
+import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -88,6 +95,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.utils.Opt;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -109,13 +117,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Stream.concat;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -892,6 +893,16 @@ public class ActionManager extends BaseManager {
      */
     public static DataResult completedActions(User user, PageControl pc) {
         return getActions(user, pc, "completed_action_list");
+    }
+
+    /**
+     * Retrieve the list of all completed actions for a particular user
+     * @param user The user in question
+     * @param pc The details of which results to return
+     * @return A list containing the pending actions for the user
+     */
+    public static DataResult allCompletedActions(User user, PageControl pc) {
+        return getActions(user, pc, "completed_action_list", null, true);
     }
 
     /**

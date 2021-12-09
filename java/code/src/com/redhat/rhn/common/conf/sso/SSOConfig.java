@@ -16,10 +16,12 @@ package com.redhat.rhn.common.conf.sso;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.manager.webui.controllers.SSOController;
 
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
+
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

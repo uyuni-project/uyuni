@@ -14,8 +14,9 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.annotations.SerializedName;
 import com.suse.salt.netapi.results.StateApplyResult;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Object representation of the results of a call to state.apply distupgrade.

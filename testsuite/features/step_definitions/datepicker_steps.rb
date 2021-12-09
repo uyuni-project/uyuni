@@ -24,7 +24,7 @@ end
 
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   value = Date.parse(desired_date)
-  date_input = find('input[data-provide="date-picker"]')
+  date_input = find('input[data-testid="date-picker"]')
   date_input.click
   picker = find(:xpath, '//body').find('.datepicker')
   picker_years = picker.find('.datepicker-years', visible: false)
@@ -48,8 +48,8 @@ Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   days_find(picker_days, value.day)
 end
 
-Then(/^the date field is set to "([^"]*)"$/) do |arg1|
-  value = Date.parse(arg1)
+Then(/^the date field should be set to "([^"]*)"$/) do |expected_date|
+  value = Date.parse(expected_date)
   # the fields that give backwards compatibility
   day_compat = find('input#date_day', visible: false)
   month_compat = find('input#date_month', visible: false)
@@ -62,10 +62,10 @@ Then(/^the date field is set to "([^"]*)"$/) do |arg1|
 end
 
 Given(/^I open the date picker$/) do
-  find('input[data-provide="date-picker"]').click
+  find('input[data-testid="date-picker"]').click
 end
 
-Then(/^the date picker is closed$/) do
+Then(/^the date picker should be closed$/) do
   raise unless has_no_css?('.datepicker')
 end
 
@@ -107,14 +107,14 @@ When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
   execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
 end
 
-Then(/^the time field is set to "([^"]*)"$/) do |arg1|
-  h, m = arg1.chomp.split(':').map(&:to_i)
+Then(/^the time field should be set to "([^"]*)"$/) do |expected_time|
+  h, m = expected_time.chomp.split(':').map(&:to_i)
   # the fields that give backwards compatibility
   h_compat = find('input#date_hour', visible: false)
   m_compat = find('input#date_minute', visible: false)
   ampm_compat = find('input#date_am_pm', visible: false)
 
-  raise if h_compat.value.to_i != h % 12
-  raise if m_compat.value.to_i != m
-  raise if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
+  raise StandardError, 'invalid hidden hour' if h_compat.value.to_i != h % 12
+  raise StandardError, 'invalid hidden minute' if m_compat.value.to_i != m
+  raise StandardError, 'invalid hidden AM/PM' if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
 end

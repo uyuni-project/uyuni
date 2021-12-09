@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.user;
 
+import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -48,8 +49,8 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
-
 import com.redhat.rhn.manager.system.ServerGroupManager;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -62,9 +63,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.security.auth.login.LoginException;
 
-import static java.util.Optional.of;
+import javax.security.auth.login.LoginException;
 
 /**
  * UserManager - the singleton class used to provide Business Operations

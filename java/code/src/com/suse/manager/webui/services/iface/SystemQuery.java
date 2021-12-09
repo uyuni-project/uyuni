@@ -15,6 +15,7 @@
 package com.suse.manager.webui.services.iface;
 
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.LocalCall;

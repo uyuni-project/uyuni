@@ -30,7 +30,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And I restart salt-minion on "kvm_server"
 
   Scenario: Enable the virtualization host formula for KVM
     When I follow "Formulas" in the content area
@@ -55,6 +54,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     Then service "libvirtd" is enabled on "kvm_server"
+
+  Scenario: Restart the minion to enable libvirt_events engine configuration
+    Then I restart salt-minion on "kvm_server"
 
   Scenario: Prepare a KVM test virtual machine and list it
     When I delete default virtual network on "kvm_server"
@@ -378,6 +380,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Create"
     Then I should see a "Autoinstallation: 15-sp2-kvm" text
     And I should see a "Autoinstallation Details" text
+
+@long_test
+@scc_credentials
+  Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
@@ -443,7 +449,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Cleanup: Cleanup KVM virtualization host
     When I run "zypper -n mr -e --all" on "kvm_server" without error control
     And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm_server" without error control
-    And I run "systemctl stop salt-minion" on "kvm_server" without error control
+    And I stop salt-minion on "kvm_server"
     And I run "rm /etc/salt/minion.d/susemanager*" on "kvm_server" without error control
     And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm_server" without error control
     And I run "rm /etc/salt/pki/minion/minion_master.pub" on "kvm_server" without error control
@@ -457,3 +463,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-pool0 virtual storage pool on "kvm_server" without error control
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
+
+  @uyuni
+  Scenario: Cleanup: Cleanup venv-salt-minion files from KVM virtualization host
+    And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
+    And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control
+    And I run "rm /etc/venv-salt-minion/pki/minion/minion_master.pub" on "kvm_server" without error control

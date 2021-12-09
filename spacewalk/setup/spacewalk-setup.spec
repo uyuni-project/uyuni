@@ -23,8 +23,8 @@
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
+%global pylint_check 1
 %if 0%{?suse_version}
-%{!?pylint_check: %global pylint_check 0}
 %define apache_user wwwrun
 %define apache_group www
 %define misc_path /srv/
@@ -36,7 +36,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.1
+Version:        4.3.4
 Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -73,7 +73,6 @@ Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-DateTime
 Requires:       perl-Frontier-RPC
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
@@ -107,9 +106,7 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 %else
 Requires:       (python-PyYAML or PyYAML)
 %endif
-Requires:       /usr/bin/gpg
 Requires:       curl
-Requires:       perl-DateTime
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
 Requires:       spacewalk-base-minimal
@@ -119,6 +116,9 @@ Requires:       spacewalk-setup-jabberd
 
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
+
+# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1"
+Requires(post): cobbler
 
 %description
 A collection of post-installation scripts for managing Spacewalk's initial
@@ -248,9 +248,11 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
     fi
 fi
 
+%if 0%{?suse_version}
 if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
      sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' /etc/sysconfig/tomcat
 fi
+%endif
 
 if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/NCCcredentials
@@ -280,14 +282,21 @@ fi
 if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
     sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
+
+# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1" and update
+# https://github.com/uyuni-project/uyuni/blob/ea02d4cdf5a91daefa468884548a8b1e60370d3c/spacewalk/setup/bin/spacewalk-setup-cobbler#L29
+COBBLER_VERSION=$(grep "version " /etc/cobbler/version)
+if [[ $(echo -e "version = 3.2.0\n${COBBLER_VERSION}" | sort -rV | head -n 1) != "version = 3.2.0" ]]; then
+  sed -i 's/COBBLER_CONFIG_FILES = \["modules.conf", "settings"\]/COBBLER_CONFIG_FILES = \["modules.conf", "settings.yaml"\]/' /usr/bin/spacewalk-setup-cobbler
+fi
+
 exit 0
 
 %check
 make test
 %if 0%{?pylint_check}
 # check coding style
-pylint --rcfile /etc/spacewalk-python3-pylint.rc \
-    $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
+spacewalk-python3-pylint $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py ||:
 %endif
 
 %files

@@ -14,10 +14,11 @@
  */
 
 package com.redhat.rhn.common.finder.test;
-import java.util.List;
 
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
+
+import java.util.List;
 
 import junit.framework.TestCase;
 

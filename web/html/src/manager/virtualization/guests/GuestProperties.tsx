@@ -5,10 +5,10 @@ import * as React from "react";
 import { Panel } from "components/panels/Panel";
 import { Text } from "components/input/Text";
 import { Select } from "components/input/Select";
-import { Check } from 'components/input/Check';
+import { Check } from "components/input/Check";
 import Validation from "components/validation";
 import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from 'components/messages';
+import { Utils as MessagesUtils } from "components/messages";
 import { Loading } from "components/utils/Loading";
 import { guestNicsPanel } from "./properties/guest-nics-panel";
 import { GuestDisksPanel } from "./properties/GuestDisksPanel";
@@ -74,7 +74,7 @@ export function GuestProperties(props: Props) {
                   {({ osTypes, domainsCaps, messages }) => {
                     const allMessages = ([] as any[])
                       .concat(props.messages, messages, netListError, poolListError, poolsCapsErrors)
-                      .filter(item => item);
+                      .filter((item) => item);
                     const { initialModel } = props;
 
                     if (
@@ -98,12 +98,12 @@ export function GuestProperties(props: Props) {
                         >
                           {({ model, changeModel }) => {
                             const vmTypes = domainsCaps
-                              .map(cap => cap.domain)
+                              .map((cap) => cap.domain)
                               .filter((vmType, idx, array) => array.indexOf(vmType) === idx);
                             const vmType =
                               model.vmType || initialModel.vmType || (vmTypes.includes("kvm") ? "kvm" : vmTypes[0]);
                             const arch = initialModel.arch || props.host.cpu.arch.toLowerCase();
-                            const caps = domainsCaps.find(cap => cap.arch === arch && cap.domain === vmType);
+                            const caps = domainsCaps.find((cap) => cap.arch === arch && cap.domain === vmType);
 
                             const onChangeProfile = (name, value) => {
                               if (value) {
@@ -152,7 +152,7 @@ export function GuestProperties(props: Props) {
                                     name="osType"
                                     required
                                     defaultValue={osTypes[0]}
-                                    options={osTypes.map(item => ({
+                                    options={osTypes.map((item) => ({
                                       value: item,
                                       label: osTypesLabels[item],
                                     }))}
@@ -185,27 +185,23 @@ export function GuestProperties(props: Props) {
                                     required
                                     defaultValue={arch}
                                     options={domainsCaps
-                                      .map(cap => cap.arch)
+                                      .map((cap) => cap.arch)
                                       .filter((item, index, array) => array.indexOf(item) === index)}
                                   />
                                 )}
-                                <Check
-                                  name="uefi"
-                                  label={t('Enable UEFI')}
-                                  divClass="col-md-6 col-md-offset-3"
-                                />
+                                <Check name="uefi" label={t("Enable UEFI")} divClass="col-md-6 col-md-offset-3" />
                                 {model["uefi"] && (
                                   <>
                                     <Text
                                       name="uefiLoader"
-                                      label={t('UEFI firmware path')}
+                                      label={t("UEFI firmware path")}
                                       required={model["uefi"] && !props.host.uefiAutoLoader}
                                       labelClass="col-md-3"
                                       divClass="col-md-6"
                                     />
                                     <Text
                                       name="nvramTemplate"
-                                      label={t('NVRAM template path')}
+                                      label={t("NVRAM template path")}
                                       required={model["uefi"] && !props.host.uefiAutoLoader}
                                       labelClass="col-md-3"
                                       divClass="col-md-6"
@@ -226,7 +222,7 @@ export function GuestProperties(props: Props) {
                                         .sort((k1, k2) =>
                                           props.cobblerProfiles[k1].localeCompare(props.cobblerProfiles[k2])
                                         )
-                                        .map(k => ({
+                                        .map((k) => ({
                                           value: k,
                                           label: props.cobblerProfiles[k],
                                         }))}
@@ -240,53 +236,50 @@ export function GuestProperties(props: Props) {
                                     />
                                   </>
                                 )}
-                                { initialModel.name === undefined && props.host.inCluster && (
-                                    <>
-                                      {
-                                        !props.host.raCanStartResources && (
-                                          <Messages
-                                            items={MessagesUtils.warning(
-                                              t('Cluster support is disabled since VirtualDomain resource agent ' +
-                                                'does not support the start_resources parameter.')
-                                            )}
-                                          />)
-                                      }
-                                      <Check
-                                        name="in_cluster"
-                                        label={t('Define as a cluster resource')}
-                                        divClass="col-md-6 col-md-offset-3"
-                                        disabled={!props.host.raCanStartResources}
+                                {initialModel.name === undefined && props.host.inCluster && (
+                                  <>
+                                    {!props.host.raCanStartResources && (
+                                      <Messages
+                                        items={MessagesUtils.warning(
+                                          t(
+                                            "Cluster support is disabled since VirtualDomain resource agent " +
+                                              "does not support the start_resources parameter."
+                                          )
+                                        )}
                                       />
-                                      <Text
-                                        name="cluster_definitions"
-                                        label={t('Path to the cluster shared folder for VM definitions')}
-                                        labelClass="col-md-3"
-                                        divClass="col-md-6"
-                                        disabled={!model["in_cluster"] || !props.host.raCanStartResources}
-                                        required={model["in_cluster"]}
-                                      />
-                                    </>
-                                  )
-                                }
-                                { initialModel.name === undefined && props.host.templates && (
-                                    <Select
+                                    )}
+                                    <Check
+                                      name="in_cluster"
+                                      label={t("Define as a cluster resource")}
+                                      divClass="col-md-6 col-md-offset-3"
+                                      disabled={!props.host.raCanStartResources}
+                                    />
+                                    <Text
+                                      name="cluster_definitions"
+                                      label={t("Path to the cluster shared folder for VM definitions")}
                                       labelClass="col-md-3"
                                       divClass="col-md-6"
-                                      name="template"
-                                      label={t("Template")}
-                                      options={props.host.templates}
-                                      formatOptionLabel={
-                                        ({value}) => {
-                                          const description = TemplatesMessages[value];
-                                           if (description != null) {
-                                             return `${value} - ${description}`;
-                                           }
-                                           return value;
-                                        }
-                                      }
+                                      disabled={!model["in_cluster"] || !props.host.raCanStartResources}
+                                      required={model["in_cluster"]}
                                     />
-                                  )
-                                }
+                                  </>
+                                )}
+                                {initialModel.name === undefined && props.host.templates && (
+                                  <Select
+                                    labelClass="col-md-3"
+                                    divClass="col-md-6"
+                                    name="template"
+                                    label={t("Template")}
+                                    options={props.host.templates}
+                                    formatOptionLabel={({ value }) => {
+                                      const description = TemplatesMessages[value];
+                                      if (description != null) {
+                                        return `${value} - ${description}`;
+                                      }
+                                      return value;
+                                    }}
+                                  />
+                                )}
                               </Panel>,
                               <GuestDisksPanel
                                 changeModel={changeModel}
@@ -314,7 +307,7 @@ export function GuestProperties(props: Props) {
                                       osTypes: ["hvm"],
                                     },
                                   ].filter(
-                                    entry =>
+                                    (entry) =>
                                       caps !== undefined &&
                                       caps.devices.graphics.type.includes(entry.value) &&
                                       entry.osTypes.includes(model.osType)

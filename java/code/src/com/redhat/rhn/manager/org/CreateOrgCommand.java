@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.manager.org;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -32,7 +29,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * CreateOrgCommand - Command to create an org and the first admin in the Org.

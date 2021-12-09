@@ -16,7 +16,7 @@ type Props = {
   buttonClass?: string;
   buttonText?: React.ReactNode;
   onDeleteSuccess?: (...args: any[]) => any;
-}
+};
 
 type State = {
   messages: any[];
@@ -34,17 +34,17 @@ class DeleteSystem extends React.Component<Props, State> {
 
   handleDelete = (cleanupErr: Boolean) => {
     return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, { nocleanup: cleanupErr })
-      .then(data => {
+      .then((data) => {
         if (data.success && this.props.onDeleteSuccess) {
           this.props.onDeleteSuccess();
         } else {
           this.setState({
-            messages: MessagesUtils.error(data.messages.map(m => msgMap[m])),
+            messages: MessagesUtils.error(data.messages.map((m) => msgMap[m])),
           });
           this.showErrorDialog();
         }
       })
-      .catch(jqXHR => {
+      .catch((jqXHR) => {
         this.handleResponseError(jqXHR);
       });
   };

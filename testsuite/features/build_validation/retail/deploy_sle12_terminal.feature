@@ -3,6 +3,7 @@
 
 @proxy
 @private_net
+@sle12sp5_terminal
 Feature: PXE boot a SLES 12 SP5 retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator

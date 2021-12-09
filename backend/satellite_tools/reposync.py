@@ -352,7 +352,7 @@ def write_ssl_set_cache(ca_cert, client_cert, client_key):
             else:
                 org = str(org)
             ssldir = os.path.join(CACHE_DIR, '.ssl-certs', org)
-            cert_file = os.path.join(ssldir, "%s.pem" % name)
+            cert_file = os.path.join(ssldir, "%s.pem" % re.sub(r'[^a-zA-Z0-9_-]', '_', name))
             if not os.path.exists(cert_file):
                 create_dir_tree(ssldir)
                 f = open(cert_file, "wb")
@@ -484,6 +484,7 @@ class RepoSync(object):
         #if self.checksum_cache is None:
         #    self.checksum_cache = {}
         self.arches = self.get_compatible_arches(int(self.channel['id']))
+        self.channel_arch = self.get_channel_arch(int(self.channel['id']))
         self.import_batch_size = default_import_batch_size
 
     def set_import_batch_size(self, batch_size):
@@ -571,7 +572,8 @@ class RepoSync(object):
                                                   channel_label=self.channel_label,
                                                   ca_cert_file=ca_cert_file,
                                                   client_cert_file=client_cert_file,
-                                                  client_key_file=client_key_file)
+                                                  client_key_file=client_key_file,
+                                                  channel_arch=self.channel_arch)
                     except repo.GeneralRepoException as exc:
                         log(0, "Plugin error: {}".format(exc))
                         sync_error = -1
@@ -714,6 +716,7 @@ class RepoSync(object):
         """Try to import the repository plugin required to sync the repository
 
         :repo_type: type of the repository; only 'yum' is currently supported
+        :channel_arch: the channel architecture
 
         """
         if repo_type == "yum" and not isSUSE():
@@ -2380,6 +2383,22 @@ class RepoSync(object):
         arches = [k['label'] for k in  h.fetchall_dict()
                 if CFG.SYNC_SOURCE_PACKAGES or k['label'] not in ['src', 'nosrc']]
         return arches
+
+    @staticmethod
+    def get_channel_arch(channel_id):
+        """Return the basearch value for the channel"""
+        h = rhnSQL.prepare("""select ca.label
+                              from rhnChannel c,
+                              rhnChannelArch ca
+                              where c.id = :channel_id
+                              and c.channel_arch_id = ca.id""")
+        h.execute(channel_id=channel_id)
+        row = h.fetchone_dict()
+
+        if not isinstance(row, dict):
+            return None
+
+        return re.sub("^channel-([^-]+)(?:-deb)?$", "\\1", row['label'])
 
     @staticmethod
     def _update_keywords(notice):

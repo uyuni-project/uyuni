@@ -9,36 +9,22 @@ postgres_exporter_service:
     - enable: False
 
 {% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
-{%- include 'srvmonitoring/removejmxprops.sls' %}
+{% include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_tomcat_config:
-  cmd.run:
-    - name: grep -q -v -- '-Dcom.sun.management.jmxremote.host=' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat
-    - require:
-      - cmd: remove_tomcat_jmx_*
-
-jmx_exporter_tomcat_service:
-  service.dead:
-    - name: prometheus-jmx_exporter@tomcat
-    - enable: False
-    - require:
-      - cmd: jmx_tomcat_config
+  file.absent:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+  mgrcompat.module_run:
+    - name: service.systemctl_reload
 
 {% set remove_jmx_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
 {%- include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_taskomatic_config:
-  cmd.run:
-    - name: grep -q -v -- '-Dcom.sun.management.jmxremote.host=' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3334' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf
-    - require:
-      - cmd: remove_taskomatic_jmx_*
-
-jmx_exporter_taskomatic_service:
-  service.dead:
-    - name: prometheus-jmx_exporter@taskomatic
-    - enable: False
-    - require:
-      - cmd: jmx_taskomatic_config
+  file.absent:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+  mgrcompat.module_run:
+    - name: service.systemctl_reload
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

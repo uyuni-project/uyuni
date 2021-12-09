@@ -69,10 +69,9 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
-            new JsonParser<>(new TypeToken<Event>(){});
+            new JsonParser<>(new TypeToken<Event>() { });
 
     @Override
-    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -102,7 +101,6 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         host.asMinionServer().get().setMinionId("testminion.local");
     }
 
-    @SuppressWarnings("unchecked")
     public void testNewGuestNoRestart() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("sles12sp2", "sles12sp2-new");
@@ -124,16 +122,16 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
                      newGuests.get(0).getStateLabel());
 
         // Shutdown event
-        context().checking(new Expectations(){ {
+        context().checking(new Expectations() {{
             never(virtManager).startGuest(host.getMinionId(), "sles12sp2-new");
-        } });
-        Optional<EngineEvent> stopEvent = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
+        }});
+        Optional<EngineEvent> stopEvent = EngineEvent.parse(
+                getEngineEvent("virtevents.guest.shutdown.json", placeholders));
         AbstractLibvirtEngineMessage stopMessage = AbstractLibvirtEngineMessage.create(stopEvent.get());
 
         action.execute(stopMessage);
     }
 
-    @SuppressWarnings("unchecked")
     public void testNewGuestFirstReboot() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("sles12sp2", "sles12sp2-new");
@@ -150,16 +148,16 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         action.execute(startMessage);
 
         // Shutdown event
-        context().checking(new Expectations(){ {
+        context().checking(new Expectations() {{
             oneOf(virtManager).startGuest(host.getMinionId(), "sles12sp2-new");
-        } });
-        Optional<EngineEvent> stopEvent = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
+        }});
+        Optional<EngineEvent> stopEvent = EngineEvent.parse(
+                getEngineEvent("virtevents.guest.shutdown.json", placeholders));
         AbstractLibvirtEngineMessage stopMessage = AbstractLibvirtEngineMessage.create(stopEvent.get());
 
         action.execute(stopMessage);
     }
 
-    @SuppressWarnings("unchecked")
     public void testNewGuestFirstRebootAborted() throws Exception {
         States vmState = context().states("vm").startsAs("started");
 
@@ -186,20 +184,21 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         context().checking(new Expectations() { {
             never(virtManager).startGuest(host.getMinionId(), "sles12sp2-new");
         } });
-        Optional<EngineEvent> stopEvent = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
+        Optional<EngineEvent> stopEvent = EngineEvent.parse(
+                getEngineEvent("virtevents.guest.shutdown.json", placeholders));
         AbstractLibvirtEngineMessage stopMessage = AbstractLibvirtEngineMessage.create(stopEvent.get());
 
         action.execute(stopMessage);
     }
 
-    @SuppressWarnings("unchecked")
     public void testShutdownPersistent() throws Exception {
         expectGuestDefinition(uuid,
                 "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", null);
-        context().checking(new Expectations(){ {
+        context().checking(new Expectations() {{
             never(virtManager).startGuest(host.getMinionId(), "sles12sp2");
-        } });
-        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
+        }});
+        Optional<EngineEvent> event = EngineEvent.parse(
+                getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
         new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
@@ -211,14 +210,13 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
                      matchingGuests.get(0).getStateLabel());
     }
 
-
-    @SuppressWarnings("unchecked")
     public void testShutdownTransient() throws Exception {
         expectGuestDefinition(uuid, null, null);
-        context().checking(new Expectations(){ {
+        context().checking(new Expectations() {{
             never(virtManager).startGuest(host.getMinionId(), "sles12sp2");
-        } });
-        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
+        }});
+        Optional<EngineEvent> event = EngineEvent.parse(
+                getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
         new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
@@ -230,11 +228,11 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         assertEquals(0, matchingGuests.size());
     }
 
-    @SuppressWarnings("unchecked")
     public void testUpdate() throws Exception {
         expectGuestDefinition(uuid,
                 "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", null);
-        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.updated.json", Collections.emptyMap()));
+        Optional<EngineEvent> event = EngineEvent.parse(
+                getEngineEvent("virtevents.guest.updated.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
         new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
@@ -249,7 +247,8 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     protected Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) throws Exception {
-        return SaltTestUtils.getSaltResponse("/com/suse/manager/reactor/messaging/test/" + filename, placeholders, null);
+        return SaltTestUtils.getSaltResponse("/com/suse/manager/reactor/messaging/test/" + filename,
+                placeholders, null);
     }
 
     private Event getEngineEvent(String filename, Map<String, String> placeholders) throws Exception {
@@ -273,7 +272,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     private void expectGuestDefinition(String uuidIn, String file,
                                        Map<String, String> placeholders,
                                        States state, String expectedState) {
-        context().checking(new Expectations(){ {
+        context().checking(new Expectations() {{
             allowing(virtManager).getGuestDefinition("testminion.local", uuidIn);
             will(returnValue(
                     file == null ?
@@ -285,6 +284,6 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             if (state != null && expectedState != null) {
                 when(state.is(expectedState));
             }
-        } });
+        }});
     }
 }

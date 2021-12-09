@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 05 14:04:56 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Build the package only for SUSE Linux Enterprise
+
+-------------------------------------------------------------------
 Mon Aug 09 10:44:25 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

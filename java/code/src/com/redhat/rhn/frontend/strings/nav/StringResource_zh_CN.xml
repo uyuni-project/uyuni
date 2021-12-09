@@ -1229,6 +1229,20 @@
         </context-group>
         <target state="final">库存</target>
       </trans-unit>
+      <trans-unit approved="yes" id="configchannel.nav.systems.appstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/channel/AppStreams.do</context>
+        </context-group>
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
+        </context-group>
+        <target state="final">AppStream</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

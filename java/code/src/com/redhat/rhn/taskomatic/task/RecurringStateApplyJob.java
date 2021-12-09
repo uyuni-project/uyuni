@@ -21,6 +21,7 @@ import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

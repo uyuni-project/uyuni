@@ -1,61 +1,52 @@
-
-import * as React from 'react';
-import { Form } from './Form';
-import { Select } from './Select';
-import { SubmitButton } from 'components/buttons';
+import * as React from "react";
+import { Form } from "./Form";
+import { Select } from "./Select";
+import { SubmitButton } from "components/buttons";
 
 export default {
   component: Select,
-  title: 'Forms/Select'
+  title: "Forms/Select",
 };
 
 let model = {
-  level: 'beginner',
+  level: "beginner",
 };
 
 export const Example = () => (
   <Form
     model={model}
-    onChange={newModel => {model['level'] = newModel['level']}}
-    onSubmit={() => alert(`Level: ${model['level']}`)}
+    onChange={(newModel) => {
+      model["level"] = newModel["level"];
+    }}
+    onSubmit={() => alert(`Level: ${model["level"]}`)}
     divClass="col-md-12"
     formDirection="form-horizontal"
   >
     <Select
       name="level"
-      label={t('Level')}
+      label={t("Level")}
       required
       labelClass="col-md-3"
       divClass="col-md-6"
       options={["beginner", "normal", "expert"]}
     />
-    <SubmitButton
-      id="submit-btn"
-      className="btn-success"
-      text={t("Submit")}
-    />
+    <SubmitButton id="submit-btn" className="btn-success" text={t("Submit")} />
   </Form>
-)
-
+);
 
 export const AdvancedExample = () => {
-  const [model, setModel] = React.useState({flavor: ['vanilla', 'strawberry']});
+  const [model, setModel] = React.useState({ flavor: ["vanilla", "strawberry"] });
 
   const options = [
-    { value: 'chocolate', label: 'Chocolate', color: "#7B3F00" },
-    { value: 'strawberry', label: 'Strawberry', color: "#DF0000" },
-    { value: 'vanilla', label: 'Vanilla', color: "#F3E5AB" }
+    { value: "chocolate", label: "Chocolate", color: "#7B3F00" },
+    { value: "strawberry", label: "Strawberry", color: "#DF0000" },
+    { value: "vanilla", label: "Vanilla", color: "#F3E5AB" },
   ];
 
   return (
     <div className="panel panel-default">
       <div className="panel-body">
-        <Form
-          model={model}
-          onChange={setModel}
-          divClass="col-md-12"
-          formDirection="form-horizontal"
-        >
+        <Form model={model} onChange={setModel} divClass="col-md-12" formDirection="form-horizontal">
           <Select
             name="flavor"
             label={t("Flavor")}
@@ -65,20 +56,20 @@ export const AdvancedExample = () => {
             labelClass="col-md-3"
             divClass="col-md-6"
             isMulti
-            formatOptionLabel={(object, {context}) => {
+            formatOptionLabel={(object, { context }) => {
               if (context === "menu") {
-                return <div style={{color: object.color}}>{object.label}</div>;
+                return <div style={{ color: object.color }}>{object.label}</div>;
               } else {
                 const dotStyle = {
                   backgroundColor: object.color,
                   borderRadius: 10,
-                  display: 'block',
+                  display: "block",
                   marginRight: 8,
                   height: 10,
                   width: 10,
                 };
                 return (
-                  <div style={{alignItems: 'center', display: 'flex'}}>
+                  <div style={{ alignItems: "center", display: "flex" }}>
                     <div style={dotStyle}></div>
                     <div>{object.label}</div>
                   </div>
@@ -91,7 +82,7 @@ export const AdvancedExample = () => {
       </div>
     </div>
   );
-}
+};
 
 export const AsyncExample = () => {
   const [model, setModel] = React.useState({
@@ -99,7 +90,7 @@ export const AsyncExample = () => {
   });
 
   const loadOptions = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
           {
@@ -129,8 +120,8 @@ export const AsyncExample = () => {
         label={t("Level")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        getOptionValue={item => item.value}
-        getOptionLabel={item => item.label}
+        getOptionValue={(item) => item.value}
+        getOptionLabel={(item) => item.label}
         defaultValueOption={{ value: 2, label: "Level 2" }}
       />
     </Form>

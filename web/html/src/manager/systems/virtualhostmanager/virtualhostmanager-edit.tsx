@@ -50,7 +50,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       "bindForm",
       "setKubeconfigContexts",
       "handleResponseError",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
 
     if (this.isEdit()) {
       this.setValues(this.props.item);
@@ -59,7 +59,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
 
   UNSAFE_componentWillMount() {
     Network.get("/rhn/manager/api/vhms/module/" + this.props.type.toLowerCase() + "/params")
-      .then(data => {
+      .then((data) => {
         this.setState({ vhmParams: data.data });
       })
       .catch(this.handleResponseError);
@@ -76,7 +76,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     m["id"] = item.id;
     m["label"] = item.label;
     m["gathererModule"] = item.gathererModule;
-    Object.keys(item.config).forEach(cfg => {
+    Object.keys(item.config).forEach((cfg) => {
       m["module_" + cfg] = item.config[cfg];
     });
     if (item.credentials) {
@@ -91,7 +91,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
 
   setKubeconfigContexts(id) {
     Network.get("/rhn/manager/api/vhms/kubeconfig/" + id + "/contexts")
-      .then(data => {
+      .then((data) => {
         this.setState({
           model: Object.assign(this.state.model, { contexts: data.data }),
         });
@@ -114,13 +114,22 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         // Remove '<default>' placeholder for submit
         formData.set("module_context", "");
       }
-      request = Network.post("/rhn/manager/api/vhms/update/kubernetes", formData, "application/x-www-form-urlencoded", false);
+      request = Network.post(
+        "/rhn/manager/api/vhms/update/kubernetes",
+        formData,
+        "application/x-www-form-urlencoded",
+        false
+      );
     } else {
-      request = Network.post("/rhn/manager/api/vhms/update/" + this.state.model.id, jQuery(this.form).serialize(), "application/x-www-form-urlencoded");
+      request = Network.post(
+        "/rhn/manager/api/vhms/update/" + this.state.model.id,
+        jQuery(this.form).serialize(),
+        "application/x-www-form-urlencoded"
+      );
     }
 
     return request
-      .then(data => {
+      .then((data) => {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
@@ -137,13 +146,22 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         // Remove '<default>' placeholder for submit
         formData.set("module_context", "");
       }
-      request = Network.post("/rhn/manager/api/vhms/create/kubernetes", formData, "application/x-www-form-urlencoded", false);
+      request = Network.post(
+        "/rhn/manager/api/vhms/create/kubernetes",
+        formData,
+        "application/x-www-form-urlencoded",
+        false
+      );
     } else {
-      request = Network.post("/rhn/manager/api/vhms/create", jQuery(this.form).serialize(), "application/x-www-form-urlencoded");
+      request = Network.post(
+        "/rhn/manager/api/vhms/create",
+        jQuery(this.form).serialize(),
+        "application/x-www-form-urlencoded"
+      );
     }
 
     return request
-      .then(data => {
+      .then((data) => {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
@@ -259,7 +277,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     if (!this.state.vhmParams) {
       return null;
     }
-    var fields = Object.keys(this.state.vhmParams).map(param => this.paramField(param, this.state.vhmParams[param]));
+    var fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param, this.state.vhmParams[param]));
 
     fields.unshift(<Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6" />);
 
@@ -274,7 +292,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     let formData = new FormData();
     formData.append("kubeconfig", kubeconfig);
     Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, "application/x-www-form-urlencoded", false)
-      .then(res => {
+      .then((res) => {
         const data = res.data;
         if (data.currentContext === "") {
           // Replace unnamed context with '<default>' to differ it from empty choice
@@ -291,7 +309,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           });
         }
       })
-      .catch(jqXHR => {
+      .catch((jqXHR) => {
         this.setState({
           validKubeconfig: false,
         });
@@ -310,7 +328,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           labelClass="col-md-3"
           divClass="col-md-6"
           isClearable
-          options={this.state.model.contexts.map(k => (k === "" ? "<default>" : k))}
+          options={this.state.model.contexts.map((k) => (k === "" ? "<default>" : k))}
         />
       );
     }
@@ -347,7 +365,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         model={this.state.model}
         className="virtualhostmanager-form"
         onChange={this.onFormChange}
-        onSubmit={e => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
+        onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
         onValidate={this.onValidate}
         formRef={this.bindForm}
       >

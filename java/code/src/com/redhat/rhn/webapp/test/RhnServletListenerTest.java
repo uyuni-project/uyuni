@@ -15,6 +15,7 @@
 package com.redhat.rhn.webapp.test;
 
 import com.redhat.rhn.webapp.RhnServletListener;
+
 import junit.framework.TestCase;
 
 /**

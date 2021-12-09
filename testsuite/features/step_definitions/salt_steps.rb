@@ -28,20 +28,32 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl stop salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
+  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  node.run("rc#{pkgname} stop", check_errors: false) if minion == 'sle_minion'
+  node.run("systemctl stop #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
+  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
+  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
+  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
+  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+end
+
+When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
+  node = get_target(minion)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  node.run("#{salt_call} saltutil.refresh_grains")
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -58,8 +70,9 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
-    output, _code = target.run('salt-call -lquiet saltutil.running')
+    output, _code = target.run("#{salt_call} -lquiet saltutil.running")
     break if output == "local:\n"
     sleep 3
   end
@@ -217,6 +230,23 @@ end
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $server.run("salt #{system_name} saltutil.sync_all")
+end
+
+When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_cache = $product == 'Uyuni' ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  file_delete(node, "#{salt_cache}#{filename}")
+end
+
+When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  file_delete(node, "#{salt_config}#{filename}")
+end
+
+When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
+  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
@@ -577,7 +607,8 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  output, _code = node.run('salt-call --local key.finger')
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
 end
@@ -630,23 +661,27 @@ end
 # salt-ssh steps
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
+  pkgs = $product == 'Uyuni' ? "venv-salt-minion" : "salt salt-minion"
   if %w[sle_minion ssh_minion sle_client].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", check_errors: false)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
   elsif %w[ceos_minion].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", check_errors: false)
+    target.run("test -e /usr/bin/yum && yum -y remove #{pkgs}", check_errors: false)
   elsif %w[ubuntu_minion].include?(host)
-    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", check_errors: false)
+    pkgname = "salt-common salt-minion" if $product != 'Uyuni'
+    target.run("test -e /usr/bin/apt && apt -y remove #{pkgs}", check_errors: false)
   end
 end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
+  pkgs = $product == 'Uyuni' ? "venv-salt-minion" : "salt salt-minion"
   if %w[sle_minion ssh_minion sle_client].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", check_errors: false)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
   elsif %w[ceos_minion].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", check_errors: false)
+    target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
   elsif %w[ubuntu_minion].include?(host)
-    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", check_errors: false)
+    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
+    target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
   end
 end
 
@@ -673,14 +708,20 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
+  pkgs = $product == 'Uyuni' ? "venv-salt-minion" : "salt salt-minion"
   if host.include? 'ceos'
-    node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
+    node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
   elsif (host.include? 'ubuntu') || (host.include? 'debian')
-    node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
+    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
+    node.run("apt-get --assume-yes remove #{pkgs} && apt-get --assume-yes purge #{pkgs} && apt-get --assume-yes autoremove", check_errors: false)
   else
-    node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', check_errors: false)
+    node.run("zypper --non-interactive remove --clean-deps -y #{pkgs} spacewalk-proxy-salt", check_errors: false)
   end
-  node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+  if $product == 'Uyuni'
+    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
+  else
+    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+  end
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 

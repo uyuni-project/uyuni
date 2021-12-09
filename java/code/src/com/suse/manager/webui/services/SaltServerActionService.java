@@ -31,6 +31,7 @@ import static java.util.stream.Collectors.toMap;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -54,6 +55,7 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -103,10 +105,8 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -118,9 +118,11 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -151,6 +153,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
@@ -173,8 +176,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.jose4j.lang.JoseException;
 
 import java.io.File;
@@ -224,6 +225,7 @@ public class SaltServerActionService {
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
+    private static final String PACKAGES_PKGLOCK = "packages.pkglock";
     private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
     private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
     private static final String PARAM_PKGS = "param_pkgs";
@@ -272,15 +274,6 @@ public class SaltServerActionService {
         this.saltKeyUtils = saltKeyUtilsIn;
     }
 
-    private Action unproxy(Action entity) {
-        Hibernate.initialize(entity);
-        if (entity instanceof HibernateProxy) {
-            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
-                    .getImplementation();
-        }
-        return entity;
-    }
-
     /**
      * For a given action return the salt call(s) that need to be executed for the minions involved.
      *
@@ -305,12 +298,14 @@ public class SaltServerActionService {
         }
 
         ActionType actionType = actionIn.getActionType();
-        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
             return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
+        }
+        else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
+            return packagesLockAction(minions, (PackageLockAction) actionIn);
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
@@ -533,7 +528,7 @@ public class SaltServerActionService {
         if (!sshPushMinions.isEmpty()) {
             for (MinionServer sshMinion : sshPushMinions) {
                 try {
-                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion, forcePackageListRefresh);
                 }
                 catch (TaskomaticApiException e) {
                     LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
@@ -632,6 +627,7 @@ public class SaltServerActionService {
                                                 Object::toString,
                                                 Object::toString,
                                                 Object::toString,
+                                                Object::toString,
                                                 Object::toString
                                         ));
                                         return Optional.empty();
@@ -682,6 +678,10 @@ public class SaltServerActionService {
                             e ->  {
                                 LOG.error(e);
                                 return "Salt error: " + e.getMessage();
+                            },
+                            e -> {
+                                LOG.error(e);
+                                return "Salt SSH error: " + e.getRetcode() + " " + e.getMessage();
                             }
                     )).orElse("Unknonw error");
                     // no result, fail the entire chain
@@ -1087,7 +1087,7 @@ public class SaltServerActionService {
                         .sorted()
                         .collect(Collectors.toList())
                 );
-                params.put("allowVendorChange", allowVendorChange);
+                params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
                     entry.getKey().stream()
                         .filter(e -> e.isUpdateStack())
@@ -1108,22 +1108,39 @@ public class SaltServerActionService {
             Map.Entry::getValue));
     }
 
+    private Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
+            List<MinionSummary> minionSummaries, PackageLockAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        for (MinionSummary m : minionSummaries) {
+            DataResult<PackageListItem> setLockPkg = PackageManager.systemSetLockedPackages(
+                    m.getServerId(), action.getId(), null);
+            List<List<String>> pkgs = setLockPkg.stream().map(d -> Arrays.asList(d.getName(), d.getArch(),
+                    new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
+                    .toUniversalEvrString())).collect(Collectors.toList());
+            LocalCall<Map<String, ApplyResult>> localCall =
+                    State.apply(Arrays.asList(PACKAGES_PKGLOCK), Optional.of(singletonMap(PARAM_PKGS, pkgs)));
+            List<MinionSummary> mSums = ret.getOrDefault(localCall, new ArrayList<>());
+            mSums.add(m);
+            ret.put(localCall, mSums);
+        }
+        return ret;
+    }
+
     private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
             List<MinionSummary> minionSummaries, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        List<Package> packages = action.getDetails().stream().flatMap(details -> {
-            PackageName packageName = details.getPackageName();
+        List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
+
+        List<String> nevraStrings = action.getDetails().stream().map(details -> {
+            PackageName name = details.getPackageName();
             PackageEvr evr = details.getEvr();
             PackageArch arch = details.getArch();
-            return PackageFactory.lookupByNevra(action.getOrg(), packageName.getName(), evr.getVersion(),
-                    evr.getRelease(), evr.getEpoch(), arch).stream();
+            return name.getName() + "-" + evr.toUniversalEvrString() + "." + arch.getLabel();
         }).collect(toList());
 
-        List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
-        List<Long> pids = packages.stream().map(p -> p.getId()).collect(toList());
-
-        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackages(pids, sids);
+        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackagesByNevra(nevraStrings, sids);
         Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
                 .collect(groupingBy(t -> t.getB(), mapping(t -> t.getA(), toList())));
         action.getServerActions().forEach(sa -> {
@@ -1575,8 +1592,8 @@ public class SaltServerActionService {
             Set<Channel> currentChannels = minion.getChannels();
             currentChannels.removeAll(unsubbed);
             currentChannels.addAll(subbed);
-            ServerFactory.save(minion);
             MinionPillarManager.INSTANCE.generatePillar(minion);
+            ServerFactory.save(minion);
         });
 
         Map<String, Object> pillar = new HashMap<>();
@@ -1585,11 +1602,15 @@ public class SaltServerActionService {
         Map<String, Object> distupgrade = new HashMap<>();
         susemanager.put("distupgrade", distupgrade);
         distupgrade.put("dryrun", action.getDetails().isDryRun());
-        distupgrade.put("allowVendorChange", action.getDetails().isAllowVendorChange());
+        distupgrade.put(ALLOW_VENDOR_CHANGE, action.getDetails().isAllowVendorChange());
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
+
+        if (commitTransaction) {
+            HibernateFactory.commitTransaction();
+        }
 
         LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
                 Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
@@ -1609,7 +1630,7 @@ public class SaltServerActionService {
                 .matcher(scapActionDetails.getParametersContents());
         Matcher ruleMatcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)")
                 .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-)+)")
+        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-|\\/)+)")
                 .matcher(scapActionDetails.getParametersContents());
         Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)")
                 .matcher(scapActionDetails.getParametersContents());
@@ -2346,6 +2367,7 @@ public class SaltServerActionService {
         pillarData.put("playbook_path", playbookPath);
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
+        pillarData.put("flush_cache", details.isFlushCache());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
     }
@@ -2475,6 +2497,17 @@ public class SaltServerActionService {
      * @param minion minion on which the action will be executed
      */
     public void executeSSHAction(Action action, MinionServer minion) {
+        executeSSHAction(action, minion, false);
+    }
+
+    /**
+     * Execute an action on an ssh-push minion.
+     *
+     * @param action the action to be executed
+     * @param minion minion on which the action will be executed
+     * @param forcePkgRefresh set to true if a package list refresh should be scheduled at the end
+     */
+    public void executeSSHAction(Action action, MinionServer minion, boolean forcePkgRefresh) {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
@@ -2506,7 +2539,7 @@ public class SaltServerActionService {
                     Arrays.asList(new MinionSummary(minion)));
 
             for (LocalCall<?> call : calls.keySet()) {
-                Optional<JsonElement> result;
+                Optional<Result<JsonElement>> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
@@ -2533,23 +2566,35 @@ public class SaltServerActionService {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace("Salt call result: " + r);
                     }
-                    String function = (String) call.getPayload().get("fun");
 
-                    // reboot needs special handling in case of ssh push
-                    if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        sa.setPickupTime(new Date());
-                    }
-                    else {
-                        saltUtils.updateServerAction(sa, 0L, true, "n/a",
-                                r, function);
-                    }
+                    r.consume(error -> {
+                        sa.setStatus(STATUS_FAILED);
+                        sa.setResultMsg(error.fold(
+                                e -> "function " + e.getFunctionName() + " not available.",
+                                e -> "module " + e.getModuleName() + " not supported.",
+                                e -> "error parsing json.",
+                                GenericError::getMessage,
+                                e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
+                        ));
+                        sa.setCompletionTime(new Date());
+                    }, jsonResult -> {
+                        String function = (String) call.getPayload().get("fun");
 
-                    // Perform a "check-in" after every executed action
-                    minion.updateServerInfo();
+                        // reboot needs special handling in case of ssh push
+                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            sa.setPickupTime(new Date());
+                        }
+                        else {
+                            saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                                    jsonResult, function);
+                        }
+
+                        // Perform a "check-in" after every executed action
+                        minion.updateServerInfo();
 
                     // Perform a package profile update in the end if necessary
-                    if (saltUtils.shouldRefreshPackageList(function, result)) {
+                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
                         LOG.info("Scheduling a package profile update");
                         Action pkgList;
                         try {
@@ -2562,7 +2607,8 @@ public class SaltServerActionService {
                             LOG.error(e);
                         }
                     }
-                });
+                 });
+              });
             }
         }
         return;

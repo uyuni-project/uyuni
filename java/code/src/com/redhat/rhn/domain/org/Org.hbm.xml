@@ -51,11 +51,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <many-to-many column="slave_id" class="com.redhat.rhn.domain.iss.IssSlave" />
         </set>
 
+        <set name="pillars" lazy="true" inverse="true" cascade="all" access="field">
+            <key column="org_id"/>
+            <one-to-many class="com.redhat.rhn.domain.server.Pillar"/>
+        </set>
+
         <join table="rhnRegTokenOrgDefault" optional="true">
             <key column="org_id"/>
             <many-to-one name="token" column="reg_token_id" not-null="true" unique="true"/>
         </join>
-
     </class>
 
     <query name="Org.findByName">

@@ -15,13 +15,13 @@
 
 package com.suse.manager.clusters.test;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -29,6 +29,9 @@ import com.suse.manager.webui.utils.salt.custom.ClusterUpgradePlanSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.utils.Json;
+
+import com.google.gson.JsonObject;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactModal from 'react-modal';
+import ReactModal from "react-modal";
 
 export type DialogProps = {
   /** whether the dialog should be shown or hidden */
@@ -20,7 +20,7 @@ export type DialogProps = {
   hideHeader?: boolean;
   /** Can the modal be closed using the cross button, ESC or by clicking on the overlay? */
   closableModal?: boolean;
-}
+};
 
 ReactModal.setAppElement(document.body);
 
@@ -35,19 +35,22 @@ export function Dialog(props: DialogProps) {
       className="modal-dialog react-modal"
       shouldCloseOnOverlayClick={closableModal}
       shouldCloseOnEsc={closableModal}
-      onRequestClose={
-        () => {
-          props.onClose?.();
-        }
-      }
+      onRequestClose={() => {
+        props.onClose?.();
+      }}
     >
       <div className="modal-content">
         <div className="modal-content">
           {!props.hideHeader && (
             <div className="modal-header">
               {closableModal && (
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close"
-                  onClick={() => props.onClose?.()}>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  onClick={() => props.onClose?.()}
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               )}

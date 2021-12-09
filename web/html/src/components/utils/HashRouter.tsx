@@ -14,7 +14,7 @@ type HashContextType = {
 
 export const HashRouterContext = React.createContext<HashContextType>({
   hash: null,
-  goTo: hash => {},
+  goTo: (hash) => {},
   back: () => {},
   initial: () => {},
 });
@@ -41,7 +41,7 @@ const HashRouter = ({ initialPath, children }: HashRouterProps) => {
     } else {
       initial();
     }
-    window.addEventListener("popstate", event => {
+    window.addEventListener("popstate", (event) => {
       setHash(hashUrl());
     });
   }, []);
@@ -84,7 +84,7 @@ type RouterProps = {
 const Route = ({ path, children }: RouterProps) => {
   return (
     <HashRouterContext.Consumer>
-      {context => {
+      {(context) => {
         const match = path === context.hash;
         if (context.switch) {
           if (match) {
@@ -115,7 +115,7 @@ type SwitchProps = {
 const Switch = ({ children }: SwitchProps) => {
   return (
     <HashRouterContext.Consumer>
-      {context => (
+      {(context) => (
         <HashRouterContext.Provider value={{ switch: true, ...context }}>{children}</HashRouterContext.Provider>
       )}
     </HashRouterContext.Consumer>

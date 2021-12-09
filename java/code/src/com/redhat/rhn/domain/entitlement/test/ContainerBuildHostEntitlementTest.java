@@ -28,9 +28,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.HashMap;
 import java.util.Map;

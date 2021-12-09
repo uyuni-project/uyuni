@@ -84,7 +84,7 @@ describe("paged data endpoint", () => {
     expect(queryParams.get("q")).toEqual("myselectallquery");
   });
 
-  test("Request call with pagination", done => {
+  test("Request call with pagination", (done) => {
     const placeholderResponse = [];
     const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
     const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
@@ -95,8 +95,8 @@ describe("paged data endpoint", () => {
     MockedNetwork.get.mockReturnValue(Utils.cancelable(mockPromise, mockCancelCallback));
 
     // The test is done when the request promise is resolved
-    const mockCallback = jest.fn(promise =>
-      promise.then(response => {
+    const mockCallback = jest.fn((promise) =>
+      promise.then((response) => {
         // The callback should be called with the Promise object from 'Network.get'
         expect(mockCallback).toBeCalledTimes(1);
         expect(response).toEqual(placeholderResponse);
@@ -107,7 +107,7 @@ describe("paged data endpoint", () => {
     endpoint.doGet(mockCallback, pageControl);
   });
 
-  test("Cancelling obsolete requests", done => {
+  test("Cancelling obsolete requests", (done) => {
     const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
     const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
 
@@ -118,8 +118,8 @@ describe("paged data endpoint", () => {
 
     // Suppress rejections in the mock callback
     // The test is done when the cancelled promise rejection is catched
-    const mockCallback = jest.fn(promise =>
-      promise.catch(reason => {
+    const mockCallback = jest.fn((promise) =>
+      promise.catch((reason) => {
         expect(reason).toBe("The request is cancelled due to subsequent calls");
         // Cancel callback should've been called exactly once
         expect(mockCancelCallback).toBeCalledTimes(1);

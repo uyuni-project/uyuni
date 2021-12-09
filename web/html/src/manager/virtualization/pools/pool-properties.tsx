@@ -15,11 +15,11 @@ import Validation from "components/validation";
 import { SubmitButton, Button } from "components/buttons";
 import { Messages } from "components/messages";
 import { ActionSchedule } from "components/action-schedule";
-import { Utils } from "utils/functions";
 import { VirtualizationPoolCapsApi } from "./virtualization-pools-capabilities-api";
 import * as FieldsData from "./properties/fields-data";
 
 import { MessageType } from "components/messages";
+import { localizedMoment } from "utils";
 
 type Props = {
   serverId: string;
@@ -37,7 +37,7 @@ function clearFields(initialModel, setModel) {
     // Split the hosts name and port
     let model = initialModel;
     if ((model.source || {}).hosts) {
-      const splitHosts = model.source.hosts.map(host => {
+      const splitHosts = model.source.hosts.map((host) => {
         const [hostname, port] = host.split(":");
         return { name: hostname, port };
       });
@@ -59,7 +59,7 @@ export function PoolProperties(props: Props) {
   const [model, setModel] = React.useState(props.initialModel ? flattenModel(props.initialModel) : {});
   const [invalid, setInvalid] = React.useState(false);
   const [actionChain, setActionChain] = React.useState<ActionChain | null | undefined>(null);
-  const [earliest, setEarliest] = React.useState(Utils.dateWithTimezone(props.localTime));
+  const [earliest, setEarliest] = React.useState(localizedMoment());
 
   React.useEffect(() => {
     clearFields(props.initialModel, setModel);
@@ -79,7 +79,7 @@ export function PoolProperties(props: Props) {
 
     // Merge hosts name and port
     if (data.source != null && data.source.hosts != null) {
-      const hosts = data.source.hosts.map(host => {
+      const hosts = data.source.hosts.map((host) => {
         const port = host.port ? `:${host.port}` : "";
         return `${host.name}${port}`;
       });
@@ -95,8 +95,8 @@ export function PoolProperties(props: Props) {
     props.submit(data);
   };
 
-  const onDateTimeChanged = (date: Date) => {
-    setEarliest(date);
+  const onDateTimeChanged = (value: moment.Moment) => {
+    setEarliest(value);
   };
 
   const onActionChainChanged = (newActionChain: ActionChain | null | undefined) => {
@@ -130,10 +130,10 @@ export function PoolProperties(props: Props) {
       {({ capabilities, messages: capsError }) => {
         if (capabilities != null) {
           const pool_types = capabilities["pool_types"]
-            .filter(pool_type => pool_type.supported)
-            .map(pool_type => pool_type["name"]);
+            .filter((pool_type) => pool_type.supported)
+            .map((pool_type) => pool_type["name"]);
 
-          const pool_type = capabilities["pool_types"].find(type => type.name === model.type);
+          const pool_type = capabilities["pool_types"].find((type) => type.name === model.type);
           const source_format_types = (((pool_type || {})["options"] || {})["pool"] || {})["sourceFormatType"];
           const source_format_default = (((pool_type || {})["options"] || {})["pool"] || {})["default_format"];
 
@@ -376,7 +376,7 @@ export function PoolProperties(props: Props) {
                         labelClass="col-md-3"
                         divClass="col-md-6"
                         defaultValue={default_adapter_selection}
-                        options={Object.keys(adapter_selections).map(k => ({
+                        options={Object.keys(adapter_selections).map((k) => ({
                           value: k,
                           label: adapter_selections[k],
                         }))}
@@ -564,8 +564,6 @@ export function PoolProperties(props: Props) {
 
               <Panel key="schedule" title={t("Schedule")} headingLevel="h3">
                 <ActionSchedule
-                  timezone={props.timezone}
-                  localTime={props.localTime}
                   earliest={earliest}
                   actionChains={props.actionChains}
                   onActionChainChanged={onActionChainChanged}

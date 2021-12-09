@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc.image;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;

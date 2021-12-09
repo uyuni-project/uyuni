@@ -1229,6 +1229,20 @@
         </context-group>
         <target state="translated">Inventáre</target>
       </trans-unit>
+      <trans-unit id="configchannel.nav.systems.appstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/channel/AppStreams.do</context>
+        </context-group>
+        <target state="translated">Položky AppStream</target>
+      </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
+        </context-group>
+        <target state="translated">Položky AppStream</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -40,6 +41,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long actionId = context.getJobDetail()
                 .getJobDataMap().getLongValueFromString("action_id");
+        boolean forcePkgRefresh = context.getJobDetail().getJobDataMap().getBooleanValue("force_pkg_list_refresh");
         String sshMinionId = context.getJobDetail().getJobDataMap().getString("ssh_minion_id");
         Optional<MinionServer> sshMinionOpt = MinionServerFactory.findByMinionId(sshMinionId);
         if (sshMinionOpt.isEmpty()) {
@@ -61,6 +63,6 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
                 });
 
         log.info("Executing action: " + actionId + " on ssh minion: " + sshMinionId);
-        GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE.executeSSHAction(action, sshMinionOpt.get());
+        GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE.executeSSHAction(action, sshMinionOpt.get(), forcePkgRefresh);
     }
 }

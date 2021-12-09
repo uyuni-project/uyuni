@@ -80,11 +80,12 @@ def do_kickstart_list(self, args, doreturn=False):
 
     if doreturn:
         return kickstarts
+    if kickstarts:
+        print(os.linesep.join(kickstarts))
     else:
-        if kickstarts:
-            print(os.linesep.join(kickstarts))
-        else:
-            logging.error(_N("No kickstart profiles available"))
+        logging.error(_N("No kickstart profiles available"))
+
+    return None
 
 ####################
 
@@ -185,6 +186,8 @@ def help_kickstart_delete(self):
 def complete_kickstart_delete(self, text, line, beg, end):
     if len(line.split(' ')) <= 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_delete(self, args):
@@ -332,6 +335,8 @@ def complete_kickstart_details(self, text, line, beg, end):
     if len(line.split(' ')) <= 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_details(self, args):
     arg_parser = get_argument_parser()
@@ -340,7 +345,7 @@ def do_kickstart_details(self, args):
 
     if len(args) != 1:
         self.help_kickstart_details()
-        return
+        return None
 
     label = args[0]
     kickstart = None
@@ -353,7 +358,7 @@ def do_kickstart_details(self, args):
 
     if not kickstart:
         logging.warning(_N('Invalid Kickstart profile'))
-        return
+        return None
 
     act_keys = \
         self.client.kickstart.profile.keys.getActivationKeys(self.session,
@@ -579,6 +584,8 @@ def complete_kickstart_rename(self, text, line, beg, end):
     if len(line.split(' ')) <= 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_rename(self, args):
     arg_parser = get_argument_parser()
@@ -601,7 +608,7 @@ def do_kickstart_rename(self, args):
 
 def help_kickstart_listcryptokeys(self):
     print(_('kickstart_listcryptokeys: List the crypto keys associated ' +
-          'with a Kickstart profile'))
+            'with a Kickstart profile'))
     print(_('usage: kickstart_listcryptokeys PROFILE'))
 
 
@@ -611,6 +618,8 @@ def complete_kickstart_listcryptokeys(self, text, line, beg, end):
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_listcryptokeys(self, args, doreturn=False):
     arg_parser = get_argument_parser()
@@ -619,7 +628,7 @@ def do_kickstart_listcryptokeys(self, args, doreturn=False):
 
     if not args:
         self.help_kickstart_listcryptokeys()
-        return
+        return None
 
     profile = args[0]
     keys = self.client.kickstart.profile.system.listKeys(self.session, profile)
@@ -627,11 +636,12 @@ def do_kickstart_listcryptokeys(self, args, doreturn=False):
 
     if doreturn:
         return keys
+    if keys:
+        print('\n'.join(keys))
     else:
-        if keys:
-            print('\n'.join(keys))
-        else:
-            logging.error(_N("No crypto keys has been found"))
+        logging.error(_N("No crypto keys has been found"))
+
+    return None
 
 ####################
 
@@ -649,6 +659,8 @@ def complete_kickstart_addcryptokeys(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_cryptokey_list('', True), text)
 
+    return None
+
 
 def do_kickstart_addcryptokeys(self, args):
     args, _options = parse_command_arguments(args, get_argument_parser())
@@ -665,7 +677,7 @@ def do_kickstart_addcryptokeys(self, args):
 
 def help_kickstart_removecryptokeys(self):
     print(_('kickstart_removecryptokeys: Remove crypto keys from a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_removecryptokeys PROFILE <KEY ...>'))
 
 
@@ -682,6 +694,8 @@ def complete_kickstart_removecryptokeys(self, text, line, beg, end):
             keys = []
 
         return tab_completer(keys, text)
+
+    return None
 
 
 def do_kickstart_removecryptokeys(self, args):
@@ -707,7 +721,7 @@ def do_kickstart_removecryptokeys(self, args):
 
 def help_kickstart_listactivationkeys(self):
     print(_('kickstart_listactivationkeys: List the activation keys ' +
-          'associated with a Kickstart profile'))
+            'associated with a Kickstart profile'))
     print(_('usage: kickstart_listactivationkeys PROFILE'))
 
 
@@ -717,29 +731,33 @@ def complete_kickstart_listactivationkeys(self, text, line, beg, end):
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_listactivationkeys(self, args, doreturn=False):
     args, _options = parse_command_arguments(args, get_argument_parser())
 
     if not args:
         self.help_kickstart_listactivationkeys()
-        return
+        return None
 
     profile = args[0]
-    keys = sorted(filter(None, [k.get('key') for k in self.client.kickstart.profile.keys.getActivationKeys(self.session, profile)]))
+    keys = sorted(filter(None, [k.get('key') for k in
+                                self.client.kickstart.profile.keys.getActivationKeys(self.session, profile)]))
 
     if doreturn:
         return keys
-    else:
-        if keys:
-            print('\n'.join(keys))
+    if keys:
+        print('\n'.join(keys))
+
+    return None
 
 ####################
 
 
 def help_kickstart_addactivationkeys(self):
     print(_('kickstart_addactivationkeys: Add activation keys to a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_addactivationkeys PROFILE <KEY ...>'))
 
 
@@ -751,6 +769,8 @@ def complete_kickstart_addactivationkeys(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_activationkey_list('', True),
                              text)
+
+    return None
 
 
 def do_kickstart_addactivationkeys(self, args):
@@ -770,7 +790,7 @@ def do_kickstart_addactivationkeys(self, args):
 
 def help_kickstart_removeactivationkeys(self):
     print(_('kickstart_removeactivationkeys: Remove activation keys from ' +
-          'a Kickstart profile'))
+            'a Kickstart profile'))
     print(_('usage: kickstart_removeactivationkeys PROFILE <KEY ...>'))
 
 
@@ -788,6 +808,8 @@ def complete_kickstart_removeactivationkeys(self, text, line, beg,
             keys = []
 
         return tab_completer(keys, text)
+
+    return None
 
 
 def do_kickstart_removeactivationkeys(self, args):
@@ -811,7 +833,7 @@ def do_kickstart_removeactivationkeys(self, args):
 
 def help_kickstart_enableconfigmanagement(self):
     print(_('kickstart_enableconfigmanagement: Enable configuration ' +
-          'management on a Kickstart profile'))
+            'management on a Kickstart profile'))
     print(_('usage: kickstart_enableconfigmanagement PROFILE'))
 
 
@@ -821,6 +843,8 @@ def complete_kickstart_enableconfigmanagement(self, text, line, beg,
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_enableconfigmanagement(self, args):
@@ -844,7 +868,7 @@ def do_kickstart_enableconfigmanagement(self, args):
 
 def help_kickstart_disableconfigmanagement(self):
     print(_('kickstart_disableconfigmanagement: Disable configuration ' +
-          'management on a Kickstart profile'))
+            'management on a Kickstart profile'))
     print(_('usage: kickstart_disableconfigmanagement PROFILE'))
 
 
@@ -854,6 +878,8 @@ def complete_kickstart_disableconfigmanagement(self, text, line, beg,
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_disableconfigmanagement(self, args):
@@ -877,7 +903,7 @@ def do_kickstart_disableconfigmanagement(self, args):
 
 def help_kickstart_enableremotecommands(self):
     print(_('kickstart_enableremotecommands: Enable remote commands ' +
-          'on a Kickstart profile'))
+            'on a Kickstart profile'))
     print(_('usage: kickstart_enableremotecommands PROFILE'))
 
 
@@ -887,6 +913,8 @@ def complete_kickstart_enableremotecommands(self, text, line, beg,
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_enableremotecommands(self, args):
@@ -910,7 +938,7 @@ def do_kickstart_enableremotecommands(self, args):
 
 def help_kickstart_disableremotecommands(self):
     print(_('kickstart_disableremotecommands: Disable remote commands ' +
-          'on a Kickstart profile'))
+            'on a Kickstart profile'))
     print(_('usage: kickstart_disableremotecommands PROFILE'))
 
 
@@ -919,6 +947,8 @@ def complete_kickstart_disableremotecommands(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_disableremotecommands(self, args):
@@ -953,6 +983,8 @@ def complete_kickstart_setlocale(self, text, line, beg, end):
     elif len(parts) == 3:
         return tab_completer(list_locales(), text)
 
+    return None
+
 
 def do_kickstart_setlocale(self, args):
     arg_parser = get_argument_parser()
@@ -981,7 +1013,7 @@ def do_kickstart_setlocale(self, args):
 
 def help_kickstart_setselinux(self):
     print(_('kickstart_setselinux: Set the SELinux mode for a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_setselinux PROFILE MODE'))
 
 
@@ -993,6 +1025,8 @@ def complete_kickstart_setselinux(self, text, line, beg, end):
     elif len(parts) == 3:
         modes = ['enforcing', 'permissive', 'disabled']
         return tab_completer(modes, text)
+
+    return None
 
 
 def do_kickstart_setselinux(self, args):
@@ -1018,7 +1052,7 @@ def do_kickstart_setselinux(self, args):
 
 def help_kickstart_setpartitions(self):
     print(_('kickstart_setpartitions: Set the partitioning scheme for a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_setpartitions PROFILE'))
 
 
@@ -1027,6 +1061,8 @@ def complete_kickstart_setpartitions(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_setpartitions(self, args):
@@ -1069,7 +1105,7 @@ def do_kickstart_setpartitions(self, args):
 
 def help_kickstart_setdistribution(self):
     print(_('kickstart_setdistribution: Set the distribution for a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_setdistribution PROFILE DISTRIBUTION'))
 
 
@@ -1080,6 +1116,8 @@ def complete_kickstart_setdistribution(self, text, line, beg, end):
         return tab_completer(self.do_kickstart_list('', True), text)
     elif len(parts) == 3:
         return tab_completer(self.do_distribution_list('', True), text)
+
+    return None
 
 
 def do_kickstart_setdistribution(self, args):
@@ -1114,6 +1152,8 @@ def complete_kickstart_enablelogging(self, text, line, beg, end):
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_enablelogging(self, args):
     arg_parser = get_argument_parser()
@@ -1147,6 +1187,8 @@ def complete_kickstart_addvariable(self, text, line, beg, end):
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_addvariable(self, args):
     arg_parser = get_argument_parser()
@@ -1177,7 +1219,7 @@ def do_kickstart_addvariable(self, args):
 
 def help_kickstart_updatevariable(self):
     print(_('kickstart_updatevariable: Update a variable in a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_updatevariable PROFILE KEY VALUE'))
 
 
@@ -1197,6 +1239,8 @@ def complete_kickstart_updatevariable(self, text, line, beg, end):
 
         return tab_completer(variables.keys(), text)
 
+    return None
+
 
 def do_kickstart_updatevariable(self, args):
     arg_parser = get_argument_parser()
@@ -1214,7 +1258,7 @@ def do_kickstart_updatevariable(self, args):
 
 def help_kickstart_removevariables(self):
     print(_('kickstart_removevariables: Remove variables from a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_removevariables PROFILE <KEY ...>'))
 
 
@@ -1233,6 +1277,8 @@ def complete_kickstart_removevariables(self, text, line, beg, end):
             pass
 
         return tab_completer(variables.keys(), text)
+
+    return None
 
 
 def do_kickstart_removevariables(self, args):
@@ -1265,7 +1311,7 @@ def do_kickstart_removevariables(self, args):
 
 def help_kickstart_listvariables(self):
     print(_('kickstart_listvariables: List the variables of a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_listvariables PROFILE'))
 
 
@@ -1274,6 +1320,8 @@ def complete_kickstart_listvariables(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_listvariables(self, args):
@@ -1310,6 +1358,8 @@ def complete_kickstart_addoption(self, text, line, beg, end):
         return tab_completer(self.do_kickstart_list('', True), text)
     elif len(parts) == 3:
         return tab_completer(sorted(self.KICKSTART_OPTIONS), text)
+
+    return None
 
 
 def do_kickstart_addoption(self, args):
@@ -1375,6 +1425,8 @@ def complete_kickstart_removeoptions(self, text, line, beg, end):
 
         return tab_completer(sorted(options), text)
 
+    return None
+
 
 def do_kickstart_removeoptions(self, args):
     arg_parser = get_argument_parser()
@@ -1409,7 +1461,7 @@ def do_kickstart_removeoptions(self, args):
 
 def help_kickstart_listoptions(self):
     print(_('kickstart_listoptions: List the options of a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_listoptions PROFILE'))
 
 
@@ -1418,6 +1470,8 @@ def complete_kickstart_listoptions(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_listoptions(self, args):
@@ -1445,7 +1499,7 @@ def do_kickstart_listoptions(self, args):
 
 def help_kickstart_listcustomoptions(self):
     print(_('kickstart_listcustomoptions: List the custom options of a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_listcustomoptions PROFILE'))
 
 
@@ -1454,6 +1508,8 @@ def complete_kickstart_listcustomoptions(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_listcustomoptions(self, args):
@@ -1481,7 +1537,7 @@ def do_kickstart_listcustomoptions(self, args):
 
 def help_kickstart_setcustomoptions(self):
     print(_('kickstart_setcustomoptions: Set custom options for a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_setcustomoptions PROFILE'))
 
 
@@ -1490,6 +1546,8 @@ def complete_kickstart_setcustomoptions(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_setcustomoptions(self, args):
@@ -1531,7 +1589,7 @@ def do_kickstart_setcustomoptions(self, args):
 
 def help_kickstart_addchildchannels(self):
     print(_('kickstart_addchildchannels: Add a child channels to a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_addchildchannels PROFILE <CHANNEL ...>'))
 
 
@@ -1562,6 +1620,8 @@ def complete_kickstart_addchildchannels(self, text, line, beg, end):
         return tab_completer(self.list_child_channels(
             parent=parent_channel), text)
 
+    return None
+
 
 def do_kickstart_addchildchannels(self, args):
     arg_parser = get_argument_parser()
@@ -1591,7 +1651,7 @@ def do_kickstart_addchildchannels(self, args):
 
 def help_kickstart_removechildchannels(self):
     print(_('kickstart_removechildchannels: Remove child channels from ' +
-          'a Kickstart profile'))
+            'a Kickstart profile'))
     print(_('usage: kickstart_removechildchannels PROFILE <CHANNEL ...>'))
 
 
@@ -1604,6 +1664,8 @@ def complete_kickstart_removechildchannels(self, text, line, beg,
     elif len(parts) > 2:
         return tab_completer(self.do_kickstart_listchildchannels(
             parts[1], True), text)
+
+    return None
 
 
 def do_kickstart_removechildchannels(self, args):
@@ -1636,7 +1698,7 @@ def do_kickstart_removechildchannels(self, args):
 
 def help_kickstart_listchildchannels(self):
     print(_('kickstart_listchildchannels: List the child channels of a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_listchildchannels PROFILE'))
 
 
@@ -1646,6 +1708,8 @@ def complete_kickstart_listchildchannels(self, text, line, beg, end):
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_listchildchannels(self, args, doreturn=False):
     arg_parser = get_argument_parser()
@@ -1654,7 +1718,7 @@ def do_kickstart_listchildchannels(self, args, doreturn=False):
 
     if not args:
         self.help_kickstart_listchildchannels()
-        return
+        return None
 
     profile = args[0]
 
@@ -1663,16 +1727,17 @@ def do_kickstart_listchildchannels(self, args, doreturn=False):
 
     if doreturn:
         return channels
-    else:
-        if channels:
-            print('\n'.join(sorted(channels)))
+    if channels:
+        print('\n'.join(sorted(channels)))
+
+    return None
 
 ####################
 
 
 def help_kickstart_addfilepreservations(self):
     print(_('kickstart_addfilepreservations: Add file preservations to a ' +
-          'Kickstart profile'))
+            'Kickstart profile'))
     print(_('usage: kickstart_addfilepreservations PROFILE <FILELIST ...>'))
 
 
@@ -1684,6 +1749,8 @@ def complete_kickstart_addfilepreservations(self, text, line, beg, end):
     elif len(parts) == 3:
         return tab_completer(self.do_filepreservation_list('', True),
                              text)
+
+    return None
 
 
 def do_kickstart_addfilepreservations(self, args):
@@ -1709,7 +1776,7 @@ def do_kickstart_addfilepreservations(self, args):
 
 def help_kickstart_removefilepreservations(self):
     print(_('kickstart_removefilepreservations: Remove file ' +
-          'preservations from a Kickstart profile'))
+            'preservations from a Kickstart profile'))
     print(_('usage: kickstart_removefilepreservations PROFILE <FILE ...>'))
 
 
@@ -1732,6 +1799,8 @@ def complete_kickstart_removefilepreservations(self, text, line, beg,
             return []
 
         return tab_completer(files, text)
+
+    return None
 
 
 def do_kickstart_removefilepreservations(self, args):
@@ -1756,7 +1825,7 @@ def do_kickstart_removefilepreservations(self, args):
 
 def help_kickstart_listpackages(self):
     print(_('kickstart_listpackages: List the packages for a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_listpackages PROFILE'))
 
 
@@ -1771,7 +1840,7 @@ def do_kickstart_listpackages(self, args, doreturn=False):
 
     if not args:
         self.help_kickstart_listpackages()
-        return
+        return None
 
     profile = args[0]
 
@@ -1781,9 +1850,10 @@ def do_kickstart_listpackages(self, args, doreturn=False):
 
     if doreturn:
         return packages
-    else:
-        if packages:
-            print('\n'.join(packages))
+    if packages:
+        print('\n'.join(packages))
+
+    return None
 
 ####################
 
@@ -1800,6 +1870,8 @@ def complete_kickstart_addpackages(self, text, line, beg, end):
         return tab_completer(self.do_kickstart_list('', True), text)
     elif len(parts) > 2:
         return tab_completer(self.get_package_names(), text)
+
+    return None
 
 
 def do_kickstart_addpackages(self, args):
@@ -1824,7 +1896,7 @@ def do_kickstart_addpackages(self, args):
 
 def help_kickstart_removepackages(self):
     print(_('kickstart_removepackages: Remove packages from a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_removepackages PROFILE <PACKAGE ...>'))
 
 
@@ -1837,6 +1909,8 @@ def complete_kickstart_removepackages(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_kickstart_listpackages(
             parts[1], True), text)
+
+    return None
 
 
 def do_kickstart_removepackages(self, args):
@@ -1869,7 +1943,7 @@ def do_kickstart_removepackages(self, args):
 
 def help_kickstart_listscripts(self):
     print(_('kickstart_listscripts: List the scripts for a Kickstart ' +
-          'profile'))
+            'profile'))
     print(_('usage: kickstart_listscripts PROFILE'))
 
 
@@ -1929,6 +2003,8 @@ def complete_kickstart_addscript(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_addscript(self, args):
@@ -2037,6 +2113,8 @@ def complete_kickstart_removescript(self, text, line, beg, end):
 
     if len(parts) == 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_removescript(self, args):
@@ -2260,7 +2338,7 @@ def do_kickstart_export(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     filename = ""
-    if options.file != None:
+    if options.file is not None:
         logging.debug("Passed filename do_kickstart_export %s" %
                       options.file)
         filename = options.file
@@ -2279,7 +2357,7 @@ def do_kickstart_export(self, args):
                       (args, profiles))
         if not profiles:
             logging.error(_N("Error, no valid kickstart profile passed, " +
-                          "check name is  correct with spacecmd kickstart_list"))
+                             "check name is  correct with spacecmd kickstart_list"))
             return 1
         if not filename:
             # No filename arg, so we try to do something sensible:
@@ -2308,7 +2386,7 @@ def do_kickstart_export(self, args):
         if not self.user_confirm(_("File %s exists, ") % filename +
                                  _("confirm overwrite file? (y/n)")):
             return 1
-    if json_dump_to_file(ksdetails_list, filename) != True:
+    if json_dump_to_file(ksdetails_list, filename) is not True:
         logging.error(_N("Error saving exported kickstart profiles to file") %
                       filename)
         return 1
@@ -2340,7 +2418,7 @@ def do_kickstart_importjson(self, args):
             logging.error(_N("Error, could not read json data from %s") % filename)
             return 1
         for ksdetails in ksdetails_list:
-            if self.import_kickstart_fromdetails(ksdetails) != True:
+            if self.import_kickstart_fromdetails(ksdetails) is not True:
                 logging.error(_N("Error importing kickstart %s") %
                               ksdetails['name'])
 
@@ -2470,7 +2548,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     # export/import some settings, so we post a warning that some manual
     # fixup may be required
     logging.warning(_N("Due to API ommissions, there are some settings which" +
-                    " cannot be imported, please check and fixup manually if necessary"))
+                       " cannot be imported, please check and fixup manually if necessary"))
     logging.warning(_N(" * Details->Preserve ks.cfg"))
     logging.warning(_N(" * Details->Comment"))
     # Org default gets exported but no way to set it, so we can just show this
@@ -2492,7 +2570,7 @@ def import_kickstart_fromdetails(self, ksdetails):
 
 def is_kickstart(self, name):
     if not name:
-        return
+        return None
     return name in self.do_kickstart_list(name, True)
 
 
@@ -2543,11 +2621,11 @@ def do_kickstart_diff(self, args):
 
     if len(args) != 1 and len(args) != 2:
         self.help_kickstart_diff()
-        return
+        return None
 
     source_channel = args[0]
     if not self.check_kickstart(source_channel):
-        return
+        return None
 
     target_channel = None
     if len(args) == 2:
@@ -2556,7 +2634,7 @@ def do_kickstart_diff(self, args):
         # can a corresponding channel name be found automatically?
         target_channel = self.do_kickstart_getcorresponding(source_channel)
     if not self.check_kickstart(target_channel):
-        return
+        return None
 
     source_replacedict, target_replacedict = get_string_diff_dicts(source_channel, target_channel)
 
@@ -2578,6 +2656,8 @@ def help_kickstart_getupdatetype(self):
 def complete_kickstart_getupdatetype(self, text, line, beg, end):
     if len(line.split(' ')) <= 2:
         return tab_completer(self.do_kickstart_list('', True), text)
+
+    return None
 
 
 def do_kickstart_getupdatetype(self, args):
@@ -2677,6 +2757,8 @@ def complete_kickstart_getsoftwaredetails(self, text, line, beg, end):
     if len(line.split(' ')) >= 2:
         return tab_completer(self.do_kickstart_list('', True), text)
 
+    return None
+
 
 def do_kickstart_getsoftwaredetails(self, args):
     arg_parser = get_argument_parser()
@@ -2740,6 +2822,8 @@ def complete_kickstart_setsoftwaredetails(self, text, line, beg, end):
     if length in [4, 6]:
         mode= ['True', 'False']
         return tab_completer(mode, text)
+
+    return None
 
 
 def do_kickstart_setsoftwaredetails(self, args):

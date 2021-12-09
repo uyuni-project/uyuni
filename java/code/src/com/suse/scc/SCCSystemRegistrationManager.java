@@ -14,6 +14,8 @@
  */
 package com.suse.scc;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -40,8 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
 
 public class SCCSystemRegistrationManager {
 

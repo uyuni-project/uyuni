@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+
 import org.apache.log4j.Logger;
 
 

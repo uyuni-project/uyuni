@@ -103,7 +103,8 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
 
         try {
-            ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId(), sys2.getId()), empty(), new Date(12345), null);
+            ActionChainManager.scheduleApplyStates(
+                    user, List.of(sys1.getId(), sys2.getId()), empty(), new Date(12345), null);
             fail("NoMaintenanceWindowException should have been thrown.");
         }
         catch (NotInMaintenanceModeException e) {

@@ -24,7 +24,7 @@ export const Range = (props: Props) => {
   const { placeholder, inputClass, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
   return (
-    <InputBase {...propsToPass} name={[`${props.prefix}_start`, `${props.prefix}_end`]} >
+    <InputBase {...propsToPass} name={[`${props.prefix}_start`, `${props.prefix}_end`]}>
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);

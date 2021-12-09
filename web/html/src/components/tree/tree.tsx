@@ -31,9 +31,9 @@ export const Tree = (props: Props) => {
   }
 
   function handleVisibleSublist(id: string): void {
-    setVisibleSublist(oldVisibleSublist =>
+    setVisibleSublist((oldVisibleSublist) =>
       oldVisibleSublist.indexOf(id) !== -1
-        ? oldVisibleSublist.filter(item => item !== id)
+        ? oldVisibleSublist.filter((item) => item !== id)
         : oldVisibleSublist.concat([id])
     );
   }
@@ -46,10 +46,12 @@ export const Tree = (props: Props) => {
     if (changeEvent.target instanceof HTMLInputElement) {
       const { value: id, checked } = changeEvent.target;
 
-      setSelected(oldSelected => (checked ? oldSelected.concat([id]) : oldSelected.filter(itemId => itemId !== id)));
+      setSelected((oldSelected) =>
+        checked ? oldSelected.concat([id]) : oldSelected.filter((itemId) => itemId !== id)
+      );
 
       if (props.data) {
-        const item = props.data.items.find(item => item.id === id);
+        const item = props.data.items.find((item) => item.id === id);
         if (props.onItemSelectionChanged != null && item != null) {
           props.onItemSelectionChanged(item, checked);
         }
@@ -59,7 +61,7 @@ export const Tree = (props: Props) => {
 
   function renderItem(item: TreeItem, idx: number) {
     const children = (props.data != null ? props.data.items : [])
-      .filter(row => (item.children || []).includes(row.id))
+      .filter((row) => (item.children || []).includes(row.id))
       .map((child, childIdx) => renderItem(child, childIdx));
     const sublistVisible = isSublistVisible(item.id);
     const openSubListIconClass = sublistVisible ? "fa-angle-down" : "fa-angle-right";
@@ -103,14 +105,14 @@ export const Tree = (props: Props) => {
   }
 
   const data = props.data || { items: [{ id: "0" }], rootId: "0" };
-  const rootNode = data.items.find(item => item.id === data.rootId);
+  const rootNode = data.items.find((item) => item.id === data.rootId);
 
   if (rootNode == null) {
     return <div>{t("Invalid data")}</div>;
   }
 
   const nodes = data.items
-    .filter(item => (rootNode.children || []).includes(item.id))
+    .filter((item) => (rootNode.children || []).includes(item.id))
     .map((item, idx) => renderItem(item, idx));
 
   if (nodes == null || nodes.length === 0) {

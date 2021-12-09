@@ -80,7 +80,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -89,6 +88,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -103,10 +103,12 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
@@ -191,7 +193,7 @@ public class SaltUtils {
     /** Package-affecting Salt state module names. */
     private static final List<String> PKG_STATE_MODULES = Arrays.asList(
         "pkg.group_installed", "pkg.installed", "pkg.latest", "pkg.patch_installed",
-        "pkg.purged", "pkg.removed", "pkg.uptodate"
+        "pkg.purged", "pkg.removed", "pkg.uptodate", "product.all_installed"
     );
 
     /** Package-affecting Salt execution module names. */
@@ -394,11 +396,10 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
+            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
-                .collect(Collectors.toMap(
-                    info -> packageToKey(name, info),
-                    Function.identity()
-                ));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
 
             change.getOldValue().stream().forEach(info -> {
                 String key = packageToKey(name, info);
@@ -416,7 +417,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> name, info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -535,52 +536,10 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
+        Action action = serverAction.getParentAction();
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-
-            // Revisit the action status if test=true
-            if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
-                serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-            }
-
-            ApplyStatesActionResult statesResult = Optional.ofNullable(
-                    applyStatesAction.getDetails().getResults())
-                    .orElse(Collections.emptySet())
-                    .stream()
-                    .filter(result ->
-                            serverAction.getServerId().equals(result.getServerId()))
-                    .findFirst()
-                    .orElse(new ApplyStatesActionResult());
-            applyStatesAction.getDetails().addResult(statesResult);
-            statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
-            statesResult.setServerId(serverAction.getServerId());
-            statesResult.setReturnCode(retcode);
-
-            // Set the output to the result
-            statesResult.setOutput(YamlHelper.INSTANCE
-                    .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
-
-            // Create the result message depending on the action status
-            String states = applyStatesAction.getDetails().getMods().isEmpty() ?
-                    "highstate" : applyStatesAction.getDetails().getMods().toString();
-            String message = "Successfully applied state(s): " + states;
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                message = "Failed to apply state(s): " + states;
-
-                NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
-                        new StateApplyFailed(serverAction.getServer().getName(),
-                                serverAction.getServerId(), serverAction.getParentAction().getId()));
-
-                Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
-                // TODO: are also org admins and the creator part of this list?
-                UserNotificationFactory.storeForUsers(nm, admins);
-            }
-            if (applyStatesAction.getDetails().isTest()) {
-                message += " (test-mode)";
-            }
-            serverAction.setResultMsg(message);
+            handleStateApplyData(serverAction, jsonResult, retcode, success);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
@@ -635,6 +594,9 @@ public class SaltUtils {
                 handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
                         PkgProfileUpdateSlsResult.class));
             });
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
+            handlePackageLockData(serverAction, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
@@ -734,6 +696,90 @@ public class SaltUtils {
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+        }
+    }
+
+    private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
+            boolean success) {
+        ApplyStatesAction applyStatesAction = (ApplyStatesAction)serverAction.getParentAction();
+
+        // Revisit the action status if test=true
+        if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        }
+
+        ApplyStatesActionResult statesResult = Optional.ofNullable(
+                applyStatesAction.getDetails().getResults())
+                .orElse(Collections.emptySet())
+                .stream()
+                .filter(result ->
+                        serverAction.getServerId().equals(result.getServerId()))
+                .findFirst()
+                .orElse(new ApplyStatesActionResult());
+        applyStatesAction.getDetails().addResult(statesResult);
+        statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
+        statesResult.setServerId(serverAction.getServerId());
+        statesResult.setReturnCode(retcode);
+
+        // Set the output to the result
+        statesResult.setOutput(YamlHelper.INSTANCE
+                .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
+
+        // Create the result message depending on the action status
+        String states = applyStatesAction.getDetails().getMods().isEmpty() ?
+                "highstate" : applyStatesAction.getDetails().getMods().toString();
+        String message = "Successfully applied state(s): " + states;
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            message = "Failed to apply state(s): " + states;
+
+            NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
+                    new StateApplyFailed(serverAction.getServer().getName(),
+                            serverAction.getServerId(), serverAction.getParentAction().getId()));
+
+            Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
+            // TODO: are also org admins and the creator part of this list?
+            UserNotificationFactory.storeForUsers(nm, admins);
+        }
+        if (applyStatesAction.getDetails().isTest()) {
+            message += " (test-mode)";
+        }
+        serverAction.setResultMsg(message);
+
+        serverAction.getServer().asMinionServer().ifPresent(minion -> {
+            if (jsonResult.isJsonObject()) {
+                updateSystemInfo(jsonResult, minion);
+            }
+        });
+    }
+
+    private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            String msg = "Error while changing the lock status";
+            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> {
+                        if (r.containsKey("pkg_|-pkg_locked_|-pkg_locked_|-held")) {
+                            serverAction.setResultMsg(msg + ":\n" +
+                                    r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment());
+                        }
+                        else {
+                            serverAction.setResultMsg(msg);
+                        }
+                    },
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.syncLockedPackages(minionServer.getId(), action.getId());
+            });
+        }
+        else {
+            String msg = "Successfully changed lock status";
+            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> serverAction.setResultMsg(msg + ":\n" +
+                            r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.updateLockedPackages(minionServer.getId(), action.getId());
+                PackageManager.updateUnlockedPackages(minionServer.getId(), action.getId());
+            });
         }
     }
 
@@ -1100,8 +1146,8 @@ public class SaltUtils {
 
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction)action;
-        ImageBuildActionDetails details = ba.getDetails();
+        ImageBuildAction ba = (ImageBuildAction) action;
+        Optional<ImageBuildActionDetails> details = Optional.ofNullable(ba.getDetails());
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -1111,53 +1157,62 @@ public class SaltUtils {
         serverAction.setResultMsg(json);
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            Optional<ImageProfile> profileOpt =
-                    ImageProfileFactory.lookupById(details.getImageProfileId());
+            details.ifPresentOrElse(det -> {
+                Optional<ImageProfile> profileOpt =
+                        ImageProfileFactory.lookupById(det.getImageProfileId());
 
-            profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    // Download the built Kiwi image to SUSE Manager server
-                    OSImageInspectSlsResult.Bundle bundleInfo =
-                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet().getBundle();
-                    infoOpt.ifPresent(info -> info.setChecksum(
-                            ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = systemQuery
-                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
-                            .orElseThrow(() -> new RuntimeException("Failed to download image."));
+                profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
+                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                        // Download the built Kiwi image to SUSE Manager server
+                        OSImageInspectSlsResult.Bundle bundleInfo =
+                                Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                        .getKiwiBuildInfo().getChanges().getRet().getBundle();
+                        infoOpt.ifPresent(info -> info.setChecksum(
+                                ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
+                                .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                        OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
+                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                    if (collectResult.getReturnCode() != 0) {
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        serverAction.setResultMsg(StringUtils
-                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()), 1024));
-                    }
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
+                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                            1024));
+                        }
+                    });
+                }));
+                ImageInspectAction iAction = ActionManager.scheduleImageInspect(
+                        action.getSchedulerUser(),
+                        action.getServerActions()
+                                .stream()
+                                .map(ServerAction::getServerId)
+                                .collect(Collectors.toList()),
+                        Optional.of(action.getId()),
+                        det.getVersion(),
+                        profileOpt.map(ImageProfile::getLabel).orElse(null),
+                        profileOpt.map(ImageProfile::getTargetStore).orElse(null),
+                        Date.from(Instant.now())
+                );
+                try {
+                    TASKOMATIC_API.scheduleActionExecution(iAction);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule image inspection");
+                    LOG.error(e);
+                }
+
+                infoOpt.ifPresent(info -> {
+                    info.setRevisionNumber(info.getRevisionNumber() + 1);
+                    info.setInspectAction(iAction);
+                    ImageInfoFactory.save(info);
                 });
-            }));
-            ImageInspectAction iAction = ActionManager.scheduleImageInspect(
-                    action.getSchedulerUser(),
-                    action.getServerActions()
-                            .stream()
-                            .map(ServerAction::getServerId)
-                            .collect(Collectors.toList()),
-                    Optional.of(action.getId()),
-                    details.getVersion(),
-                    profileOpt.map(ImageProfile::getLabel).orElse(null),
-                    profileOpt.map(ImageProfile::getTargetStore).orElse(null),
-                    Date.from(Instant.now())
-            );
-            try {
-                TASKOMATIC_API.scheduleActionExecution(iAction);
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule image inspection");
-                LOG.error(e);
-            }
-
-            infoOpt.ifPresent(info -> {
-                info.setRevisionNumber(info.getRevisionNumber() + 1);
-                info.setInspectAction(iAction);
-                ImageInfoFactory.save(info);
+            }, () -> {
+                LOG.error("Details not found in ImageBuildAction");
+                LOG.error("Name is: " + action.getName());
+                LOG.error("Action ID is: " + action.getId());
+                LOG.error("Earliest action was: " + action.getEarliestAction());
+                LOG.error("Scheduler User is: " + action.getSchedulerUser());
             });
         }
     }
@@ -1907,27 +1962,67 @@ public class SaltUtils {
 
     /**
      * Update the system info through grains and data returned by status.uptime
+     *
      * @param jsonResult response from salt master against util.systeminfo state
-     * @param minionId ID of the minion for which information should be updated
+     * @param minion the minion for which information should be updated
      */
-    public void updateSystemInfo(JsonElement jsonResult, String minionId) {
-        Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
-        minionServer.ifPresent(minion -> {
-            SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
-            updateSystemInfo(systemInfo, minion);
-        });
+    public void updateSystemInfo(JsonElement jsonResult, MinionServer minion) {
+        SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
+        updateSystemInfo(systemInfo, minion);
+    }
+
+
+    /**
+     * Update the minion connection path according to master/proxy hostname
+     * @param minion the minion
+     * @param master master/proxy hostname
+     * @return true if the path has changed
+     */
+    public boolean updateMinionConnectionPath(MinionServer minion, String master) {
+        boolean changed = minion.updateServerPaths(master);
+
+        if (changed) {
+            ServerFactory.save(minion);
+
+            // Regenerate the pillar data
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+
+            // push the changed pillar data to the minion
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+
+            ApplyStatesAction action = ActionManager.scheduleApplyStates(minion.getCreator(),
+                    Collections.singletonList(minion.getId()),
+                    Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                    new Date());
+            try {
+                TASKOMATIC_API.scheduleActionExecution(action, false);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule channels state application");
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion " +
+                          minion.getMinionId());
+            }
+
+        }
+        return changed;
     }
 
     /**
-     * Update the system info of the minion
+     * Update the system info of the minion and set Reboot Actions to completed
      * @param systemInfo response from salt master against util.systeminfo state
      * @param minion  minion for which information should be updated
      */
     public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
-        systemInfo.getKerneRelese().ifPresent(kerneRelese -> {
-            minion.setRunningKernel(kerneRelese);
-            ServerFactory.save(minion);
-        });
+        systemInfo.getKerneRelese().ifPresent(minion::setRunningKernel);
+        systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
+        ServerFactory.save(minion);
+
+        if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
+            systemInfo.getMaster().ifPresent(master -> {
+                updateMinionConnectionPath(minion, master);
+            });
+        }
+
         //Update the uptime
         systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));
     }

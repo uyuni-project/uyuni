@@ -65,7 +65,8 @@ public class AccessTest extends BaseTestCaseWithUser {
     private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private final FormulaManager formulaManager = new FormulaManager(saltApi);
-    private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private final ClusterManager clusterManager = new ClusterManager(
+            saltApi, systemQuery, serverGroupManager, formulaManager);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(

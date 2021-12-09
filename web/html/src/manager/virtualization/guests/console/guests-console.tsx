@@ -116,7 +116,7 @@ class GuestsConsole extends React.Component<Props, State> {
       }
     };
 
-    ws.onmessage = e => {
+    ws.onmessage = (e) => {
       if (typeof e.data === "string") {
         this.virtEventHandler(JSON.parse(e.data));
       }
@@ -126,9 +126,13 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   connect = () => {
-    if (this.state.graphicsType != null && this.state.vmState !== "stopped"
-        && Object.keys(this.clients).includes(this.state.graphicsType)
-        && this.state.currentToken != null && this.client == null) {
+    if (
+      this.state.graphicsType != null &&
+      this.state.vmState !== "stopped" &&
+      Object.keys(this.clients).includes(this.state.graphicsType) &&
+      this.state.currentToken != null &&
+      this.client == null
+    ) {
       const port = window.location.port ? `:${window.location.port}` : "";
       const url = `wss://${window.location.hostname}${port}/rhn/websockify/?token=${this.state.currentToken}`;
       this.client = new this.clients[this.state.graphicsType](
@@ -169,7 +173,7 @@ class GuestsConsole extends React.Component<Props, State> {
     // Something bad happened, notify the user
     this.popupSubmit = this.connect.bind(this);
     this.client = undefined;
-    this.setState(oldState => {
+    this.setState((oldState) => {
       const connectionError = oldState.connected ? t("Disconnected") : t("Failed to connect");
       return {
         error: error || connectionError,
@@ -180,7 +184,7 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   toggleScale = () => {
-    this.setState(state => {
+    this.setState((state) => {
       const expanded = !state.expanded;
       if (this.client != null) {
         this.client.toggleScale(expanded);
@@ -194,7 +198,7 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   askPassword = () =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
       this.popupSubmit = () => {
         hideDialog("popup");
         resolve(this.state.password);
@@ -215,7 +219,7 @@ class GuestsConsole extends React.Component<Props, State> {
       `/rhn/manager/api/systems/details/virtualization/guests/consoleToken/${this.props.guestUuid}`,
       this.state.currentToken
     ).then(
-      response => {
+      (response) => {
         this.isRefreshing = false;
         this.popupSubmit = undefined;
 
@@ -228,7 +232,7 @@ class GuestsConsole extends React.Component<Props, State> {
           this.connect
         );
       },
-      xhr => {
+      (xhr) => {
         this.isRefreshing = false;
         if (xhr.status === 400) {
           // We have hit a time where the VM is not yet in the DB, retry
@@ -250,13 +254,19 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   updateGuestData = () => {
-    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.state.hostId}/guest/${this.props.guestUuid}`)
-      .then((response) => {
-        this.setState({
-          graphicsType: response.graphics?.type,
-          guestName: response.name,
-        }, this.refreshToken);
-      }, (xhr) => {
+    Network.get(
+      `/rhn/manager/api/systems/details/virtualization/guests/${this.state.hostId}/guest/${this.props.guestUuid}`
+    ).then(
+      (response) => {
+        this.setState(
+          {
+            graphicsType: response.graphics?.type,
+            guestName: response.name,
+          },
+          this.refreshToken
+        );
+      },
+      (xhr) => {
         if (xhr.status === 404) {
           if (this.updateGuestTimeoutId) {
             clearTimeout(this.updateGuestTimeoutId);
@@ -264,7 +274,8 @@ class GuestsConsole extends React.Component<Props, State> {
           // We may have hit the time where the machine is not yet in the DB, try again
           this.updateGuestTimeoutId = window.setTimeout(() => this.updateGuestData(), 500);
         }
-      });
+      }
+    );
   };
 
   virtEventHandler = (msg: any) => {
@@ -280,7 +291,7 @@ class GuestsConsole extends React.Component<Props, State> {
 
     if (this.state.hostId !== hostId) {
       if (this.state.hostId == null) {
-        this.setState({hostId}, this.updateGuestData);
+        this.setState({ hostId }, this.updateGuestData);
       }
       return;
     }
@@ -322,7 +333,7 @@ class GuestsConsole extends React.Component<Props, State> {
           </div>
           <ul className="nav navbar-nav navbar-utility">
             <li>
-              {this.state.graphicsType === 'vnc' && (
+              {this.state.graphicsType === "vnc" && (
                 <Button
                   title={t("Toggle full size")}
                   icon={this.state.expanded ? "fa-compress" : "fa-expand"}
@@ -343,8 +354,10 @@ class GuestsConsole extends React.Component<Props, State> {
         />
         <div id="display-area" className={`${styles.display_area_console} ${styles[areaClassName]}`}>
           <div id="canvas" className={styles.canvas}>
-            { this.state.vmState != null && this.state.vmState !== "running" && this.state.vmState !== "running" && <div className="col-md-12">{t('Guest is not running')}</div> }
-            { this.state.vmState == null && <div className="col-md-12">{t('Unknown guest')}</div> }
+            {this.state.vmState != null && this.state.vmState !== "running" && this.state.vmState !== "running" && (
+              <div className="col-md-12">{t("Guest is not running")}</div>
+            )}
+            {this.state.vmState == null && <div className="col-md-12">{t("Unknown guest")}</div>}
           </div>
         </div>
       </>

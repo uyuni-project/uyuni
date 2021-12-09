@@ -21,13 +21,13 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for VirtualHostManager class.

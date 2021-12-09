@@ -22,7 +22,7 @@ export const renderer = (id: string, { contentAdd, flashMessage }: RendererProps
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
-      <MessagesContainer/>
+      <MessagesContainer />
       <UserLocalizationProvider>
         <AddCluster providers={providersJson} />
       </UserLocalizationProvider>

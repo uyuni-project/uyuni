@@ -25,7 +25,7 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -245,7 +245,8 @@ install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}:/usr/share/rhn
-spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn
+# Run pylint check but never fail
+spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn ||:
 %endif
 
 %post broker

@@ -15,12 +15,12 @@
 
 package com.redhat.rhn.common.util.test;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.redhat.rhn.common.util.StringUtil;
 
 import junit.framework.TestCase;
 

@@ -118,7 +118,7 @@ const Promote = (props: Props) => {
                     "action",
                     props.projectId
                   )
-                    .then(projectWithUpdatedSources => {
+                    .then((projectWithUpdatedSources) => {
                       closeDialog(modalNameId);
                       showSuccessToastr(
                         t(
@@ -129,7 +129,7 @@ const Promote = (props: Props) => {
                       );
                       props.onChange(projectWithUpdatedSources);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       showErrorToastr(error.messages, { autoHide: false });
                       closeDialog(modalNameId);
                     });

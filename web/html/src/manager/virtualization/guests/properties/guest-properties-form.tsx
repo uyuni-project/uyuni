@@ -7,7 +7,7 @@ import { Form } from "components/input/Form";
 import { SubmitButton, Button } from "components/buttons";
 import { Messages } from "components/messages";
 import { ActionSchedule } from "components/action-schedule";
-import { Utils } from "utils/functions";
+import { localizedMoment } from "utils";
 
 type Props = {
   submitText: string;
@@ -15,14 +15,16 @@ type Props = {
   initialModel: any | null | undefined;
   validationChecks: Array<{ check: (model: any) => boolean; message: MessageType }>;
   messages: Array<MessageType>;
-  children: (props: { model: any, changeModel: any }) => JSX.Element | JSX.Element[];
+  children: (props: { model: any; changeModel: any }) => JSX.Element | JSX.Element[];
   localTime: string;
   timezone: string;
   actionChains: Array<ActionChain>;
 };
 
 type State = {
-  model: any;
+  model: {
+    earliest: moment.Moment;
+  } & any;
   isInvalid: boolean;
   actionChain: ActionChain | null | undefined;
 };
@@ -35,7 +37,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      model: Object.assign({}, props.initialModel, { earliest: Utils.dateWithTimezone(props.localTime) }),
+      model: Object.assign({}, props.initialModel, { earliest: localizedMoment() }),
       isInvalid: false,
       actionChain: null,
     };
@@ -48,7 +50,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
   };
 
   onValidate = (isValid: boolean) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isInvalid: !isValid,
     }));
   };
@@ -64,15 +66,15 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     this.props.submit(model);
   };
 
-  onDateTimeChanged = (date: Date) => {
-    this.setState(state => ({
-      model: Object.assign({}, state.model, { earliest: date, actionChain: null }),
+  onDateTimeChanged = (value: moment.Moment) => {
+    this.setState((state) => ({
+      model: Object.assign({}, state.model, { earliest: value, actionChain: null }),
       actionChain: null,
     }));
   };
 
   onActionChainChanged = (actionChain: ActionChain | null | undefined) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       model: Object.assign({}, state.model, { actionChain: actionChain ? actionChain.text : null }),
       actionChain,
     }));
@@ -80,8 +82,8 @@ class GuestPropertiesForm extends React.Component<Props, State> {
 
   render() {
     const checksMessages = this.props.validationChecks
-      .filter(item => item.check(this.state.model))
-      .flatMap(item => item.message);
+      .filter((item) => item.check(this.state.model))
+      .flatMap((item) => item.message);
     return (
       <div>
         <Form
@@ -98,8 +100,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           })}
           <Panel key="schedule" title={t("Schedule")} headingLevel="h3">
             <ActionSchedule
-              timezone={this.props.timezone}
-              localTime={this.props.localTime}
               earliest={this.state.model.earliest}
               actionChains={this.props.actionChains}
               onActionChainChanged={this.onActionChainChanged}

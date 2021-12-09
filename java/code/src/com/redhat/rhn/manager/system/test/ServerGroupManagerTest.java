@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.system.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;

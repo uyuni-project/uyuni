@@ -59,7 +59,7 @@ function actionsFor(id, state, update, enabled) {
     rejected: [del],
     denied: [del],
   };
-  return <div className="pull-right btn-group">{mapping[state].map(fn => fn())}</div>;
+  return <div className="pull-right btn-group">{mapping[state].map((fn) => fn())}</div>;
 }
 
 const stateMapping = {
@@ -97,7 +97,7 @@ type State = {
 class KeyManagement extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["searchData", "rowKey", "reloadKeys"].forEach(method => (this[method] = this[method].bind(this)));
+    ["searchData", "rowKey", "reloadKeys"].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       keys: [],
       isOrgAdmin: false,
@@ -108,7 +108,7 @@ class KeyManagement extends React.Component<Props, State> {
 
   reloadKeys() {
     this.setState({ loading: true });
-    return listKeys().then(data => {
+    return listKeys().then((data) => {
       this.setState({
         keys: data["minions"],
         isOrgAdmin: data["isOrgAdmin"],
@@ -185,14 +185,14 @@ class KeyManagement extends React.Component<Props, State> {
               headerClass="text-center"
               comparator={Utils.sortByText}
               header={t("State")}
-              cell={row => labelFor(row.state)}
+              cell={(row) => labelFor(row.state)}
             />
             <Column
               width="15%"
               columnClass="text-right"
               headerClass="text-right"
               header={t("Actions")}
-              cell={row => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
+              cell={(row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
             />
           </Table>
         </TopPanel>
@@ -201,4 +201,4 @@ class KeyManagement extends React.Component<Props, State> {
   }
 }
 
-export const renderer = id => SpaRenderer.renderNavigationReact(<KeyManagement />, document.getElementById(id));
+export const renderer = (id) => SpaRenderer.renderNavigationReact(<KeyManagement />, document.getElementById(id));

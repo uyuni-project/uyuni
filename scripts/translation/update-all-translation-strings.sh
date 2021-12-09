@@ -44,6 +44,12 @@ function update_xliff() {
         echo "xliffmerger returned a fault code"
         return 1
     fi
+    for tfile in $GIT_ROOT_DIR/$XLIFF_DIR/* ; do
+        sed -i 's/ \/>/\/>/g' $tfile
+	if [ -n "$(tail -c -1 "$tfile")" ]; then
+            echo >> $tfile
+        fi
+    done
     MODIFIED=`git status --short --porcelain --untracked-files=no | wc -l`
     if [ $MODIFIED -gt 0 ]; then
         git add -u
@@ -54,7 +60,7 @@ function update_xliff() {
     return 0
 }
 
-PO_DIRS=(backend client/rhel/yum-rhn-plugin client/rhel/mgr-daemon client/rhel/spacewalk-client-tools client/tools/spacewalk-abrt web susemanager spacecmd)
+PO_DIRS=(backend client/rhel/yum-rhn-plugin client/rhel/mgr-daemon client/rhel/spacewalk-client-tools web susemanager spacecmd)
 commits=0
 safe=0
 

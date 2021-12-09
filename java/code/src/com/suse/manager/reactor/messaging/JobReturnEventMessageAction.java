@@ -26,10 +26,6 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
@@ -41,6 +37,11 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.log4j.Logger;
 

@@ -25,8 +25,9 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.log4j.Logger;
 
-import javax.security.auth.login.LoginException;
 import java.util.Objects;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * AuthHandler

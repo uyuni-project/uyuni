@@ -44,7 +44,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
-import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -337,12 +336,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if (!minionId.equals(oldMinionId)) {
             LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                     "profile to '" + minionId + "' [" + registeredMinion.getMachineId() + "]");
+            MinionPillarManager.INSTANCE.removePillar(registeredMinion);
             registeredMinion.setName(minionId);
             registeredMinion.setMinionId(minionId);
             ServerFactory.save(registeredMinion);
 
             MinionPillarManager.INSTANCE.generatePillar(registeredMinion);
-            MinionPillarManager.INSTANCE.removePillar(oldMinionId);
 
             migrateMinionFormula(minionId, Optional.of(oldMinionId));
 
@@ -481,7 +480,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             mapHardwareGrains(minion, grains);
 
-            setServerPaths(minion, master, isSaltSSH, saltSSHProxyId);
+            if (isSaltSSH) {
+                minion.updateServerPaths(saltSSHProxyId);
+            }
+            else {
+                minion.updateServerPaths(master);
+            }
 
             ServerFactory.save(minion);
             giveCapabilities(minion, isSaltSSH);
@@ -736,23 +740,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 " with " + hostname.map(n -> "hostname: " + n + " and ").orElse("") + " HW addresseses: " + hwAddrs);
     }
 
-    private void setServerPaths(MinionServer server, String master,
-                                boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
-        Optional<Set<ServerPath>> proxyPaths =
-                isSaltSSH ?
-                        saltSSHProxyId
-                                .map(proxyId -> ServerFactory.lookupById(proxyId))
-                                .map(proxy -> ServerFactory
-                                        .createServerPaths(server, proxy, proxy.getHostname())
-                                ) :
-                        ServerFactory.lookupProxyServer(master).map(proxy ->
-                            ServerFactory
-                                    .createServerPaths(server, proxy, master)
-                        );
-        server.getServerPaths().clear();
-        server.getServerPaths().addAll(proxyPaths.orElse(Collections.emptySet()));
-    }
-
     private void giveCapabilities(MinionServer server, boolean isSaltSSH) {
         // Salt systems always have the script.run capability
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -876,7 +863,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err2 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err3 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err4 -> rpmErrQueryRHELProvidesRelease(minionId)),
+                            err4 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err5 -> rpmErrQueryRHELProvidesRelease(minionId)),
                     r -> of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
             ))
             .flatMap(pkgStr -> {
@@ -912,7 +900,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         err1 -> rpmErrQueryRHELRelease(err1, minionId),
                                         err2 -> rpmErrQueryRHELRelease(err2, minionId),
                                         err3 -> rpmErrQueryRHELRelease(err3, minionId),
-                                        err4 -> rpmErrQueryRHELRelease(err4, minionId)),
+                                        err4 -> rpmErrQueryRHELRelease(err4, minionId),
+                                        err5 -> rpmErrQueryRHELRelease(err5, minionId)),
                                 r -> of(r)
                         ))
                         .map(result -> {

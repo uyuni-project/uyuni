@@ -12,7 +12,10 @@ type RendererProps = {
   hostInfo?: HostInfo;
 };
 
-export const renderer = (id: string, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hostInfo }: RendererProps) => {
+export const renderer = (
+  id: string,
+  { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hostInfo }: RendererProps
+) => {
   SpaRenderer.renderNavigationReact(
     <GuestsList
       serverId={serverId}

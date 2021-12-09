@@ -15,20 +15,21 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.visualization.VisualizationManager;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.template.jade.JadeTemplateEngine;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static spark.Spark.get;
+
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.visualization.VisualizationManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for visualization pages.

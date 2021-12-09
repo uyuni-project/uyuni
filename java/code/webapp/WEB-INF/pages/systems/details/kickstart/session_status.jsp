@@ -53,7 +53,7 @@
   </tr>
   <tr>
     <th><bean:message key="kickstart.session_status.jsp.time" /></th>
-    <td><fmt:formatDate value="${ksession.lastAction}" type="both" dateStyle="short" timeStyle="long"/></td>
+    <td><span class="legacy-date-time"><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ssZ" value="${ksession.lastAction}" /></span></td>
   </tr>
   <tr>
     <th><bean:message key="kickstart.session_status.jsp.last_file" /></th>

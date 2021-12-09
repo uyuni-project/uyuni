@@ -20,10 +20,11 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.user.UserManager;
+
 import com.suse.manager.utils.MailHelper;
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -37,6 +38,7 @@ import org.apache.struts.action.DynaActionForm;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

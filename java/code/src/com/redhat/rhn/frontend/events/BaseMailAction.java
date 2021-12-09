@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.utils.MailHelper;
 
 /**

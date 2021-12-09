@@ -28,7 +28,7 @@ const ManagementSettings = (props: Props) => {
 
   useEffect(() => {
     fetchProviderFormulaForm(props.cluster.provider.label, "settings")
-      .then(data => {
+      .then((data) => {
         setForm(data.form);
       })
       .catch((error: ErrorMessagesType) => {
@@ -36,7 +36,7 @@ const ManagementSettings = (props: Props) => {
       });
 
     fetchClusterFormulaData(props.cluster.id, "settings")
-      .then(data => {
+      .then((data) => {
         setValues(data);
       })
       .catch((error: ErrorMessagesType) => {
@@ -57,7 +57,7 @@ const ManagementSettings = (props: Props) => {
       props.setMessages(messages);
     } else {
       saveClusterFormulaData(props.cluster.id, "settings", values)
-        .then(data => {
+        .then((data) => {
           props.setMessages([Messages.success(t("Settings saved successfully"))]);
         })
         .catch((error: ErrorMessagesType) => {
@@ -74,7 +74,7 @@ const ManagementSettings = (props: Props) => {
             <div className="action-button-wrapper">
               <div className="btn-group">
                 <FormulaFormContext.Consumer>
-                  {({ validate, clearValues }: { validate: any; clearValues: any; }) => (
+                  {({ validate, clearValues }: { validate: any; clearValues: any }) => (
                     <React.Fragment>
                       <Button
                         id="btn-save"
@@ -90,7 +90,9 @@ const ManagementSettings = (props: Props) => {
                         icon="fa-eraser"
                         text="Clear values"
                         className="btn-default"
-                        handler={() => clearValues?.(() => window.confirm("Are you sure you want to clear all values?"))}
+                        handler={() =>
+                          clearValues?.(() => window.confirm("Are you sure you want to clear all values?"))
+                        }
                       />
                     </React.Fragment>
                   )}

@@ -14,15 +14,15 @@
  */
 package com.redhat.rhn.frontend.action.help;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.frontend.struts.RhnHelper;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.frontend.struts.RhnHelper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Static action page.

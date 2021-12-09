@@ -783,7 +783,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(parent1);
         TestUtils.flushAndEvict(child1);
 
-        Map <Channel, Channel> children = ChannelManager.
+        Map<Channel, Channel> children = ChannelManager.
                                 findCompatibleChildren(parent, parent1, user);
 
         assertNotEmpty(children.keySet());
@@ -829,7 +829,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(child1);
 
 
-        Map <Channel, Channel> children = ChannelManager.
+        Map<Channel, Channel> children = ChannelManager.
                                 findCompatibleChildren(parent, parent1, user);
 
         assertNotEmpty(children.keySet());

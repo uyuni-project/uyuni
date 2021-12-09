@@ -12763,6 +12763,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles">
+          <source>Optional OVAL Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.audit.xccdfdetails.jsp.title">
           <source>Profile Title</source>
         <context-group name="ctx">
@@ -15130,14 +15136,14 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.lastmodified-header" xml:space="preserve">
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="configsystemfilter.name">
@@ -15162,84 +15168,84 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.actions-header" xml:space="preserve">
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath-header" xml:space="preserve">
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployallbutton" xml:space="preserve">
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployselectedbutton" xml:space="preserve">
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.h2" xml:space="preserve">
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.description" xml:space="preserve">
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath" xml:space="preserve">
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.deployconfirmbutton" xml:space="preserve">
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.h2" xml:space="preserve">
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.note" xml:space="preserve">
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.warning" xml:space="preserve">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <!-- deployrevision.jsp -->
@@ -21366,7 +21372,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.header" xml:space="preserve">
-        <source>System Activation Key</source>
+        <source>System Reactivation Key</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>

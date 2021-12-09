@@ -19,24 +19,25 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
 import org.apache.log4j.Logger;
 
-import javax.websocket.OnOpen;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnError;
-import javax.websocket.Session;
-import javax.websocket.EndpointConfig;
-import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import javax.websocket.EndpointConfig;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.

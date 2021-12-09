@@ -29,8 +29,10 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;

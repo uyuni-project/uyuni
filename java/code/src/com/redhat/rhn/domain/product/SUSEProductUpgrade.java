@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.domain.product;
 
-import java.io.Serializable;
-
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+
+import java.io.Serializable;
 
 /**
  * Class representation of a SUSE product upgrade.

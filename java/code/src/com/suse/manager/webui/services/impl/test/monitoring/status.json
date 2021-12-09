@@ -1,31 +1,5 @@
 {
     "local": {
-        "mgrcompat_|-jmx_taskomatic_exporter_service_|-service.status_|-module_run": {
-            "name": "service.status",
-            "changes": {
-                "ret": true
-            },
-            "comment": "Module function service.status executed",
-            "result": true,
-            "__sls__": "srvmonitoring.status",
-            "__run_num__": 0,
-            "start_time": "18:31:37.482343",
-            "duration": 31.181,
-            "__id__": "jmx_taskomatic_exporter_service"
-        },
-        "mgrcompat_|-jmx_tomcat_exporter_service_|-service.status_|-module_run": {
-            "name": "service.status",
-            "changes": {
-                "ret": true
-            },
-            "comment": "Module function service.status executed",
-            "result": true,
-            "__sls__": "srvmonitoring.status",
-            "__run_num__": 1,
-            "start_time": "18:31:37.513996",
-            "duration": 22.479,
-            "__id__": "jmx_tomcat_exporter_service"
-        },
         "mgrcompat_|-node_exporter_service_|-service.status_|-module_run": {
             "name": "service.status",
             "changes": {

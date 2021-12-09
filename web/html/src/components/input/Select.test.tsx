@@ -26,7 +26,7 @@ describe("Select", () => {
     expect(() => {
       renderWithForm(<Select name="level" label="Level" options={["beginner", "normal", "expert"]} />);
     }).not.toThrow();
-    openMenu(screen.getByLabelText(/^Level/));
+    openMenu(screen.getByLabelText("Level"));
     expect(screen.getByText("beginner")).toBeDefined();
   });
 
@@ -42,9 +42,9 @@ describe("Select", () => {
         ]}
       />
     );
-    await select(screen.getByLabelText(/^Level/), "Expert");
+    await select(screen.getByLabelText("Level"), "Expert");
     expect(getFieldValuesByName("test form", "level")).toStrictEqual(["expert"]);
-    openMenu(screen.getByLabelText(/^Level/));
+    openMenu(screen.getByLabelText("Level"));
     expect(screen.getByText("Beginner")).toBeDefined();
   });
 
@@ -62,20 +62,20 @@ describe("Select", () => {
           { value: "vanilla", label: "Vanilla", color: "#F3E5AB" },
         ]}
         isMulti
-        formatOptionLabel={object => <div style={{ color: object.color }}>{object.label}</div>}
+        formatOptionLabel={(object) => <div style={{ color: object.color }}>{object.label}</div>}
       />
     );
     expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["vanilla", "strawberry"]);
-    await clearFirst(screen.getByLabelText(/^Flavor/));
+    await clearFirst(screen.getByLabelText("Flavor"));
     expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["strawberry"]);
-    await select(screen.getByLabelText(/^Flavor/), "Chocolate");
+    await select(screen.getByLabelText("Flavor"), "Chocolate");
     expect(screen.getByText("Chocolate").style.color).toEqual("rgb(123, 63, 0)");
     expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["strawberry", "chocolate"]);
-    await clearFirst(screen.getByLabelText(/^Flavor/));
-    await clearFirst(screen.getByLabelText(/^Flavor/));
+    await clearFirst(screen.getByLabelText("Flavor"));
+    await clearFirst(screen.getByLabelText("Flavor"));
     expect(getFieldValuesByName("test form", "flavor")).toStrictEqual([""]);
     expect(screen.getByText("Start typing...")).toBeDefined();
-    await type(screen.getByLabelText(/^Flavor/), "Mint");
+    await type(screen.getByLabelText("Flavor"), "Mint");
     expect(screen.getByText("No flavor")).toBeDefined();
   });
 

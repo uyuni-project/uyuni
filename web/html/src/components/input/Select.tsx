@@ -50,7 +50,7 @@ type CommonSelectProps = (SingleMode | MultiMode) & {
 type SelectProps = CommonSelectProps & {
   /** Select options */
   options: Array<Object | string>;
-}
+};
 
 type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
   // 'value' and 'defaultValue' are not currently supported with the async Select
@@ -64,7 +64,7 @@ type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
    */
   loadOptions: (inputValue: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
   cacheOptions?: boolean;
-}
+};
 
 export function Select(props: SelectProps | AsyncSelectProps) {
   const {
@@ -82,7 +82,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   const formContext = React.useContext(FormContext);
   const isAsync = (props: SelectProps | AsyncSelectProps): props is AsyncSelectProps => {
     return (props as AsyncSelectProps).loadOptions !== undefined;
-  }
+  };
 
   const bootstrapStyles = {
     control: (styles: {}) => ({
@@ -119,8 +119,12 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   useEffect(() => {
     const value = (formContext.model || {})[props.name || ""];
     // Since defaultValueOption is not bound to the model, ensure sanity
-    if (isAsync(props) && typeof defaultValueOption !== 'undefined' && getOptionValue(defaultValueOption) !== value) {
-      console.error(`Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(defaultValueOption)}, got ${value}`);
+    if (isAsync(props) && typeof defaultValueOption !== "undefined" && getOptionValue(defaultValueOption) !== value) {
+      console.error(
+        `Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(
+          defaultValueOption
+        )}, got ${value}`
+      );
     }
   }, []);
 
@@ -128,8 +132,10 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   return (
     <InputBase<any> {...propsToPass}>
       {({ setValue, onBlur }) => {
-        const onChange = newValue => {
-          const value = Array.isArray(newValue) ? newValue.map(item => getOptionValue(item)) : getOptionValue(newValue);
+        const onChange = (newValue) => {
+          const value = Array.isArray(newValue)
+            ? newValue.map((item) => getOptionValue(item))
+            : getOptionValue(newValue);
           setValue(props.name, value);
         };
         const value = (formContext.model || {})[props.name || ""];
@@ -142,8 +148,8 @@ export function Select(props: SelectProps | AsyncSelectProps) {
           isDisabled: props.disabled,
           onBlur: onBlur,
           onChange: onChange,
-          getOptionLabel: option => (option != null ? getOptionLabel(option) : ""),
-          getOptionValue: option => (option != null ? getOptionValue(option) : ""),
+          getOptionLabel: (option) => (option != null ? getOptionLabel(option) : ""),
+          getOptionValue: (option) => (option != null ? getOptionValue(option) : ""),
           formatOptionLabel: formatOptionLabel,
           placeholder: placeholder,
           isLoading: isLoading,
@@ -152,7 +158,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
           styles: bootstrapStyles,
           isMulti: props.isMulti,
           menuPortalTarget: document.body,
-          classNamePrefix: `class-${props.name}`
+          classNamePrefix: `class-${props.name}`,
         };
 
         if (isAsync(props)) {
@@ -164,15 +170,15 @@ export function Select(props: SelectProps | AsyncSelectProps) {
               aria-label={props.title}
               defaultValue={defaultValueOption}
               {...commonProps}
-            />);
-        }
-        else {
-          const convertedOptions = (props.options || []).map(item =>
+            />
+          );
+        } else {
+          const convertedOptions = (props.options || []).map((item) =>
             typeof item === "string" ? { label: item, value: item } : item
           );
-          const defaultValue = convertedOptions.find(item => getOptionValue(item) === props.defaultValue);
-          const optionFinder = needle => convertedOptions.find(option => getOptionValue(option) === needle);
-          const valueOption = Array.isArray(value) ? value.map(item => optionFinder(item)) : optionFinder(value);
+          const defaultValue = convertedOptions.find((item) => getOptionValue(item) === props.defaultValue);
+          const optionFinder = (needle) => convertedOptions.find((option) => getOptionValue(option) === needle);
+          const valueOption = Array.isArray(value) ? value.map((item) => optionFinder(item)) : optionFinder(value);
 
           return (
             <ReactSelect
@@ -191,8 +197,8 @@ export function Select(props: SelectProps | AsyncSelectProps) {
 
 Select.defaultProps = {
   isClearable: false,
-  getOptionValue: option => (option instanceof Object ? option.value : option),
-  getOptionLabel: option => (option instanceof Object ? option.label : option),
+  getOptionValue: (option) => (option instanceof Object ? option.value : option),
+  getOptionLabel: (option) => (option instanceof Object ? option.label : option),
   isLoading: false,
   emptyText: "No options",
   inputClass: undefined,
@@ -206,5 +212,5 @@ Select.defaultProps = {
   invalidHint: undefined,
   onChange: undefined,
   isMulti: false,
-  cacheOptions: false
+  cacheOptions: false,
 };

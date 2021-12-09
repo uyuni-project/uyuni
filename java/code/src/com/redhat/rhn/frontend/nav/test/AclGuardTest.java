@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;

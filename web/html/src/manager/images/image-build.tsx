@@ -4,7 +4,6 @@ import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
 import { SubmitButton, LinkButton } from "components/buttons";
-import { Utils } from "utils/functions";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Select } from "components/input/Select";
@@ -13,6 +12,7 @@ import { ActionLink, ActionChainLink } from "components/links";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
@@ -44,7 +44,7 @@ type Props = {};
 type State = {
   model: {
     version: string;
-    earliest: any;
+    earliest: moment.Moment;
     profileId?: any;
     buildHostId?: any;
     actionChain?: any;
@@ -63,7 +63,7 @@ class BuildImage extends React.Component<Props, State> {
     this.state = {
       model: {
         version: window.version || "",
-        earliest: Utils.dateWithTimezone(window.localTime),
+        earliest: localizedMoment(),
       },
       profile: {},
       profiles: [],
@@ -78,13 +78,13 @@ class BuildImage extends React.Component<Props, State> {
       "onBuild",
       "onDateTimeChanged",
       "onActionChainChanged",
-    ].forEach(method => (this[method] = this[method].bind(this)));
+    ].forEach((method) => (this[method] = this[method].bind(this)));
 
     this.getProfiles();
   }
 
   getProfiles() {
-    Network.get("/rhn/manager/api/cm/imageprofiles").then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles").then((res) => {
       this.setState({
         profiles: res,
       });
@@ -98,7 +98,7 @@ class BuildImage extends React.Component<Props, State> {
   getProfileDetails(profileId) {
     if (!profileId) return true;
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then((res) => {
       if (res.success) {
         var data = res.data;
 
@@ -125,7 +125,7 @@ class BuildImage extends React.Component<Props, State> {
   }
 
   getBuildHosts(type) {
-    Network.get("/rhn/manager/api/cm/build/hosts/" + type).then(res => {
+    Network.get("/rhn/manager/api/cm/build/hosts/" + type).then((res) => {
       this.setState({
         hosts: res,
       });
@@ -181,11 +181,11 @@ class BuildImage extends React.Component<Props, State> {
     });
   }
 
-  onDateTimeChanged(date: Date) {
-     const model: State['model'] = Object.assign({}, this.state.model, {
-      earliest: date,
+  onDateTimeChanged(value: moment.Moment) {
+    const model: State["model"] = Object.assign({}, this.state.model, {
+      earliest: value,
       actionChain: null,
-     });
+    });
     this.setState({
       actionChain: null,
       model,
@@ -193,7 +193,7 @@ class BuildImage extends React.Component<Props, State> {
   }
 
   onActionChainChanged(actionChain: ActionChain | null) {
-    const model: State['model'] = Object.assign({}, this.state.model, {
+    const model: State["model"] = Object.assign({}, this.state.model, {
       actionChain: actionChain?.text,
     });
     this.setState({
@@ -203,10 +203,7 @@ class BuildImage extends React.Component<Props, State> {
   }
 
   onBuild(model) {
-    Network.post(
-      "/rhn/manager/api/cm/build/" + this.state.model.profileId,
-      model
-    ).then(data => {
+    Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
         const msg = MessagesUtils.info(
           this.state.model.actionChain ? (
@@ -230,7 +227,7 @@ class BuildImage extends React.Component<Props, State> {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -307,7 +304,7 @@ class BuildImage extends React.Component<Props, State> {
                               </li>
                               <li>
                                 <ul>
-                                  {p.channels.children.map(ch => (
+                                  {p.channels.children.map((ch) => (
                                     <li key={ch.id}>
                                       <a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>
                                         {ch.name}
@@ -376,7 +373,7 @@ class BuildImage extends React.Component<Props, State> {
               </span>
             }
             options={this.state.profiles}
-            getOptionValue={option => option.profileId}
+            getOptionValue={(option) => option.profileId}
           />
 
           {this.state.profile.imageType === "dockerfile" && (
@@ -389,14 +386,12 @@ class BuildImage extends React.Component<Props, State> {
             label={t("Build Host")}
             labelClass="col-md-3"
             divClass="col-md-9"
-            getOptionLabel={option => option.name}
-            getOptionValue={option => option.id}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id}
             options={this.state.hosts}
           />
 
           <ActionSchedule
-            timezone={window.timezone}
-            localTime={localTime}
             earliest={this.state.model.earliest}
             actionChains={window.actionChains}
             actionType="image.build"

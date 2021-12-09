@@ -15,14 +15,14 @@
 
 package com.redhat.rhn.domain.credentials;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.user.User;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.user.User;
 
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.

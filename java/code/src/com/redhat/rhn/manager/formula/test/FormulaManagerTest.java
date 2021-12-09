@@ -55,7 +55,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 /**
@@ -68,7 +67,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     static final String PROMETHEUS_EXPORTERS_FORMULA_DATA = "prometheus-exporters-formula-data.json";
 
     static final String TEMP_PATH = "formulas/";
-    static final String formulaName = "dhcpd";
+    static final String FORMULA_NAME = "dhcpd";
     private SaltService saltServiceMock;
     private FormulaManager manager;
     private Path metadataDir;
@@ -107,8 +106,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
         Map<String, Object> layout = Json.GSON.fromJson(layoutData, Map.class);
-        FormulaManager manager = new FormulaManager(saltServiceMock);
-        manager.validateContents(contents,layout);
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
+        formulaManager.validateContents(contents, layout);
 
     }
 
@@ -123,13 +122,14 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         Map<String, Object> layout = Json.GSON.fromJson(layoutData, Map.class);
 
-        contents.put("test","dummy"); // add a random field
+        contents.put("test", "dummy"); // add a random field
 
-        FormulaManager manager = new FormulaManager(saltServiceMock);
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         try {
-            manager.validateContents(contents,layout);
-            fail( "Exception expected but didn't throw" );
-        } catch (InvalidFormulaException ex) {
+            formulaManager.validateContents(contents, layout);
+            fail("Exception expected but didn't throw");
+        }
+        catch (InvalidFormulaException ex) {
 
         }
     }
@@ -144,15 +144,15 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup managed = ServerGroupTestUtils.createManaged(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
 
-        context().checking(new Expectations(){{
+        context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.saveGroupFormulaData(user,managed.getId(), formulaName, contents);
+        manager.saveGroupFormulaData(user, managed.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, managed.getId())
+                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(FORMULA_NAME, managed.getId())
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
-        assertEquals(contents,savedFormulaData);
+        assertEquals(contents, savedFormulaData);
     }
 
     /**
@@ -168,10 +168,10 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.enableFormula(minion.getMinionId(), formulaName);
+        manager.enableFormula(minion.getMinionId(), FORMULA_NAME);
         List<String> enabledFormulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
         assertNotNull(enabledFormulas);
-        assertEquals(true, enabledFormulas.contains(formulaName));
+        assertEquals(true, enabledFormulas.contains(FORMULA_NAME));
     }
 
     /**
@@ -187,13 +187,13 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.saveServerFormulaData(user,minion.getId(), formulaName, contents);
+        manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minion.getMinionId())
+                FormulaFactory.getFormulaValuesByNameAndMinionId(FORMULA_NAME, minion.getMinionId())
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
-        assertEquals(contents,savedFormulaData);
-        assertEquals( true, savedFormulaData.equals(contents));
+        assertEquals(contents, savedFormulaData);
+        assertEquals(true, savedFormulaData.equals(contents));
     }
 
     /**
@@ -205,12 +205,13 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaManager manager = new FormulaManager(saltServiceMock);
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         User testUser = UserTestUtils.createUser("test-user", user.getOrg().getId());
         try {
-            manager.saveServerFormulaData(testUser,minion.getId(), formulaName, contents);
-            fail( "Exception expected but didn't throw" );
-        } catch (PermissionException ex) {
+            formulaManager.saveServerFormulaData(testUser, minion.getId(), FORMULA_NAME, contents);
+            fail("Exception expected but didn't throw");
+        }
+        catch (PermissionException ex) {
             //expected exception
         }
     }
@@ -264,10 +265,10 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.saveServerFormulaData(user,minion.getId(), formulaName, contents);
+        manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
 
         combinedPrometheusExportersFormulas = this.manager
-                .getCombinedFormulaDataForSystems(user, Arrays.asList(minion.getId()), formulaName);
+                .getCombinedFormulaDataForSystems(user, Arrays.asList(minion.getId()), FORMULA_NAME);
 
         assertNotNull(combinedPrometheusExportersFormulas);
         assertEquals(combinedPrometheusExportersFormulas.size(), 1);
@@ -276,7 +277,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(combinedFormulaData.getSystemID(), minion.getId());
         assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
-        assertNotNull(combinedFormulaData.getFormulaValues().get(formulaName));
+        assertNotNull(combinedFormulaData.getFormulaValues().get(FORMULA_NAME));
     }
 
     public void testListEndpoints() throws Exception {

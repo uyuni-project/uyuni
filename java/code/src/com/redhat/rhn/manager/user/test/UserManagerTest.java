@@ -499,31 +499,31 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         User peon = UserTestUtils.createUser("testBob", user.getOrg().getId());
 
-        DataResult users = UserManager.usersInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numTotal + 1, users.getTotalSize());
+        DataResult orgUsers = UserManager.usersInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numTotal + 1, orgUsers.getTotalSize());
 
-        users = UserManager.activeInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numActive + 1, users.getTotalSize());
+        orgUsers = UserManager.activeInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numActive + 1, orgUsers.getTotalSize());
 
-        users = UserManager.disabledInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numDisabled, users.getTotalSize());
+        orgUsers = UserManager.disabledInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numDisabled, orgUsers.getTotalSize());
 
         UserFactory.getInstance().disable(peon, user);
 
-        users = UserManager.usersInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numTotal + 1, users.getTotalSize());
+        orgUsers = UserManager.usersInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numTotal + 1, orgUsers.getTotalSize());
 
-        users = UserManager.activeInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numActive, users.getTotalSize());
+        orgUsers = UserManager.activeInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numActive, orgUsers.getTotalSize());
 
-        users = UserManager.disabledInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numDisabled + 1, users.getTotalSize());
+        orgUsers = UserManager.disabledInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numDisabled + 1, orgUsers.getTotalSize());
     }
 
 

@@ -21,13 +21,11 @@ export function VirtualizationPoolDefinitionApi(props: Props) {
   const [definition, setDefinition] = React.useState(null);
 
   React.useEffect(() => {
-    Network.get(
-      `/rhn/manager/api/systems/details/virtualization/pools/${props.hostid}/pool/${props.poolName}`
-    ).then(
-      response => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/pools/${props.hostid}/pool/${props.poolName}`).then(
+      (response) => {
         setDefinition(response);
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? Messages.Utils.error(

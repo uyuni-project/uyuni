@@ -46,7 +46,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
   }
 
   cloneItems() {
-    return this.state.items.map(i => _cloneDeep(i));
+    return this.state.items.map((i) => _cloneDeep(i));
   }
 
   handleUpdate() {
@@ -59,7 +59,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
     const ids = jQuery(this.node).sortable("toArray", { attribute: "data-id" });
     if (ids.length > 0) {
       ids.forEach((id, ix) => {
-        const item = newItems.find(elm => elm.label === id);
+        const item = newItems.find((elm) => elm.label === id);
         item.position = ix + 1;
       });
     }
@@ -95,7 +95,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
         : a.position - b.position
     );
 
-    return sortedItems.map(i => {
+    return sortedItems.map((i) => {
       // TODO: Provide a callback as prop for optional mapping and generify this default implementation
       const icon = channelIcon(i);
       return (
@@ -113,7 +113,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
     return (
       <div>
         {this.state.items.length > 0 ? (
-          <div ref={node => (this.node = node)} className="list-group">
+          <div ref={(node) => (this.node = node)} className="list-group">
             {this.getElements()}
           </div>
         ) : (

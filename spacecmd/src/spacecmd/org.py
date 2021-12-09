@@ -59,7 +59,7 @@ options:
   --pam enable PAM authentication''' % ', '.join(_PREFIXES)))
 
 
-def do_org_create(self, args):
+def do_org_create(self, args): # pylint: disable=too-many-return-statements
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-n', '--org-name')
     arg_parser.add_argument('-u', '--username')
@@ -172,6 +172,8 @@ def do_org_delete(self, args):
     elif self.user_confirm(_('Delete this organization [y/N]:')):
         self.client.org.delete(self.session, org_id)
         return 0
+
+    return None
 
 ####################
 
@@ -348,9 +350,10 @@ def do_org_list(self, args, doreturn=False):
 
     if doreturn:
         return orgs
-    else:
-        if orgs:
-            print('\n'.join(sorted(orgs)))
+    if orgs:
+        print('\n'.join(sorted(orgs)))
+
+    return None
 
 ####################
 

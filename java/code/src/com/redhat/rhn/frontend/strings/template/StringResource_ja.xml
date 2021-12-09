@@ -310,7 +310,7 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -498,7 +498,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 

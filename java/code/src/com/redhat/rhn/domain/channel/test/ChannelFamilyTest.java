@@ -75,6 +75,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
 
     /**
      * Utility method that ensures that a channel family has maximum members.
+     * @param user the user
      * @param channelFamily the channel family
      */
     public static void ensurePrivateChannelFamilyExists(User user, ChannelFamily channelFamily) {
@@ -87,7 +88,6 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
             channelFamily.addPrivateChannelFamily(privateChannelFamily);
 
             HibernateFactory.getSession().save(privateChannelFamily);
-
         }
     }
 }

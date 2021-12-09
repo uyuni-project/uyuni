@@ -18,7 +18,9 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+
 import com.suse.manager.metrics.PrometheusExporter;
+
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.ExecutorService;

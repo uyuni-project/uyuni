@@ -35,6 +35,21 @@
         },
         "__id__": "grains_update"
       },
+      "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
+        "comment": "Module function sumautil.get_kernel_live_version executed",
+        "name": "sumautil.get_kernel_live_version",
+        "start_time": "15:10:28.950000",
+        "result": true,
+        "duration": 10,
+        "__run_num__": 4,
+        "__sls__": "util.systeminfo",
+        "changes": {
+          "ret": {
+            "mgr_kernel_live_version": "livepatch_2_2_3"
+          }
+        },
+        "__id__": "grains_update"
+      },
       "mgrcompat_|-status_uptime_|-status.uptime_|-module_run": {
         "__id__": "status_uptime",
         "__run_num__": 3,

@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -39,6 +40,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.UserPreferenceUtils;
+import com.suse.manager.webui.utils.ViewHelper;
 
 /**
  * This class only exists to have a single place for initializing objects
@@ -84,4 +86,6 @@ public class GlobalInstanceHolder {
             new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER,
                     SERVER_GROUP_MANAGER)
     );
+
+    public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
 }

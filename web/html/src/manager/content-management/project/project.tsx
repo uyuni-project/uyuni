@@ -36,7 +36,7 @@ const Project = (props: Props) => {
   const hasEditingPermissions = isOrgAdmin(roles);
 
   useInterval(() => {
-    onAction({}, "get", project.properties.label).then(project => {
+    onAction({}, "get", project.properties.label).then((project) => {
       setProject(project);
     });
   }, 5000);
@@ -60,17 +60,19 @@ const Project = (props: Props) => {
 
   let changesToBuild = ["Software Channels:\n"];
   changesToBuild = changesToBuild.concat(
-    project.softwareSources.map(source => `\n ${statesEnum.findByKey(source.state).sign} ${source.name}`)
+    project.softwareSources.map((source) => `\n ${statesEnum.findByKey(source.state).sign} ${source.name}`)
   );
   if (project.filters.length > 0) {
     changesToBuild = changesToBuild.concat("\n\nSoftware Filter:\n");
     changesToBuild = changesToBuild.concat(
-      project.filters.map(filter => `\n ${statesEnum.findByKey(filter.state).sign} ${getClmFilterDescription(filter)}`)
+      project.filters.map(
+        (filter) => `\n ${statesEnum.findByKey(filter.state).sign} ${getClmFilterDescription(filter)}`
+      )
     );
   }
 
-  const hasErrors = project.messages.some(m => m.type === "error");
-  const messageGroups = _groupBy(project.messages, m => m.entity);
+  const hasErrors = project.messages.some((m) => m.type === "error");
+  const messageGroups = _groupBy(project.messages, (m) => m.entity);
 
   const isProjectEdited = changesToBuild.length > 0;
   const isBuildDisabled =
@@ -81,7 +83,7 @@ const Project = (props: Props) => {
     (project.environments[1] || {}).status === "building" || // promoting 1st env to 2nd: we can't build as it would affect this promotion
     hasErrors;
 
-  const hasChannelsWithUnsyncedPatches = project.softwareSources.filter(s => s.hasUnsyncedPatches).length > 0;
+  const hasChannelsWithUnsyncedPatches = project.softwareSources.filter((s) => s.hasUnsyncedPatches).length > 0;
   return (
     <TopPanel
       title={t("Content Lifecycle Project - {0}", project.properties.name)}
@@ -107,7 +109,7 @@ const Project = (props: Props) => {
             .then(() => {
               window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/contentmanagement/projects`);
             })
-            .catch(error => {
+            .catch((error) => {
               showErrorToastr(error.messages, { autoHide: false });
             })
         }
@@ -117,7 +119,7 @@ const Project = (props: Props) => {
         properties={project.properties}
         currentHistoryEntry={currentHistoryEntry}
         showDraftVersion={isProjectEdited}
-        onChange={projectWithNewProperties => {
+        onChange={(projectWithNewProperties) => {
           setProject(projectWithNewProperties);
           cancelRefreshAction();
         }}
@@ -128,7 +130,7 @@ const Project = (props: Props) => {
         <Sources
           projectId={projectId}
           softwareSources={project.softwareSources}
-          onChange={projectWithNewSources => {
+          onChange={(projectWithNewSources) => {
             setProject(projectWithNewSources);
             cancelRefreshAction();
           }}
@@ -137,7 +139,7 @@ const Project = (props: Props) => {
         <FiltersProject
           projectId={projectId}
           selectedFilters={project.filters}
-          onChange={projectWithNewSources => {
+          onChange={(projectWithNewSources) => {
             setProject(projectWithNewSources);
             cancelRefreshAction();
           }}
@@ -149,7 +151,7 @@ const Project = (props: Props) => {
         projectId={projectId}
         disabled={isBuildDisabled}
         currentHistoryEntry={currentHistoryEntry}
-        onBuild={projectWithNewSources => {
+        onBuild={(projectWithNewSources) => {
           setProject(projectWithNewSources);
           cancelRefreshAction();
         }}
@@ -161,7 +163,7 @@ const Project = (props: Props) => {
         projectId={projectId}
         environments={project.environments}
         historyEntries={project.properties.historyEntries}
-        onChange={projectWithNewEnvironment => {
+        onChange={(projectWithNewEnvironment) => {
           setProject(projectWithNewEnvironment);
           cancelRefreshAction();
         }}

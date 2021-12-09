@@ -54,7 +54,7 @@ class CreateImageStore extends React.Component<Props, State> {
     };
 
     ["setValues", "isLabelUnique", "onUpdate", "onCreate", "onFormChange", "onValidate", "clearFields"].forEach(
-      method => (this[method] = this[method].bind(this))
+      (method) => (this[method] = this[method].bind(this))
     );
 
     if (this.isEdit()) {
@@ -67,7 +67,7 @@ class CreateImageStore extends React.Component<Props, State> {
   }
 
   setValues(id) {
-    Network.get("/rhn/manager/api/cm/imagestores/" + id).then(res => {
+    Network.get("/rhn/manager/api/cm/imagestores/" + id).then((res) => {
       if (res.success) {
         var data = res.data;
         this.setState({
@@ -86,7 +86,7 @@ class CreateImageStore extends React.Component<Props, State> {
     }
 
     return Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
-      .then(res => !res.success)
+      .then((res) => !res.success)
       .catch(() => false);
   }
 
@@ -97,17 +97,14 @@ class CreateImageStore extends React.Component<Props, State> {
 
     model.label = model.label.trim();
     model.uri = model.uri.trim();
-    return Network.post(
-      "/rhn/manager/api/cm/imagestores/update/" + window.storeId,
-      model
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imagestores/update/" + window.storeId, model).then((data) => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -124,17 +121,14 @@ class CreateImageStore extends React.Component<Props, State> {
 
     model.label = model.label.trim();
     model.uri = model.uri.trim();
-    return Network.post(
-      "/rhn/manager/api/cm/imagestores/create",
-      model
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imagestores/create", model).then((data) => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -249,7 +243,7 @@ class CreateImageStore extends React.Component<Props, State> {
           model={this.state.model}
           className="image-store-form"
           onChange={this.onFormChange}
-          onSubmit={e => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
+          onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
           onValidate={this.onValidate}
         >
           <Select
@@ -259,7 +253,7 @@ class CreateImageStore extends React.Component<Props, State> {
             name="storeType"
             required
             disabled={this.isEdit()}
-            options={this.state.storeTypes.map(k => ({ value: k, label: typeMap[k] }))}
+            options={this.state.storeTypes.map((k) => ({ value: k, label: typeMap[k] }))}
           />
           <Text
             name="label"

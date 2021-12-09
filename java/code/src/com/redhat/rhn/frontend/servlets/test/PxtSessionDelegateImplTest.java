@@ -14,10 +14,9 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.redhat.rhn.domain.session.WebSession;
+import com.redhat.rhn.frontend.servlets.PxtCookieManager;
+import com.redhat.rhn.frontend.servlets.PxtSessionDelegateImpl;
 
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.TransformerUtils;
@@ -28,9 +27,10 @@ import org.hamcrest.TypeSafeMatcher;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
 
-import com.redhat.rhn.domain.session.WebSession;
-import com.redhat.rhn.frontend.servlets.PxtCookieManager;
-import com.redhat.rhn.frontend.servlets.PxtSessionDelegateImpl;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * PxtSessionDelegateImplTest

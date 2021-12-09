@@ -186,7 +186,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         // db should remain untouched
         assertEquals("option1=value1", fromDb.getKernelOptions().trim());
         // the get function convert null to empty string
-        assert(fromDb.getKernelOptionsPost().isEmpty());
+        assert fromDb.getKernelOptionsPost().isEmpty();
     }
 
     public void testDistroDelete() throws Exception {

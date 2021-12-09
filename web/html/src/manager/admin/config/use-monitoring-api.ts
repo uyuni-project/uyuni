@@ -12,7 +12,7 @@ type ExportersResultType = {
 };
 
 function isRestartNeeded(data: ExportersResultType) {
-  return Object.keys(data.exporters).some(key => data.messages[key] === "restart");
+  return Object.keys(data.exporters).some((key) => data.messages[key] === "restart");
 }
 
 const useMonitoringApi = () => {
@@ -64,10 +64,10 @@ const useMonitoringApi = () => {
           if (!toEnable) {
             // disable monitoring
             const allDisabled: boolean = Object.keys(data.data.exporters).every(
-              key => data.data.exporters[key] === false
+              (key) => data.data.exporters[key] === false
             );
             const someEnabled: boolean = Object.keys(data.data.exporters).some(
-              key => data.data.exporters[key] === true
+              (key) => data.data.exporters[key] === true
             );
             if (allDisabled) {
               return { success: true, message: "disabling_succeeded" };
@@ -79,10 +79,10 @@ const useMonitoringApi = () => {
           } else if (toEnable) {
             // enable monitoring
             const allEnabled: boolean = Object.keys(data.data.exporters).every(
-              key => data.data.exporters[key] === true
+              (key) => data.data.exporters[key] === true
             );
             const someDisabled: boolean = Object.keys(data.data.exporters).some(
-              key => data.data.exporters[key] === false
+              (key) => data.data.exporters[key] === false
             );
             if (allEnabled) {
               return { success: true, message: "enabling_succeeded" };

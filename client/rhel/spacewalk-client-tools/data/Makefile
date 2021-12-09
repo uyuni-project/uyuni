@@ -5,7 +5,6 @@ PREFIX		?= /
 
 GLADES		= gui.glade progress.glade rh_register.glade
 PUPLET_SS       = puplet-screenshot.png
-KEYS		= RHNS-CA-CERT
 
 # Distro
 RHEL		= $(shell rpm --eval 0%{?rhel})
@@ -100,8 +99,6 @@ endif
 		$(RHNSHARE_DIR)/up2date_client/*glade
 
 	$(INSTALL_DATA) $(PUPLET_SS) $(PIXMAP_DIR)
-
-	$(INSTALL_DATA) $(KEYS)  $(RHNSHARE_DIR)
 
 clean::
 	@find . -name .\#\* -exec rm -fv {} \;

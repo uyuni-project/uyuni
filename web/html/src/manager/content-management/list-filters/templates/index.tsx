@@ -37,7 +37,7 @@ export default (props: FilterFormProps) => {
     {
       label: t("AppStream modules with defaults"),
       value: Template.AppStreamsWithDefaults,
-    }
+    },
   ];
   return (
     <>
@@ -45,7 +45,7 @@ export default (props: FilterFormProps) => {
         label={t("Template")}
         name="template"
         labelClass="col-md-3"
-        divClass="col-md-6"
+        divClass="col-md-8"
         defaultValue={Template.LivePatchingSystem}
         options={templates}
       />

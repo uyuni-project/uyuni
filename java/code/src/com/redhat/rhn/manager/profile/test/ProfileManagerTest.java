@@ -637,7 +637,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         otherServerList.add(pli2);
 
 
-        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(otherServerList),
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(
+                new DataResult<PackageListItem>(otherServerList),
                 new DataResult<PackageListItem>(serverList), "foo");
         assertEquals(1, diff.size());
 

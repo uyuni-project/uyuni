@@ -15,7 +15,7 @@ describe("SearchField", () => {
       // This is intentionally undefined, the bug happens specifically on the undefined -> value transition
       const [criteria, setCriteria] = useState<string | undefined>(undefined);
 
-      return <SearchField criteria={criteria} onSearch={value => setCriteria(value)} />;
+      return <SearchField criteria={criteria} onSearch={(value) => setCriteria(value)} />;
     };
 
     render(<TestWrapper />);
@@ -27,10 +27,10 @@ describe("SearchField", () => {
     expect(consoleError).not.toBeCalled();
   });
 
-  test("is searchable when no criteria is specified", async done => {
+  test("is searchable when no criteria is specified", async (done) => {
     render(
       <SearchField
-        onSearch={value => {
+        onSearch={(value) => {
           expect(value).toBe("value");
           done();
         }}
@@ -43,12 +43,7 @@ describe("SearchField", () => {
   test("is searchable when criteria is specified", async () => {
     const TestWrapper = () => {
       const [criteria, setCriteria] = useState("initialValue");
-      return (
-        <SearchField
-          criteria={criteria}
-          onSearch={value => setCriteria(value)}
-        />
-      );
+      return <SearchField criteria={criteria} onSearch={(value) => setCriteria(value)} />;
     };
 
     render(<TestWrapper />);

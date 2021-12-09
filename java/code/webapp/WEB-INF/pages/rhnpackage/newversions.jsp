@@ -18,7 +18,10 @@
 <rhn:list pageList="${requestScope.pageList}" noDataText="newversions.jsp.noversions">
   <rhn:listdisplay>
     <rhn:column header="newversions.jsp.newerversion">
-    <a href="/rhn/software/packages/Details.do?pid=${current.id}"><c:out value="${current.nvrea}" /></a>
+        <c:if test="${current.pkg_reboot == 1}">
+            <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+        </c:if>
+        <a href="/rhn/software/packages/Details.do?pid=${current.id}"><c:out value="${current.nvrea}" /></a>
     </rhn:column>
 
     <rhn:column header="newversions.jsp.providingchannel">

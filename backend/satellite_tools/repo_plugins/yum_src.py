@@ -120,7 +120,9 @@ class ZyppoSync:
         zypper_gpg_keys = {}
         with tempfile.NamedTemporaryFile() as f:
             # Collect GPG keys from the Spacewalk GPG keyring
-            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+            # The '--export-options export-clean' is needed avoid exporting key signatures
+            # which are not needed and can cause issues when importing into the RPMDB
+            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
             process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
             for line in process.stdout.readlines():
                line_l = line.decode().split(":")
@@ -395,7 +397,7 @@ class ContentSource:
     def __init__(self, url, name, insecure=False, interactive=True,
                  yumsrc_conf=None, org="1", channel_label="",
                  no_mirrors=False, ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None):
+                 client_key_file=None, channel_arch=""):
         """
         Plugin constructor.
         """
@@ -461,6 +463,7 @@ class ContentSource:
             # Replace non-valid characters from reponame (only alphanumeric chars allowed)
             self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
             self.channel_label = channel_label
+            self.channel_arch = channel_arch
 
             # SUSE vendor repositories belongs to org = NULL
             # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
@@ -582,7 +585,7 @@ class ContentSource:
                 if re.match('^\s*\#.*', line) or re.match('^\s*$', line):
                     continue
                 mirror = re.sub('\n$', '', line) # no more trailing \n's
-                (mirror, count) = re.subn('\$ARCH', '$BASEARCH', mirror)
+                mirror = re.sub('\$(?:BASE)?ARCH', self.channel_arch, mirror, flags=re.IGNORECASE)
                 returnlist.append(mirror)
 
         returnlist = _replace_and_check_url(returnlist)

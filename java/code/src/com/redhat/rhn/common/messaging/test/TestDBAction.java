@@ -40,8 +40,9 @@ public class TestDBAction implements MessageAction {
     }
 
     /**
-     * Perform the action on the EventMessage
+     * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msg) {
         TestDBEventMessage tm = (TestDBEventMessage) msg;
         System.out.println("Execute ..");

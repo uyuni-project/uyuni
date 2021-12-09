@@ -29,12 +29,12 @@ export const renderer = (renderId, { serverId, warningMessage }) => {
     formData.selected = selectedFormulas;
 
     return Network.post("/rhn/manager/api/formulas/select", formData).then(
-      data => {
+      (data) => {
         component.setState({
-          messages: data.map(msg => getMessageText(msg)),
+          messages: data.map((msg) => getMessageText(msg)),
         });
       },
-      xhr => {
+      (xhr) => {
         try {
           component.setState({
             errors: [JSON.parse(xhr.responseText)],

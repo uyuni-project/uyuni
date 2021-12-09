@@ -15,24 +15,26 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
-import spark.utils.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 /**
  * Filter templates functionality
@@ -63,17 +65,18 @@ public class FilterTemplateManager {
     public List<ContentFilter> createLivePatchFilters(String prefix, PackageEvr kernelEvr, User user) {
         ensureOrgAdmin(user);
 
-        Map<String, FilterCriteria> criteria =
-                Map.of("livepatches", new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR,
-                "package_nevr", "kernel-default " + kernelEvr.toString()),
+        Map<String, FilterCriteria> criteria = Map.of(
+                "livepatches", new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR,
+                        "package_nevr", "kernel-default " + kernelEvr.toString()),
                 "noreboot", new FilterCriteria(FilterCriteria.Matcher.CONTAINS,
-                "keyword", "reboot_suggested"));
+                        "keyword", "reboot_suggested"),
+                "noreboot2", new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME,
+                        "package_provides_name", "installhint(reboot-needed)"));
 
         // Make sure none of the filters exist
         ensureNoFiltersExist(criteria.keySet(), prefix, user);
 
-        List<ContentFilter> createdFilters = new ArrayList<>(2);
-
+        List<ContentFilter> createdFilters = new ArrayList<>(3);
         criteria.forEach((name, crit) -> createdFilters.add(
                 ContentProjectFactory.createFilter(prefix + name, ContentFilter.Rule.DENY,
                         ContentFilter.EntityType.ERRATUM, crit, user)
@@ -90,7 +93,8 @@ public class FilterTemplateManager {
      * @param user the user
      * @return the list of created filters
      */
-    public List<ContentFilter> createAppStreamFilters(String prefix, Channel channel, User user) {
+    public List<ContentFilter> createAppStreamFilters(String prefix, Channel channel, User user)
+            throws ModulemdApiException {
         ensureOrgAdmin(user);
 
         // Create an AppStream filter for every module that has a default stream

@@ -19,7 +19,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
     this.state = {
       open: false,
     };
-    ["onClick"].forEach(method => (this[method] = this[method].bind(this)));
+    ["onClick"].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   onClick() {
@@ -80,9 +80,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
           <div className="panel-body">
             <pre id={id + "-results"}>{value}</pre>
           </div>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
       </div>
     );
   }
@@ -90,22 +88,25 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
 
 function isPreviewDone(minionsMap: Map<any, any>, waitForSSH) {
   return (
-    Array.from(minionsMap, e => e[1]).every(v => v.type === "matched" || v.type === "timedOut" || v.type === "error") &&
-    !waitForSSH
+    Array.from(minionsMap, (e) => e[1]).every(
+      (v) => v.type === "matched" || v.type === "timedOut" || v.type === "error"
+    ) && !waitForSSH
   );
 }
 
 function isRunDone(minionsMap: Map<any, any>) {
-  return Array.from(minionsMap, e => e[1]).every(v => v.type === "result" || v === "timedOut" || v.type === "error");
+  return Array.from(minionsMap, (e) => e[1]).every(
+    (v) => v.type === "result" || v === "timedOut" || v.type === "error"
+  );
 }
 
 function isTimedOutDone(minionsMap: Map<any, any>, waitForSSH, timedOutSSH) {
   if (!minionsMap || minionsMap.size === 0) {
     return timedOutSSH;
   }
-  const results = Array.from(minionsMap, e => e[1]);
-  const noMinionsPending = results.every(v => v.type !== "pending");
-  const anyTimedOutMinion = results.some(v => v.type === "timedOut");
+  const results = Array.from(minionsMap, (e) => e[1]);
+  const noMinionsPending = results.every((v) => v.type !== "pending");
+  const anyTimedOutMinion = results.some((v) => v.type === "timedOut");
   if (waitForSSH) {
     return timedOutSSH && noMinionsPending;
   }
@@ -136,7 +137,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   constructor(props) {
     super(props);
     ["onPreview", "onRun", "onStop", "commandChanged", "targetChanged", "commandResult", "onBeforeUnload"].forEach(
-      method => (this[method] = this[method].bind(this))
+      (method) => (this[method] = this[method].bind(this))
     );
 
     this.state = {
@@ -159,12 +160,12 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       paddingBottom: "0px",
     };
     if (this.state.errors) {
-      this.state.errors.forEach(msg => {
+      this.state.errors.forEach((msg) => {
         msgs.push(<div className="alert alert-danger">{msg}</div>);
       });
     }
     if (this.state.warnings) {
-      this.state.warnings.forEach(msg => {
+      this.state.warnings.forEach((msg) => {
         msgs.push(<div className="alert alert-warning">{msg}</div>);
       });
     }
@@ -334,7 +335,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         executing: jQuery.Deferred().resolve(),
       });
     };
-    ws.onclose = e => {
+    ws.onclose = (e) => {
       var errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
@@ -354,14 +355,14 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         ran: jQuery.Deferred(),
       });
     };
-    ws.onerror = e => {
+    ws.onerror = (e) => {
       console.log("Websocket error: " + e);
       this.setState({
         errors: [t("Error connecting to server. Refresh the page to try again.")],
         websocketErr: true,
       });
     };
-    ws.onmessage = e => {
+    ws.onmessage = (e) => {
       var event = JSON.parse(e.data);
       var minionsMap: Map<any, any> | undefined;
       var previewed;
@@ -493,7 +494,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           }
 
           const noPending =
-            Array.from(minionsMap || [], e => e[1]).every(v => v.type !== "pending") && !this.state.result.waitForSSH;
+            Array.from(minionsMap || [], (e) => e[1]).every((v) => v.type !== "pending") &&
+            !this.state.result.waitForSSH;
 
           if (noPending) {
             previewed = this.state.previewed;
@@ -574,4 +576,4 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   }
 }
 
-export const renderer = id => SpaRenderer.renderNavigationReact(<RemoteCommand />, document.getElementById(id));
+export const renderer = (id) => SpaRenderer.renderNavigationReact(<RemoteCommand />, document.getElementById(id));

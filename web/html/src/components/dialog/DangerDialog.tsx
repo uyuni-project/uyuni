@@ -25,7 +25,7 @@ type Props = DialogProps & {
  * This 'item' will be passed to the 'onConfirm*' handlers.
  */
 export function DangerDialog(props: Props) {
-  const { item, btnClass, submitText, submitIcon, onConfirm, onConfirmAsync, ...otherProps}  = props;
+  const { item, btnClass, submitText, submitIcon, onConfirm, onConfirmAsync, ...otherProps } = props;
 
   const buttonClass = btnClass || "btn-danger";
   const buttons = (
@@ -67,5 +67,5 @@ export function DangerDialog(props: Props) {
     </div>
   );
 
-  return <Dialog footer={buttons} {...otherProps}/>;
+  return <Dialog footer={buttons} {...otherProps} />;
 }

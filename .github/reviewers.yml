@@ -3,11 +3,11 @@ reviewers:
   groups:
     qa:
       - ktsamis
-      - atighineanu
       - maximenoel8
       - srbarrios
       - Bischoff
-      - calancha
+      - nodeg
+      - orestis87
 
 files:
   # Keys are glob expressions.

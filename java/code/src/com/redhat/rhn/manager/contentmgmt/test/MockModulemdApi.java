@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.manager.contentmgmt.test;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
@@ -51,9 +54,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 
 /**
  * Mock class for libmodulemd API

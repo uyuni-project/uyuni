@@ -18,8 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 /**
  * SessionFactory - the singleton class used to fetch and store

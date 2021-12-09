@@ -69,7 +69,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     this.setState({ loading: true });
 
     future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
-      .then(data => {
+      .then((data) => {
         this.setState({
           availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),
           loading: false,
@@ -85,9 +85,9 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
       this.setState({ loading: true });
 
       future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
-        .then(data => {
+        .then((data) => {
           const currentSelectedBaseId = data.data.base ? data.data.base.id : this.props.defaultBaseId;
-          const currentChildSelectedIds = data.data.children ? data.data.children.map(c => c.id) : [];
+          const currentChildSelectedIds = data.data.children ? data.data.children.map((c) => c.id) : [];
           this.props.onNewBaseChannel({ currentSelectedBaseId, currentChildSelectedIds });
           this.setState({
             loading: false,
@@ -95,7 +95,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
         })
         .catch(this.handleResponseError);
     } else {
-      future = new Promise(function(resolve, reject) {
+      future = new Promise(function (resolve, reject) {
         resolve();
       });
     }
@@ -117,7 +117,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     } else {
       this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
-        .then(data => {
+        .then((data) => {
           this.setState({
             availableChannels: data.data,
             fetchedData: this.state.fetchedData.set(baseId, data.data),
@@ -131,7 +131,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
 
   handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       messages: prevState.messages.concat(msg),
     }));
   };

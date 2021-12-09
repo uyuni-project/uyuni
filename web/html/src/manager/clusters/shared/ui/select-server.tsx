@@ -26,7 +26,7 @@ type Props = {
 const SystemMessages = (props: { messages: MessageType[] }) => {
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px", margin: "0px" }}>
-      {props.messages.map(msg => (
+      {props.messages.map((msg) => (
         <li>
           <Icon type="system-warn" className="fa-1-5x" />
           {msg.text}
@@ -38,7 +38,7 @@ const SystemMessages = (props: { messages: MessageType[] }) => {
 
 const SelectServer = (props: Props) => {
   const [selections, setSelections] = useState<Set<number>>(
-    props.selectedServers ? new Set(props.selectedServers.map(srv => srv.id)) : new Set()
+    props.selectedServers ? new Set(props.selectedServers.map((srv) => srv.id)) : new Set()
   );
   const [servers, setServers] = useState<Array<ServerType>>([]);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -47,9 +47,9 @@ const SelectServer = (props: Props) => {
     setFetching(true);
     props
       .fetchServers()
-      .then(data => {
+      .then((data) => {
         setServers(data);
-        setSelections(props.selectedServers ? new Set(props.selectedServers.map(srv => srv.id)) : new Set());
+        setSelections(props.selectedServers ? new Set(props.selectedServers.map((srv) => srv.id)) : new Set());
       })
       .catch((error: ErrorMessagesType) => {
         props.setMessages(error.messages);
@@ -63,7 +63,7 @@ const SelectServer = (props: Props) => {
     const keysToSearch = ["name"];
     if (criteria) {
       return keysToSearch
-        .map(key => row[key])
+        .map((key) => row[key])
         .join()
         .toLowerCase()
         .includes(criteria.toLowerCase());
@@ -72,7 +72,7 @@ const SelectServer = (props: Props) => {
   };
 
   const selectServers = (selections: Set<number>) => {
-    const selectedServers = servers.filter(srv => selections.has(srv.id));
+    const selectedServers = servers.filter((srv) => selections.has(srv.id));
     props.onNext(selectedServers);
   };
 
@@ -120,7 +120,7 @@ const SelectServer = (props: Props) => {
       <Table
         data={servers}
         loading={fetching}
-        identifier={row => row.id}
+        identifier={(row) => row.id}
         initialSortColumnKey="name"
         searchField={<SearchField filter={filterFunc} placeholder={t("Filter by any value")} />}
       >

@@ -23,9 +23,9 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -352,7 +352,8 @@ public class ErrataTestUtils {
 
         if (errata != null) {
             errata.addPackage(result);
-            TestUtils.saveAndFlush(errata);
+            result.setErrata(Set.of(errata));
+            HibernateFactory.getSession().refresh(errata);
         }
 
         return result;

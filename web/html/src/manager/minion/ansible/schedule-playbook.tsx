@@ -9,14 +9,19 @@ import { AnsiblePath } from "./ansible-path-type";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { AceEditor } from "components/ace-editor";
 import { PlaybookDetails } from "./accordion-path-content";
-import { Formats, Utils } from "utils/functions";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Toggler } from "components/toggler";
 import { Loading } from "components/utils/Loading";
+import { localizedMoment } from "utils";
+import { Check, Form } from "components/input";
 
 interface SchedulePlaybookProps {
-  playbook: PlaybookDetails,
-  onBack: () => void
+  playbook: PlaybookDetails;
+  onBack: () => void;
+}
+
+interface PlaybookArgs {
+  flushCache: Boolean;
 }
 
 export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookProps) {
@@ -26,94 +31,77 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
+  const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
-  const [datetime, setDatetime] = useState(new Date());
-
-  // TODO: Use UserLocalization hook instead
-  const timezone = window.timezone;
-  const localTime = window.localTime;
+  const [datetime, setDatetime] = useState(localizedMoment());
 
   useEffect(() => {
     const getInventoryPaths = () => {
       return Network.get(`/rhn/manager/api/systems/details/ansible/paths/inventory/${playbook.path.minionServerId}`)
-        .then((res: JsonResult<AnsiblePath[]>) => res.success ? res.data : Promise.reject(res))
-        .then(inv => inv.map(i => i.path))
-        .then(inv => {
+        .then((res: JsonResult<AnsiblePath[]>) => (res.success ? res.data : Promise.reject(res)))
+        .then((inv) => inv.map((i) => i.path))
+        .then((inv) => {
           if (playbook.customInventory) inv.push(playbook.customInventory);
           setInventories(inv);
         })
-        .catch(res =>
-          setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res))
-        );
-    }
+        .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+    };
 
     const getPlaybookContents = () => {
-      return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents",
-        {
-          pathId: playbook.path.id,
-          playbookRelPathStr: playbook.name
-        },
-      )
-        .then((res: JsonResult<string>) => res.success ? res.data : Promise.reject(res))
+      return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents", {
+        pathId: playbook.path.id,
+        playbookRelPathStr: playbook.name,
+      })
+        .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
         .then(setPlaybookContent)
-        .catch(res =>
-          setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res))
-        );
-    }
+        .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+    };
 
     Promise.all([getInventoryPaths(), getPlaybookContents()]).finally(() => setLoading(false));
-  }, [playbook, localTime]);
-
-  useEffect(() => {
-    setDatetime(Utils.dateWithTimezone(localTime || ""));
-  }, [localTime]);
+  }, [playbook]);
 
   const schedule = () => {
-    return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook",
-      {
-        playbookPath: playbook.fullPath,
-        inventoryPath: inventoryPath?.text,
-        controlNodeId: playbook.path.minionServerId,
-        testMode: isTestMode,
-        actionChainLabel: actionChain?.text || null,
-        earliest: Formats.LocalDateTime(datetime)
-      },
-    )
-      .then((res: JsonResult<number>) => res.success ? res.data : Promise.reject(res))
-      .then(actionId =>
-        setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text}/>)))
-      .catch(res =>
-        setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res))
-      );
+    return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook", {
+      playbookPath: playbook.fullPath,
+      inventoryPath: inventoryPath?.text,
+      controlNodeId: playbook.path.minionServerId,
+      testMode: isTestMode,
+      flushCache: playbookArgs.flushCache,
+      actionChainLabel: actionChain?.text || null,
+      earliest: datetime,
+    })
+      .then((res: JsonResult<number>) => (res.success ? res.data : Promise.reject(res)))
+      .then((actionId) => setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text} />)))
+      .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
   };
 
-  if (loading)
-    return <Loading text={t("Loading playbook contents..")} />;
-
+  if (loading) return <Loading text={t("Loading playbook contents..")} />;
 
   const inventoryOpts: ComboboxItem[] = inventories.map((inv, i) => ({ id: i, text: inv }));
 
   const buttons = [
     <div className="btn-group pull-right">
-      <Toggler
-        text={t("Test mode")}
-        value={isTestMode}
-        className="btn"
-        handler={() => setTestMode(!isTestMode)}
+      <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setTestMode(!isTestMode)} />
+      <Button
+        icon="fa-angle-left"
+        className="btn-default"
+        text={t("Back")}
+        title={t("Back to playbook list")}
+        handler={onBack}
       />
-      <Button icon="fa-angle-left" className="btn-default" text={t("Back")} title={t("Back to playbook list")} handler={onBack} />
-      <AsyncButton defaultType="btn-success" action={schedule} title={t("Schedule playbook execution")} text={t("Schedule")} />
+      <AsyncButton
+        defaultType="btn-success"
+        action={schedule}
+        title={t("Schedule playbook execution")}
+        text={t("Schedule")}
+      />
     </div>,
   ];
 
   return (
     <>
       <Messages items={messages} />
-      <InnerPanel
-        title={t("Playbook '{0}'", playbook.name)}
-        icon="fa-file-text-o"
-        buttons={buttons}
-      >
+      <InnerPanel title={t("Playbook '{0}'", playbook.name)} icon="fa-file-text-o" buttons={buttons}>
         <div className="panel panel-default">
           <div className="panel-heading">
             <div>
@@ -122,8 +110,6 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
           </div>
           <div className="panel-body">
             <ActionSchedule
-              timezone={timezone}
-              localTime={localTime}
               earliest={datetime}
               actionChains={window.actionChains}
               onDateTimeChanged={setDatetime}
@@ -131,7 +117,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
               systemIds={[playbook.path.minionServerId]}
               actionType="ansible.playbook"
             />
-            <div className="form-horizontal">
+            <Form model={playbookArgs} onChange={setPlaybookArgs} formDirection="form-horizontal">
               <div className="form-group">
                 <div className="col-sm-3 control-label">
                   <label>{t("Inventory Path")}:</label>
@@ -146,7 +132,14 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
                   />
                 </div>
               </div>
-            </div>
+              <div className="col-sm-offset-3 col-sm-6">
+                <Check
+                  name="flushCache"
+                  label={t("Flush Ansible fact cache")}
+                  title={t("Clear the fact cache for every host in inventory")}
+                />
+              </div>
+            </Form>
           </div>
         </div>
 
@@ -167,7 +160,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   );
 }
 
-function ScheduleMessage({ id, actionChain }: { id: number, actionChain?: string }) {
+function ScheduleMessage({ id, actionChain }: { id: number; actionChain?: string }) {
   if (actionChain) {
     return (
       <span>
@@ -175,8 +168,7 @@ function ScheduleMessage({ id, actionChain }: { id: number, actionChain?: string
         <ActionChainLink id={id}>'{actionChain}'</ActionChainLink>
       </span>
     );
-  }
-  else {
+  } else {
     return (
       <span>
         {t("Playbook execution has been")}&nbsp;

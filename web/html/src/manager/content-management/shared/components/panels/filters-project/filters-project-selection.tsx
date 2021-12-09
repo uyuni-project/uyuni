@@ -22,7 +22,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   const [onGoingSelectedFilters, setOnGoingSelectedFilters] = useState(props.initialSelectedFiltersIds);
 
   useEffect(() => {
-    onActionAllFilters({}, "get").then(apiAllFilters => setAllFilters(apiAllFilters));
+    onActionAllFilters({}, "get").then((apiAllFilters) => setAllFilters(apiAllFilters));
   }, []);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
     <React.Fragment>
       {allFilters &&
         allFilters.length > 0 &&
-        allFilters.map(filter => (
+        allFilters.map((filter) => (
           <div key={filter.id} className="checkbox">
             <input
               type="checkbox"
@@ -49,7 +49,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
               id={"child_" + filter.id}
               name="filterSelection"
               checked={onGoingSelectedFilters.includes(filter.id)}
-              onChange={event =>
+              onChange={(event) =>
                 setOnGoingSelectedFilters(_xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)]))
               }
             />
