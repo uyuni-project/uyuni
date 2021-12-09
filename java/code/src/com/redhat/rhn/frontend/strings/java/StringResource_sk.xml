@@ -2616,7 +2616,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="action.completelink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systém&lt;/a&gt;&lt;/strong&gt; úspešne dokončil túto akciu.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">
@@ -2626,7 +2626,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="action.completelink.plural" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systémov&lt;/a&gt;&lt;/strong&gt; úspešne dokončilo túto akciu.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
           <context context-type="paramnotes">
@@ -2636,7 +2636,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="action.name" xml:space="preserve">
         <source>Patch Update: {0} - {1}</source>
-        <target/>
+        <target>Aktualizácia opráv: {0} - {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
@@ -2644,7 +2644,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errata.swstack" xml:space="preserve">
         <source>Patch Update: Combined update for the software update stack ({0} patches)</source>
-        <target/>
+        <target>Aktualizácia opráv: Kombinovaná aktualizácia zásobníka aktualizácií softvéru ({0} opráv)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: combined software stack update (4 errata)</context>
@@ -2652,7 +2652,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errata.schedule" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; aktualizácia opráv bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2660,7 +2660,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errata.schedule.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; aktualizácia opráv bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2668,7 +2668,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errataconfirm.schedule" xml:space="preserve">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
-        <target/>
+        <target>Oprava &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; bola &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;naplánovaná&lt;/a&gt; pre &lt;strong&gt;{1}&lt;/strong&gt; systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
@@ -2676,7 +2676,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural" xml:space="preserve">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
-        <target/>
+        <target>Oprava &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; bola &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;naplánovaná&lt;/a&gt; pre &lt;strong&gt;{1}&lt;/strong&gt; systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
