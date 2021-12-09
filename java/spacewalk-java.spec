@@ -618,6 +618,8 @@ rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
+ln -s -f %{_javadir}/ongres-scram/client.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_client.jar
+ln -s -f %{_javadir}/ongres-scram/common.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_common.jar
 
 # install apidoc sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
@@ -901,5 +903,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/ongres-scram_client.jar
 %{jardir}/ongres-scram_common.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
-
+%{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
+%
 %changelog
