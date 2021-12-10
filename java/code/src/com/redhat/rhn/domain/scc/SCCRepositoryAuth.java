@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -195,6 +195,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
         return new EqualsBuilder()
             .append(getCredentials(), otherSCCRepository.getCredentials())
             .append(getRepo(), otherSCCRepository.getRepo())
+            .append(getUrl(), otherSCCRepository.getUrl())
             .isEquals();
     }
 

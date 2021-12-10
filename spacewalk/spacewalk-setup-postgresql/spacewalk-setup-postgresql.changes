@@ -1,3 +1,6 @@
+- require postgresql14 on SLE15 SP4
+- cleanup unused dependencies
+
 -------------------------------------------------------------------
 Mon Aug 09 10:40:48 CEST 2021 - jgonzalez@suse.com
 

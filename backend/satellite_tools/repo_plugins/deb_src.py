@@ -28,6 +28,7 @@ from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
+from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import repo
 
@@ -90,6 +91,7 @@ class DebRepo:
         proxy_user="",
         proxy_pass="",
         gpg_verify=True,
+        channel_label=None,
     ):
         self.url = url
         parts = url.rsplit('/dists/', 1)
@@ -308,7 +310,7 @@ class ContentSource:
 
     def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
                  org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
-                 client_cert_file=None, client_key_file=None):
+                 client_cert_file=None, client_key_file=None, channel_arch=""):
         # pylint: disable=W0613
         self.url = url
         self.name = name
@@ -335,7 +337,8 @@ class ContentSource:
             root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
             self.repo = DebRepo(url, root,
                                 os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
-                                self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
+                                self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure),
+                                channel_label=channel_label)
             self.repo.verify()
 
             self.num_packages = 0

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -730,6 +730,7 @@ public class StatesAPI {
                                                 Object::toString,
                                                 Object::toString,
                                                 e -> "Error during state.show_highstate",
+                                                Object::toString,
                                                 Object::toString
                                         ),
                                         YamlHelper.INSTANCE::dump

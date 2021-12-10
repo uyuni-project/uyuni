@@ -33,7 +33,7 @@ logger.setLevel(logging.INFO)
 
 # create RotatingFileHandler handler and set level to INFO
 ch = logging.handlers.RotatingFileHandler("/var/log/tftpsync/tftpsync.log",
-                                          mode='a', maxBytes=1048576, backupCount=3)
+                                          mode='a', maxBytes=1048576, backupCount=10)
 ch.setLevel(logging.INFO)
 
 # create formatter
@@ -122,7 +122,7 @@ def application(environ, start_response):
             # remove tmp file if exists
             if tfname and os.path.exists(tfname):
                 os.unlink(tfname)
-            logger.error("Writing file failed: %s" % e)
+            logger.error("Writing file failed: %s", e, exc_info=True)
             content = "Writing file failed"
 
     # remove tmp file if exists

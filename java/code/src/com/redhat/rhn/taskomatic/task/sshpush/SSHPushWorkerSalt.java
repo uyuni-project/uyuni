@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -160,6 +160,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                             Object::toString,
                             Object::toString,
                             Object::toString,
+                            Object::toString,
                             Object::toString
                     ));
                     saltSSHService.cleanPendingActionChainAsync(minion);
@@ -292,6 +293,10 @@ public class SSHPushWorkerSalt implements QueueWorker {
                             e ->  {
                                 log.error(e);
                                 return "Salt error: " + e.getMessage();
+                            },
+                            e -> {
+                                log.error(e);
+                                return "Salt SSH error: " + e.getRetcode() + " " + e.getMessage();
                             }
                     )).orElse("Unknown error");
 

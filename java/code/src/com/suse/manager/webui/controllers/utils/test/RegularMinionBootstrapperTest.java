@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,9 +16,13 @@
 package com.suse.manager.webui.controllers.utils.test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -75,7 +79,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
-            Map<String, Object> pillarData = createPillarData(Optional.empty());
+            Map<String, Object> pillarData = createPillarData(Optional.empty(), Optional.empty());
 
             // return failure when calling low-level bootstrap
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
@@ -109,6 +113,16 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         super.testCompatibleActivationKeysBase(key);
     }
 
+    public void testCompatibleActivationKeysAndReactivation() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server testServer = ServerFactoryTest.createTestServer(user);
+        ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey(user, "");
+        ActivationKey reactkey = ActivationKeyTest.createTestActivationKey(user);
+
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        super.testCompatibleActivationKeysBase(key, reactkey);
+    }
+
     @Override
     protected List<String> bootstrapMods() {
         return Arrays.asList("certs", "bootstrap");
@@ -120,8 +134,15 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     }
 
     @Override
-    protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
+    protected Map<String, Object> createPillarData(Optional<ActivationKey> key, Optional<ActivationKey> reactKey) {
         Map<String, Object> pillarData = new HashMap<>();
+        key.ifPresent(k -> {
+            ActivationKeyManager.getInstance().findAll(user)
+            .stream()
+            .filter(ak -> k.getKey().equals(ak.getKey()))
+            .findFirst()
+            .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
+        });
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("contact_method", key
@@ -131,6 +152,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         pillarData.put("minion_pub", "pubKey");
         pillarData.put("minion_pem", "privKey");
         pillarData.put("mgr_sudo_user", "root");
+        reactKey.ifPresent(k -> pillarData.put("management_key", k.getKey()));
         return pillarData;
     }
 

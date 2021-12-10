@@ -29,7 +29,7 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.1
+Version:        4.3.3
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -57,6 +57,7 @@ Requires:       rhn-client-tools > 2.8.4
 Requires:       rhnlib
 %endif
 Requires:       libxslt
+Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
 %if 0%{?pylint_check}
 BuildRequires:  python3-rhn-client-tools

@@ -1,5 +1,11 @@
-- Add connection details for postgresql salt pillar
-- replaced pidof with pgrep and removed sysvinit-tools dependency
+- check DB version on SUSE 15.4
+
+-------------------------------------------------------------------
+Fri Nov 05 14:13:23 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add connection details for postgresql salt pillar
+  * replaced pidof with pgrep and removed sysvinit-tools dependency
 
 -------------------------------------------------------------------
 Thu Oct 28 12:16:53 CEST 2021 - jgonzalez@suse.com

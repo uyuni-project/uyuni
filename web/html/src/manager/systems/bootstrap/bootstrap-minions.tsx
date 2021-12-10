@@ -28,6 +28,7 @@ type State = {
   privKey: string;
   privKeyPwd: string;
   activationKey: string;
+  reactivationKey: string;
   ignoreHostKeys: boolean;
   manageWithSSH: boolean;
   messages: any[];
@@ -53,6 +54,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       privKey: "",
       privKeyPwd: "",
       activationKey: "",
+      reactivationKey: "",
       ignoreHostKeys: true,
       manageWithSSH: false,
       messages: [],
@@ -76,6 +78,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       "ignoreHostKeysChanged",
       "manageWithSSHChanged",
       "activationKeyChanged",
+      "reactivationKeyChanged",
       "clearFields",
       "proxyChanged",
     ].forEach((method) => (this[method] = this[method].bind(this)));
@@ -153,6 +156,12 @@ class BootstrapMinions extends React.Component<Props, State> {
     });
   }
 
+  reactivationKeyChanged(event) {
+    this.setState({
+      reactivationKey: event.target.value,
+    });
+  }
+
   proxyChanged(event) {
     var proxyId = event.target.value;
     var proxy = this.props.proxies.find((p) => DEPRECATED_unsafeEquals(p.id, proxyId));
@@ -170,6 +179,8 @@ class BootstrapMinions extends React.Component<Props, State> {
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
     formData["user"] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
     formData["activationKeys"] = this.state.activationKey === "" ? [] : [this.state.activationKey];
+    formData["reactivationKey"] =
+      this.state.reactivationKey.trim() === "" ? undefined : this.state.reactivationKey.trim();
     formData["ignoreHostKeys"] = this.state.ignoreHostKeys;
 
     const authMethod = this.state.authMethod;
@@ -287,7 +298,7 @@ class BootstrapMinions extends React.Component<Props, State> {
     const authenticationData =
       this.state.authMethod === "password" ? (
         <div className="form-group">
-          <label className="col-md-3 control-label">Password:</label>
+          <label className="col-md-3 control-label">{t("Password")}:</label>
           <div className="col-md-6">
             <input
               name="password"
@@ -342,7 +353,7 @@ class BootstrapMinions extends React.Component<Props, State> {
         {messages}
         <div className="form-horizontal">
           <div className="form-group">
-            <label className="col-md-3 control-label">Host:</label>
+            <label className="col-md-3 control-label">{t("Host")}:</label>
             <div className="col-md-6">
               <input
                 name="hostname"
@@ -355,7 +366,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             </div>
           </div>
           <div className="form-group">
-            <label className="col-md-3 control-label">SSH Port:</label>
+            <label className="col-md-3 control-label">{t("SSH Port")}:</label>
             <div className="col-md-6">
               <input
                 name="port"
@@ -372,7 +383,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             </div>
           </div>
           <div className="form-group">
-            <label className="col-md-3 control-label">User:</label>
+            <label className="col-md-3 control-label">{t("User")}:</label>
             <div className="col-md-6">
               <input
                 name="user"
@@ -394,7 +405,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             </div>
           </div>
           <div className="form-group">
-            <label className="col-md-3 control-label">Authentication Method:</label>
+            <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
 
             <div className="col-md-6">
               <div className="radio col-md-3">
@@ -425,7 +436,7 @@ class BootstrapMinions extends React.Component<Props, State> {
           </div>
           {authenticationData}
           <div className="form-group">
-            <label className="col-md-3 control-label">Activation Key:</label>
+            <label className="col-md-3 control-label">{t("Activation Key")}:</label>
             <div className="col-md-6">
               <select
                 value={this.state.activationKey}
@@ -444,6 +455,19 @@ class BootstrapMinions extends React.Component<Props, State> {
                     </option>
                   ))}
               </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Reactivation Key")}:</label>
+            <div className="col-md-6">
+              <input
+                name="reactivationKey"
+                className="form-control"
+                type="text"
+                placeholder={t("Leave empty when no reactivation is wanted")}
+                value={this.state.reactivationKey}
+                onChange={this.reactivationKeyChanged}
+              />
             </div>
           </div>
           <div className="form-group">
@@ -487,7 +511,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                     checked={this.state.ignoreHostKeys}
                     onChange={this.ignoreHostKeysChanged}
                   />
-                  <span>Disable SSH strict host key checking during bootstrap process</span>
+                  <span>{t("Disable SSH strict host key checking during bootstrap process")}</span>
                 </label>
               </div>
             </div>
@@ -503,7 +527,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                     checked={this.state.manageWithSSH}
                     onChange={this.manageWithSSHChanged}
                   />
-                  <span>Manage system completely via SSH (will not install an agent)</span>
+                  <span>{t("Manage system completely via SSH (will not install an agent)")}</span>
                 </label>
               </div>
             </div>
@@ -519,7 +543,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   componentDidMount() {
     window.addEventListener("beforeunload", (e) => {
       if (this.state.loading) {
-        var confirmationMessage = "Are you sure you want to close this page while bootstrapping is in progress ?";
+        var confirmationMessage = t("Are you sure you want to close this page while bootstrapping is in progress ?");
         (e || window.event).returnValue = confirmationMessage;
         return confirmationMessage;
       }

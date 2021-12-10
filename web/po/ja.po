@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-22 11:13+0200\n"
-"PO-Revision-Date: 2021-10-14 08:12+0000\n"
+"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"PO-Revision-Date: 2021-11-10 09:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2160,15 +2160,13 @@ msgid "Advisory Keywords"
 msgstr "アドバイザリキーワード"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
-#, fuzzy
 msgid "Package Provides Name"
-msgstr "パッケージ名"
+msgstr "名前を指定するパッケージ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#, fuzzy
 msgid "Provides Name"
-msgstr "モジュール名"
+msgstr "名前を指定する"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
@@ -2256,14 +2254,12 @@ msgid "Content Lifecycle Projects"
 msgstr "コンテンツライフサイクルプロジェクト"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
-#, fuzzy
 msgid "Last Build"
-msgstr "ビルド"
+msgstr "前回のビルド"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
-#, fuzzy
 msgid "never"
-msgstr "重大度"
+msgstr "なし"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
@@ -2375,9 +2371,8 @@ msgid "contains package with epoch/version/release greater than"
 msgstr "指定したエポック／バージョン／リリースよりも新しいパッケージ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
-#, fuzzy
 msgid "contains package which provides name equal"
-msgstr "一致するパッケージ名"
+msgstr "指定した名前が等しいパッケージ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "equal"
@@ -2396,14 +2391,12 @@ msgid "matches regular expression"
 msgstr "正規表現にマッチするもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "provides name"
-msgstr "サービス名"
+msgstr "名前が指定されているもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "provides name equal"
-msgstr "バージョン一致"
+msgstr "指定した名前が等しいもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "NEVRA"
@@ -2426,9 +2419,8 @@ msgid "Contains Package Name"
 msgstr "パッケージ名を含むもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
-#, fuzzy
 msgid "Contains Package Provides Name"
-msgstr "パッケージ名を含むもの"
+msgstr "名前を指定したパッケージを含むもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Contains Package"
@@ -3451,24 +3443,32 @@ msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
 msgstr ""
+"ディスクの空き容量を検証できません。この問題が解決しない場合は、システム管理"
+"者に連絡してください。"
 
 #: ../html/src/manager/login/login.tsx:66
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
 msgstr ""
+"いくつかの重要なディレクトリがありません。システム管理者に連絡して、設定を確"
+"認してください。"
 
 #: ../html/src/manager/login/login.tsx:71
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
 msgstr ""
+"サーバの使用可能なディスク容量が不足しています。ディスク容量を追加するには、"
+"システム管理者に連絡してください。"
 
 #: ../html/src/manager/login/login.tsx:76
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
 msgstr ""
+"サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追加"
+"するには、システム管理者に連絡してください。"
 
 #: ../html/src/manager/login/login.tsx:94
 msgid "Signing in ..."
@@ -3817,19 +3817,16 @@ msgid "No Playbook found."
 msgstr "playbook が見つかりませんでした。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
-#, fuzzy
 msgid "Playbook File Name"
-msgstr "playbook ディレクトリ"
+msgstr "playbookファイル名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:138
-#, fuzzy
 msgid "Full Path"
-msgstr "パス"
+msgstr "フルパス"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:142
-#, fuzzy
 msgid "Custom Inventory"
-msgstr "インベントリパス"
+msgstr "カスタムインベントリ"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:156
 msgid "Inventory file empty."
@@ -5010,18 +5007,16 @@ msgid "Guest is not running"
 msgstr "ゲストは動作していません"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
-#, fuzzy
 msgid "Unknown guest"
-msgstr "不明"
+msgstr "不明ゲスト"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:26
 msgid "Retry"
-msgstr ""
+msgstr "再試行"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:32
-#, fuzzy
 msgid "Connecting..."
-msgstr "接続性"
+msgstr "接続中..."
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
@@ -5063,17 +5058,16 @@ msgid "Virtual CPU Count"
 msgstr "仮想 CPU 数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:192
-#, fuzzy
 msgid "Enable UEFI"
-msgstr "IPv6 の有効化"
+msgstr "UEFIの有効化"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:197
 msgid "UEFI firmware path"
-msgstr ""
+msgstr "UEFIファームウェアパス"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:204
 msgid "NVRAM template path"
-msgstr ""
+msgstr "NVRAMテンプレートパス"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:216
 msgid "Auto-installation Profile"
@@ -5086,14 +5080,16 @@ msgstr "カーネルオプション"
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:245
 msgid "Cluster support is disabled since VirtualDomain resource agent "
 msgstr ""
+"VirtualDomainリソースエージェント以降、クラスタのサポートは無効になっていま"
+"す "
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:253
 msgid "Define as a cluster resource"
-msgstr ""
+msgstr "クラスタリソースとして定義"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Path to the cluster shared folder for VM definitions"
-msgstr ""
+msgstr "VM定義用のクラスタ共有フォルダへのパス"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:291
 msgid "Graphics"
@@ -5165,16 +5161,15 @@ msgstr "グラフィカルコンソール"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:40
 msgid "Migrate"
-msgstr ""
+msgstr "移行"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:58
 msgid "Select where to migrate the virtual guest to."
-msgstr ""
+msgstr "仮想ゲストの移行先を選択します。"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:61
-#, fuzzy
 msgid "Target Host"
-msgstr "ターゲットホスト名"
+msgstr "ターゲットホスト"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"

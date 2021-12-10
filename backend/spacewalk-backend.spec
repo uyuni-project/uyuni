@@ -49,7 +49,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.3.2
+Version:        4.3.6
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -241,7 +241,7 @@ Requires:       (python3-dateutil or python3-python-dateutil)
 %if 0%{?suse_version}
 Requires(pre):  libzypp(plugin:system) >= 0
 Requires:       apache2-prefork
-Requires:       zypp-plugin-python
+Requires:       python3-zypp-plugin
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
