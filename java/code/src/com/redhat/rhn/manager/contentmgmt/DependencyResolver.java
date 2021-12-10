@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import static com.suse.utils.Opt.stream;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -36,9 +39,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.suse.utils.Opt.stream;
-import static java.util.stream.Collectors.toList;
-
 /**
  * Resolves dependencies in a content management project
  *
@@ -51,7 +51,7 @@ import static java.util.stream.Collectors.toList;
  * current module selection. In return, all module filters are translated into a collection of package filters by the
  * following rules:
  *
- * 1. All modular packages are denied (deny by existence of 'modularitylabel' rpm header)
+ * 1. All modular packages are denied (deny by nevra)
  * 2. For each package publicly provided by a module, all the packages from other sources with the same package name
  *    are denied. As a result, a specific package is only provided exclusively by the module to prevent any conflicts
  *    (deny by name).
@@ -136,10 +136,10 @@ public class DependencyResolver {
 
         List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).collect(Collectors.toList());
 
-        List<ContentFilter> outFilters = new ArrayList<>();
-
         // 1. Modular packages to be denied
-        outFilters.add(initFilter(FilterCriteria.Matcher.EXISTS, ContentFilter.Rule.DENY, "module_stream", null));
+        Stream<PackageFilter> pkgDenyFilters;
+        pkgDenyFilters = modulemdApi.getAllPackages(sources).stream()
+                .map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.DENY));
 
         // 2. Non-modular packages to be denied by name
         Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream()
@@ -147,16 +147,15 @@ public class DependencyResolver {
 
         // 3. Modular packages to be allowed
         Stream<PackageFilter> pkgAllowFilters = modPkgList.getRpmPackages().stream()
-                .map(DependencyResolver::initFilterFromPackageNevra);
+                .map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.ALLOW));
 
         // Concatenate filter streams into the list
-        outFilters.addAll(Stream.of(providedRpmApiFilters, pkgAllowFilters).flatMap(s -> s).collect(toList()));
-
-        return new DependencyResolutionResult(outFilters, resolvedModules);
+        return new DependencyResolutionResult(Stream.of(pkgDenyFilters, providedRpmApiFilters, pkgAllowFilters)
+                .flatMap(s -> s).collect(toList()), resolvedModules);
     }
 
-    private static PackageFilter initFilterFromPackageNevra(String nevra) {
-        return initFilter(FilterCriteria.Matcher.EQUALS, ContentFilter.Rule.ALLOW, "nevra", nevra);
+    private static PackageFilter initFilterFromPackageNevra(String nevra, ContentFilter.Rule rule) {
+        return initFilter(FilterCriteria.Matcher.EQUALS, rule, "nevra", nevra);
     }
 
     private static PackageFilter initFilterFromPackageName(String name) {
