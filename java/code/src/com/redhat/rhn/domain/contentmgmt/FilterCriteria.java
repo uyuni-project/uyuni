@@ -27,7 +27,6 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EXISTS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
@@ -90,7 +89,6 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"));
         validCombinations.add(Triple.of(MODULE, EQUALS, "module_stream"));
-        validCombinations.add(Triple.of(PACKAGE, EXISTS, "module_stream"));
         validCombinations.add(Triple.of(PACKAGE, PROVIDES_NAME, "provides_name"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name"));
     }
@@ -111,7 +109,6 @@ public class FilterCriteria {
         GREATER("greater"),
         GREATEREQ("greatereq"),
         MATCHES("matches"),
-        EXISTS("exists"),
         PROVIDES_NAME("provides_name"),
         CONTAINS_PROVIDES_NAME("contains_provides_name");
 
