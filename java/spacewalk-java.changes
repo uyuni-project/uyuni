@@ -1,3 +1,5 @@
+- Use an 'allow' filter for the kernel packages with live patching
+  filter templates (bsc#1191460)
 - require postgresql14 on SLE15 SP4
 
 -------------------------------------------------------------------
