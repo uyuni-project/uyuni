@@ -908,5 +908,5 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
 %{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
-%
+
 %changelog
