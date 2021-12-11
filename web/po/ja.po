@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"POT-Creation-Date: 2021-12-11 11:51+0100\n"
 "PO-Revision-Date: 2021-11-10 09:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -405,7 +405,8 @@ msgstr "必要"
 #: ../html/src/components/input/Password.stories.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:181
 #: ../html/src/manager/login/login.tsx:172
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:409
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:301
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:37
 msgid "Password"
 msgstr "パスワード"
@@ -1801,6 +1802,8 @@ msgstr "動作を "
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "scheduled"
 msgstr "スケジュールしました"
@@ -2832,6 +2835,7 @@ msgstr "パス"
 #: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:402
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Activation Key"
 msgstr "アクティベーションキー"
 
@@ -2895,7 +2899,7 @@ msgstr "取り込み"
 #: ../html/src/manager/images/image-import.tsx:322
 #: ../html/src/manager/images/image-profile-edit.tsx:489
 #: ../html/src/manager/images/image-store-edit.tsx:203
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:280
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:291
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:209
 msgid "Clear fields"
 msgstr "項目の消去"
@@ -4531,7 +4535,7 @@ msgstr ""
 "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
 "をサブスクライブします。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:209
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:220
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4539,40 +4543,40 @@ msgstr ""
 "リクエストが中断されたか、もしくはサーバから不正な応答を受け取りました。お使"
 "いの minion が正しくブートストラップされているかどうかをご確認ください。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:238
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:249
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "ホストをブートストラップしました。システムは"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:251
 msgid "systems"
 msgstr "システム"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:253
 msgid "shortly"
 msgstr "しばらくすると現われるはずです"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:260
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:271
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "システムをブートストラップしています: 応答を待っています.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:264
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:275
 msgid "Loading SSH Private Key.."
 msgstr "SSH 機密鍵を読み込んでいます.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:272
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:283
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:297
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
 msgid "e.g., ••••••••••••"
 msgstr "例: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:306
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:317
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
 msgid "SSH Private Key"
 msgstr "SSH 機密鍵"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:312
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:323
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4580,19 +4584,19 @@ msgstr ""
 "ファイルはサーバ内の一時ファイルとして保存されています。ブートストラップ処理"
 "が完了すると削除されます"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:318
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 機密鍵のパスフレーズ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "Leave empty for no passphrase"
 msgstr "パスフレーズが無い場合は何も入力しないでください"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:346
 msgid "Bootstrap Minions"
 msgstr "minion のブートストラップ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4600,15 +4604,30 @@ msgstr ""
 "SSH の資格情報のみを提供することで、管理対象のシステムを追加することができま"
 "す。 {0} はシステムを遠隔から準備し、登録処理を実施します。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:351
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
+#, fuzzy
+msgid "Host"
+msgstr "ホスト"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "e.g., host.domain.com"
 msgstr "例: host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:370
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#, fuzzy
+msgid "SSH Port"
+msgstr "ポート"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:381
 msgid "Port range: 1 - 65535"
 msgstr "ポート範囲: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:389
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:386
+#, fuzzy
+msgid "User"
+msgstr "ユーザー"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4620,22 +4639,50 @@ msgstr ""
 "鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH 鍵を配置したあ"
 "と、ブートストラップ処理の際に設定されます。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:437
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:454
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+msgid "Authentication Method"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:448
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
+#: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "なし"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#, fuzzy
+msgid "Reactivation Key"
+msgstr "アクティベーションキー"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
+msgid "Leave empty when no reactivation is wanted"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:473
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:497
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 "プロキシのホスト名が完全修飾型ではありません。チャンネルへのアクセス時に問題"
 "を引き起こす可能性があります。"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+msgid "Disable SSH strict host key checking during bootstrap process"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:530
+msgid "Manage system completely via SSH (will not install an agent)"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
+#, fuzzy
+msgid ""
+"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
 
 #: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4659,6 +4706,29 @@ msgstr "クリーンアップ処理中にエラーが発生しました"
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
 msgid "Confirm Deletion"
 msgstr "削除の確認"
+
+#: ../html/src/manager/systems/proxy.tsx:42
+msgid "Please select a list of minions (not proxies or traditional clients)."
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:67
+msgid "Change of proxy server has been "
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:101
+#: ../html/src/manager/systems/proxy.tsx:117
+#, fuzzy
+msgid "Change Proxy"
+msgstr "変更"
+
+#: ../html/src/manager/systems/proxy.tsx:117
+msgid "Connect minion(s) to another proxy server."
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:120
+#, fuzzy
+msgid "New Proxy"
+msgstr "プロキシ"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21
