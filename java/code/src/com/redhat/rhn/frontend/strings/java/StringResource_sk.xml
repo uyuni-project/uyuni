@@ -2684,21 +2684,21 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errataconfirm.nosystems" xml:space="preserve">
         <source>You must select at least one system.</source>
-        <target/>
+        <target>Musíte vybrať aspoň jeden systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="run as" xml:space="preserve">
         <source>Run as:</source>
-        <target/>
+        <target>Spustiť ako:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed Systems" xml:space="preserve">
         <source>Completed Systems</source>
-        <target/>
+        <target>Dokončené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
