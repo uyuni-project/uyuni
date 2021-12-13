@@ -180,7 +180,11 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  if host == 'server'
+    salt = 'salt'
+  end
+  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -189,7 +193,9 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
+  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -1674,6 +1680,9 @@ end
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
   salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  if host == 'server'
+    salt_call = 'salt-call'
+  end
   source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
@@ -1708,22 +1717,30 @@ And(/^I copy vCenter configuration file on server$/) do
 end
 
 When(/^I export "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  node = get_target("server")
-  node.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+  $server.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
-  node = get_target("server")
-  node.run("inter-server-sync import --importDir=#{path}")
+  $server.run("inter-server-sync import --importDir=#{path}")
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
 end
 
-Then(/^Export folder "(.*?)" doesn't exists on server$/) do |folder|
-     raise "Folder exists" if folder_exists?($server, folder)
+Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
+  raise "Folder exists" if folder_exists?($server, folder)
 end
-When(/^I ensure folder "(.*?)" doesn't exists$/) do |folder|
-    folder_delete($server, folder) if folder_exists?($server, folder)
+
+When(/^I ensure folder "(.*?)" doesn't exist$/) do |folder|
+  folder_delete($server, folder) if folder_exists?($server, folder)
+end
+
+When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  # HACK: initrd is not regenerated after patching SLES 11 kernel
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('mkinitrd')
+  end
 end

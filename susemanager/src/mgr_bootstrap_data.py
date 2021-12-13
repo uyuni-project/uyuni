@@ -179,7 +179,8 @@ PKGLIST12 = [
 ONLYSLE12 = [
     "libzmq3",
     "gio-branding-SLE",
-    "wallpaper-branding-SLE"
+    "wallpaper-branding-SLE",
+    "venv-salt-minion",
 ]
 
 PKGLIST12_X86_ARM = [
@@ -352,7 +353,8 @@ RES7 = [
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
-    "python2-hwdata"
+    "python2-hwdata",
+    "venv-salt-minion",
 ]
 
 RES7_X86 = [
@@ -382,7 +384,8 @@ RES8 = [
     "python3-pysocks",
     "python3-pytz",
     "python3-setuptools",
-    "python3-distro"
+    "python3-distro",
+    "venv-salt-minion",
 ]
 
 RES8_X86 = [
@@ -451,6 +454,7 @@ PKGLIST15_SALT = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "venv-salt-minion",
 ]
 
 PKGLIST15SP0SP1_SALT = [
@@ -605,6 +609,7 @@ PKGLISTUBUNTU1804 = [
     "python3-distro",
     "python3-gnupg",
     "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTUBUNTU2004 = [
@@ -624,6 +629,7 @@ PKGLISTUBUNTU2004 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTDEBIAN9 = [
@@ -685,6 +691,7 @@ PKGLISTDEBIAN9 = [
     "dmidecode",
     "gnupg",
     "gnupg1",
+    "venv-salt-minion",
 ]
 
 
@@ -744,6 +751,33 @@ PKGLISTDEBIAN10 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "venv-salt-minion",
+]
+
+PKGLISTDEBIAN11 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.4-2",
+    "libldap-common",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    # end of gnupg dependencies
+    "venv-salt-minion"
 ]
 
 PKGLISTASTRALINUXOREL = [
@@ -1462,6 +1496,11 @@ DATA = {
      'debian10-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-10-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN10,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'debian11-amd64-uyuni' : {
+         'BASECHANNEL' : 'debian-11-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN11,
+         'DEST' : '/srv/www/htdocs/pub/repositories/debian/11/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {

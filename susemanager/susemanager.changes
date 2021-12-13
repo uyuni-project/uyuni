@@ -1,4 +1,12 @@
 - fix pg-migrate to check version of postgresql??-server (bsc#1192368)
+- Enable bootstrapping for Debian 11
+
+-------------------------------------------------------------------
+Fri Dec 03 12:30:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Add Salt Bundle (venv-salt-minion) to bootstrap repositories
+    definitions for all relevant system types
 
 -------------------------------------------------------------------
 Tue Nov 16 10:09:13 CET 2021 - jgonzalez@suse.com

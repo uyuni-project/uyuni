@@ -1,3 +1,5 @@
+- do not build python 2 package for SLE15
+
 -------------------------------------------------------------------
 Fri Nov 05 13:33:47 CET 2021 - jgonzalez@suse.com
 

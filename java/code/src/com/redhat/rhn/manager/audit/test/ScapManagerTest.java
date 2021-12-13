@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -80,6 +80,44 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
         assertEquals("Default", result.getProfile().getIdentifier());
         assertEquals("Default vanilla kernel hardening", result.getProfile().getTitle());
+    }
+
+    public void testXccdfEvalTransformXccdfWithTailoring() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ScapAction action = ActionManager.scheduleXccdfEval(user,
+                minion, "/usr/share/xml/scap/ssg/content/ssg-sle15-ds-1.2.xml",
+                "--profile suse_test --tailoring-file /root/tailoring.xml", new Date());
+
+        File resumeXsl = new File(TestUtils.findTestData(
+                "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/xccdf-resume.xslt.in").getPath());
+        InputStream resultsIn = TestUtils.findTestData(
+                "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/results.xml")
+                .openStream();
+        XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        assertNotNull(result);
+
+        assertEquals("xccdf_org.ssgproject.content_profile_cis_suse_test", result.getProfile().getIdentifier());
+        assertEquals("Tailored profile", result.getProfile().getTitle());
+        assertRuleResults(result, "pass",
+                Arrays.asList(
+                    "xccdf_org.ssgproject.content_rule_rpm_verify_ownership",
+                    "xccdf_org.ssgproject.content_rule_ensure_suse_gpgkey_installed",
+                    "CCE-85796-1"
+                ));
     }
 
     public void testXccdfEvalResume() throws Exception {
@@ -297,7 +335,9 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .map(ident -> ident.getIdentifier())
                 .collect(Collectors.toSet());
         assertEquals(ruleIds.size(), resultIds.size());
-        assertTrue(resultIds.containsAll(ruleIds));
+        assertTrue("Expected but missing rules: " + resultIds.stream()
+                     .filter(r -> !ruleIds.contains(r)).collect(Collectors.toList()),
+            resultIds.containsAll(ruleIds));
     }
 
     private void assertRuleResultsCount(XccdfTestResult result, String ruleType, int count) {

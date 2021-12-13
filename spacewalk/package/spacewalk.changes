@@ -1,3 +1,5 @@
+- require postgresql14 on SLE15 SP4
+
 -------------------------------------------------------------------
 Fri Nov 05 13:35:34 CET 2021 - jgonzalez@suse.com
 

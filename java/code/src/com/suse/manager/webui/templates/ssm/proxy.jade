@@ -1,0 +1,18 @@
+.spacewalk-toolbar-h1
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{' System Set Manager Overview '}
+    a(href="/docs/#{docsLocale}/reference/systems/ssm-overview.html", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{tabs}
+#proxy
+
+script(type="text/javascript").
+    window.csrfToken = "#{csrf_token}";
+    window.minions = !{minions};
+    window.proxies = !{proxies};
+
+script(type='text/javascript').
+    spaImportReactPage('systems/proxy')
+        .then(function(module) { module.renderer('proxy') });

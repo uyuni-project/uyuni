@@ -114,7 +114,7 @@ Then(/^the time field should be set to "([^"]*)"$/) do |expected_time|
   m_compat = find('input#date_minute', visible: false)
   ampm_compat = find('input#date_am_pm', visible: false)
 
-  raise 'invalid hidden hour' if h_compat.value.to_i != h % 12
-  raise 'invalid hidden minute' if m_compat.value.to_i != m
-  raise 'invalid hidden AM/PM' if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
+  raise StandardError, 'invalid hidden hour' if h_compat.value.to_i != h % 12
+  raise StandardError, 'invalid hidden minute' if m_compat.value.to_i != m
+  raise StandardError, 'invalid hidden AM/PM' if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
 end

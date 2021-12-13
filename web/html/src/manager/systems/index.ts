@@ -1,6 +1,7 @@
 export default {
   "systems/activation-key/activation-key-channels": () => import("./activation-key/activation-key-channels.renderer"),
   "systems/bootstrap/bootstrap-minions": () => import("./bootstrap/bootstrap-minions"),
+  "systems/proxy": () => import("./proxy.renderer"),
   "systems/ssm/ssm-subscribe-channels": () => import("./ssm/ssm-subscribe-channels"),
   "systems/subscribe-channels/subscribe-channels": () => import("./subscribe-channels/subscribe-channels.renderer"),
   "systems/virtualhostmanager/virtualhostmanager": () => import("./virtualhostmanager/virtualhostmanager"),

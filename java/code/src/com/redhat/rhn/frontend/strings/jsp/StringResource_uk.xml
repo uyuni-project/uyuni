@@ -22217,10 +22217,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.header" xml:space="preserve">
-        <source>System Activation Key</source>
+        <source>System Reactivation Key</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
         <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
@@ -26539,6 +26540,27 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
         <source>AppStreams</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve">
+          <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve">
+          <source>Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="sdc.details.connection.change" xml:space="preserve">
+        <source>Change</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Connection.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

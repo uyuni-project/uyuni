@@ -1,4 +1,15 @@
-- exchange zypp-plugin dependency to use the python3 version
+-------------------------------------------------------------------
+Tue Dec 07 09:54:28 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
+
+-------------------------------------------------------------------
+Fri Dec 03 12:21:02 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Reposync: replace architecture variables in mirror lists
+  * exchange zypp-plugin dependency to use the python3 version
 
 -------------------------------------------------------------------
 Tue Nov 16 10:03:10 CET 2021 - jgonzalez@suse.com
