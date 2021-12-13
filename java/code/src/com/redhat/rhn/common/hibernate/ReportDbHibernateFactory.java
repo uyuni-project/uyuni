@@ -55,10 +55,15 @@ import javax.persistence.FlushModeType;
  */
 public class ReportDbHibernateFactory {
 
-    private ReportDbConnectionManager connectionManager;
+    private final ReportDbConnectionManager connectionManager;
     private static final Logger LOG = Logger.getLogger(ReportDbHibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
 
+    /**
+     * Create a new hibernate factory for reporting with the specified {@link ReportDbConnectionManager}
+     *
+     * @param conMgr the configuration manager
+     */
     public ReportDbHibernateFactory(ReportDbConnectionManager conMgr) {
         connectionManager = conMgr;
     }
