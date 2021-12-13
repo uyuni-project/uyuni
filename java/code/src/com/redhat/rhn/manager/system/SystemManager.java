@@ -126,7 +126,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -736,14 +735,6 @@ public class SystemManager extends BaseManager {
                 token.setValid(false);
                 AccessTokenFactory.save(token);
             });
-
-            // cleanup server formulas
-            try {
-                FormulaFactory.deleteLegacyFormulas(minion);
-            }
-            catch (IOException e) {
-                log.error(String.format("Failed to cleanup formula files for minion %s: %s", minion.getMinionId() + e));
-            }
         });
 
 

@@ -48,24 +48,6 @@ def test_virtual(has_psycopg2):
         assert suma_minion.__virtual__() == has_psycopg2
 
 
-def test_formula_pillars():
-    '''
-    Test formula ordering
-    '''
-    minion_id = "suma-refhead-min-sles12sp4.mgr.suse.de"
-    pillar = {"group_ids": [9]}
-
-    # Load the group and system pillars
-    cursor = MagicMock()
-    cursor.fetchall.return_value = []
-    group_formulas, pillar = suma_minion.load_group_pillars(minion_id, cursor, pillar)
-    system_formulas, pillar = suma_minion.load_system_pillars(minion_id, cursor, pillar)
-
-    pillar = suma_minion.formula_pillars(system_formulas, group_formulas, pillar)
-    assert "formulas" in pillar
-    assert pillar["formulas"] == ['branch-network', 'locale', 'tftpd']
-
-
 def test_formula_pillars_db():
     '''
     Test getting the formulas from the database

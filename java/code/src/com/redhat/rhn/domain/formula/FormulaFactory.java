@@ -284,7 +284,8 @@ public class FormulaFactory {
                         return pillar;
                     }).setPillar(formData);
                 });
-                deleteServerFormulaData(server.getMinionId(), formula);
+                FileUtils.deleteFile(new File(getPillarDir() +
+                        server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
 
             // Remove the entry from the data file
@@ -362,29 +363,6 @@ public class FormulaFactory {
     }
 
     /**
-     * Legacy way to get the list of formulas for a minion. Should not be used by new code!
-     * @param minionId the minion id
-     * @return the list of formulas
-     * @deprecated in favor of the getFormulasByMinion()
-     */
-    @Deprecated
-    public static List<String> getLegacyFormulasByMinionId(String minionId) {
-        List<String> formulas = new LinkedList<>();
-        File serverDataFile = new File(getServerDataFile());
-        try {
-            Map<String, List<String>> serverFormulas = GSON.fromJson(
-                    new BufferedReader(new FileReader(serverDataFile)), Map.class);
-            if (serverFormulas != null) {
-                formulas.addAll(serverFormulas.getOrDefault(minionId,
-                        Collections.emptyList()));
-            }
-        }
-        catch (FileNotFoundException | UnsupportedOperationException e) {
-        }
-        return orderFormulas(formulas);
-    }
-
-    /**
      * Returns the formulas applied to a given server
      * @param minion the minion
      * @return the list of formulas
@@ -394,12 +372,6 @@ public class FormulaFactory {
                 .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
                 .collect(Collectors.toList()));
-
-        // Still try the legacy way since the formula data may not be converted yet
-        File serverDataFile = new File(getServerDataFile());
-        if (formulas.isEmpty() && serverDataFile.exists()) {
-            return getLegacyFormulasByMinionId(minion.getMinionId());
-        }
         return orderFormulas(formulas);
     }
 
@@ -465,47 +437,12 @@ public class FormulaFactory {
     /**
      * Returns the saved values of a given server for a given formula.
      * @param name the name of the formula
-     * @param minionId the minion id
-     * @return the saved values or an empty optional if no values were found
-     * @deprecated Use getFormulaValuesByNameAndMinion() instead
-     */
-    @Deprecated
-    public static Optional<Map<String, Object>> getLegacyFormulaValuesByNameAndMinionId(
-            String name, String minionId) {
-        try {
-            File dataFile = new File(getPillarDir() +
-                    minionId + "_" + name + "." + PILLAR_FILE_EXTENSION);
-            if (dataFile.exists()) {
-                return Optional.of((Map<String, Object>) GSON.fromJson(
-                        new BufferedReader(new FileReader(dataFile)), Map.class));
-            }
-            else {
-                return Optional.empty();
-            }
-        }
-        catch (FileNotFoundException | UnsupportedOperationException e) {
-            return Optional.empty();
-        }
-    }
-    /**
-     * Returns the saved values of a given server for a given formula.
-     * @param name the name of the formula
      * @param minion the minion
      * @return the saved values or an empty optional if no values were found
      */
     public static Optional<Map<String, Object>> getFormulaValuesByNameAndMinion(
             String name, MinionServer minion) {
-        return minion.getPillarByCategory(PREFIX + name)
-                .map(Pillar::getPillar)
-                .or(() -> {
-                    // Look for the legacy file in case the minion hasn't been converted yet
-                    File dataFile = new File(getPillarDir() +
-                            minion.getMinionId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
-                    if (dataFile.exists()) {
-                        return getLegacyFormulaValuesByNameAndMinionId(name, minion.getMinionId());
-                    }
-                    return Optional.empty();
-                });
+        return minion.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
     }
 
     /**
@@ -586,7 +523,8 @@ public class FormulaFactory {
                         return pillar;
                     }).setPillar(formData);
                 });
-                deleteGroupFormulaData(group.getId(), formula);
+                FileUtils.deleteFile(new File(getGroupPillarDir() +
+                        group.getId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
 
             // Remove the entry from the data file
@@ -770,54 +708,6 @@ public class FormulaFactory {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * Ensure all legacy formulas data for the minion are wiped.
-     *
-     * @param minion the minion to remove the formula data from
-     *
-     * @throws IOException if anything bad happens while removing the files.
-     */
-    public static void deleteLegacyFormulas(MinionServer minion) throws IOException {
-        FormulaFactory.getFormulasByMinion(minion).forEach(formula -> {
-            FormulaFactory.deleteServerFormulaData(minion.getMinionId(), formula);
-        });
-        removeEntryFromFormulaFile(minion.getMinionId(), getServerDataFile());
-    }
-
-    /**
-     * Deletes all saved values of a given server for a given formula
-     * @param minionId the minion id
-     * @param formulaName the name of the formula
-     * @throws IOException if an IOException occurs while saving the data
-     */
-    public static void deleteServerFormulaData(String minionId, String formulaName) {
-        try {
-            File file = new File(getPillarDir() +
-                    minionId + "_" + formulaName +
-                    "." + PILLAR_FILE_EXTENSION);
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-        catch (UnsupportedOperationException e) {
-            LOG.error("Error deleting formula data for " + formulaName +
-                    ": " + e.getMessage());
-        }
-    }
-
-    /**
-     * Deletes all saved values of a given group for a given formula
-     * @param groupId the id of the group
-     * @param formulaName the name of the formula
-     */
-    public static void deleteGroupFormulaData(Long groupId, String formulaName) {
-        File file = new File(getGroupPillarDir() +
-                groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-        if (file.exists()) {
-            file.delete();
         }
     }
 

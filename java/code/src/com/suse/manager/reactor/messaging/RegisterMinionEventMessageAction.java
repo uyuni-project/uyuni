@@ -23,11 +23,9 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -83,7 +81,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -364,8 +361,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             MinionPillarManager.INSTANCE.generatePillar(registeredMinion);
 
-            migrateMinionFormula(registeredMinion, Optional.of(oldMinionId));
-
             saltApi.deleteKey(oldMinionId);
             SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
                     oldMinionId + "' has been updated to '" + minionId + "'");
@@ -525,12 +520,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minion, org, grains);
                 applySaltboot(minion);
-                migrateMinionFormula(minion, originalMinionId);
                 return;
             }
 
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
-            migrateMinionFormula(minion, originalMinionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -541,42 +534,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
-    }
-
-    private void migrateMinionFormula(MinionServer minion, Optional<String> originalMinionId) {
-        // after everything is done, if minionId has changed, we want to put the formula data
-        // to the correct location on the FS
-        originalMinionId.ifPresent(oldId -> {
-            if (!oldId.equals(minion.getMinionId())) {
-                try {
-                    List<String> minionFormulas = FormulaFactory.getLegacyFormulasByMinionId(oldId);
-                    if (!minionFormulas.isEmpty() && minion.getPillars().stream()
-                            .noneMatch(pillar -> pillar.getCategory().startsWith(FormulaFactory.PREFIX))) {
-                        // There are formula data files to be converted to the new way
-                        FormulaFactory.saveServerFormulas(minion, minionFormulas);
-                        for (String minionFormula : minionFormulas) {
-                            Optional<Map<String, Object>> formulaValues =
-                                    FormulaFactory.getLegacyFormulaValuesByNameAndMinionId(minionFormula, oldId);
-                            if (formulaValues.isPresent()) {
-                                // handle via Optional.get because of exception handling
-                                FormulaFactory.saveServerFormulaData(formulaValues.get(), minion, minionFormula);
-                                FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
-                            }
-                        }
-                        for (String formula : minionFormulas) {
-                            FormulaFactory.deleteServerFormulaData(oldId, formula);
-                        }
-
-                        // Ensure old minion id is not in the legacy formulas file
-                        FormulaFactory.removeEntryFromFormulaFile(oldId, FormulaFactory.getServerDataFile());
-                    }
-                }
-                catch (IOException | ValidatorException e) {
-                    LOG.warn("Error when converting formulas from minionId " + oldId +
-                            "to minionId " + minion.getMinionId());
-                }
-            }
-        });
     }
 
     private Optional<Org> getProxyOrg(String master, boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
