@@ -2705,49 +2705,49 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="In Progress Systems" xml:space="preserve">
         <source>In Progress Systems</source>
-        <target/>
+        <target>Prebiehajúce systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed Systems" xml:space="preserve">
         <source>Failed Systems</source>
-        <target/>
+        <target>Neúspešné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package List" xml:space="preserve">
         <source>Package List</source>
-        <target/>
+        <target>Zoznam balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.actionrescheduled" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; successfully rescheduled.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; úspešne preplánované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystemsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cert_admin" xml:space="preserve">
         <source>Certificate Administrator</source>
-        <target/>
+        <target>Administrátor certifikátov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org_admin" xml:space="preserve">
         <source>Organization Administrator</source>
-        <target/>
+        <target>Administrátor organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satellite_admin" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrator</source>
-        <target/>
+        <target>Administrátor @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
