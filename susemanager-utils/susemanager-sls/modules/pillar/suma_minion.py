@@ -239,12 +239,8 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
     # Loading group formulas
     for formula_name in group_formulas:
         formula_metadata = load_formula_metadata(formula_name)
-        if formula_metadata.get("type", "") != "cluster-formula":
-            # a minion can be in multiple cluster groups, each group with its own cluster-formulas
-            # in such a case we want to merge all values from cluster-formulas
-            # the values of the formula will be under different keys, mgr_clusters:cluster1:.., mgr_clusters:cluster2:...
-            if formula_name in out_formulas:
-                continue # already processed
+        if formula_name in out_formulas:
+            continue # already processed
         out_formulas.append(formula_name)
         pillar = salt.utils.dictupdate.merge(pillar,
                        load_formula_pillar(system_formulas.get(formula_name, {}),
@@ -290,22 +286,8 @@ def load_formula_pillar(system_data, group_data, formula_name, formula_metadata 
         log.error('Error loading form.yml of formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return {}
 
-    # if group_data starts with mgr_clusters then merge and adjust without the mgr_clusters:<cluster>:settings prefix
-    cluster_name = None
-    cluster_pillar_key = None
-    if formula_metadata and formula_metadata.get("type", "") == "cluster-formula":
-        if "cluster_pillar_key" not in formula_metadata:
-            log.error("No 'cluster_pillar_key' in metadata of formula {}".format(formula_name))
-        else:
-            cluster_pillar_key = formula_metadata["cluster_pillar_key"]
-            group_data, cluster_name = _pillar_value_by_path(group_data, "mgr_clusters:*:{}".format(cluster_pillar_key))
-
     merged_data = merge_formula_data(layout, group_data, system_data)
     merged_data = adjust_empty_values(layout, merged_data)
-
-    # put back data under cluster pillar namespace
-    if cluster_name:
-        merged_data = {"mgr_clusters": {cluster_name: {cluster_pillar_key: merged_data}}}
 
     return merged_data
 
