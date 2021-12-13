@@ -18,7 +18,6 @@ from contextlib import contextmanager
 import os
 import logging
 import yaml
-import json
 import salt.utils.dictupdate
 import salt.utils.stringutils
 
@@ -37,7 +36,6 @@ MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metada
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
-FORMULA_ORDER_FILE = FORMULAS_DATA_PATH + '/formula_order.json'
 FORMULA_PREFIX = 'formula-'
 
 # OS images path:
@@ -47,15 +45,6 @@ IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 MANAGER_STATIC_PILLAR = [
     'gpgkeys'
 ]
-
-MANAGER_GLOBAL_PILLAR = [
-    'mgr_conf'
-]
-
-MINION_PILLAR_FILES_PREFIX = "pillar_{minion_id}"
-MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml", "_virtualization.yml", "_custom_info.yml"]
-
-CONFIG_FILE = '/etc/rhn/rhn.conf'
 
 formulas_metadata_cache = dict()
 
@@ -115,7 +104,7 @@ def ext_pillar(minion_id, pillar, *args):
     ret = {}
 
     # Load the pillar from the legacy files
-    ret = load_legacy_pillars(minion_id, ret)
+    ret = load_static_pillars(ret)
 
     # Load the global pillar from DB
     with _get_cursor() as cursor:
@@ -145,10 +134,6 @@ def get_formula_order(pillar):
     '''
     if 'formula_order' in pillar:
         return pillar.pop('formula_order')
-
-    if os.path.exists(FORMULA_ORDER_FILE):
-        with open(FORMULA_ORDER_FILE) as ofile:
-            return json.load(ofile)
     return []
 
 
@@ -206,16 +191,6 @@ def load_group_pillars(minion_id, cursor, pillar):
         else:
             pillar = salt.utils.dictupdate.merge(pillar, row[1], strategy='recurse')
 
-    # Now look for the legacy files in case the formulas haven't been migrated yet
-    data = load_formulas_from_file("group_formulas.json")
-    for group in pillar.get("group_ids", []):
-        for formula in data.get(str(group), []):
-            formula_utf8 = salt.utils.stringutils.to_str(formula)
-            group_filename = os.path.join(FORMULAS_DATA_PATH, "group_pillar",
-                    "{id}_{name}.json".format(id=group, name=formula_utf8))
-            formula_data = load_formula_data(group_filename)
-            group_formulas[formula_utf8] = formula_data
-
     return (group_formulas, pillar)
 
 
@@ -238,62 +213,20 @@ def load_system_pillars(minion_id, cursor, pillar):
         else:
             pillar = salt.utils.dictupdate.merge(pillar, row[1], strategy='recurse')
 
-    # Now look for the legacy files in case the formulas haven't been migrated yet
-    data = load_formulas_from_file("minion_formulas.json")
-    for formula in data.get(str(minion_id), []):
-        formula_utf8 = salt.utils.stringutils.to_str(formula)
-        system_filename = os.path.join(FORMULAS_DATA_PATH, "pillar",
-                "{id}_{name}.json".format(id=minion_id, name=formula_utf8))
-        formula_data = load_formula_data(system_filename)
-        server_formulas[formula_utf8] = formula_data
-
     return (server_formulas, pillar)
 
 
-def load_legacy_pillars(minion_id, pillar):
-    # Including SUSE Manager static pillar data
+def load_static_pillars(pillar):
+    """ 
+    Including SUSE Manager static pillar data
+    """
     for static_pillar in MANAGER_STATIC_PILLAR:
         static_pillar_filename = os.path.join(MANAGER_STATIC_PILLAR_DATA_PATH, static_pillar)
         try:
             pillar.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read(), Loader=yaml.FullLoader))
         except Exception as exc:
             log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
-
-    # Including SUSE Manager global pillar data
-    for global_pillar in MANAGER_GLOBAL_PILLAR:
-        global_pillar_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, global_pillar)
-        try:
-            # Global pillars may no longer exist once they have been migrated to the database
-            if os.path.exists(global_pillar_filename):
-                pillar.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read(), Loader=yaml.FullLoader))
-        except Exception as exc:
-            log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
-
-    # Including generated pillar data for this minion
-    minion_pillar_filename_prefix = MINION_PILLAR_FILES_PREFIX.format(minion_id=minion_id)
-    for suffix in MINION_PILLAR_FILES_SUFFIXES:
-        data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, minion_pillar_filename_prefix + suffix)
-        if os.path.exists(data_filename):
-            try:
-                pillar = salt.utils.dictupdate.merge(
-                        pillar,
-                        yaml.load(open(data_filename).read(), Loader=yaml.FullLoader),
-                        strategy='recurse')
-            except Exception as error:
-                log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
     return pillar
-
-
-def load_formulas_from_file(formula_filename):
-    formulas = {}
-    formula_file = os.path.join(FORMULAS_DATA_PATH, formula_filename)
-    if os.path.exists(formula_file):
-        try:
-            with open(formula_file) as f:
-                formulas = json.load(f)
-        except Exception as error:
-            log.error('Error loading formulas from file: {message}'.format(message=str(error)))
-    return formulas
 
 
 def formula_pillars(system_formulas, group_formulas, all_pillar):
@@ -336,18 +269,6 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
         pillar["formulas"] = out_formulas
 
     return pillar
-
-
-def load_formula_data(path):
-    '''
-    Load the JSON data from the legacy formula file
-    '''
-    try:
-        data = json.load(open(path)) if path is not None and os.path.isfile(path) else {}
-    except Exception as error:
-        log.error('Error loading data from "{path}": {message}'.format(path=path, message=str(error)))
-        return {}
-    return data
 
 
 def load_formula_pillar(system_data, group_data, formula_name, formula_metadata = None):
