@@ -98,7 +98,7 @@ BuildRequires:  spacewalk-client-tools
 %if %{?suse_version} >= 1110 && 0%{?suse_version} < 1500
 Requires:       python-selinux
 %endif
-%if %{?suse_version} >= 1110 && 0%{?suse_version} >= 1500
+%if 0%{?suse_version} >= 1500
 Requires:       python3-selinux
 %endif
 %else
