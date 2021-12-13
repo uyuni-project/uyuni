@@ -43,21 +43,21 @@ export function rawChannelsToDerivedChannels(
   const requiredByMap = new Map<number, Set<DerivedChannel> | undefined>();
   for (const channelIdString in rawRequiresMap) {
     const channelId = parseInt(channelIdString, 10);
-    if (isNaN(channelId)) {
+    const channel = channelsMap.get(channelId);
+    if (isNaN(channelId) || !channel) {
       throw new RangeError("Invalid channel id");
     }
 
-    // The original data includes the channel's own id, don't include it in the set
-    const requiredChannelIds = rawRequiresMap[channelIdString]
+    const requiredChannels = rawRequiresMap[channelIdString]
       ?.map((id) => channelsMap.get(id) as DerivedChannel) // We know these values exist
-      .filter((channel) => channel.id !== channelId);
-    if (requiredChannelIds?.length) {
-      requiresMap.set(channelId, new Set(requiredChannelIds));
-      requiredChannelIds.forEach((channel) => {
-        if (requiredByMap.has(channel.id)) {
-          requiredByMap.get(channel.id)?.add(channel);
+      .filter((requiredChannel) => requiredChannel.id !== channel.id); // The original data includes the channel's own id, don't include it in the set
+    if (requiredChannels?.length) {
+      requiresMap.set(channelId, new Set(requiredChannels));
+      requiredChannels.forEach((requiredChannel) => {
+        if (requiredByMap.has(requiredChannel.id)) {
+          requiredByMap.get(requiredChannel.id)?.add(channel);
         } else {
-          requiredByMap.set(channel.id, new Set([channel]));
+          requiredByMap.set(requiredChannel.id, new Set([channel]));
         }
       });
     }
