@@ -25,14 +25,8 @@ end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|
   node = get_target(host)
-  node.run("ping -c1 #{$server.ip}")
-  $server.run("ping -c1 #{node.ip}")
-end
-
-Then(/^"([^"]*)" should not communicate with the server$/) do |host|
-  node = get_target(host)
-  node.run_until_fail("ping -c1 #{$server.ip}")
-  $server.run_until_fail("ping -c1 #{node.ip}")
+  node.run("ping -c1 #{$server.full_hostname}")
+  $server.run("ping -c1 #{node.full_hostname}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|

@@ -165,14 +165,6 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
 end
 
-When(/^I check (.*) box$/) do |checkbox_name|
-  check BOX_IDS[checkbox_name]
-end
-
-When(/^I uncheck (.*) box$/) do |checkbox_name|
-  check BOX_IDS[checkbox_name]
-end
-
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(),'#{option}')]"
   xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
