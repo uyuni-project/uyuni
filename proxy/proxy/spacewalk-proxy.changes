@@ -1,3 +1,6 @@
+- Update the token in case a channel can't be found in the cache.
+  (bsc#1193585)
+
 -------------------------------------------------------------------
 Fri Nov 05 13:51:07 CET 2021 - jgonzalez@suse.com
 
