@@ -72,11 +72,8 @@ if $build_validation
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
   $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
-  $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
-  $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
-  $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
   $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
@@ -92,9 +89,9 @@ if $build_validation
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
-             $sle11sp4_buildhost, $sle11sp3_terminal,
-             $sle12sp5_buildhost, $sle12sp5_terminal,
-             $sle15sp3_buildhost, $sle15sp3_terminal,
+             $sle11sp4_buildhost,
+             $sle12sp5_buildhost,
+             $sle15sp3_buildhost,
              $opensuse153arm_minion]
 else
   # Define twopence objects for QA environment
@@ -143,8 +140,14 @@ end
 # * for the usual clients, it is the full hostname, e.g. hmu-centos.tf.local
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
 def get_system_name(host)
-  if host == 'pxeboot_minion'
+  # If the system is not known, just return the parameter
+  system_name = host
+
+  case host
+  when 'pxeboot_minion'
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
@@ -152,6 +155,10 @@ def get_system_name(host)
       word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
+  when 'sle11sp3_terminal'
+  when 'sle12sp5_terminal'
+  when 'sle15sp3_terminal'
+    system_name = host + '.example.org'
   else
     begin
       node = get_target(host)
@@ -162,6 +169,8 @@ def get_system_name(host)
   end
   system_name
 end
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength
 
 # Get MAC address of system
 def get_mac_address(host)
@@ -208,6 +217,9 @@ end
 # Other global variables
 $product = product
 $pxeboot_mac = ENV['PXEBOOT_MAC']
+$sle11sp3_terminal_mac = ENV['SLE11SP3_TERMINAL_MAC']
+$sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
+$sle15sp3_terminal_mac = ENV['SLE15SP3_TERMINAL_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
@@ -266,11 +278,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian11_minion'           => $debian11_minion,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
                   'sle11sp4_buildhost'        => $sle11sp4_buildhost,
-                  'sle11sp3_terminal'         => $sle11sp3_terminal,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
-                  'sle12sp5_terminal'         => $sle12sp5_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
-                  'sle15sp3_terminal'         => $sle15sp3_terminal,
                   'opensuse153arm_minion'     => $opensuse153arm_minion }
 
 # This is the inverse of `node_by_host`.
@@ -299,9 +308,9 @@ def client_public_ip(host)
   end
 
   interface = case host
-              when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
+              when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian9/, /^debian10/, 'server', 'proxy', 'build_host'
                 'eth0'
-              when /^ubuntu/
+              when /^debian11/, /^ubuntu/
                 'ens3'
               when 'kvm_server', 'xen_server'
                 'br0'
