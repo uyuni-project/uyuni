@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -53,7 +52,6 @@ public enum ViewHelper {
     INSTANCE;
 
     private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
-    private static final ClusterManager CLUSTER_MANAGER = GlobalInstanceHolder.CLUSTER_MANAGER;
 
     ViewHelper() { }
 
@@ -276,13 +274,5 @@ public enum ViewHelper {
      */
     public boolean hasSshPushContactMethod(Server server) {
         return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
-    }
-
-    /**
-     * @param groupId server group id
-     * @return true if the group is owned by a cluster
-     */
-    public boolean isClusterGroup(String groupId) {
-        return CLUSTER_MANAGER.isClusterGroup(Long.parseLong(groupId));
     }
 }

@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
-import com.redhat.rhn.frontend.xmlrpc.cluster.ClusterHandler;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
@@ -82,7 +81,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
@@ -127,7 +125,6 @@ public class HandlerFactory {
         SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
-        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -153,7 +150,6 @@ public class HandlerFactory {
         factory.addHandler("channel.org", new ChannelOrgHandler());
         factory.addHandler("channel.software", new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper,
             systemHandler));
-        factory.addHandler("cluster", new ClusterHandler(clusterManager));
         factory.addHandler("configchannel", new ConfigChannelHandler());
         factory.addHandler("contentmanagement", new ContentManagementHandler());
         factory.addHandler("distchannel", new DistChannelHandler());

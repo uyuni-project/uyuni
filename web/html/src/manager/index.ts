@@ -28,7 +28,6 @@ import Shared from "./shared";
 import Systems from "./systems";
 import Virtualization from "./virtualization";
 import Visualization from "./visualization";
-import Clusters from "./clusters";
 
 const pages = {
   ...Admin,
@@ -48,7 +47,6 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Visualization,
-  ...Clusters,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

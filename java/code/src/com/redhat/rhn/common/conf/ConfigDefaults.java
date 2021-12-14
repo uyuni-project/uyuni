@@ -315,11 +315,6 @@ public class ConfigDefaults {
     public static final String SALT_ENABLED_KICKSTART_INSTALL_TYPES = "salt_enabled_kickstart_install_types";
 
     /**
-     * Specify if CaaSP nodes are system-locked by default
-     */
-    public static final String AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED = "java.automatic_system_lock_cluster_nodes";
-
-    /**
      * Allows to publish erratas into the configured vendor channels via the api
      */
     public static final String ALLOW_ADDING_PATCHES_VIA_API = "java.allow_adding_patches_via_api";
@@ -1004,15 +999,6 @@ public class ConfigDefaults {
      */
     public List<String> getUserSelectedSaltInstallTypeLabels() {
         return Config.get().getList(SALT_ENABLED_KICKSTART_INSTALL_TYPES);
-    }
-
-    /**
-     * Returns if systems running a cluster product (CaaSP) are automatically system-locked upon bootstrapping or
-     * after any package-related action.
-     * @return true if system lock is automatically enabled
-     */
-    public boolean isAutomaticSystemLockForClusterNodesEnabled() {
-        return Config.get().getBoolean(AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED);
     }
 
     /**

@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MailHelper;
@@ -39,7 +38,6 @@ import com.suse.manager.webui.services.impl.runner.MgrRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -1269,20 +1267,6 @@ public class SaltService implements SystemQuery, SaltApi {
                     }
                 )
         ).map(s -> s.getContainers());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Map<String, Map<String, Object>>> listClusterNodes(
-            MinionServer managementNode, ClusterProviderParameters clusterProviderParameters) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("cluster_type", clusterProviderParameters.getClusterProvider());
-        clusterProviderParameters.getClusterParams().ifPresent(cpp -> pillar.put("params", cpp));
-        return callSync(State.apply(Arrays.asList("clusters.listnodes"), Optional.of(pillar),
-                Optional.of(true), Optional.empty(), ClusterOperationsSlsResult.class),
-                managementNode.getMinionId()).map(ret -> ret.listNodesResult().getChanges().getRet());
     }
 
     /**

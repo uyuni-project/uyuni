@@ -112,11 +112,7 @@ class FormulaForm extends React.Component<Props, State> {
           metadata: {},
         });
       else {
-        if (
-          data.formula_list.filter(
-            (formula) => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name)
-          ).length > 1
-        ) {
+        if (data.formula_list.filter((formula) => DEPRECATED_unsafeEquals(formula, data.formula_name)).length > 1) {
           this.state.warnings.push(
             t(
               'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',

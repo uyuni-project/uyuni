@@ -56,7 +56,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -70,7 +69,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
@@ -152,16 +150,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager
-        );
-        SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, clusterManager,
-                formulaManager, new SaltKeyUtils(saltApi));
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
+        SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, new SaltKeyUtils(saltApi));
         service.setSkipCommandScriptPerms(true);
         return service;
     }
@@ -475,14 +465,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager
-        );
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
         saltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
 
         SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
@@ -963,10 +946,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private void successWorker() throws IOException {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager) {
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi) {
             @Override
             public boolean shouldRefreshPackageList(String function,
                                                     Optional<JsonElement> callResult) {
