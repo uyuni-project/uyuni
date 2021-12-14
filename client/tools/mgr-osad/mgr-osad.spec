@@ -146,6 +146,7 @@ Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 4.1.3
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}

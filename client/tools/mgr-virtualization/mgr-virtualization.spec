@@ -109,6 +109,7 @@ Obsoletes:      %{oldname}-common < %{oldversion}
 Requires:       python3-rhn-client-tools
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host

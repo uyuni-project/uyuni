@@ -272,6 +272,7 @@ Requires:       python3-dbus
 Requires:       python3-gobject-base
 %endif
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 %endif
 
 %ifnarch s390 s390x
