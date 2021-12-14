@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 Requires:       python3-rhn-client-tools
 Requires:       python3-rhn-setup
 %else

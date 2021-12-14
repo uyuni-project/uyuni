@@ -83,6 +83,7 @@ BuildRequires:  python3-debian
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
+BuildRequires:  python3-rpm-macros
 BuildRequires:  python3-uyuni-common-libs
 
 %description
