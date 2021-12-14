@@ -74,6 +74,7 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
     And I check enable SLAAC with routing box
+    And I uncheck enable route box
     And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -200,3 +201,9 @@ Feature: Setup Uyuni for Retail branch network
     And name resolution should work on terminal "sle_client"
     And terminal "sle_minion" should have got a retail network IP address
     And name resolution should work on terminal "sle_minion"
+
+@proxy
+@private_net
+  Scenario: The terminals should not reach the server
+    Then "sle_client" should not communicate with the server
+    And "sle_minion" should not communicate with the server
