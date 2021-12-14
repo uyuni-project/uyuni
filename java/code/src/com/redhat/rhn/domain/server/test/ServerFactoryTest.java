@@ -74,7 +74,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
@@ -93,7 +92,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -138,17 +136,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
     private static final SaltApi SALT_API = new TestSaltApi();
     private static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
-    private static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
-    private static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
-            SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER);
-    private static final SaltUtils SALT_UTILS = new SaltUtils(
-            SYSTEM_QUERY, SALT_API, CLUSTER_MANAGER, FORMULA_MANAGER, SERVER_GROUP_MANAGER);
+    private static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
     private static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SALT_API);
     private static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
             SALT_API,
             SALT_UTILS,
-            CLUSTER_MANAGER,
-            FORMULA_MANAGER,
             SALT_KEY_UTILS
     );
     private static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
