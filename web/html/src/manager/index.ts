@@ -50,7 +50,6 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Visualization,
-  ...Clusters,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {
