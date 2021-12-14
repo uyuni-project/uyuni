@@ -1,3 +1,7 @@
+- Fixes query for system-history report to prevent more than one
+  row returned by a subquery with rhnxccdftestresult.identifier
+  (bsc#1191192)
+
 -------------------------------------------------------------------
 Wed Nov 17 12:38:43 CET 2021 - jmassaguerpla@suse.de
 
