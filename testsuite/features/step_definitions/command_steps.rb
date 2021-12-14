@@ -23,10 +23,16 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
-Then(/^"([^"]*)" should communicate with the server$/) do |host|
+Then(/^"([^"]*)" should communicate with the server using "([^"]*)"/) do |host, ethernet|
   node = get_target(host)
-  node.run("ping -c1 #{$server.full_hostname}")
-  $server.run("ping -c1 #{node.full_hostname}")
+  node.run("ping -4 -c 1 -I #{ethernet} #{$server.ip}")
+  $server.run("ping -4 -c 1 #{node.ip}")
+end
+
+Then(/^"([^"]*)" should not communicate with the server using "([^"]*)"/) do |host, ethernet|
+  node = get_target(host)
+  node.run_until_fail("ping -4 -c 1 -I #{ethernet} #{$server.ip}")
+  $server.run_until_fail("ping -4 -c 1 #{node.ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|

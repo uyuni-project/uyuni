@@ -200,3 +200,9 @@ Feature: Setup Uyuni for Retail branch network
     And name resolution should work on terminal "sle_client"
     And terminal "sle_minion" should have got a retail network IP address
     And name resolution should work on terminal "sle_minion"
+
+@proxy
+@private_net
+  Scenario: The terminals should not reach the server
+    Then "sle_client" should not communicate with the server using "eth1"
+    And "sle_minion" should not communicate with the server using "eth1"
