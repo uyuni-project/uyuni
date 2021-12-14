@@ -79,6 +79,7 @@ BuildRequires:  python3
 BuildRequires:  python3-dev
 %else
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 %endif
 Requires:       python3-rpm
 Requires:       python3-simplejson
