@@ -33,6 +33,7 @@ export default class State {
   /** User-selected filters such as vendors, custom, clones */
   activeFilters: string[] = [];
 
+  // TODO: A better name for this? `mergeState`? `onChange`?
   // Whenever we receive new inputs or data, compute and return an updated result
   resolveChange = (stateChange: StateChange = {}) => {
     const { select, deselect, open, close, ...rest } = stateChange;

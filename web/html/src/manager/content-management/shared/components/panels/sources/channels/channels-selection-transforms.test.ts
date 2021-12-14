@@ -19,39 +19,39 @@ const getMockServerChannel = (partial: Partial<ServerChannelType> = {}): ServerC
 };
 
 describe("channels selection data transforms", () => {
+  const PARENT_ID = 1000;
+  const CHILD_A_ID = 1001;
+  const CHILD_B_ID = 1002;
+
+  const rawChannels: RawChannelType[] = [
+    // A base channel with no children
+    {
+      base: getMockServerChannel(),
+      children: [],
+    },
+    // A base channel where one of the children is required
+    {
+      base: getMockServerChannel({ id: PARENT_ID }),
+      children: [
+        // One child that is not required in any way
+        getMockServerChannel(),
+        // Two children that are in the requires map
+        getMockServerChannel({ id: CHILD_A_ID }),
+        getMockServerChannel({ id: CHILD_B_ID }),
+      ],
+    },
+    // A base channel where one of the children is recommended
+    { base: getMockServerChannel(), children: [getMockServerChannel({ recommended: true })] },
+  ];
+  // These maps include their own id in the server response
+  const rawRequiresMap = {
+    [PARENT_ID]: [],
+    // This child requires the other child while the other one doesn't require this one
+    [CHILD_A_ID]: [PARENT_ID, CHILD_A_ID, CHILD_B_ID],
+    [CHILD_B_ID]: [PARENT_ID, CHILD_B_ID],
+  };
+
   describe("rawChannelsToDerivedChannels", () => {
-    const PARENT_ID = 1000;
-    const CHILD_A_ID = 1001;
-    const CHILD_B_ID = 1002;
-
-    const rawChannels: RawChannelType[] = [
-      // A base channel with no children
-      {
-        base: getMockServerChannel(),
-        children: [],
-      },
-      // A base channel where one of the children is required
-      {
-        base: getMockServerChannel({ id: PARENT_ID }),
-        children: [
-          // One child that is not required in any way
-          getMockServerChannel(),
-          // Two children that are in the requires map
-          getMockServerChannel({ id: CHILD_A_ID }),
-          getMockServerChannel({ id: CHILD_B_ID }),
-        ],
-      },
-      // A base channel where one of the children is recommended
-      { base: getMockServerChannel(), children: [getMockServerChannel({ recommended: true })] },
-    ];
-    // These maps include their own id in the server response
-    const rawRequiresMap = {
-      [PARENT_ID]: [],
-      // This child requires the other child while the other one doesn't require this one
-      [CHILD_A_ID]: [PARENT_ID, CHILD_A_ID, CHILD_B_ID],
-      [CHILD_B_ID]: [PARENT_ID, CHILD_B_ID],
-    };
-
     test("works on empty data", () => {
       const { baseChannels, channelsMap, requiresMap, requiredByMap } = rawChannelsToDerivedChannels([], {});
 
@@ -63,18 +63,21 @@ describe("channels selection data transforms", () => {
 
     test("identifies base channels", () => {
       const { baseChannels } = rawChannelsToDerivedChannels(rawChannels, rawRequiresMap);
-      expect(baseChannels.length).toBeGreaterThan(0);
+      expect(baseChannels.length).toEqual(rawChannels.length);
     });
 
     test("maps all channels", () => {
       const { channelsMap } = rawChannelsToDerivedChannels(rawChannels, rawRequiresMap);
-      expect(channelsMap.size).toBeGreaterThan(0);
+
+      const channelsCount =
+        rawChannels.length + rawChannels.reduce((total, rawChannel) => total + rawChannel.children.length, 0);
+      expect(channelsMap.size).toEqual(channelsCount);
       expect(channelsMap.has(PARENT_ID)).toEqual(true);
       expect(channelsMap.has(CHILD_A_ID)).toEqual(true);
       expect(channelsMap.has(CHILD_B_ID)).toEqual(true);
     });
 
-    test("identifies two-way requirements, without duplicates", () => {
+    test("identifies two-way requirements with no duplicates", () => {
       const { channelsMap, requiresMap, requiredByMap } = rawChannelsToDerivedChannels(rawChannels, rawRequiresMap);
       const parent = channelsMap.get(PARENT_ID);
       const childA = channelsMap.get(CHILD_A_ID);
@@ -94,10 +97,35 @@ describe("channels selection data transforms", () => {
     });
   });
 
-  describe("derivedChannelsToRowDefinitions", () => {
+  describe("State", () => {
+    // TODO: Test this separately
+    const derivedChannels = rawChannelsToDerivedChannels(rawChannels, rawRequiresMap);
+
     test("works on empty data", () => {
       const rows = derivedChannelsToRowDefinitions([], new State());
       expect(rows).toEqual([]);
+    });
+  });
+
+  // TODO: Move to a separate file
+  describe("State", () => {
+    test("renders nothing when no base selection has been made", () => {
+      const state = new State();
+      const result = state.resolveChange(rawChannelsToDerivedChannels(rawChannels, rawRequiresMap));
+      expect(result).toEqual(undefined);
+    });
+
+    test("renders nothing when no channels are present", () => {
+      const state = new State();
+      const result = state.resolveChange({ selectedBaseChannelId: PARENT_ID });
+      expect(result).toEqual(undefined);
+    });
+
+    test("yields a row for each base channel", () => {
+      const state = new State();
+      state.resolveChange(rawChannelsToDerivedChannels(rawChannels, rawRequiresMap));
+      const result = state.resolveChange({ selectedBaseChannelId: PARENT_ID });
+      expect(result?.rows.length).toBeGreaterThanOrEqual(rawChannels.length);
     });
   });
 });
