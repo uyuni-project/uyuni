@@ -1,3 +1,4 @@
+- require python macros for building
 - exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
 
 -------------------------------------------------------------------
