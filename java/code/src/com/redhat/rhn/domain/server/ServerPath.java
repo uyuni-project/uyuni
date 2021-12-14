@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,6 +38,15 @@ public class ServerPath extends BaseDomainHelper {
      * Default constructor.
      */
     public ServerPath() {
+    }
+
+    /**
+     * @param positionIn the server position in the path chain
+     * @param hostnameIn the hostname of the server
+     */
+    public ServerPath(Long positionIn, String hostnameIn) {
+        this.position = positionIn;
+        this.hostname = hostnameIn;
     }
 
     /**

@@ -12,6 +12,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </generator>
         </id>
         <property name="states" column="states" type="string" />
+        <property name="pillars" column="pillars" type="string" />
         <property name="test" column="test" type="yes_no" />
         <property name="created" type="timestamp" insert="false" update="false" />
         <property name="modified" type="timestamp" insert="false" update="false" />

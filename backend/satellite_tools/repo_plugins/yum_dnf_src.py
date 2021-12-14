@@ -69,9 +69,10 @@ class RawSolvablePackage:
 
 class ContentSource(zypper_ContentSource):
 
-    def __init__(self, url, name, insecure=False, interactive=False, yumsrc_conf=YUMSRC_CONF, org="1", channel_label="",
+    def __init__(self, url, name, insecure=False, interactive=False, yumsrc_conf=YUMSRC_CONF, org="1",
+                 channel_label="",
                  no_mirrors=True, ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None):
+                 client_key_file=None, channel_arch=""):
         # insecure and interactive are not implemented for this module.
         """
         Plugin constructor.

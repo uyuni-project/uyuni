@@ -796,6 +796,16 @@ select sa.server_id
         <return alias="ra" class="com.redhat.rhn.domain.action.Action"/>
     </sql-query>
 
+    <sql-query name="Action.updateServerActionsPickedUp">
+        <![CDATA[
+            UPDATE rhnServerAction
+                SET status = :status,
+                    pickup_time = current_timestamp
+            WHERE action_id  = :action_id
+                AND server_id  IN (:server_ids)
+                AND status NOT IN(2,3)
+        ]]>
+    </sql-query>
     <sql-query name="Action.updateServerActions">
         <![CDATA[
             UPDATE rhnServerAction

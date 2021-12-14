@@ -232,6 +232,23 @@ When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   $server.run("salt #{system_name} saltutil.sync_all")
 end
 
+When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_cache = $product == 'Uyuni' ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  file_delete(node, "#{salt_cache}#{filename}")
+end
+
+When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  file_delete(node, "#{salt_config}#{filename}")
+end
+
+When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
+  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
+end
+
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
@@ -474,12 +491,6 @@ When(/^I press minus sign in (.*) section$/) do |section|
   sectionids = { 'third configured zone' => 'bind#configured_zones#2',
                  'third available zone'  => 'bind#available_zones#2' }
   find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
-end
-
-When(/^I check (.*) box$/) do |box|
-  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
-             'include forwarders'        => 'bind#config#include_forwarders' }
-  check boxids[box]
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|

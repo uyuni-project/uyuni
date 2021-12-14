@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 07 10:38:04 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Improve logging in tftpsync receiver
+
+-------------------------------------------------------------------
 Fri Nov 05 14:13:04 CET 2021 - jgonzalez@suse.com
 
 - version 4.3.3-1

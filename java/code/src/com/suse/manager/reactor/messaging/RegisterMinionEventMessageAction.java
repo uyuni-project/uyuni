@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -61,6 +61,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -126,31 +127,35 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Optional<MinionStartupGrains> startupGrainsOpt = Opt.or(registerMinionEventMessage.getMinionStartupGrains(),
                 () -> saltApi.getGrains(registerMinionEventMessage.getMinionId(),
                         new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager"));
-        registerMinion(registerMinionEventMessage.getMinionId(), false, empty(), empty(),  startupGrainsOpt);
+        registerMinion(registerMinionEventMessage.getMinionId(), false, empty(), empty(), empty(),  startupGrainsOpt);
     }
 
     /**
      * Temporary HACK: Run the registration for a minion with given id.
      * Will be extracted to a separate class, this is here only because of easier rebasing.
      * @param minionId minion id
-     * @param activationKeyOverride label of activation key to be applied to the system.
-     *                              If left empty, activation key from grains will be used.
+     * @param sshPushPort the port to use for bootstrapping
      * @param proxyId the proxy to which the minion connects, if any
+     * @param activationKeyOverride label of activation key to be applied to the system.
+ *                              If left empty, activation key from grains will be used.
      */
-    public void registerSSHMinion(String minionId, Optional<Long> proxyId, Optional<String> activationKeyOverride) {
+    public void registerSSHMinion(String minionId, Integer sshPushPort, Optional<Long> proxyId,
+                                  Optional<String> activationKeyOverride) {
         Optional<MinionStartupGrains> startupGrainsOpt = saltApi.getGrains(minionId,
                 new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager");
-        registerMinion(minionId, true, proxyId, activationKeyOverride, startupGrainsOpt);
+        registerMinion(minionId, true, of(sshPushPort), proxyId, activationKeyOverride, startupGrainsOpt);
     }
+
     /**
-     * Performs minion registration or reactivation..
+     * Performs minion registration or reactivation.
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param sshPort the port to use for ssh only bootstrapping
      * @param activationKeyOverride label of activation key to be applied to the system.
      *                       If left empty, activation key from grains will be used.
      * @param startupGrains Grains needed for initial phase of registration
      */
-    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> proxyId,
+    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Integer> sshPort, Optional<Long> proxyId,
                                 Optional<String> activationKeyOverride, Optional<MinionStartupGrains> startupGrains) {
         Opt.consume(startupGrains,
             ()-> LOG.error("Aborting: needed grains are not found for minion: " + minionId),
@@ -165,7 +170,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
-                    machineId -> registerMinion(minionId, isSaltSSH, proxyId, activationKeyOverride,
+                    machineId -> registerMinion(minionId, isSaltSSH, sshPort, proxyId, activationKeyOverride,
                             validReactivationKey, machineId, saltbootInitrd));
             });
     }
@@ -193,15 +198,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      *
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param sshPort the port to use for ssh only bootstrapping
      * @param actKeyOverride label of activation key to be applied to the system.
      *                       If left empty, activation key from grains will be used.
      * @param reActivationKey valid reactivation key
      * @param machineId Machine Id of the minion
      * @param saltbootInitrd saltboot_initrd, to be used for retail minions
      */
-    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSSHProxyId,
-                                Optional<String> actKeyOverride, Optional<String> reActivationKey, String machineId,
-                                boolean saltbootInitrd) {
+    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Integer> sshPort,
+                                Optional<Long> saltSSHProxyId, Optional<String> actKeyOverride,
+                                Optional<String> reActivationKey, String machineId, boolean saltbootInitrd) {
         Opt.consume(reActivationKey,
             //Case A: Registration
             () -> {
@@ -210,7 +216,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         Opt.consume(MinionServerFactory.findByMinionId(minionId),
                             () -> {
                                 // Case 1.1 - new registration
-                                finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride,
+                                finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId, actKeyOverride,
                                         isSaltSSH);
                             },
                             minionServer -> {
@@ -230,7 +236,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 Opt.consume(server.asMinionServer(),
                                     () -> {
                                         // traditional client wants migration to salt
-                                        finalizeMinionRegistration(minionId, machineId, saltSSHProxyId,
+                                        finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId,
                                                 actKeyOverride, isSaltSSH);
                                     },
                                     registeredMinion -> {
@@ -262,7 +268,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             //Case B : Reactivation
             rk -> {
                 reactivateSystem(minionId, machineId, rk);
-                finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
+                finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId, actKeyOverride, isSaltSSH);
             }
         );
     }
@@ -390,12 +396,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Complete the minion registration with information from grains
      * @param minionId the minion id
      * @param machineId the machine id that we are trying to register
+     * @param sshPort the port to use for ssh only bootstrapping
      * @param saltSSHProxyId optional proxy id for saltssh in case it is used
      * @param activationKeyOverride optional label of activation key to be applied to the system
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      */
     public void finalizeMinionRegistration(String minionId,
                                            String machineId,
+                                           Optional<Integer> sshPort,
                                            Optional<Long> saltSSHProxyId,
                                            Optional<String> activationKeyOverride,
                                            boolean isSaltSSH) {
@@ -482,6 +490,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             if (isSaltSSH) {
                 minion.updateServerPaths(saltSSHProxyId);
+                minion.setSSHPushPort(sshPort.orElse(SaltSSHService.SSH_PUSH_PORT));
             }
             else {
                 minion.updateServerPaths(master);
