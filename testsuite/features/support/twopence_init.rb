@@ -335,10 +335,14 @@ $nodes.each do |node|
   next if node.nil?
   next if node.is_a?(String) && node.empty?
 
-  node.init_ip(node.full_hostname)
-
   host = $host_by_node[node]
   raise "Cannot resolve host for node: '#{node.hostname}'" if host.nil? || host == ''
+
+  if ADDRESSES.key? host
+    node.init_ip(net_prefix + ADDRESSES[host])
+  else
+    node.init_ip(node.full_hostname)
+  end
 
   ip = client_public_ip host
   node.init_public_ip ip
