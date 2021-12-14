@@ -1,3 +1,4 @@
+- Remove cluster management feature
 - Fix errors on calling sed -E ... by force_restart_minion
   with action chains
 - Fix problem installing/removing packages using action chains
