@@ -146,7 +146,6 @@ class BootstrapMinions extends React.Component<Props, State> {
   manageWithSSHChanged(event) {
     this.setState({
       manageWithSSH: event.target.checked,
-      port: "",
     });
   }
 
@@ -377,7 +376,6 @@ class BootstrapMinions extends React.Component<Props, State> {
                 onChange={this.portChanged}
                 onKeyPress={window.numericValidate}
                 value={this.state.port}
-                disabled={this.state.manageWithSSH}
                 title={t("Port range: 1 - 65535")}
               />
             </div>

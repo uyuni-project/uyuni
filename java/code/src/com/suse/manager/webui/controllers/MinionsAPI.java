@@ -55,7 +55,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -160,8 +159,7 @@ public class MinionsAPI {
      */
     public String accept(Request request, Response response, User user) {
         String target = request.params("target");
-        MinionPendingRegistrationService.addMinion(
-                user, target, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, target, ContactMethodUtil.DEFAULT);
         try {
             saltApi.acceptKey(target);
         }
