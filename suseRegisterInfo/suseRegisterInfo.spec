@@ -80,6 +80,7 @@ Group:          Productivity/Other
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 2 specific files for %{name}.
