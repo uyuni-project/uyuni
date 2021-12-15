@@ -5,6 +5,8 @@ set -x
 CURDIR=$(dirname $(realpath $0))
 CONFIG_DIR="$CURDIR/proxy-config"
 SQUID_CACHE_DIR="$CURDIR/proxy-squid-cache"
+RHN_CACHE_DIR="$CURDIR/proxy-rhn-cache"
+TFTPBOOT_DIR="$CURDIR/proxy-tftpboot"
 
 export REGISTRY=registry.tf.local
 
@@ -28,6 +30,8 @@ podman pod create --name proxy-pod \
 
 podman run --rm=true -dt --pod proxy-pod \
 	-v $CONFIG_DIR:/etc/uyuni \
+	-v $RHN_CACHE_DIR:/var/cache/rhn \
+	-v $TFTPBOOT_DIR:/srv/tftpboot \
 	--name proxy-httpd \
 	$REGISTRY/proxy-httpd
 
