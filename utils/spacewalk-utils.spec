@@ -34,6 +34,7 @@ BuildArch:      noarch
 BuildRequires:  fdupes
 BuildRequires:  docbook-utils
 BuildRequires:  python3
+BuildRequires:  python3-rpm-macros
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python3-pylint
 %endif
