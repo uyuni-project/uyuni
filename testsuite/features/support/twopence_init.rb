@@ -141,7 +141,6 @@ end
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 # rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/AbcSize
 def get_system_name(host)
   # If the system is not known, just return the parameter
   system_name = host
@@ -155,9 +154,7 @@ def get_system_name(host)
       word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle11sp3_terminal'
-  when 'sle12sp5_terminal'
-  when 'sle15sp3_terminal'
+  when 'sle11sp3_terminal', 'sle12sp5_terminal', 'sle15sp3_terminal'
     system_name = host + '.example.org'
   else
     begin
@@ -169,7 +166,6 @@ def get_system_name(host)
   end
   system_name
 end
-# rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 
 # Get MAC address of system
