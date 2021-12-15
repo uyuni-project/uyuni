@@ -37,6 +37,25 @@ sudo usermod --add-subgids 10000-75535 $(whoami)
 rm /run/user/$(id -u)/libpod/pause.pid
 ```
 
+---
+
+In case you get into this other error while pulling:
+```
+Error: error creating build container: The following failures happened while trying to pull image specified by "suse/sle15:15.3" based on search registries in /etc/containers/registries.conf:
+* "localhost/suse/sle15:15.3": Error initializing source docker://localhost/suse/sle15:15.3: error pinging docker registry localhost: Get https://localhost/v2/: dial tcp [::1]:443: connect: connection refused
+* "registry.opensuse.org/suse/sle15:15.3": Error initializing source docker://registry.opensuse.org/suse/sle15:15.3: Error reading manifest 15.3 in registry.opensuse.org/suse/sle15: name unknown
+* "docker.io/suse/sle15:15.3": Error initializing source docker://suse/sle15:15.3: Error reading manifest 15.3 in docker.io/suse/sle15: errors:
+denied: requested access to the resource is denied
+unauthorized: authentication required (edited)
+```
+
+you are probably using an older `podman` version (2.1.1 for instance). Make sure you are on a newer version (3.4.4 for instance) you can download and install like the following:
+```
+sudo zypper ar https://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_Leap_15.3/ virtualization_container
+sudo zypper install podman-3.4.4-lp153.2.2.x86_64
+```
+
+
 ## Building all images and pushing them to a registry
 
 ```sh
