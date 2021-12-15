@@ -60,7 +60,7 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
           itemKey={itemKey}
           children={Row}
           // How many items to prerender outside of the viewport, see https://react-window.vercel.app/#/api/FixedSizeList
-          overscanCount={3}
+          overscanCount={10}
         />
       ) : null}
     </div>

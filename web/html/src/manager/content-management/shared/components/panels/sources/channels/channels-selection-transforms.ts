@@ -6,17 +6,25 @@ export function rawChannelsToDerivedChannels(
 ) {
   // Keep track of all channels we store
   const channelsMap = new Map<number, DerivedChannel>();
-  // TODO: Type all of this
-  // NB! The data we receive here is already a copy since we're in a worker so it's safe to modify it directly
+
+  // The data we receive here is already a copy since we're in a worker so it's safe to modify it directly if needed
   const baseChannels = rawChannels.map((rawChannel: RawChannelType) => {
-    // TODO: This cast is not correct
-    // If we want to reduce copy overhead we could only pick the fields we need here
-    const baseChannel: DerivedBaseChannel = rawChannel.base as DerivedBaseChannel;
+    const { id, name, label, archLabel, custom, isCloned, recommended, subscribable } = rawChannel.base;
+    const baseChannel: DerivedBaseChannel = {
+      id,
+      name,
+      label,
+      archLabel,
+      custom,
+      isCloned,
+      recommended,
+      subscribable,
+      // Precompute a name value for filtering so we only do this once
+      standardizedName: name.toLocaleLowerCase(),
+      recommendedChildrenIds: new Set<number>(),
+      children: [],
+    };
 
-    // Precompute filtering values so we only do this once
-    baseChannel.standardizedName = baseChannel.name.toLocaleLowerCase();
-
-    baseChannel.recommendedChildrenIds = new Set<number>();
     baseChannel.children = rawChannel.children.map((child) => {
       const derivedChild = {
         ...child,
