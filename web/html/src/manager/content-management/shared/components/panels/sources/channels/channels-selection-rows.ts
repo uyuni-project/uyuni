@@ -25,6 +25,7 @@ export type ChildRowDefinition = Identifiable & {
   isSelected: boolean;
   isRecommended: boolean;
   isRequired: boolean;
+  isRequiredBySelectedBaseChannel: boolean;
   tooltipData: {
     requiresNames: string[];
     requiredByNames: string[];

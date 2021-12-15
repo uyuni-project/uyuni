@@ -26,7 +26,8 @@ const getTooltip = (tooltipData: ChildRowDefinition["tooltipData"]) => {
 };
 
 const ChildChannel = (props: Props) => {
-  const { id, channelName, isSelected, isRequired, isRecommended, tooltipData } = props.definition;
+  const { id, channelName, isSelected, isRecommended, isRequired, isRequiredBySelectedBaseChannel, tooltipData } =
+    props.definition;
   const identifier = "child_" + id;
   const tooltip = getTooltip(tooltipData);
 
@@ -40,6 +41,7 @@ const ChildChannel = (props: Props) => {
         readOnly
         checked={isSelected}
         onClick={() => props.onToggleChannelSelect(id)}
+        disabled={isRequiredBySelectedBaseChannel}
       />
       <label className={`${styles.collapsible} ${styles.child_name}`} title={tooltip || undefined} htmlFor={identifier}>
         <Highlight enabled={props.search?.length > 0} text={channelName} highlight={props.search}></Highlight>
