@@ -1744,3 +1744,11 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
     node.run('mkinitrd')
   end
 end
+
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
+end
