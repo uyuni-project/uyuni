@@ -2168,43 +2168,43 @@
       </trans-unit>
       <trans-unit id="configfiles.upload" xml:space="preserve">
         <source>Import config file data from system</source>
-        <target/>
+        <target>Importovať údaje konfiguračného súboru zo systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.deploy" xml:space="preserve">
         <source>Deploy config files to system</source>
-        <target/>
+        <target>Nasadiť konfiguračné súbory do systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.deployed" xml:space="preserve">
         <source>Files successfully deployed</source>
-        <target/>
+        <target>Súbory úspešne nasadené</target>
       </trans-unit>
       <trans-unit id="configfiles.verify" xml:space="preserve">
         <source>Verify deployed config files</source>
-        <target/>
+        <target>Overiť nasadené konfiguračné súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.diff" xml:space="preserve">
         <source>Show differences between profiled config files and deployed config files</source>
-        <target/>
+        <target>Zobraziť rozdiely medzi profilovanými konfiguračnými súbormi a nasadenými konfiguračnými súbormi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.diffed" xml:space="preserve">
         <source>Files successfully compared</source>
-        <target/>
+        <target>Súbory úspešne porovnané</target>
       </trans-unit>
       <trans-unit id="config.actionnote" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>
-        <target/>
+        <target>&lt;a href="{0}"&gt;Revízia {1}&lt;/a&gt; {2} z &lt;a href="{3}"&gt;{4}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
@@ -2212,7 +2212,7 @@
       </trans-unit>
       <trans-unit id="config.upload.onechannel" xml:space="preserve">
         <source>Destination Configuration Channel: {0}</source>
-        <target/>
+        <target>Cieľový konfiguračný kanál: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Destination Configuration Channel: sandbox for postmaster.devel</context>
@@ -2220,21 +2220,21 @@
       </trans-unit>
       <trans-unit id="config.upload.channels" xml:space="preserve">
         <source>Destination Configuration Channels:</source>
-        <target/>
+        <target>Cieľové konfiguračné kanály:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.upload.filenames" xml:space="preserve">
         <source>Files for Upload:</source>
-        <target/>
+        <target>Súbory na nahratie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.message" xml:space="preserve">
         <source>The following packages are not available in any of the channels associated to this kickstart profile: {0}. In order for all kickstart functionality to work correctly, these packages should be present in at least one channel associated to this profile.</source>
-        <target/>
+        <target>Nasledujúce balíky nie sú k dispozícii v žiadnom z kanálov spojených s týmto profilom kickstart: {0}. Aby všetky funkcie kickstart fungovali správne, tieto balíky by mali byť prítomné aspoň v jednom kanáli priradenom k tomuto profilu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2266,7 +2266,32 @@ available for this kickstart profile to function properly.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;Ak chcete tento problém vyriešiť, skontrolujte nasledujúce veci:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Je kanál nástrojov klienta pre základný kanál tohto profilu kickstart dostupný
+pre vašu organizáciu? Ak nie je, budete musieť požiadať administrátora
+@@PRODUCT_NAME@@ o oprávnenia pre kanál klientskych nástrojov.
+&lt;/li&gt;
+&lt;li&gt;
+Uistite sa, že kanál klientskych nástrojov pre základný kanál tohto profilu kickstart
+je dostupný pre váš @@PRODUCT_NAME@@. Ak nie je, prosím, kontaktujte svojho
+administrátora @@PRODUCT_NAME@@ a požiadajte o mgr-inter-sync pre kanál 
+nástrojov klienta a skúste to znova.
+&lt;/li&gt;
+&lt;li&gt;
+Uistite sa, že balík spacewalk-koan zodpovedajúci tomuto kickstart je k dispozícii
+v kanáli nástrojov základného kanála kickstart. Ak nie je, budete musieť ho sprístupniť,
+aby tento profil kickstart správne fungoval.
+&lt;/li&gt;
+&lt;li&gt;
+Sú vyššie uvedené balíky k dispozícii v tomto základnom kanáli kickstart? Ak nie, budete ich musieť
+sprístupniť, aby tento profil kickstart správne fungoval.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2289,273 +2314,289 @@ and try again.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;Ak chcete tento problém vyriešiť, skontrolujte nasledujúce veci:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Je softvérový kanál potomka 'appstream' pre základný kanál tohto profilu kickstart
+dostupný pre vašu organizáciu? Ak nie je, budete musieť požiadať o oprávnenia
+pre softvérový kanál 'appstream' od svojho administrátora @@PRODUCT_NAME@@.
+&lt;/li&gt;
+&lt;li&gt;
+Uistite sa, že kanál potomka 'appstream' pre základný kanál tohto profilu kickstart
+je dostupný pre váš @@PRODUCT_NAME@@. Ak nie je, prosím, kontaktujte svojho
+administrátora @@PRODUCT_NAME@@ a požiadajte o cdn-sync pre kanál appstream
+a skúste to znova.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation</source>
-        <target/>
+        <target>Spustiť automatickú inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart_guest.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation of a guest system</source>
-        <target/>
+        <target>Spustiť automatickú inštaláciu hosťovského systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule_sync" xml:space="preserve">
         <source>Schedule a package sync for autoinstallations</source>
-        <target/>
+        <target>Naplánovať synchronizáciu balíkov pre automatické inštalácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel" xml:space="preserve">
         <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
-        <target/>
+        <target>Vami vybrané označenie automatickej inštalácie je neplatné, musí mať aspoň {0} znakov a obsahovať len nasledujúce znaky : A-Z, a-z, 0-9, _, - </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
-        <target/>
+        <target>Označenie automatickej inštalácie už existuje: '{0}'. Prosím, zvoľte si jedinečné označenie kickstart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.success" xml:space="preserve">
         <source>Autoinstallation details successfully updated.</source>
-        <target/>
+        <target>Podrobnosti automatickej inštalácie boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.duplicatefile" xml:space="preserve">
         <source>Please specify only file contents or a file to upload but not both.</source>
-        <target/>
+        <target>Prosím, určte len obsah súboru alebo súbor, ktorý chcete nahrať, ale nie oboje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.nolabel" xml:space="preserve">
         <source>Autoinstallation profile label is required.</source>
-        <target/>
+        <target>Vyžaduje sa označenie profilu automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.delete.success" xml:space="preserve">
         <source>Autoinstallation was deleted successfully.</source>
-        <target/>
+        <target>Automatická inštalácia bola úspešne vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.success" xml:space="preserve">
         <source>Kickstart advanced options successfully updated.</source>
-        <target/>
+        <target>Pokročilé možnosti kickstart boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.url.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Default @@PRODUCT_NAME@@ kickstart URLs are stored with just the file path, allowing @@PRODUCT_NAME@@ to know when to dynamically adjust the hostname in the URL rendered in the kickstart file. (for proxies, etc) You may customize this value by changing it to a fully qualified URL, which will appear in the kickstart file as is.</source>
-        <target/>
+        <target>&lt;strong&gt;NOTE:&lt;/strong&gt; Predvolené adresy URL kickstart @@PRODUCT_NAME@@ sú uložené len s cestou k súboru, čo umožňuje, aby @@PRODUCT_NAME@@ vedel, kedy dynamicky upraviť názov hostiteľa v adrese URL uvedenej v súbore kickstart. (pre proxy servery atď.) Túto hodnotu môžete upraviť tak, že ju zmeníte na plne kvalifikovanú adresu URL, ktorá sa v súbore kickstart zobrazí tak, ako je.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
-        <target/>
+        <target>&lt;strong&gt;NOTE:&lt;/strong&gt; Do tohto poľa môžete nastaviť heslo zahašované ľubovoľným algoritmom (ktorý tento operačný systém podporuje). Hašovací algoritmus &lt;strong&gt;auth&lt;/strong&gt; v tejto voľbe ovplyvní budúce vytvorené heslá, môžete chcieť, aby bol rovnaký ako tu použitý algoritmus. Ak zadáte heslo v podobe obyčajného textu, musíte vybrať &lt;strong&gt;Encrypt&lt;/strong&gt; vyššie jeho zašifrovanie, ak tak neurobíte, nebudete sa môcť prihlásiť po dokončení procesu kickstart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_add.success" xml:space="preserve">
         <source>Successfully added IP Range to Autoinstallation Profile {0}</source>
-        <target/>
+        <target>Úspešne pridaný IP rozsah do profilu automatickej inštalácie {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_conflict.failure" xml:space="preserve">
         <source>Error: The IP range you entered conflicts with another IP range. Please choose a different IP range.</source>
-        <target/>
+        <target>Chyba: Zadaný rozsah IP koliduje s iným rozsahom IP. Prosím, vyberte iný rozsah IP.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_validate.failure" xml:space="preserve">
         <source>Error: IP range values must be between 0 and 255. Please check IP range you just entered and try again.</source>
-        <target/>
+        <target>Chyba: Hodnoty rozsahu IP musia byť v rozmedzí od 0 do 255. Prosím, skontrolujte rozsah IP, ktorý ste práve zadali, a skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.success" xml:space="preserve">
         <source>Successfully deleted IP Range from Autoinstallation Profile {0}</source>
-        <target/>
+        <target>Úspešne vymazaný IP rozsah z profilu automatickej inštalácie {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure" xml:space="preserve">
         <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
-        <target/>
+        <target>Pri vymazávaní rozsahu IP z profilu automatickej inštalácie {0} došlo k chybe. Prosím, skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.update.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
-        <target/>
+        <target>Úryvok automatickej inštalácie &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.create.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
-        <target/>
+        <target>Úryvok automatickej inštalácie &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne vytvorený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.delete.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
-        <target/>
+        <target>Úryvok automatickej inštalácie &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.couldnotdelete.message" xml:space="preserve">
         <source>An error occurred when attempting to delete the snippet &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Došlo k chybe pri pokuse o odstránenie úryvku &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart snippet Delete Confirm pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.rename-error" xml:space="preserve">
         <source>An error occurred when attempting to rename the snippet &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Došlo k chybe pri pokuse o premenovanie úryvku &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.filenameexists.message" xml:space="preserve">
         <source>Snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
-        <target/>
+        <target>Úryvok s názvom &lt;strong&gt;{0}&lt;/strong&gt; už existuje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message" xml:space="preserve">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
-        <target/>
+        <target>Požadovaný názov súboru úryvku nie je platný. Názov súboru úryvku kickstart nesmie obsahovať lomítko (/) alebo začínať s bodkou (.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.details" xml:space="preserve">
         <source>Delete or rename the offending snippet from {0}</source>
-        <target/>
+        <target>Odstrániť alebo premenovať problémový úryvok z {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Snippet Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
         <source>delete snippet</source>
-        <target/>
+        <target>vymazať úryvok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
-        <target/>
+        <target>Nové systémy možno automaticky nainštalovať na základe ich ip adresy pridaním &lt;code&gt;{0}&lt;/code&gt; parametrov jadra pre automatickú inštaláciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
-        <target/>
+        <target>Možnosti profilu kickstart boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPartitionEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.updated" xml:space="preserve">
         <source>Kickstart profile package groups updated successfully.</source>
-        <target/>
+        <target>Skupiny balíkov profilu kickstart boli úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation.schedule_pkg_install" xml:space="preserve">
         <source>Schedule a package install for activation key</source>
-        <target/>
+        <target>Naplánovať inštaláciu balíka pre aktivačný kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation.schedule_deploy" xml:space="preserve">
         <source>Schedule a config deploy for activation key</source>
-        <target/>
+        <target>Naplánovať nasadenie konfigurácie pre aktivačný kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.mtime_upload" xml:space="preserve">
         <source>Upload config file data based upon mtime to server</source>
-        <target/>
+        <target>Nahrať údaje konfiguračného súboru založené na mtime na server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="script.run" xml:space="preserve">
         <source>Run an arbitrary script</source>
-        <target/>
+        <target>Spustiť ľubovoľný skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhnsd.configure" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daemon Configuration</source>
-        <target/>
+        <target>Konfigurácia démonov @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.verify" xml:space="preserve">
         <source>Verify deployed packages</source>
-        <target/>
+        <target>Overiť nasadené balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhn_applet.use_satellite" xml:space="preserve">
         <source>Allows for rhn-applet use with an @@PRODUCT_NAME@@</source>
-        <target/>
+        <target>Umožňuje použitie rhn-applet s @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.rollback" xml:space="preserve">
         <source>Rollback a transaction</source>
-        <target/>
+        <target>Vrátiť späť transakciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="action.failedlink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systém&lt;/a&gt;&lt;/strong&gt; zlyhal pri dokončení tejto akcie.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">
@@ -2565,7 +2606,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.failedlink.plural" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systémov&lt;/a&gt;&lt;/strong&gt; zlyhalo pri dokončení tejto akcie.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
           <context context-type="paramnotes">
@@ -2575,7 +2616,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.completelink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systém&lt;/a&gt;&lt;/strong&gt; úspešne dokončil túto akciu.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">
@@ -2585,7 +2626,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.completelink.plural" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systémov&lt;/a&gt;&lt;/strong&gt; úspešne dokončilo túto akciu.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
           <context context-type="paramnotes">
@@ -2595,7 +2636,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.name" xml:space="preserve">
         <source>Patch Update: {0} - {1}</source>
-        <target/>
+        <target>Aktualizácia opráv: {0} - {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
@@ -2603,7 +2644,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errata.swstack" xml:space="preserve">
         <source>Patch Update: Combined update for the software update stack ({0} patches)</source>
-        <target/>
+        <target>Aktualizácia opráv: Kombinovaná aktualizácia zásobníka aktualizácií softvéru ({0} opráv)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: combined software stack update (4 errata)</context>
@@ -2611,7 +2652,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errata.schedule" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; aktualizácia opráv bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2619,7 +2660,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errata.schedule.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; aktualizácia opráv bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2627,7 +2668,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errataconfirm.schedule" xml:space="preserve">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
-        <target/>
+        <target>Oprava &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; bola &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;naplánovaná&lt;/a&gt; pre &lt;strong&gt;{1}&lt;/strong&gt; systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
@@ -2635,7 +2676,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural" xml:space="preserve">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
-        <target/>
+        <target>Oprava &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; bola &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;naplánovaná&lt;/a&gt; pre &lt;strong&gt;{1}&lt;/strong&gt; systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>

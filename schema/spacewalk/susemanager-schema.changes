@@ -1,3 +1,6 @@
+- Add support for custom SSH port for SSH minions
+- Fix changing of existing proxy path
+- Add pillars to Apply States action
 - require postgresql14 on SLE15 SP4
 
 -------------------------------------------------------------------

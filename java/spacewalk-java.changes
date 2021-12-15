@@ -1,3 +1,14 @@
+- provide static configuration key name for SSHMinionActionExecutor
+  parallel threads
+- Add link to the original vendor advisory in the patch details page
+- fix issue with empty action chains getting deleted too early (bsc#1191377)
+- Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
+- Add additional matchers to package (nevra) filter
+- Add greater equals matcher to package (nevra) filter
+- Add support for custom SSH port for SSH minions
+- UI and API call for changing proxy
+- Use an 'allow' filter for the kernel packages with live patching
+  filter templates (bsc#1191460)
 - require postgresql14 on SLE15 SP4
 
 -------------------------------------------------------------------

@@ -28,6 +28,11 @@ public class MinionActionChainCleanup extends RhnJavaJob {
 
     private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
 
+    @Override
+    public String getConfigNamespace() {
+        return "minion_actionchain_cleanup";
+    }
+
     /**
      * @param context the job execution context
      * @see org.quartz.Job#execute(JobExecutionContext)

@@ -38,6 +38,11 @@ import java.util.Set;
  */
 public class SummaryPopulation extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "summary_population";
+    }
+
     /**
      * {@inheritDoc}
      */

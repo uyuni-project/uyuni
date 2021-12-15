@@ -951,6 +951,25 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Update the {@link ActionStatus} to "PickedUp" of several rhnServerAction rows identified
+     * by server and action IDs.
+     *
+     * @param actionIn associated action of rhnServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     */
+    public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
+        if (log.isDebugEnabled()) {
+            log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
+                    " is going to b set for these servers: " + serverIds);
+        }
+        Map<String, Object>  parameters = new HashMap<String, Object>();
+        parameters.put("action_id", actionIn.getId());
+        parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
+
+        udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
+    }
+
+    /**
      * Update the status of several rhnServerAction rows identified by server and action IDs.
      * @param actionIn associated action of rhnServerAction records
      * @param serverIds server Ids for which action is scheduled

@@ -41,6 +41,15 @@ public class ServerPath extends BaseDomainHelper {
     }
 
     /**
+     * @param positionIn the server position in the path chain
+     * @param hostnameIn the hostname of the server
+     */
+    public ServerPath(Long positionIn, String hostnameIn) {
+        this.position = positionIn;
+        this.hostname = hostnameIn;
+    }
+
+    /**
      * Gets the id.
      *
      * @return the id

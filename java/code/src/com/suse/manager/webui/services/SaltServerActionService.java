@@ -333,7 +333,8 @@ public class SaltServerActionService {
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
-            return applyStatesAction(minions, actionDetails.getMods(), actionDetails.isTest());
+            return applyStatesAction(minions, actionDetails.getMods(),
+                                     actionDetails.getPillarsMap(), actionDetails.isTest());
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
@@ -563,7 +564,7 @@ public class SaltServerActionService {
                 List<Long> succeededServerIds = results.get(true).stream()
                         .map(MinionSummary::getServerId).collect(toList());
                 if (!succeededServerIds.isEmpty()) {
-                    ActionFactory.updateServerActions(actionIn, succeededServerIds, ActionFactory.STATUS_PICKED_UP);
+                    ActionFactory.updateServerActionsPickedUp(actionIn, succeededServerIds);
                 }
                 List<Long> failedServerIds  = results.get(false).stream()
                         .map(MinionSummary::getServerId).collect(toList());
@@ -1343,9 +1344,10 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
-            List<MinionSummary> minionSummaries, List<String> mods, boolean test) {
+            List<MinionSummary> minionSummaries, List<String> mods,
+            Optional<Map<String, Object>> pillar, boolean test) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, Optional.empty(), Optional.of(true),
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true),
                 test ? Optional.of(test) : Optional.empty()), minionSummaries);
         return ret;
     }

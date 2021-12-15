@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"POT-Creation-Date: 2021-12-11 11:51+0100\n"
 "PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -401,7 +401,8 @@ msgstr "požadovaný"
 #: ../html/src/components/input/Password.stories.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:181
 #: ../html/src/manager/login/login.tsx:172
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:409
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:301
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:37
 msgid "Password"
 msgstr "Heslo"
@@ -1793,6 +1794,8 @@ msgstr "Akce byla "
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "scheduled"
 msgstr "naplánována"
@@ -2812,6 +2815,7 @@ msgstr "Cesta"
 #: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:402
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Activation Key"
 msgstr "Aktivační klíč"
 
@@ -2873,7 +2877,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-import.tsx:322
 #: ../html/src/manager/images/image-profile-edit.tsx:489
 #: ../html/src/manager/images/image-store-edit.tsx:203
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:280
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:291
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:209
 msgid "Clear fields"
 msgstr "Vymazat pole"
@@ -4488,7 +4492,7 @@ msgstr ""
 "Každý systém registrovaný tímto aktivačním klíčem bude předplacen vybraným "
 "podřízeným kanálům."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:209
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:220
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4496,40 +4500,40 @@ msgstr ""
 "Žádost přerušena nebo ze serveru přijata neplatná odpověď. Zkontrolujte, zda "
 "byl váš sledující klient správně zaveden."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:238
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:249
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "Hostitel byl úspěšně spuštěn! Váš systém by se měl objevit v"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:251
 msgid "systems"
 msgstr "systémy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:253
 msgid "shortly"
 msgstr "krátce"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:260
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:271
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "Váš systém se zavádí: čekám na odpověď.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:264
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:275
 msgid "Loading SSH Private Key.."
 msgstr "Načítání privátního klíče SSH.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:272
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:283
 msgid "Bootstrap"
 msgstr "Zavést systém"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:297
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
 msgid "e.g., ••••••••••••"
 msgstr "např. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:306
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:317
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
 msgid "SSH Private Key"
 msgstr "Privátní klíč SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:312
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:323
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4537,19 +4541,19 @@ msgstr ""
 "Soubor bude uložen v dočasném souboru na serveru a bude odstraněn po "
 "proceduře zavedení systému"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:318
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
 msgid "SSH Private Key Passphrase"
 msgstr "Heslo privátního klíče SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "Leave empty for no passphrase"
 msgstr "Není-li heslo, ponechte prázdné"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:346
 msgid "Bootstrap Minions"
 msgstr "Zavádění systémů u sledujících (minion) klientů"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4557,15 +4561,30 @@ msgstr ""
 "Můžete přidat systémy do správy pouze poskytnutím přihlašovacích údajů SSH. "
 "{0} připraví systém na dálku a registroje ho."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:351
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
+#, fuzzy
+msgid "Host"
+msgstr "Hostitelé"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "e.g., host.domain.com"
 msgstr "např. host.doman.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:370
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#, fuzzy
+msgid "SSH Port"
+msgstr "Port"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:381
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portů: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:389
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:386
+#, fuzzy
+msgid "User"
+msgstr "Uživatelé"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4577,22 +4596,50 @@ msgstr ""
 "'ssh_push_sudo_user' je 'root'. Tento uživatel je nastaven, až je během "
 "bootstrapu umístěn SSH klíč {0}."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:437
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:454
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+msgid "Authentication Method"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:448
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
+#: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Žádný"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#, fuzzy
+msgid "Reactivation Key"
+msgstr "Aktivační klíč"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
+msgid "Leave empty when no reactivation is wanted"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:473
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:497
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 "Hostitelský název proxy není plně kvalifikován. To může způsobit problémy "
 "při přístupu ke kanálům."
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+msgid "Disable SSH strict host key checking during bootstrap process"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:530
+msgid "Manage system completely via SSH (will not install an agent)"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
+#, fuzzy
+msgid ""
+"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
 
 #: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4614,6 +4661,29 @@ msgstr "Během mazání došlo k chybě"
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
 msgid "Confirm Deletion"
 msgstr "Potvrdit odstranění"
+
+#: ../html/src/manager/systems/proxy.tsx:42
+msgid "Please select a list of minions (not proxies or traditional clients)."
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:67
+msgid "Change of proxy server has been "
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:101
+#: ../html/src/manager/systems/proxy.tsx:117
+#, fuzzy
+msgid "Change Proxy"
+msgstr "Změny"
+
+#: ../html/src/manager/systems/proxy.tsx:117
+msgid "Connect minion(s) to another proxy server."
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:120
+#, fuzzy
+msgid "New Proxy"
+msgstr "Proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21

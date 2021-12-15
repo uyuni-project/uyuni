@@ -39,6 +39,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ForwardRegistrationTask extends RhnJavaJob {
 
     @Override
+    public String getConfigNamespace() {
+        return "forward_registration";
+    }
+
+    @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
             log.debug("Forwarding registrations disabled");

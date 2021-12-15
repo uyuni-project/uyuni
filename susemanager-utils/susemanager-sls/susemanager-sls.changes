@@ -1,5 +1,8 @@
 - Fix errors on calling sed -E ... by force_restart_minion
   with action chains
+- Fix problem installing/removing packages using action chains
+  in transactional systems
+- Add state for changing proxy
 - Enable basic support for Debian 11
 
 -------------------------------------------------------------------

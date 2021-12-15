@@ -28,6 +28,11 @@ import java.util.HashMap;
  */
 public class ChangeLogCleanUp extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "changelog_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

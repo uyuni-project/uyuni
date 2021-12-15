@@ -1,3 +1,6 @@
+- Add support for custom SSH port for SSH minions
+- UI for changing proxy
+
 -------------------------------------------------------------------
 Fri Dec 03 12:30:08 CET 2021 - jgonzalez@suse.com
 

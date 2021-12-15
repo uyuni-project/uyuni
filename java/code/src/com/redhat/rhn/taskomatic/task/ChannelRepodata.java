@@ -36,6 +36,11 @@ public class ChannelRepodata extends RhnQueueJob {
     }
 
     @Override
+    public String getConfigNamespace() {
+        return "channel_repodata";
+    }
+
+    @Override
     protected Class getDriverClass() {
         return ChannelRepodataDriver.class;
     }
