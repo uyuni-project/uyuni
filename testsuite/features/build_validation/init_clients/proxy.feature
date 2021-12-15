@@ -17,6 +17,7 @@ Feature: Setup SUSE Manager proxy
     # uncomment when product is out:
     # When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
+    And I allow all SSL protocols on the proxy's apache
     And I let squid use avahi on the proxy
 
   Scenario: Log in as admin user
