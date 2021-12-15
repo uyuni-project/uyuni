@@ -1379,7 +1379,7 @@
       </trans-unit>
       <trans-unit id="Organization Applicants" xml:space="preserve">
         <source>Organization Applicants</source>
-        <target>Žiadatelia organizácie</target>
+        <target>Žiadatelia o organizáciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -2754,70 +2754,70 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="org_applicant" xml:space="preserve">
         <source>Organization Applicant</source>
-        <target/>
+        <target>Žiadateľ o organizáciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel_admin" xml:space="preserve">
         <source>Channel Administrator</source>
-        <target/>
+        <target>Administrátor kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="coma_admin" xml:space="preserve">
         <source>Coma CMS Administrator</source>
-        <target/>
+        <target>Administrátor Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="coma_author" xml:space="preserve">
         <source>Coma CMS Author</source>
-        <target/>
+        <target>Autor Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="coma_publisher" xml:space="preserve">
         <source>Coma CMS Publisher</source>
-        <target/>
+        <target>Vydavateľ Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhn_support" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Support Administrator</source>
-        <target/>
+        <target>Administrátor podpory @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config_admin" xml:space="preserve">
         <source>Configuration Administrator</source>
-        <target/>
+        <target>Administrátor konfigurácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="monitoring_admin" xml:space="preserve">
         <source>Monitoring Administrator</source>
-        <target/>
+        <target>Administrátor monitorovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_group_admin" xml:space="preserve">
         <source>System Group Administrator</source>
-        <target/>
+        <target>Administrátor systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation_key_admin" xml:space="preserve">
         <source>Activation Key Administrator</source>
-        <target/>
+        <target>Administrátor aktivačných kľúčov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
