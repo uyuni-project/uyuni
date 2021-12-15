@@ -57,6 +57,11 @@ public class AutoErrataTask extends RhnJavaJob {
 
     private Queue<Action> actionsToSchedule = new LinkedList<>();
 
+    @Override
+    public String getConfigNamespace() {
+        return "auto_errata";
+    }
+
     /**
      * {@inheritDoc}
      */

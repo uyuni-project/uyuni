@@ -41,6 +41,11 @@ public class MgrSyncRefresh extends RhnJavaJob {
 
     private static final String NO_REPO_SYNC_KEY = "noRepoSync";
 
+    @Override
+    public String getConfigNamespace() {
+        return "mgrsyncrefresh";
+    }
+
     /**
      * {@inheritDoc}
      * @throws JobExecutionException in case of errors during mgr-inter-sync execution

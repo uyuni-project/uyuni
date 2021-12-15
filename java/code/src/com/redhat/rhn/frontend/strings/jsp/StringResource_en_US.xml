@@ -4348,6 +4348,12 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve">
+        <source>Vendor Advisory</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="details.jsp.none" xml:space="preserve">
         <source>&lt;span class="no-details"&gt;(none)&lt;/span&gt;</source>
         <context-group name="ctx">

@@ -27,6 +27,11 @@ import java.util.Date;
  */
 public class CVEServerChannels extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "cve_server_channels";
+    }
+
     /**
      * @param context the job execution context
      * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)

@@ -1,3 +1,5 @@
+- add migration for changed rhn.conf values
+
 -------------------------------------------------------------------
 Fri Nov 05 13:37:55 CET 2021 - jgonzalez@suse.com
 
