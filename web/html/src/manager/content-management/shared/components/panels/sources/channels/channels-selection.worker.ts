@@ -2,22 +2,22 @@
  * NB! Workers must import polyfills
  * If we want to use more workers in the future, using a dedicated library such as Comlink or something similar might make sense
  */
-//
 import "manager/polyfills.ts";
 
 import WorkerMessages from "./channels-selection-messages";
 import { isBaseChannel } from "core/channels/type/channels.type";
 import { rawChannelsToDerivedChannels } from "./channels-selection-transforms";
-import State, { StateChange } from "./channels-selection-state";
+import ChannelProcessor, { WorkerPayload } from "./channels-processor";
 
 // eslint-disable-next-line no-restricted-globals
 const context: Worker = self as any;
 
-const state = new State();
+const state = new ChannelProcessor();
 
-// Respond to message from parent thread
+// React to messages from parent thread
 context.addEventListener("message", async ({ data }) => {
-  let stateChange: StateChange = {};
+  let payload: WorkerPayload = {};
+
   switch (data.type) {
     // The worker can't currently integrate with our network layer due to its reliance on jQuery, in the future the worker could do the request itself
     case WorkerMessages.SET_CHANNELS: {
@@ -30,7 +30,7 @@ context.addEventListener("message", async ({ data }) => {
         data.channels,
         data.mandatoryChannelsMap
       );
-      stateChange = {
+      payload = {
         baseChannels,
         channelsMap,
         requiresMap,
@@ -45,7 +45,7 @@ context.addEventListener("message", async ({ data }) => {
       if (typeof search !== "string") {
         throw new TypeError("No search string");
       }
-      stateChange = { search };
+      payload = { search };
       break;
     }
     case WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID: {
@@ -53,7 +53,7 @@ context.addEventListener("message", async ({ data }) => {
       if (typeof selectedBaseChannelId !== "number" || isNaN(selectedBaseChannelId)) {
         throw new TypeError("No base channel id");
       }
-      stateChange = { selectedBaseChannelId, select: [selectedBaseChannelId], open: [selectedBaseChannelId] };
+      payload = { selectedBaseChannelId, select: [selectedBaseChannelId], open: [selectedBaseChannelId] };
       break;
     }
     case WorkerMessages.SET_ACTIVE_FILTERS: {
@@ -61,7 +61,7 @@ context.addEventListener("message", async ({ data }) => {
       if (!Array.isArray(activeFilters)) {
         throw new TypeError("No valid active filters");
       }
-      stateChange = { activeFilters };
+      payload = { activeFilters };
       break;
     }
     case WorkerMessages.TOGGLE_IS_CHANNEL_OPEN: {
@@ -70,9 +70,9 @@ context.addEventListener("message", async ({ data }) => {
         throw new TypeError("Channel not found");
       }
       if (state.isOpen(channelId)) {
-        stateChange = { close: [channelId] };
+        payload = { close: [channelId] };
       } else {
-        stateChange = { open: [channelId] };
+        payload = { open: [channelId] };
       }
       break;
     }
@@ -84,15 +84,15 @@ context.addEventListener("message", async ({ data }) => {
       }
 
       if (state.isSelected(channelId)) {
-        stateChange.deselect = [channelId];
+        payload.deselect = [channelId];
       } else {
-        stateChange.select = [channelId];
+        payload.select = [channelId];
         // If we selected a parent on the first level, also select all recommended children
         const channel = state.channelsMap.get(channelId);
         if (isBaseChannel(channel)) {
           channel.children.forEach((child) => {
             if (child.recommended) {
-              stateChange.select?.push(child.id);
+              payload.select?.push(child.id);
             }
           });
         }
@@ -107,11 +107,11 @@ context.addEventListener("message", async ({ data }) => {
       }
 
       if (data.selected) {
-        stateChange.select = [];
-        channel.recommendedChildrenIds.forEach((id) => stateChange.select?.push(id));
+        payload.select = [];
+        channel.recommendedChildrenIds.forEach((id) => payload.select?.push(id));
       } else {
-        stateChange.deselect = [];
-        channel.recommendedChildrenIds.forEach((id) => stateChange.deselect?.push(id));
+        payload.deselect = [];
+        channel.recommendedChildrenIds.forEach((id) => payload.deselect?.push(id));
       }
       break;
     }
@@ -119,13 +119,14 @@ context.addEventListener("message", async ({ data }) => {
       throw new RangeError(`Unknown message type, got ${data.type}`);
   }
 
-  // Convert whatever we have remaining after all the filters etc into row definitions and related info and pass to the main thread
-  const change = state.resolveChange(stateChange);
-  if (typeof change === "undefined") {
-    // If there's no result because some data isn't available yet, do nothing
+  const result = state.produceViewFrom(payload);
+  if (!result) {
+    // If we're still missing some data to produce a result, do nothing
     return;
   }
-  const { rows, selectedChannelsCount, selectedChannelLabels } = change;
+
+  // Apply filters, search etc and convert whatever we have remaining into row definitions and related info and pass to the main thread
+  const { rows, selectedChannelsCount, selectedChannelLabels } = result;
   context.postMessage({
     type: WorkerMessages.STATE_CHANGED,
     rows,

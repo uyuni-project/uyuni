@@ -1,6 +1,6 @@
 import { RawChannelType, ServerChannelType } from "core/channels/type/channels.type";
-import State from "./channels-selection-state";
-import { rawChannelsToDerivedChannels, derivedChannelsToRowDefinitions } from "./channels-selection-transforms";
+import ChannelProcessor from "./channels-processor";
+import { rawChannelsToDerivedChannels } from "./channels-selection-transforms";
 
 let mockServerChannelId = 0;
 const getMockServerChannel = (partial: Partial<ServerChannelType> = {}): ServerChannelType => {
@@ -18,7 +18,7 @@ const getMockServerChannel = (partial: Partial<ServerChannelType> = {}): ServerC
   return Object.assign(mockServerChannel, partial);
 };
 
-describe("channels selection data transforms", () => {
+describe("channels selection", () => {
   const PARENT_ID = 1000;
   const CHILD_A_ID = 1001;
   const CHILD_B_ID = 1002;
@@ -97,35 +97,27 @@ describe("channels selection data transforms", () => {
     });
   });
 
-  describe("State", () => {
-    // TODO: Test this separately
-    const derivedChannels = rawChannelsToDerivedChannels(rawChannels, rawRequiresMap);
-
-    test("works on empty data", () => {
-      const rows = derivedChannelsToRowDefinitions([], new State());
-      expect(rows).toEqual([]);
-    });
-  });
-
-  // TODO: Move to a separate file
-  describe("State", () => {
-    test("renders nothing when no base selection has been made", () => {
-      const state = new State();
-      const result = state.resolveChange(rawChannelsToDerivedChannels(rawChannels, rawRequiresMap));
+  describe("ChannelProcessor", () => {
+    test("returns nothing when no base selection has been made", () => {
+      const state = new ChannelProcessor();
+      const result = state.produceViewFrom(rawChannelsToDerivedChannels(rawChannels, rawRequiresMap));
       expect(result).toEqual(undefined);
     });
 
-    test("renders nothing when no channels are present", () => {
-      const state = new State();
-      const result = state.resolveChange({ selectedBaseChannelId: PARENT_ID });
+    test("returns nothing when no channels are present", () => {
+      const state = new ChannelProcessor();
+      const result = state.produceViewFrom({ selectedBaseChannelId: PARENT_ID });
       expect(result).toEqual(undefined);
     });
 
-    test("yields a row for each base channel", () => {
-      const state = new State();
-      state.resolveChange(rawChannelsToDerivedChannels(rawChannels, rawRequiresMap));
-      const result = state.resolveChange({ selectedBaseChannelId: PARENT_ID });
-      expect(result?.rows.length).toBeGreaterThanOrEqual(rawChannels.length);
+    test("returns a row for each base channel", () => {
+      const state = new ChannelProcessor();
+      const firstResult = state.produceViewFrom(rawChannelsToDerivedChannels(rawChannels, rawRequiresMap));
+      expect(firstResult).toEqual(undefined);
+
+      const secondResult = state.produceViewFrom({ selectedBaseChannelId: PARENT_ID });
+      expect(secondResult).not.toEqual(undefined);
+      expect(secondResult?.rows.length).toBeGreaterThanOrEqual(rawChannels.length);
     });
   });
 });

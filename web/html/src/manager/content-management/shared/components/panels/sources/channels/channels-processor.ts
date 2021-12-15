@@ -1,11 +1,8 @@
-import produce from "utils/produce";
-
 import { DerivedBaseChannel, DerivedChannel, isBaseChannel, isChildChannel } from "core/channels/type/channels.type";
 
-import { channelsFiltersAvailable } from "./channels-filters-types";
-import { derivedChannelsToRowDefinitions } from "./channels-selection-transforms";
+import { derivedChannelsToRowDefinitions, filterBaseChannels } from "./channels-processor-transforms";
 
-export type StateChange = Partial<State> & {
+export type WorkerPayload = Partial<ChannelProcessor> & {
   // Since selection-deselection involves resolving required channels etc, they have special handling
   select?: number[];
   deselect?: number[];
@@ -13,7 +10,7 @@ export type StateChange = Partial<State> & {
   close?: number[];
 };
 
-export default class State {
+export default class ChannelProcessor {
   /** An array of all base channels after they've passed initial processing */
   baseChannels: DerivedBaseChannel[] | undefined = undefined;
   /** A map from a channel id to any known channel */
@@ -33,67 +30,26 @@ export default class State {
   /** User-selected filters such as vendors, custom, clones */
   activeFilters: string[] = [];
 
-  // TODO: A better name for this? `mergeState`? `onChange`?
-  // Whenever we receive new inputs or data, compute and return an updated result
-  resolveChange = (stateChange: StateChange = {}) => {
-    const { select, deselect, open, close, ...rest } = stateChange;
-    Object.assign(this, rest);
+  /** Ingest new data if any is available, then produce a projection of the existing data */
+  produceViewFrom = (payload: WorkerPayload = {}) => {
+    // If there's any new data available, store it internally
+    this.ingest(payload);
 
-    // If we don't have channels or a selected base channel id yet, there's nothing to do
+    // If we don't have channels or a selected base channel id yet, there's nothing else to do
     if (typeof this.baseChannels === "undefined" || typeof this.selectedBaseChannelId === "undefined") {
       return;
     }
 
     /**
      * If channels changed or the chosen base channel has changed, ensure channels are properly sorted
-     * We store the sorting and only do this on changes so we don't resort for other basic operations
+     * The sorting is stored and only updated on changes so we don't resort for other basic operations
      */
-    if (typeof stateChange.baseChannels !== "undefined" || typeof stateChange.selectedBaseChannelId !== "undefined") {
+    if (typeof payload.baseChannels !== "undefined" || typeof payload.selectedBaseChannelId !== "undefined") {
       this.baseChannels = this.sortChannels(this.baseChannels);
     }
 
-    /**
-     * This object wrap-unwrap is only required so we can filter and modify the draft in immer at the same time.
-     * Immer doesn't allow you to return a new draft value and modify the draft at the same time since it's usually a bug.
-     */
-    const { baseChannels } = produce({ baseChannels: this.baseChannels }, (draft): void => {
-      // Filter by categories and search strings first if possible so everything else is cheaper
-      if (this.activeFilters.length) {
-        const filters = this.activeFilters.map((name) => channelsFiltersAvailable[name].isVisible);
-        draft.baseChannels = draft.baseChannels.filter((channel) => {
-          return filters.some((filter) => filter(channel));
-        });
-      }
-
-      if (this.search) {
-        const search = this.search.toLocaleLowerCase();
-        draft.baseChannels = draft.baseChannels.filter((channel) => {
-          // NB! We filter the children as a side-effect here, sorry
-          channel.children = channel.children.filter((child) => {
-            console.log(child.standardizedName, child);
-            return child.standardizedName.includes(search);
-          });
-          // If the base channel name matches search or we have any children left after the above, include the base channel
-          const matchesSearch = channel.standardizedName.includes(search) || channel.children.length > 0;
-
-          // If the search _changed_ then open base channels that match, otherwise leave user's selection be
-          if (typeof stateChange.search !== "undefined") {
-            if (matchesSearch) {
-              this.openBaseChannelIds.add(channel.id);
-            } else {
-              this.openBaseChannelIds.delete(channel.id);
-            }
-          }
-
-          return matchesSearch;
-        });
-      } else if (typeof stateChange.search !== "undefined") {
-        // If the search was cleared, close all base channels
-        this.openBaseChannelIds.clear();
-      }
-    });
-
     // Update selections and open-close states
+    const { select, deselect, open, close } = payload;
     if (typeof select !== "undefined") {
       select.forEach((channelId) => this.selectRecursively(this.channelsMap.get(channelId)));
     }
@@ -107,7 +63,8 @@ export default class State {
       close.forEach((channelId) => this.openBaseChannelIds.delete(channelId));
     }
 
-    const rows = derivedChannelsToRowDefinitions(baseChannels, this);
+    const filteredBaseChannels = this.filterBaseChannels(this.baseChannels, payload.search);
+    const rows = this.derivedChannelsToRowDefinitions(filteredBaseChannels);
     const sortedSelectedChannels = this.sortChannels(Array.from(this.selectedChannels));
 
     return {
@@ -127,6 +84,14 @@ export default class State {
   isOpen = (channelId: number) => {
     return this.openBaseChannelIds.has(channelId);
   };
+
+  private filterBaseChannels = filterBaseChannels.bind(this);
+  private derivedChannelsToRowDefinitions = derivedChannelsToRowDefinitions.bind(this);
+
+  private ingest(payload: WorkerPayload = {}) {
+    const { select, deselect, open, close, ...rest } = payload;
+    Object.assign(this, rest);
+  }
 
   /** Resolve and select all channels that are required along with this channel */
   private selectRecursively = (channel?: DerivedChannel) => {

@@ -5,6 +5,8 @@ import { RawChannelType } from "core/channels/type/channels.type";
 
 type ChannelsResponse = RawChannelType[];
 
+const pageSize = window.userPrefPageSize || 15;
+
 const useChannelsApi = () => {
   const [channelsPromise, setChannelsPromise] = useState<Promise<ChannelsResponse> | undefined>(undefined);
   if (channelsPromise) {
@@ -21,13 +23,11 @@ const useChannelsApi = () => {
   return [promise];
 };
 
-const pageSize = window.userPrefPageSize || 15;
-
-// TODO: Move this to a worker too or to the server instead
+// If needed, this could also be moved to a worker, or to the server instead
 export const useLoadSelectOptions = () => {
   const [channelsPromise] = useChannelsApi();
 
-  const loadSelectOptions = async (searchString: string, previouslyLoaded: RawChannelType[]) => {
+  const loadSelectOptions = async (searchString: string, previouslyLoaded: ChannelsResponse) => {
     const rawChannels = await channelsPromise;
 
     const offset = previouslyLoaded.length;
@@ -62,7 +62,7 @@ export const useChannelsWithMandatoryApi = () => {
   }
 
   const promise = channelsPromise.then((channels) => {
-    const channelIds = (channels as RawChannelType[]).reduce((ids, channel) => {
+    const channelIds = channels.reduce((ids, channel) => {
       ids.push(channel.base.id, ...channel.children.map((child) => child.id));
       return ids;
     }, [] as number[]);

@@ -1,8 +1,5 @@
 import { DerivedBaseChannel, DerivedChannel, RawChannelType } from "core/channels/type/channels.type";
-import { RowDefinition, RowType } from "./channels-selection-rows";
-import State from "./channels-selection-state";
 
-// TODO: Add tests
 export function rawChannelsToDerivedChannels(
   rawChannels: RawChannelType[],
   rawRequiresMap: { [key: string]: number[] | undefined }
@@ -64,82 +61,4 @@ export function rawChannelsToDerivedChannels(
   }
 
   return { baseChannels, channelsMap, requiresMap, requiredByMap };
-}
-
-const getTooltipData = (channelId: number, state: State) => {
-  const [requiresNames, requiredByNames] = [state.requiresMap.get(channelId), state.requiredByMap.get(channelId)].map(
-    (maybeSet) =>
-      Array.from(maybeSet || [])
-        .filter(Boolean)
-        .map((channel) => channel.name)
-  );
-  return {
-    requiresNames,
-    requiredByNames,
-  };
-};
-
-// TODO: Add tests
-export function derivedChannelsToRowDefinitions(derivedChannels: DerivedBaseChannel[], state: State): RowDefinition[] {
-  // TODO: Here and elsewhere, this reduce can become just a regular for loop if we want to go faster
-  return derivedChannels.reduce((result, channel) => {
-    // TODO: Either is open or matches search
-    const isOpen = state.isOpen(channel.id);
-    const isSelected = state.isSelected(channel.id);
-
-    // We need to figure out what state the children are in before we can store the parent state
-    let children: RowDefinition[] = [];
-    let selectedChildrenCount = 0;
-    let recommendedChildrenCount = 0;
-    let selectedRecommendedChildrenCount = 0;
-    const parentRequires = state.requiresMap.get(channel.id);
-    if (channel.children.length) {
-      channel.children.forEach((child) => {
-        const isChildSelected = state.isSelected(child.id);
-        selectedChildrenCount += Number(isChildSelected);
-        const isChildRecommended = child.recommended;
-        recommendedChildrenCount += Number(isChildRecommended);
-        selectedRecommendedChildrenCount += Number(isChildSelected && isChildRecommended);
-
-        if (isOpen) {
-          // const tooltip
-          children.push({
-            type: RowType.Child,
-            id: child.id,
-            channelName: child.name,
-            isSelected: isChildSelected,
-            isRequired: Boolean(parentRequires?.has(child)),
-            isRecommended: child.recommended,
-            tooltipData: getTooltipData(child.id, state),
-          });
-        }
-      });
-    } else if (isOpen) {
-      children.push({
-        type: RowType.EmptyChild,
-        id: `empty_child_${channel.id}`,
-      });
-    }
-
-    result.push({
-      type: RowType.Parent,
-      id: channel.id,
-      channelName: channel.name,
-      isOpen,
-      isSelected,
-      isSelectedBaseChannel: channel.id === state.selectedBaseChannelId,
-      selectedChildrenCount,
-    });
-    if (isOpen && recommendedChildrenCount) {
-      result.push({
-        type: RowType.RecommendedToggle,
-        id: `recommended_toggle_${channel.id}`,
-        channelId: channel.id,
-        areAllRecommendedChildrenSelected: recommendedChildrenCount === selectedRecommendedChildrenCount,
-      });
-    }
-    result.push(...children);
-
-    return result;
-  }, [] as RowDefinition[]);
 }

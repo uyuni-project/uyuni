@@ -14,7 +14,7 @@ import BaseChannel from "./base-channel";
 import ChildChannel from "./child-channel";
 import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
-import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-selection-api";
+import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-api";
 import { RowType, RowDefinition } from "./channels-selection-rows";
 import EmptyChild from "./empty-child";
 
