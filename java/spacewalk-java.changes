@@ -1,3 +1,4 @@
+- forward registration data to SUSE Customer Center
 - Run Prometheus JMX exporter as Java agent (bsc#1184617)
 - Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
 - Fix package update action with shared channels (bsc#1191313)
