@@ -39,6 +39,11 @@ public class GathererJob extends RhnJavaJob {
 
     public static final String VHM_LABEL = "vhmLabel";
 
+    @Override
+    public String getConfigNamespace() {
+        return "gatherer";
+    }
+
     /**
      * {@inheritDoc}
      */

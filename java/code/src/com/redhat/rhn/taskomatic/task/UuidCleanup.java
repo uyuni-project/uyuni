@@ -29,6 +29,11 @@ import java.util.HashMap;
  */
 public class UuidCleanup extends RhnJavaJob {
 
+    @Override
+    public String getConfigNamespace() {
+        return "uuid_cleanup";
+    }
+
     /**
      * {@inheritDoc}
      */

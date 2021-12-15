@@ -35,6 +35,11 @@ public class MinionCheckin extends RhnJavaJob {
 
     private SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
+    @Override
+    public String getConfigNamespace() {
+        return "minion_checkin";
+    }
+
     /**
      * @param context the job execution context
      * @see org.quartz.Job#execute(JobExecutionContext)

@@ -46,6 +46,16 @@ public class MinionActionExecutor extends RhnJavaJob {
 
     private SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
 
+    @Override
+    public int getDefaultRescheduleTime() {
+        return 10;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_action_executor";
+    }
+
     /**
      * @param context the job execution context
      * @see org.quartz.Job#execute(JobExecutionContext)
