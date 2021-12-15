@@ -49,8 +49,6 @@ class Proxy extends React.Component<Props, State> {
   }
 
   proxyChanged = (event) => {
-    var proxyId = event.target.value;
-    var proxy = this.props.proxies.find((p) => p.id === proxyId);
     this.setState({
       proxy: event.target.value,
     });
