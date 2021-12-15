@@ -40,7 +40,7 @@ podman run --rm=true -dt --pod proxy-pod \
 	--name proxy-salt-broker \
 	$REGISTRY/proxy-salt-broker
 
-podman run --rm=true -dt --pod proxy-pod \
+podman run --rm=true -d --pod proxy-pod \
 	-v $CONFIG_DIR:/etc/uyuni \
 	-v $SQUID_CACHE_DIR:/var/cache/squid \
 	--name proxy-squid \
