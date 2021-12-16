@@ -45,7 +45,6 @@ module LavandaBasic
   end
 
   def private_ip
-    raise 'empty private_ip, something wrong' if @in_private_ip.empty?
     @in_private_ip
   end
 
@@ -55,7 +54,6 @@ module LavandaBasic
   end
 
   def private_interface
-    raise 'empty private_interface, something wrong' if @in_private_interface.empty?
     @in_private_interface
   end
 
