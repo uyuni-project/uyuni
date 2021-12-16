@@ -1,6 +1,8 @@
 #!BuildTag: proxy-salt-broker:latest proxy-salt-broker:%PKG_VERSION% proxy-salt-broker:%PKG_VERSION%.%RELEASE%
 
-FROM suse/sle15:15.3
+# HACK: Open Build Service currently only supports short names. Assume short name by default, allow to override to qualified name via ARG
+ARG BASE_IMAGE_PREFIX=
+FROM ${BASE_IMAGE_PREFIX}suse/sle15:15.3
 
 # Distro repos
 RUN zypper addrepo http://download.opensuse.org/distribution/leap/15.3/repo/oss/ main
