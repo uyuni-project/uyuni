@@ -33,7 +33,7 @@ COPY proxy/proxy/salt-broker/salt-broker /usr/bin/salt-broker
 RUN chmod +x /usr/bin/salt-broker
 COPY proxy/proxy/salt-broker/broker /etc/salt/broker
 
-COPY containers/proxy-salt-broker/uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY containers/proxy-salt-broker-image/uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 CMD uyuni-configure.py && salt-broker

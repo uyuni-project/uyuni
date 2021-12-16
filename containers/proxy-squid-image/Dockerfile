@@ -33,7 +33,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 
 COPY proxy/installer/squid.conf /etc/squid/squid.conf
 
-COPY containers/proxy-squid/uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY containers/proxy-squid-image/uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 CMD uyuni-configure.py && squid -z --foreground && squid -FC -d 1 --foreground
