@@ -37,7 +37,12 @@ sudo usermod --add-subgids 10000-75535 $(whoami)
 rm /run/user/$(id -u)/libpod/pause.pid
 ```
 
----
+
+## Building all images and pushing them to a registry
+
+```sh
+sh build-proxy.sh
+```
 
 In case you get into this other error while pulling:
 ```
@@ -49,16 +54,13 @@ denied: requested access to the resource is denied
 unauthorized: authentication required (edited)
 ```
 
-you are probably using an older `podman` version (2.1.1 for instance). Make sure you are on a newer version (3.4.4 for instance) you can download and install like the following:
+you are probably using an older `podman` version (2.1.1 for instance). Make sure you are on a newer version (3.4.4 for instance), remove all images and restart the build.
+
+On Leap 15.3:
 ```
 sudo zypper ar https://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_Leap_15.3/ virtualization_container
 sudo zypper install podman-3.4.4-lp153.2.2.x86_64
-```
-
-
-## Building all images and pushing them to a registry
-
-```sh
+podman rmi --all --force
 sh build-proxy.sh
 ```
 
