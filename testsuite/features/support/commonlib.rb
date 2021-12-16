@@ -101,9 +101,9 @@ end
 # the URL depends on whether we use a proxy or not
 def registration_url
   if $proxy.nil?
-    "https://#{$server.ip}/XMLRPC"
+    "https://#{$server.full_hostname}/XMLRPC"
   else
-    "https://#{$proxy.ip}/XMLRPC"
+    "https://#{$proxy.full_hostname}/XMLRPC"
   end
 end
 
