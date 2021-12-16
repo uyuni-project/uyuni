@@ -76,21 +76,21 @@ Feature: Sanity checks
   Scenario: The Ubuntu minion is healthy
     Then "ubuntu_minion" should have a FQDN
     And reverse resolution should work for "ubuntu_minion"
-    And "ubuntu_minion" should communicate with the server using "eth0"
+    And "ubuntu_minion" should communicate with the server using "ens3"
     And the clock from "ubuntu_minion" should be exact
 
 @virthost_kvm
   Scenario: The KVM host is healthy
     Then "kvm_server" should have a FQDN
     And reverse resolution should work for "kvm_server"
-    And "kvm_server" should communicate with the server using "eth0"
+    And "kvm_server" should communicate with the server using "br0"
     And the clock from "kvm_server" should be exact
 
 @virthost_xen
   Scenario: The Xen host is healthy
     Then "xen_server" should have a FQDN
     And reverse resolution should work for "xen_server"
-    And "xen_server" should communicate with the server using "eth0"
+    And "xen_server" should communicate with the server using "br0"
     And the clock from "xen_server" should be exact
 
   Scenario: The external resources can be reached

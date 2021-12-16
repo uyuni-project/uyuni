@@ -223,28 +223,28 @@ Feature: Sanity checks
   Scenario: The Ubuntu 18.04 Salt minion is healthy
     Then "ubuntu1804_minion" should have a FQDN
     And reverse resolution should work for "ubuntu1804_minion"
-    And "ubuntu1804_minion" should communicate with the server using "eth0"
+    And "ubuntu1804_minion" should communicate with the server using "ens3"
     And the clock from "ubuntu1804_minion" should be exact
 
 @ubuntu1804_ssh_minion
   Scenario: The Ubuntu 18.04 Salt SSH minion is healthy
     Then "ubuntu1804_ssh_minion" should have a FQDN
     And reverse resolution should work for "ubuntu1804_ssh_minion"
-    And "ubuntu1804_ssh_minion" should communicate with the server using "eth0"
+    And "ubuntu1804_ssh_minion" should communicate with the server using "ens3"
     And the clock from "ubuntu1804_ssh_minion" should be exact
 
 @ubuntu2004_minion
   Scenario: The Ubuntu 20.04 minion is healthy
     Then "ubuntu2004_minion" should have a FQDN
     And reverse resolution should work for "ubuntu2004_minion"
-    And "ubuntu2004_minion" should communicate with the server using "eth0"
+    And "ubuntu2004_minion" should communicate with the server using "ens3"
     And the clock from "ubuntu2004_minion" should be exact
 
 @ubuntu2004_ssh_minion
   Scenario: The Ubuntu 20.04 Salt SSH minion is healthy
     Then "ubuntu2004_ssh_minion" should have a FQDN
     And reverse resolution should work for "ubuntu2004_ssh_minion"
-    And "ubuntu2004_ssh_minion" should communicate with the server using "eth0"
+    And "ubuntu2004_ssh_minion" should communicate with the server using "ens3"
     And the clock from "ubuntu2004_ssh_minion" should be exact
 
 @debian9_minion
@@ -279,14 +279,14 @@ Feature: Sanity checks
   Scenario: The Debian 11 minion is healthy
     Then "debian11_minion" should have a FQDN
     And reverse resolution should work for "debian11_minion"
-    And "debian11_minion" should communicate with the server using "eth0"
+    And "debian11_minion" should communicate with the server using "ens3"
     And the clock from "debian11_minion" should be exact
 
 @debian11_ssh_minion
   Scenario: The Debian 11 Salt SSH minion is healthy
     Then "debian11_ssh_minion" should have a FQDN
     And reverse resolution should work for "debian11_ssh_minion"
-    And "debian11_ssh_minion" should communicate with the server using "eth0"
+    And "debian11_ssh_minion" should communicate with the server using "ens3"
     And the clock from "debian11_ssh_minion" should be exact
 
 @sle11sp4_buildhost
