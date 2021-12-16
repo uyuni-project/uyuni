@@ -9,7 +9,7 @@ IMAGES=(proxy-httpd proxy-salt-broker proxy-squid proxy-tftpd)
 for image in "${IMAGES[@]}"
 do
     echo "**** BUILDING $image ****"
-    podman build -f $image/Dockerfile --build-arg BASE_IMAGE_PREFIX=registry.suse.com/ -t $image -t $REGISTRY/$image ..
+    podman build -f $image-image/Dockerfile --build-arg BASE_IMAGE_PREFIX=registry.suse.com/ -t $image -t $REGISTRY/$image ..
 done
 
 for image in "${IMAGES[@]}"
