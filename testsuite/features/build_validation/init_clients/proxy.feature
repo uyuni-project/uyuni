@@ -83,6 +83,14 @@ Feature: Setup SUSE Manager proxy
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
+@proxy
+@private_net
+  Scenario: Parametrize the branch network
+    When I follow first "Branch Network" in the content area
+    And I uncheck enable route box
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
 @private_net
   Scenario: Let avahi work on the branch server
     When I open avahi port on the proxy
