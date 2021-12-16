@@ -325,6 +325,7 @@ def client_public_ip(host)
               else
                 raise "Unknown net interface for #{host}"
               end
+  node.init_public_interface(interface)
   output, code = node.run("ip address show dev #{interface} | grep 'inet '")
   raise 'Cannot resolve public ip' unless code.zero?
 
@@ -341,9 +342,8 @@ $nodes.each do |node|
   raise "Cannot resolve host for node: '#{node.hostname}'" if host.nil? || host == ''
 
   if ADDRESSES.key? host
-    node.init_ip(net_prefix + ADDRESSES[host])
-  else
-    node.init_ip(node.full_hostname)
+    node.init_private_ip(net_prefix + ADDRESSES[host])
+    node.init_private_interface('eth1')
   end
 
   ip = client_public_ip host

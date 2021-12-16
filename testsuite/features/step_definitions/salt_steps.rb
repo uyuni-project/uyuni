@@ -493,12 +493,6 @@ When(/^I press minus sign in (.*) section$/) do |section|
   find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
 end
 
-When(/^I check (.*) box$/) do |box|
-  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
-             'include forwarders'        => 'bind#config#include_forwarders' }
-  check boxids[box]
-end
-
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   node = get_target(minion)
   output, _code = node.run('date +%Z')
@@ -523,7 +517,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
+  $server.run("salt '#{$minion.full_hostname}' saltutil.refresh_pillar wait=True")
 end
 
 def pillar_get(key, minion)
