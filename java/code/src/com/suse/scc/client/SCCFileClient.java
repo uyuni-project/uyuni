@@ -14,14 +14,18 @@
  */
 package com.suse.scc.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
+
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCSystemCredentialsJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -93,6 +97,16 @@ public class SCCFileClient implements SCCClient {
             return getList("product_tree.json",
                     ProductTreeEntry.class);
         }
+    }
+
+    @Override
+    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
+            throws SCCClientException {
+        return null;
+    }
+
+    @Override
+    public void deleteSystem(long id, String username, String password) throws SCCClientException {
     }
 
     /**

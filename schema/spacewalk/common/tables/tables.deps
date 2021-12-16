@@ -269,6 +269,7 @@ suseProductChannel             :: suseProducts rhnChannel
 suseProductExtension           :: suseProducts
 suseProductSCCRepository       :: suseProducts suseSCCRepository
 suseSCCOrderItem               :: suseCredentials
+suseSCCRegCache                :: suseCredentials rhnServer
 suseSCCRepositoryAuth          :: suseCredentials rhnContentSource
 suseSCCSubscription            :: suseCredentials
 suseSCCSubscriptionProduct     :: suseSCCSubscription suseProducts

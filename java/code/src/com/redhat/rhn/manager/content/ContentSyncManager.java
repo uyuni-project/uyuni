@@ -2187,11 +2187,14 @@ public class ContentSyncManager {
     }
 
     /**
-     * Try to read this system's UUID from file or return a cached value. The UUID will
-     * be sent to SCC for debugging purposes.
+     * Try to read this system's UUID from file or return a cached value.
+     * When the system is not registered, the backup id is returned from rhn.conf
+     * When forwarding registrations to SCC, this ID identifies the proxy system
+     * which sent the registration
+     *
      * @return this system's UUID
      */
-    private String getUUID() {
+    public static String getUUID() {
         if (uuid == null) {
             BufferedReader reader = null;
             try {
@@ -2204,10 +2207,10 @@ public class ContentSyncManager {
                 }
             }
             catch (FileNotFoundException e) {
-                log.warn("Error reading UUID: " + e.getMessage());
+                log.info("Server not registered at SCC: " + e.getMessage());
             }
             catch (IOException e) {
-                log.warn("Error reading UUID: " + e.getMessage());
+                log.warn("Unable to read SCC credentials file: " + e.getMessage());
             }
             finally {
                 if (reader != null) {
@@ -2215,8 +2218,14 @@ public class ContentSyncManager {
                         reader.close();
                     }
                     catch (IOException e) {
-                        log.warn("Error reading UUID: " + e.getMessage());
+                        log.warn("IO exception on SCC credentials file: " + e.getMessage());
                     }
+                }
+            }
+            if (uuid == null) {
+                uuid = Config.get().getString(ConfigDefaults.SCC_BACKUP_SRV_USR);
+                if (uuid == null) {
+                    log.warn("WARNING: unable to read SCC username");
                 }
             }
         }

@@ -14,16 +14,28 @@
  */
 package com.redhat.rhn.domain.scc;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.server.Server;
+
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,15 +44,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -268,6 +276,23 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Store {@link SCCRegCacheItem} to the database.
+     * @param item regcache item
+     */
+    public static void saveRegCacheItem(SCCRegCacheItem item) {
+        item.setModified(new Date());
+        singleton.saveObject(item);
+    }
+
+    /**
+     * Delete {@link SCCRegCacheItem} from the database.
+     * @param item regcache item
+     */
+    public static void deleteRegCacheItem(SCCRegCacheItem item) {
+        singleton.removeObject(item);
+    }
+
+    /**
      * Clear all order items from the database assigne to the given
      * credentials
      * @param c the credentials
@@ -462,4 +487,98 @@ public class SCCCachingFactory extends HibernateFactory {
         singleton.removeObject(a);
     }
 
+    /**
+     * Initialize new systems to get forwarded to SCC
+     */
+    @SuppressWarnings("unchecked")
+    public static void initNewSystemsToForward() {
+
+        List<Server> newServer = getSession()
+                .getNamedQuery("SCCRegCache.newServersRequireRegistration")
+                .getResultList();
+        newServer.stream().forEach(s -> {
+            SCCRegCacheItem rci = new SCCRegCacheItem(s);
+            saveRegCacheItem(rci);
+            log.debug("New RegCacheItem saved: " + rci);
+        });
+    }
+
+    /**
+     * Returns registration items of systems which should be forwarded to SCC
+     *
+     * @return list of {@link SCCRegCacheItem}
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SCCRegCacheItem> findSystemsToForwardRegistration() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
+
+        return getSession().getNamedQuery("SCCRegCache.serversRequireRegistration")
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+                .getResultList();
+    }
+
+    /**
+     * Returns registration items of systems which should be de-registered from SCC
+     *
+     * @return list of {@link SCCRegCacheItem}
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SCCRegCacheItem> listDeregisterItems() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
+
+        return getSession().getNamedQuery("SCCRegCache.listDeRegisterItems")
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+                .getResultList();
+    }
+
+    /**
+     * Returns registration items of systems which were registered under the specified
+     * organization credentials
+     *
+     * @param cred the organization credential
+     * @return list of {@link SCCRegCacheItem}
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SCCRegCacheItem> listRegItemsByCredentials(Credentials cred) {
+
+        return getSession().getNamedQuery("SCCRegCache.listRegItemsByCredentials")
+                .setParameter("creds", cred)
+                .getResultList();
+    }
+
+    /**
+     * Lookup SCCRegCacheItem for a Server
+     * @param srv the Server
+     * @return optional SCCRegCacheItem
+     */
+    public static Optional<SCCRegCacheItem> lookupCacheItemByServer(Server srv) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRegCacheItem> select = builder.createQuery(SCCRegCacheItem.class);
+        Root<SCCRegCacheItem> root = select.from(SCCRegCacheItem.class);
+        select.where(builder.equal(root.get("server"), srv));
+        return getSession().createQuery(select).uniqueResultOptional();
+
+    }
+
+    /**
+     * Set SCC Registration Required Flag for a given server
+     * @param srv the server
+     * @param rereg status
+     */
+    public static void setReregRequired(Server srv, boolean rereg) {
+        lookupCacheItemByServer(srv).ifPresentOrElse(
+                i -> {
+                    i.setSccRegistrationRequired(rereg);
+                    saveRegCacheItem(i);
+                    },
+                () -> {
+                    SCCRegCacheItem item = new SCCRegCacheItem(srv);
+                    item.setSccRegistrationRequired(rereg);
+                    saveRegCacheItem(item);
+                });
+    }
 }

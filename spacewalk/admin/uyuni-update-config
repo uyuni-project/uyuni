@@ -1,0 +1,35 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import sys
+import os.path
+import uuid
+from spacewalk.common.rhnConfig import initCFG, CFG
+
+initCFG('server.susemanager')
+try:
+    if CFG.scc_backup_srv_usr:
+        # nothing to do
+        sys.exit(0)
+except AttributeError:
+    # key does not exist, we need to create it
+    pass
+
+scc_cred_file = "/etc/zypp/credentials.d/SCCcredentials"
+
+uuidNum = None
+if os.path.exists(scc_cred_file):
+    with open(scc_cred_file, "r") as f:
+        for line in f:
+            if line.startswith("username"):
+                _k, v = line.split("=", 2)
+                uuidNum = v.strip()
+                break
+if not uuidNum:
+    # scc expects either a SCC machine login (must exists in SCC)
+    # or a UUID4 following rfc4122 to identify a anonyme proxy
+    uuidNum = str(uuid.uuid4())
+with open("/etc/rhn/rhn.conf", "a") as r:
+    r.write("\n")
+    r.write("server.susemanager.scc_backup_srv_usr = {}\n".format(uuidNum))
+sys.exit(0)
