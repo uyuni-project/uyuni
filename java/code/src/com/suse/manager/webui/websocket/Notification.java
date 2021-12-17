@@ -189,6 +189,9 @@ public class Notification {
      * @param property which property to spread to all sessions
      */
     public static void spreadUpdate(String property) {
+        // Check for closed sessions before notifying them
+        clearBrokenSessions();
+
         synchronized (LOCK) {
             // if there are unread messages, notify it to all attached WebSocket sessions
             wsSessions.forEach((session, watched) -> {
