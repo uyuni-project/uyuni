@@ -228,7 +228,6 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat-taglibs-standard
-Requires:       uyuni-cluster-provider-caasp
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
