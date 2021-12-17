@@ -686,7 +686,7 @@ When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
