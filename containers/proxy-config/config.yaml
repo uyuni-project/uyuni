@@ -3,4 +3,6 @@ max_cache_size_mb: 20000
 system_id: 100001000
 email: test@test.test
 binary_ca_certs: ""
-binary_srv_cert_rpm: ""
+binary_server_crt: ""
+binary_server_csr: ""
+binary_server_key: ""

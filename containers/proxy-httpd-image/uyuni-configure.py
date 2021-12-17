@@ -19,8 +19,9 @@ with open(config_path + "config.yaml") as source:
     os.system("/usr/sbin/update-ca-certificates")
 
     # Decode and install server certificate package
-    os.system(f"echo -n '{config['binary_srv_cert_rpm']}' | base64 -d > /root/rhn-org-httpd-ssl-key-pair-proxy-1.0-3.noarch.rpm")
-    os.system('rpm -Uv /root/rhn-org-httpd-ssl-key-pair-proxy-1.0-3.noarch.rpm')
+    os.system(f"echo -n '{config['binary_server_crt']}' | base64 -d > /etc/apache2/ssl.crt/server.crt")
+    os.system(f"echo -n '{config['binary_server_csr']}' | base64 -d > /etc/apache2/ssl.csr/server.csr")
+    os.system(f"echo -n '{config['binary_server_key']}' | base64 -d > /etc/apache2/ssl.key/server.key")
 
     # Create conf file
     with open("/etc/rhn/rhn.conf", "w") as file:
