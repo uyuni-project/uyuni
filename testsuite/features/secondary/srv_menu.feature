@@ -203,7 +203,7 @@ Feature: Web UI - Main landing page menu, texts and links
   Scenario: Sidebar link destination for Systems => Virtual Systems
     When I follow the left menu "Systems > System List > Virtual Systems"
     Then I should see a "Virtual Systems" text
-    And the current path is "/rhn/systems/VirtualList.do"
+    And the current path is "/rhn/manager/systems/list/virtual"
 
   Scenario: Sidebar link destination for Systems => Out of Date
     When I follow the left menu "Systems > System List > Out of Date"
