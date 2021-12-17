@@ -44,4 +44,4 @@ FROM (
       ) latest_packages
       group by channel_id, name_id, evr_id, package_arch_id, build_time
 ) n
-WHERE rn = 1
+WHERE rn = 1;
