@@ -1,3 +1,5 @@
+- Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
+
 -------------------------------------------------------------------
 Wed Nov 17 12:41:45 CET 2021 - jmassaguerpla@suse.de
 
