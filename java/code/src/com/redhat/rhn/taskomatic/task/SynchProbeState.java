@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,6 +20,11 @@ import org.quartz.JobExecutionContext;
  * SynchProbeState
  */
 public class SynchProbeState extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "sync_probe_state";
+    }
 
     /**
      * {@inheritDoc}

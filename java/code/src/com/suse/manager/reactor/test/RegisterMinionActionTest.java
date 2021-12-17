@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -375,7 +375,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * We migrate the existing system and change the machine id.
      */
     public void testRegisterDuplicateMinionId() throws Exception {
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
         server.setHostname(MINION_ID);
@@ -425,7 +425,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * Case 2.2 - fail with RegisterMinionException
      */
     public void testAlreadyRegisteredMinionWithSameMachineId2() throws Exception {
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(user);
         server1.setMinionId(MINION_ID);
         server1.setHostname(MINION_ID);
@@ -1116,7 +1116,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void testRegisterRHELMinionWithRESActivationKeyTwoBaseChannels() throws Exception {
         Channel resChannelI386 = RhelUtilsTest.createResChannel(user, "7", "ia32", "res-i386");
         Channel resChannelX8664 = RhelUtilsTest.createResChannel(user, "7", "x86_64", "res-x86_64");
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         HibernateFactory.getSession().flush();
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
@@ -1371,7 +1371,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     public void testRegisterSystemFromDifferentOrg() throws Exception {
         User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
-        MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT);
         try {
             executeTest(
                     SLES_NO_AK_EXPECTATIONS,
@@ -1396,7 +1396,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     public void testRegisterSystemWithAKAndCreator() throws Exception {
         User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
-        MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT);
         try {
             executeTest(
                     SLES_EXPECTATIONS,
@@ -1686,7 +1686,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
                 user.getOrg());
 
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();

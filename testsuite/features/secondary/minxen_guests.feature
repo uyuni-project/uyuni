@@ -30,7 +30,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And I restart salt-minion on "xen_server"
 
   Scenario: Enable the virtualization host formula for Xen
     When I follow "Formulas" in the content area
@@ -56,6 +55,9 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     Then service "libvirtd" is enabled on "xen_server"
+
+  Scenario: Restart the minion to enable libvirt_events engine configuration
+    Then I restart salt-minion on "xen_server"
 
   Scenario: Prepare a Xen test virtual machine and list it
     When I follow "Virtualization" in the content area

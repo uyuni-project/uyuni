@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -24,6 +25,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,16 +52,28 @@ public class DWRItemSelector {
     public String select(String setLabel, String[] ids, boolean on) throws Exception {
         WebContext ctx = WebContextFactory.get();
         HttpServletRequest req = ctx.getHttpServletRequest();
-        Integer size = updateSetFromRequest(req, setLabel, ids, on);
+        User user = new RequestContext(req).getCurrentUser();
+        Integer size = updateSetFromRequest(req, setLabel, ids, on, user);
         if (size == null) {
             return "";
         }
         return getResponse(size, setLabel);
     }
 
-    // Update the proper set based upon request parameters
-    private Integer updateSetFromRequest(HttpServletRequest req,
-            String setLabel, String[] which, boolean isOn) throws Exception {
+    /**
+     * Update the proper set based upon request parameters
+     *
+     * @param req servlet request
+     * @param setLabel set label
+     * @param which ids to toggle
+     * @param isOn true to add, false to remove
+     * @param user the user updating the set
+     * @return the final count of items in the set
+     *
+     * @throws Exception if anything bad happens
+     */
+    public static Integer updateSetFromRequest(HttpServletRequest req,
+            String setLabel, String[] which, boolean isOn, User user) throws Exception {
         if (which == null) {
             return null;
         }
@@ -68,9 +82,7 @@ public class DWRItemSelector {
             Set<String> set  = SessionSetHelper.lookupAndBind(req, setLabel);
 
             if (isOn) {
-                for (String id : which) {
-                    set.add(id);
-                }
+                set.addAll(Arrays.asList(which));
             }
             else {
                 for (String id : which) {
@@ -81,7 +93,7 @@ public class DWRItemSelector {
         }
         RhnSetDecl decl = RhnSetDecl.find(setLabel);
         if (decl != null) {
-            RhnSet set = decl.get(new RequestContext(req).getCurrentUser());
+            RhnSet set = decl.get(user);
             if (isOn) {
                 set.addElements(which);
             }

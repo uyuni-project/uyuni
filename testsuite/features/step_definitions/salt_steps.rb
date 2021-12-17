@@ -50,6 +50,12 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
 end
 
+When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
+  node = get_target(minion)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  node.run("#{salt_call} saltutil.refresh_grains")
+end
+
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
@@ -64,8 +70,9 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
-    output, _code = target.run('salt-call -lquiet saltutil.running')
+    output, _code = target.run("#{salt_call} -lquiet saltutil.running")
     break if output == "local:\n"
     sleep 3
   end
@@ -223,6 +230,23 @@ end
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $server.run("salt #{system_name} saltutil.sync_all")
+end
+
+When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_cache = $product == 'Uyuni' ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  file_delete(node, "#{salt_cache}#{filename}")
+end
+
+When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  file_delete(node, "#{salt_config}#{filename}")
+end
+
+When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
+  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
@@ -469,12 +493,6 @@ When(/^I press minus sign in (.*) section$/) do |section|
   find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
 end
 
-When(/^I check (.*) box$/) do |box|
-  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
-             'include forwarders'        => 'bind#config#include_forwarders' }
-  check boxids[box]
-end
-
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   node = get_target(minion)
   output, _code = node.run('date +%Z')
@@ -499,7 +517,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
+  $server.run("salt '#{$minion.full_hostname}' saltutil.refresh_pillar wait=True")
 end
 
 def pillar_get(key, minion)
@@ -583,7 +601,8 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  output, _code = node.run('salt-call --local key.finger')
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
 end

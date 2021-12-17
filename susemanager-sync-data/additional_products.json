@@ -460,50 +460,50 @@
         ],
         "repositories" : [
             {
-                "id" : -324,
-                "url" : "https://repo.almalinux.org/almalinux/8/BaseOS/aarch64/os/",
+                "id" : -360,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/baseos",
                 "name" : "almalinux8",
-                "distro_target" : "aarch64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -325,
-                "url" : "https://repo.almalinux.org/almalinux/8/AppStream/aarch64/os/",
+                "id" : -361,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/appstream",
                 "name" : "almalinux8-appstream",
-                "distro_target" : "aarch64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 AppStream",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -326,
-                "url" : "https://repo.almalinux.org/almalinux/8/extras/aarch64/os/",
+                "id" : -362,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/extras",
                 "name" : "almalinux8-extras",
-                "distro_target" : "aarch64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 Extras",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -327,
-                "url" : "https://repo.almalinux.org/almalinux/8/PowerTools/aarch64/os/",
+                "id" : -363,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/powertools",
                 "name" : "almalinux8-powertools",
-                "distro_target" : "aarch64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 PowerTools",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -328,
-                "url" : "https://repo.almalinux.org/almalinux/8/HighAvailability/aarch64/os/",
+                "id" : -364,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/ha",
                 "name" : "almalinux8-ha",
-                "distro_target" : "aarch64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 HighAvailability",
                 "enabled" : false,
                 "autorefresh" : true,
@@ -567,11 +567,11 @@
         "release_type" : null,
         "arch" : "x86_64",
         "friendly_name" : "Rocky Linux 8 x86_64",
-        "product_class" : "SLE-M-T",
+        "product_class" : "SLE-M-T-BETA",
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "beta",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -648,7 +648,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -661,50 +661,50 @@
         ],
         "repositories" : [
             {
-                "id" : -287,
-                "url" : "https://repo.almalinux.org/almalinux/8/BaseOS/x86_64/os/",
+                "id" : -360,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/baseos",
                 "name" : "almalinux8",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -288,
-                "url" : "https://repo.almalinux.org/almalinux/8/AppStream/x86_64/os/",
+                "id" : -361,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/appstream",
                 "name" : "almalinux8-appstream",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 AppStream",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -289,
-                "url" : "https://repo.almalinux.org/almalinux/8/extras/x86_64/os/",
+                "id" : -362,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/extras",
                 "name" : "almalinux8-extras",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 Extras",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -290,
-                "url" : "https://repo.almalinux.org/almalinux/8/PowerTools/x86_64/os/",
+                "id" : -363,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/powertools",
                 "name" : "almalinux8-powertools",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 PowerTools",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -291,
-                "url" : "https://repo.almalinux.org/almalinux/8/HighAvailability/x86_64/os/",
+                "id" : -364,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/ha",
                 "name" : "almalinux8-ha",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 HighAvailability",
                 "enabled" : false,
                 "autorefresh" : true,
@@ -725,7 +725,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1100,7 +1100,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1138,7 +1138,7 @@
                 "name" : "debian-10-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Security",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             }
@@ -1157,7 +1157,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1195,7 +1195,7 @@
                 "name" : "debian-9-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 9 (stretch) AMD64 Main Security",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             }
@@ -1508,7 +1508,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1585,7 +1585,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1899,7 +1899,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -2006,7 +2006,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -2123,7 +2123,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -2220,7 +2220,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -3311,7 +3311,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [

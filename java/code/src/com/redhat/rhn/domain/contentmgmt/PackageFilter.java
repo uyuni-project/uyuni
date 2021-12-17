@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,8 +45,20 @@ public class PackageFilter extends ContentFilter<Package> {
         switch (matcher) {
             case CONTAINS:
                 return getField(pack, field, String.class).contains(value);
+            case LOWER:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) < 0;
+            case LOWEREQ:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) <= 0;
             case EQUALS:
                 return getField(pack, field, String.class).equals(value);
+            case GREATEREQ:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) >= 0;
+            case GREATER:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) > 0;
             case MATCHES:
                 if (pattern == null) {
                     pattern = Pattern.compile(value);
@@ -76,6 +89,31 @@ public class PackageFilter extends ContentFilter<Package> {
                 return type.cast(pack.getExtraTag("modularitylabel"));
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
+        }
+    }
+
+    private static boolean checkNameAndArch(String field, String value, Package pack) {
+        if (field.equals("nevr")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$1").equals(pack.getPackageName().getName());
+        }
+        else if (field.equals("nevra")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$1$5")
+                    .equals(pack.getPackageName().getName() + pack.getPackageArch().getLabel());
+        }
+        else {
+            throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");
+        }
+    }
+
+    private static String getEvr(String field, String value) {
+        if (field.equals("nevr")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$2$3-$4");
+        }
+        else if (field.equals("nevra")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$2$3-$4");
+        }
+        else {
+            throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");
         }
     }
 

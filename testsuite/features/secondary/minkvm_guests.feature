@@ -30,7 +30,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And I restart salt-minion on "kvm_server"
 
   Scenario: Enable the virtualization host formula for KVM
     When I follow "Formulas" in the content area
@@ -55,6 +54,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     Then service "libvirtd" is enabled on "kvm_server"
+
+  Scenario: Restart the minion to enable libvirt_events engine configuration
+    Then I restart salt-minion on "kvm_server"
 
   Scenario: Prepare a KVM test virtual machine and list it
     When I delete default virtual network on "kvm_server"
@@ -150,6 +152,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Attach an image to a cdrom on a KVM virtual machine
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
     And I store "" into file "/tmp/test-image.iso" on "kvm_server"
     And I wait until I do not see "Loading..." text
     And I enter "/tmp/test-image.iso" as "disk2_source_file"
@@ -200,11 +203,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the virtual storage pools and volumes for KVM
     When I refresh the "test-pool0" storage pool of this "kvm_server"
     And I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I open the sub-list of the product "test-pool0"
     Then I wait until I see "test-vm2_system" text
 
   Scenario: delete a running KVM virtual machine
     When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
     And I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
@@ -229,27 +234,32 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: delete a running KVM UEFI virtual machine
     When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
     And I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
   Scenario: Refresh a virtual storage pool for KVM
     When I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I click on "Refresh" in tree item "test-pool0"
     And I wait at most 600 seconds until the tree item "test-pool0" has no sub-list
 
   Scenario: Stop a virtual storage pool for KVM
     When I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I click on "Stop" in tree item "test-pool0"
     And I wait at most 600 seconds until the tree item "test-pool0" contains "inactive" text
 
   Scenario: Start a virtual storage pool for KVM
     When I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I click on "Start" in tree item "test-pool0"
     And I wait at most 600 seconds until the tree item "test-pool0" contains "running" text
 
   Scenario: Delete a virtual storage pool for KVM
     When I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I click on "Delete" in tree item "test-pool0"
     And I check "purge"
     And I click on "Delete" in "Delete Virtual Storage Pool" modal
@@ -272,6 +282,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Edit a virtual storage pool for KVM
     When I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I click on "Edit Pool" in tree item "test-pool1"
     And I wait until I see "General" text
     And I enter "0711" as "target_mode"
@@ -283,6 +294,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a virtual volume
     When I follow "Storage"
+    And I wait until I do not see "Loading..." text
     And I open the sub-list of the product "tmp"
     And I click on "Delete" in tree item "test-net0.xml"
     And I click on "Delete" in "Delete Virtual Storage Volume" modal
@@ -290,11 +302,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: List virtual networks
     When I follow "Networks"
+    And I wait until I do not see "Loading..." text
     Then I wait until I see "test-net0" text
     And I should see a "test-net1" text
 
   Scenario: Stop virtual network
     When I follow "Networks"
+    And I wait until I do not see "Loading..." text
     Then table row for "test-net1" should contain "running"
     When I click on "Stop" in row "test-net1"
     And I click on "Stop" in "Stop Network" modal
@@ -303,12 +317,14 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Start virtual network
     When I follow "Networks"
+    And I wait until I do not see "Loading..." text
     And I click on "Start" in row "test-net1"
     Then I wait until table row for "test-net1" contains button "Stop"
     And table row for "test-net1" should contain "running"
 
   Scenario: Delete virtual network
     When I follow "Networks"
+    And I wait until I do not see "Loading..." text
     And I click on "Delete" in row "test-net1"
     And I click on "Delete" in "Delete Network" modal
     Then I wait until I do not see "test-net1" text
@@ -337,6 +353,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
+    And I wait until I do not see "Loading..." text
     And I click on "Stop" in row "test-net2"
     And I click on "Stop" in "Stop Network" modal
     Then I wait until table row for "test-net2" contains button "Start"

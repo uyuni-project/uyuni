@@ -33,6 +33,24 @@ describe("Testing filters enum and descriptions", () => {
     filter.criteriaValue = "asd-123-123";
     filter.rule = "deny";
     expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package equal asd-123-123 (nevr)");
+
+    filter.matcher = "lower";
+    expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package lower than asd-123-123 (nevr)");
+
+    filter.matcher = "lowereq";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by nevra name: deny package lower or equal than asd-123-123 (nevr)"
+    );
+
+    filter.matcher = "greater";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by nevra name: deny package greater than asd-123-123 (nevr)"
+    );
+
+    filter.matcher = "greatereq";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by nevra name: deny package greater or equal than asd-123-123 (nevr)"
+    );
   });
 
   test("test filter package provides description", () => {
@@ -123,7 +141,7 @@ describe("Testing filters enum and descriptions", () => {
     };
 
     expect(getClmFilterDescription(filter)).toEqual(
-      "filter by date: deny patch later or equal than 2018-09-10T00:00+01:00 (issue_date)"
+      "filter by date: deny patch greater or equal than 2018-09-10T00:00+01:00 (issue_date)"
     );
   });
 

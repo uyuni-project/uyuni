@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -108,7 +108,7 @@ public class ServerConfigHandler extends BaseHandler {
      * #array_end()
      */
     public List<ConfigFileNameDto> listFiles(User loggedInUser,
-            Integer sid, boolean listLocal) {
+            Integer sid, Boolean listLocal) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         if (listLocal) {
@@ -188,9 +188,9 @@ public class ServerConfigHandler extends BaseHandler {
     public ConfigRevision createOrUpdatePath(User loggedInUser,
             Integer sid,
             String path,
-            boolean isDir,
+            Boolean isDir,
             Map<String, Object> data,
-            boolean commitToLocal) {
+            Boolean commitToLocal) {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
@@ -264,7 +264,7 @@ public class ServerConfigHandler extends BaseHandler {
             Integer sid,
             String path,
             Map<String, Object> data,
-            boolean commitToLocal) {
+            Boolean commitToLocal) {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
@@ -303,7 +303,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int","serverId")
      * @xmlrpc.param #array_single("string","paths to lookup on.")
-     * @xmlrpc.param #param("int","searchLocal")
+     * @xmlrpc.param #param("boolean","searchLocal")
      *      #options()
      *          #item_desc ("1", "to search configuration file paths
      *              in the system's local override configuration or
@@ -317,7 +317,7 @@ public class ServerConfigHandler extends BaseHandler {
      *      #array_end()
      */
     public List<ConfigRevision> lookupFileInfo(User loggedInUser,
-            Integer sid, List<String> paths, boolean searchLocal) {
+            Integer sid, List<String> paths, Boolean searchLocal) {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         List<ConfigRevision> revisions = new LinkedList<ConfigRevision>();
@@ -371,7 +371,7 @@ public class ServerConfigHandler extends BaseHandler {
     public int deleteFiles(User loggedInUser,
             Integer sid,
             List<String> paths,
-            boolean deleteFromLocal) {
+            Boolean deleteFromLocal) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         List<ConfigFile> cfList = new ArrayList<>();
@@ -496,7 +496,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int addChannels(User loggedInUser, List<Number> serverIds, List<String> configChannelLabels,
-                           boolean addToTop) {
+                           Boolean addToTop) {
         List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
@@ -611,7 +611,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyConfigChannel(User user, List<Integer> serverIds, Date earliest, boolean test) {
+    public Long scheduleApplyConfigChannel(User user, List<Integer> serverIds, Date earliest, Boolean test) {
         try {
             // Validate the given system id
             List<Server> servers = xmlRpcSystemHelper.lookupServers(user, serverIds);

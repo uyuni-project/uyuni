@@ -14,9 +14,10 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import tempfile
+import shutil
 import os
 import solv
-import xml.etree.ElementTree as etree
 import unittest
 try:
     from io import StringIO
@@ -60,6 +61,13 @@ class YumSrcTest(unittest.TestCase):
         yum_src.ContentSource.setup_repo = real_setup_repo
 
         return cs
+
+    def setUp(self):
+        patch('spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs').start()
+        self.repo = yum_src.ZypperRepo(tempfile.mkdtemp(), "http://example.com", "1")
+
+    def tearDown(self):
+        shutil.rmtree(self.repo.root)
 
     def test_content_source_init(self):
         cs = self._make_dummy_cs()
@@ -177,3 +185,28 @@ class YumSrcTest(unittest.TestCase):
         self.assertTrue(comps.endswith('751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml'))
         modules = cs.get_modules()
         self.assertTrue(modules.endswith('2c3714db39642790c8a1922c6cae04e7b95af59b234af60f15778d5550e3a546-modules.yaml.gz'))
+
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
+    @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    def test_mirror_list_arch(self):
+        cs = self._make_dummy_cs()
+        cs.channel_arch = "arch1"
+        grabber_mock = Mock()
+
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+            with open(os.path.join(self.repo.root, "mirrorlist.txt"), "w") as fake_list:
+                fake_list.writelines([
+                    "http://host1/base/$basearch/os/\n",
+                    "http://host2/base/$BASEARCH/os/\n",
+                    "http://host3/base/$ARCH/os/\n",
+                ])
+            mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+            self.assertEqual(mirrors, [
+                "http://host1/base/arch1/os/",
+                "http://host2/base/arch1/os/",
+                "http://host3/base/arch1/os/",
+            ])

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -318,10 +318,10 @@ public class ServerFactory extends HibernateFactory {
             ServerPath path = findServerPath(server, parentPath.getId().getProxyServer()).orElseGet(() -> {
                 ServerPath newPath = new ServerPath();
                 newPath.setId(new ServerPathId(server, parentPath.getId().getProxyServer()));
-                newPath.setPosition(parentPath.getPosition() + 1);
                 newPath.setHostname(parentPath.getHostname());
                 return newPath;
             });
+            path.setPosition(parentPath.getPosition() + 1);
             paths.add(path);
 
         }
@@ -330,10 +330,10 @@ public class ServerFactory extends HibernateFactory {
             newPath.setId(new ServerPathId(server, proxyServer));
             // the first proxy is the one to which
             // the server connects directly
-            newPath.setPosition(0L);
             newPath.setHostname(proxyHostname);
             return newPath;
         });
+        path.setPosition(0L);
         paths.add(path);
         return paths;
     }

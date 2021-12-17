@@ -30,7 +30,7 @@ logger.setLevel(logging.INFO)
 
 # create RotatingFileHandler handler and set level to INFO
 ch = logging.handlers.RotatingFileHandler("/var/log/tftpsync/tftpsync.log",
-                                          mode='a', maxBytes=1048576, backupCount=3)
+                                          mode='a', maxBytes=1048576, backupCount=10)
 ch.setLevel(logging.INFO)
 
 # create formatter
@@ -85,7 +85,7 @@ def application(environ, start_response):
                 status = '200 OK'
                 content = "removing file '%s', status: %s" % (path, status)
             except Exception as e:
-                logger.debug("os.remove(%s) failed: %s" % (path, e))
+                logger.error("os.remove(%s) failed: %s", path, e, exc_info=True)
                 content = "removing %s failed" % path
         else:
             # success, if file not exists: we achieved what we wanted

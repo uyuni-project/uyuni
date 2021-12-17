@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -59,7 +59,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
                 RegisterMinionEventMessageAction action =
                         mock(RegisterMinionEventMessageAction.class);
                 context().checking(new Expectations() {{
-                    allowing(action).registerSSHMinion("myhost", Optional.empty(), activationKeyLabel);
+                    allowing(action).registerSSHMinion("myhost", 6022, Optional.empty(), activationKeyLabel);
                 }});
                 return action;
             }

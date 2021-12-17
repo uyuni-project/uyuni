@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -157,7 +157,7 @@ public class NotificationMessageController {
 
         UserNotificationFactory.delete(notifications);
 
-        Notification.spreadUpdate();
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", "success");
@@ -193,7 +193,7 @@ public class NotificationMessageController {
             }
         });
 
-        Notification.spreadUpdate();
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", "success");

@@ -1,3 +1,21 @@
+- Fix errors on calling sed -E ... by force_restart_minion
+  with action chains
+- Fix problem installing/removing packages using action chains
+  in transactional systems
+- Add state for changing proxy
+- Enable basic support for Debian 11
+
+-------------------------------------------------------------------
+Fri Dec 03 12:33:13 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * fix openscap scan with tailoring options (bsc#1192321)
+  * Align allow_vendor_change pillar name across SLS files
+  * Use venv-salt-minion instead of salt for docker states
+  * Fix libvirt engine config destination for Salt Bundle
+  * Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
+    in order to force venv-salt-minion installation
+
 -------------------------------------------------------------------
 Tue Nov 16 10:09:40 CET 2021 - jgonzalez@suse.com
 
