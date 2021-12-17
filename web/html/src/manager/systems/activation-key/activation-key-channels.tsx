@@ -128,7 +128,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                         `is not compatible then the fall back will be the "${defaultChannelName}" channel.`
                     )}
                   </span>
-                  {this.state.currentSelectedBaseId === -1 &&
+                  {this.state.currentSelectedBaseId === -1 && (
                     <Messages
                       items={MessagesUtils.warning(
                         t(
@@ -137,7 +137,8 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                             "channels are selected."
                         )
                       )}
-                    />}
+                    />
+                  )}
                 </div>
               </div>
               <div className="form-group">
