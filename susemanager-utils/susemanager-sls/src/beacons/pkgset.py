@@ -9,8 +9,15 @@ Author: Bo Maryniuk <bo@suse.de>
 from __future__ import absolute_import
 import os
 
+import salt.cache
+import salt.config
+
 
 __virtualname__ = "pkgset"
+
+__opts__ = salt.config.minion_config('/etc/salt/minion')
+
+CACHE = salt.cache.Cache(__opts__)
 
 PKGSET_COOKIES = (
     "/var/cache/venv-salt-minion/rpmdb.cookie",
@@ -18,7 +25,6 @@ PKGSET_COOKIES = (
     "/var/cache/salt/minion/rpmdb.cookie",
     "/var/cache/salt/minion/dpkg.cookie",
 )
-COOKIE_PATH = None
 
 
 def __virtual__():
@@ -56,9 +62,15 @@ def beacon(config):
         with open(cookie_path) as ck_file:
             ck_data = ck_file.read().strip()
             if __virtualname__ not in __context__:
-                __context__[__virtualname__] = ck_data
+                cache_data = CACHE.fetch("beacon/pkgset", "cookie").get("data", None)
+                if cache_data:
+                    __context__[__virtualname__] = cache_data
+                else:
+                    __context__[__virtualname__] = ck_data
+                    CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
             if __context__[__virtualname__] != ck_data:
                 ret.append({"tag": "changed"})
+                CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
                 __context__[__virtualname__] = ck_data
                 break
 
