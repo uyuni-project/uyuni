@@ -94,11 +94,11 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "broadcast" in broadcast address field
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
-    And I enter the local IP address of "client" in first reserved IP field
+    And I enter the local IP address of "sle_client" in first reserved IP field
     And I enter the MAC address of "sle_client" in first reserved MAC field
     And I press "Add Item" in host reservations section
     And I enter "minion" in second reserved hostname field
-    And I enter the local IP address of "minion" in second reserved IP field
+    And I enter the local IP address of "sle_minion" in second reserved IP field
     And I enter the MAC address of "sle_minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -123,10 +123,10 @@ Feature: Setup Uyuni for Retail branch network
     And I enter "admin@example.org." in first contact field
     And I press "Add Item" in first A section
     And I enter "client" in first A name field
-    And I enter the local IP address of "client" in first A address field
+    And I enter the local IP address of "sle_client" in first A address field
     And I press "Add Item" in first A section
     And I enter "minion" in second A name field
-    And I enter the local IP address of "minion" in second A address field
+    And I enter the local IP address of "sle_minion" in second A address field
     And I press "Add Item" in first A section
     And I enter "proxy" in third A name field
     And I enter the local IP address of "proxy" in third A address field
@@ -161,7 +161,7 @@ Feature: Setup Uyuni for Retail branch network
     And I follow first "Dhcpd" in the content area
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
-    And I enter the local IP address of "pxeboot" in third reserved IP field
+    And I enter the local IP address of "pxeboot_minion" in third reserved IP field
     And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -169,7 +169,7 @@ Feature: Setup Uyuni for Retail branch network
     When I follow first "Bind" in the content area
     And I press "Add Item" in first A section
     And I enter "pxeboot" in fourth A name field
-    And I enter the local IP address of "pxeboot" in fourth A address field
+    And I enter the local IP address of "pxeboot_minion" in fourth A address field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
