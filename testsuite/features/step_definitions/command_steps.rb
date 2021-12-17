@@ -518,7 +518,7 @@ When(/^I stop salt-minion on the PXE boot minion$/) do
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
@@ -1151,7 +1151,6 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
     STDOUT.puts "#{output}"
   end
   # reverse name resolution
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   client = net_prefix + "2"
   [client, "8.8.8.8"].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
@@ -1624,11 +1623,11 @@ When(/^I prepare the retail configuration file on server$/) do
   sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
   sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
   sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
-  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
+  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot_minion']}/; "
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
-  sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
+  sed_values << "s/<MINION>/#{ADDRESSES['sle_minion']}/; "
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
-  sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
+  sed_values << "s/<CLIENT>/#{ADDRESSES['sle_client']}/; "
   sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
   sed_values << "s/<IMAGE>/#{compute_image_name}/"
   $server.run("sed -i '#{sed_values}' #{dest}")

@@ -300,16 +300,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'tftpd#listen_ip',
                'vsftpd internal network address' => 'vsftpd_config#listen_address' }
-  addresses = { 'network'     => '0',
-                'client'      => '2',
-                'minion'      => '3',
-                'pxeboot'     => '4',
-                'range begin' => '128',
-                'range end'   => '253',
-                'proxy'       => '254',
-                'broadcast'   => '255' }
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  fill_in fieldids[field], with: net_prefix + addresses[host]
+  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
 end
 
 When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
@@ -329,16 +320,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do 
                'third A address'          => 'bind#available_zones#0#records#A#2#1',
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'vsftpd_config#listen_address' }
-  addresses = { 'network'     => '0',
-                'client'      => '2',
-                'minion'      => '3',
-                'pxeboot'     => '4',
-                'range begin' => '128',
-                'range end'   => '253',
-                'proxy'       => '254',
-                'broadcast'   => '255' }
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  fill_in fieldids[field], with: net_prefix + addresses[host]
+  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
 end
 
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
@@ -766,7 +748,6 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
 end
 
 When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   cred = "--api-user admin --api-pass admin"
   dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
   names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"
