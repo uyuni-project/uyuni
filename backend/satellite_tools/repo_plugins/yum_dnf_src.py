@@ -208,18 +208,16 @@ class ContentSource(zypper_ContentSource):
         self.digest=hashlib.sha256(self.url.encode('utf8')).hexdigest()[:16]
         self.dnfbase.repos.add(repo)
         self.repoid = repo.id
-        try:
-            logger = logging.getLogger('dnf')
-            logger.setLevel(logging.ERROR)
-            self.dnfbase.repos[self.repoid].load()
-            logger.setLevel(logging.WARN)
-        except RepoError:
-            # Dnf bug workaround. Mirrorlist was provided but none worked. Fallback to baseurl and load again.
-            # Remove once dnf is fixed and add detection if mirrors failed.
-            logger.setLevel(logging.WARN)
-            repo.mirrorlist = ""
+        logger = logging.getLogger('dnf')
+        logger.setLevel(logging.ERROR)
+        self.dnfbase.repos[self.repoid].load()
+        # Don't use mirrors if there are none.
+        if not self.clean_urls(self.dnfbase.repos[self.repoid]._repo.getMirrors()):
             no_mirrors = True
+            # Reload repo just in case.
+            repo.mirrorlist = ""
             self.dnfbase.repos[self.repoid].load()
+        logger.setLevel(logging.WARN)
 
         # Do not try to expand baseurl to other mirrors
         if no_mirrors:
