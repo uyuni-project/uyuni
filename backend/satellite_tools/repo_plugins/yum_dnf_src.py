@@ -211,7 +211,7 @@ class ContentSource(zypper_ContentSource):
         try:
             logger = logging.getLogger('dnf')
             logger.setLevel(logging.ERROR)
-            self.yumbase.repos[self.repoid].load()
+            self.dnfbase.repos[self.repoid].load()
             logger.setLevel(logging.WARN)
         except RepoError:
             # Dnf bug workaround. Mirrorlist was provided but none worked. Fallback to baseurl and load again.
