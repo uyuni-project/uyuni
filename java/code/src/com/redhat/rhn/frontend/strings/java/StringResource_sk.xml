@@ -2964,28 +2964,28 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart" xml:space="preserve">
         <source>Delete Autoinstallation</source>
-        <target/>
+        <target>Vymazať automatickú inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deleteTree" xml:space="preserve">
         <source>Delete Distribution</source>
-        <target/>
+        <target>Vymazať distribúciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.profile" xml:space="preserve">
         <source>Delete Profile</source>
-        <target/>
+        <target>Vymazať profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; system.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; neplánované pre &lt;strong&gt;{1}&lt;/strong&gt; systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems.do</context>
           <context context-type="paramnotes">
@@ -2995,7 +2995,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="message.unscheduled.systems" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; systems.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; neplánované pre &lt;strong&gt;{1}&lt;/strong&gt; systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems.do</context>
           <context context-type="paramnotes">
@@ -3005,7 +3005,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="email.verified" xml:space="preserve">
         <source>Email Address Updated</source>
-        <target/>
+        <target>Emailová adresa aktualizovaná</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -3013,98 +3013,98 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errata.create.bugfixadvisory" xml:space="preserve">
         <source>Bug Fix Advisory</source>
-        <target/>
+        <target>Upozornenie na opravu chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.productenhancementadvisory" xml:space="preserve">
         <source>Product Enhancement Advisory</source>
-        <target/>
+        <target>Upozornenie na vylepšenia produktu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory" xml:space="preserve">
         <source>Security Advisory</source>
-        <target/>
+        <target>Bezpečnostné upozornenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.crit" xml:space="preserve">
         <source>Security Advisory (Critical)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Kritické)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.imp" xml:space="preserve">
         <source>Security Advisory (Important)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Dôležité)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.mod" xml:space="preserve">
         <source>Security Advisory (Moderate)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Stredne závažné)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.low" xml:space="preserve">
         <source>Security Advisory (Low)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Nízke)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.both" xml:space="preserve">
         <source>Name and Summary</source>
-        <target/>
+        <target>Názov a súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.name" xml:space="preserve">
         <source>Name Only</source>
-        <target/>
+        <target>Iba názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.name_and_desc" xml:space="preserve">
         <source>Name and Description</source>
-        <target/>
+        <target>Názov a opis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.free_form" xml:space="preserve">
         <source>Free form</source>
-        <target/>
+        <target>Voľná forma</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.use_free_form" xml:space="preserve">
         <source>Searching by fields can ONLY be done with Free Form search.</source>
-        <target/>
+        <target>Vyhľadávanie podľa polí je možné vykonať IBA pomocou vyhľadávania Voľnou formou.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.need_one_arch" xml:space="preserve">
         <source>When searching by architecture you must select at least one architecture.</source>
-        <target/>
+        <target>Pri vyhľadávaní podľa architektúry musíte vybrať aspoň jednu architektúru.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.connection_error" xml:space="preserve">
         <source>Could not connect to search server.</source>
-        <target/>
+        <target>Nepodarilo sa pripojiť k vyhľadávaciemu serveru.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
