@@ -1,3 +1,4 @@
+- Fixed mirror link usage for dnf.
 - require python macros for building
 - Add headers to update proxy auth token in listChannels (bsc#1193585)
 
