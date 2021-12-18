@@ -100,6 +100,8 @@ def application(environ, start_response):
                 file_content = form.getvalue('file')
                 file_content = file_content.replace(CFG.SERVER_IP.encode(), CFG.PROXY_IP.encode())
                 file_content = file_content.replace(CFG.SERVER_FQDN.encode(), CFG.PROXY_FQDN.encode())
+                if CFG.SERVER_IP6 and CFG.PROXY_IP6:
+                    file_content = file_content.replace(CFG.SERVER_IP6.encode(), CFG.PROXY_IP6.encode())
                 tf.write(file_content)
                 tf.close()
                 os.rename(tfname, rfname)
