@@ -217,8 +217,7 @@ class ContentSource(zypper_ContentSource):
                 repo.mirrorlist = ""
                 self.dnfbase.repos[self.repoid].load()
         except RepoError as exc:
-            msg = "Unable to load repository: {}".format(exc)
-            raise RepoMDError(msg)
+            raise RepoMDError(exc)
             return
 
         # Do not try to expand baseurl to other mirrors
@@ -621,7 +620,7 @@ class ContentSource(zypper_ContentSource):
         repomd_path = os.path.join(self.dnfbase.repos[self.repoid].basecachedir,
                                    self.name + "-" + self.digest, "repodata", "repomd.xml")
         if not os.path.isfile(repomd_path):
-            raise RepoMDNotFound(repomd_path)
+            raise RepoMDError(repomd_path)
         repomd = open(repomd_path, 'rb')
         files = {}
         for _event, elem in etree.iterparse(repomd):
