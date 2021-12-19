@@ -17,22 +17,22 @@ end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("getent hosts #{node.ip}", check_errors: false)
+  result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+  raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
-Then(/^"([^"]*)" should communicate with the server using "([^"]*)"/) do |host, ethernet|
+Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -4 -c 1 -I #{ethernet} #{$server.ip}")
-  $server.run("ping -4 -c 1 #{node.ip}")
+  node.run("ping -4 -c 1 -I #{node.public_interface} #{$server.full_hostname}")
+  $server.run("ping -4 -c 1 #{node.public_ip}")
 end
 
-Then(/^"([^"]*)" should not communicate with the server using "([^"]*)"/) do |host, ethernet|
+Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
-  node.run_until_fail("ping -4 -c 1 -I #{ethernet} #{$server.ip}")
-  $server.run_until_fail("ping -4 -c 1 #{node.ip}")
+  node.run_until_fail("ping -4 -c 1 -I #{node.private_interface} #{$server.full_hostname}")
+  $server.run_until_fail("ping -4 -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -380,7 +380,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  node.run("wget http://#{$server.ip}/#{file}")
+  node.run("wget http://#{$server.full_hostname}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
@@ -538,7 +538,7 @@ When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   gpg_keys = get_gpg_keys(node)
   gpg_keys.each do |key|
     gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
   end
 end
 
@@ -830,7 +830,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client.ip} --register #{bootstrap} --tunnel\n" \
+  script = "spawn spacewalk-ssh-push-init --client #{$client.full_hostname} --register #{bootstrap} --tunnel\n" \
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
@@ -1162,7 +1162,7 @@ end
 
 When(/^I configure the proxy$/) do
   # prepare the settings file
-  settings = "RHN_PARENT=#{$server.ip}\n" \
+  settings = "RHN_PARENT=#{$server.full_hostname}\n" \
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
@@ -1171,7 +1171,7 @@ When(/^I configure the proxy$/) do
              "SSL_PASSWORD=spacewalk\n" \
              "SSL_ORG=SUSE\n" \
              "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{$proxy.ip}\n" \
+             "SSL_COMMON=#{$proxy.full_hostname}\n" \
              "SSL_CITY=Nuremberg\n" \
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \

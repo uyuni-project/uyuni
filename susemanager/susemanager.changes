@@ -1,4 +1,5 @@
 - Added installation on Rocky Linux 8.
+- fix pg-migrate to check version of postgresql??-server (bsc#1192368)
 - Add sha256 hash to venv-enabled-ARCH.txt file generated
   with mgr-create-bootstrap-repo
 - Enable bootstrapping for Debian 11

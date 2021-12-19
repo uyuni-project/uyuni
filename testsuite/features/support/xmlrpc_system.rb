@@ -45,7 +45,7 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     if $proxy.nil?
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, salt_ssh)
     else
-      proxy = @connection.call('system.search_by_name', @sid, $proxy.ip)
+      proxy = @connection.call('system.search_by_name', @sid, $proxy.full_hostname)
       proxy_id = proxy.map { |s| s['id'] }.first
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, proxy_id, salt_ssh)
     end

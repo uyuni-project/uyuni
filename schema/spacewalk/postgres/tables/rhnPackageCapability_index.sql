@@ -14,12 +14,12 @@
 --
 
 CREATE UNIQUE INDEX rhn_pkg_cap_name_version_uq
-    ON rhnPackageCapability (name, version)
- where version is not null;
+    ON rhnPackageCapability USING btree (sha512(replace(name, E'\\', E'\\\\')::bytea), version)
+ WHERE version IS NOT NULL;
 
-create unique index rhn_pkg_cap_name_uq
-    on rhnPackageCapability (name)
- where version is null;
+CREATE UNIQUE INDEX rhn_pkg_cap_name_uq
+    ON rhnPackageCapability USING btree (sha512(replace(name, E'\\', E'\\\\')::bytea))
+ WHERE version IS NULL;
 
 CREATE INDEX rhn_pkg_cap_name_idx
     ON rhnPackageCapability USING HASH (name);

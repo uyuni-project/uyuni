@@ -109,11 +109,15 @@ default_or_input "TFTP Boot directory" TFTPBOOT "/srv/tftpboot"
 
 default_or_input "SUSE Manager Proxy FQDN" SUMA_PROXY_FQDN $(hostname -f)
 
-default_or_input "SUSE Manager Proxy IP Address" SUMA_PROXY_IP $(getent hosts $SUMA_PROXY_FQDN | awk '{ print $1 }' || echo "")
+default_or_input "SUSE Manager Proxy IPv4 Address" SUMA_PROXY_IP $(getent ahostsv4 $SUMA_PROXY_FQDN | awk '{ print $1 }' | head -1 || echo "")
+
+default_or_input "SUSE Manager Proxy IPv6 Address" SUMA_PROXY_IP6 $(getent ahostsv6 $SUMA_PROXY_FQDN | awk '{ print $1 }' | head -1 || echo "")
 
 default_or_input "SUSE Manager Server FQDN" SUMA_FQDN $PARENT_FQDN
 
-default_or_input "SUSE Manager Parent IP Address" SUMA_IP $(getent hosts $SUMA_FQDN | awk '{ print $1 }' || echo "" )
+default_or_input "SUSE Manager Parent IPv4 Address" SUMA_IP $(getent ahostsv4 $SUMA_FQDN | awk '{ print $1 }' | head -1 || echo "" )
+
+default_or_input "SUSE Manager Parent IPv6 Address" SUMA_IP6 $(getent ahostsv6 $SUMA_FQDN | awk '{ print $1 }' | head -1 || echo "" )
 
 
 
@@ -124,10 +128,12 @@ Using the following configuration for this SUSE Manager Proxy:
  * TFTP Boot directory = $TFTPBOOT
 
  * SUSE Manager Proxy FQDN = $SUMA_PROXY_FQDN
- * SUSE Manager Proxy IP = $SUMA_PROXY_IP
+ * SUSE Manager Proxy IPv4 = $SUMA_PROXY_IP
+ * SUSE Manager Proxy IPv6 = $SUMA_PROXY_IP6
 
  * SUSE Manager Server FQDN = $SUMA_FQDN
- * SUSE Manager Server IP = $SUMA_IP
+ * SUSE Manager Server IPv4 = $SUMA_IP
+ * SUSE Manager Server IPv6 = $SUMA_IP6
 
 If any of this settings are wrong please re-run this script!
 
@@ -146,10 +152,20 @@ if ! egrep -m1 "^tftpsync.server_ip[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; 
 else
     sed -i "s/^tftpsync.server_ip[[:space:]]*=.*/tftpsync.server_ip = $SUMA_IP/" /etc/rhn/rhn.conf
 fi
+if ! egrep -m1 "^tftpsync.server_ip6[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+    echo "tftpsync.server_ip6 = $SUMA_IP6" >> /etc/rhn/rhn.conf
+else
+    sed -i "s/^tftpsync.server_ip6[[:space:]]*=.*/tftpsync.server_ip6 = $SUMA_IP6/" /etc/rhn/rhn.conf
+fi
 if ! egrep -m1 "^tftpsync.proxy_ip[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
     echo "tftpsync.proxy_ip = $SUMA_PROXY_IP" >> /etc/rhn/rhn.conf
 else
     sed -i "s/^tftpsync.proxy_ip[[:space:]]*=.*/tftpsync.proxy_ip = $SUMA_PROXY_IP/" /etc/rhn/rhn.conf
+fi
+if ! egrep -m1 "^tftpsync.proxy_ip6[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+    echo "tftpsync.proxy_ip6 = $SUMA_PROXY_IP6" >> /etc/rhn/rhn.conf
+else
+    sed -i "s/^tftpsync.proxy_ip6[[:space:]]*=.*/tftpsync.proxy_ip6 = $SUMA_PROXY_IP6/" /etc/rhn/rhn.conf
 fi
 if ! egrep "^tftpsync.proxy_fqdn[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
     echo "tftpsync.proxy_fqdn = $SUMA_PROXY_FQDN" >> /etc/rhn/rhn.conf
@@ -162,9 +178,10 @@ else
     sed -i "s!^tftpsync.tftpboot[[:space:]]*=.*!tftpsync.tftpboot = $TFTPBOOT!" /etc/rhn/rhn.conf
 fi
 
-
-sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/        Allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
-sed -i "s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/#        Allow from /g" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "s/^[[:space:]]*Require ip[[:space:]].*$/#        Require ip /g" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "0,/^[[:space:]#]*Allow from[[:space:]].*/s/^[[:space:]#]*Allow from[[:space:]].*$/        Allow from $SUMA_IP\n        Allow from $SUMA_IP6/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "0,/^[[:space:]#]*Require ip[[:space:]].*/s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP\n        Require ip $SUMA_IP6/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
 
 
 #######################################

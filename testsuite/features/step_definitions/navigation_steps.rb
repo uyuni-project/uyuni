@@ -202,7 +202,7 @@ When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |clien
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
-  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td,'#{line}')]//select")
+  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
   select(value, from: select[:id])
 end
 

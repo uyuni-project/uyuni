@@ -752,7 +752,7 @@ type=rpm-md
         """
         if self._md_exists('repomd'):
             repomd_path = self._retrieve_md_path('repomd')
-            infile = self._decompress(repomd_path)
+            infile = fileutils.decompress_open(repomd_path)
             for repodata in etree.parse(infile).getroot():
                 if repodata.get('type') == 'primary':
                     checksum_elem = repodata.find(REPO_XML+'checksum')
@@ -900,7 +900,7 @@ type=rpm-md
         susedata = []
         if self._md_exists('susedata'):
             data_path = self._retrieve_md_path('susedata')
-            infile = self._decompress(data_path)
+            infile = fileutils.decompress_open(data_path)
             for package in etree.parse(infile).getroot():
                 d = {}
                 d['pkgid'] = package.get('pkgid')
@@ -935,7 +935,7 @@ type=rpm-md
         products = []
         if self._md_exists('products'):
             data_path = self._retrieve_md_path('products')
-            infile = self._decompress(data_path)
+            infile = fileutils.decompress_open(data_path)
             for product in etree.parse(infile).getroot():
                 p = {}
                 p['name'] = product.find('name').text
@@ -961,7 +961,9 @@ type=rpm-md
         if self._md_exists('updateinfo'):
             notices = {}
             updates_path = self._retrieve_md_path('updateinfo')
-            infile = self._decompress(updates_path)
+            if not os.path.exists(updates_path) and self._md_exists('updateinfo_zck'):
+                updates_path = self._retrieve_md_path('updateinfo_zck')
+            infile = fileutils.decompress_open(updates_path)
             for _event, elem in etree.iterparse(infile):
                 if elem.tag == 'update':
                     un = UpdateNotice(elem)
@@ -972,7 +974,7 @@ type=rpm-md
             return ('updateinfo', notices.values())
         elif self._md_exists('patches'):
             patches_path = self._retrieve_md_path('patches')
-            infile = self._decompress(patches_path)
+            infile = fileutils.decompress_open(patches_path)
             notices = []
             for patch in etree.parse(infile).getroot():
                 checksum_elem = patch.find(PATCHES_XML+'checksum')
@@ -1002,6 +1004,10 @@ type=rpm-md
         groups = None
         if self._md_exists('group'):
             groups = self._retrieve_md_path('group')
+            if not os.path.exists(groups) and self._md_exists('group_xz'):
+                groups = self._retrieve_md_path('group_xz')
+            if not os.path.exists(groups) and self._md_exists('group_gz'):
+                groups = self._retrieve_md_path('group_gz')
         return groups
 
     def get_modules(self):
@@ -1245,12 +1251,3 @@ type=rpm-md
 
     def _authenticate(self, url):
         pass
-
-    def _decompress(self, filename):
-        if filename.endswith('.gz'):
-            return gzip.open(filename)
-        elif filename.endswith('.bz2'):
-            return bz2.open(filename)
-        elif filename.endswith('.xz'):
-            return lzma.open(filename)
-        return open(filename, 'rt')
