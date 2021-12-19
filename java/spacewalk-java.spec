@@ -215,6 +215,7 @@ Requires:       jboss-logging
 Requires:       joda-time
 Requires:       jose4j
 Requires:       jpa-api
+Requires:       libsolv-tools
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm

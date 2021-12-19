@@ -1,3 +1,4 @@
+- Change rhnPackageCapability name data type to TEXT
 - Add support for custom SSH port for SSH minions
 - Fix changing of existing proxy path
 - Add pillars to Apply States action

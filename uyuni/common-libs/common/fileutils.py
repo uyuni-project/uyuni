@@ -30,6 +30,12 @@ from uyuni.common.checksum import getFileChecksum
 from uyuni.common.rhnLib import isSUSE
 from uyuni.common.usix import ListType, TupleType, MaxInt
 
+try:
+    import lzma
+    HAS_LZMA = True
+except ImportError:
+    HAS_LZMA = False
+
 def cleanupAbsPath(path):
     """ take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible.
 
@@ -497,18 +503,18 @@ def decompress_open(filename):
     elif filename.endswith('.bz2'):
         file_obj = bz2.BZ2File(filename, 'rb')
     elif filename.endswith('.xz'):
-        try:
-            # pylint: disable=F0401,E1101
-            import lzma
+        if HAS_LZMA:
             file_obj = lzma.LZMAFile(filename, 'rb')
-        except ImportError: # No LZMA lib - be sad
-            # xz uncompresses foo.xml.xz to foo.xml
-            # uncompress, keep both, return uncompressed file
-            subprocess.call(['xz', '-d', '-k', filename])
-            uncompressed_path = filename.rsplit('.', 1)[0]
-            file_obj = codecs.open(uncompressed_path, 'rb', encoding="utf8")
+        else:
+            file_obj = subprocess.Popen(["xz", "-d", "-k", filename],
+                                        stdout=subprocess.PIPE,
+                                        stderr=subprocess.DEVNULL).stdout
+    elif filename.endswith('.zck'):
+        file_obj = subprocess.Popen(["unzck", "-c", filename],
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.DEVNULL).stdout
     else:
         file_obj = codecs.open(filename, 'r', encoding="utf8")
-    if filename.endswith(('.gz', '.bz2', '.xz')):
+    if filename.endswith(('.gz', '.bz2', '.xz', '.zck')):
         return io.TextIOWrapper(file_obj, encoding="utf8")
     return file_obj
