@@ -41,6 +41,9 @@ java/conf/cobbler/snippets/ @SchoolGuy
 
 # Python
 *.py @uyuni-project/python
+# This file only holds data, no Python code
+mgr_bootstrap_data.py
+
 
 # Frontend
 web/ @uyuni-project/frontend

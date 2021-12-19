@@ -182,7 +182,7 @@ class YumSrcTest(unittest.TestCase):
         cs._get_repodata_path = Mock(return_value=os.path.join(wdir, "repodata"))
 
         comps = cs.get_groups()
-        self.assertTrue(comps.endswith('751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml'))
+        self.assertTrue(comps.endswith('7b3e68b8ce7cbaf431e311014e097b99390465ce660eebdf3bd469524aea8059-comps-AppStream.x86_64.xml.xz'))
         modules = cs.get_modules()
         self.assertTrue(modules.endswith('2c3714db39642790c8a1922c6cae04e7b95af59b234af60f15778d5550e3a546-modules.yaml.gz'))
 

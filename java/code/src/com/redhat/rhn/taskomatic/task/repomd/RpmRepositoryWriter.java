@@ -68,7 +68,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private static final String SUSEDATA_FILE = "susedata.xml.gz.new";
     private static final String NOREPO_FILE = "noyumrepo.txt";
     private static final String SOLV_FILE = "solv.new";
-    private static final String REPO2SOLV = "/usr/bin/repo2solv.sh";
+    private static final String REPO2SOLV = "/usr/bin/repo2solv";
 
     private static final String GROUP = "groups";
     private static final String MODULES = "modules";
