@@ -1,3 +1,6 @@
+- Add decompression of zck files to fileutils
+- require python macros for building
+
 -------------------------------------------------------------------
 Mon Aug 09 11:12:24 CEST 2021 - jgonzalez@suse.com
 

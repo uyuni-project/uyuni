@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,6 +31,7 @@ import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.AnsibleController;
+import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -46,6 +47,7 @@ import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
@@ -153,7 +155,10 @@ public class Router implements SparkApplication {
         minionsAPI.initRoutes();
 
         // Systems API
-        SystemsController.initRoutes(systemsController);
+        SystemsController.initRoutes(systemsController, jade);
+
+        //CSV API
+        CSVDownloadController.initRoutes();
 
         // Activation Keys API
         ActivationKeysController.initRoutes();
@@ -206,6 +211,9 @@ public class Router implements SparkApplication {
 
         // Ansible Control Node
         AnsibleController.initRoutes(jade);
+
+        // Rhn Set API
+        SetController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

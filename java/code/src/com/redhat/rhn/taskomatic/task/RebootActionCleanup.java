@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -43,6 +43,11 @@ import java.util.Map;
  * that after this time, the reboot action has failed for some reason.
  */
 public class RebootActionCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "reboot_action_cleanup";
+    }
 
     /**
      * {@inheritDoc}

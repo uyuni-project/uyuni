@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -39,6 +39,11 @@ import java.util.stream.Stream;
 public class TokenCleanup extends RhnJavaJob {
 
     private final SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+
+    @Override
+    public String getConfigNamespace() {
+        return "token_cleanup";
+    }
 
     /**
      * {@inheritDoc}

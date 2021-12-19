@@ -2555,16 +2555,6 @@
                  path="/WEB-INF/pages/systems/physicallist.jsp"/>
     </action>
 
-    <action path="/systems/VirtualList"
-        scope="request"
-        input="/WEB-INF/pages/systems/virtuallist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.VirtualSystemSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/virtuallist.jsp"/>
-    </action>
-
     <action path="/systems/DuplicateIPList"
         scope="request"
         input="/WEB-INF/pages/systems/duplicate/duplicatesystems.jsp"

@@ -67,6 +67,7 @@ BuildRequires:  python-devel
 %else
 BuildRequires:  python2-devel
 %endif
+Recommends:     zchunk
 
 %description -n python2-%{name}
 Python 2 libraries required by both Uyuni server and client tools.
@@ -77,12 +78,14 @@ Python 2 libraries required by both Uyuni server and client tools.
 Summary:        Uyuni server and client tools libraries for python3
 Group:          Development/Languages/Python
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 Conflicts:      %{name} < 1.7.0
 %if 0%{?suse_version}
 Requires:       python3-base
 %else
 Requires:       python3-libs
 %endif
+Recommends:     zchunk
 
 Obsoletes:      python3-spacewalk-backend-libs
 Obsoletes:      python3-spacewalk-usix

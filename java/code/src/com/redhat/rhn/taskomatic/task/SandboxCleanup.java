@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,6 +31,11 @@ import java.util.Map;
  * SandboxCleanup
  */
 public class SandboxCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "sandbox_cleanup";
+    }
 
     /**
      * {@inheritDoc}

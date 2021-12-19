@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.quartz.Job;
@@ -26,6 +27,46 @@ import org.quartz.JobExecutionException;
 public interface RhnJob extends Job {
 
     String DEFAULT_LOGGING_LAYOUT = "%d [%t] %-5p %c %x - %m%n";
+
+    /**
+     * @return a string representing the namespace from which job specific
+     * configuration parameters are read
+     */
+    String getConfigNamespace();
+
+    /**
+     * @return default fallback value for number of parallel threads used
+     */
+    default int getDefaultParallelThreads() {
+        return 1;
+    }
+
+    /**
+     * Gets the number of parallel threads for this job either from config or a fallback value
+     * @return number of parallel
+     */
+    default int getParallelThreads() {
+        return Config.get().getInt("taskomatic." + getConfigNamespace() + "." + "parallel_threads",
+                Config.get().getInt("taskomatic." + this.getClass().getCanonicalName() + ".parallel_threads",
+                 getDefaultParallelThreads()));
+    }
+
+    /**
+     * @return default fallback reschedule time for jobs
+     */
+    default int getDefaultRescheduleTime() {
+       return 10;
+    }
+
+    /**
+     * Gets the reschedule time for this job either from config or a fallback value
+     * @return reschedule time
+     */
+    default int getRescheduleTime() {
+        return Config.get().getInt("taskomatic." + getConfigNamespace() + "." + "reschedule_time",
+                Config.get().getInt("taskomatic." + this.getClass().getCanonicalName() + ".reschedule_time",
+                 getDefaultRescheduleTime()));
+    }
 
     /**
      * execute method to be called

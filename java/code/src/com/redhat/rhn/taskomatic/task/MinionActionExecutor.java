@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,6 +45,16 @@ public class MinionActionExecutor extends RhnJavaJob {
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
     private SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+
+    @Override
+    public int getDefaultRescheduleTime() {
+        return 10;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_action_executor";
+    }
 
     /**
      * @param context the job execution context

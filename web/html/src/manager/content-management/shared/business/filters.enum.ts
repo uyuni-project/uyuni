@@ -81,6 +81,16 @@ const filterMatchers: FilterMatcherEnumType = {
     text: "provides name",
     longDescription: t("contains package which provides name equal"),
   },
+  LOWER: {
+    key: "lower",
+    text: t("lower"),
+    longDescription: t("lower than"),
+  },
+  LOWEREQ: {
+    key: "lowereq",
+    text: t("lower or equal"),
+    longDescription: t("lower or equal than"),
+  },
   EQUALS: {
     key: "equals",
     text: t("equals"),
@@ -88,8 +98,13 @@ const filterMatchers: FilterMatcherEnumType = {
   },
   GREATEREQ: {
     key: "greatereq",
-    text: t("later or equal"),
-    longDescription: t("later or equal than"),
+    text: t("greater or equal"),
+    longDescription: t("greater or equal than"),
+  },
+  GREATER: {
+    key: "greater",
+    text: t("greater"),
+    longDescription: t("greater than"),
   },
   MATCHES: {
     key: "matches",
@@ -114,7 +129,13 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     key: "nevra",
     text: t("NEVRA"),
     entityType: filterEntity.PACKAGE,
-    matchers: [filterMatchers.EQUALS],
+    matchers: [
+      filterMatchers.LOWER,
+      filterMatchers.LOWEREQ,
+      filterMatchers.EQUALS,
+      filterMatchers.GREATER,
+      filterMatchers.GREATEREQ,
+    ],
   },
   PROVIDES_NAME: {
     key: "provides_name",

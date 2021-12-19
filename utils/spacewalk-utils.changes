@@ -1,5 +1,13 @@
-- Use EL8 Client Tools for EL8 clones, as CentOS8 will be end of
-  life by the end of the year
+- require python macros for building
+- Add Debian 11 repositories
+
+-------------------------------------------------------------------
+Fri Dec 03 12:29:48 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Use Almalinux Mirror List
+  * Use EL8 Client Tools for EL8 clones, as CentOS8 will be end of
+    life by the end of the year
 
 -------------------------------------------------------------------
 Tue Nov 16 10:07:42 CET 2021 - jgonzalez@suse.com

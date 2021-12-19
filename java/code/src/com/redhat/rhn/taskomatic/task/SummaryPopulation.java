@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -37,6 +37,11 @@ import java.util.Set;
  * daily summary email
  */
 public class SummaryPopulation extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "summary_population";
+    }
 
     /**
      * {@inheritDoc}

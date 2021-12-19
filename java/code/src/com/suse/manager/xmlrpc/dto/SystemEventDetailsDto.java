@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -37,6 +37,9 @@ public class SystemEventDetailsDto extends SystemEventDto implements Serializabl
 
     private List<Map<String, String>> additionalInfo;
 
+    /**
+     * Default constructor.
+     */
     public SystemEventDetailsDto() {
         additionalInfo = new ArrayList<>();
     }
@@ -73,6 +76,12 @@ public class SystemEventDetailsDto extends SystemEventDto implements Serializabl
         this.additionalInfo = additionalInfoIn;
     }
 
+    /**
+     * Check if this event has the additional information specific for the event type.
+     *
+     * @return <code>true</code> when there are additional pieces of information thus {@link #getAdditionalInfo()} will
+     * return a collection with at least one valid entry.
+     */
     public boolean hasAdditionInfo() {
         return additionalInfo != null && !additionalInfo.isEmpty();
     }

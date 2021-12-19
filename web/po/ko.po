@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"POT-Creation-Date: 2021-12-11 11:51+0100\n"
 "PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -399,7 +399,8 @@ msgstr "필수"
 #: ../html/src/components/input/Password.stories.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:181
 #: ../html/src/manager/login/login.tsx:172
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:409
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:301
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:37
 msgid "Password"
 msgstr "비밀번호"
@@ -1789,6 +1790,8 @@ msgstr "작업이 "
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "scheduled"
 msgstr "예약됨"
@@ -2804,6 +2807,7 @@ msgstr "경로"
 #: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:402
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Activation Key"
 msgstr "활성화 키"
 
@@ -2865,7 +2869,7 @@ msgstr "가져오기"
 #: ../html/src/manager/images/image-import.tsx:322
 #: ../html/src/manager/images/image-profile-edit.tsx:489
 #: ../html/src/manager/images/image-store-edit.tsx:203
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:280
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:291
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:209
 msgid "Clear fields"
 msgstr "필드 지우기"
@@ -4479,7 +4483,7 @@ msgid ""
 msgstr ""
 "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:209
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:220
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4487,58 +4491,58 @@ msgstr ""
 "서버로부터 수신된 중단되거나 유효하지 않은 응답을 요청하십시오. minion이 올바"
 "르게 부트스트랩되었는지 확인하십시오."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:238
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:249
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "호스트를 부트스트랩했습니다! 시스템이 표시되어야 하는 위치:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:251
 msgid "systems"
 msgstr "시스템"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:253
 msgid "shortly"
 msgstr "곧"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:260
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:271
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "시스템을 부트스트랩하는 중: 응답을 기다리는 중..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:264
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:275
 msgid "Loading SSH Private Key.."
 msgstr "SSH 개인 키를 로드하는 중..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:272
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:283
 msgid "Bootstrap"
 msgstr "부트스트랩"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:297
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
 msgid "e.g., ••••••••••••"
 msgstr "예: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:306
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:317
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
 msgid "SSH Private Key"
 msgstr "SSH 개인 키"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:312
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:323
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차 후에 삭제됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:318
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "Leave empty for no passphrase"
 msgstr "비밀번호가 없는 경우 비워두십시오."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:346
 msgid "Bootstrap Minions"
 msgstr "부트스트랩 Minion"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4546,15 +4550,30 @@ msgstr ""
 "SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {0}은(는) 시스템"
 "을 원격으로 준비하며 등록을 수행합니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:351
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
+#, fuzzy
+msgid "Host"
+msgstr "호스트"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "e.g., host.domain.com"
 msgstr "예: host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:370
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#, fuzzy
+msgid "SSH Port"
+msgstr "포트"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:381
 msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:389
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:386
+#, fuzzy
+msgid "User"
+msgstr "사용자"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4566,22 +4585,50 @@ msgstr ""
 "'root'입니다. 이 사용자는 부트스트랩 절차 중에 {0}의 SSH 키가 배포된 후에 설"
 "정됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:437
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:454
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+msgid "Authentication Method"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:448
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
+#: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "없음"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#, fuzzy
+msgid "Reactivation Key"
+msgstr "활성화 키"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
+msgid "Leave empty when no reactivation is wanted"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Proxy"
 msgstr "프록시"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:473
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:497
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 "프록시의 호스트 이름이 완전하지 않습니다. 이로 인해 채널에 액세스할 때 문제"
 "가 발생할 수 있습니다."
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+msgid "Disable SSH strict host key checking during bootstrap process"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:530
+msgid "Manage system completely via SSH (will not install an agent)"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
+#, fuzzy
+msgid ""
+"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
 #: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4603,6 +4650,29 @@ msgstr "정리 중 오류 발생"
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
 msgid "Confirm Deletion"
 msgstr "삭제 확인"
+
+#: ../html/src/manager/systems/proxy.tsx:42
+msgid "Please select a list of minions (not proxies or traditional clients)."
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:67
+msgid "Change of proxy server has been "
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:101
+#: ../html/src/manager/systems/proxy.tsx:117
+#, fuzzy
+msgid "Change Proxy"
+msgstr "변경 사항"
+
+#: ../html/src/manager/systems/proxy.tsx:117
+msgid "Connect minion(s) to another proxy server."
+msgstr ""
+
+#: ../html/src/manager/systems/proxy.tsx:120
+#, fuzzy
+msgid "New Proxy"
+msgstr "프록시"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21

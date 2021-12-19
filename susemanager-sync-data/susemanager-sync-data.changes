@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Dec 03 12:33:33 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * use mirrorlist URLs for AlmaLinux 8
+  * add SLES15 SP2 LTSS
+
+-------------------------------------------------------------------
 Fri Nov 05 14:07:25 CET 2021 - jgonzalez@suse.com
 
 - version 4.3.3-1

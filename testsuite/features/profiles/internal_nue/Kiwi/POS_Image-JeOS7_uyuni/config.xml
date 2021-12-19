@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<image schemaversion="6.1" name="POS_Image_JeOS7_uyuni">
+    <description type="system">
+        <author>Admin User</author>
+        <contact>noemail@example.com</contact>
+        <specification>SUSE Linux Enterprise 15 SP3 JeOS</specification>
+    </description>
+    <preferences>
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+
+        <locale>en_US</locale>
+        <keytable>us.map.gz</keytable>
+        <timezone>Europe/Berlin</timezone>
+        <hwclock>utc</hwclock>
+
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <type filesystem="ext3" image="pxe" initrd_system="dracut"/>
+    </preferences>
+
+    <drivers>
+      <file name="drivers/block/virtio_blk.ko" />
+    </drivers>
+
+    <!-- remove all the following repositories if you want to get their packages through Uyuni;
+         in that case, sync those repos in Uyuni, and add them to the activation key;
+         finally, re-enable option  '- -ignore-repos-used-for-build' in file 'kiwi-image-build.sls' -->
+    <repository type="rpm-md">  <!-- product -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Product-SLES/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Product-SLES/15-SP3/x86_64/update/"/>
+    </repository>
+    <repository type="rpm-md">  <!-- base system -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Basesystem/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update/"/>
+    </repository>
+    <repository type="rpm-md">  <!-- desktop applications -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Desktop-Applications/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP3/x86_64/update/"/>
+    </repository>
+    <repository type="rpm-md">  <!-- development tools -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Development-Tools/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Development-Tools/15-SP3/x86_64/update/"/>
+    </repository>
+    <repository type="rpm-md">  <!-- manager tools -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Manager-Tools/15/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
+    </repository>
+
+    <packages type="image">
+        <package name="patterns-base-minimal_base"/>
+        <package name="aaa_base-extras"/>
+        <package name="acl"/>
+        <package name="chrony"/>
+        <package name="curl"/>
+        <package name="dracut"/>
+        <package name="fipscheck"/>
+        <package name="group(mail)"/>
+        <package name="group(wheel)"/>
+        <package name="grub2-branding-SLE" bootinclude="true"/>
+        <package name="iputils"/>
+        <package name="issue-generator"/>
+        <package name="zypper-lifecycle-plugin"/>
+        <package name="vim"/>
+        <package name="shim" arch="x86_64"/>
+        <package name="grub2"/>
+        <package name="grub2-x86_64-efi" arch="x86_64"/>
+        <package name="haveged"/>
+        <package name="less" />
+        <package name="tar"/>
+        <package name="parted"/>
+        <package name="SUSEConnect"/>
+        <package name="suse-build-key"/>
+        <package name="systemd"/>
+        <package name="systemd-sysvinit"/>
+        <package name="timezone"/>
+        <package name="wicked"/>
+        <package name="iproute2"/>
+        <package name="openssh"/>
+        <package name="rsync"/>
+        <package name="plymouth-plugin-label-ft"/>
+
+        <package name="kernel-default"/>
+	<package name="salt-minion"/>
+
+	<package name="dracut-saltboot"/>
+        <package name="mdadm"/>
+        <package name="cryptsetup"/>
+        <package name="kernel-firmware"/>
+        <package name="kexec-tools"/>
+        <package name="plymouth"/>
+        <package name="plymouth-dracut"/>
+        <package name="plymouth-branding-SLE"/>
+        <package name="plymouth-plugin-label-ft"/>
+        <package name="fontconfig"/>
+        <package name="fonts-config"/>
+        <package name="noto-sans-fonts"/>
+        <package name="busybox"/>
+        <package name="bind-utils"/>
+        <package name="kiwi-tools"/>
+        <package name="dosfstools"/>
+        <package name="xfsprogs"/>
+    </packages>
+    <users group="root">
+      <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash"/>
+    </users>
+
+    <packages type="bootstrap">
+        <package name="udev"/>
+        <package name="filesystem"/>
+        <package name="glibc-locale-base"/>
+        <package name="ca-certificates-mozilla"/>
+        <package name="sles-release"/>
+        <package name="rhn-org-trusted-ssl-cert-osimage"/>
+    </packages>
+</image>

@@ -36,6 +36,8 @@ type State = {
 function getTokenLifetime(token: String): number {
   const jwsParts = token.split(".");
   const claims = JSON.parse(atob(jwsParts[1]));
+  // TODO: If you touch this code, please use `localizedMoment()` here instead
+  // eslint-disable-next-line local-rules/no-raw-date
   return new Date(claims["exp"] * 1000).valueOf() - new Date(claims["iat"] * 1000).valueOf();
 }
 
