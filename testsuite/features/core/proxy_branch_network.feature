@@ -62,6 +62,7 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Parametrize the branch network
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
+    And I click on "Expand All Sections"
     And I enter "eth1" in NIC field
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
@@ -77,6 +78,7 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Parametrize DHCP on the branch server
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I enter "example.org" in domain name field
     And I enter the local IP address of "proxy" in domain name server field
     And I enter "eth1" in listen interfaces field
@@ -102,6 +104,7 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Parametrize DNS on the branch server
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     # general information:
     And I check include forwarders box
     And I press "Add Item" in config options section
@@ -153,6 +156,7 @@ Feature: Setup SUSE Manager for Retail branch network
     # dhcpd:
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
     And I enter the local IP address of "pxeboot_minion" in third reserved IP field
@@ -161,6 +165,7 @@ Feature: Setup SUSE Manager for Retail branch network
     Then I should see a "Formula saved" text
     # bind:
     When I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in A section of example.org zone
     And I enter "pxeboot" in fourth A name field of example.org zone
     And I enter the local IP address of "pxeboot_minion" in fourth A address field of example.org zone

@@ -43,6 +43,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Parametrize the KVM virtualization host
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
+    And I click on "Expand All Sections"
     And I select "NAT" in virtual network mode field
     And I enter "192.168.124.1" in virtual network IPv4 address field
     And I enter "192.168.124.2" in first IPv4 address for DHCP field
