@@ -41,6 +41,9 @@ type Context = {
   getCleanValues?: any | null;
   clearValues: any | null;
   validate: any | null;
+  sectionsExpanded: any | null;
+  setSectionsExpanded: any | null;
+  searchCriteria: any | null;
 };
 
 export const FormulaFormContext = React.createContext<Context>({
@@ -51,6 +54,9 @@ export const FormulaFormContext = React.createContext<Context>({
   getCleanValues: null,
   clearValues: null,
   validate: null,
+  sectionsExpanded: null,
+  setSectionsExpanded: null,
+  searchCriteria: null,
 });
 
 export function generateFormulaComponent(
@@ -192,7 +198,16 @@ export function generateFormulaComponentForId(
     );
   else if (element.$type === "group") {
     return (
-      <Group id={id} key={id} header={element.$name} help={element.$help}>
+      <Group
+        id={id}
+        key={id}
+        header={element.$name}
+        help={element.$help}
+        sectionsExpanded={formulaForm.props.sectionsExpanded}
+        setSectionsExpanded={formulaForm.props.setSectionsExpanded}
+        isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
+        criteria={formulaForm.props.searchCriteria}
+      >
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
       </Group>
     );
@@ -206,6 +221,10 @@ export function generateFormulaComponentForId(
         value={value}
         formulaForm={formulaForm}
         disabled={isDisabled}
+        sectionsExpanded={formulaForm.props.sectionsExpanded}
+        setSectionsExpanded={formulaForm.props.setSectionsExpanded}
+        isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
+        criteria={formulaForm.props.searchCriteria}
       />
     );
   } else if (element.$type === "select")
@@ -327,6 +346,29 @@ function checkVisibilityCondition(id, condition, formulaForm) {
   return false;
 }
 
+export function isFiltered(criteria) {
+  return criteria && criteria.length > 0;
+}
+
+// return the element content visibility conditionally based on the element name by the criteria
+function isVisibleByCriteria(element: any, criteria: string) {
+  let visibilityForcedByChildren = false;
+  // check if all children are not visible by criteria so we can hide the parent (this element) as well
+  for (var child_name in element) {
+    if (child_name.startsWith("$")) continue;
+    visibilityForcedByChildren = isVisibleByCriteria(element[child_name], criteria);
+    if (visibilityForcedByChildren) break;
+  }
+
+  // return conditions result whether the element can be hided or not
+  return (
+    criteria == null ||
+    criteria === "" ||
+    element.$name.toLowerCase().includes(criteria.toLowerCase()) ||
+    visibilityForcedByChildren
+  );
+}
+
 function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
   var child_items: React.ReactNode[] = [];
   for (var child_name in element) {
@@ -415,9 +457,12 @@ export const FormulaFormRenderer = () => (
 type UnwrappedFormulaFormRendererProps = {
   scope: string | null;
   values: any;
+  sectionsExpanded: string;
+  setSectionsExpanded: (string) => void;
   layout?: any;
   onChange?: (id: string, value: string) => any;
   registerValidationTrigger?: (...args: any[]) => any;
+  searchCriteria: string | null;
 };
 
 // layout
@@ -590,6 +635,9 @@ type FormulaFormContextProviderProps = {
   systemData?: any;
   groupData?: any;
   scope?: any;
+  sectionsExpanded?: string | undefined;
+  setSectionsExpanded?: (status: string) => void | undefined;
+  searchCriteria?: string;
 };
 
 type FormulaFormContextProviderState = {
@@ -603,6 +651,7 @@ type FormulaFormContextProviderState = {
 // systemData
 // groupData
 // scope
+// searchCriteria
 export class FormulaFormContextProvider extends React.Component<
   FormulaFormContextProviderProps,
   FormulaFormContextProviderState
@@ -632,6 +681,9 @@ export class FormulaFormContextProvider extends React.Component<
       clearValues: this.clearValues,
       validate: this.validate,
       registerValidationTrigger: this.registerValidationTrigger,
+      sectionsExpanded: this.props.sectionsExpanded,
+      setSectionsExpanded: this.props.setSectionsExpanded,
+      searchCriteria: this.props.searchCriteria,
     };
 
     return <FormulaFormContext.Provider value={contextValue}>{this.props.children}</FormulaFormContext.Provider>;
