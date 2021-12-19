@@ -51,6 +51,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in first CNAME section
     And I enter "ftp" in first CNAME alias field
     And I enter "proxy" in first CNAME name field
@@ -86,6 +87,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
     And I click on "Save Formula"
@@ -95,6 +97,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Tftpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in internal network address field
     And I enter "/srv/saltboot" in TFTP base directory field
     And I click on "Save Formula"
@@ -104,6 +107,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Vsftpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in vsftpd internal network address field
     And I enter "/srv/saltboot" in FTP server directory field
     And I click on "Save Formula"
@@ -171,6 +175,7 @@ Feature: PXE boot a Retail terminal
     When I follow "HWTYPE:Intel-Genuine" in the content area
     When I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
+    And I click on "Expand All Sections"
     And I enter "disk1" in disk id field
     And I enter "/dev/vda" in disk device field
     And I select "msdos" in disk label field
@@ -255,6 +260,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Remove Item" in third CNAME section
     And I press "Remove Item" in second CNAME section
     And I press "Remove Item" in first CNAME section
@@ -311,6 +317,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
@@ -405,6 +412,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     # direct zone example.org:
     And I press "Remove Item" in fifth CNAME section
     And I press "Remove Item" in fourth CNAME section
@@ -436,6 +444,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
+    And I click on "Expand All Sections"
     And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text

@@ -18,6 +18,7 @@ Feature: PXE boot a terminal with Cobbler
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in pxeboot next server field
     And I enter "pxelinux.0" in pxeboot filename field
     And I click on "Save Formula"
@@ -149,6 +150,7 @@ Feature: PXE boot a terminal with Cobbler
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     # direct zone tf.local:
     And I scroll to the top of the page
     And I press minus sign in third configured zone section
@@ -159,6 +161,7 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I enter "boot/pxelinux.0" in pxeboot filename field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
