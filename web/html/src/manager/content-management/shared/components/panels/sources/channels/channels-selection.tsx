@@ -235,7 +235,13 @@ const ChannelsSelection = (props: PropsType) => {
               />
             </div>
           </label>
-          <VirtualList items={rows} renderRow={Row} rowHeight={rowHeight} />
+          <VirtualList
+            items={rows}
+            renderRow={Row}
+            rowHeight={rowHeight}
+            // By default, assume we have a base channel row
+            estimatedRowHeight={30}
+          />
         </div>
       )}
     </React.Fragment>

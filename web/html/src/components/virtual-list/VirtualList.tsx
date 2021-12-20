@@ -3,11 +3,14 @@ import { useRef, useEffect } from "react";
 import { VariableSizeList as List, ListChildComponentProps } from "react-window";
 import { useResizeDetector } from "react-resize-detector";
 
-export type Identifiable = { id: number | string };
+export type Identifiable = {
+  id: number | string;
+};
 
 type ListProps<T> = {
   renderRow: (item: T) => JSX.Element;
   rowHeight: (item: T) => number;
+  estimatedRowHeight?: number;
   items: T[];
 };
 
@@ -57,10 +60,11 @@ const VirtualList = <T extends Identifiable>(props: ListProps<T>) => {
           itemData={props.items}
           itemCount={props.items.length}
           itemSize={itemSize}
+          estimatedItemSize={props.estimatedRowHeight}
           itemKey={itemKey}
           children={Row}
           // How many items to prerender outside of the viewport, see https://react-window.vercel.app/#/api/FixedSizeList
-          overscanCount={10}
+          overscanCount={100}
         />
       ) : null}
     </div>
