@@ -1,6 +1,5 @@
-- Use salt.cache for pkgset beacon to make it possible
-  to notify about installed packages changes even if
-  salt-minion was stopped during this changes
+- Improve `pkgset` beacon with using `salt.cache`
+  to notify about the changes made while the minion was stopped
 - Add dnfnotify plugin support for pkgset beacon
 - Use flat repositories format for Debian based systems
 - Add checking for libvirtd binary to grains.virt module
