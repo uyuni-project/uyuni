@@ -251,7 +251,7 @@ fi
 
 if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
-    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml > /etc/tomcat/server.xml
+    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup -o /etc/tomcat/server.xml
 fi
 
 
