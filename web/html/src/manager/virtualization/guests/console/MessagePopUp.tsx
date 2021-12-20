@@ -44,6 +44,7 @@ export function MessagePopUp(props: Props) {
   return (
     <LegacyDialog
       id={props.id}
+      hideHeader
       content={popupContent()}
       footer={
         buttonValues && [
