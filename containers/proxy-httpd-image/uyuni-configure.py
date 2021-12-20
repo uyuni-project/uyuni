@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import base64
 import os
 import yaml
 
@@ -14,14 +15,18 @@ with open(config_path + "config.yaml") as source:
         file.write(str(config['system_id']))
     
     # Decode and install SSL CA certificate
-    os.system(f"echo -n '{config['binary_ca_certs']}' | base64 -d > /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT")
+    with open("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w") as file:
+        file.write(base64.b64decode(config['binary_ca_certs']).decode())
     os.symlink("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT")
     os.system("/usr/sbin/update-ca-certificates")
 
-    # Decode and install server certificate package
-    os.system(f"echo -n '{config['binary_server_crt']}' | base64 -d > /etc/apache2/ssl.crt/server.crt")
-    os.system(f"echo -n '{config['binary_server_csr']}' | base64 -d > /etc/apache2/ssl.csr/server.csr")
-    os.system(f"echo -n '{config['binary_server_key']}' | base64 -d > /etc/apache2/ssl.key/server.key")
+    # Decode and install server certificate files
+    with open("/etc/apache2/ssl.crt/server.crt", "w") as file:
+        file.write(base64.b64decode(config['binary_server_crt']).decode())
+    with open("/etc/apache2/ssl.csr/server.csr", "w") as file:
+        file.write(base64.b64decode(config['binary_server_csr']).decode())
+    with open("/etc/apache2/ssl.key/server.key", "w") as file:
+        file.write(base64.b64decode(config['binary_server_key']).decode())
 
     # Create conf file
     with open("/etc/rhn/rhn.conf", "w") as file:
