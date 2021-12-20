@@ -1,4 +1,4 @@
-# begin waiting for NetworkManager
+<!-- begin waiting for NetworkManager -->
     <source>
         <![CDATA[
 if systemctl is-enabled NetworkManager.service ; then
@@ -15,5 +15,5 @@ if systemctl is-enabled NetworkManager.service ; then
 fi
         ]]>
     </source>
-# end waiting for NetworkManager
+<!-- end waiting for NetworkManager -->
 
