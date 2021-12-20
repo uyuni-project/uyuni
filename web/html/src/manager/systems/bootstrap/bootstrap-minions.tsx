@@ -25,7 +25,7 @@ enum AuthMethod {
   Password = "password",
   SshKey = "ssh-key",
   AnsiblePreauth = "ansible-preauth",
-};
+}
 
 type State = {
   host: string;
@@ -304,54 +304,56 @@ class BootstrapMinions extends React.Component<Props, State> {
 
     const productName = window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 
-    const authenticationData =
+    const authenticationData = (
       <>
-      {this.state.authMethod === AuthMethod.Password && (
-        <div className="form-group">
-          <label className="col-md-3 control-label">{t("Password")}:</label>
-          <div className="col-md-6">
-            <input
-              name="password"
-              className="form-control"
-              type="password"
-              autoComplete="new-password"
-              placeholder={t("e.g., ••••••••••••")}
-              value={this.state.password}
-              onChange={this.passwordChanged}
-            />
-          </div>
-        </div>
-      )}
-      {this.state.authMethod === AuthMethod.SshKey && (
-        <div>
+        {this.state.authMethod === AuthMethod.Password && (
           <div className="form-group">
-            <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
-            <div className="col-md-6">
-              <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
-              <div className="help-block">
-                <i className="fa fa-exclamation-triangle" />
-                {t(
-                  "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="form-group">
-            <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+            <label className="col-md-3 control-label">{t("Password")}:</label>
             <div className="col-md-6">
               <input
-                name="privKeyPwd"
+                name="password"
                 className="form-control"
                 type="password"
                 autoComplete="new-password"
-                placeholder={t("Leave empty for no passphrase")}
-                value={this.state.privKeyPwd}
-                onChange={this.privKeyPwdChanged}
+                placeholder={t("e.g., ••••••••••••")}
+                value={this.state.password}
+                onChange={this.passwordChanged}
               />
             </div>
           </div>
-      </div>
-      )}</>;
+        )}
+        {this.state.authMethod === AuthMethod.SshKey && (
+          <div>
+            <div className="form-group">
+              <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
+              <div className="col-md-6">
+                <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
+                <div className="help-block">
+                  <i className="fa fa-exclamation-triangle" />
+                  {t(
+                    "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+              <div className="col-md-6">
+                <input
+                  name="privKeyPwd"
+                  className="form-control"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder={t("Leave empty for no passphrase")}
+                  value={this.state.privKeyPwd}
+                  onChange={this.privKeyPwdChanged}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
 
     return (
       <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="reference/systems/bootstrapping.html">
@@ -443,7 +445,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <span>{t("SSH Private Key")}</span>
                 </label>
               </div>
-              {this.props.ansibleInventoryId &&
+              {this.props.ansibleInventoryId && (
                 <div className="radio col-md-6">
                   <label>
                     <input
@@ -455,7 +457,8 @@ class BootstrapMinions extends React.Component<Props, State> {
                     />
                     <span>{t("Ansible control node")}</span>
                   </label>
-                </div>}
+                </div>
+              )}
             </div>
           </div>
           {authenticationData}
@@ -586,6 +589,8 @@ export const renderer = (id) => {
       availableActivationKeys={window.availableActivationKeys}
       proxies={window.proxies}
       ansibleInventoryId={ansibleInventoryId}
-      targetHost={targetHost}/>,
+      targetHost={targetHost}
+    />,
     document.getElementById(id)
-  )};
+  );
+};
