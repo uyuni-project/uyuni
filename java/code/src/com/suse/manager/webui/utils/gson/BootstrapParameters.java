@@ -102,16 +102,19 @@ public class BootstrapParameters {
      * @param userIn user
      * @param ansibleInventoryIdIn the id of the Ansible Inventory Path
      * @param activationKeysIn activation keys
+     * @param reactivationKeyIn reactivation key
      * @param ignoreHostKeysIn ignore hostIn keys?
      * @param proxyIdIn proxy id
      */
     public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, Long ansibleInventoryIdIn,
-            List<String> activationKeysIn, boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
+            List<String> activationKeysIn, Optional<String> reactivationKeyIn, boolean ignoreHostKeysIn,
+            Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
         this.ansibleInventoryId = of(ansibleInventoryIdIn);
         this.activationKeys = activationKeysIn;
+        this.reactivationKey = reactivationKeyIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
         this.proxyId = proxyIdIn;
     }
@@ -136,8 +139,8 @@ public class BootstrapParameters {
                         Optional.ofNullable(json.getProxy()));
             case ANSIBLE_PREAUTH:
                 return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
-                        json.getAnsibleInventoryId(), json.getActivationKeys(), json.getIgnoreHostKeys(),
-                        Optional.ofNullable(json.getProxy()));
+                        json.getAnsibleInventoryId(), json.getActivationKeys(), json.maybeGetReactivationKey(),
+                        json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
             default:
                 throw new UnsupportedOperationException("Unsupported auth method " + authMethod);
         }
