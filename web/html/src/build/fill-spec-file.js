@@ -17,7 +17,8 @@ function fillSpecFile() {
   return new Promise(function (resolve, reject) {
     fs.readFile(specFileLocation, "utf8", function (err, specFile) {
       if (err) {
-        throw err;
+        reject(err);
+        return;
       }
       var specFileEdited = specFile.replace(
         /(?<=%package -n susemanager-web-libs[\s\S]*?)License:.*/m,
@@ -26,7 +27,8 @@ function fillSpecFile() {
 
       fs.writeFile(specFileLocation, specFileEdited, "utf8", function (err) {
         if (err) {
-          throw err;
+          reject(err);
+          return;
         }
 
         resolve({ mappedProcessedLicenses });
