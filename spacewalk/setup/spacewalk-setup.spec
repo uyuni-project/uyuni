@@ -250,11 +250,11 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
     fi
 fi
 
-if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
+if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then 
+#during upgrade, setup new connectionTimeout if the user didn't change it
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
     xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml
 fi
-
 
 %if 0%{?suse_version}
 if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
