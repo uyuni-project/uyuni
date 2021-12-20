@@ -16,7 +16,6 @@ export type LegacyDialogProps = {
   content?: React.ReactNode;
   /** The footer of the popup */
   footer?: React.ReactNode;
-  hideHeader?: boolean;
   closableModal?: boolean;
   /** Callback for when the dialog is closed */
   onClose?: () => void;
@@ -49,11 +48,13 @@ export const LegacyDialog = (props: LegacyDialogProps) => {
     };
   }
 
+  const hasHeader = Boolean(typeof props.title !== "undefined" || props.closableModal);
+
   return (
     <div className="modal fade" tabIndex="-1" role="dialog" id={props.id} {...bootStrapModalOptionalProps}>
       <div className={"modal-dialog " + (props.className ? props.className : "")}>
         <div className="modal-content">
-          {!props.hideHeader && (
+          {!hasHeader && (
             <div className="modal-header">
               {closableModal && (
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
