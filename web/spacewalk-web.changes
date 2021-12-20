@@ -1,5 +1,3 @@
-- Provide a search box on section name for Formulas content
-- Add expand/collapse all button for formula sections
 - Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
 - Button to add selected systems to SSM in virtual systems list
 - Add support for custom SSH port for SSH minions
