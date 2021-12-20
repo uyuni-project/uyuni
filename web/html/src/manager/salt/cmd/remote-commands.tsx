@@ -135,10 +135,6 @@ type RemoteCommandState = {
 class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandState> {
   constructor(props) {
     super(props);
-    ["onPreview", "onRun", "onStop", "commandChanged", "targetChanged", "commandResult", "onBeforeUnload"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
-
     this.state = {
       command: "ls -lha",
       target: "*",
@@ -273,7 +269,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     );
   }
 
-  onPreview() {
+  onPreview = () => {
     const deferred = jQuery.Deferred();
     this.state.websocket.send(
       JSON.stringify({
@@ -290,9 +286,9 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       },
     });
     return deferred;
-  }
+  };
 
-  onRun() {
+  onRun = () => {
     const deferred = jQuery.Deferred();
     this.state.websocket.send(
       JSON.stringify({
@@ -307,21 +303,21 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       ran: deferred,
     });
     return deferred;
-  }
+  };
 
-  onStop() {
+  onStop = () => {
     this.state.websocket.send(
       JSON.stringify({
         cancel: true,
       })
     );
-  }
+  };
 
-  onBeforeUnload(event) {
+  onBeforeUnload = (event) => {
     this.setState({
       pageUnloading: true,
     });
-  }
+  };
 
   componentDidMount() {
     var port = window.location.port;
@@ -531,21 +527,21 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     window.removeEventListener("beforeunload", this.onBeforeUnload);
   }
 
-  targetChanged(event) {
+  targetChanged = (event) => {
     this.setState({
       target: event.target.value,
       previewed: jQuery.Deferred(),
       ran: jQuery.Deferred().resolve(),
     });
-  }
+  };
 
-  commandChanged(event) {
+  commandChanged = (event) => {
     this.setState({
       command: event.target.value,
     });
-  }
+  };
 
-  commandResult(result) {
+  commandResult = (result) => {
     const elements: React.ReactNode[] = [];
     for (var kv of result.minions) {
       const id = kv[0];
@@ -572,7 +568,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       );
     }
     return <div>{elements}</div>;
-  }
+  };
 }
 
 export const renderer = (id) => SpaRenderer.renderNavigationReact(<RemoteCommand />, document.getElementById(id));
