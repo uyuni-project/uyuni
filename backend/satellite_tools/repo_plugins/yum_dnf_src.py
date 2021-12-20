@@ -218,7 +218,6 @@ class ContentSource(zypper_ContentSource):
                 self.dnfbase.repos[self.repoid].load()
         except RepoError as exc:
             raise RepoMDError(exc)
-            return
 
         # Do not try to expand baseurl to other mirrors
         if no_mirrors:
