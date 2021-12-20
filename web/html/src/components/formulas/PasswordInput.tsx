@@ -24,25 +24,22 @@ class PasswordInput extends React.Component<Props, State> {
     this.state = {
       showPassword: false,
     };
-
-    this.handleGeneratePassword = this.handleGeneratePassword.bind(this);
-    this.handleToggleShowPassword = this.handleToggleShowPassword.bind(this);
   }
 
-  handleGeneratePassword(event) {
+  handleGeneratePassword = (event) => {
     event.preventDefault();
     this.props.onChange({
       value: generatePassword(),
       id: this.props.id,
     });
-  }
+  };
 
-  handleToggleShowPassword(event) {
+  handleToggleShowPassword = (event) => {
     event.preventDefault();
     this.setState((state, props) => {
       return { showPassword: !state.showPassword };
     });
-  }
+  };
 
   render() {
     // empty password is always rendered as text to prevent problems with browser autocompletion

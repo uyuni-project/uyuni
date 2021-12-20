@@ -25,18 +25,16 @@ type State = {
 class VirtualHostManagerDetails extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    ["onRefresh", "handleResponseError"].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
     };
   }
 
-  handleResponseError(jqXHR) {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
-  }
+  };
 
   UNSAFE_componentWillMount() {
     Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
@@ -46,7 +44,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
       .catch(this.handleResponseError);
   }
 
-  onRefresh() {
+  onRefresh = () => {
     return Network.post("/rhn/manager/api/vhms/" + this.props.data.id + "/refresh", this.props.data.id)
       .then((data) => {
         if (data.success) {
@@ -60,7 +58,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
         }
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   render() {
     return (

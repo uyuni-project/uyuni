@@ -69,17 +69,6 @@ class ImageImport extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getImageStores = this.getImageStores.bind(this);
-    this.getBounceUrl = this.getBounceUrl.bind(this);
-    this.onFormChange = this.onFormChange.bind(this);
-    this.onValidate = this.onValidate.bind(this);
-    this.getBuildHosts = this.getBuildHosts.bind(this);
-    this.getActivationKeys = this.getActivationKeys.bind(this);
-    this.onImport = this.onImport.bind(this);
-    this.handleActivationKeyChange = this.handleActivationKeyChange.bind(this);
-    this.clearFields = this.clearFields.bind(this);
-    this.handleResponseError = this.handleResponseError.bind(this);
-
     this.state = {
       imageStores: null,
       messages: [],
@@ -96,7 +85,7 @@ class ImageImport extends React.Component {
     this.getActivationKeys();
   }
 
-  getImageStores() {
+  getImageStores = () => {
     const type = "registry";
     Network.get("/rhn/manager/api/cm/imagestores/type/" + type)
       .then((data) => {
@@ -105,9 +94,9 @@ class ImageImport extends React.Component {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  getBuildHosts() {
+  getBuildHosts = () => {
     Network.get("/rhn/manager/api/cm/build/hosts/container_build_host")
       .then((data) => {
         this.setState({
@@ -115,9 +104,9 @@ class ImageImport extends React.Component {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  getActivationKeys() {
+  getActivationKeys = () => {
     Network.get("/rhn/manager/api/cm/activationkeys")
       .then((data) => {
         this.setState({
@@ -125,7 +114,7 @@ class ImageImport extends React.Component {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   getChannels(token) {
     if (!token) {
@@ -145,35 +134,35 @@ class ImageImport extends React.Component {
     });
   }
 
-  handleResponseError(jqXHR) {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
-  }
+  };
 
-  getBounceUrl() {
+  getBounceUrl = () => {
     return encodeURIComponent("/rhn/manager/cm/import");
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: emptyModel(),
     });
-  }
+  };
 
-  onImport() {
+  onImport = () => {
     const storeId: number = parseInt(this.state.model.storeId || "", 10);
     const buildHostId: number = parseInt(this.state.model.buildHostId || "", 10);
     if (
@@ -209,11 +198,11 @@ class ImageImport extends React.Component {
         messages: MessagesUtils.error("Not all required values present."),
       });
     }
-  }
+  };
 
-  handleActivationKeyChange(name, value) {
+  handleActivationKeyChange = (name, value) => {
     this.getChannels(value);
-  }
+  };
 
   renderActivationKeySelect() {
     const hint =

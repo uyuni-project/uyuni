@@ -66,18 +66,6 @@ class CreateImageProfile extends React.Component<Props, State> {
       customData: {},
     };
 
-    [
-      "handleTokenChange",
-      "handleImageTypeChange",
-      "handleImageStoreChange",
-      "isLabelValid",
-      "onUpdate",
-      "onCreate",
-      "onFormChange",
-      "onValidate",
-      "clearFields",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
-
     this.getImageStores(typeMap[this.state.model.imageType].storeType);
     if (this.isEdit()) {
       this.setValues(window.profileId);
@@ -137,22 +125,22 @@ class CreateImageProfile extends React.Component<Props, State> {
     });
   }
 
-  handleTokenChange(name, value) {
+  handleTokenChange = (name, value) => {
     this.getChannels(value);
-  }
+  };
 
-  handleImageTypeChange(name, value) {
+  handleImageTypeChange = (name, value) => {
     const storeType = typeMap[value].storeType;
     this.getImageStores(storeType);
-  }
+  };
 
-  handleImageStoreChange(name, storeLabel) {
+  handleImageStoreChange = (name, storeLabel) => {
     Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel).then((res) => {
       this.setState({
         storeUri: res.success && res.data.uri,
       });
     });
-  }
+  };
 
   addCustomData(label) {
     if (label) {
@@ -176,7 +164,7 @@ class CreateImageProfile extends React.Component<Props, State> {
     }
   }
 
-  isLabelValid(label) {
+  isLabelValid = (label) => {
     if (this.state.initLabel && this.state.initLabel === label) {
       // Initial state (on edit), always valid.
       return true;
@@ -189,9 +177,9 @@ class CreateImageProfile extends React.Component<Props, State> {
     return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
       .then((res) => !res.success && isValid)
       .catch(() => false);
-  }
+  };
 
-  onUpdate(model) {
+  onUpdate = (model) => {
     if (!this.isEdit()) {
       return false;
     }
@@ -215,9 +203,9 @@ class CreateImageProfile extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onCreate(model) {
+  onCreate = (model) => {
     if (this.isEdit()) {
       return false;
     }
@@ -241,25 +229,25 @@ class CreateImageProfile extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: Object.assign({}, this.defaultModel),
     });
-  }
+  };
 
   getImageStores(type) {
     return Network.get("/rhn/manager/api/cm/imagestores/type/" + type).then((data) => {

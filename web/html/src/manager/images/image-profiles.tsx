@@ -42,9 +42,6 @@ type State = {
 class ImageProfiles extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["reloadData", "handleSelectItems", "selectProfile", "deleteProfiles"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
     this.state = {
       messages: [],
       imageprofiles: [],
@@ -63,26 +60,26 @@ class ImageProfiles extends React.Component<Props, State> {
     return true;
   }
 
-  reloadData() {
+  reloadData = () => {
     Network.get("/rhn/manager/api/cm/imageprofiles").then((data) => {
       this.setState({
         imageprofiles: data,
       });
     });
     this.clearMessages();
-  }
+  };
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items,
     });
-  }
+  };
 
-  selectProfile(row) {
+  selectProfile = (row) => {
     this.setState({
       selected: row,
     });
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -90,7 +87,7 @@ class ImageProfiles extends React.Component<Props, State> {
     });
   }
 
-  deleteProfiles(idList) {
+  deleteProfiles = (idList) => {
     return Network.post("/rhn/manager/api/cm/imageprofiles/delete", idList).then((data) => {
       if (data.success) {
         this.setState({
@@ -119,7 +116,7 @@ class ImageProfiles extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;

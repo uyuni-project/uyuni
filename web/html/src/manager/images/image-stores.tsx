@@ -42,9 +42,6 @@ type State = {
 class ImageStores extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["reloadData", "handleSelectItems", "selectStore", "deleteStores"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
     this.state = {
       messages: [],
       imagestores: [],
@@ -63,14 +60,14 @@ class ImageStores extends React.Component<Props, State> {
     return true;
   }
 
-  reloadData() {
+  reloadData = () => {
     Network.get("/rhn/manager/api/cm/imagestores").then((data) => {
       this.setState({
         imagestores: data,
       });
     });
     this.clearMessages();
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -78,19 +75,19 @@ class ImageStores extends React.Component<Props, State> {
     });
   }
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items,
     });
-  }
+  };
 
-  selectStore(row) {
+  selectStore = (row) => {
     this.setState({
       selected: row,
     });
-  }
+  };
 
-  deleteStores(idList) {
+  deleteStores = (idList) => {
     return Network.post("/rhn/manager/api/cm/imagestores/delete", idList).then((data) => {
       if (data.success) {
         this.setState({
@@ -119,7 +116,7 @@ class ImageStores extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;

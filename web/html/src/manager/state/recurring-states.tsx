@@ -66,16 +66,6 @@ type State = {
 class RecurringStates extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-
-    [
-      "deleteSchedule",
-      "handleForwardAction",
-      "handleDetailsAction",
-      "handleEditAction",
-      "handleResponseError",
-      "updateSchedule",
-      "toggleActive",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
       schedules: [],
@@ -124,24 +114,24 @@ class RecurringStates extends React.Component<Props, State> {
     this.setState({ selected: row, action: action });
   }
 
-  handleDetailsAction(row) {
+  handleDetailsAction = (row) => {
     this.getScheduleDetails(row, "details");
     window.history.pushState(null, "", "#/details/" + row.recurringActionId);
-  }
+  };
 
-  handleEditAction(row) {
+  handleEditAction = (row) => {
     this.getScheduleDetails(row, "edit");
     window.history.pushState(null, "", "#/edit/" + row.recurringActionId);
-  }
+  };
 
-  toggleActive(schedule) {
+  toggleActive = (schedule) => {
     Object.assign(schedule, {
       active: !schedule.active,
     });
     this.updateSchedule(schedule);
-  }
+  };
 
-  updateSchedule(schedule) {
+  updateSchedule = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
       .then((_) => {
         const successMsg = (
@@ -160,9 +150,9 @@ class RecurringStates extends React.Component<Props, State> {
         this.handleForwardAction();
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  deleteSchedule(item) {
+  deleteSchedule = (item) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
       .then((_) => {
         this.setState({
@@ -177,7 +167,7 @@ class RecurringStates extends React.Component<Props, State> {
           messages: messages,
         });
       });
-  }
+  };
 
   handleForwardAction = (action?: string) => {
     const loc = window.location;

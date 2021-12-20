@@ -19,10 +19,9 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
     this.state = {
       open: false,
     };
-    ["onClick"].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
-  onClick() {
+  onClick = () => {
     if (
       this.props.result !== "pending" &&
       this.props.result !== "timedOut" &&
@@ -31,7 +30,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
     ) {
       this.setState({ open: !this.state.open });
     }
-  }
+  };
 
   render() {
     const id = this.props.id;

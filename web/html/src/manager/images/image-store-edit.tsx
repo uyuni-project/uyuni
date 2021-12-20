@@ -53,10 +53,6 @@ class CreateImageStore extends React.Component<Props, State> {
       messages: [],
     };
 
-    ["setValues", "isLabelUnique", "onUpdate", "onCreate", "onFormChange", "onValidate", "clearFields"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
-
     if (this.isEdit()) {
       this.setValues(window.storeId);
     }
@@ -66,7 +62,7 @@ class CreateImageStore extends React.Component<Props, State> {
     return window.storeId ? true : false;
   }
 
-  setValues(id) {
+  setValues = (id) => {
     Network.get("/rhn/manager/api/cm/imagestores/" + id).then((res) => {
       if (res.success) {
         var data = res.data;
@@ -78,9 +74,9 @@ class CreateImageStore extends React.Component<Props, State> {
         window.location.href = "/rhn/manager/cm/imagestores/create";
       }
     });
-  }
+  };
 
-  isLabelUnique(label) {
+  isLabelUnique = (label) => {
     if (this.state.initLabel && this.state.initLabel === label) {
       return true;
     }
@@ -88,9 +84,9 @@ class CreateImageStore extends React.Component<Props, State> {
     return Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
       .then((res) => !res.success)
       .catch(() => false);
-  }
+  };
 
-  onUpdate(model) {
+  onUpdate = (model) => {
     if (!this.isEdit()) {
       return false;
     }
@@ -112,9 +108,9 @@ class CreateImageStore extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onCreate(model) {
+  onCreate = (model) => {
     if (this.isEdit()) {
       return false;
     }
@@ -136,25 +132,25 @@ class CreateImageStore extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: Object.assign({}, this.defaultModel),
     });
-  }
+  };
 
   renderTypeInputs(type) {
     switch (type) {

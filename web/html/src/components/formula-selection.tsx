@@ -30,19 +30,6 @@ class FormulaSelection extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    [
-      "init",
-      "saveRequest",
-      "resetChanges",
-      "removeAllFormulas",
-      "getGroupItemState",
-      "getListIcon",
-      "getListStyle",
-      "generateList",
-      "onGroupItemClick",
-      "onListItemClick",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
-
     this.state = {
       formulas: {},
       groups: { groupless: [] },
@@ -54,7 +41,7 @@ class FormulaSelection extends React.Component<Props, State> {
     this.init();
   }
 
-  init() {
+  init = () => {
     Network.get(this.props.dataUrl).then((data) => {
       const groupDict = { groupless: [] };
       const formulaDict: any = {};
@@ -72,9 +59,9 @@ class FormulaSelection extends React.Component<Props, State> {
         groups: groupDict,
       });
     });
-  }
+  };
 
-  saveRequest() {
+  saveRequest = () => {
     const selectedFormulas: unknown[] = [];
     jQuery.each(this.state.formulas, function (name, formula) {
       if (formula.selected) selectedFormulas.push(name);
@@ -89,24 +76,24 @@ class FormulaSelection extends React.Component<Props, State> {
       this.init();
       window.scrollTo(0, 0);
     });
-  }
+  };
 
-  resetChanges() {
+  resetChanges = () => {
     const selectedFormulas = this.state.activeSelectedFormulas;
     jQuery.each(this.state.formulas, function (name, formula) {
       formula.selected = selectedFormulas.indexOf(name) >= 0;
     });
     this.forceUpdate();
-  }
+  };
 
-  removeAllFormulas() {
+  removeAllFormulas = () => {
     jQuery.each(this.state.formulas, function (name, formula) {
       formula.selected = false;
     });
     this.forceUpdate();
-  }
+  };
 
-  getGroupItemState(group) {
+  getGroupItemState = (group) => {
     let selectedCount = 0;
     group.forEach(function (formula) {
       if (formula.selected) selectedCount++;
@@ -114,18 +101,18 @@ class FormulaSelection extends React.Component<Props, State> {
     if (selectedCount === 0) return 0;
     else if (selectedCount === group.length) return 1;
     else return 2;
-  }
+  };
 
-  getListIcon(state) {
+  getListIcon = (state) => {
     if (!state) return "fa fa-lg fa-square-o";
     else if (DEPRECATED_unsafeEquals(state, 1)) return "fa fa-lg fa-check-square-o";
     else return "fa fa-lg fa-minus-square-o";
-  }
+  };
 
-  getListStyle(state) {
+  getListStyle = (state) => {
     if (state) return "list-group-item list-group-item-info";
     else return "list-group-item";
-  }
+  };
 
   getDescription(formula) {
     if (this.state.showDescription === formula.name)
@@ -133,7 +120,7 @@ class FormulaSelection extends React.Component<Props, State> {
     else return null;
   }
 
-  generateList() {
+  generateList = () => {
     var list: React.ReactNode[] = [];
     const groups = this.state.groups;
 
@@ -210,9 +197,9 @@ class FormulaSelection extends React.Component<Props, State> {
       }, this);
     }
     return list;
-  }
+  };
 
-  onListItemClick(e) {
+  onListItemClick = (e) => {
     e.preventDefault();
     const formula =
       this.state.formulas[DEPRECATED_unsafeEquals(e.target.href, undefined) ? e.target.parentElement.id : e.target.id];
@@ -227,9 +214,9 @@ class FormulaSelection extends React.Component<Props, State> {
       formula.selected = !formula.selected;
     }
     this.forceUpdate();
-  }
+  };
 
-  onGroupItemClick(e) {
+  onGroupItemClick = (e) => {
     e.preventDefault();
 
     var group = e.target;
@@ -250,7 +237,7 @@ class FormulaSelection extends React.Component<Props, State> {
         break;
     }
     this.forceUpdate();
-  }
+  };
 
   render() {
     var items: MessageType[] = [];
