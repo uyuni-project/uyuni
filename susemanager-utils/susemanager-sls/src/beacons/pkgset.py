@@ -15,15 +15,17 @@ import salt.config
 
 __virtualname__ = "pkgset"
 
-__opts__ = salt.config.minion_config('/etc/salt/minion')
+SALT_CONFIG_DIR = os.environ.get("SALT_CONFIG_DIR")
+
+__opts__ = salt.config.minion_config(
+    os.path.join("/etc/salt" if SALT_CONFIG_DIR is None else SALT_CONFIG_DIR, "minion")
+)
 
 CACHE = salt.cache.Cache(__opts__)
 
 PKGSET_COOKIES = (
-    "/var/cache/venv-salt-minion/rpmdb.cookie",
-    "/var/cache/venv-salt-minion/dpkg.cookie",
-    "/var/cache/salt/minion/rpmdb.cookie",
-    "/var/cache/salt/minion/dpkg.cookie",
+    os.path.join(__opts__["cachedir"], "rpmdb.cookie"),
+    os.path.join(__opts__["cachedir"], "dpkg.cookie"),
 )
 
 
