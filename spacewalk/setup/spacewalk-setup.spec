@@ -114,6 +114,7 @@ Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-setup-jabberd
 Requires(post): libxslt-tools
+
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
 
