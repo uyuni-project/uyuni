@@ -10,6 +10,7 @@ pkgset.__context__ = dict()
 
 @patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True))
 @patch.object(pkgset, '__context__', {pkgset.__virtualname__: ""})
+@patch.object(pkgset, 'CACHE', MagicMock())
 def test_beacon():
     '''
     Test beacon functionality.
