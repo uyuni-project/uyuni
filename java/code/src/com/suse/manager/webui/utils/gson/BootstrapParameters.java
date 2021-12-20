@@ -16,7 +16,9 @@ package com.suse.manager.webui.utils.gson;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson.AuthMethod;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
