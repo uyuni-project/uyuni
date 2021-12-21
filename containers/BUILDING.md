@@ -8,6 +8,11 @@
    - use `make push REGISTRY=myregistry.intra.net` to override registry name
  - `make push-proxy-squid` pushes an individual image
 
+## Pushing to the Open Build Service
+
+ - `make osc-checkin` pushes all containers to their respective OBS projects. A local copy of projects is created in `obs-project`
+ - `make osc-checkin OSC_API_URL=https://api.suse.de OSC_PROJECT=Devel:Galaxy:Manager:Head:Containers` specifies different API endpoints and projects
+
 ## Running a local registry (in sumaform)
 
 Add to `main.tf` and then `terraform apply`:
