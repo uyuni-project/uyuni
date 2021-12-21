@@ -28,12 +28,9 @@ VOLUME [ "/etc/uyuni", "/var/cache/squid" ]
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses squid
 
-# TODO: remove, devel
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses vim less nmap
+COPY squid.conf /etc/squid/squid.conf
 
-COPY proxy/installer/squid.conf /etc/squid/squid.conf
-
-COPY containers/proxy-squid-image/uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 CMD uyuni-configure.py && squid -z --foreground && squid -FC -d 1 --foreground
