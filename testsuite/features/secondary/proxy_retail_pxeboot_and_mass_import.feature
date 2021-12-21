@@ -43,6 +43,7 @@ Feature: PXE boot a Retail terminal
     And I check the "vsftpd" formula
     And I check the "pxe" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "tftpd" formula should be checked
     And the "vsftpd" formula should be checked
     And the "pxe" formula should be checked
@@ -164,6 +165,7 @@ Feature: PXE boot a Retail terminal
     And I follow "Formulas" in the content area
     And I check the "saltboot" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "saltboot" formula should be checked
 
   Scenario: Parametrize the Saltboot formula
@@ -248,6 +250,7 @@ Feature: PXE boot a Retail terminal
     And I uncheck the "tftpd" formula
     And I uncheck the "pxe" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "tftpd" formula should be unchecked
     And the "pxe" formula should be unchecked
 
@@ -295,6 +298,7 @@ Feature: PXE boot a Retail terminal
     And I check the "tftpd" formula
     And I check the "vsftpd" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "pxe" formula should be checked
     And the "saltboot" formula should be checked
     And the "tftpd" formula should be checked
@@ -426,6 +430,7 @@ Feature: PXE boot a Retail terminal
     And I uncheck the "tftpd" formula
     And I uncheck the "vsftpd" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "pxe" formula should be unchecked
     And the "saltboot" formula should be unchecked
     And the "tftpd" formula should be unchecked
