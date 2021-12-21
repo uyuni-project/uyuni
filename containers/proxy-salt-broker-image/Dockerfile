@@ -28,7 +28,7 @@ VOLUME "/etc/uyuni"
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-salt
 
-COPY containers/proxy-salt-broker-image/uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 CMD uyuni-configure.py && salt-broker
