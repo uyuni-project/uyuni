@@ -1,0 +1,10 @@
+<services>
+	<service mode="buildtime" name="kiwi_metainfo_helper"/>
+	<service mode="buildtime" name="replace_using_package_version">
+		<param name="file">Dockerfile</param>
+		<param name="regex">%PKG_VERSION%</param>
+		<param name="parse-version">patch</param>
+		<param name="package">spacewalk-proxy-salt</param>
+	</service>
+	<service mode="buildtime" name="docker_label_helper"/>
+</services>
