@@ -42,5 +42,5 @@ $(osc_project_links):
 
 # push sources to Build Service
 osc-checkin: osc-init
-	cd obs-project && osc addremove -r
-	cd obs-project && osc --apiurl ${OSC_API_URL} checkin .
+	cd obs-project ; osc addremove -r
+	cd obs-project ; osc --apiurl ${OSC_API_URL} checkin .
