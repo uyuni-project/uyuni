@@ -217,20 +217,6 @@ Feature: Use advanced features of Salt formulas
 
 #TODO test for adding/removing items in edit-group
 
-# this should not be necessary, but it is currently required to run this test repeatedly
-# https://github.com/SUSE/spacewalk/issues/4513
-  Scenario: Cleanup: remove "Testform" formula from "test-formula-group"
-     When I follow the left menu "Systems > System Groups"
-     And I follow "test-formula-group" in the content area
-     And I follow "Formulas" in the content area
-     Then I should see a "Choose formulas:" text
-     And I should see a "Testform" text
-     When I uncheck the "testform" formula
-     And I click on "Save"
-     Then I wait until I see "Formula saved" text
-     And I wait until there is no pillar refresh salt job active
-     Then the pillar data for "testing" should be empty on "sle_minion"
-
   Scenario: Cleanup: remove "test-formula-group" system group
      When I follow the left menu "Systems > System Groups"
      And I follow "test-formula-group" in the content area
