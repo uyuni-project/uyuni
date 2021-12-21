@@ -67,6 +67,7 @@ Feature: Setup Uyuni for Retail branch network
     And I check the "dhcpd" formula
     And I check the "bind" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "branch-network" formula should be checked
     And the "dhcpd" formula should be checked
     And the "bind" formula should be checked
