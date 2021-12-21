@@ -25,6 +25,8 @@ EXPOSE 69/udp
 
 VOLUME "/etc/uyuni"
 
-# TODO: add installation
+# TODO: check installation
+
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses tftp
 
 # TODO: add RUN directive
