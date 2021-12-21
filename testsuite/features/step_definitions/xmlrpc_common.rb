@@ -8,7 +8,7 @@ require 'socket'
 # system namespace
 
 Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @system_api = XMLRPCSystemTest.new($server.ip)
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
   @system_api.login(luser, password)
 end
 
@@ -84,7 +84,7 @@ end
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @user_api = XMLRPCUserTest.new($server.ip)
+  @user_api = XMLRPCUserTest.new($server.full_hostname)
   @user_api.login(luser, password)
 end
 
@@ -149,12 +149,12 @@ end
 # channel namespace
 
 Given(/^I am logged in via XML\-RPC channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @channel_api = XMLRPCChannelTest.new($server.ip)
+  @channel_api = XMLRPCChannelTest.new($server.full_hostname)
   assert(@channel_api.login(luser, password))
 end
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
-  url = "http://#{$server.ip}/pub/AnotherRepo/"
+  url = "http://#{$server.full_hostname}/pub/AnotherRepo/"
   assert(@channel_api.create_repo(label, url))
 end
 
@@ -214,7 +214,7 @@ end
 key = nil
 
 Given(/^I am logged in via XML\-RPC activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @activation_key_api = XMLRPCActivationKeyTest.new($server.ip)
+  @activation_key_api = XMLRPCActivationKeyTest.new($server.full_hostname)
   raise unless @activation_key_api.login(luser, password)
 end
 
@@ -299,9 +299,9 @@ end
 # Auth
 Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
   # Authenticate
-  @action_chain_api = XMLRPCActionChain.new($server.ip)
-  @schedule_api = XMLRPCScheduleTest.new($server.ip)
-  @system_api = XMLRPCSystemTest.new($server.ip)
+  @action_chain_api = XMLRPCActionChain.new($server.full_hostname)
+  @schedule_api = XMLRPCScheduleTest.new($server.full_hostname)
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
   @action_chain_api.login(luser, password)
   @system_api.login(luser, password)
   @schedule_api.login(luser, password)
@@ -497,16 +497,16 @@ Then(/^I wait until there are no more scheduled actions$/) do
 end
 
 Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpc_api_tester = XMLRPCApiTest.new($server.ip)
+  @rpc_api_tester = XMLRPCApiTest.new($server.full_hostname)
   assert(@rpc_api_tester.login(luser, password))
 end
 
 # power management namespace
 
 Given(/^I am logged in via XML\-RPC powermgmt as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @powermanagenent_api = XMLRPCPowermanagementTest.new($server.ip)
+  @powermanagenent_api = XMLRPCPowermanagementTest.new($server.full_hostname)
   @powermanagenent_api.login(luser, password)
-  @system_api = XMLRPCSystemTest.new($server.ip)
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
   @system_api.login(luser, password)
 end
 
@@ -543,7 +543,7 @@ end
 # cveaudit namespace
 
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @cve_audit_api = XMLRPCCVEAuditTest.new($server.ip)
+  @cve_audit_api = XMLRPCCVEAuditTest.new($server.full_hostname)
   @cve_audit_api.login(luser, password)
 end
 
@@ -590,7 +590,7 @@ end
 # configchannel namespace
 
 Given(/^I am logged in via XML\-RPC configchannel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @configuration_channel_api = XMLRPCConfigChannelTest.new($server.ip)
+  @configuration_channel_api = XMLRPCConfigChannelTest.new($server.full_hostname)
   @configuration_channel_api.login(luser, password)
 end
 

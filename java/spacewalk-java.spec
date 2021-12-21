@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.2
+Version:        4.3.6
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -148,7 +148,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.18
+BuildRequires:  salt-netapi-client >= 0.19
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -215,12 +215,13 @@ Requires:       jboss-logging
 Requires:       joda-time
 Requires:       jose4j
 Requires:       jpa-api
+Requires:       libsolv-tools
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
-Requires:       salt-netapi-client >= 0.18
+Requires:       salt-netapi-client >= 0.19
 Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
@@ -618,6 +619,8 @@ rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
+ln -s -f %{_javadir}/ongres-scram/client.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_client.jar
+ln -s -f %{_javadir}/ongres-scram/common.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_common.jar
 
 # install apidoc sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
@@ -901,6 +904,10 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
 %{jardir}/postgresql-jdbc.jar
+%{jardir}/ongres-scram_client.jar
+%{jardir}/ongres-scram_common.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
 
 %changelog

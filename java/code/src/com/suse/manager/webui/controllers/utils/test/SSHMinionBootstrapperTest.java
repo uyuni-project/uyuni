@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -58,7 +59,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
                 RegisterMinionEventMessageAction action =
                         mock(RegisterMinionEventMessageAction.class);
                 context().checking(new Expectations() {{
-                    allowing(action).registerSSHMinion("myhost", Optional.empty(), activationKeyLabel);
+                    allowing(action).registerSSHMinion("myhost", 6022, Optional.empty(), activationKeyLabel);
                 }});
                 return action;
             }
@@ -96,9 +97,16 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
     }
 
     @Override
-    protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
+    protected Map<String, Object> createPillarData(Optional<ActivationKey> key, Optional<ActivationKey> reactKey) {
         String contactMethod = key.map(k -> k.getContactMethod().getLabel()).orElse(getDefaultContactMethod());
         Map<String, Object> pillarData = new HashMap<>();
+        key.ifPresent(k -> {
+            ActivationKeyManager.getInstance().findAll(user)
+            .stream()
+            .filter(ak -> k.getKey().equals(ak.getKey()))
+            .findFirst()
+            .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
+        });
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         if (contactMethod.equals("ssh-push-tunnel")) {
             pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
@@ -107,6 +115,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
         pillarData.put("minion_id", "myhost");
         pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", "root");
+        reactKey.ifPresent(k -> pillarData.put("management_key", k.getKey()));
         return pillarData;
     }
 }

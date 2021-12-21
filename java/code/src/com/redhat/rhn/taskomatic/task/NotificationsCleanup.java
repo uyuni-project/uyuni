@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -28,6 +28,11 @@ import java.util.Date;
  * Cleanup of notification messages after a configurable lifetime.
  */
 public class NotificationsCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "notification_cleanup";
+    }
 
     @Override
     public void execute(JobExecutionContext arg0In) throws JobExecutionException {

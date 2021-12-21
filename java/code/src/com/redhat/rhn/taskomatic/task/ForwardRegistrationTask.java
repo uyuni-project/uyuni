@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -37,6 +37,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ForwardRegistrationTask extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "forward_registration";
+    }
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {

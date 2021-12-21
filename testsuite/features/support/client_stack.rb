@@ -82,8 +82,3 @@ def get_gpg_keys(node, target = $server)
   gpg_keys.lines.map(&:strip)
 end
 # rubocop:enable Metrics/AbcSize
-
-def sle11family?(node)
-  _out, code = node.run('pidof systemd', check_errors: false)
-  code.nonzero?
-end

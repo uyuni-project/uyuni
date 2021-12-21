@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -209,27 +209,40 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     /**
-     * {@inheritDoc}
+     * Synchronously executes a salt function on a single minion and returns the result.
+     *
+     * @param call the salt function
+     * @param minionId the minion server id
+     * @param <R> type of result
+     * @return an optional containing the result or empty if no result was retrieved from the minion
+     * @throws RuntimeException when a {@link SaltException} is thrown
      */
-    @Override
-    public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+    public <R> Optional<Result<R>> callSyncResult(LocalCall<R> call, String minionId) {
         try {
             Map<String, Result<R>> stringRMap = callSync(call, new MinionList(minionId));
 
             return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
-                LOG.warn("Got no result for " + call.getPayload().get("fun") +
-                        " on minion " + minionId + " (minion did not respond in time)");
-                return Optional.<R>empty();
-            }, r ->
-                r.fold(error -> {
-                    LOG.warn(error.toString());
-                    return Optional.<R>empty();
-                }, Optional::of)
-            );
+                        LOG.warn("Got no result for " + call.getPayload().get("fun") +
+                                " on minion " + minionId + " (minion did not respond in time)");
+                        return Optional.empty();
+                    }, Optional::of);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+        return callSyncResult(call, minionId).flatMap(r ->
+            r.fold(error -> {
+                LOG.warn(error.toString());
+                return Optional.<R>empty();
+            }, Optional::of)
+        );
     }
 
     /**
@@ -273,6 +286,12 @@ public class SaltService implements SystemQuery, SaltApi {
                         },
                         e -> {
                             LOG.error("Generic Salt error for runner call " +
+                                    runnerCallToString(call) +
+                                    ": " + e.getMessage());
+                            return Optional.empty();
+                        },
+                        e -> {
+                            LOG.error("SaltSSH error for runner call " +
                                     runnerCallToString(call) +
                                     ": " + e.getMessage());
                             return Optional.empty();
@@ -349,6 +368,12 @@ public class SaltService implements SystemQuery, SaltApi {
                     },
                     e -> {
                         LOG.error("Generic Salt error for wheel call " +
+                                wheelCallToString(call) +
+                                ": " + e.getMessage());
+                        return Optional.empty();
+                    },
+                    e -> {
+                        LOG.error("SaltSSH error for wheel call " +
                                 wheelCallToString(call) +
                                 ": " + e.getMessage());
                         return Optional.empty();
@@ -635,8 +660,8 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     @Override
-    public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
-        return callSync(new ElementCallJson(call), minionId);
+    public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
+        return callSyncResult(new ElementCallJson(call), minionId);
     }
 
     /**
@@ -1131,6 +1156,13 @@ public class SaltService implements SystemQuery, SaltApi {
                                     e.getMessage());
                             return Optional.of(Collections.singletonMap(false,
                                     "Generic Salt error: " + e.getMessage()));
+                        },
+                        e -> {
+                            LOG.error("SaltSSH error for runner call " +
+                                    "[mgrutil.move_minion_uploaded_files]: " +
+                                    e.getMessage());
+                            return Optional.of(Collections.singletonMap(false,
+                                    "SaltSSH error: " + e.getMessage()));
                         }
                 )
         );
@@ -1234,6 +1266,12 @@ public class SaltService implements SystemQuery, SaltApi {
                     },
                     e -> {
                         LOG.error("Generic Salt error for runner call " +
+                                "[mgrk8s.get_all_containers]: " +
+                                e.getMessage());
+                        throw new NoSuchElementException();
+                    },
+                    e -> {
+                        LOG.error("SaltSSH error for runner call " +
                                 "[mgrk8s.get_all_containers]: " +
                                 e.getMessage());
                         throw new NoSuchElementException();

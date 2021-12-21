@@ -176,7 +176,18 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           <dd className="col-xs-8">
             <ul>
               {content?.unknownSystems.map((s) => (
-                <li key={s + "_hostname"}>{s}</li>
+                <li key={s + "_hostname"}>
+                  {s}
+                  &nbsp;(
+                  <a
+                    href={
+                      "/rhn/manager/systems/bootstrap?ansibleInventoryId=" + this.props.path.id + "&targetHost=" + s
+                    }
+                  >
+                    {t("bootstrap")}
+                  </a>
+                  )
+                </li>
               ))}
             </ul>
           </dd>

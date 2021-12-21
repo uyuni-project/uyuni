@@ -5,15 +5,15 @@
 # Texts and links
 #
 
-Then(/^I should see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should see a "(.*)" text in the content area$/) do |text|
   within('#spacewalk-content') do
-    raise "Text #{txt} not found" unless has_content?(txt)
+    raise "Text '#{text}' not found" unless has_content?(text)
   end
 end
 
-Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should not see a "(.*)" text in the content area$/) do |text|
   within('#spacewalk-content') do
-    raise "Text #{txt} found" unless has_no_content?(txt)
+    raise "Text '#{text}' found" unless has_no_content?(text)
   end
 end
 
@@ -34,19 +34,19 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  raise "Text #{text} not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text}' not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
-  raise "Text #{text} found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text}' found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text #{text} not found" unless has_content?(text, wait: seconds.to_i)
+  raise "Text '#{text}' not found" unless has_content?(text, wait: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text #{text1} or #{text2} not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text1}' or '#{text2}' not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
@@ -67,7 +67,7 @@ end
 
 When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |seconds, text|
   next if has_no_text?(text, wait: 3)
-  repeat_until_timeout(message: "Couldn't find text '#{text}'", timeout: seconds.to_i) do
+  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
     begin
       accept_prompt do
@@ -165,6 +165,14 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
 end
 
+When(/^I check (.*) box$/) do |checkbox_name|
+  check BOX_IDS[checkbox_name]
+end
+
+When(/^I uncheck (.*) box$/) do |checkbox_name|
+  uncheck BOX_IDS[checkbox_name]
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(),'#{option}')]"
   xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
@@ -194,7 +202,7 @@ When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |clien
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
-  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td,'#{line}')]//select")
+  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
   select(value, from: select[:id])
 end
 
@@ -568,19 +576,19 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
   text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
-  raise "Text #{text} not found" unless has_content?(text)
+  raise "Text '#{text}' not found" unless has_content?(text)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text #{text1} and #{text2} are not found" unless has_content?(text1) || has_content?(text2)
+  raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
 end
 
 #
 # Test for text in a snippet textarea
 #
-Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
+Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   within('textarea') do
-    raise "Text #{arg1} not found" unless has_content?(arg1)
+    raise "Text '#{text}' not found" unless has_content?(text)
   end
 end
 
@@ -588,14 +596,14 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  raise "Text #{title} not found" unless has_content?(Regexp.new(title))
+  raise "Regular expression '#{title}' not found" unless has_content?(Regexp.new(title))
 end
 
 #
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |text|
-  raise "#{text} found on the page! FAIL" unless has_no_content?(text)
+  raise "Text '#{text}' found on the page" unless has_no_content?(text)
 end
 
 #
@@ -624,13 +632,13 @@ end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text #{text} not found in #{element}" unless has_content?(text)
+    raise "Text '#{text}' not found in #{element}" unless has_content?(text)
   end
 end
 
 Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text #{text} found in #{element}" if has_content?(text)
+    raise "Text '#{text}' found in #{element}" if has_content?(text)
   end
 end
 

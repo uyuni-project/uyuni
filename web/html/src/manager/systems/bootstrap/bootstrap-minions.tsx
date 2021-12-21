@@ -17,17 +17,26 @@ declare global {
 type Props = {
   proxies: any[];
   availableActivationKeys: any[];
+  ansibleInventoryId: number | null;
+  targetHost: string | null;
 };
+
+enum AuthMethod {
+  Password = "password",
+  SshKey = "ssh-key",
+  AnsiblePreauth = "ansible-preauth",
+}
 
 type State = {
   host: string;
   port: string;
   user: string;
-  authMethod: string;
+  authMethod: AuthMethod;
   password: string;
   privKey: string;
   privKeyPwd: string;
   activationKey: string;
+  reactivationKey: string;
   ignoreHostKeys: boolean;
   manageWithSSH: boolean;
   messages: any[];
@@ -45,14 +54,15 @@ class BootstrapMinions extends React.Component<Props, State> {
     super(props);
 
     this.initState = {
-      host: "",
+      host: props.targetHost || "",
       port: "",
       user: "",
-      authMethod: "password",
+      authMethod: props.ansibleInventoryId ? AuthMethod.AnsiblePreauth : AuthMethod.Password,
       password: "",
       privKey: "",
       privKeyPwd: "",
       activationKey: "",
+      reactivationKey: "",
       ignoreHostKeys: true,
       manageWithSSH: false,
       messages: [],
@@ -76,6 +86,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       "ignoreHostKeysChanged",
       "manageWithSSHChanged",
       "activationKeyChanged",
+      "reactivationKeyChanged",
       "clearFields",
       "proxyChanged",
     ].forEach((method) => (this[method] = this[method].bind(this)));
@@ -143,13 +154,18 @@ class BootstrapMinions extends React.Component<Props, State> {
   manageWithSSHChanged(event) {
     this.setState({
       manageWithSSH: event.target.checked,
-      port: "",
     });
   }
 
   activationKeyChanged(event) {
     this.setState({
       activationKey: event.target.value,
+    });
+  }
+
+  reactivationKeyChanged(event) {
+    this.setState({
+      reactivationKey: event.target.value,
     });
   }
 
@@ -170,15 +186,19 @@ class BootstrapMinions extends React.Component<Props, State> {
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
     formData["user"] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
     formData["activationKeys"] = this.state.activationKey === "" ? [] : [this.state.activationKey];
+    formData["reactivationKey"] =
+      this.state.reactivationKey.trim() === "" ? undefined : this.state.reactivationKey.trim();
     formData["ignoreHostKeys"] = this.state.ignoreHostKeys;
 
     const authMethod = this.state.authMethod;
     formData["authMethod"] = authMethod;
-    if (authMethod === "password") {
+    if (authMethod === AuthMethod.Password) {
       formData["password"] = this.state.password.trim();
-    } else if (authMethod === "ssh-key") {
+    } else if (authMethod === AuthMethod.SshKey) {
       formData["privKey"] = this.state.privKey;
       formData["privKeyPwd"] = this.state.privKeyPwd;
+    } else if (authMethod === AuthMethod.AnsiblePreauth) {
+      formData["ansibleInventoryId"] = this.props.ansibleInventoryId;
     }
     if (this.state.proxy) {
       formData["proxy"] = this.state.proxy;
@@ -284,52 +304,56 @@ class BootstrapMinions extends React.Component<Props, State> {
 
     const productName = window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 
-    const authenticationData =
-      this.state.authMethod === "password" ? (
-        <div className="form-group">
-          <label className="col-md-3 control-label">Password:</label>
-          <div className="col-md-6">
-            <input
-              name="password"
-              className="form-control"
-              type="password"
-              autoComplete="new-password"
-              placeholder={t("e.g., ••••••••••••")}
-              value={this.state.password}
-              onChange={this.passwordChanged}
-            />
-          </div>
-        </div>
-      ) : (
-        <div>
+    const authenticationData = (
+      <>
+        {this.state.authMethod === AuthMethod.Password && (
           <div className="form-group">
-            <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
-            <div className="col-md-6">
-              <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
-              <div className="help-block">
-                <i className="fa fa-exclamation-triangle" />
-                {t(
-                  "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="form-group">
-            <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+            <label className="col-md-3 control-label">{t("Password")}:</label>
             <div className="col-md-6">
               <input
-                name="privKeyPwd"
+                name="password"
                 className="form-control"
                 type="password"
                 autoComplete="new-password"
-                placeholder={t("Leave empty for no passphrase")}
-                value={this.state.privKeyPwd}
-                onChange={this.privKeyPwdChanged}
+                placeholder={t("e.g., ••••••••••••")}
+                value={this.state.password}
+                onChange={this.passwordChanged}
               />
             </div>
           </div>
-        </div>
-      );
+        )}
+        {this.state.authMethod === AuthMethod.SshKey && (
+          <div>
+            <div className="form-group">
+              <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
+              <div className="col-md-6">
+                <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
+                <div className="help-block">
+                  <i className="fa fa-exclamation-triangle" />
+                  {t(
+                    "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+              <div className="col-md-6">
+                <input
+                  name="privKeyPwd"
+                  className="form-control"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder={t("Leave empty for no passphrase")}
+                  value={this.state.privKeyPwd}
+                  onChange={this.privKeyPwdChanged}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
 
     return (
       <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="reference/systems/bootstrapping.html">
@@ -342,7 +366,7 @@ class BootstrapMinions extends React.Component<Props, State> {
         {messages}
         <div className="form-horizontal">
           <div className="form-group">
-            <label className="col-md-3 control-label">Host:</label>
+            <label className="col-md-3 control-label">{t("Host")}:</label>
             <div className="col-md-6">
               <input
                 name="hostname"
@@ -355,7 +379,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             </div>
           </div>
           <div className="form-group">
-            <label className="col-md-3 control-label">SSH Port:</label>
+            <label className="col-md-3 control-label">{t("SSH Port")}:</label>
             <div className="col-md-6">
               <input
                 name="port"
@@ -366,13 +390,12 @@ class BootstrapMinions extends React.Component<Props, State> {
                 onChange={this.portChanged}
                 onKeyPress={window.numericValidate}
                 value={this.state.port}
-                disabled={this.state.manageWithSSH}
                 title={t("Port range: 1 - 65535")}
               />
             </div>
           </div>
           <div className="form-group">
-            <label className="col-md-3 control-label">User:</label>
+            <label className="col-md-3 control-label">{t("User")}:</label>
             <div className="col-md-6">
               <input
                 name="user"
@@ -393,8 +416,9 @@ class BootstrapMinions extends React.Component<Props, State> {
               )}
             </div>
           </div>
+
           <div className="form-group">
-            <label className="col-md-3 control-label">Authentication Method:</label>
+            <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
 
             <div className="col-md-6">
               <div className="radio col-md-3">
@@ -402,8 +426,8 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <input
                     name="authMethod"
                     type="radio"
-                    value="password"
-                    checked={this.state.authMethod === "password"}
+                    value={AuthMethod.Password}
+                    checked={this.state.authMethod === AuthMethod.Password}
                     onChange={this.authMethodChanged}
                   />
                   <span>{t("Password")}</span>
@@ -414,18 +438,33 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <input
                     name="authMethod"
                     type="radio"
-                    value="ssh-key"
-                    checked={this.state.authMethod === "ssh-key"}
+                    value={AuthMethod.SshKey}
+                    checked={this.state.authMethod === AuthMethod.SshKey}
                     onChange={this.authMethodChanged}
                   />
                   <span>{t("SSH Private Key")}</span>
                 </label>
               </div>
+              {this.props.ansibleInventoryId && (
+                <div className="radio col-md-6">
+                  <label>
+                    <input
+                      name="authMethod"
+                      type="radio"
+                      value={AuthMethod.AnsiblePreauth}
+                      checked={this.state.authMethod === AuthMethod.AnsiblePreauth}
+                      onChange={this.authMethodChanged}
+                    />
+                    <span>{t("Ansible control node")}</span>
+                  </label>
+                </div>
+              )}
             </div>
           </div>
           {authenticationData}
+
           <div className="form-group">
-            <label className="col-md-3 control-label">Activation Key:</label>
+            <label className="col-md-3 control-label">{t("Activation Key")}:</label>
             <div className="col-md-6">
               <select
                 value={this.state.activationKey}
@@ -444,6 +483,19 @@ class BootstrapMinions extends React.Component<Props, State> {
                     </option>
                   ))}
               </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Reactivation Key")}:</label>
+            <div className="col-md-6">
+              <input
+                name="reactivationKey"
+                className="form-control"
+                type="text"
+                placeholder={t("Leave empty when no reactivation is wanted")}
+                value={this.state.reactivationKey}
+                onChange={this.reactivationKeyChanged}
+              />
             </div>
           </div>
           <div className="form-group">
@@ -487,7 +539,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                     checked={this.state.ignoreHostKeys}
                     onChange={this.ignoreHostKeysChanged}
                   />
-                  <span>Disable SSH strict host key checking during bootstrap process</span>
+                  <span>{t("Disable SSH strict host key checking during bootstrap process")}</span>
                 </label>
               </div>
             </div>
@@ -503,7 +555,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                     checked={this.state.manageWithSSH}
                     onChange={this.manageWithSSHChanged}
                   />
-                  <span>Manage system completely via SSH (will not install an agent)</span>
+                  <span>{t("Manage system completely via SSH (will not install an agent)")}</span>
                 </label>
               </div>
             </div>
@@ -519,7 +571,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   componentDidMount() {
     window.addEventListener("beforeunload", (e) => {
       if (this.state.loading) {
-        var confirmationMessage = "Are you sure you want to close this page while bootstrapping is in progress ?";
+        var confirmationMessage = t("Are you sure you want to close this page while bootstrapping is in progress ?");
         (e || window.event).returnValue = confirmationMessage;
         return confirmationMessage;
       }
@@ -527,8 +579,18 @@ class BootstrapMinions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) =>
-  SpaRenderer.renderNavigationReact(
-    <BootstrapMinions availableActivationKeys={window.availableActivationKeys} proxies={window.proxies} />,
+export const renderer = (id) => {
+  const params = new URLSearchParams(window.location.search);
+  const targetHost = params.get("targetHost");
+  const ansibleInventoryId = Number.parseInt(params.get("ansibleInventoryId") || "", 10) || null;
+
+  return SpaRenderer.renderNavigationReact(
+    <BootstrapMinions
+      availableActivationKeys={window.availableActivationKeys}
+      proxies={window.proxies}
+      ansibleInventoryId={ansibleInventoryId}
+      targetHost={targetHost}
+    />,
     document.getElementById(id)
   );
+};

@@ -103,6 +103,8 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
         }
       }
 
+      // This doesn't affect user-facing date time values, however if you touch this code, please use `localizedMoment()` here instead
+      // eslint-disable-next-line local-rules/no-raw-date
       Loggerhead.info("[" + new Date().toUTCString() + "] - Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();

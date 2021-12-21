@@ -29,7 +29,7 @@
 
 
 Name:           susemanager-sls
-Version:        4.3.2
+Version:        4.3.5
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
@@ -126,22 +126,6 @@ py.test%{?rhel:-3}
 # HACK! Create broken link when it will be replaces with the real file
 ln -sf %{wwwdocroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
-# Pre-create top.sls to suppress empty/absent top.sls warning/error (bsc#1017754)
-USERLAND="/srv/salt"
-TOP="$USERLAND/top.sls"
-if [ -d "$USERLAND" ]; then
-    if [ ! -f "$TOP" ]; then
-	cat <<EOF >> $TOP
-# This only calls no-op statement from
-# /usr/share/susemanager/salt/util/noop.sls state
-# Feel free to change it.
-
-base:
-  '*':
-    - util.noop
-EOF
-    fi
-fi
 
 %posttrans
 # Run JMX exporter as Java Agent (bsc#1184617)

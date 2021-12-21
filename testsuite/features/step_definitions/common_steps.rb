@@ -26,7 +26,7 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   node = get_target(host)
   step %(I should see a "#{node.hostname}" text)
   kernel_version, _code = node.run('uname -r')
-  puts 'i should see kernel version: ' + kernel_version
+  puts 'I should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
   os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
@@ -64,7 +64,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait until I do not see "#{event}" text, refreshing the page
+    And I wait at most 90 seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
@@ -609,7 +609,11 @@ When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$
 end
 
 When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  $proxy.run('mgr-bootstrap')
+  # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
+  # force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+  # $proxy.run("mgr-bootstrap #{force_bundle}")
+  $proxy.run("mgr-bootstrap ")
+
   $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise "Key: #{key} not included" unless output.include? key
@@ -640,9 +644,11 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{client} &&
+  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
@@ -857,7 +863,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   else # As Ubuntu has no support, must be CentOS/SLES_ES
     node.run('yum install wget', timeout: 600)
   end
-  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
   puts node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
@@ -1303,4 +1309,14 @@ When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host
   target = get_target(host)
   dest = "/srv/playbooks/"
   target.run("rm -rf #{dest}")
+end
+
+When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  node_id = retrieve_server_id(system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  react_key = @system_api.obtain_reactivation_key(node_id)
+  puts "Reactivation Key: #{react_key}"
+  step %(I enter "#{react_key}" as "reactivationKey")
 end

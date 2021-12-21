@@ -128,15 +128,17 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                         `is not compatible then the fall back will be the "${defaultChannelName}" channel.`
                     )}
                   </span>
-                  <Messages
-                    items={MessagesUtils.warning(
-                      t(
-                        `When "${this.getDefaultBase().name}" is selected and the installed ` +
-                          "product is not detected, no channel will be added even if children " +
-                          "channels are selected."
-                      )
-                    )}
-                  />
+                  {this.state.currentSelectedBaseId === -1 && (
+                    <Messages
+                      items={MessagesUtils.warning(
+                        t(
+                          `When "${this.getDefaultBase().name}" is selected and the installed ` +
+                            "product is not detected, no channel will be added even if children " +
+                            "channels are selected."
+                        )
+                      )}
+                    />
+                  )}
                 </div>
               </div>
               <div className="form-group">

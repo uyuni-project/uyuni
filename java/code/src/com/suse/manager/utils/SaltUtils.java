@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -80,7 +80,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -194,7 +193,7 @@ public class SaltUtils {
     /** Package-affecting Salt state module names. */
     private static final List<String> PKG_STATE_MODULES = Arrays.asList(
         "pkg.group_installed", "pkg.installed", "pkg.latest", "pkg.patch_installed",
-        "pkg.purged", "pkg.removed", "pkg.uptodate"
+        "pkg.purged", "pkg.removed", "pkg.uptodate", "product.all_installed"
     );
 
     /** Package-affecting Salt execution module names. */
@@ -540,49 +539,7 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-
-            // Revisit the action status if test=true
-            if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
-                serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-            }
-
-            ApplyStatesActionResult statesResult = Optional.ofNullable(
-                    applyStatesAction.getDetails().getResults())
-                    .orElse(Collections.emptySet())
-                    .stream()
-                    .filter(result ->
-                            serverAction.getServerId().equals(result.getServerId()))
-                    .findFirst()
-                    .orElse(new ApplyStatesActionResult());
-            applyStatesAction.getDetails().addResult(statesResult);
-            statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
-            statesResult.setServerId(serverAction.getServerId());
-            statesResult.setReturnCode(retcode);
-
-            // Set the output to the result
-            statesResult.setOutput(YamlHelper.INSTANCE
-                    .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
-
-            // Create the result message depending on the action status
-            String states = applyStatesAction.getDetails().getMods().isEmpty() ?
-                    "highstate" : applyStatesAction.getDetails().getMods().toString();
-            String message = "Successfully applied state(s): " + states;
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                message = "Failed to apply state(s): " + states;
-
-                NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
-                        new StateApplyFailed(serverAction.getServer().getName(),
-                                serverAction.getServerId(), serverAction.getParentAction().getId()));
-
-                Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
-                // TODO: are also org admins and the creator part of this list?
-                UserNotificationFactory.storeForUsers(nm, admins);
-            }
-            if (applyStatesAction.getDetails().isTest()) {
-                message += " (test-mode)";
-            }
-            serverAction.setResultMsg(message);
+            handleStateApplyData(serverAction, jsonResult, retcode, success);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
@@ -740,6 +697,59 @@ public class SaltUtils {
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+    }
+
+    private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
+            boolean success) {
+        ApplyStatesAction applyStatesAction = (ApplyStatesAction)serverAction.getParentAction();
+
+        // Revisit the action status if test=true
+        if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        }
+
+        ApplyStatesActionResult statesResult = Optional.ofNullable(
+                applyStatesAction.getDetails().getResults())
+                .orElse(Collections.emptySet())
+                .stream()
+                .filter(result ->
+                        serverAction.getServerId().equals(result.getServerId()))
+                .findFirst()
+                .orElse(new ApplyStatesActionResult());
+        applyStatesAction.getDetails().addResult(statesResult);
+        statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
+        statesResult.setServerId(serverAction.getServerId());
+        statesResult.setReturnCode(retcode);
+
+        // Set the output to the result
+        statesResult.setOutput(YamlHelper.INSTANCE
+                .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
+
+        // Create the result message depending on the action status
+        String states = applyStatesAction.getDetails().getMods().isEmpty() ?
+                "highstate" : applyStatesAction.getDetails().getMods().toString();
+        String message = "Successfully applied state(s): " + states;
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            message = "Failed to apply state(s): " + states;
+
+            NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
+                    new StateApplyFailed(serverAction.getServer().getName(),
+                            serverAction.getServerId(), serverAction.getParentAction().getId()));
+
+            Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
+            // TODO: are also org admins and the creator part of this list?
+            UserNotificationFactory.storeForUsers(nm, admins);
+        }
+        if (applyStatesAction.getDetails().isTest()) {
+            message += " (test-mode)";
+        }
+        serverAction.setResultMsg(message);
+
+        serverAction.getServer().asMinionServer().ifPresent(minion -> {
+            if (jsonResult.isJsonObject()) {
+                updateSystemInfo(jsonResult, minion);
+            }
+        });
     }
 
     private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -1952,15 +1962,13 @@ public class SaltUtils {
 
     /**
      * Update the system info through grains and data returned by status.uptime
+     *
      * @param jsonResult response from salt master against util.systeminfo state
-     * @param minionId ID of the minion for which information should be updated
+     * @param minion the minion for which information should be updated
      */
-    public void updateSystemInfo(JsonElement jsonResult, String minionId) {
-        Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
-        minionServer.ifPresent(minion -> {
-            SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
-            updateSystemInfo(systemInfo, minion);
-        });
+    public void updateSystemInfo(JsonElement jsonResult, MinionServer minion) {
+        SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
+        updateSystemInfo(systemInfo, minion);
     }
 
 
@@ -2000,7 +2008,7 @@ public class SaltUtils {
     }
 
     /**
-     * Update the system info of the minion
+     * Update the system info of the minion and set Reboot Actions to completed
      * @param systemInfo response from salt master against util.systeminfo state
      * @param minion  minion for which information should be updated
      */

@@ -17,16 +17,22 @@ end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("getent hosts #{node.ip}", check_errors: false)
+  result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+  raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
-Then(/^"([^"]*)" should communicate with the server$/) do |host|
+Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -c1 #{$server.full_hostname}")
-  $server.run("ping -c1 #{node.full_hostname}")
+  node.run("ping -4 -c 1 -I #{node.public_interface} #{$server.full_hostname}")
+  $server.run("ping -4 -c 1 #{node.public_ip}")
+end
+
+Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
+  node = get_target(host)
+  node.run_until_fail("ping -4 -c 1 -I #{node.private_interface} #{$server.full_hostname}")
+  $server.run_until_fail("ping -4 -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -180,7 +186,11 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  if host == 'server'
+    salt = 'salt'
+  end
+  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -189,7 +199,9 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
+  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -368,7 +380,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  node.run("wget http://#{$server.ip}/#{file}")
+  node.run("wget http://#{$server.full_hostname}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
@@ -526,7 +538,7 @@ When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   gpg_keys = get_gpg_keys(node)
   gpg_keys.each do |key|
     gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
   end
 end
 
@@ -818,7 +830,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client.ip} --register #{bootstrap} --tunnel\n" \
+  script = "spawn spacewalk-ssh-push-init --client #{$client.full_hostname} --register #{bootstrap} --tunnel\n" \
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
@@ -841,8 +853,9 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   # use sumaform states to migrate to latest SP the system repositories:
-  node.run('salt-call --local --file-root /root/salt/ state.apply repos')
+  node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
   node.run("for repo in $(zypper lr | awk 'NR>7 && !/susemanager:/ {print $3}'); do zypper mr -d $repo; done")
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
@@ -856,11 +869,21 @@ When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          "zypper mr --#{action} #{repos}"
+          mand_repos = ""
+          opt_repos = ""
+          repos.split(' ').map do |repo|
+            if repo =~ /_ltss_/
+              opt_repos = "#{opt_repos} #{repo}"
+            else
+              mand_repos = "#{mand_repos} #{repo}"
+            end
+          end
+          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
         else
           cmd_list = if action == 'enable'
                        repos.split(' ').map do |repo|
@@ -883,6 +906,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
         end
   node.run(cmd, check_errors: error_control.empty?)
 end
+# rubocop:enable Metrics/BlockLength
 
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
@@ -1138,7 +1162,7 @@ end
 
 When(/^I configure the proxy$/) do
   # prepare the settings file
-  settings = "RHN_PARENT=#{$server.ip}\n" \
+  settings = "RHN_PARENT=#{$server.full_hostname}\n" \
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
@@ -1147,7 +1171,7 @@ When(/^I configure the proxy$/) do
              "SSL_PASSWORD=spacewalk\n" \
              "SSL_ORG=SUSE\n" \
              "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{$proxy.ip}\n" \
+             "SSL_COMMON=#{$proxy.full_hostname}\n" \
              "SSL_CITY=Nuremberg\n" \
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
@@ -1661,11 +1685,15 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  if host == 'server'
+    salt_call = 'salt-call'
+  end
   source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
-  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+  node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
@@ -1695,22 +1723,38 @@ And(/^I copy vCenter configuration file on server$/) do
 end
 
 When(/^I export "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  node = get_target("server")
-  node.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+  $server.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
-  node = get_target("server")
-  node.run("inter-server-sync import --importDir=#{path}")
+  $server.run("inter-server-sync import --importDir=#{path}")
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
 end
 
-Then(/^Export folder "(.*?)" doesn't exists on server$/) do |folder|
-     raise "Folder exists" if folder_exists?($server, folder)
+Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
+  raise "Folder exists" if folder_exists?($server, folder)
 end
-When(/^I ensure folder "(.*?)" doesn't exists$/) do |folder|
-    folder_delete($server, folder) if folder_exists?($server, folder)
+
+When(/^I ensure folder "(.*?)" doesn't exist$/) do |folder|
+  folder_delete($server, folder) if folder_exists?($server, folder)
+end
+
+When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  # HACK: initrd is not regenerated after patching SLES 11 kernel
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('mkinitrd')
+  end
+end
+
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
 end

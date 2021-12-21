@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,6 +45,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.PlaybookAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -667,6 +668,17 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method to get a {@link ApplyStatesActionDetails} by its action id.
+     * @param actionId the id of the {@link ApplyStatesActionDetails}
+     * @return the {@link ApplyStatesActionDetails} corresponding to the given action id.
+     */
+    public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
+        final Map<String, Long> params = Collections.singletonMap("action_id", actionId);
+        return (ApplyStatesActionDetails)
+                singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId", params, true);
+    }
+
+    /**
      * Insert or Update a Action.
      * @param actionIn Action to be stored in database.
      * @return action
@@ -799,6 +811,23 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a List of ServerAction objects for a given Server.
+     * @param serverIn you want to limit the list of Actions to
+     * @param actionType you want to limit the list of Actions to
+     * @param date you want to limit the completion date after
+     * @return List of ServerAction objects
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
+        final Map<String, Object> params = new HashMap<>();
+
+        params.put("server", serverIn);
+        params.put("actionType", actionType);
+        params.put("date", date);
+
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
+    }
+    /**
      * Lookup a List of ServerAction objects in the given states for a given Server.
      * @param serverIn you want to limit the list of Actions to
      * @param statusList to filter the ServerActoins by
@@ -919,6 +948,25 @@ public class ActionFactory extends HibernateFactory {
             .setParameter("queued", ActionFactory.STATUS_QUEUED)
             .executeUpdate();
         }
+    }
+
+    /**
+     * Update the {@link ActionStatus} to "PickedUp" of several rhnServerAction rows identified
+     * by server and action IDs.
+     *
+     * @param actionIn associated action of rhnServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     */
+    public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
+        if (log.isDebugEnabled()) {
+            log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
+                    " is going to b set for these servers: " + serverIds);
+        }
+        Map<String, Object>  parameters = new HashMap<String, Object>();
+        parameters.put("action_id", actionIn.getId());
+        parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
+
+        udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
     }
 
     /**

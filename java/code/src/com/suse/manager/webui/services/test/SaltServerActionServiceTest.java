@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -87,6 +87,7 @@ import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.results.Result;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -132,8 +133,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         SaltService saltService = new SaltService() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
-                return Optional.of(new JsonObject());
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
+                return Optional.of(Result.success(new JsonObject()));
             }
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -640,7 +641,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private SaltServerActionService countSaltActionCalls(AtomicInteger counter) {
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 counter.incrementAndGet();
                 throw new RuntimeException();
             }
@@ -678,9 +679,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         AtomicInteger counter2 = new AtomicInteger();
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 counter2.incrementAndGet();
-                return Optional.of(new JsonObject());
+                return Optional.of(Result.success(new JsonObject()));
             }
         };
         testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
@@ -815,7 +816,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.empty();
             }
         };
@@ -841,7 +842,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 throw new RuntimeException();
             }
         };
@@ -870,8 +871,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
-                return Optional.of(new JsonObject());
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
+                return Optional.of(Result.success(new JsonObject()));
             }
         };
         SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
@@ -934,7 +935,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
         testService.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion);
+            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion, false);
             oneOf(saltServiceMock).callAsync(
                     with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
             LocalAsyncResult<?> result = new LocalAsyncResult() {

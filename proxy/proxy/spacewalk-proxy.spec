@@ -25,7 +25,7 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -93,11 +93,9 @@ Requires:       spacewalk-proxy-package-manager
 Requires:       spacewalk-ssl-cert-check
 %if 0%{?suse_version}
 Requires:       apache2-prefork
-Requires:       http_proxy
 Requires:       apache2-mod_wsgi-python3
 %else
 Requires:       mod_ssl
-Requires:       squid
 Requires:       python3-mod_wsgi
 %endif
 Requires(post): %{name}-common

@@ -22,7 +22,7 @@ class NoKeyErrorsDict(dict):
 
 
 # this initCFG also operates on spacewalk.common.rhnConfig.CFG
-@patch("spacewalk.satellite_tools.download.initCFG", Mock())
+@patch("uyuni.common.context_managers.initCFG", Mock())
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads
 @patch("urlgrabber.grabber.PyCurlFileObject.close", Mock())  # no need to close files
@@ -40,7 +40,7 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
 
     with patch(
         "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
-    ), patch("spacewalk.satellite_tools.download.CFG", CFG):
+    ), patch("uyuni.common.context_managers.CFG", CFG):
 
         td = ThreadedDownloader(force=True)
         td.add(params)

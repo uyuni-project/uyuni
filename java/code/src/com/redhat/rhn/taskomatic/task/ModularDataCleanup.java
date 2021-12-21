@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -39,6 +39,11 @@ public class ModularDataCleanup extends RhnJavaJob {
 
     private static final String MOUNT_POINT_PATH = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     private static final String MODULES_REL_PATH = "rhn/modules";
+
+    @Override
+    public String getConfigNamespace() {
+        return "modular_data_cleanup";
+    }
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {

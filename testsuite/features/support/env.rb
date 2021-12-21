@@ -296,7 +296,7 @@ Before('@sle11sp4_buildhost') do
 end
 
 Before('@sle11sp3_terminal') do
-  skip_this_scenario unless $sle11sp3_terminal
+  skip_this_scenario unless $sle11sp3_terminal_mac
 end
 
 Before('@sle12sp5_buildhost') do
@@ -304,7 +304,7 @@ Before('@sle12sp5_buildhost') do
 end
 
 Before('@sle12sp5_terminal') do
-  skip_this_scenario unless $sle12sp5_terminal
+  skip_this_scenario unless $sle12sp5_terminal_mac
 end
 
 Before('@sle15sp3_buildhost') do
@@ -312,7 +312,7 @@ Before('@sle15sp3_buildhost') do
 end
 
 Before('@sle15sp3_terminal') do
-  skip_this_scenario unless $sle15sp3_terminal
+  skip_this_scenario unless $sle15sp3_terminal_mac
 end
 
 Before('@opensuse153arm_minion') do

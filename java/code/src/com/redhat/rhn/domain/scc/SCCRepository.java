@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -275,7 +275,10 @@ public class SCCRepository extends BaseDomainHelper {
                     return Optional.of(a);
                 }
             }
-            result = Optional.of(a);
+            if (result.isEmpty() || a.getId() < result.get().getId()) {
+                // get always the same result and use the oldest alternative if there are multiple
+                result = Optional.of(a);
+            }
         }
         return result;
     }

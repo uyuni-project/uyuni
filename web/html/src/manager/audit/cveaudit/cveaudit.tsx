@@ -10,34 +10,46 @@ import { Highlight } from "components/table/Highlight";
 import { Messages } from "components/messages";
 import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
+const AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
 const NOT_AFFECTED = "NOT_AFFECTED";
 const PATCHED = "PATCHED";
-const ALL = [AFFECTED_PATCH_INAPPLICABLE, AFFECTED_PATCH_APPLICABLE, NOT_AFFECTED, PATCHED];
+const ALL = [
+  AFFECTED_PATCH_INAPPLICABLE,
+  AFFECTED_PATCH_APPLICABLE,
+  AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
+  NOT_AFFECTED,
+  PATCHED,
+];
 const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
     className: "fa-exclamation-circle text-danger",
-    label: "Affected, patches available in channels which are not assigned",
+    label: t("Affected, patches available in channels which are not assigned"),
+  },
+  AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
+    className: "fa-exclamation-circle text-danger",
+    label: t("Affected, patches available in a Product Migration target"),
   },
   AFFECTED_PATCH_APPLICABLE: {
     className: "fa-exclamation-triangle text-warning",
-    label: "Affected, at least one patch available in an assigned channel",
+    label: t("Affected, at least one patch available in an assigned channel"),
   },
   NOT_AFFECTED: {
     className: "fa-circle text-success",
-    label: "Not affected",
+    label: t("Not affected"),
   },
   PATCHED: {
     className: "fa-check-circle text-success",
-    label: "Patched",
+    label: t("Patched"),
   },
 };
 const TARGET_IMAGE = "IMAGE";
 const TARGET_SERVER = "SERVER";
 const CVE_REGEX = /(\d{4})-(\d{4,7})/i;
-const CURRENT_YEAR = new Date().getFullYear();
+const CURRENT_YEAR = localizedMoment().year();
 const YEARS = (function () {
   const arr: number[] = [];
   for (let i = 1999; i <= CURRENT_YEAR; i++) {
@@ -100,6 +112,7 @@ class CVEAudit extends React.Component<Props, State> {
     this.setState({ selectedItems: items }, () => {
       DWRItemSelector.select("system_list", list, isAdd, (res) => {
         // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
+        // eslint-disable-next-line no-eval
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
@@ -287,13 +300,13 @@ class CVEAudit extends React.Component<Props, State> {
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
                   if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
-                    return "No action required";
+                    return t("No action required");
                   } else if (row.patchStatus === AFFECTED_PATCH_APPLICABLE) {
                     return (
                       <div>
                         <div>
                           <a href={"/rhn/systems/details/ErrataList.do?sid=" + row.id}>
-                            Install a new patch on this system.
+                            {t("Install a new patch on this system.")}
                           </a>
                         </div>
                         {row.erratas.map((errata) => {
@@ -305,12 +318,24 @@ class CVEAudit extends React.Component<Props, State> {
                         })}
                       </div>
                     );
+                  } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT) {
+                    return (
+                      <div>
+                        <div>
+                          <a href={"/rhn/systems/details/SPMigration.do?sid=" + row.id}>
+                            {t("Patch available, but system needs to be migrated to a newer Product.")}
+                          </a>
+                        </div>
+                        <div>{"Channel: " + row.channels[0].name}</div>
+                        <div>{"Patch: " + row.erratas[0].advisory}</div>
+                      </div>
+                    );
                   } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE) {
                     return (
                       <div>
                         <div>
                           <a href="/rhn/channels/manage/Manage.do">
-                            Patch available but needs to be cloned into Channel.
+                            {t("Patch available, but needs to be cloned into Channel.")}
                           </a>
                         </div>
                         <div>{"Channel: " + row.channels[0].name}</div>
@@ -318,18 +343,18 @@ class CVEAudit extends React.Component<Props, State> {
                       </div>
                     );
                   } else {
-                    return "If you see this report a bug.";
+                    return t("If you see this report a bug.");
                   }
                 } else if (this.state.resultType === TARGET_IMAGE) {
                   if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
-                    return "No action required";
+                    return t("No action required");
                   } else if (row.patchStatus === AFFECTED_PATCH_APPLICABLE) {
                     return (
                       <LinkButton
                         icon="fa-cogs"
                         href={"/rhn/manager/cm/rebuild/" + row.id}
                         className="btn-xs btn-default pull-right"
-                        text="Rebuild"
+                        text={t("Rebuild")}
                       />
                     );
                   } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE) {
@@ -337,18 +362,18 @@ class CVEAudit extends React.Component<Props, State> {
                       <div>
                         <div>
                           <a href="/rhn/channels/manage/Manage.do">
-                            Patch available but needs to be cloned into Channel.
+                            {t("Patch available but needs to be cloned into Channel.")}
                           </a>
                         </div>
-                        <div>{"Channel: " + row.channels[0].name}</div>
-                        <div>{"Errata: " + row.erratas[0].advisory}</div>
+                        <div>{t("Channel") + ": " + row.channels[0].name}</div>
+                        <div>{t("Errata") + ": " + row.erratas[0].advisory}</div>
                       </div>
                     );
                   } else {
-                    return "If you see this report a bug.";
+                    return t("If you see this report a bug.");
                   }
                 } else {
-                  return "If you see this report a bug.";
+                  return t("If you see this report a bug.");
                 }
               }}
             />
@@ -366,7 +391,7 @@ class CVEAudit extends React.Component<Props, State> {
             }
             data-senna-off="true"
           >
-            Download CSV
+            {t("Download CSV")}
           </a>
         </TopPanel>
         Please note that underlying data needed for this audit is updated nightly. If systems were registered very

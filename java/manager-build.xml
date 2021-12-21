@@ -309,7 +309,7 @@
     </exec>
   </target>
 
-  <target name="deploy-restart" depends="deploy, restart-tomcat" />
+  <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
   <target name="test" depends="jar" description="Run unit tests">
     <mkdir dir="${tests.results.dir}" />
@@ -338,7 +338,16 @@
     </junit>
   </target>
 
-  <target name="test-pr" depends="test" description="Run unit tests for Pull Requests">
+  <target name="test-report" depends="test" description="Run unit tests and produce a report">
+    <junitreport todir="${tests.results.dir}">
+      <fileset dir="${tests.results.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${tests.results.dir}/html"/>
+    </junitreport>
+  </target>
+
+  <target name="test-pr" depends="test-report" description="Run unit tests for Pull Requests">
     <fail if="junit_failed"/>
   </target>
 

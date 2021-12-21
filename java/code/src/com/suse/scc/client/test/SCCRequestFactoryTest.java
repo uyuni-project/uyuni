@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,5 +56,6 @@ public class SCCRequestFactoryTest extends TestCase {
                 request.getFirstHeader("Accept-Encoding").getValue());
         assertEquals(TEST_UUID,
                 request.getFirstHeader("SMS").getValue());
+        assertEquals("SUSE Manager/4.3.999", request.getFirstHeader("User-Agent").getValue());
     }
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC.
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt_ssh
@@ -9,7 +9,7 @@ Feature: Register a salt-ssh system via XML-RPC
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Setup XML-RPC bootstrap: delete SSH minion system profile
+  Scenario: Delete SSH minion system profile before XML-RPC bootstrap test
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -23,9 +23,9 @@ Feature: Register a salt-ssh system via XML-RPC
     And I logout from XML-RPC system namespace
 
   Scenario: Check new XML-RPC bootstrapped salt-ssh system in System Overview page
-     And I follow the left menu "Systems > Overview"
-     And I wait until I see the name of "ssh_minion", refreshing the page
-     And I wait until onboarding is completed for "ssh_minion"
+    When I follow the left menu "Systems > Overview"
+    And I wait until I see the name of "ssh_minion", refreshing the page
+    And I wait until onboarding is completed for "ssh_minion"
 
   Scenario: Check contact method of this Salt SSH system
     Given I am on the Systems overview page of this "ssh_minion"
@@ -46,10 +46,10 @@ Feature: Register a salt-ssh system via XML-RPC
     Given I am on the Systems overview page of this "ssh_minion"
     Then I check for failed events on history event page
 
-  Scenario: Cleanup: subscribe SSH minion to base channel
+  Scenario: XML-RPC bootstrap: subscribe SSH minion to base channel
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
+    And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "Test-Channel-x86_64"
     And I wait until I do not see "Loading..." text

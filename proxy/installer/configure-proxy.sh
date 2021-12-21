@@ -325,7 +325,7 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-systemctl status salt-minion > /dev/null 2>&1
+systemctl status salt-minion > /dev/null 2>&1 || systemctl status venv-salt-minion > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     /usr/sbin/fetch-certificate $SYSTEMID_PATH
     PROPOSED_PARENT=$(grep ^[[:blank:]]*master /etc/salt/minion.d/susemanager.conf | sed -e "s/.*:[[:blank:]]*//")
@@ -430,11 +430,6 @@ SQUID_VER_MAJOR=$(squid -v | awk -F'[ .]' '/Version/ {print $4}')
 if [ $SQUID_VER_MAJOR -ge 3 ] ; then
     # squid 3.X has acl 'all' built-in
     SQUID_REWRITE="$SQUID_REWRITE s/^acl all.*//;"
-    # squid 3.2 and later need none instead of -1 for range_offset_limit
-    SQUID_VER_MINOR=$(squid -v | awk -F'[ .]' '/Version/ {print $5}')
-    if [[ $SQUID_VER_MAJOR -ge 4 || ( $SQUID_VER_MAJOR -eq 3 && $SQUID_VER_MINOR -ge 2 ) ]] ; then
-        SQUID_REWRITE="$SQUID_REWRITE s/^range_offset_limit.*/range_offset_limit none/;"
-    fi
 fi
 sed "$SQUID_REWRITE" < $DIR/squid.conf  > $SQUID_DIR/squid.conf
 sed -e "s|\${session.ca_chain:/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT}|$CA_CHAIN|g" \
