@@ -1,5 +1,13 @@
 # Building instructions for developers
 
+## Building
+
+ - `make` builds all containers
+ - `make proxy-squid` builds an individual image (autocompletion via TAB works)
+ - `make push` builds all containers and pushes them to `REGISTRY` (by default, registry.tf.local)
+   - use `make push REGISTRY=myregistry.intra.net` to override registry name
+ - `make push-proxy-squid` pushes an individual image
+
 ## Running a local registry (in sumaform)
 
 Add to `main.tf` and then `terraform apply`:
@@ -35,13 +43,6 @@ sudo touch /etc/sub{u,g}id
 sudo usermod --add-subuids 10000-75535 $(whoami)
 sudo usermod --add-subgids 10000-75535 $(whoami)
 rm /run/user/$(id -u)/libpod/pause.pid
-```
-
-
-## Building all images and pushing them to a registry
-
-```sh
-sh build-proxy.sh
 ```
 
 ## Running
