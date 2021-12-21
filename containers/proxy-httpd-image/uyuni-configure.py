@@ -2,6 +2,7 @@
 
 import base64
 import os
+import re
 import yaml
 
 config_path = "/etc/uyuni/"
@@ -27,6 +28,15 @@ with open(config_path + "config.yaml") as source:
         file.write(base64.b64decode(config['binary_server_csr']).decode())
     with open("/etc/apache2/ssl.key/server.key", "w") as file:
         file.write(base64.b64decode(config['binary_server_key']).decode())
+
+    with open("/etc/apache2/httpd.conf", "r+") as file:
+        file_content = file.read()
+        # make sure to send logs to stdout/stderr instead to file
+        file_content = re.sub(r"ErrorLog .*", "ErrorLog /proc/self/fd/2", file_content)
+        # writing back the content
+        file.seek(0,0)
+        file.write(file_content)
+        file.truncate()
 
     # Create conf file
     with open("/etc/rhn/rhn.conf", "w") as file:
