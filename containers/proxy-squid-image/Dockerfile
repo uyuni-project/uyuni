@@ -13,7 +13,7 @@ RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-squid
-LABEL org.opencontainers.image.title="Proxy salt-broker container"
+LABEL org.opencontainers.image.title="Proxy squid container"
 LABEL org.opencontainers.image.description="Image contains a Proxy component cache http requests"
 LABEL org.opensuse.reference="registry.opensuse.org/proxy-squid:%PKG_VERSION%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
