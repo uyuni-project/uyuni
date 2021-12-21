@@ -3191,70 +3191,70 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="systemsearch_custom_info" xml:space="preserve">
         <source>Custom Info</source>
-        <target/>
+        <target>Vlastné informácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_snapshot_tag" xml:space="preserve">
         <source>Snapshot Tag</source>
-        <target/>
+        <target>Značka snímky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.activity" xml:space="preserve">
         <source>Activity</source>
-        <target/>
+        <target>Aktivita</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_checkin" xml:space="preserve">
         <source>Days Since Last Check-in</source>
-        <target/>
+        <target>Dni od posledného prihlásenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_registered" xml:space="preserve">
         <source>Days Since First Registered</source>
-        <target/>
+        <target>Dni od prvej registrácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.hardware" xml:space="preserve">
         <source>Hardware</source>
-        <target/>
+        <target>Hardvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_model" xml:space="preserve">
         <source>CPU Model</source>
-        <target/>
+        <target>Model CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt" xml:space="preserve">
         <source>CPU MHz Less Than</source>
-        <target/>
+        <target>CPU MHz menej ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_gt" xml:space="preserve">
         <source>CPU MHz Greater Than</source>
-        <target/>
+        <target>CPU MHz viac ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_lt" xml:space="preserve">
         <source>Number of CPUs Less Than</source>
-        <target/>
+        <target>Počet CPU menej ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
