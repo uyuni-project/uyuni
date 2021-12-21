@@ -305,4 +305,53 @@ public class MinionServer extends Server implements SaltConfigurable {
     public Optional<MinionServer> asMinionServer() {
         return Optional.of(this);
     }
+
+    /**
+     * Updates Server Path according to Salt master/proxy hostname.
+     * @param hostname hostname of Salt master the minion is connected to
+     * @return <code>true</code> if the path has been changed
+     */
+    public boolean updateServerPaths(String hostname) {
+        Optional<Server> proxy = ServerFactory.lookupProxyServer(hostname);
+
+        return updateServerPaths(proxy, Optional.of(hostname));
+    }
+
+    /**
+     * Updates Server Path according to proxyId.
+     * @param proxyId Id of a proxy the minion is connected to
+     * @return <code>true</code> if the path has been changed
+     */
+    public boolean updateServerPaths(Optional<Long> proxyId) {
+        return updateServerPaths(proxyId.map(id -> ServerFactory.lookupById(id)), Optional.empty());
+    }
+
+    private boolean updateServerPaths(Optional<Server> proxy, Optional<String> hostname) {
+
+        boolean changed = false;
+
+        if (proxy.isPresent()) {
+                // the system is connected to a proxy
+                // check if serverPath already exists
+                Optional<ServerPath> path = ServerFactory.findServerPath(this, proxy.get());
+                if (!path.isPresent() || path.get().getPosition() != 0) {
+                    // proxy path does not exist -> create it
+                    Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(this, proxy.get(),
+                                                 hostname.orElse(proxy.get().getHostname()));
+                    getServerPaths().clear();
+                    getServerPaths().addAll(proxyPaths);
+
+                    changed = true;
+                }
+         }
+         else {
+                if (!getServerPaths().isEmpty()) {
+                    // reconnecting from proxy to master
+                    getServerPaths().clear();
+
+                    changed = true;
+                }
+        }
+        return changed;
+    }
 }

@@ -4942,6 +4942,12 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="ssm.overview.misc.proxy">
+          <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="ssm.overview.misc.lock">
           <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
         <context-group name="ctx">
@@ -5117,6 +5123,12 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.misc.index.tabs.custom">
           <source>Custom Values</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="ssm.misc.index.tabs.proxy">
+          <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -21315,6 +21327,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <source>Memory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.connection.change" xml:space="preserve">
+        <source>Change</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.connection.header" xml:space="preserve">

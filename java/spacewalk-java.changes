@@ -1,3 +1,6 @@
+- UI and API call for changing proxy
+- require postgresql14 on SLE15 SP4
+- Update proxy path on minion connection
 - fix actionchain stuck in pending/picked up (bsc#1189561)
 - fix parsing error by making SCAP Profile description attribute optional
   (bsc#1192321)
