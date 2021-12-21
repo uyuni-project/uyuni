@@ -503,6 +503,14 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion.full_hostname}' saltutil.refresh_pillar wait=True")
 end
 
+When(/^I wait until there is no pillar refresh salt job active$/) do
+  repeat_until_timeout(message: "pillar refresh job still active") do
+    output, = $server.run("salt-run jobs.active")
+    break unless output.include?("saltutil.refresh_pillar")
+    sleep 1
+  end
+end
+
 def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'

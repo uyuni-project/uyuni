@@ -228,6 +228,7 @@ Feature: Use advanced features of Salt formulas
      When I uncheck the "testform" formula
      And I click on "Save"
      Then I wait until I see "Formula saved" text
+     And I wait until there is no pillar refresh salt job active
      Then the pillar data for "testing" should be empty on "sle_minion"
 
   Scenario: Cleanup: remove "test-formula-group" system group
@@ -238,4 +239,5 @@ Feature: Use advanced features of Salt formulas
      Then I should see a "System group" text
      Then I should see a "test-formula-group" text
      And I should see a "deleted" text
+     And I wait until there is no pillar refresh salt job active
      Then the pillar data for "testing" should be empty on "sle_minion"
