@@ -28,11 +28,6 @@ VOLUME "/etc/uyuni"
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-salt
 
-# TODO -> remove the following block of lines after the merge
-COPY proxy/proxy/salt-broker/salt-broker /usr/bin/salt-broker
-RUN chmod +x /usr/bin/salt-broker
-COPY proxy/proxy/salt-broker/broker /etc/salt/broker
-
 COPY containers/proxy-salt-broker-image/uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
