@@ -37,9 +37,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
  spacewalk-proxy-common spacewalk-proxy-package-manager \
  spacewalk-proxy-redirect spacewalk-ssl-cert-check
 
-COPY containers/proxy-httpd-image/uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
-COPY containers/proxy-httpd-image/ssl.conf /etc/apache2/vhosts.d/ssl.conf
+COPY ssl.conf /etc/apache2/vhosts.d/ssl.conf
 
 CMD uyuni-configure.py && /usr/sbin/start_apache2 -DFOREGROUND -k start

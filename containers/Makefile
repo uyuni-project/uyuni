@@ -15,7 +15,7 @@ build_targets := $(patsubst %-image,%,$(IMAGES))
 build: $(build_targets)
 
 $(build_targets):
-	@${BUILDER} build -f $@-image/Dockerfile --build-arg BASE_IMAGE_PREFIX=registry.suse.com/ -t $@ ..
+	cd $@-image ; ${BUILDER} build --build-arg BASE_IMAGE_PREFIX=registry.suse.com/ -t $@ .
 
 # push (to registry)
 push_targets := $(patsubst %-image,push-%,$(IMAGES))
