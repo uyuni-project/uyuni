@@ -44,7 +44,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
-import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
@@ -764,27 +764,23 @@ public class SaltUtils {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
-            // activate the new tokens
-            List<Long> newTokenIds = sca.getDetails().getAccessTokens()
-                    .stream()
-                    .filter(ac -> ac.getMinion() != null)
-                    .filter(ac -> ac.getMinion().getId().equals(serverAction.getServer().getId()))
-                    .map(AccessToken::getId)
-                    .collect(Collectors.toList());
-
             // if successful update channels in db and trigger pillar refresh
             SystemManager.updateServerChannels(
                     action.getSchedulerUser(),
                     serverAction.getServer(),
                     Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels(),
-                    newTokenIds);
+                    sca.getDetails().getChannels());
         }
         else {
-            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(returnObject);
-            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS);
+            //set the token as invalid
+            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+            sca.getDetails().getAccessTokens().forEach(token -> {
+                token.setValid(false);
+                AccessTokenFactory.save(token);
+            });
+
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
+                    jsonResult);
         }
     }
 

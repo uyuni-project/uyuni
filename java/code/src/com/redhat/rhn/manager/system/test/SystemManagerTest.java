@@ -1321,7 +1321,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22), null);
+        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22));
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(2, server.getChildChannels().size());
@@ -1350,7 +1350,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, of(base2), Collections.emptyList(), null);
+        SystemManager.updateServerChannels(user, server, of(base2), Collections.emptyList());
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(0, server.getChildChannels().size());
@@ -1377,7 +1377,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22), null);
+        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22));
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
