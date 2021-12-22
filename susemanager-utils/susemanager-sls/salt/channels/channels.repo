@@ -10,9 +10,9 @@
 {%- set apt_support_acd = apt_version and salt['pkg.version_cmp'](apt_version, "1.6.10") > 0 %}
 
 {%- if apt_support_acd %}
-deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download {{ chan }} main
+deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
 {%- else %}
-deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download {{ chan }} main
+deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
 {%- endif %}
 {%- else %}
 [{{ args['alias'] }}]

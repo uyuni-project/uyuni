@@ -881,6 +881,7 @@ class RepoSync(object):
                return None
 
         log(0, "Add Patch %s" % patch_name)
+
         e = importLib.Erratum()
         e['errata_from']   = notice['from']
         e['advisory'] = e['advisory_name'] = patch_name
@@ -904,6 +905,7 @@ class RepoSync(object):
         e['update_date']   = updated_date
         e['org_id'] = self.org_id
         e['notes']         = ''
+        e['rights']        = notice['rights']
         e['refers_to']     = ''
         e['channels']      = [{'label':self.channel_label}]
         e['packages']      = []

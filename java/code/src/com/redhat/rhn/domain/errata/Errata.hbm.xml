@@ -32,6 +32,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="issueDate" column="issue_date" type="timestamp" />
         <property name="updateDate" column="update_date" type="timestamp" />
         <property name="notes" column="notes" type="string" length="4000" />
+        <property name="rights" column="rights" type="string" length="100" />
         <property name="refersTo" column="refers_to" type="string"
             length="4000" />
         <property name="advisoryName" column="advisory_name" type="string"
