@@ -5,7 +5,7 @@ const npmLicensesArray = [
 
 const npmDependencies = [
     { name: "@babel/polyfill", license: "MIT",  version: "7.7.0" }, 
-  { name: "@babel/runtime", license: "MIT",  version: "7.7.7" }, 
+  { name: "@babel/runtime", license: "MIT",  version: "7.14.0" }, 
   { name: "@emotion/cache", license: "MIT",  version: "11.4.0" }, 
   { name: "@emotion/hash", license: "MIT",  version: "0.8.0" }, 
   { name: "@emotion/memoize", license: "MIT",  version: "0.7.5" }, 

@@ -17,6 +17,7 @@ import Clusters from "./clusters";
 import ContentManagement from "./content-management";
 import Errors from "./errors";
 import Groups from "./groups";
+import Header from "./header";
 import Images from "./images";
 import Login from "./login";
 import MaintenanceWindows from "./maintenance";
@@ -36,6 +37,7 @@ const pages = {
   ...ContentManagement,
   ...Errors,
   ...Groups,
+  ...Header,
   ...Highstate,
   ...Images,
   ...Login,
