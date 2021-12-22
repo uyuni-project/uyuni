@@ -70,6 +70,17 @@ public class OrgHandler extends BaseHandler {
     private static final String USED_KEY = "used";
     private static Logger log = Logger.getLogger(OrgHandler.class);
 
+    private final MigrationManager migrationManager;
+
+    /**
+     * Constructor
+     *
+     * @param migrationManagerIn the migration manager
+     */
+    public OrgHandler(MigrationManager migrationManagerIn) {
+        migrationManager = migrationManagerIn;
+    }
+
     /**
      * Create a new organization.
      * @param loggedInUser The current user
@@ -447,7 +458,7 @@ public class OrgHandler extends BaseHandler {
             }
         }
 
-        List<Long> serversMigrated = MigrationManager.migrateServers(loggedInUser,
+        List<Long> serversMigrated = migrationManager.migrateServers(loggedInUser,
                 toOrg, servers);
         return serversMigrated.toArray();
     }

@@ -52,6 +52,16 @@ public class SystemMigrateAction extends RhnAction {
     public static final String SID = "sid";
     public static final String ORG = "to_org";
 
+    private final MigrationManager migrationManager;
+
+    /**
+     * Constructor
+     *
+     * @param migrationManagerIn the migration manager
+     */
+    public SystemMigrateAction(MigrationManager migrationManagerIn) {
+        migrationManager = migrationManagerIn;
+    }
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -170,7 +180,7 @@ public class SystemMigrateAction extends RhnAction {
         List<Server> serverList = new ArrayList<Server>();
         serverList.add(s);
 
-        List<Long> serversMigrated = MigrationManager.migrateServers(user,
+        List<Long> serversMigrated = migrationManager.migrateServers(user,
                 toOrg, serverList);
 
         Iterator it = serversMigrated.iterator();
