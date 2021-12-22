@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-11 11:51+0100\n"
+"POT-Creation-Date: 2021-12-22 10:19+0100\n"
 "PO-Revision-Date: 2021-11-09 09:11+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -31,11 +31,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.8.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:487
+#: ../html/javascript/spacewalk-essentials.js:499
 msgid "remaining"
 msgstr "剩余"
 
-#: ../html/javascript/spacewalk-essentials.js:507
+#: ../html/javascript/spacewalk-essentials.js:519
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -211,7 +211,7 @@ msgstr "取消"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:111
+#: ../html/src/components/table/Table.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
 #: ../html/src/manager/content-management/project/project.tsx:94
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -323,7 +323,7 @@ msgid "Toggle section visibility"
 msgstr "切换部分可见性"
 
 #: ../html/src/components/input/Check.stories.tsx:26
-#: ../html/src/components/input/DateTime.stories.tsx:26
+#: ../html/src/components/input/DateTime.stories.tsx:27
 #: ../html/src/components/input/FormMultiInput.stories.tsx:71
 #: ../html/src/components/input/FormMultiInput.stories.tsx:121
 #: ../html/src/components/input/FormMultiInput.stories.tsx:163
@@ -342,7 +342,7 @@ msgstr "切换部分可见性"
 msgid "Submit"
 msgstr "提交"
 
-#: ../html/src/components/input/DateTime.stories.tsx:25
+#: ../html/src/components/input/DateTime.stories.tsx:26
 msgid "Time"
 msgstr "时间"
 
@@ -394,8 +394,8 @@ msgstr "必填"
 #: ../html/src/components/input/Password.stories.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:181
 #: ../html/src/manager/login/login.tsx:172
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:301
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:311
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:433
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:37
 msgid "Password"
 msgstr "口令"
@@ -573,7 +573,7 @@ msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:336
+#: ../html/src/components/table/TableDataHandler.tsx:343
 msgid "There are no entries to show."
 msgstr "没有可显示的项。"
 
@@ -631,7 +631,7 @@ msgstr "清除"
 msgid "Select All"
 msgstr "全选"
 
-#: ../html/src/components/table/TableDataHandler.tsx:337
+#: ../html/src/components/table/TableDataHandler.tsx:344
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:615
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:91
@@ -641,7 +641,7 @@ msgstr "全选"
 msgid "Loading..."
 msgstr "正在装载..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:367
+#: ../html/src/components/table/TableDataHandler.tsx:374
 msgid "items per page"
 msgstr "项每页"
 
@@ -1156,9 +1156,10 @@ msgid " seconds"
 msgstr " 秒刷新"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:278
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
+#: ../html/src/manager/systems/virtual-list.tsx:58
 #: ../html/src/manager/virtualization/ListTab.tsx:237
 msgid "Filter by name"
 msgstr "按名称过滤"
@@ -1184,11 +1185,12 @@ msgid "Elapsed Time"
 msgstr "已用时间"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:225
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:268
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:147
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:56
 #: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:781
+#: ../html/src/manager/systems/virtual-list.tsx:83
 msgid "Status"
 msgstr "状态"
 
@@ -1214,31 +1216,52 @@ msgstr "会话已失效，请重新装载页面以查看最新数据。"
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:167
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:30
+msgid "Affected, patches available in channels which are not assigned"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
+msgid "Affected, patches available in a Product Migration target"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
+msgid "Affected, at least one patch available in an assigned channel"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
+msgid "Not affected"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
+#, fuzzy
+msgid "Patched"
+msgstr "补丁"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:180
 msgid "CVE Audit"
 msgstr "CVE 审计"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:174
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:187
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:229
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:242
 msgid "Audit Servers"
 msgstr "审计服务器"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:236
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 msgid "Audit Images"
 msgstr "审计映像"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:269
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:282
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:153
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:270
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:109
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
@@ -1255,7 +1278,7 @@ msgstr "审计映像"
 msgid "Name"
 msgstr "名称"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:286
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:299
 #: ../html/src/manager/images/image-profiles.tsx:191
 #: ../html/src/manager/images/image-stores.tsx:193
 #: ../html/src/manager/images/image-view.tsx:668
@@ -1268,6 +1291,55 @@ msgstr "名称"
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "操作"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:350
+#, fuzzy
+msgid "No action required"
+msgstr "需要重引导"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:309
+msgid "Install a new patch on this system."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:326
+msgid "Patch available, but system needs to be migrated to a newer Product."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
+msgid "Patch available, but needs to be cloned into Channel."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:346
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:376
+msgid "If you see this report a bug."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:357
+#: ../html/src/manager/images/image-view-overview.tsx:593
+msgid "Rebuild"
+msgstr "重构建"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:365
+msgid "Patch available but needs to be cloned into Channel."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:368
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
+#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:41
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:33
+msgid "Channel"
+msgstr "频道"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
+msgid "Errata"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:394
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
+msgid "Download CSV"
+msgstr "下载 CSV"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:58
 msgid "Match data status"
@@ -1576,10 +1648,6 @@ msgstr "系统名称"
 msgid "Unmatched systems"
 msgstr "不匹配的系统"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
-msgid "Download CSV"
-msgstr "下载 CSV"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
 msgstr "仅物理部署"
@@ -1751,8 +1819,8 @@ msgstr "操作 "
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/proxy.tsx:68
+#: ../html/src/manager/systems/proxy.tsx:72
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "scheduled"
 msgstr "已安排"
@@ -1946,7 +2014,7 @@ msgstr "无可用模块"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:41
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:8
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
 msgid "Stream"
 msgstr "流"
 
@@ -1957,12 +2025,6 @@ msgstr "选择流..."
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
 msgid "No streams available"
 msgstr "无可用流"
-
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
-#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:41
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:33
-msgid "Channel"
-msgstr "频道"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:7
 msgid "Module Name"
@@ -2075,7 +2137,7 @@ msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:133
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:154
 msgid "Advisory Type"
 msgstr "建议类型"
 
@@ -2084,7 +2146,7 @@ msgid "Issued"
 msgstr "颁发日期"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:205
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:160
 #: ../html/src/manager/images/image-view-patches.tsx:100
 msgid "Synopsis"
 msgstr "摘要"
@@ -2106,7 +2168,7 @@ msgid "Package Provides Name"
 msgstr "软件包提供名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:142
 msgid "Provides Name"
 msgstr "提供名称"
 
@@ -2251,7 +2313,7 @@ msgid "containing"
 msgstr "包含"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "matches"
 msgstr "匹配"
 
@@ -2260,7 +2322,7 @@ msgid "regular expression matches package name"
 msgstr "正则表达式匹配软件包名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "equals"
 msgstr "等于"
 
@@ -2308,59 +2370,90 @@ msgstr "包含纪元/版本/发行版高于以下值的软件包"
 msgid "contains package which provides name equal"
 msgstr "包含所提供名称等于以下值的软件包"
 
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+msgid "lower"
+msgstr ""
+
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-msgid "equal"
-msgstr "等于"
+#, fuzzy
+msgid "lower than"
+msgstr "版本低于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-msgid "later or equal"
+#, fuzzy
+msgid "lower or equal"
 msgstr "晚于或等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-msgid "later or equal than"
+#, fuzzy
+msgid "lower or equal than"
 msgstr "晚于或等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
+msgid "equal"
+msgstr "等于"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#, fuzzy
+msgid "greater or equal"
+msgstr "晚于或等于"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#, fuzzy
+msgid "greater or equal than"
+msgstr "晚于或等于"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
+#, fuzzy
+msgid "greater"
+msgstr "创建"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
+#, fuzzy
+msgid "greater than"
+msgstr "创建时间"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
 msgstr "匹配正则表达式"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
 msgid "provides name"
 msgstr "提供名称"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "provides name equal"
 msgstr "提供的名称等于"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:127
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:148
 msgid "Advisory Name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:145
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:166
 msgid "Keyword"
 msgstr "关键字"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:151
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:172
 msgid "Issue date"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:178
 msgid "Contains Package Name"
 msgstr "包含软件包名称"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:184
 msgid "Contains Package Provides Name"
 msgstr "包含提供以下名称的软件包"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:190
 msgid "Contains Package"
 msgstr "包含软件包"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
 msgid "enable module"
 msgstr "启用模块"
 
@@ -2748,7 +2841,7 @@ msgstr "路径"
 #: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:402
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
 msgid "Activation Key"
 msgstr "激活密钥"
 
@@ -2810,7 +2903,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-import.tsx:322
 #: ../html/src/manager/images/image-profile-edit.tsx:489
 #: ../html/src/manager/images/image-store-edit.tsx:203
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:291
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:300
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:209
 msgid "Clear fields"
 msgstr "清除字段"
@@ -3141,10 +3234,6 @@ msgstr "构建状态"
 msgid "Inspect"
 msgstr "检查"
 
-#: ../html/src/manager/images/image-view-overview.tsx:593
-msgid "Rebuild"
-msgstr "重构建"
-
 #: ../html/src/manager/images/image-view-overview.tsx:594
 msgid "Reschedule the build"
 msgstr "重安排构建"
@@ -3305,6 +3394,7 @@ msgid "Revision"
 msgstr "修订版"
 
 #: ../html/src/manager/images/image-view.tsx:636
+#: ../html/src/manager/systems/virtual-list.tsx:89
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "更新"
@@ -3721,7 +3811,12 @@ msgstr "已注册的系统"
 msgid "Unknown Hostnames"
 msgstr "未知主机名"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:187
+#, fuzzy
+msgid "bootstrap"
+msgstr "引导"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:222
 msgid "Loading content.."
 msgstr "正在装载内容..."
 
@@ -4011,14 +4106,16 @@ msgstr "标记为已读"
 msgid "Delete Notification"
 msgstr "删除通知"
 
-#: ../html/src/manager/notifications/notifications.tsx:39
+#: ../html/src/manager/notifications/notifications.tsx:41
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:341
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 #: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 连接已关闭。请刷新页面以重试。"
 
-#: ../html/src/manager/notifications/notifications.tsx:52
+#: ../html/src/manager/notifications/notifications.tsx:54
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:361
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 #: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "连接到服务器时出错。请刷新页面以重试。"
@@ -4386,109 +4483,109 @@ msgstr "基础频道："
 msgid "${defaultChannelName}"
 msgstr "${defaultChannelName}"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:134
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:135
 msgid "${this.getDefaultBase().name}"
 msgstr "${this.getDefaultBase().name}"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:145
 msgid "Child Channels:"
 msgstr "子频道："
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:148
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:150
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子频道。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:220
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:229
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 "请求已中断，或者从服务器收到了无效响应。请检查您的受控端是否已正常引导。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:249
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:258
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "已成功引导主机！您的系统很快应会显示在"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:251
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:260
 msgid "systems"
 msgstr "系统"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:253
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:262
 msgid "shortly"
 msgstr "中"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:271
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:280
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "您的系统正在引导：正在等待响应..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:275
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:284
 msgid "Loading SSH Private Key.."
 msgstr "正在装载 SSH 私用密钥..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:283
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:292
 msgid "Bootstrap"
 msgstr "引导"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:318
 msgid "e.g., ••••••••••••"
 msgstr "例如 ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:317
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:445
 msgid "SSH Private Key"
 msgstr "SSH 私用密钥"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:323
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "该文件将储存在服务器上的临时文件中，在完成引导过程后将被删除"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:347
 msgid "Leave empty for no passphrase"
 msgstr "留空表示无通行口令"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:346
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Bootstrap Minions"
 msgstr "引导受控端"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
 msgstr ""
 "只能通过提供 SSH 身份凭证来添加要管理的系统。{0} 将远程准备系统并执行注册。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
 #, fuzzy
 msgid "Host"
 msgstr "主机"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 msgid "e.g., host.domain.com"
 msgstr "例如 host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:382
 #, fuzzy
 msgid "SSH Port"
 msgstr "端口"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:381
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:393
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:386
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 #, fuzzy
 msgid "User"
 msgstr "用户"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:412
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4499,44 +4596,48 @@ msgstr ""
 "\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间部署 {0} 的 "
 "SSH 密钥后设置。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
 msgid "Authentication Method"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:448
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
-#: ../html/src/manager/systems/proxy.tsx:124
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:458
+msgid "Ansible control node"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:506
+#: ../html/src/manager/systems/proxy.tsx:122
 msgid "None"
 msgstr "无"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
 #, fuzzy
 msgid "Reactivation Key"
 msgstr "激活密钥"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:495
 msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Proxy"
 msgstr "代理"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:497
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:525
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr "代理的主机名不是完全限定的。这可能导致在访问频道时出现问题。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:542
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:530
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:558
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
 #, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
@@ -4567,24 +4668,34 @@ msgstr "确认删除"
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr ""
 
-#: ../html/src/manager/systems/proxy.tsx:67
+#: ../html/src/manager/systems/proxy.tsx:65
 msgid "Change of proxy server has been "
 msgstr ""
 
-#: ../html/src/manager/systems/proxy.tsx:101
-#: ../html/src/manager/systems/proxy.tsx:117
+#: ../html/src/manager/systems/proxy.tsx:99
+#: ../html/src/manager/systems/proxy.tsx:115
 #, fuzzy
 msgid "Change Proxy"
 msgstr "更改"
 
-#: ../html/src/manager/systems/proxy.tsx:117
+#: ../html/src/manager/systems/proxy.tsx:115
 msgid "Connect minion(s) to another proxy server."
 msgstr ""
 
-#: ../html/src/manager/systems/proxy.tsx:120
+#: ../html/src/manager/systems/proxy.tsx:118
 #, fuzzy
 msgid "New Proxy"
 msgstr "代理"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
+#, fuzzy
+msgid "system selected"
+msgstr "删除选定项"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
+#, fuzzy
+msgid "systems selected"
+msgstr "删除选定项"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21
@@ -4900,23 +5011,48 @@ msgstr "虚拟主机管理器"
 msgid "Add a virtual host manager"
 msgstr "添加虚拟主机管理器"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:177
+#: ../html/src/manager/systems/virtual-list.tsx:40
+#, fuzzy
+msgid "Virtual Systems"
+msgstr "托管虚拟系统"
+
+#: ../html/src/manager/systems/virtual-list.tsx:59
+#, fuzzy
+msgid "No Virtual Systems."
+msgstr "托管虚拟系统"
+
+#: ../html/src/manager/systems/virtual-list.tsx:64
+#, fuzzy
+msgid "Virtual Host"
+msgstr "虚拟主机管理器"
+
+#: ../html/src/manager/systems/virtual-list.tsx:72
+#, fuzzy
+msgid "Virtual System"
+msgstr "托管虚拟系统"
+
+#: ../html/src/manager/systems/virtual-list.tsx:100
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
+msgid "Base Software Channel"
+msgstr "基础软件频道"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:179
 msgid "Disconnected"
 msgstr "已断开连接"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:177
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:179
 msgid "Failed to connect"
 msgstr "无法连接"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:338
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:340
 msgid "Toggle full size"
 msgstr "切换完整大小"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:358
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
 msgid "Guest is not running"
 msgstr "Guest 未运行"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:362
 msgid "Unknown guest"
 msgstr "未知 Guest"
 
@@ -5053,10 +5189,6 @@ msgstr "当前内存"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
 msgid "vCPUs"
 msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
-msgid "Base Software Channel"
-msgstr "基础软件频道"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
 msgid "paused"
@@ -5809,15 +5941,15 @@ msgstr " 过滤器"
 msgid "Partition systems by given check-in time:"
 msgstr "按给定的签入时间将系统分区："
 
-#: ../html/src/manager/visualization/ui/components.ts:139
+#: ../html/src/manager/visualization/ui/components.ts:145
 msgid "Add a grouping level"
 msgstr "添加分组级别"
 
-#: ../html/src/manager/visualization/ui/components.ts:177
+#: ../html/src/manager/visualization/ui/components.ts:183
 msgid "Select a system group"
 msgstr "选择系统组"
 
-#: ../html/src/manager/visualization/ui/components.ts:226
+#: ../html/src/manager/visualization/ui/components.ts:232
 msgid "Split into groups"
 msgstr "分割成组"
 
