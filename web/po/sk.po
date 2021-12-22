@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-22 10:19+0100\n"
-"PO-Revision-Date: 2021-10-31 17:12+0000\n"
+"PO-Revision-Date: 2021-12-11 18:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4685,27 +4685,24 @@ msgstr ""
 "registráciu."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
-#, fuzzy
 msgid "Host"
-msgstr "Hostitelia"
+msgstr "Hostiteľ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:382
-#, fuzzy
 msgid "SSH Port"
-msgstr "Port"
+msgstr "Port SSH"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:393
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portov: 1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
-#, fuzzy
 msgid "User"
-msgstr "Používatelia"
+msgstr "Používateľ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:412
 msgid ""
@@ -4721,7 +4718,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
 msgid "Authentication Method"
-msgstr ""
+msgstr "Metóda overenia"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:458
 msgid "Ansible control node"
@@ -4734,13 +4731,12 @@ msgid "None"
 msgstr "Žiadny"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
-#, fuzzy
 msgid "Reactivation Key"
-msgstr "Aktivačný kľúč"
+msgstr "Reaktivačný kľúč"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:495
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Ponechať prázdne, ak sa nevyžaduje reaktivácia"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Proxy"
@@ -4756,17 +4752,16 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:542
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Zakázať prísnu kontrolu kľúča hostiteľa SSH počas zavádzacieho procesu"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:558
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Spravovať systém kompletne cez SSH (neinštaluje sa agent)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
-#, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
+msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
 
 #: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4792,25 +4787,25 @@ msgstr "Potvrdiť vymazanie"
 #: ../html/src/manager/systems/proxy.tsx:42
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr ""
+"Prosím, vyberte zoznam klientov minion (nie proxy serverov alebo tradičných "
+"klientov)."
 
 #: ../html/src/manager/systems/proxy.tsx:65
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Zmena proxy servera bola "
 
 #: ../html/src/manager/systems/proxy.tsx:99
 #: ../html/src/manager/systems/proxy.tsx:115
-#, fuzzy
 msgid "Change Proxy"
-msgstr "Zmeny"
+msgstr "Zmena proxy"
 
 #: ../html/src/manager/systems/proxy.tsx:115
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Pripojiť agenta(ov) minion k ďalšiemu proxy serveru."
 
 #: ../html/src/manager/systems/proxy.tsx:118
-#, fuzzy
 msgid "New Proxy"
-msgstr "Proxy"
+msgstr "Nový proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
 #, fuzzy
@@ -6138,6 +6133,12 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "later or equal"
+#~ msgstr "neskorší alebo rovnaký"
+
+#~ msgid "later or equal than"
+#~ msgstr "neskorší alebo rovnaký ako"
 
 #~ msgid ""
 #~ "provided channel that corresponds to the installed SUSE Linux version. "
