@@ -187,7 +187,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
-        SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
                 allowing(taskomaticMock)
@@ -203,7 +202,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
-        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
         createMetadataFiles();
     }
 
@@ -275,7 +274,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server test = SystemManager.lookupByIdAndUser(id, user);
         assertNotNull(test);
 
-        SystemManager.deleteServer(user, id);
+        systemManager.deleteServer(user, id);
 
         try {
             test = SystemManager.lookupByIdAndUser(id, user);
@@ -309,7 +308,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
-        SystemManager.deleteServer(user, minion.getId());
+        systemManager.deleteServer(user, minion.getId());
 
         assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
         assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
@@ -333,7 +332,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
-        SystemManager.deleteServer(user, minion.getId());
+        systemManager.deleteServer(user, minion.getId());
 
         assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
         assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
@@ -353,7 +352,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server test = SystemManager.lookupByIdAndUser(sid, user);
         assertNotNull(test);
 
-        SystemManager.deleteServer(user, sid);
+        systemManager.deleteServer(user, sid);
 
         try {
             test = SystemManager.lookupByIdAndUser(sid, user);
@@ -380,10 +379,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(test);
 
         // Delete the host first:
-        SystemManager.deleteServer(user, host.getId());
+        systemManager.deleteServer(user, host.getId());
         TestUtils.flushAndEvict(host);
 
-        SystemManager.deleteServer(user, sid);
+        systemManager.deleteServer(user, sid);
         TestUtils.flushAndEvict(guest);
 
         try {

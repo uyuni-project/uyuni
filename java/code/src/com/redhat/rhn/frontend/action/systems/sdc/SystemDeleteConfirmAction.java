@@ -45,6 +45,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemDeleteConfirmAction extends RhnAction {
 
+    private final SystemManager systemManager;
+
+    /**
+     * Constructor
+     *
+     * @param systemManagerIn the system manager
+     */
+    public SystemDeleteConfirmAction(SystemManager systemManagerIn) {
+        systemManager = systemManagerIn;
+    }
+
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
             ActionForm form,
@@ -87,7 +98,7 @@ public class SystemDeleteConfirmAction extends RhnAction {
 
             try {
                 // Now we can remove the system
-                SystemManager.deleteServer(loggedInUser, sid);
+                systemManager.deleteServer(loggedInUser, sid);
                 createSuccessMessage(request, "message.serverdeleted.param",
                         sid.toString());
             }

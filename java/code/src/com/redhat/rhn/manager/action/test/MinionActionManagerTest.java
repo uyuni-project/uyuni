@@ -107,7 +107,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+    private SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
     @Override
     public void setUp() throws Exception {
