@@ -6585,7 +6585,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
-            return SystemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
+            return systemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
         }
         catch (SystemsExistException e) {
             throw new SystemsExistFaultException(e.getSystemIds());

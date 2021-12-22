@@ -364,7 +364,9 @@ public class ServerGroupManager {
      */
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         if (!servers.isEmpty()) {
-            SystemManager.removeServersFromServerGroup(servers, sg);
+            SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                    saltApi);
+            systemManager.removeServersFromServerGroup(servers, sg);
             updatePillarAfterGroupUpdateForServers(servers);
         }
     }
