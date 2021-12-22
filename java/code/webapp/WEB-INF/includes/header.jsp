@@ -21,9 +21,6 @@
 </div>
 
 <rhn:require acl="user_authenticated()">
-  <script type="text/javascript">
-    window.csrfToken = '<c:out value="${csrf_token}" />';
-  </script>
   <ul class="nav navbar-nav navbar-utility">
     <li>
       <a href="/rhn/account/UserDetails.do"
@@ -89,6 +86,7 @@
       <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
         <div id="ssm-counter"></div>
         <script type="text/javascript">
+          window.csrfToken = '<c:out value="${csrf_token}" />';
           spaImportReactPage('systems/ssm/ssm-counter')
             .then(function(module) {
               module.renderer("ssm-counter", {})
