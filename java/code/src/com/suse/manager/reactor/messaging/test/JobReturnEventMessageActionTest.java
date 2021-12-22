@@ -159,7 +159,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
                         serverGroupManager),

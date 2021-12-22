@@ -25,12 +25,14 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
 
@@ -52,6 +54,17 @@ public class ServerGroupManager {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
+
+    private final SaltApi saltApi;
+
+    /**
+     * Constructor.
+     *
+     * @param saltApiIn the Salt API
+     */
+    public ServerGroupManager(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
 
     /**
      * Lookup a ServerGroup by ID and organization.

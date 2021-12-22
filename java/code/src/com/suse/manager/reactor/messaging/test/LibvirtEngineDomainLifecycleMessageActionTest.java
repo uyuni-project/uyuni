@@ -88,7 +88,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             allowing(virtManager).updateLibvirtEngine(with(any(MinionServer.class)));
         }});
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(new TestSaltApi());
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
                 new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),

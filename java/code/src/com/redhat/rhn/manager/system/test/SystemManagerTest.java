@@ -195,7 +195,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         });
         SaltApi saltApi = new TestSaltApi();
         VirtManager virtManager = new TestVirtManager();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),

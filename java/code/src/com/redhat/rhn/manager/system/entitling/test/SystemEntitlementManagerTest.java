@@ -54,7 +54,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
                         serverGroupManager),

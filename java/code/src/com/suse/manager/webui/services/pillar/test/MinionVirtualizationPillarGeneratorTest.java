@@ -57,7 +57,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             }
         };
 
-        ServerGroupManager serverGroupManager =  new ServerGroupManager();
+        ServerGroupManager serverGroupManager =  new ServerGroupManager(new TestSaltApi());
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
