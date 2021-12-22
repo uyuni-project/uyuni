@@ -113,7 +113,11 @@ Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-setup-jabberd
+%if 0%{?rhel}
+Requires(post): libxslt-devel
+%else
 Requires(post): libxslt-tools
+%endif
 
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
