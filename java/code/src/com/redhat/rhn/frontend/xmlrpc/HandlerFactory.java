@@ -77,6 +77,7 @@ import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -145,7 +146,7 @@ public class HandlerFactory {
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", new ActivationKeyHandler(serverGroupManager));
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
-        factory.addHandler("ansible", new AnsibleHandler());
+        factory.addHandler("ansible", new AnsibleHandler(new AnsibleManager(GlobalInstanceHolder.SALT_API)));
         factory.addHandler("api", new ApiHandler(factory));
         factory.addHandler("audit", new CVEAuditHandler());
         factory.addHandler("auth", new AuthHandler());
