@@ -19,7 +19,6 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -52,14 +51,22 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -103,6 +110,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     // Reference to the SaltService instance
     private final SaltApi saltApi;
     private final SystemQuery systemQuery;
+    private final SystemEntitlementManager entitlementManager;
 
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
@@ -116,6 +124,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         saltApi = saltApiIn;
         systemQuery = systemQueryIn;
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
+        entitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(virtManager, monitoringManager, groupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
+        );
     }
 
     /**
@@ -500,7 +515,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             giveCapabilities(minion, isSaltSSH);
 
             // Assign the Salt base entitlement by default
-            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
+            entitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));
