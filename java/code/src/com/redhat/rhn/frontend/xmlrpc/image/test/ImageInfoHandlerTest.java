@@ -93,7 +93,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private static TaskomaticApi taskomaticApi;
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
@@ -175,12 +175,11 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 will(returnValue(Optional.of(mockResult)));
         }});
 
-        ServerGroupManager serverGroupMgr = new ServerGroupManager();
         SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
-                        serverGroupMgr),
+                        serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupMgr)
+                        new FormulaMonitoringManager(), serverGroupManager)
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);

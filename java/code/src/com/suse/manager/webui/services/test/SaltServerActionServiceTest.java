@@ -119,6 +119,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
     private SystemEntitlementManager systemEntitlementManager;
+    private ServerGroupManager serverGroupManager;
     private TaskomaticApi taskomaticMock;
 
     @Override
@@ -139,7 +140,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
         saltServerActionService = createSaltServerActionService(saltService, saltService);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        serverGroupManager = new ServerGroupManager(saltService);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
@@ -152,7 +153,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
                 saltApi, systemQuery, serverGroupManager, formulaManager
@@ -475,7 +475,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
                 saltApi, systemQuery, serverGroupManager, formulaManager
@@ -964,7 +963,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager) {
             @Override

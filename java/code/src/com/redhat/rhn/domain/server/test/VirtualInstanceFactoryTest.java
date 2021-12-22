@@ -31,6 +31,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -58,11 +59,11 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), new TestVirtManager(), new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemEntitler(saltApi, new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager)
         );
     }
 

@@ -101,7 +101,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             }
         };
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(new TestSaltApi());
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
                 new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(), serverGroupManager)

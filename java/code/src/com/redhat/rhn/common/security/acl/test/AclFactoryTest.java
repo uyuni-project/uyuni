@@ -35,7 +35,7 @@ public class AclFactoryTest extends RhnBaseTestCase {
     public void testGetAcl() {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         AclFactory aclFactory = new AclFactory(new Access(clusterManager));

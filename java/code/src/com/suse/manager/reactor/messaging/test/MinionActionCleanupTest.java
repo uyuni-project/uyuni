@@ -124,7 +124,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager = new ClusterManager(
                 saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
@@ -278,7 +278,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ActionChainFactory.delete(actionChain);
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager =  new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
                 formulaManager);

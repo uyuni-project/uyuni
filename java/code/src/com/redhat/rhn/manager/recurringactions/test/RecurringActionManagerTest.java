@@ -39,6 +39,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.test.TestSaltApi;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -208,7 +210,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testListGroupRecurringActions() {
-        ServerGroupManager manager = new ServerGroupManager();
+        ServerGroupManager manager = new ServerGroupManager(new TestSaltApi());
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
 
         var action = new GroupRecurringAction();
