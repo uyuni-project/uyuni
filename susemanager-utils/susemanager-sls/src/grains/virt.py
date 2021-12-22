@@ -5,14 +5,21 @@ Grains for virtualization hosts
 import logging
 import re
 import subprocess
-from xml.etree import ElementTree
 import salt.modules.virt
+
+try:
+    from salt.utils.path import which_bin as _which_bin
+except ImportError:
+    from salt.utils import which_bin as _which_bin
+
+from xml.etree import ElementTree
+
 
 log = logging.getLogger(__name__)
 
 
 def __virtual__():
-    return salt.modules.virt.__virtual__()
+    return salt.modules.virt.__virtual__() and _which_bin(["libvirtd"]) is not None
 
 
 def features():
