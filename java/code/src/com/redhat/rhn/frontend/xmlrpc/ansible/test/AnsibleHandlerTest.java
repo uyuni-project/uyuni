@@ -62,25 +62,21 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     private AnsibleHandler handler;
 
     private static TaskomaticApi taskomaticApi;
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    private final Mockery context = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
-    private SaltApi originalSaltApi;
+    private SaltApi saltApi;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ActionChainManager.setTaskomaticApi(getTaskomaticApi());
-        handler = new AnsibleHandler();
-        originalSaltApi = AnsibleManager.getSaltApi();
-    }
 
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-        AnsibleManager.setSaltApi(originalSaltApi);
+        saltApi = context.mock(SaltApi.class);
+        AnsibleManager manager = new AnsibleManager(saltApi);
+        handler = new AnsibleHandler(manager);
     }
 
     public void testSchedulePlaybook() throws Exception {
@@ -286,12 +282,10 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                         "path", "/etc/playbooks"
                 ));
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right("playbook-content"))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
         assertEquals(
                 "playbook-content",
                 handler.fetchPlaybookContents(admin, playbookPath.getId().intValue(), "tmp/123"));
@@ -310,8 +304,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {
-            taskomaticApi = CONTEXT.mock(TaskomaticApi.class);
-            CONTEXT.checking(new Expectations() {
+            taskomaticApi = context.mock(TaskomaticApi.class);
+            context.checking(new Expectations() {
                 {
                     allowing(taskomaticApi)
                             .scheduleActionExecution(with(any(Action.class)));

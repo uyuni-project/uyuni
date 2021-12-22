@@ -53,7 +53,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
 
     private Mockery CONTEXT;
 
-    private SaltApi originalSaltApi;
+    private SaltApi saltApi;
+    private AnsibleManager ansibleManager;
 
     @Override
     public void setUp() throws Exception {
@@ -61,13 +62,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         CONTEXT = new JUnit3Mockery() {{
             setThreadingPolicy(new Synchroniser());
         }};
-        originalSaltApi = AnsibleManager.getSaltApi();
-    }
-
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-        AnsibleManager.setSaltApi(originalSaltApi);
+        saltApi = CONTEXT.mock(SaltApi.class);
+        ansibleManager = new AnsibleManager(saltApi);
     }
 
     /**
@@ -187,7 +183,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testFetchPlaybookInvalidPath() {
         try {
-            AnsibleManager.fetchPlaybookContents(-1234, "path/to/playbook", user);
+            ansibleManager.fetchPlaybookContents(-1234, "path/to/playbook", user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -203,7 +199,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
         try {
-            AnsibleManager.fetchPlaybookContents(path.getId(), "/absolute", user);
+            ansibleManager.fetchPlaybookContents(path.getId(), "/absolute", user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalArgumentException e) {
@@ -218,17 +214,14 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right("suchplaybookwow"))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
-
 
         assertEquals(
                 Optional.of("suchplaybookwow"),
-                AnsibleManager.fetchPlaybookContents(path.getId(), "site.yml", user));
+                ansibleManager.fetchPlaybookContents(path.getId(), "site.yml", user));
     }
 
     /**
@@ -238,15 +231,13 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.left(false))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
 
         try {
-            AnsibleManager.fetchPlaybookContents(path.getId(), "site.yml", user);
+            ansibleManager.fetchPlaybookContents(path.getId(), "site.yml", user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalStateException e) {
@@ -299,15 +290,13 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         Map<String, Map<String, AnsiblePlaybookSlsResult>> expected = Map.of("/tmp/test", Map.of("site.yml",
                 new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts")));
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right(expected))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
 
         Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> result =
-                AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
+                ansibleManager.discoverPlaybooks(playbookPath.getId(), user);
         assertEquals(Optional.of(expected), result);
     }
 
@@ -320,15 +309,13 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.left("error"))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
 
         try {
-            AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
+            ansibleManager.discoverPlaybooks(playbookPath.getId(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalStateException e) {
@@ -343,7 +330,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testDiscoverPlaybooksNonExistingPath() throws Exception {
         try {
-            AnsibleManager.discoverPlaybooks(-1234, user);
+            ansibleManager.discoverPlaybooks(-1234, user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -361,7 +348,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
                 "inventory", controlNode.getId(), "/tmp/test/hosts", user);
         try {
-            AnsibleManager.discoverPlaybooks(inventoryPath.getId(), user);
+            ansibleManager.discoverPlaybooks(inventoryPath.getId(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalArgumentException e) {
@@ -380,15 +367,13 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         Map<String, Map<String, Map<String, List<String>>>> expected =
                 Map.of("minion",  Map.of("all", Map.of("children", List.of("host1", "host2"))));
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right(expected))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
 
         Optional<Map<String, Map<String, Object>>> result =
-                AnsibleManager.introspectInventory(inventoryPath.getId(), user);
+                ansibleManager.introspectInventory(inventoryPath.getId(), user);
         assertEquals(Optional.of(expected), result);
     }
 
@@ -400,15 +385,13 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
                 "inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
-        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.left("error desc"))));
         }});
-        AnsibleManager.setSaltApi(saltApi);
 
         try {
-            AnsibleManager.introspectInventory(inventoryPath.getId(), user);
+            ansibleManager.introspectInventory(inventoryPath.getId(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalStateException e) {
@@ -421,7 +404,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testIntrospectInventoryNonExistingPath() {
         try {
-            AnsibleManager.introspectInventory(-1234, user);
+            ansibleManager.introspectInventory(-1234, user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -438,7 +421,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
         try {
-            AnsibleManager.introspectInventory(playbookPath.getId(), user);
+            ansibleManager.introspectInventory(playbookPath.getId(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalArgumentException e) {
