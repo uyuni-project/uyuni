@@ -111,7 +111,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     public final void testImportImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
-        MinionServer server = ImageTestUtils.createBuildHost(admin);
+        MinionServer server = ImageTestUtils.createBuildHost(systemEntitlementManager, admin);
         ImageStore store = createImageStore("registry.reg", admin);
         ActivationKey ak = createActivationKey(admin);
 
