@@ -62,6 +62,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -97,7 +98,10 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -146,6 +150,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
+    private final SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, new ServerGroupFactory(), saltApi);
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -200,7 +206,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
 
-        SystemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(user, server.getId());
 
         try {
             // Regular users cannot see orphan actions
@@ -224,7 +230,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
 
-        SystemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(user, server.getId());
         // Admins should see orphan actions
         result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);

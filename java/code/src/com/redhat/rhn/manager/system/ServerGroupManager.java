@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
@@ -393,7 +394,9 @@ public class ServerGroupManager {
      */
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         if (!servers.isEmpty()) {
-            SystemManager.removeServersFromServerGroup(servers, sg);
+            SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                    saltApi);
+            systemManager.removeServersFromServerGroup(servers, sg);
             updatePillarAfterGroupUpdateForServers(servers);
         }
     }

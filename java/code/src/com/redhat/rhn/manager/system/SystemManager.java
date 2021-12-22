@@ -20,7 +20,6 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Optional.ofNullable;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -102,19 +101,22 @@ import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.utils.Opt;
 
@@ -148,7 +150,6 @@ import java.util.stream.Collectors;
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
-    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
@@ -161,7 +162,8 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
 
-    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final SystemEntitlementManager systemEntitlementManager;
+    private SaltApi saltApi;
     private ServerFactory serverFactory;
     private ServerGroupFactory serverGroupFactory;
 
@@ -170,19 +172,20 @@ public class SystemManager extends BaseManager {
      *
      * @param serverFactoryIn the server factory in
      * @param serverGroupFactoryIn the server group factory in
+     * @param saltApiIn the Salt API
      */
-    public SystemManager(ServerFactory serverFactoryIn, ServerGroupFactory serverGroupFactoryIn) {
+    public SystemManager(ServerFactory serverFactoryIn, ServerGroupFactory serverGroupFactoryIn, SaltApi saltApiIn) {
         super();
         this.serverFactory = serverFactoryIn;
         this.serverGroupFactory = serverGroupFactoryIn;
-    }
-
-    /**
-     * Used in tests to mock the SaltService.
-     * @param mockedSaltService The mocked SaltService.
-     */
-    public static void mockSaltService(SaltService mockedSaltService) {
-        saltApi = mockedSaltService;
+        this.saltApi = saltApiIn;
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(new VirtManagerSalt(saltApiIn), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltApiIn, new VirtManagerSalt(saltApiIn),
+                        new FormulaMonitoringManager(), serverGroupManager)
+        );
     }
 
     /**
@@ -474,7 +477,7 @@ public class SystemManager extends BaseManager {
      * if the format of the hardware address is invalid
      * @return the created system
      */
-    public static MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
+    public MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
         Optional<String> hwAddress = ofNullable((String) data.get("hwAddress"));
         Optional<String> hostname = ofNullable((String) data.get("hostname"));
 
@@ -644,7 +647,7 @@ public class SystemManager extends BaseManager {
      * @param cleanupType cleanup options
      * @return a list of cleanup errors or empty if no errors or no cleanup was done
      */
-    public static Optional<List<String>> deleteServerAndCleanup(
+    public Optional<List<String>> deleteServerAndCleanup(
             User user, long sid, ServerCleanupType cleanupType) {
         return deleteServerAndCleanup(user, sid, cleanupType, 300);
     }
@@ -659,7 +662,7 @@ public class SystemManager extends BaseManager {
      * @param cleanupTimeout timeout for cleanup operation
      * @return a list of cleanup errors or empty if no errors or no cleanup was done
      */
-    public static Optional<List<String>> deleteServerAndCleanup(
+    public Optional<List<String>> deleteServerAndCleanup(
             User user, long sid, ServerCleanupType cleanupType, int cleanupTimeout) {
         if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
             Server server = lookupByIdAndUser(sid, user);
@@ -685,7 +688,7 @@ public class SystemManager extends BaseManager {
      * @param user The user doing the deleting.
      * @param sid The id of the Server to be deleted
      */
-    public static void deleteServer(User user, Long sid) {
+    public void deleteServer(User user, Long sid) {
         deleteServer(user, sid, true);
     }
 
@@ -699,7 +702,7 @@ public class SystemManager extends BaseManager {
      * @param sid The id of the Server to be deleted
      * @param deleteSaltKey delete also the salt key when set to true
      */
-    public static void deleteServer(User user, Long sid, boolean deleteSaltKey) {
+    public void deleteServer(User user, Long sid, boolean deleteSaltKey) {
         /*
          * Looking up the server here rather than being passed in a Server object, allows
          * us to call lookupByIdAndUser which will ensure the user has access to this
@@ -757,7 +760,7 @@ public class SystemManager extends BaseManager {
         });
     }
 
-    private static void removeSaltSSHKnownHosts(Server server) {
+    private void removeSaltSSHKnownHosts(Server server) {
         Optional.ofNullable(server.getHostname()).ifPresent(hostname -> {
             Optional<MgrUtilRunner.RemoveKnowHostResult> result =
                     saltApi.removeSaltSSHKnownHost(hostname);
@@ -781,7 +784,7 @@ public class SystemManager extends BaseManager {
 
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
-                FormulaFactory.grantMonitoringEntitlement(server);
+                systemsEntitlementManager.grantMonitoringEntitlement(server);
             }
         }
     }
@@ -800,7 +803,7 @@ public class SystemManager extends BaseManager {
      * @param servers The servers to remove
      * @param serverGroup The group to remove the servers from
      */
-    public static void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
+    public void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
         ServerFactory.removeServersFromGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {

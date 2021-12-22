@@ -120,6 +120,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
@@ -178,11 +179,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
-        SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
                 allowing(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
+                allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
             }
         });
         SaltApi saltApi = new TestSaltApi();
@@ -194,7 +195,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
-        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
         createMetadataFiles();
     }
 
@@ -266,7 +267,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server test = SystemManager.lookupByIdAndUser(id, user);
         assertNotNull(test);
 
-        SystemManager.deleteServer(user, id);
+        systemManager.deleteServer(user, id);
 
         try {
             test = SystemManager.lookupByIdAndUser(id, user);
@@ -300,7 +301,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
-        SystemManager.deleteServer(user, minion.getId());
+        systemManager.deleteServer(user, minion.getId());
 
         assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
         assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
@@ -323,7 +324,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
-        SystemManager.deleteServer(user, minion.getId());
+        systemManager.deleteServer(user, minion.getId());
 
         assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
         assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
@@ -343,7 +344,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server test = SystemManager.lookupByIdAndUser(sid, user);
         assertNotNull(test);
 
-        SystemManager.deleteServer(user, sid);
+        systemManager.deleteServer(user, sid);
 
         try {
             test = SystemManager.lookupByIdAndUser(sid, user);
@@ -370,10 +371,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(test);
 
         // Delete the host first:
-        SystemManager.deleteServer(user, host.getId());
+        systemManager.deleteServer(user, host.getId());
         TestUtils.flushAndEvict(host);
 
-        SystemManager.deleteServer(user, sid);
+        systemManager.deleteServer(user, sid);
         TestUtils.flushAndEvict(guest);
 
         try {
@@ -1378,7 +1379,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfile() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer minion = SystemManager.createSystemProfile(user, "test system", data);
+        MinionServer minion = systemManager.createSystemProfile(user, "test system", data);
         Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
 
         // flush & refresh iface because generated="insert"
@@ -1412,7 +1413,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testListSystemProfile() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system",
+        MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
         HibernateFactory.getSession().evict(emptyProfileMinion);
 
@@ -1439,7 +1440,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testListSystemProfileTradSystem() {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system",
+        MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
         HibernateFactory.getSession().createNativeQuery("DELETE FROM suseMinionInfo").executeUpdate();
         HibernateFactory.getSession().evict(emptyProfileMinion);
@@ -1456,7 +1457,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         UserTestUtils.addUserRole(foreignUser, RoleFactory.ORG_ADMIN);
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        SystemManager.createSystemProfile(user, "test system", singletonMap("hwAddress", hwAddr));
+        systemManager.createSystemProfile(user, "test system", singletonMap("hwAddress", hwAddr));
 
         assertEquals(1, SystemManager.listEmptySystemProfiles(user, null).getTotalSize());
         assertEquals(0, SystemManager.listEmptySystemProfiles(foreignUser, null).getTotalSize());
@@ -1469,9 +1470,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfileExistingHwAddress() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer profile = SystemManager.createSystemProfile(user, "test system", data);
+        MinionServer profile = systemManager.createSystemProfile(user, "test system", data);
         try {
-            SystemManager.createSystemProfile(user, "test system 2", data);
+            systemManager.createSystemProfile(user, "test system 2", data);
             fail("System creation should have failed!");
         } catch (SystemsExistException e) {
             assertEquals(singletonList(profile.getId()), e.getSystemIds());
@@ -1599,7 +1600,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> data = new HashMap<>();
         hostName.ifPresent(n -> data.put("hostname", n));
         hwAddr.ifPresent(a -> data.put("hwAddress", a));
-        return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
+        return systemManager.createSystemProfile(user, hostName.orElse("test system"), data);
     }
 
     /**
@@ -1625,11 +1626,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
         // Remove server from group, entitlement should be removed
-        SystemManager.removeServersFromServerGroup(Arrays.asList(server), group);
+        systemManager.removeServersFromServerGroup(Arrays.asList(server), group);
         assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 

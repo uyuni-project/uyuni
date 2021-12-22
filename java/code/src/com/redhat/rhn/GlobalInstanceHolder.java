@@ -16,13 +16,17 @@ package com.redhat.rhn;
 
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -87,6 +91,8 @@ public class GlobalInstanceHolder {
             new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER,
                     SERVER_GROUP_MANAGER)
     );
+    public static final SystemManager SYSTEM_MANAGER = new SystemManager(ServerFactory.SINGLETON,
+            ServerGroupFactory.SINGLETON, SALT_API);
     public static final WebsocketHeartbeatService WEBSOCKET_SESSION_MANAGER = new WebsocketHeartbeatService();
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
