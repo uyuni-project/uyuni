@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.ansible.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -36,13 +35,20 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.utils.Xor;
 
@@ -292,7 +298,13 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
-        SystemEntitlementManager entitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
+        SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(virtManager, monitoringManager, groupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
+        );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerArch a = ServerFactory.lookupServerArchByName("x86_64");
