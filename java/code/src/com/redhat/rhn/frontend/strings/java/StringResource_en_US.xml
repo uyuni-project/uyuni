@@ -1555,6 +1555,12 @@
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ovalfiles" xml:space="preserve">
+        <source>Optional OVAL Files (comma separated)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="first">
           <source>First Scan Id</source>
         <context-group name="ctx">
