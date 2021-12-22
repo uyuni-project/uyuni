@@ -3261,70 +3261,70 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_gt" xml:space="preserve">
         <source>Number of CPUs Greater Than</source>
-        <target/>
+        <target>Počet CPU väčší ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_lt" xml:space="preserve">
         <source>RAM Less Than</source>
-        <target/>
+        <target>RAM menej ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_gt" xml:space="preserve">
         <source>RAM Greater Than</source>
-        <target/>
+        <target>RAM viac ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.devices" xml:space="preserve">
         <source>Hardware Devices</source>
-        <target/>
+        <target>Hardvérové zariadenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_description" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target>Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_driver" xml:space="preserve">
         <source>Driver</source>
-        <target/>
+        <target>Ovládač</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_device_id" xml:space="preserve">
         <source>Device ID</source>
-        <target/>
+        <target>ID zariadenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_vendor_id" xml:space="preserve">
         <source>Vendor ID</source>
-        <target/>
+        <target>ID dodávateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.dmiinfo" xml:space="preserve">
         <source>DMI Info</source>
-        <target/>
+        <target>Informácie DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_dmi_system" xml:space="preserve">
         <source>System</source>
-        <target/>
+        <target>Systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
