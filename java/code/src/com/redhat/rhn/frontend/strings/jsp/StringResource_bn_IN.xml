@@ -21598,83 +21598,6 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
-        <source>Virtual Systems</source>
-        <target>ভার্চুয়াল সিস্টেম</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <target>সিস্টেম</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve">
-        <source>No Virtual Systems.</source>
-        <target>কোনো ভার্চুয়াল সিস্টেম নেই</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.name" xml:space="preserve">
-        <source>System</source>
-        <target>সিস্টেম</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.host" xml:space="preserve">
-        <source>Host</source>
-        <target>হোস্ট</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve">
-        <source>{0} Active Virtual Systems, {1} Total.</source>
-        <target>{0} সক্রিয় ভার্চুয়াল সিস্টেম, {1} সর্বমোট।</target>
-        <context-group name="ctx">
-          <context context-type="paramnotes">3 Active Virtual Systems, 10 Total.</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve">
-        <source>View All</source>
-        <target>সমগ্র প্রদর্শন</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.updates" xml:space="preserve">
-        <source>Updates</source>
-        <target>আপডেট</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.state" xml:space="preserve">
-        <source>Status</source>
-        <target>অবস্থা</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.channel" xml:space="preserve">
-        <source>Base Software Channel</source>
-        <target>বেস সফ্টওয়্যার চ্যানেল</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
-        <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
-        <target>এই সিস্টেমটি নির্বাচন করা যাবে না - এটি @@PRODUCT_NAME@@-এ নিবন্ধিত নয়</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="virtualguestslist.jsp.header" xml:space="preserve">
         <source>Hosted Virtual Systems</source>
         <target>হোস্টেড ভার্চুয়াল সিস্টেম</target>
@@ -27741,6 +27664,13 @@ given channel.</source>
         <source>Change</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve">
+        <source>Vendor Advisory</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       <target state="new"/>
   </trans-unit>
