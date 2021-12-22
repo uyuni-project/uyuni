@@ -6134,6 +6134,12 @@ msgstr "nedefinované"
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
 
+#~ msgid "later or equal"
+#~ msgstr "neskorší alebo rovnaký"
+
+#~ msgid "later or equal than"
+#~ msgstr "neskorší alebo rovnaký ako"
+
 #~ msgid ""
 #~ "provided channel that corresponds to the installed SUSE Linux version. "
 #~ "Instead of the default, "
