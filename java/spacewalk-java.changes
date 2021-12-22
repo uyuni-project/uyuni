@@ -1,3 +1,4 @@
+- Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
 - Generate flat repositories metadata for Debian based systems
 - Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
 - Added rights field to generated updateinfo.xml to handle copyright
