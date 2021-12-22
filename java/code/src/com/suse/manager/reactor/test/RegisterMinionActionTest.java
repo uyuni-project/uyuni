@@ -315,7 +315,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         if (expectations != null) {
             Expectations exp = expectations.apply(saltServiceMock, key);
             context().checking(exp);
-            SystemManager.mockSaltService(saltServiceMock);
 
             TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
             ActionManager.setTaskomaticApi(taskomaticMock);

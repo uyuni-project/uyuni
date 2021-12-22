@@ -114,7 +114,6 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
@@ -150,7 +149,6 @@ import java.util.stream.Collectors;
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
-    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
@@ -164,6 +162,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCAP = "scap.xccdf_eval";
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private SaltApi saltApi;
     private ServerFactory serverFactory;
     private ServerGroupFactory serverGroupFactory;
 
@@ -172,19 +171,13 @@ public class SystemManager extends BaseManager {
      *
      * @param serverFactoryIn the server factory in
      * @param serverGroupFactoryIn the server group factory in
+     * @param saltApiIn the Salt API
      */
-    public SystemManager(ServerFactory serverFactoryIn, ServerGroupFactory serverGroupFactoryIn) {
+    public SystemManager(ServerFactory serverFactoryIn, ServerGroupFactory serverGroupFactoryIn, SaltApi saltApiIn) {
         super();
         this.serverFactory = serverFactoryIn;
         this.serverGroupFactory = serverGroupFactoryIn;
-    }
-
-    /**
-     * Used in tests to mock the SaltService.
-     * @param mockedSaltService The mocked SaltService.
-     */
-    public static void mockSaltService(SaltService mockedSaltService) {
-        saltApi = mockedSaltService;
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -646,7 +639,7 @@ public class SystemManager extends BaseManager {
      * @param cleanupType cleanup options
      * @return a list of cleanup errors or empty if no errors or no cleanup was done
      */
-    public static Optional<List<String>> deleteServerAndCleanup(
+    public Optional<List<String>> deleteServerAndCleanup(
             User user, long sid, ServerCleanupType cleanupType) {
         return deleteServerAndCleanup(user, sid, cleanupType, 300);
     }
@@ -661,7 +654,7 @@ public class SystemManager extends BaseManager {
      * @param cleanupTimeout timeout for cleanup operation
      * @return a list of cleanup errors or empty if no errors or no cleanup was done
      */
-    public static Optional<List<String>> deleteServerAndCleanup(
+    public Optional<List<String>> deleteServerAndCleanup(
             User user, long sid, ServerCleanupType cleanupType, int cleanupTimeout) {
         if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
             Server server = lookupByIdAndUser(sid, user);
@@ -687,7 +680,7 @@ public class SystemManager extends BaseManager {
      * @param user The user doing the deleting.
      * @param sid The id of the Server to be deleted
      */
-    public static void deleteServer(User user, Long sid) {
+    public void deleteServer(User user, Long sid) {
         deleteServer(user, sid, true);
     }
 
@@ -701,7 +694,7 @@ public class SystemManager extends BaseManager {
      * @param sid The id of the Server to be deleted
      * @param deleteSaltKey delete also the salt key when set to true
      */
-    public static void deleteServer(User user, Long sid, boolean deleteSaltKey) {
+    public void deleteServer(User user, Long sid, boolean deleteSaltKey) {
         /*
          * Looking up the server here rather than being passed in a Server object, allows
          * us to call lookupByIdAndUser which will ensure the user has access to this
@@ -759,7 +752,7 @@ public class SystemManager extends BaseManager {
         ServerFactory.delete(server);
     }
 
-    private static void removeSaltSSHKnownHosts(Server server) {
+    private void removeSaltSSHKnownHosts(Server server) {
         Optional<MgrUtilRunner.RemoveKnowHostResult> result =
                 saltApi.removeSaltSSHKnownHost(server.getHostname());
         boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
