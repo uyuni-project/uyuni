@@ -122,11 +122,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private static final String SSH_PUSH_CONTACT_METHOD = "ssh-push";
     private static final String DEFAULT_CONTACT_METHOD = "default";
     private Path metadataDirOfficial;
+    private SaltService saltServiceMock;
+    private SystemManager systemManager;
 
     @FunctionalInterface
     private interface ExpectationsFunction {
 
-        Expectations apply(SaltService saltServiceMock, String key) throws Exception;
+        Expectations apply(String key) throws Exception;
 
     }
 
@@ -143,7 +145,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     }
 
-    private ExpectationsFunction SLES_EXPECTATIONS = (saltServiceMock, key) ->
+    private ExpectationsFunction SLES_EXPECTATIONS = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
                 will(returnValue(Optional.of(MINION_ID)));
@@ -164,7 +166,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }};
 
     @SuppressWarnings("unchecked")
-    private final ExpectationsFunction SLES_NO_AK_EXPECTATIONS = (saltServiceMock, key) ->
+    private final ExpectationsFunction SLES_NO_AK_EXPECTATIONS = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
                 will(returnValue(Optional.of(MINION_ID)));
@@ -268,6 +270,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
        Files.createDirectories(testFormulaDir);
        Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
        Files.createFile(testFormulaFile);
+
+       saltServiceMock = mock(SaltService.class);
+       systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
     }
 
     @Override
@@ -302,8 +307,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier,
                             Assertions assertions, Consumer<Void> cleanup, String contactMethod,
                             Optional<MinionStartupGrains> startupGrains) throws Exception {
-
-        SaltService saltServiceMock = mock(SaltService.class);
         // cleanup
         if (cleanup != null) {
             cleanup.accept(null);
@@ -313,7 +316,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         // Register a minion via RegisterMinionAction and mocked SaltService
         if (expectations != null) {
-            Expectations exp = expectations.apply(saltServiceMock, key);
+            Expectations exp = expectations.apply(key);
             context().checking(exp);
 
             TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -435,7 +438,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         try {
-            executeTest((saltServiceMock, key) -> new Expectations() {{
+            executeTest((key) -> new Expectations() {{
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
                 will(returnValue(Optional.of(MINION_ID)));
                 allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -479,7 +482,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {{
+        executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).getMasterHostname(MINION_ID);
             will(returnValue(Optional.of(MINION_ID)));
             allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -497,7 +500,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void testWithMissingMachineIdStartUpGrains() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
-        executeTest((saltServiceMock, key) -> new Expectations() {{
+        executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).getMachineId(MINION_ID);
             will(returnValue(Optional.of(MACHINE_ID)));
 
@@ -517,7 +520,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {{
+        executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).getMachineId(MINION_ID);
             will(returnValue(Optional.of(MACHINE_ID)));
             allowing(saltServiceMock).getGrains(MINION_ID);
@@ -599,7 +602,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(minion);
 
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -640,7 +643,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -686,7 +689,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -739,7 +742,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false).susemanagerGrain(suseManagerGrain)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -797,7 +800,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false).susemanagerGrain(suseManagerGrain)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -858,7 +861,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 "Config channel 1", "config-channel-1");
         HibernateFactory.getSession().flush();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -932,7 +935,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {
+        executeTest((key) -> new Expectations() {
 
             {
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -992,7 +995,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1051,7 +1054,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1122,7 +1125,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .createMinionStartUpGrains();
         try {
             executeTest(
-                    (saltServiceMock, key) -> new Expectations() {{
+                    (key) -> new Expectations() {{
                         allowing(saltServiceMock).getMasterHostname(MINION_ID);
                         will(returnValue(Optional.of(MINION_ID)));
                         allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1202,7 +1205,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1267,7 +1270,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1427,7 +1430,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1475,7 +1478,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .createMinionStartUpGrains();
         try {
             executeTest(
-                    (saltServiceMock, key) -> new Expectations() {{
+                    (key) -> new Expectations() {{
                         allowing(saltServiceMock).getMasterHostname(MINION_ID);
                         will(returnValue(Optional.of(MINION_ID)));
                         allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1525,7 +1528,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .createMinionStartUpGrains();
         try {
             executeTest(
-                    (saltServiceMock, key) -> new Expectations() {{
+                    (key) -> new Expectations() {{
                         allowing(saltServiceMock).getMasterHostname(MINION_ID);
                         will(returnValue(Optional.of(MINION_ID)));
                         allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1575,7 +1578,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1623,14 +1626,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup alreadyAssignedGroup = ServerGroupFactory.create("HWTYPE:idontmatch",
                 "HW group - assigned to empty profile beforehand", user.getOrg());
 
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = systemManager.createSystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         ServerFactory.addServerToGroup(emptyMinion, alreadyAssignedGroup);
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1692,7 +1695,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         try {
             executeTest(
-                    (saltServiceMock, key) -> new Expectations() {{
+                    (key) -> new Expectations() {{
                         allowing(saltServiceMock).getMasterHostname(MINION_ID);
                         will(returnValue(Optional.of(MINION_ID)));
                         allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1748,7 +1751,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         try {
             executeTest(
-                    (saltServiceMock, key) -> new Expectations() {{
+                    (key) -> new Expectations() {{
                         allowing(saltServiceMock).getMasterHostname(MINION_ID);
                         will(returnValue(Optional.of(MINION_ID)));
                         allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1805,7 +1808,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .createMinionStartUpGrains();
 
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1844,13 +1847,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testEmptyProfileRegistration() throws Exception {
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = systemManager.createSystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1908,7 +1911,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         final String hwAddress = "00:11:22:33:44:55";
 
         // assign some formula
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = systemManager.createSystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         String minionId = "_" + hwAddress;
         FormulaFactory.saveServerFormulas(minionId, Collections.singletonList(testFormula));
@@ -1921,7 +1924,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1995,7 +1998,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {
+        executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
                 will(returnValue(Optional.of(MINION_ID)));
@@ -2057,7 +2060,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {
+        executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
                 will(returnValue(Optional.of(MINION_ID)));
@@ -2115,7 +2118,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {
+        executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
                 will(returnValue(Optional.of(MINION_ID)));
@@ -2160,7 +2163,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         HibernateFactory.getSession().flush();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -2218,7 +2221,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         oldMinion.addChannel(assignedChildChannel);
         ServerFactory.save(oldMinion);
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -2270,7 +2273,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .machineId(MACHINE_ID).saltbootInitrd(true).susemanagerGrain(suseManagerGrain)
                 .createMinionStartUpGrains();
         executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
+                (key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);

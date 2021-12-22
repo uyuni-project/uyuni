@@ -20,7 +20,6 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Optional.ofNullable;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -102,14 +101,18 @@ import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
@@ -161,7 +164,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
 
-    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final SystemEntitlementManager systemEntitlementManager;
     private SaltApi saltApi;
     private ServerFactory serverFactory;
     private ServerGroupFactory serverGroupFactory;
@@ -178,6 +181,13 @@ public class SystemManager extends BaseManager {
         this.serverFactory = serverFactoryIn;
         this.serverGroupFactory = serverGroupFactoryIn;
         this.saltApi = saltApiIn;
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(new VirtManagerSalt(saltApiIn), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltApiIn, new VirtManagerSalt(saltApiIn),
+                        new FormulaMonitoringManager(), serverGroupManager)
+        );
     }
 
     /**
@@ -469,7 +479,7 @@ public class SystemManager extends BaseManager {
      * if the format of the hardware address is invalid
      * @return the created system
      */
-    public static MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
+    public MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
         Optional<String> hwAddress = ofNullable((String) data.get("hwAddress"));
         Optional<String> hostname = ofNullable((String) data.get("hostname"));
 
@@ -793,7 +803,7 @@ public class SystemManager extends BaseManager {
      * @param servers The servers to remove
      * @param serverGroup The group to remove the servers from
      */
-    public static void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
+    public void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
         ServerFactory.removeServersFromGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
