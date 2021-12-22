@@ -77,6 +77,7 @@ import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -132,6 +133,7 @@ public class HandlerFactory {
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        MigrationManager migrationManager = new MigrationManager(serverGroupManager);
 
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
@@ -174,7 +176,7 @@ public class HandlerFactory {
         factory.addHandler("kickstart.snippet", new SnippetHandler());
         factory.addHandler("kickstart.tree", new KickstartTreeHandler());
         factory.addHandler("maintenance", new MaintenanceHandler());
-        factory.addHandler("org", new OrgHandler());
+        factory.addHandler("org", new OrgHandler(migrationManager));
         factory.addHandler("org.trusts", new OrgTrustHandler());
         factory.addHandler("packages", new PackagesHandler());
         factory.addHandler("packages.provider", new PackagesProviderHandler());
