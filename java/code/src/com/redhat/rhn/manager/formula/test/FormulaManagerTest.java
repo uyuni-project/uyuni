@@ -56,7 +56,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 /**
@@ -305,6 +304,9 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
                 saltServiceMock);
         systemManager.addServerToServerGroup(minion, group);

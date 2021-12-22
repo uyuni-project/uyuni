@@ -43,6 +43,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -76,6 +77,9 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
                         new FormulaMonitoringManager(), serverGroupManager)
         );
+        context.checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
         UserTestUtils.addVirtualization(user.getOrg());

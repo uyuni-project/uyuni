@@ -186,6 +186,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);
         Files.createFile(systemLockFile);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
     }
 
     /**
@@ -722,7 +726,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
 
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
 
         Action action = ActionFactoryTest.createAction(
