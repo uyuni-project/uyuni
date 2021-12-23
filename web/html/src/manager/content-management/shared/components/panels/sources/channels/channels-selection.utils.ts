@@ -1,6 +1,7 @@
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { getChannelsTreeValues } from "core/channels/api/use-channels-tree-api";
 import { ChannelType } from "core/channels/type/channels.type";
+
 import { channelsFiltersAvailable } from "./channels-selection.state";
 
 export function orderBaseChannels(channelsTree: ChannelsTreeType, selectedBaseChannelId: number): Array<ChannelType> {

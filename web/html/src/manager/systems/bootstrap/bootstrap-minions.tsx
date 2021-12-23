@@ -1,10 +1,13 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages } from "components/messages";
-import Network from "utils/network";
-import { AsyncButton } from "components/buttons";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { AsyncButton } from "components/buttons";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {

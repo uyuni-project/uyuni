@@ -1,16 +1,20 @@
 import * as React from "react";
-import { DisplayHighstate } from "./display-highstate";
-import { Messages } from "components/messages";
-import { LinkButton } from "components/buttons";
-import { Utils as MessagesUtils } from "components/messages";
-import { ActionSchedule } from "components/action-schedule";
-import { AsyncButton } from "components/buttons";
-import { Toggler } from "components/toggler";
-import Network from "utils/network";
-import { InnerPanel } from "components/panels/InnerPanel";
-import { ActionLink, ActionChainLink } from "components/links";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { ActionSchedule } from "components/action-schedule";
+import { LinkButton } from "components/buttons";
+import { AsyncButton } from "components/buttons";
+import { ActionChainLink, ActionLink } from "components/links";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { InnerPanel } from "components/panels/InnerPanel";
+import { Toggler } from "components/toggler";
+
 import { localizedMoment } from "utils";
+import Network from "utils/network";
+
+import { DisplayHighstate } from "./display-highstate";
 
 // See java/code/src/com/suse/manager/webui/templates/groups/highstate.jade
 declare global {

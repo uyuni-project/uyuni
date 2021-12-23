@@ -1,12 +1,16 @@
 import * as React from "react";
-import { Messages } from "components/messages";
-import Network from "utils/network";
-import { RecurringStatesDetails } from "./recurring-states-details";
-import { RecurringStatesList } from "./recurring-states-list";
-import { RecurringStatesEdit } from "./recurring-states-edit";
-import { Utils as MessagesUtils } from "components/messages";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+
 import { localizedMoment } from "utils";
+import Network from "utils/network";
+
+import { RecurringStatesDetails } from "./recurring-states-details";
+import { RecurringStatesEdit } from "./recurring-states-edit";
+import { RecurringStatesList } from "./recurring-states-list";
 
 /**
  * See:

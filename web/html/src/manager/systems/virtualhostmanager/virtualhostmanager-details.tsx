@@ -1,14 +1,16 @@
 import * as React from "react";
+
 import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { Utils } from "utils/functions";
-import Network from "utils/network";
+import { ModalButton } from "components/dialog/ModalButton";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { Table } from "components/table/Table";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 type Props = {
   data: any;

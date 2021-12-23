@@ -1,13 +1,15 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Text, DateTime, Radio, Select, Form } from "components/input";
-import AppStreamsForm from "./appstreams/appstreams";
-import { FilterFormType } from "../shared/type/filter.type";
-import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
+
+import { DateTime, Form, Radio, Select, Text } from "components/input";
+
+import { localizedMoment } from "utils";
 import produce from "utils/produce";
 
+import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
+import { FilterFormType } from "../shared/type/filter.type";
+import AppStreamsForm from "./appstreams/appstreams";
 import TemplatesForm from "./templates";
-import { localizedMoment } from "utils";
 
 enum FilterBy {
   Type = "Type",

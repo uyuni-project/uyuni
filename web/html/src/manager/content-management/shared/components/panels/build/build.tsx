@@ -1,20 +1,21 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+
+import _last from "lodash/last";
+
 import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages, Utils as MsgUtils } from "components/messages";
-
 import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
-import { Loading } from "components/utils/Loading";
-import DownArrow from "../../down-arrow/down-arrow";
-import statesEnum from "../../../../shared/business/states.enum";
-
-import { ProjectHistoryEntry } from "../../../type/project.type";
+import { Messages, Utils as MsgUtils } from "components/messages";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+import { Loading } from "components/utils/Loading";
+
+import statesEnum from "../../../../shared/business/states.enum";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-import _last from "lodash/last";
+import { ProjectHistoryEntry } from "../../../type/project.type";
+import DownArrow from "../../down-arrow/down-arrow";
 
 type Props = {
   projectId: string;

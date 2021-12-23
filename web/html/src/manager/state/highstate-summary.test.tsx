@@ -1,5 +1,6 @@
-import { render, server, within, click, waitForElementToBeRemoved, screen } from "utils/test-utils";
 import HighstateSummary from "manager/state/highstate-summary";
+
+import { click, render, screen, server, waitForElementToBeRemoved, within } from "utils/test-utils";
 
 const API_SUMMARY = "/rhn/manager/api/states/summary?sid=1000";
 const API_HIGHSTATE = "/rhn/manager/api/states/highstate?sid=1000";

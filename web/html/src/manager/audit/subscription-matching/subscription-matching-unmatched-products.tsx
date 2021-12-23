@@ -1,11 +1,14 @@
 import * as React from "react";
-import { CsvLink, SystemLabel } from "./subscription-matching-util";
-import { PopUp } from "components/popup";
+
 import { ModalButton } from "components/dialog/ModalButton";
-import { Table } from "components/table/Table";
+import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
+
+import { CsvLink, SystemLabel } from "./subscription-matching-util";
 
 type UnmatchedProductsProps = {
   unmatchedProductIds: any[];

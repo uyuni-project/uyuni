@@ -1,9 +1,10 @@
 import * as React from "react";
-import Network from "utils/network";
-import { showInfoToastr, showSuccessToastr, showWarningToastr, showErrorToastr } from "components/toastr/toastr";
 
-import { JsonResult } from "utils/network";
 import { MessageType } from "components/messages";
+import { showErrorToastr, showInfoToastr, showSuccessToastr, showWarningToastr } from "components/toastr/toastr";
+
+import Network from "utils/network";
+import { JsonResult } from "utils/network";
 
 // TODO move this to FormulaComponentGenerator when flowified
 export type FormulaValuesType = {

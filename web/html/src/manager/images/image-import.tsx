@@ -1,15 +1,17 @@
 import * as React from "react";
 
-import { TopPanel } from "components/panels/TopPanel";
-import { Text } from "components/input/Text";
-import { Select } from "components/input/Select";
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { Button, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
-import { SubmitButton, Button } from "components/buttons";
-import Network from "utils/network";
+import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { Utils } from "utils/functions";
-import SpaRenderer from "core/spa/spa-renderer";
+import Network from "utils/network";
 
 const msgMap = {
   not_found: t("Image store not found"),

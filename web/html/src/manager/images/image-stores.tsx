@@ -1,16 +1,19 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton, LinkButton } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Messages } from "components/messages";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import SpaRenderer from "core/spa/spa-renderer";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/list-stores.jade
 declare global {
