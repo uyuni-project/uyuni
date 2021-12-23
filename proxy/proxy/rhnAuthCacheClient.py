@@ -145,32 +145,7 @@ class Shelf:
         except Fault as e:
             rfile.close()
             sock.close()
-            # If e.faultCode is 0, it's another exception
-            if e.faultCode != 0:
-                # Treat is as a regular xmlrpc fault
-                raise
-
-            _dict = e.faultString
-            if not isinstance(_dict, type({})):
-                # Not the expected type
-                raise
-
-            if 'name' not in _dict:
-                # Doesn't look like a marshalled exception
-                raise
-
-            name = _dict['name']
-            args = _dict.get('args')
-            # Look up the exception
-            if not hasattr(__builtins__, name):
-                # Unknown exception name
-                raise
-
-            # Instantiate the exception object
-            import new
-            _dict = {'args': args}
-            # pylint: disable=bad-option-value,nonstandard-exception
-            raise_with_tb(new.instance(getattr(__builtins__, name), _dict), sys.exc_info()[2])
+            raise
 
         return params[0]
 
