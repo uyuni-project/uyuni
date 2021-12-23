@@ -777,14 +777,14 @@ public class SystemManager extends BaseManager {
      * @param servers The servers to add
      * @param serverGroup The group to add the server to
      */
-    public static void addServersToServerGroup(Collection<Server> servers,
+    public void addServersToServerGroup(Collection<Server> servers,
             ServerGroup serverGroup) {
         ServerFactory.addServersToGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
 
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
-                FormulaFactory.grantMonitoringEntitlement(server);
+                systemEntitlementManager.grantMonitoringEntitlement(server);
             }
         }
     }
@@ -794,7 +794,7 @@ public class SystemManager extends BaseManager {
      * @param server The server to add
      * @param serverGroup The group to add the server to
      */
-    public static void addServerToServerGroup(Server server, ServerGroup serverGroup) {
+    public void addServerToServerGroup(Server server, ServerGroup serverGroup) {
         addServersToServerGroup(Arrays.asList(server), serverGroup);
     }
 

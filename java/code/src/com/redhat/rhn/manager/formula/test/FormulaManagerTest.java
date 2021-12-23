@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
@@ -236,7 +237,9 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
-        SystemManager.addServerToServerGroup(minion, group);
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                saltServiceMock);
+        systemManager.addServerToServerGroup(minion, group);
         assertTrue(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
         List<FormulaData> combinedPrometheusExportersFormulas = this.manager

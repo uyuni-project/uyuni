@@ -340,7 +340,8 @@ public class ServerGroupManager {
         validateAccessCredentials(loggedInUser, sg, sg.getName());
         validateAdminCredentials(loggedInUser);
 
-        SystemManager.addServersToServerGroup(servers, sg);
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServersToServerGroup(servers, sg);
         updatePillarAfterGroupUpdateForServers(servers);
     }
 

@@ -516,7 +516,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.getManagedGroups().add(terminalsGroup);
         server.setMinionId(MINION_ID);
         server.setMachineId(MACHINE_ID);
-        SystemManager.addServerToServerGroup(server, terminalsGroup);
+        systemManager.addServerToServerGroup(server, terminalsGroup);
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();

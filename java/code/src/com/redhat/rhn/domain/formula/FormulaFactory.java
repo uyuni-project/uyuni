@@ -283,26 +283,10 @@ public class FormulaFactory {
                     }
                 }
                 else {
-                    grantMonitoringEntitlement(minion);
+                    systemEntitlementManager.grantMonitoringEntitlement(minion);
                 }
             });
         }
-    }
-
-    /**
-     * Entitle server if it doesn't already have the monitoring entitlement and if it's allowed.
-     * @param server the server to entitle
-     */
-    public static void grantMonitoringEntitlement(Server server) {
-        boolean hasEntitlement = SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING);
-        if (!hasEntitlement && systemEntitlementManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
-            systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.MONITORING);
-            return;
-        }
-        if (LOG.isDebugEnabled() && hasEntitlement) {
-            LOG.debug("Server " + server.getName() + " already has monitoring entitlement.");
-        }
-
     }
 
     /**

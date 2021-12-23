@@ -18,12 +18,17 @@ import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -81,7 +86,9 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
         // Create a group level assignment of the Formula
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(minion, group);
+        SaltApi saltApi = new TestSaltApi();
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServerToServerGroup(minion, group);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
 
         // Save data that enables monitoring

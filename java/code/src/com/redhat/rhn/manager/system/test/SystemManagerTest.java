@@ -411,7 +411,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(serverInList(s, systems));
 
 
-        SystemManager.addServerToServerGroup(s, sg);
+        systemManager.addServerToServerGroup(s, sg);
         systems = SystemManager.systemsNotInGroup(user, sg, null);
         assertFalse(serverInList(s, systems));
     }
@@ -729,7 +729,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         DataResult<SystemOverview> dr = SystemManager.registeredList(user, null, 0);
@@ -1637,7 +1637,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
         // Remove server from group, entitlement should be removed
@@ -1652,7 +1652,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
 
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
 
         List<SystemGroupsDTO> systemGroupsDTOs = this.systemManager
                 .retrieveSystemGroupsForSystemsWithEntitlementAndUser(user, EntitlementManager.SALT.getLabel());
