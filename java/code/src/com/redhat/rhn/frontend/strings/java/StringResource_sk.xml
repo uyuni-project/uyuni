@@ -3331,70 +3331,70 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="systemsearch_dmi_bios" xml:space="preserve">
         <source>BIOS</source>
-        <target/>
+        <target>BIOS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_dmi_asset" xml:space="preserve">
         <source>Asset Tag</source>
-        <target/>
+        <target>Označenie majetku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.networkinfo" xml:space="preserve">
         <source>Network Info</source>
-        <target/>
+        <target>Informácie o sieti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hostname" xml:space="preserve">
         <source>Hostname</source>
-        <target/>
+        <target>Názov hostiteľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ip" xml:space="preserve">
         <source>IP Address</source>
-        <target/>
+        <target>IP adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ipv6" xml:space="preserve">
         <source>IPv6 Address</source>
-        <target/>
+        <target>IPv6 adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target>Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_installed_packages" xml:space="preserve">
         <source>Installed Packages</source>
-        <target/>
+        <target>Nainštalované balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_needed_packages" xml:space="preserve">
         <source>Needed Packages</source>
-        <target/>
+        <target>Potrebné balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_running_kernel" xml:space="preserve">
         <source>Running Kernel</source>
-        <target/>
+        <target>Spustené jadro</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
