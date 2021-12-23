@@ -79,7 +79,6 @@ class Messages extends React.Component<Props> {
             data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
             identifier={(row) => row.id}
             initialSortColumnKey="message"
-            initialItemsPerPage={window.userPrefPageSize}
           >
             <Column
               columnKey="message"

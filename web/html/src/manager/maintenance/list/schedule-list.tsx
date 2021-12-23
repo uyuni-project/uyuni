@@ -26,7 +26,6 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
       <Table
         data={props.data}
         identifier={(row) => row.id}
-        initialItemsPerPage={window.userPrefPageSize}
         emptyText={t("No schedules created. Use Create to add a schedule.")}
       >
         <Column columnKey="scheduleName" header={t("Schedule Name")} cell={(row) => row.name} />

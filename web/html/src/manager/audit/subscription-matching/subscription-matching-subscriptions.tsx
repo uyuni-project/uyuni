@@ -59,7 +59,6 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
                 : null;
             }}
             initialSortColumnKey="partNumber"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by description")} />}
           >
             <Column

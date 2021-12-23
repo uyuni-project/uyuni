@@ -42,7 +42,6 @@ class ImageViewPackages extends React.Component<Props> {
         data={data.packagelist ? data.packagelist : []}
         identifier={(p) => p.name + p.arch}
         initialSortColumnKey="name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} />}
       >
         <Column columnKey="name" comparator={Utils.sortByText} header={t("Package Name")} cell={(row) => row.name} />

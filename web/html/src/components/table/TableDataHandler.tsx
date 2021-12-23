@@ -6,6 +6,7 @@ import { SearchPanel } from "./SearchPanel";
 import { SearchField } from "./SearchField";
 import { PageControl, SimpleDataProvider, AsyncDataProvider } from "utils/data-providers";
 import { Utils } from "utils/functions";
+import { pageSize } from "core/user-preferences";
 
 import { PagedData, Comparator } from "utils/data-providers";
 
@@ -112,7 +113,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       data: [],
       provider: this.getProvider(),
       currentPage: 1,
-      itemsPerPage: this.props.initialItemsPerPage || window.userPrefPageSize || 15,
+      itemsPerPage: this.props.initialItemsPerPage || pageSize,
       totalItems: 0,
       criteria: undefined,
       sortColumnKey: this.props.initialSortColumnKey || null,

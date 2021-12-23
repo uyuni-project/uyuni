@@ -54,7 +54,6 @@ export function VirtualSystems(props: Props) {
         selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
         emptyText={t("No Virtual Systems.")}
       >

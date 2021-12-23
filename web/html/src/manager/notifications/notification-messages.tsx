@@ -479,7 +479,6 @@ class NotificationMessages extends React.Component<Props, State> {
             cssClassFunction={(row) => (DEPRECATED_unsafeEquals(row["isRead"], true) ? "text-muted" : "")}
             initialSortColumnKey="created"
             initialSortDirection={-1}
-            initialItemsPerPage={window.userPrefPageSize}
             loading={this.state.loading}
             selectable
             selectedItems={this.state.selectedItems}

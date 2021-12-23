@@ -74,7 +74,6 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
         data={data.patchlist ? data.patchlist : []}
         identifier={(p) => p.id}
         initialSortColumnKey="name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} />}
       >
         <Column
