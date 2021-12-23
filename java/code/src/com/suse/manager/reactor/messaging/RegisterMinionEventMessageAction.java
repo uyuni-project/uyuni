@@ -122,7 +122,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         saltApi = saltApiIn;
         systemQuery = systemQueryIn;
         VirtManager virtManager = new VirtManagerSalt(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         entitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, groupManager),

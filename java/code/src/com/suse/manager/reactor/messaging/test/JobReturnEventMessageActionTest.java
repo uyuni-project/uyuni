@@ -163,7 +163,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = context().mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
@@ -185,6 +185,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);
         Files.createFile(systemLockFile);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
     }
 
     /**
@@ -720,10 +724,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("caasp-worker-orion-cluster-1.openstack.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
-
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);

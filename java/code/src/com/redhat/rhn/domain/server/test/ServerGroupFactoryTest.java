@@ -23,6 +23,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.test.TestSaltApi;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -94,7 +96,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testRemove() throws Exception {
-        ServerGroupFactory.remove(managedGroup);
+        ServerGroupFactory.remove(new TestSaltApi(), managedGroup);
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
                                                     managedGroup.getOrg());

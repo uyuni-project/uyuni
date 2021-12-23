@@ -139,7 +139,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         };
 
         SaltApi saltApi = new TestSaltApi();
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),

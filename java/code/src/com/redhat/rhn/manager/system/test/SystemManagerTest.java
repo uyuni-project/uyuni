@@ -128,6 +128,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
@@ -191,11 +192,12 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             {
                 allowing(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
+                allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
             }
         });
         SaltApi saltApi = new TestSaltApi();
         VirtManager virtManager = new TestVirtManager();
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),

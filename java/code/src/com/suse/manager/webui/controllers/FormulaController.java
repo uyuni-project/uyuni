@@ -366,11 +366,16 @@ public class FormulaController {
                                     "Provided systemId does not correspond to a minion"));
                     FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     FormulaFactory.saveServerFormulas(minion, selectedFormulas);
+                    saltApi.refreshPillar(new MinionList(minion.getMinionId()));
                     break;
                 case GROUP:
                     ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
                     FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
                     FormulaFactory.saveGroupFormulas(group, selectedFormulas);
+                    List<String> minionIds = group.getServers().stream()
+                            .flatMap(s -> Opt.stream(s.asMinionServer()))
+                            .map(MinionServer::getMinionId).collect(Collectors.toList());
+                    saltApi.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
                     return errorResponse(response, Collections.singletonList("error_invalid_target"));

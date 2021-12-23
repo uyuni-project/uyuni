@@ -40,6 +40,7 @@ import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -102,8 +103,9 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             }
         };
 
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
-        ServerGroupManager serverGroupManager = new ServerGroupManager(new TestSaltApi());
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(new TestSaltApi(), virtManager, monitoringManager, serverGroupManager)

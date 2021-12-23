@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +33,16 @@ import java.util.Map;
  */
 public class FormulaMonitoringManager implements MonitoringManager {
 
+    private final SaltApi saltApi;
+
+    /**
+     * Constructor
+     *
+     * @param saltApiIn the Salt API
+     */
+    public FormulaMonitoringManager(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
     /**
      * {@inheritDoc}
      */
@@ -41,6 +53,7 @@ public class FormulaMonitoringManager implements MonitoringManager {
             if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
                 formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
                 FormulaFactory.saveServerFormulas(minion, formulas);
+                saltApi.refreshPillar(new MinionList(minion.getMinionId()));
             }
         }
     }
@@ -57,6 +70,7 @@ public class FormulaMonitoringManager implements MonitoringManager {
                     .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
             FormulaFactory.saveServerFormulaData(
                     FormulaFactory.disableMonitoring(data), minion, PROMETHEUS_EXPORTERS);
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         }
     }
 

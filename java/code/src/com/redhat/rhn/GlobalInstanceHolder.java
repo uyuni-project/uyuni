@@ -80,7 +80,7 @@ public class GlobalInstanceHolder {
             new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER =
             new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API);
-    public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
+    public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
             new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER,

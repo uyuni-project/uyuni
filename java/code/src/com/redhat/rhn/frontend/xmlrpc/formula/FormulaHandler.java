@@ -35,9 +35,14 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaUtil;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.utils.Opt;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * FormulaHandler
@@ -47,15 +52,18 @@ import java.util.Map;
 public class FormulaHandler extends BaseHandler {
 
     private final FormulaManager formulaManager;
+    private final SaltApi saltApi;
 
     /**
      * Instantiates a new formula handler.
      *
      * @param formulaManagerIn the formula manager
+     * @param saltApiIn the Salt API
      */
-    public FormulaHandler(FormulaManager formulaManagerIn) {
+    public FormulaHandler(FormulaManager formulaManagerIn, SaltApi saltApiIn) {
         super();
         this.formulaManager = formulaManagerIn;
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -150,6 +158,12 @@ public class FormulaHandler extends BaseHandler {
         try {
             ServerGroup group = ServerGroupFactory.lookupById(systemGroupId.longValue());
             FormulaFactory.saveGroupFormulas(group, formulas);
+            List<String> minions = group.getServers().stream()
+                    .map(Server::asMinionServer)
+                    .flatMap(Opt::stream)
+                    .map(MinionServer::getMinionId)
+                    .collect(Collectors.toList());
+            saltApi.refreshPillar(new MinionList(minions));
         }
         catch (ValidatorException e) {
             throw new ValidationException(e.getMessage(), e);
@@ -181,6 +195,7 @@ public class FormulaHandler extends BaseHandler {
                             "Provided systemId does not correspond to a minion"));
             FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
             FormulaFactory.saveServerFormulas(minion, formulas);
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         }
         catch (PermissionException e) {
             throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));

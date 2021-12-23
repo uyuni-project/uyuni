@@ -50,6 +50,7 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
@@ -299,12 +300,16 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, groupManager),
                 new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
         );
+
+        context.checking(new Expectations() {{
+            allowing(saltApi).refreshPillar(with(any(MinionList.class)));
+        }});
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerArch a = ServerFactory.lookupServerArchByName("x86_64");

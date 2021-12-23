@@ -52,7 +52,8 @@ import java.util.Map;
 public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
     static final String TEMP_PATH = "formulas/";
-    private FormulaMonitoringManager manager = new FormulaMonitoringManager();
+    private SaltApi saltApi = new TestSaltApi();
+    private FormulaMonitoringManager manager = new FormulaMonitoringManager(saltApi);
     private Path metadataDir;
 
     public FormulaMonitoringManagerTest() { }
@@ -86,7 +87,6 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
         // Create a group level assignment of the Formula
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SaltApi saltApi = new TestSaltApi();
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
         systemManager.addServerToServerGroup(minion, group);
         FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));
