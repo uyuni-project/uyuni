@@ -27,16 +27,42 @@ import java.util.Properties;
  */
 public class ReportDbConnectionManager extends AbstractConnectionManager {
 
+    private final String dbUser;
+    private final String dbPass;
+    private final String dbConnectionUrl;
+
+    /**
+     * Construct the default report connection manager that connects to the database specified by the configuration
+     * properties.
+     */
     public ReportDbConnectionManager() {
+        this(
+            Config.get().getString("reporting.db_user"),
+            Config.get().getString("reporting.db_password"),
+            Config.get().getString("reporting.db_url")
+        );
+    }
+
+    /**
+     * Construct a report connection manager using the specified connection parameters
+     * @param dbUserIn the database user
+     * @param dbPasswordIn the database password
+     * @param dbConnectionUrlIn the connection url to reach the database
+     */
+    public ReportDbConnectionManager(String dbUserIn, String dbPasswordIn, String dbConnectionUrlIn) {
         super(Collections.emptySet());
+
+        dbUser = dbUserIn;
+        dbPass = dbPasswordIn;
+        this.dbConnectionUrl = dbConnectionUrlIn;
     }
 
     @Override
     protected Properties getConfigurationProperties() {
-        final Properties hibProperties = Config.get().getNamespaceProperties("hibernate");
-        hibProperties.put("hibernate.connection.username", Config.get().getString("REPORT_DB_USER"));
-        hibProperties.put("hibernate.connection.password", Config.get().getString("REPORT_DB_PASSWORD"));
-        hibProperties.put("hibernate.connection.url", Config.get().getString("REPORT_DB_CONNECT"));
+        final Properties hibProperties = Config.get().getNamespaceProperties("reporting.hibernate", "hibernate");
+        hibProperties.put("hibernate.connection.username", dbUser);
+        hibProperties.put("hibernate.connection.password", dbPass);
+        hibProperties.put("hibernate.connection.url", dbConnectionUrl);
         return null;
     }
 
