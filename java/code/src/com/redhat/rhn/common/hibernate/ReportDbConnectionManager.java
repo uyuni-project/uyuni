@@ -35,7 +35,7 @@ public class ReportDbConnectionManager extends AbstractConnectionManager {
      * Construct the default report connection manager that connects to the database specified by the configuration
      * properties.
      */
-    public ReportDbConnectionManager() {
+    ReportDbConnectionManager() {
         this(
             Config.get().getString("reporting.db_user"),
             Config.get().getString("reporting.db_password"),
@@ -49,7 +49,7 @@ public class ReportDbConnectionManager extends AbstractConnectionManager {
      * @param dbPasswordIn the database password
      * @param dbConnectionUrlIn the connection url to reach the database
      */
-    public ReportDbConnectionManager(String dbUserIn, String dbPasswordIn, String dbConnectionUrlIn) {
+    ReportDbConnectionManager(String dbUserIn, String dbPasswordIn, String dbConnectionUrlIn) {
         super(Collections.emptySet());
 
         dbUser = dbUserIn;
