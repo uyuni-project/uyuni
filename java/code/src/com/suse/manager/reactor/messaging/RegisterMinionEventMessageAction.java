@@ -653,8 +653,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     branchIdGroupName + "\")! Aborting registration.");
         }
 
-        SystemManager.addServerToServerGroup(minion, terminalsGroup);
-        SystemManager.addServerToServerGroup(minion, branchIdGroup);
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServerToServerGroup(minion, terminalsGroup);
+        systemManager.addServerToServerGroup(minion, branchIdGroup);
         if (hwGroup != null) {
             // if the system is already assigned to some HWTYPE group, skip assignment and log this only
             if (minion.getManagedGroups().stream().anyMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
@@ -662,7 +663,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         ". The minion is already in a HW group.");
             }
             else {
-                SystemManager.addServerToServerGroup(minion, hwGroup);
+                systemManager.addServerToServerGroup(minion, hwGroup);
             }
         }
 
