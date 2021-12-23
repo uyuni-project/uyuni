@@ -25,9 +25,9 @@ import java.util.Set;
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions.
  */
-class ConnectionManager extends AbstractConnectionManager {
+class DefaultConnectionManager extends AbstractConnectionManager {
 
-    ConnectionManager() {
+    DefaultConnectionManager() {
         super(Set.of("com.redhat.rhn.domain", "com.redhat.rhn.taskomatic.domain"));
     }
 
