@@ -182,8 +182,8 @@ public class SystemManager extends BaseManager {
         this.serverGroupFactory = serverGroupFactoryIn;
         this.saltApi = saltApiIn;
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
-        VirtManager virtManager = new VirtManagerSalt(saltApiIn);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApiIn, virtManager, monitoringManager, serverGroupManager)

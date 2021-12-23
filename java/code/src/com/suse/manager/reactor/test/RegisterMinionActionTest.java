@@ -277,6 +277,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
        saltServiceMock = mock(SaltService.class);
        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
+
+       context().checking(new Expectations() {{
+           allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+       }});
     }
 
     @Override

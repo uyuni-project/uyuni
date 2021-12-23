@@ -42,6 +42,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
@@ -57,7 +58,7 @@ import java.util.Optional;
 
 public class AnsibleManagerTest extends BaseTestCaseWithUser {
 
-    private Mockery CONTEXT;
+    private Mockery context;
 
     private SaltApi saltApi;
     private AnsibleManager ansibleManager;
@@ -65,10 +66,10 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT = new JUnit3Mockery() {{
+        context = new JUnit3Mockery() {{
             setThreadingPolicy(new Synchroniser());
         }};
-        saltApi = CONTEXT.mock(SaltApi.class);
+        saltApi = context.mock(SaltApi.class);
         ansibleManager = new AnsibleManager(saltApi);
     }
 
@@ -220,7 +221,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right("suchplaybookwow"))));
         }});
@@ -237,7 +238,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.left(false))));
         }});
@@ -296,7 +297,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         Map<String, Map<String, AnsiblePlaybookSlsResult>> expected = Map.of("/tmp/test", Map.of("site.yml",
                 new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts")));
 
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right(expected))));
         }});
@@ -315,7 +316,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
 
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.left("error"))));
         }});
@@ -373,7 +374,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         Map<String, Map<String, Map<String, List<String>>>> expected =
                 Map.of("minion",  Map.of("all", Map.of("children", List.of("host1", "host2"))));
 
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.right(expected))));
         }});
@@ -391,7 +392,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
                 "inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
             will(returnValue(Optional.of(Xor.left("error desc"))));
         }});
@@ -437,12 +438,16 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, groupManager),
                 new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
         );
+
+        context.checking(new Expectations() {{
+            allowing(saltApi).refreshPillar(with(any(MinionList.class)));
+        }});
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerArch a = ServerFactory.lookupServerArchByName("x86_64");

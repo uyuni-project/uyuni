@@ -68,6 +68,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -101,11 +102,14 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         saltServiceMock = context.mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
         );
+        context.checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
     }
 
     public final void testImportImage() throws Exception {

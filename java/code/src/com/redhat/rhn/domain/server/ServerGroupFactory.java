@@ -26,6 +26,10 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -199,11 +203,18 @@ public class ServerGroupFactory extends HibernateFactory {
 
     /**
      * Remove an server group
+     * @param saltApi the Salt API
      * @param group to remove
      */
-    public static void remove(ServerGroup group) {
+    public static void remove(SaltApi saltApi, ServerGroup group) {
         if (group != null) {
+            List<String> minions = group.getServers().stream()
+                    .map(Server::asMinionServer)
+                    .flatMap(Opt::stream)
+                    .map(MinionServer::getMinionId)
+                    .collect(Collectors.toList());
             SINGLETON.removeObject(group);
+            saltApi.refreshPillar(new MinionList(minions));
         }
     }
 

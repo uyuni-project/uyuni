@@ -319,6 +319,7 @@ public class FormulaManager {
         if (!enabledFormulas.contains(formulaName)) {
             enabledFormulas.add(formulaName);
             FormulaFactory.saveServerFormulas(minion, enabledFormulas);
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         }
     }
 

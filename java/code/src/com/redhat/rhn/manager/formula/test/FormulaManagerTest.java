@@ -237,6 +237,9 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
                 saltServiceMock);
         systemManager.addServerToServerGroup(minion, group);
@@ -265,9 +268,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
         manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
 
         combinedPrometheusExportersFormulas = this.manager

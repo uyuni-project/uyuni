@@ -29,6 +29,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
@@ -58,8 +59,9 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             }
         };
 
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
-        ServerGroupManager serverGroupManager =  new ServerGroupManager(new TestSaltApi());
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager =  new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(new TestSaltApi(), virtManager, monitoringManager, serverGroupManager)

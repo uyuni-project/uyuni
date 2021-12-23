@@ -277,6 +277,5 @@ public class TestSaltApi implements SaltApi {
 
     @Override
     public void refreshPillar(MinionList minionList) {
-        throw new UnsupportedOperationException();
     }
 }
