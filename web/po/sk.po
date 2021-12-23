@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-09 15:26+0100\n"
-"PO-Revision-Date: 2021-12-11 18:13+0000\n"
+"PO-Revision-Date: 2021-12-23 08:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:491
 msgid "remaining"
@@ -1257,24 +1257,23 @@ msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:33
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "Ovplyvnené, opravy dostupné v kanáloch, ktoré nie sú priradené"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:37
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "Ovplyvnené, opravy dostupné v cieli migrácie produktu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "Ovplyvnené, v priradenom kanáli je k dispozícii aspoň jedna oprava"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 msgid "Not affected"
-msgstr ""
+msgstr "Neovplyvnené"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
-#, fuzzy
 msgid "Patched"
-msgstr "Opravy"
+msgstr "Opravené"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:180
 msgid "CVE Audit"
@@ -1333,13 +1332,12 @@ msgstr "Akcie"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:302
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:349
-#, fuzzy
 msgid "No action required"
-msgstr "Vyžaduje sa reštart"
+msgstr "Nevyžaduje sa žiadna akcia"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:308
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "Inštalovať novú opravu na tento systém."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:325
 msgid "Patch available, but system needs to be migrated to a newer Product."
@@ -5164,9 +5162,8 @@ msgid "Virtual Systems"
 msgstr "Hosťované virtuálne systémy"
 
 #: ../html/src/manager/systems/virtual-list.tsx:60
-#, fuzzy
 msgid "No Virtual Systems."
-msgstr "Hosťované virtuálne systémy"
+msgstr "Žiadne virtuálne systémy."
 
 #: ../html/src/manager/systems/virtual-list.tsx:65
 #, fuzzy
