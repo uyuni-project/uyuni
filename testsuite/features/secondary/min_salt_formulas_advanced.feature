@@ -216,6 +216,12 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
 #TODO test for adding/removing items in edit-group
+  Scenario: Cleanup: remove formula from minion
+     When I follow "Formulas" in the content area
+     And I uncheck the "testform" formula
+     And I click on "Save"
+     And I wait until I see "Formula saved." text
+     Then the "testform" formula should be unchecked
 
   Scenario: Cleanup: remove "test-formula-group" system group
      When I follow the left menu "Systems > System Groups"
