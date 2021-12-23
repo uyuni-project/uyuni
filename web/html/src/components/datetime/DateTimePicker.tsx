@@ -99,8 +99,8 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     this.setVisible(props.open);
   }
 
-  // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: DatePickerProps) {
+    // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
     // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setFullYear(props.year);
@@ -198,8 +198,9 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
     this.setVisible(props.open);
   }
 
-  // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: TimePickerProps) {
+    // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
+    // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setHours(props.hours);
     date.setMinutes(props.minutes);

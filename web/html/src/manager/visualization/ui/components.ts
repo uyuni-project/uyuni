@@ -47,14 +47,20 @@ function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback
     autoclose: true,
     format: "yyyy-mm-dd",
   });
+  // TODO: If you touch this code, please use `localizedMoment()` here instead
+  // eslint-disable-next-line local-rules/no-raw-date
   jQuery(anchorId + " .partitioning-datepicker").datepicker("setDate", new Date());
   jQuery(anchorId + " .partitioning-timepicker").timepicker({ timeFormat: "H:i:s", maxTime: "23:30:00" });
+  // TODO: If you touch this code, please use `localizedMoment()` here instead
+  // eslint-disable-next-line local-rules/no-raw-date
   jQuery(anchorId + " .partitioning-timepicker").timepicker("setTime", new Date());
 
   const checkinPartitioningButtons = checkinTimePartitioning.append("div").attr("class", "btn-group");
   addButton(checkinPartitioningButtons, "Apply", () => {
     const date = jQuery(anchorId + " .partitioning-datepicker").datepicker("getDate");
     const time = jQuery(anchorId + " .partitioning-timepicker").timepicker("getTime");
+    // TODO: If you touch this code, please use `localizedMoment()` here instead
+    // eslint-disable-next-line local-rules/no-raw-date
     const datetime = new Date(
       date.getFullYear(),
       date.getMonth(),

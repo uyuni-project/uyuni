@@ -1,3 +1,5 @@
+import { localizedMoment } from "utils/datetime";
+
 let timerId = 0;
 
 /**
@@ -8,13 +10,13 @@ let timerId = 0;
 export class Timer {
   id: number;
   isEnabled: boolean;
-  start: Date;
-  prev: Date;
+  start: moment.Moment;
+  prev: moment.Moment;
 
   constructor(isEnabled = true) {
     this.id = timerId++;
     this.isEnabled = isEnabled;
-    this.start = new Date();
+    this.start = localizedMoment();
     this.prev = this.start;
   }
 
@@ -22,10 +24,10 @@ export class Timer {
     if (!this.isEnabled) {
       return;
     }
-    const now = new Date();
+    const now = localizedMoment();
     console.log(
-      `[timer ${this.id}] ${description}: +${now.getTime() - this.prev.getTime()}ms (total: ${
-        now.getTime() - this.start.getTime()
+      `[timer ${this.id}] ${description}: +${now.valueOf() - this.prev.valueOf()}ms (total: ${
+        now.valueOf() - this.start.valueOf()
       }ms)`
     );
     this.prev = now;

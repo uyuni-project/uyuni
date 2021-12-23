@@ -37,6 +37,8 @@ const PATCH_STATUS_LABEL = {
 const TARGET_IMAGE = "IMAGE";
 const TARGET_SERVER = "SERVER";
 const CVE_REGEX = /(\d{4})-(\d{4,7})/i;
+// TODO: If you touch this code, please use `localizedMoment()` here instead
+// eslint-disable-next-line local-rules/no-raw-date
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = (function () {
   const arr: number[] = [];
@@ -100,6 +102,7 @@ class CVEAudit extends React.Component<Props, State> {
     this.setState({ selectedItems: items }, () => {
       DWRItemSelector.select("system_list", list, isAdd, (res) => {
         // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
+        // eslint-disable-next-line no-eval
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
