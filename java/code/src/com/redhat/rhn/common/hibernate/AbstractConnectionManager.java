@@ -41,7 +41,7 @@ import java.util.Set;
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions.
  */
-abstract class AbstractConnectionManager {
+abstract class AbstractConnectionManager implements ConnectionManager {
 
     protected final Logger LOG;
 
@@ -65,21 +65,17 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * enable possibility to load hbm.xml files from different path
-     *
-     * @param packageNamesIn the array of package names to be added to the scan.
+     * {@inheritDoc}
      */
-    protected void setAdditionalPackageNames(String[] packageNamesIn) {
+    @Override
+    public void setAdditionalPackageNames(String[] packageNamesIn) {
         packageNames.addAll(Arrays.asList(packageNamesIn));
     }
 
     /**
-     * Register a class with HibernateFactory, to give the registered class a
-     * chance to modify Hibernate configuration before creating the
-     * SessionFactory.
-     *
-     * @param configurator Configurator to override Hibernate configuration.
+     * {@inheritDoc}
      */
+    @Override
     public void addConfigurator(Configurator configurator) {
         // Yes, this is a race condition, but it will only ever happen at
         // startup, when we really shouldn't have multiple threads running,
@@ -88,10 +84,9 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Verify if a transaction is pending
-     *
-     * @return true if a transaction is currently active.
+     * {@inheritDoc}
      */
+    @Override
     public boolean isTransactionPending() {
         final SessionInfo info = threadSessionInfo();
         if (info == null) {
@@ -102,10 +97,9 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Returns the metadata for the given object.
-     * @param target an object instance or a class to retrieve the metadata for
-     * @return the {@link ClassMetadata} for the given object.
+     * {@inheritDoc}
      */
+    @Override
     public ClassMetadata getMetadata(Object target) {
         if (target == null) {
             return null;
@@ -119,8 +113,9 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Close the sessionFactory
+     * {@inheritDoc}
      */
+    @Override
     public synchronized void close() {
         try {
             sessionFactory.close();
@@ -134,26 +129,25 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Check if this connection manager is closed
-     *
-     * @return true if it's close and the session factory is not initialized
+     * {@inheritDoc}
      */
+    @Override
     public boolean isClosed() {
         return sessionFactory == null;
     }
 
     /**
-     * Check if this connection manager has already been initialized.
-
-     * @return true if {@link #initialize()} has been called and the session factory is available.
+     * {@inheritDoc}
      */
+    @Override
     public boolean isInitialized() {
         return sessionFactory != null;
     }
 
     /**
-     * Initializes the connection manager by creating the session factory.
+     * {@inheritDoc}
      */
+    @Override
     public synchronized void initialize() {
         if (isInitialized()) {
             return;
@@ -213,10 +207,9 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Commit the transaction for the current session. This method or
-     * {@link #rollbackTransaction} can only be called once per session.
-     * @throws HibernateException if the commit fails
+     * {@inheritDoc}
      */
+    @Override
     public void commitTransaction() throws HibernateException {
         final SessionInfo info = threadSessionInfo();
         if (info == null || info.getSession() == null) {
@@ -231,10 +224,9 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Roll the transaction for the current session back. This method or
-     * {@link #commitTransaction} can only be called once per session.
-     * @throws HibernateException if the commit fails
+     * {@inheritDoc}
      */
+    @Override
     public void rollbackTransaction() throws HibernateException {
         final SessionInfo info = threadSessionInfo();
         if (info == null || info.getSession() == null) {
@@ -249,11 +241,9 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Returns Hibernate session stored in ThreadLocal storage. If not
-     * present, creates a new one and stores it in ThreadLocal; creating the
-     * session also begins a transaction implicitly.
-     * @return Session asked for
+     * {@inheritDoc}
      */
+    @Override
     public Session getSession() {
         if (!isInitialized()) {
             initialize();
@@ -282,16 +272,17 @@ abstract class AbstractConnectionManager {
     }
 
     /**
-     * Returns Hibernate session stored in ThreadLocal storage, if it exists
-     * @return Session a session
+     * {@inheritDoc}
      */
+    @Override
     public Optional<Session> getSessionIfPresent() {
         return Optional.ofNullable(threadSessionInfo()).map(SessionInfo::getSession);
     }
 
     /**
-     * Closes Hibernate Session stored in ThreadLocal storage.
+     * {@inheritDoc}
      */
+    @Override
     public void closeSession() {
         SessionInfo info = threadSessionInfo();
         if (info == null) {
