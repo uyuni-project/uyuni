@@ -403,7 +403,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(serverInList(s, systems));
 
 
-        SystemManager.addServerToServerGroup(s, sg);
+        systemManager.addServerToServerGroup(s, sg);
         systems = SystemManager.systemsNotInGroup(user, sg, null);
         assertFalse(serverInList(s, systems));
     }
@@ -721,7 +721,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         DataResult<SystemOverview> dr = SystemManager.registeredList(user, null, 0);
@@ -1641,7 +1641,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
 
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
 
         List<SystemGroupsDTO> systemGroupsDTOs = this.systemManager
                 .retrieveSystemGroupsForSystemsWithEntitlementAndUser(user, EntitlementManager.SALT.getLabel());
