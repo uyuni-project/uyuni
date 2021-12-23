@@ -18,7 +18,8 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.ReportDbConnectionManager;
+import com.redhat.rhn.common.hibernate.ConnectionManager;
+import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 
 import org.quartz.JobExecutionContext;
@@ -32,7 +33,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
-        ReportDbConnectionManager rcm = new ReportDbConnectionManager();
+        ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
         ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
         SelectMode m = ModeFactory.getMode("SystemReport_queries", "system", Map.class);
         DataResult<Map<String, Object>> dataResult = m.execute();
