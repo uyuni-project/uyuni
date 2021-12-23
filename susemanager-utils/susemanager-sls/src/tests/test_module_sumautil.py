@@ -19,7 +19,7 @@ def test_livepatching_kernelliveversion():
     '''
 
     sumautil.log = MagicMock()
-    with patch.object(sumautil, '_which_bin', MagicMock(return_value="/bogus/path")) as mockX:
+    with patch.object(sumautil, '_which_bin', return_value="/bogus/path"):
         mock = MagicMock(side_effect=[{ 'retcode': 0, 'stdout': 'ready' },
                                     { 'retcode': 0, 'stdout': mockery.get_test_data('livepatching-1.sample')}
                                     ]);
@@ -38,6 +38,6 @@ def test_livepatching_kernelliveversion():
             assert 'mgr_kernel_live_version' in out
             assert out['mgr_kernel_live_version'] == 'kgraft_patch_2_2_1'
 
-    with patch('salt.utils.path.which_bin', MagicMock(return_value=None)):
+    with patch.object(sumautil, '_which_bin', return_value=None):
         out = sumautil.get_kernel_live_version()
         assert out is None
