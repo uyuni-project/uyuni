@@ -47,6 +47,8 @@ module.exports = {
           // HMR needs to be imported before everything else
           ["^react-hot-loader/root"],
           ["^react$"],
+          // Fullcalendar needs to be imported before its plugins
+          ["^@fullcalendar/react"],
           // Packages
           ["^@?\\w"],
           // Root imports, each grouped together

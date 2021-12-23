@@ -1,10 +1,12 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
+// Needs to be imported before plugins and rest
+import FullCalendar from "@fullcalendar/react";
+
 import allLocales from "@fullcalendar/core/locales-all";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // TODO: This should eventually be localizedMoment instead
 /* eslint-disable local-rules/no-raw-date */
