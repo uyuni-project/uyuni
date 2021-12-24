@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-22 10:19+0100\n"
-"PO-Revision-Date: 2021-12-23 08:13+0000\n"
+"PO-Revision-Date: 2021-12-24 10:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1340,16 +1340,17 @@ msgstr "Inštalovať novú opravu na tento systém."
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:326
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
+"Oprava je k dispozícii, ale systém je potrebné migrovať na novší produkt."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "Oprava je k dispozícii, ale je potrebné ju naklonovať do kanála."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:346
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:376
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "Ak vidíte toto, nahláste chybu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:357
 #: ../html/src/manager/images/image-view-overview.tsx:593
@@ -1358,7 +1359,7 @@ msgstr "Znovu zostaviť"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:365
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "Oprava je k dispozícii, ale je potrebné ju naklonovať do kanála."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:368
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
@@ -1369,7 +1370,7 @@ msgstr "Kanál"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
 msgid "Errata"
-msgstr ""
+msgstr "Opravy chýb"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:394
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
@@ -2437,46 +2438,39 @@ msgstr "obsahuje balík, ktorý poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "lower"
-msgstr ""
+msgstr "nižšia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-#, fuzzy
 msgid "lower than"
-msgstr "verzia nižšia ako"
+msgstr "nižšia ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-#, fuzzy
 msgid "lower or equal"
-msgstr "neskorší alebo rovnaký"
+msgstr "nižšia alebo rovnaká"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-#, fuzzy
 msgid "lower or equal than"
-msgstr "neskorší alebo rovnaký ako"
+msgstr "nižšia alebo rovnaká ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "equal"
-msgstr "rovnaký"
+msgstr "rovnaká"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "greater or equal"
-msgstr "neskorší alebo rovnaký"
+msgstr "vyššia alebo rovnaká"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "greater or equal than"
-msgstr "neskorší alebo rovnaký ako"
+msgstr "vyššia alebo rovnaká ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
-#, fuzzy
 msgid "greater"
-msgstr "Vytvoriť"
+msgstr "vyššia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
-#, fuzzy
 msgid "greater than"
-msgstr "Vytvorené v"
+msgstr "vyššia ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
@@ -3918,9 +3912,8 @@ msgid "Unknown Hostnames"
 msgstr "Neznáme názvy hostiteľov"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:187
-#, fuzzy
 msgid "bootstrap"
-msgstr "Zavádzať"
+msgstr "zavádzať"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:222
 msgid "Loading content.."
@@ -4720,7 +4713,7 @@ msgstr "Metóda overenia"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:458
 msgid "Ansible control node"
-msgstr ""
+msgstr "Riadiaci uzol Ansible"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:506
@@ -4806,14 +4799,12 @@ msgid "New Proxy"
 msgstr "Nový proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
-#, fuzzy
 msgid "system selected"
-msgstr "Vymazať vybrané"
+msgstr "vybraný systém"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
-#, fuzzy
 msgid "systems selected"
-msgstr "Vymazať vybrané"
+msgstr "vybrané systémy"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21
@@ -5142,23 +5133,20 @@ msgid "Add a virtual host manager"
 msgstr "Pridať správcu virtuálnych hostiteľov"
 
 #: ../html/src/manager/systems/virtual-list.tsx:40
-#, fuzzy
 msgid "Virtual Systems"
-msgstr "Hosťované virtuálne systémy"
+msgstr "Virtuálne systémy"
 
 #: ../html/src/manager/systems/virtual-list.tsx:59
 msgid "No Virtual Systems."
 msgstr "Žiadne virtuálne systémy."
 
 #: ../html/src/manager/systems/virtual-list.tsx:64
-#, fuzzy
 msgid "Virtual Host"
-msgstr "Správca virtuálnych hostiteľov"
+msgstr "Virtuálny hostiteľ"
 
 #: ../html/src/manager/systems/virtual-list.tsx:72
-#, fuzzy
 msgid "Virtual System"
-msgstr "Hosťované virtuálne systémy"
+msgstr "Virtuálny systém"
 
 #: ../html/src/manager/systems/virtual-list.tsx:100
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
