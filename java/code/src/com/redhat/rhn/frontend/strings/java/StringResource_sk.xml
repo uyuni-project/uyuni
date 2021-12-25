@@ -3401,70 +3401,70 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="systemsearch.jsp.location" xml:space="preserve">
         <source>Location</source>
-        <target/>
+        <target>Umiestnenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_country_code" xml:space="preserve">
         <source>Country Code</source>
-        <target/>
+        <target>Kód krajiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_state" xml:space="preserve">
         <source>State/Province</source>
-        <target/>
+        <target>Štát/Provincia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_city" xml:space="preserve">
         <source>City</source>
-        <target/>
+        <target>Mesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_address" xml:space="preserve">
         <source>Address</source>
-        <target/>
+        <target>Adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_building" xml:space="preserve">
         <source>Building</source>
-        <target/>
+        <target>Budova</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_room" xml:space="preserve">
         <source>Room</source>
-        <target/>
+        <target>Miestnosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_rack" xml:space="preserve">
         <source>Rack</source>
-        <target/>
+        <target>Rack</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_uuid" xml:space="preserve">
         <source>UUID</source>
-        <target/>
+        <target>UUID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.errors.numeric" xml:space="preserve">
         <source>Search queries for this field must be numeric</source>
-        <target/>
+        <target>Vyhľadávacie dopyty pre toto pole musia byť číselné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
