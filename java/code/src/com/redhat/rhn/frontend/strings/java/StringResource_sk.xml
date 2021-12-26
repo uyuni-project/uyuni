@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="sk">
     <body>
@@ -1379,7 +1379,7 @@
       </trans-unit>
       <trans-unit id="Organization Applicants" xml:space="preserve">
         <source>Organization Applicants</source>
-        <target>Žiadatelia organizácie</target>
+        <target>Žiadatelia o organizáciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -2684,308 +2684,308 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errataconfirm.nosystems" xml:space="preserve">
         <source>You must select at least one system.</source>
-        <target/>
+        <target>Musíte vybrať aspoň jeden systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="run as" xml:space="preserve">
         <source>Run as:</source>
-        <target/>
+        <target>Spustiť ako:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed Systems" xml:space="preserve">
         <source>Completed Systems</source>
-        <target/>
+        <target>Dokončené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="In Progress Systems" xml:space="preserve">
         <source>In Progress Systems</source>
-        <target/>
+        <target>Prebiehajúce systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed Systems" xml:space="preserve">
         <source>Failed Systems</source>
-        <target/>
+        <target>Neúspešné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package List" xml:space="preserve">
         <source>Package List</source>
-        <target/>
+        <target>Zoznam balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.actionrescheduled" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; successfully rescheduled.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; úspešne preplánované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystemsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cert_admin" xml:space="preserve">
         <source>Certificate Administrator</source>
-        <target/>
+        <target>Administrátor certifikátov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org_admin" xml:space="preserve">
         <source>Organization Administrator</source>
-        <target/>
+        <target>Administrátor organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satellite_admin" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrator</source>
-        <target/>
+        <target>Administrátor @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org_applicant" xml:space="preserve">
         <source>Organization Applicant</source>
-        <target/>
+        <target>Žiadateľ o organizáciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel_admin" xml:space="preserve">
         <source>Channel Administrator</source>
-        <target/>
+        <target>Administrátor kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="coma_admin" xml:space="preserve">
         <source>Coma CMS Administrator</source>
-        <target/>
+        <target>Administrátor Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="coma_author" xml:space="preserve">
         <source>Coma CMS Author</source>
-        <target/>
+        <target>Autor Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="coma_publisher" xml:space="preserve">
         <source>Coma CMS Publisher</source>
-        <target/>
+        <target>Vydavateľ Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhn_support" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Support Administrator</source>
-        <target/>
+        <target>Administrátor podpory @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config_admin" xml:space="preserve">
         <source>Configuration Administrator</source>
-        <target/>
+        <target>Administrátor konfigurácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="monitoring_admin" xml:space="preserve">
         <source>Monitoring Administrator</source>
-        <target/>
+        <target>Administrátor monitorovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_group_admin" xml:space="preserve">
         <source>System Group Administrator</source>
-        <target/>
+        <target>Administrátor systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation_key_admin" xml:space="preserve">
         <source>Activation Key Administrator</source>
-        <target/>
+        <target>Administrátor aktivačných kľúčov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Admin Access" xml:space="preserve">
         <source>Admin Access</source>
-        <target/>
+        <target>Prístup administrátora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="neverinparens" xml:space="preserve">
         <source>(never)</source>
-        <target/>
+        <target>(nikdy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="settag.select" xml:space="preserve">
         <source>Select or deselect all items on this page</source>
-        <target/>
+        <target>Vybrať alebo zrušiť výber všetkých položiek na tejto stránke</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All list views with checkboxes</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.filter" xml:space="preserve">
         <source>Create Notification Filter</source>
-        <target/>
+        <target>Vytvoriť filter oznámení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
         <source>Upload Kickstart/Autoyast File</source>
-        <target/>
+        <target>Nahrať súbor Kickstart/Autoyast</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
-        <target/>
+        <target>Vytvoriť profil Kickstart</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstartdata" xml:space="preserve">
         <source>Create Autoinstallation</source>
-        <target/>
+        <target>Vytvoriť automatickú inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.clone.kickstart" xml:space="preserve">
         <source>Clone Autoinstallation</source>
-        <target/>
+        <target>Klonovať automatickú inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.CryptoKeyDelete" xml:space="preserve">
         <source>Delete Key</source>
-        <target/>
+        <target>Vymazať kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.user" xml:space="preserve">
         <source>Create User</source>
-        <target/>
+        <target>Vytvoriť používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.erratum" xml:space="preserve">
         <source>Create Patch</source>
-        <target/>
+        <target>Vytvoriť opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.group" xml:space="preserve">
         <source>Create Group</source>
-        <target/>
+        <target>Vytvoriť skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.extgroup" xml:space="preserve">
         <source>Create External Group</source>
-        <target/>
+        <target>Vytvoriť externú skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.extgroup" xml:space="preserve">
         <source>Delete External Group</source>
-        <target/>
+        <target>Vymazať externú skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.user" xml:space="preserve">
         <source>Delete User</source>
-        <target/>
+        <target>Vymazať používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">User details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.erratum" xml:space="preserve">
         <source>Delete Patch</source>
-        <target/>
+        <target>Vymazať opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.system" xml:space="preserve">
         <source>Delete System</source>
-        <target/>
+        <target>Vymazať systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Package list pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.systemgroup" xml:space="preserve">
         <source>Delete Group</source>
-        <target/>
+        <target>Vymazať skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.work.with.group" xml:space="preserve">
         <source>Work With Group</source>
-        <target/>
+        <target>Práca so skupinou</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata" xml:space="preserve">
         <source>Delete Patch</source>
-        <target/>
+        <target>Vymazať opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata edit page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart" xml:space="preserve">
         <source>Delete Autoinstallation</source>
-        <target/>
+        <target>Vymazať automatickú inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deleteTree" xml:space="preserve">
         <source>Delete Distribution</source>
-        <target/>
+        <target>Vymazať distribúciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.profile" xml:space="preserve">
         <source>Delete Profile</source>
-        <target/>
+        <target>Vymazať profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; system.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; neplánované pre &lt;strong&gt;{1}&lt;/strong&gt; systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems.do</context>
           <context context-type="paramnotes">
@@ -2995,7 +2995,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="message.unscheduled.systems" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; systems.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; neplánované pre &lt;strong&gt;{1}&lt;/strong&gt; systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems.do</context>
           <context context-type="paramnotes">
@@ -3005,7 +3005,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="email.verified" xml:space="preserve">
         <source>Email Address Updated</source>
-        <target/>
+        <target>Emailová adresa aktualizovaná</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -3013,112 +3013,112 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="errata.create.bugfixadvisory" xml:space="preserve">
         <source>Bug Fix Advisory</source>
-        <target/>
+        <target>Upozornenie na opravu chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.productenhancementadvisory" xml:space="preserve">
         <source>Product Enhancement Advisory</source>
-        <target/>
+        <target>Upozornenie na vylepšenia produktu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory" xml:space="preserve">
         <source>Security Advisory</source>
-        <target/>
+        <target>Bezpečnostné upozornenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.crit" xml:space="preserve">
         <source>Security Advisory (Critical)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Kritické)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.imp" xml:space="preserve">
         <source>Security Advisory (Important)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Dôležité)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.mod" xml:space="preserve">
         <source>Security Advisory (Moderate)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Stredne závažné)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.low" xml:space="preserve">
         <source>Security Advisory (Low)</source>
-        <target/>
+        <target>Bezpečnostné upozornenie (Nízke)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.both" xml:space="preserve">
         <source>Name and Summary</source>
-        <target/>
+        <target>Názov a súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.name" xml:space="preserve">
         <source>Name Only</source>
-        <target/>
+        <target>Iba názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.name_and_desc" xml:space="preserve">
         <source>Name and Description</source>
-        <target/>
+        <target>Názov a opis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.free_form" xml:space="preserve">
         <source>Free form</source>
-        <target/>
+        <target>Voľná forma</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.use_free_form" xml:space="preserve">
         <source>Searching by fields can ONLY be done with Free Form search.</source>
-        <target/>
+        <target>Vyhľadávanie podľa polí je možné vykonať IBA pomocou vyhľadávania Voľnou formou.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.need_one_arch" xml:space="preserve">
         <source>When searching by architecture you must select at least one architecture.</source>
-        <target/>
+        <target>Pri vyhľadávaní podľa architektúry musíte vybrať aspoň jednu architektúru.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.connection_error" xml:space="preserve">
         <source>Could not connect to search server.</source>
-        <target/>
+        <target>Nepodarilo sa pripojiť k vyhľadávaciemu serveru.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.could_not_parse_query" xml:space="preserve">
         <source>Could not parse query '{0}'.</source>
-        <target/>
+        <target>Nepodarilo sa spracovať dopyt '{0}'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing" xml:space="preserve">
         <source>Index files missing from search-server.  Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
-        <target/>
+        <target>Chýbajúce indexové súbory z vyhľadávacieho servera.  Za predpokladu, že údaje v databáze existujú, indexy možno opätovne vytvoriť spustením: /usr/sbin/rhn-search cleanindex, potom reštartovať rhn-search</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -3128,7 +3128,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing_for_docs" xml:space="preserve">
         <source>Index files were missing from search-server for your locale. The search operation was performed using the default locale. Assuming data exists in database for your locale, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
-        <target/>
+        <target>Na vyhľadávacom serveri chýbali indexové súbory pre vašu lokalizáciu. Operácia vyhľadávania bola vykonaná s použitím predvolenej lokalizácie. Za predpokladu, že v databáze existujú údaje pre vašu lokalizáciu, indexy možno opätovne vytvoriť spustením: /usr/sbin/rhn-search cleanindex, potom reštartovať rhn-search</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -3138,7 +3138,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="packages.search.could_not_execute_query" xml:space="preserve">
         <source>Could not execute query '{0}'.</source>
-        <target/>
+        <target>Nepodarilo sa vykonať dopyt '{0}'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -3148,14 +3148,14 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="searchserver.index_out_of_sync_with_db" xml:space="preserve">
         <source>SearchServer index and database entries appear to be out of sync. Please run '/usr/sbin/rhn-search cleanindex'</source>
-        <target/>
+        <target>Zdá sa, že položky indexu a databázy servera SearchServer nie sú synchronizované. Prosím, spustite '/usr/sbin/rhn-search cleanindex'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="patches.installed.notavailable" xml:space="preserve">
         <source>Not Available</source>
-        <target/>
+        <target>Nie je k dispozícii</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
@@ -3163,168 +3163,168 @@ a skúste to znova.
       <!-- SystemSearchAction -->
       <trans-unit id="search_string" xml:space="preserve">
         <source>Search string</source>
-        <target/>
+        <target>Vyhľadávací reťazec</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.details" xml:space="preserve">
         <source>Details</source>
-        <target/>
+        <target>Podrobnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_name_and_description" xml:space="preserve">
         <source>Name/Description</source>
-        <target/>
+        <target>Názov/Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_id" xml:space="preserve">
         <source>ID</source>
-        <target/>
+        <target>ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_custom_info" xml:space="preserve">
         <source>Custom Info</source>
-        <target/>
+        <target>Vlastné informácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_snapshot_tag" xml:space="preserve">
         <source>Snapshot Tag</source>
-        <target/>
+        <target>Značka snímky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.activity" xml:space="preserve">
         <source>Activity</source>
-        <target/>
+        <target>Aktivita</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_checkin" xml:space="preserve">
         <source>Days Since Last Check-in</source>
-        <target/>
+        <target>Dni od posledného prihlásenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_registered" xml:space="preserve">
         <source>Days Since First Registered</source>
-        <target/>
+        <target>Dni od prvej registrácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.hardware" xml:space="preserve">
         <source>Hardware</source>
-        <target/>
+        <target>Hardvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_model" xml:space="preserve">
         <source>CPU Model</source>
-        <target/>
+        <target>Model CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt" xml:space="preserve">
         <source>CPU MHz Less Than</source>
-        <target/>
+        <target>CPU MHz menej ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_gt" xml:space="preserve">
         <source>CPU MHz Greater Than</source>
-        <target/>
+        <target>CPU MHz viac ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_lt" xml:space="preserve">
         <source>Number of CPUs Less Than</source>
-        <target/>
+        <target>Počet CPU menej ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_gt" xml:space="preserve">
         <source>Number of CPUs Greater Than</source>
-        <target/>
+        <target>Počet CPU väčší ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_lt" xml:space="preserve">
         <source>RAM Less Than</source>
-        <target/>
+        <target>RAM menej ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_gt" xml:space="preserve">
         <source>RAM Greater Than</source>
-        <target/>
+        <target>RAM viac ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.devices" xml:space="preserve">
         <source>Hardware Devices</source>
-        <target/>
+        <target>Hardvérové zariadenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_description" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target>Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_driver" xml:space="preserve">
         <source>Driver</source>
-        <target/>
+        <target>Ovládač</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_device_id" xml:space="preserve">
         <source>Device ID</source>
-        <target/>
+        <target>ID zariadenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_vendor_id" xml:space="preserve">
         <source>Vendor ID</source>
-        <target/>
+        <target>ID dodávateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.dmiinfo" xml:space="preserve">
         <source>DMI Info</source>
-        <target/>
+        <target>Informácie DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_dmi_system" xml:space="preserve">
         <source>System</source>
-        <target/>
+        <target>Systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>

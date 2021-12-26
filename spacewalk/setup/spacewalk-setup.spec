@@ -113,6 +113,11 @@ Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-setup-jabberd
+%if 0%{?rhel}
+Requires(post): libxslt-devel
+%else
+Requires(post): libxslt-tools
+%endif
 
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
@@ -176,6 +181,7 @@ install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -246,6 +252,12 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
         echo '[tftpd]'                                      >> /etc/cobbler/modules.conf
         echo 'module = manage_in_tftpd'                     >> /etc/cobbler/modules.conf
     fi
+fi
+
+if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then 
+#during upgrade, setup new connectionTimeout if the user didn't change it
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
+    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml
 fi
 
 %if 0%{?suse_version}

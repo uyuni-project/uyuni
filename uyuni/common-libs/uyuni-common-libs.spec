@@ -67,7 +67,9 @@ BuildRequires:  python-devel
 %else
 BuildRequires:  python2-devel
 %endif
+%if 0%{?suse_version} || 0%{?rhel} >= 8
 Recommends:     zchunk
+%endif
 
 %description -n python2-%{name}
 Python 2 libraries required by both Uyuni server and client tools.
@@ -85,7 +87,9 @@ Requires:       python3-base
 %else
 Requires:       python3-libs
 %endif
+%if 0%{?suse_version} || 0%{?rhel} >= 8
 Recommends:     zchunk
+%endif
 
 Obsoletes:      python3-spacewalk-backend-libs
 Obsoletes:      python3-spacewalk-usix

@@ -114,4 +114,5 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         LOG.info("Minion bootstrap success: " + result.isSuccess());
         return result;
     }
+
 }

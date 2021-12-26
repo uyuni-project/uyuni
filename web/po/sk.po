@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-11 11:51+0100\n"
-"PO-Revision-Date: 2021-10-31 17:12+0000\n"
+"POT-Creation-Date: 2021-12-22 10:19+0100\n"
+"PO-Revision-Date: 2021-12-11 18:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -30,11 +30,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.8.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:487
+#: ../html/javascript/spacewalk-essentials.js:499
 msgid "remaining"
 msgstr "zostávajúce"
 
-#: ../html/javascript/spacewalk-essentials.js:507
+#: ../html/javascript/spacewalk-essentials.js:519
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -215,7 +215,7 @@ msgstr "Zrušiť"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:111
+#: ../html/src/components/table/Table.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:160
 #: ../html/src/manager/content-management/project/project.tsx:94
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -332,7 +332,7 @@ msgid "Toggle section visibility"
 msgstr "Prepnúť viditeľnosť sekcie"
 
 #: ../html/src/components/input/Check.stories.tsx:26
-#: ../html/src/components/input/DateTime.stories.tsx:26
+#: ../html/src/components/input/DateTime.stories.tsx:27
 #: ../html/src/components/input/FormMultiInput.stories.tsx:71
 #: ../html/src/components/input/FormMultiInput.stories.tsx:121
 #: ../html/src/components/input/FormMultiInput.stories.tsx:163
@@ -351,7 +351,7 @@ msgstr "Prepnúť viditeľnosť sekcie"
 msgid "Submit"
 msgstr "Podať"
 
-#: ../html/src/components/input/DateTime.stories.tsx:25
+#: ../html/src/components/input/DateTime.stories.tsx:26
 msgid "Time"
 msgstr "Čas"
 
@@ -403,8 +403,8 @@ msgstr "požadované"
 #: ../html/src/components/input/Password.stories.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:181
 #: ../html/src/manager/login/login.tsx:172
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:301
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:311
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:433
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:37
 msgid "Password"
 msgstr "Heslo"
@@ -584,7 +584,7 @@ msgid "Custom Quartz format:"
 msgstr "Vlastný formát Quartz:"
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:336
+#: ../html/src/components/table/TableDataHandler.tsx:343
 msgid "There are no entries to show."
 msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
@@ -642,7 +642,7 @@ msgstr "Vyčistiť"
 msgid "Select All"
 msgstr "Vybrať všetko"
 
-#: ../html/src/components/table/TableDataHandler.tsx:337
+#: ../html/src/components/table/TableDataHandler.tsx:344
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:615
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:91
@@ -652,7 +652,7 @@ msgstr "Vybrať všetko"
 msgid "Loading..."
 msgstr "Načítava sa..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:367
+#: ../html/src/components/table/TableDataHandler.tsx:374
 msgid "items per page"
 msgstr "položiek na stránku"
 
@@ -1191,9 +1191,10 @@ msgid " seconds"
 msgstr " sekúnd"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:278
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
+#: ../html/src/manager/systems/virtual-list.tsx:58
 #: ../html/src/manager/virtualization/ListTab.tsx:237
 msgid "Filter by name"
 msgstr "Filtrovať podľa názvu"
@@ -1219,11 +1220,12 @@ msgid "Elapsed Time"
 msgstr "Uplynutý čas"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:225
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:268
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:147
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:56
 #: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:781
+#: ../html/src/manager/systems/virtual-list.tsx:83
 msgid "Status"
 msgstr "Stav"
 
@@ -1251,31 +1253,52 @@ msgstr ""
 msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:167
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:30
+msgid "Affected, patches available in channels which are not assigned"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
+msgid "Affected, patches available in a Product Migration target"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
+msgid "Affected, at least one patch available in an assigned channel"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
+msgid "Not affected"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
+#, fuzzy
+msgid "Patched"
+msgstr "Opravy"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:180
 msgid "CVE Audit"
 msgstr "Audit CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:174
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:187
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:229
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:242
 msgid "Audit Servers"
 msgstr "Auditovať servery"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:236
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 msgid "Audit Images"
 msgstr "Auditovať obrazy"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:269
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:282
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:153
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:270
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:166
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:109
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
@@ -1292,7 +1315,7 @@ msgstr "Auditovať obrazy"
 msgid "Name"
 msgstr "Názov"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:286
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:299
 #: ../html/src/manager/images/image-profiles.tsx:191
 #: ../html/src/manager/images/image-stores.tsx:193
 #: ../html/src/manager/images/image-view.tsx:668
@@ -1305,6 +1328,55 @@ msgstr "Názov"
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "Akcie"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:350
+#, fuzzy
+msgid "No action required"
+msgstr "Vyžaduje sa reštart"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:309
+msgid "Install a new patch on this system."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:326
+msgid "Patch available, but system needs to be migrated to a newer Product."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
+msgid "Patch available, but needs to be cloned into Channel."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:346
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:376
+msgid "If you see this report a bug."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:357
+#: ../html/src/manager/images/image-view-overview.tsx:593
+msgid "Rebuild"
+msgstr "Znovu zostaviť"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:365
+msgid "Patch available but needs to be cloned into Channel."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:368
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
+#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:41
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:33
+msgid "Channel"
+msgstr "Kanál"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
+msgid "Errata"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:394
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
+msgid "Download CSV"
+msgstr "Stiahnuť CSV"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:58
 msgid "Match data status"
@@ -1633,10 +1705,6 @@ msgstr "Názov systému"
 msgid "Unmatched systems"
 msgstr "Nepriradené systémy"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
-msgid "Download CSV"
-msgstr "Stiahnuť CSV"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
 msgstr "Iba fyzické nasadenie"
@@ -1808,8 +1876,8 @@ msgstr "Akcia bola "
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/proxy.tsx:68
+#: ../html/src/manager/systems/proxy.tsx:72
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "scheduled"
 msgstr "naplánované"
@@ -2006,7 +2074,7 @@ msgstr "Žiadne dostupné moduly"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:41
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:8
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
 msgid "Stream"
 msgstr "Prúd"
 
@@ -2017,12 +2085,6 @@ msgstr "Vybrať prúd..."
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
 msgid "No streams available"
 msgstr "Nie sú k dispozícii žiadne prúdy"
-
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
-#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:41
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:33
-msgid "Channel"
-msgstr "Kanál"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:7
 msgid "Module Name"
@@ -2139,7 +2201,7 @@ msgid "Product Enhancement Advisory"
 msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:133
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:154
 msgid "Advisory Type"
 msgstr "Typ upozornenia"
 
@@ -2148,7 +2210,7 @@ msgid "Issued"
 msgstr "Vydané"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:205
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:160
 #: ../html/src/manager/images/image-view-patches.tsx:100
 msgid "Synopsis"
 msgstr "Súhrn"
@@ -2170,7 +2232,7 @@ msgid "Package Provides Name"
 msgstr "Balík poskytuje názov"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:142
 msgid "Provides Name"
 msgstr "Poskytuje názov"
 
@@ -2318,7 +2380,7 @@ msgid "containing"
 msgstr "obsahujúce"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "matches"
 msgstr "zhoduje sa"
 
@@ -2327,7 +2389,7 @@ msgid "regular expression matches package name"
 msgstr "regulárny výraz sa zhoduje s názvom balíka"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "equals"
 msgstr "zhoduje sa"
 
@@ -2375,59 +2437,90 @@ msgstr "obsahuje balík s obdobím/verziou/vydaním väčším ako"
 msgid "contains package which provides name equal"
 msgstr "obsahuje balík, ktorý poskytuje rovnaký názov"
 
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+msgid "lower"
+msgstr ""
+
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-msgid "equal"
-msgstr "rovnaký"
+#, fuzzy
+msgid "lower than"
+msgstr "verzia nižšia ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-msgid "later or equal"
+#, fuzzy
+msgid "lower or equal"
 msgstr "neskorší alebo rovnaký"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-msgid "later or equal than"
+#, fuzzy
+msgid "lower or equal than"
 msgstr "neskorší alebo rovnaký ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
+msgid "equal"
+msgstr "rovnaký"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#, fuzzy
+msgid "greater or equal"
+msgstr "neskorší alebo rovnaký"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#, fuzzy
+msgid "greater or equal than"
+msgstr "neskorší alebo rovnaký ako"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
+#, fuzzy
+msgid "greater"
+msgstr "Vytvoriť"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
+#, fuzzy
+msgid "greater than"
+msgstr "Vytvorené v"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
 msgstr "sa zhoduje s regulárnym výrazom"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
 msgid "provides name"
 msgstr "poskytuje názov"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "provides name equal"
 msgstr "poskytuje rovnaký názov"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:127
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:148
 msgid "Advisory Name"
 msgstr "Názov upozornenia"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:145
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:166
 msgid "Keyword"
 msgstr "Kľúčové slovo"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:151
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:172
 msgid "Issue date"
 msgstr "Dátum vydania"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:178
 msgid "Contains Package Name"
 msgstr "Obsahuje názov balíka"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:184
 msgid "Contains Package Provides Name"
 msgstr "Obsahuje balík poskytujúci názov"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:190
 msgid "Contains Package"
 msgstr "Obsahuje balík"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
 msgid "enable module"
 msgstr "povoliť modul"
 
@@ -2834,7 +2927,7 @@ msgstr "Cesta"
 #: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:402
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
 msgid "Activation Key"
 msgstr "Aktivačný kľúč"
 
@@ -2896,7 +2989,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-import.tsx:322
 #: ../html/src/manager/images/image-profile-edit.tsx:489
 #: ../html/src/manager/images/image-store-edit.tsx:203
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:291
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:300
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:209
 msgid "Clear fields"
 msgstr "Vymazať polia"
@@ -3229,10 +3322,6 @@ msgstr "Stav zostavenia"
 msgid "Inspect"
 msgstr "Skontrolovať"
 
-#: ../html/src/manager/images/image-view-overview.tsx:593
-msgid "Rebuild"
-msgstr "Znovu zostaviť"
-
 #: ../html/src/manager/images/image-view-overview.tsx:594
 msgid "Reschedule the build"
 msgstr "Znova naplánovať zostavenie"
@@ -3393,6 +3482,7 @@ msgid "Revision"
 msgstr "Revízia"
 
 #: ../html/src/manager/images/image-view.tsx:636
+#: ../html/src/manager/systems/virtual-list.tsx:89
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "Aktualizácie"
@@ -3829,7 +3919,12 @@ msgstr "Registrované systémy"
 msgid "Unknown Hostnames"
 msgstr "Neznáme názvy hostiteľov"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:187
+#, fuzzy
+msgid "bootstrap"
+msgstr "Zavádzať"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:222
 msgid "Loading content.."
 msgstr "Načítava sa obsah.."
 
@@ -4122,14 +4217,16 @@ msgstr "Označiť ako prečítané"
 msgid "Delete Notification"
 msgstr "Vymazať oznámenie"
 
-#: ../html/src/manager/notifications/notifications.tsx:39
+#: ../html/src/manager/notifications/notifications.tsx:41
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:341
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 #: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Pripojenie Websocket je zatvorené. Obnovte stránku a skúste to znova."
 
-#: ../html/src/manager/notifications/notifications.tsx:52
+#: ../html/src/manager/notifications/notifications.tsx:54
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:361
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 #: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Chyba pri pripájaní k serveru. Obnovte stránku a skúste to znova."
@@ -4501,15 +4598,15 @@ msgstr "Základný kanál:"
 msgid "${defaultChannelName}"
 msgstr "${defaultChannelName}"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:134
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:135
 msgid "${this.getDefaultBase().name}"
 msgstr "${this.getDefaultBase().name}"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:145
 msgid "Child Channels:"
 msgstr "Kanály potomkov:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:148
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:150
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
@@ -4517,7 +4614,7 @@ msgstr ""
 "Akýkoľvek systém zaregistrovaný pomocou tohto aktivačného kľúča bude "
 "prihlásený k vybraným kanálom potomkov."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:220
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:229
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4525,40 +4622,40 @@ msgstr ""
 "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
 "Prosím, skontrolujte, či bol váš klient minion správne zavedený."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:249
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:258
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "Hostiteľ bol úspešne zavedený! Váš systém by sa mal objaviť v"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:251
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:260
 msgid "systems"
 msgstr "systémy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:253
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:262
 msgid "shortly"
 msgstr "krátko"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:271
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:280
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "Váš systém sa zavádza: čakanie na odpoveď.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:275
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:284
 msgid "Loading SSH Private Key.."
 msgstr "Načítava sa súkromný kľúč SSH..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:283
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:292
 msgid "Bootstrap"
 msgstr "Zavádzať"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:318
 msgid "e.g., ••••••••••••"
 msgstr "napr. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:317
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:445
 msgid "SSH Private Key"
 msgstr "Súkromný kľúč SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:323
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4566,19 +4663,19 @@ msgstr ""
 "Súbor bude uložený v dočasnom súbore na serveri a bude vymazaný po "
 "zavádzacej procedúre"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "SSH Private Key Passphrase"
 msgstr "Heslo súkromného kľúča SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:347
 msgid "Leave empty for no passphrase"
 msgstr "Nechajte prázdne pre žiadne heslo"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:346
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Bootstrap Minions"
 msgstr "Zavádzať klientov minion"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4587,30 +4684,27 @@ msgstr ""
 "prihlasovacích údajov SSH. {0} pripraví systém vzdialene a vykoná "
 "registráciu."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
-#, fuzzy
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
 msgid "Host"
-msgstr "Hostitelia"
+msgstr "Hostiteľ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
-#, fuzzy
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:382
 msgid "SSH Port"
-msgstr "Port"
+msgstr "Port SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:381
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:393
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portov: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:386
-#, fuzzy
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 msgid "User"
-msgstr "Používatelia"
+msgstr "Používateľ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:412
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4622,30 +4716,33 @@ msgstr ""
 "'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
 "kľúča SSH {0} počas zavádzacej procedúry."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:421
 msgid "Authentication Method"
+msgstr "Metóda overenia"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:458
+msgid "Ansible control node"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:448
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
-#: ../html/src/manager/systems/proxy.tsx:124
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:506
+#: ../html/src/manager/systems/proxy.tsx:122
 msgid "None"
 msgstr "Žiadny"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
-#, fuzzy
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
 msgid "Reactivation Key"
-msgstr "Aktivačný kľúč"
+msgstr "Reaktivačný kľúč"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:495
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Ponechať prázdne, ak sa nevyžaduje reaktivácia"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:497
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:525
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -4653,19 +4750,18 @@ msgstr ""
 "Názov hostiteľa servera proxy nie je plne kvalifikovaný. To môže spôsobiť "
 "problémy pri prístupe ku kanálom."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:542
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Zakázať prísnu kontrolu kľúča hostiteľa SSH počas zavádzacieho procesu"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:530
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:558
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Spravovať systém kompletne cez SSH (neinštaluje sa agent)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
-#, fuzzy
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
+msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
 
 #: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4691,25 +4787,35 @@ msgstr "Potvrdiť vymazanie"
 #: ../html/src/manager/systems/proxy.tsx:42
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr ""
+"Prosím, vyberte zoznam klientov minion (nie proxy serverov alebo tradičných "
+"klientov)."
 
-#: ../html/src/manager/systems/proxy.tsx:67
+#: ../html/src/manager/systems/proxy.tsx:65
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Zmena proxy servera bola "
 
-#: ../html/src/manager/systems/proxy.tsx:101
-#: ../html/src/manager/systems/proxy.tsx:117
-#, fuzzy
+#: ../html/src/manager/systems/proxy.tsx:99
+#: ../html/src/manager/systems/proxy.tsx:115
 msgid "Change Proxy"
-msgstr "Zmeny"
+msgstr "Zmena proxy"
 
-#: ../html/src/manager/systems/proxy.tsx:117
+#: ../html/src/manager/systems/proxy.tsx:115
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Pripojiť agenta(ov) minion k ďalšiemu proxy serveru."
 
-#: ../html/src/manager/systems/proxy.tsx:120
-#, fuzzy
+#: ../html/src/manager/systems/proxy.tsx:118
 msgid "New Proxy"
-msgstr "Proxy"
+msgstr "Nový proxy"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
+#, fuzzy
+msgid "system selected"
+msgstr "Vymazať vybrané"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:19
+#, fuzzy
+msgid "systems selected"
+msgstr "Vymazať vybrané"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21
@@ -5037,23 +5143,48 @@ msgstr "Správcovia virtuálnych hostiteľov"
 msgid "Add a virtual host manager"
 msgstr "Pridať správcu virtuálnych hostiteľov"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:177
+#: ../html/src/manager/systems/virtual-list.tsx:40
+#, fuzzy
+msgid "Virtual Systems"
+msgstr "Hosťované virtuálne systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:59
+#, fuzzy
+msgid "No Virtual Systems."
+msgstr "Hosťované virtuálne systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:64
+#, fuzzy
+msgid "Virtual Host"
+msgstr "Správca virtuálnych hostiteľov"
+
+#: ../html/src/manager/systems/virtual-list.tsx:72
+#, fuzzy
+msgid "Virtual System"
+msgstr "Hosťované virtuálne systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:100
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
+msgid "Base Software Channel"
+msgstr "Základný softvérový kanál"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:179
 msgid "Disconnected"
 msgstr "Odpojené"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:177
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:179
 msgid "Failed to connect"
 msgstr "Nepodarilo sa pripojiť"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:338
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:340
 msgid "Toggle full size"
 msgstr "Prepnúť plnú veľkosť"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:358
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
 msgid "Guest is not running"
 msgstr "Hosť nie je spustený"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:360
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:362
 msgid "Unknown guest"
 msgstr "Neznámy hosť"
 
@@ -5192,10 +5323,6 @@ msgstr "Aktuálna pamäť"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
 msgid "vCPUs"
 msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
-msgid "Base Software Channel"
-msgstr "Základný softvérový kanál"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
 msgid "paused"
@@ -5962,15 +6089,15 @@ msgstr " filtre"
 msgid "Partition systems by given check-in time:"
 msgstr "Rozdeliť systémy podľa daného času registrácie:"
 
-#: ../html/src/manager/visualization/ui/components.ts:139
+#: ../html/src/manager/visualization/ui/components.ts:145
 msgid "Add a grouping level"
 msgstr "Pridajte úroveň zoskupenia"
 
-#: ../html/src/manager/visualization/ui/components.ts:177
+#: ../html/src/manager/visualization/ui/components.ts:183
 msgid "Select a system group"
 msgstr "Vybrať systémovú skupinu"
 
-#: ../html/src/manager/visualization/ui/components.ts:226
+#: ../html/src/manager/visualization/ui/components.ts:232
 msgid "Split into groups"
 msgstr "Rozdeliť do skupín"
 
@@ -6006,6 +6133,12 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "later or equal"
+#~ msgstr "neskorší alebo rovnaký"
+
+#~ msgid "later or equal than"
+#~ msgstr "neskorší alebo rovnaký ako"
 
 #~ msgid ""
 #~ "provided channel that corresponds to the installed SUSE Linux version. "

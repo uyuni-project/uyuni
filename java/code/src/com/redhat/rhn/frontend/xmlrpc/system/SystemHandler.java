@@ -207,9 +207,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -1536,12 +1538,15 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      #array_begin()
      *          #struct_begin("package")
+     *                 #prop_desc("int", "package_id", "PackageID, -1 if package is installed but not available in
+     *                 subscribed channels")
      *                 #prop("string", "name")
+     *                 #prop("string", "epoch")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
-     *                 #prop("string", "epoch")
      *                 #prop_desc("string", "arch", "architecture label")
      *                 #prop_desc("date", "installtime", "returned only if known")
+     *                 #prop("boolean", "retracted")
      *          #struct_end()
      *      #array_end()
      */
@@ -1552,7 +1557,8 @@ public class SystemHandler extends BaseHandler {
         DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
         packageListItems.elaborate();
         List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
-            Map<String, Object> item = new HashMap<>();
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("package_id", Objects.isNull(pi.getPackageId()) ? -1 : pi.getPackageId().intValue());
             item.put("name", pi.getName());
             item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
             item.put("version", pi.getVersion());
@@ -1566,6 +1572,51 @@ public class SystemHandler extends BaseHandler {
             return item;
         }).collect(toList());
         return maps;
+    }
+
+    /**
+     * List current package locks status.
+     * @param loggedInUser The current user
+     * @param sid System ID
+     * @return Returns an array of maps representing the packages locked on a system
+
+
+     * @xmlrpc.doc List current package locks status.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "system_id")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          #struct_begin("package")
+     *                 #prop_desc("int", "package_id", "PackageID, -1 if package is locked but not available in
+     *                 subscribed channels")
+     *                 #prop("string", "name")
+     *                 #prop("string", "epoch")
+     *                 #prop("string", "version")
+     *                 #prop("string", "release")
+     *                 #prop_desc("string", "arch", "architecture label")
+     *                 #prop_desc("string", "pending status", "return only if there is a pending locking")
+     *          #struct_end()
+     *      #array_end()
+     */
+    public List<Map<String, Object>> listPackagesLockStatus(User loggedInUser, Integer sid) {
+        Server server = lookupServer(loggedInUser, sid);
+
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(server.getId().longValue(), null);
+
+        return lockedPackagesResult.stream().map(pi -> {
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("package_id", pi.getPackageId().intValue());
+            item.put("name", pi.getName());
+            item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
+            item.put("version", pi.getVersion());
+            item.put("release", pi.getRelease());
+            item.put("arch", Optional.ofNullable(pi.getArch()).orElse(" "));
+            if (pi.getPending() != null) {
+                item.put("pending status", pi.getPending().equals("L") ? "Locking" : "Unlocking");
+            }
+            return item;
+        }).collect(toList());
     }
 
     /**
@@ -4569,6 +4620,70 @@ public class SystemHandler extends BaseHandler {
                 ActionFactory.TYPE_PACKAGES_REMOVE, allowModules)[0].intValue();
     }
 
+    /**
+     * Schedule package lock for a system.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param pkgIdsToLock List of package IDs to lock (as Integers)
+     * @param pkgIdsToUnlock List of package IDs to lock (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package removal
+     * @return package action id
+     *
+     * @xmlrpc.doc Schedule package lock for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("int", "pkgIdsToLock")
+     * @xmlrpc.param #array_single("int", "pkgIdsToUnlock")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.returntype #param_desc("return_int_success")
+     */
+    public Long schedulePackageLockChange(User loggedInUser, Integer sid,
+                                          List<Integer> pkgIdsToLock,
+                                          List<Integer> pkgIdsToUnlock, Date earliestOccurrence) {
+
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(server.getId(), null);
+
+        Set<Package> pkgsAlreadyLocked = new HashSet<>();
+        List<Package> pkgsFindAlreadyLocked = PackageManager.lookupByIdAndUser(
+                lockedPackagesResult.stream().map(PackageListItem::getPackageId)
+                        .collect(Collectors.toList()), loggedInUser);
+        pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
+
+        Set<Package> pkgsToLock = new HashSet<>();
+        List<Package> pkgsFindToLock = PackageManager.lookupByIdAndUser(pkgIdsToLock
+
+                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+        pkgsFindToLock.stream().filter(Objects::nonNull).forEach(pkgsToLock::add);
+
+        pkgsToLock.removeAll(pkgsAlreadyLocked);
+        pkgsToLock.forEach(x -> x.setLockPending(Boolean.TRUE));
+        PackageManager.lockPackages(server.getId(), pkgsToLock);
+        PackageManager.setPendingStatusOnLockedPackages(pkgsToLock, PackageManager.PKG_PENDING_LOCK);
+
+        Set<Package> pkgsToUnlock = new HashSet<>();
+        List<Package> pkgsFindToUnlock = PackageManager.lookupByIdAndUser(pkgIdsToUnlock
+                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+        pkgsFindToUnlock.stream().filter(Objects::nonNull).forEach(pkgsToUnlock::add);
+
+        pkgsToUnlock.forEach(x -> x.setLockPending(Boolean.TRUE));
+        PackageManager.setPendingStatusOnLockedPackages(pkgsToUnlock, PackageManager.PKG_PENDING_UNLOCK);
+
+        Set<Package> allPkgsWithAction = new HashSet<>();
+        allPkgsWithAction.addAll(pkgsToLock);
+        allPkgsWithAction.addAll(pkgsAlreadyLocked);
+
+        try {
+            // we should schedule an action for all the packages
+            Action a = ActionManager.schedulePackageLock(loggedInUser, allPkgsWithAction, earliestOccurrence, server);
+            return a.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
     /**
      * Lists all of the notes that are associated with a system.
      *   If no notes are found it should return an empty set.

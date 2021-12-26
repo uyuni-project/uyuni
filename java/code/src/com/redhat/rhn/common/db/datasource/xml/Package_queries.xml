@@ -263,7 +263,7 @@ SELECT C.name,
        CS.checksum_type checksumtype,
        F.file_mode,
        F.linkto,
-       TO_CHAR(F.mtime, 'YYYY-MM-DD HH24:MI:SS') AS MTIME
+       F.mtime AS MTIME
   FROM rhnPackageFile F left outer join rhnChecksumView CS
     ON F.checksum_id = CS.id,
        rhnPackageCapability C
@@ -888,7 +888,8 @@ SELECT p.package_id,
        p.epoch,
        p.name_id,
        p.evr_id,
-       p.arch
+       p.arch,
+       l.pending 
   FROM rhnlockedpackages l
   LEFT JOIN (
 SELECT pkg.id AS package_id,
@@ -1227,6 +1228,24 @@ SELECT DISTINCT pa.label, pa.name
    AND cpac.channel_arch_id = ca.id
    AND ca.label
     IN (%s)
+  </query>
+</mode>
+
+<mode name="packages_available_to_user">
+  <query params="org_id">
+SELECT 1
+  FROM rhnPackage P
+ WHERE p.id IN (%s)
+   AND (   P.org_id = :org_id
+        OR EXISTS (SELECT 1
+                     FROM rhnOrgChannelTreeView CT inner join rhnChannelPackage CP on CT.id = CP.channel_id
+                    WHERE CT.org_id = :org_id
+                      AND CP.package_id = P.id)
+        OR EXISTS (SELECT 1
+                     FROM rhnSharedChannelTreeView CT inner join rhnChannelPackage CP on CT.id = CP.channel_id
+                    WHERE CT.org_id = :org_id
+                      AND CP.package_id = P.id)
+       )
   </query>
 </mode>
 

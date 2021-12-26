@@ -17,13 +17,21 @@ declare global {
 type Props = {
   proxies: any[];
   availableActivationKeys: any[];
+  ansibleInventoryId: number | null;
+  targetHost: string | null;
 };
+
+enum AuthMethod {
+  Password = "password",
+  SshKey = "ssh-key",
+  AnsiblePreauth = "ansible-preauth",
+}
 
 type State = {
   host: string;
   port: string;
   user: string;
-  authMethod: string;
+  authMethod: AuthMethod;
   password: string;
   privKey: string;
   privKeyPwd: string;
@@ -46,10 +54,10 @@ class BootstrapMinions extends React.Component<Props, State> {
     super(props);
 
     this.initState = {
-      host: "",
+      host: props.targetHost || "",
       port: "",
       user: "",
-      authMethod: "password",
+      authMethod: props.ansibleInventoryId ? AuthMethod.AnsiblePreauth : AuthMethod.Password,
       password: "",
       privKey: "",
       privKeyPwd: "",
@@ -184,11 +192,13 @@ class BootstrapMinions extends React.Component<Props, State> {
 
     const authMethod = this.state.authMethod;
     formData["authMethod"] = authMethod;
-    if (authMethod === "password") {
+    if (authMethod === AuthMethod.Password) {
       formData["password"] = this.state.password.trim();
-    } else if (authMethod === "ssh-key") {
+    } else if (authMethod === AuthMethod.SshKey) {
       formData["privKey"] = this.state.privKey;
       formData["privKeyPwd"] = this.state.privKeyPwd;
+    } else if (authMethod === AuthMethod.AnsiblePreauth) {
+      formData["ansibleInventoryId"] = this.props.ansibleInventoryId;
     }
     if (this.state.proxy) {
       formData["proxy"] = this.state.proxy;
@@ -294,52 +304,56 @@ class BootstrapMinions extends React.Component<Props, State> {
 
     const productName = window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 
-    const authenticationData =
-      this.state.authMethod === "password" ? (
-        <div className="form-group">
-          <label className="col-md-3 control-label">{t("Password")}:</label>
-          <div className="col-md-6">
-            <input
-              name="password"
-              className="form-control"
-              type="password"
-              autoComplete="new-password"
-              placeholder={t("e.g., ••••••••••••")}
-              value={this.state.password}
-              onChange={this.passwordChanged}
-            />
-          </div>
-        </div>
-      ) : (
-        <div>
+    const authenticationData = (
+      <>
+        {this.state.authMethod === AuthMethod.Password && (
           <div className="form-group">
-            <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
-            <div className="col-md-6">
-              <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
-              <div className="help-block">
-                <i className="fa fa-exclamation-triangle" />
-                {t(
-                  "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="form-group">
-            <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+            <label className="col-md-3 control-label">{t("Password")}:</label>
             <div className="col-md-6">
               <input
-                name="privKeyPwd"
+                name="password"
                 className="form-control"
                 type="password"
                 autoComplete="new-password"
-                placeholder={t("Leave empty for no passphrase")}
-                value={this.state.privKeyPwd}
-                onChange={this.privKeyPwdChanged}
+                placeholder={t("e.g., ••••••••••••")}
+                value={this.state.password}
+                onChange={this.passwordChanged}
               />
             </div>
           </div>
-        </div>
-      );
+        )}
+        {this.state.authMethod === AuthMethod.SshKey && (
+          <div>
+            <div className="form-group">
+              <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
+              <div className="col-md-6">
+                <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
+                <div className="help-block">
+                  <i className="fa fa-exclamation-triangle" />
+                  {t(
+                    "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+              <div className="col-md-6">
+                <input
+                  name="privKeyPwd"
+                  className="form-control"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder={t("Leave empty for no passphrase")}
+                  value={this.state.privKeyPwd}
+                  onChange={this.privKeyPwdChanged}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
 
     return (
       <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="reference/systems/bootstrapping.html">
@@ -402,6 +416,7 @@ class BootstrapMinions extends React.Component<Props, State> {
               )}
             </div>
           </div>
+
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
 
@@ -411,8 +426,8 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <input
                     name="authMethod"
                     type="radio"
-                    value="password"
-                    checked={this.state.authMethod === "password"}
+                    value={AuthMethod.Password}
+                    checked={this.state.authMethod === AuthMethod.Password}
                     onChange={this.authMethodChanged}
                   />
                   <span>{t("Password")}</span>
@@ -423,16 +438,31 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <input
                     name="authMethod"
                     type="radio"
-                    value="ssh-key"
-                    checked={this.state.authMethod === "ssh-key"}
+                    value={AuthMethod.SshKey}
+                    checked={this.state.authMethod === AuthMethod.SshKey}
                     onChange={this.authMethodChanged}
                   />
                   <span>{t("SSH Private Key")}</span>
                 </label>
               </div>
+              {this.props.ansibleInventoryId && (
+                <div className="radio col-md-6">
+                  <label>
+                    <input
+                      name="authMethod"
+                      type="radio"
+                      value={AuthMethod.AnsiblePreauth}
+                      checked={this.state.authMethod === AuthMethod.AnsiblePreauth}
+                      onChange={this.authMethodChanged}
+                    />
+                    <span>{t("Ansible control node")}</span>
+                  </label>
+                </div>
+              )}
             </div>
           </div>
           {authenticationData}
+
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Activation Key")}:</label>
             <div className="col-md-6">
@@ -549,8 +579,18 @@ class BootstrapMinions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) =>
-  SpaRenderer.renderNavigationReact(
-    <BootstrapMinions availableActivationKeys={window.availableActivationKeys} proxies={window.proxies} />,
+export const renderer = (id) => {
+  const params = new URLSearchParams(window.location.search);
+  const targetHost = params.get("targetHost");
+  const ansibleInventoryId = Number.parseInt(params.get("ansibleInventoryId") || "", 10) || null;
+
+  return SpaRenderer.renderNavigationReact(
+    <BootstrapMinions
+      availableActivationKeys={window.availableActivationKeys}
+      proxies={window.proxies}
+      ansibleInventoryId={ansibleInventoryId}
+      targetHost={targetHost}
+    />,
     document.getElementById(id)
   );
+};

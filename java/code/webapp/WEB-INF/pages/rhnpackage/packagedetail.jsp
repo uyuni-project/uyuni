@@ -154,7 +154,7 @@
                             <bean:message key="package.jsp.builddate"/>:
                         </label>
                         <div class="col-lg-6">
-                            <c:out value="${pack.buildTime}" />
+                            <rhn:formatDate value="${pack.buildTime}" />
                         </div>
                     </div>
                     <div class="form-group">

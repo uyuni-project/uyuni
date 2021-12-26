@@ -1,3 +1,5 @@
+- Migrate the displaying of the date/time to rhn:formatDate, get rid of the legacy fmt:formatDate glue
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
 - Button to add selected systems to SSM in virtual systems list
 - Add support for custom SSH port for SSH minions
 - UI for changing proxy

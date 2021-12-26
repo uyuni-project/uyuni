@@ -51,7 +51,7 @@ describe("AccordionPathContent summary", () => {
     await waitFor(() => {
       screen.getByText("Registered Systems:");
       screen.getByText("Unknown Hostnames:");
-      screen.getByText("my-ansible-managed-client-1.tf.local");
+      screen.getByText("my-ansible-managed-client-1.tf.local", { exact: false });
       screen.getByText("minion.tf.local");
     });
   });

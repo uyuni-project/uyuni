@@ -1,14 +1,14 @@
 # Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-ADDRESSES = { 'network'     => '0',
-              'client'      => '2',
-              'minion'      => '3',
-              'pxeboot'     => '4',
-              'range begin' => '128',
-              'range end'   => '253',
-              'proxy'       => '254',
-              'broadcast'   => '255' }.freeze
+ADDRESSES = { 'network'        => '0',
+              'sle_client'     => '2',
+              'sle_minion'     => '3',
+              'pxeboot_minion' => '4',
+              'range begin'    => '128',
+              'range end'      => '253',
+              'proxy'          => '254',
+              'broadcast'      => '255' }.freeze
 
 FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'IP'                              => 'branch_network#ip',
