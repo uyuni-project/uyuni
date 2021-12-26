@@ -3471,35 +3471,35 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="systemsearch_no_matches_found" xml:space="preserve">
         <source>No matches found</source>
-        <target/>
+        <target>Nenašli sa žiadne zhody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdisable.error.sameorg" xml:space="preserve">
         <source>User to deactivate must be in the same organization.</source>
-        <target/>
+        <target>Používateľ, ktorý sa má deaktivovať, musí byť v rovnakej organizácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdisable.error.onlyuser" xml:space="preserve">
         <source>This user is the last Organization Administrator for this Organization. You cannot remove him from the Organization Administrators group.</source>
-        <target/>
+        <target>Tento používateľ je posledným administrátorom organizácie pre túto organizáciu. Nemôžete ho odstrániť zo skupiny administrátorov organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdisable.error.otheruser" xml:space="preserve">
         <source>Only Organization Administrators can deactivate users other than themselves.</source>
-        <target/>
+        <target>Iba administrátori organizácie môžu deaktivovať iných používateľov ako seba.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.base.delete.error" xml:space="preserve">
         <source>You cannot delete the base Organization {0}</source>
-        <target/>
+        <target>Nemôžete vymazať základnú organizáciu {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDelete</context>
         </context-group>
@@ -3508,35 +3508,37 @@ a skúste to znova.
         <source>You cannot deactivate another organization
 administrator. Please remove the 'Organization Administrator' role from this
 user before attempting to deactivate their account.</source>
-        <target/>
+        <target>Nemôžete deaktivovať iného správcu organizácie.
+Prosím, odstráňte rolu 'Administrátor organizácie' z tohto
+používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdisable.error.userdisabled" xml:space="preserve">
         <source>User is already deactivated.</source>
-        <target/>
+        <target>Používateľ je už deaktivovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userenable.error.usernotdisabled" xml:space="preserve">
         <source>Only deactivated users can be reactivated.</source>
-        <target/>
+        <target>Znovu aktivovať možno len deaktivovaných používateľov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userenable.error.sameorg" xml:space="preserve">
         <source>User to reactivate must be in the same organization.</source>
-        <target/>
+        <target>Používateľ, ktorý sa má znovu aktivovať, musí byť v rovnakej organizácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userenable.error.orgadmin" xml:space="preserve">
         <source>You must be an Organization Administrator to enable a user.</source>
-        <target/>
+        <target>Ak chcete povoliť používateľa, musíte byť administrátorom organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
