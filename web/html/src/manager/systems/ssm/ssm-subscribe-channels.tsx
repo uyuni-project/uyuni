@@ -72,7 +72,6 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
             identifier={(srv) => srv.id}
             initialSortColumnKey="modified"
             initialSortDirection={-1}
-            initialItemsPerPage={window.userPrefPageSize}
           >
             <Column
               columnKey="name"
@@ -165,7 +164,6 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
           identifier={(channel) => channel.base.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
-          initialItemsPerPage={window.userPrefPageSize}
         >
           <Column
             columnKey="name"
@@ -763,7 +761,6 @@ class ResultPage extends React.Component<ResultPageProps> {
           identifier={(dto) => dto.server.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
-          initialItemsPerPage={window.userPrefPageSize}
         >
           <Column
             columnKey="server"

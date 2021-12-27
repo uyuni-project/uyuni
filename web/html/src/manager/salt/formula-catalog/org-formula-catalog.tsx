@@ -95,7 +95,6 @@ class FormulaCatalog extends React.Component<Props, State> {
             data={this.state.serverData}
             identifier={this.rowKey}
             initialSortColumnKey="name"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by formula name")} />}
           >
             <Column
