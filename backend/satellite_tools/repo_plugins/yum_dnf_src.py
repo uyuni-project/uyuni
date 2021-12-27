@@ -139,6 +139,10 @@ class ContentSource(zypper_ContentSource):
                 repo.repofile = yumsrc_conf
                 # pylint: disable=W0212
                 repo._populate(self.configparser, name, yumsrc_conf)
+
+            # Configure as module hotfix repo to avoid unwanted package filter (bz#2035577)
+            repo.module_hotfixes = "true"
+
             self.repo = repo
 
             self.yumbase = self.dnfbase # for compatibility
