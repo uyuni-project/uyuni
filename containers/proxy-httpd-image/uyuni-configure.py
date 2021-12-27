@@ -13,7 +13,7 @@ with open(config_path + "config.yaml") as source:
     
     # Save the systemid file
     with open("/etc/sysconfig/rhn/systemid", "w") as file:
-        file.write(str(config['system_id']))
+        file.write(base64.b64decode(config['binary_system_id']).decode())
     
     # Decode and install SSL CA certificate
     with open("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w") as file:
@@ -71,4 +71,4 @@ os.system('chown -R root:root /srv/www/htdocs/pub')
 os.system('chmod -R 755 /srv/www/htdocs/pub')
 os.system('chown -R wwwrun:www /var/spool/rhn-proxy')
 os.system('chmod -R 750 /var/spool/rhn-proxy')
-
+os.system('chown -R wwwrun:root /var/cache/rhn/proxy-auth')
