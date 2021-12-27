@@ -3545,14 +3545,14 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="reactivateusers.none" xml:space="preserve">
         <source>Choose at least one user to reactivate.</source>
-        <target/>
+        <target>Vyberte aspoň jedného používateľa, ktorého chcete znovu aktivovať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="enable.confirmed" xml:space="preserve">
         <source>{0} user successfully reactivated.</source>
-        <target/>
+        <target>{0} používateľ úspešne znovu aktivovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
           <context context-type="paramnotes">1 user successfully reactivated.</context>
@@ -3560,7 +3560,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="enable.confirmed.plural" xml:space="preserve">
         <source>{0} users successfully reactivated.</source>
-        <target/>
+        <target>{0} používatelia úspešne znovu aktivovaní.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
           <context context-type="paramnotes">7 users successfully reactivated.</context>
@@ -3568,37 +3568,37 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="errata.applynone" xml:space="preserve">
         <source>No patches selected.</source>
-        <target/>
+        <target>Žiadne opravy neboli vybrané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.none" xml:space="preserve">
         <source>No systems selected.</source>
-        <target/>
+        <target>Žiadne systémy neboli vybrané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroups.none" xml:space="preserve">
         <source>No system groups selected.</source>
-        <target/>
+        <target>Žiadne systémové skupiny neboli vybrané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroups.create.successmessage" xml:space="preserve">
         <source>System group {0} created.</source>
-        <target/>
+        <target>Vytvorená systémová skupina {0}.</target>
       </trans-unit>
       <trans-unit id="systemgroups.edit.successmessage" xml:space="preserve">
         <source>System group {0} updated.</source>
-        <target/>
+        <target>Aktualizovaná systémová skupina {0}.</target>
       </trans-unit>
       <!-- Errata creation validation errors -->
       <trans-unit id="product" xml:space="preserve">
         <source>Product</source>
-        <target/>
+        <target>Produkt</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3606,7 +3606,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="advisory" xml:space="preserve">
         <source>Advisory</source>
-        <target/>
+        <target>Upozornenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
