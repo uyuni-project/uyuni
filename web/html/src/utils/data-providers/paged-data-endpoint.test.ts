@@ -1,9 +1,10 @@
 import { mocked } from "ts-jest/utils";
+
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import PagedDataEndpoint from "./paged-data-endpoint";
 import PageControl from "./page-control";
+import PagedDataEndpoint from "./paged-data-endpoint";
 
 jest.mock("../network");
 

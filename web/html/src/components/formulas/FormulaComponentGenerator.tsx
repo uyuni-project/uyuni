@@ -1,10 +1,14 @@
 import * as React from "react";
+
+import { default as Jexl } from "jexl";
+
+import HelpIcon from "components/utils/HelpIcon";
+
+import { Formulas, Utils } from "utils/functions";
+
 import EditGroup from "./EditGroup";
 import Group from "./Group";
 import PasswordInput from "./PasswordInput";
-import { default as Jexl } from "jexl";
-import HelpIcon from "components/utils/HelpIcon";
-import { Utils, Formulas } from "utils/functions";
 const { capitalize, deepCopy } = Utils;
 const { getEditGroupSubtype, EditGroupSubtype } = Formulas;
 

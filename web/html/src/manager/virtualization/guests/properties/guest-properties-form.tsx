@@ -1,12 +1,13 @@
-import { ActionChain } from "components/action-schedule";
-import { MessageType } from "components/messages";
-
 import * as React from "react";
-import { Panel } from "components/panels/Panel";
-import { Form } from "components/input/Form";
-import { SubmitButton, Button } from "components/buttons";
-import { Messages } from "components/messages";
+
+import { ActionChain } from "components/action-schedule";
 import { ActionSchedule } from "components/action-schedule";
+import { Button, SubmitButton } from "components/buttons";
+import { Form } from "components/input/Form";
+import { MessageType } from "components/messages";
+import { Messages } from "components/messages";
+import { Panel } from "components/panels/Panel";
+
 import { localizedMoment } from "utils";
 
 type Props = {

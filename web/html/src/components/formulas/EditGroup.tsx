@@ -1,12 +1,16 @@
+import "./formula-form.css";
+
 import * as React from "react";
-import { Utils, Formulas } from "utils/functions";
+
+import HelpIcon from "components/utils/HelpIcon";
+
+import { Formulas, Utils } from "utils/functions";
+
 import {
   ElementDefinition,
   generateFormulaComponent,
   generateFormulaComponentForId,
 } from "./FormulaComponentGenerator";
-import HelpIcon from "components/utils/HelpIcon";
-import "./formula-form.css";
 import SectionToggle from "./SectionToggle";
 
 const EditGroupSubtype = Formulas.EditGroupSubtype;

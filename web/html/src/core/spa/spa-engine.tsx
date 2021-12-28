@@ -1,9 +1,13 @@
-import * as React from "react";
-import App, { HtmlScreen } from "senna";
 import "senna/build/senna.css";
 import "./spa-engine.css";
-import { showErrorToastr } from "components/toastr/toastr";
+
+import * as React from "react";
+
+import App, { HtmlScreen } from "senna";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { showErrorToastr } from "components/toastr/toastr";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];

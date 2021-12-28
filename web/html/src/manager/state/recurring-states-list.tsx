@@ -1,11 +1,13 @@
 import * as React from "react";
-import { InnerPanel } from "components/panels/InnerPanel";
+
 import { Button } from "components/buttons";
-import { Toggler } from "components/toggler";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { Toggler } from "components/toggler";
+
 import { targetTypeToString } from "./recurring-states-utils";
 import { pageSize } from "core/user-preferences";
 

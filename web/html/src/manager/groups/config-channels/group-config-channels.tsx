@@ -1,8 +1,11 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { ConfigChannels } from "components/config-channels";
 import { Utils as MessagesUtils } from "components/messages";
+
 import Network from "utils/network";
-import SpaRenderer from "core/spa/spa-renderer";
 
 // See java/build/classes/com/suse/manager/webui/templates/groups/custom.jade
 declare global {

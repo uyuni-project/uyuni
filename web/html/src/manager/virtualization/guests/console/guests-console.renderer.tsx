@@ -1,6 +1,8 @@
 import * as React from "react";
-import GuestsConsole from "./guests-console";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import GuestsConsole from "./guests-console";
 
 type RendererProps = {
   hostId: string;

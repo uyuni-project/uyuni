@@ -1,12 +1,15 @@
 import * as React from "react";
-import { ToolTip, CsvLink, humanReadablePolicy } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
-import { Table } from "components/table/Table";
+
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
-import { localizedMoment } from "utils";
+
+import { CsvLink, humanReadablePolicy, ToolTip } from "./subscription-matching-util";
+import { WarningIcon } from "./subscription-matching-util";
 
 type SubscriptionsProps = {
   subscriptions: any[];

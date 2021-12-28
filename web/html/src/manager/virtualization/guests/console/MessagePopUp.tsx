@@ -1,10 +1,11 @@
 import * as React from "react";
-import { PopUp } from "components/popup";
-import { Loading } from "components/utils/Loading";
-import { Form } from "components/input/Form";
-import { Password } from "components/input/Password";
+
 import { Button } from "components/buttons";
 import { hideDialog } from "components/dialog/util";
+import { Form } from "components/input/Form";
+import { Password } from "components/input/Password";
+import { PopUp } from "components/popup";
+import { Loading } from "components/utils/Loading";
 
 export type PopupState = "wait" | "askPassword" | "errors";
 

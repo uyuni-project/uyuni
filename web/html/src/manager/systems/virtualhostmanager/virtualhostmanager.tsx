@@ -1,13 +1,17 @@
 import * as React from "react";
-import Network from "utils/network";
-import { TopPanel } from "components/panels/TopPanel";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { DropdownButton } from "components/buttons";
 import { Messages } from "components/messages";
-import { VirtualHostManagerList } from "./virtualhostmanager-list";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
+import Network from "utils/network";
+
 import { VirtualHostManagerDetails } from "./virtualhostmanager-details";
 import { VirtualHostManagerEdit } from "./virtualhostmanager-edit";
-import { Utils as MessagesUtils } from "components/messages";
-import SpaRenderer from "core/spa/spa-renderer";
+import { VirtualHostManagerList } from "./virtualhostmanager-list";
 
 const hashUrlRegex = /^#\/([^/]*)(?:\/(.+))?$/;
 

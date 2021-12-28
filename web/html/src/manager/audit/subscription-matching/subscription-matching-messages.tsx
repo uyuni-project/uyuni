@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Table } from "components/table/Table";
+
 import { Column } from "components/table/Column";
-import { CsvLink } from "./subscription-matching-util";
+import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
+
+import { CsvLink } from "./subscription-matching-util";
 
 type Props = {
   messages: any[];

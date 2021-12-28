@@ -1,7 +1,9 @@
 import * as React from "react";
-import { TableDataHandler } from "./TableDataHandler";
-import { SearchField } from "./SearchField";
+
 import { cloneReactElement } from "components/utils";
+
+import { SearchField } from "./SearchField";
+import { TableDataHandler } from "./TableDataHandler";
 
 type Props = {
   /** any type of data in an array, where each element is a row data */

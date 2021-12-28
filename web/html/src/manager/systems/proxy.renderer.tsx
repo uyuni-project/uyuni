@@ -1,6 +1,8 @@
 import * as React from "react";
-import { Proxy } from "./proxy";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { Proxy } from "./proxy";
 
 export const renderer = (id) =>
   SpaRenderer.renderNavigationReact(

@@ -1,11 +1,14 @@
-import ChildChannels from "./child-channels";
-import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import * as React from "react";
-import { Loading } from "components/utils/Loading";
+
+import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
+
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
+import { Loading } from "components/utils/Loading";
+
+import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import { availableChannelsType, ChannelDto } from "./activation-key-channels-api";
+import ChildChannels from "./child-channels";
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number;

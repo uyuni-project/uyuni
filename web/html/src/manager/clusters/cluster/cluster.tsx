@@ -1,23 +1,26 @@
 import { hot } from "react-hot-loader/root";
-import withPageWrapper from "components/general/with-page-wrapper";
+
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { HashRouter, Route, Switch } from "components/utils/HashRouter";
-import { TabLabel } from "components/tab-container";
-import ClusterOverview from "./cluster-overview";
-import ManagementSettings from "./cluster-config";
-import useClustersApi, { withErrorMessages } from "../shared/api/use-clusters-api";
-import useRoles from "core/auth/use-roles";
+
 import { isClusterAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import { LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { showDialog } from "components/dialog/util";
+import withPageWrapper from "components/general/with-page-wrapper";
+import { ActionChainLink, ActionLink } from "components/links";
 import { fromServerMessage } from "components/messages";
-import { ActionLink, ActionChainLink } from "components/links";
+import { MessageType, ServerMessageType } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { TabLabel } from "components/tab-container";
+import { HashRouter, Route, Switch } from "components/utils/HashRouter";
 
+import useClustersApi, { withErrorMessages } from "../shared/api/use-clusters-api";
 import { ClusterType, ErrorMessagesType } from "../shared/api/use-clusters-api";
-import { ServerMessageType, MessageType } from "components/messages";
+import ManagementSettings from "./cluster-config";
+import ClusterOverview from "./cluster-overview";
 
 const msgMap = {
   action_scheduled: (actionId) => (

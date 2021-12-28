@@ -1,24 +1,28 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton, Button } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { FromNow } from "components/datetime";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
 import { PopUp } from "components/popup";
 import { TabContainer } from "components/tab-container";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
+
 import { ImageViewOverview } from "./image-view-overview";
-import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewPackages } from "./image-view-packages";
+import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewRuntime } from "./image-view-runtime";
-import { FromNow } from "components/datetime";
-import SpaRenderer from "core/spa/spa-renderer";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
 declare global {

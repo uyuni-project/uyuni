@@ -1,10 +1,13 @@
 import * as React from "react";
+
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import { AsyncButton, Button } from "../components/buttons";
 import { Messages, MessageType } from "../components/messages";
 import Network from "../utils/network";
-import { Button, AsyncButton } from "../components/buttons";
-import { Utils } from "utils/functions";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
