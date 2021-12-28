@@ -3614,7 +3614,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="synopsis" xml:space="preserve">
         <source>Synopsis</source>
-        <target/>
+        <target>Súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3622,7 +3622,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="advisoryName" xml:space="preserve">
         <source>Advisory</source>
-        <target/>
+        <target>Upozornenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3630,7 +3630,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="advisoryType" xml:space="preserve">
         <source>Advisory Type</source>
-        <target/>
+        <target>Typ upozornenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3638,7 +3638,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="advisoryRelease" xml:space="preserve">
         <source>Advisory Release</source>
-        <target/>
+        <target>Vydanie upozornenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3646,7 +3646,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="packageName" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target>Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3654,7 +3654,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="packageNvre" xml:space="preserve">
         <source>Package NVRE</source>
-        <target/>
+        <target>NVRE balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3662,7 +3662,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="packageArch" xml:space="preserve">
         <source>Package Architecture</source>
-        <target/>
+        <target>Architektúra balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3670,7 +3670,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="summary" xml:space="preserve">
         <source>Summary</source>
-        <target/>
+        <target>Súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3678,7 +3678,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="topic" xml:space="preserve">
         <source>Topic</source>
-        <target/>
+        <target>Predmet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3686,7 +3686,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="description" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target>Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
