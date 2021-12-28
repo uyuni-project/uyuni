@@ -1,9 +1,10 @@
 import * as React from "react";
 
+import { pageSize } from "core/user-preferences";
+
 import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
 import { Comparator, PagedData } from "utils/data-providers";
 import { Utils } from "utils/functions";
-import { pageSize } from "core/user-preferences";
 
 import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
 import { Header } from "./Header";

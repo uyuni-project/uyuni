@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { pageSize } from "core/user-preferences";
+
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
@@ -9,7 +11,6 @@ import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
 import { targetTypeToString } from "./recurring-states-utils";
-import { pageSize } from "core/user-preferences";
 
 type Props = {
   data?: any;
