@@ -105,7 +105,6 @@ class Pins extends React.Component<PinsProps> {
             key="table"
             data={this.buildRows(this.props)}
             identifier={(row) => row.id}
-            initialItemsPerPage={window.userPrefPageSize}
             initialSortColumnKey="systemName"
           >
             <Column
@@ -274,7 +273,6 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
             data={this.buildRows()}
             identifier={(row) => row.id}
             initialSortColumnKey="name"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
           >
             <Column
@@ -363,12 +361,7 @@ class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorPro
   render() {
     if (this.props.subscriptions.length > 0) {
       return (
-        <Table
-          key="table"
-          data={this.props.subscriptions}
-          identifier={(row) => row.id}
-          initialItemsPerPage={window.userPrefPageSize}
-        >
+        <Table key="table" data={this.props.subscriptions} identifier={(row) => row.id}>
           <Column columnKey="partNumber" header={t("Part number")} cell={(s) => s.partNumber} />
           <Column columnKey="description" header={t("Description")} cell={(s) => s.description} />
           <Column columnKey="policy" header={t("Policy")} cell={(s) => humanReadablePolicy(s.policy)} />

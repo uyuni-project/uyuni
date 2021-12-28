@@ -41,7 +41,6 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
       <Table
         data={props.data}
         identifier={(row) => row.name}
-        initialItemsPerPage={window.userPrefPageSize}
         emptyText={t("No calendars created. Use Create to add a calendar.")}
       >
         <Column columnKey="calendarName" header={t("Calendar Name")} cell={(row) => row.name} />

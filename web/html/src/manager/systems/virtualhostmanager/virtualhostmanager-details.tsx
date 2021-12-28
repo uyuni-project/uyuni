@@ -71,12 +71,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
         </BootstrapPanel>
         {this.state.nodes && this.state.nodes.length > 0 && (
           <BootstrapPanel title={t("Nodes")}>
-            <Table
-              data={this.state.nodes}
-              identifier={(node) => node.type + "_" + node.id}
-              initialSortColumnKey="name"
-              initialItemsPerPage={window.userPrefPageSize}
-            >
+            <Table data={this.state.nodes} identifier={(node) => node.type + "_" + node.id} initialSortColumnKey="name">
               <Column
                 columnKey="name"
                 comparator={Utils.sortByText}

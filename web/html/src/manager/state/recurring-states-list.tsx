@@ -7,6 +7,7 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { targetTypeToString } from "./recurring-states-utils";
+import { pageSize } from "core/user-preferences";
 
 type Props = {
   data?: any;
@@ -68,7 +69,7 @@ class RecurringStatesList extends React.Component<Props, State> {
               data={this.props.data}
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
-              initialItemsPerPage={this.props.disableCreate ? window.userPrefPageSize : 0}
+              initialItemsPerPage={this.props.disableCreate ? pageSize : 0}
               emptyText={t(
                 "No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule.")
               )}

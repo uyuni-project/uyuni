@@ -49,12 +49,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
         <div>
-          <Table
-            data={this.buildData(this.props)}
-            identifier={(row) => row.id}
-            initialSortColumnKey="productName"
-            initialItemsPerPage={window.userPrefPageSize}
-          >
+          <Table data={this.buildData(this.props)} identifier={(row) => row.id} initialSortColumnKey="productName">
             <Column
               columnKey="productName"
               comparator={Utils.sortByText}
@@ -139,7 +134,6 @@ class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
         data={this.buildTableData(this.props)}
         identifier={(row) => row.id}
         initialSortColumnKey="systemName"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
       >
         <Column

@@ -245,7 +245,6 @@ class CVEAudit extends React.Component<Props, State> {
             data={this.state.results}
             identifier={(row) => row.id}
             initialSortColumnKey="id"
-            initialItemsPerPage={window.userPrefPageSize}
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
             selectedItems={this.state.selectedItems}

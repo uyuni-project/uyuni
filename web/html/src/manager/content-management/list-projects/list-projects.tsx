@@ -88,7 +88,6 @@ const ListProjects = (props: Props) => {
         data={normalizedProjects}
         identifier={(row) => row.label}
         initialSortColumnKey="name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by any value")} />}
       >
         <Column

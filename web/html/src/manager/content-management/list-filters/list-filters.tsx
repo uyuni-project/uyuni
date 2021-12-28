@@ -151,7 +151,6 @@ const ListFilters = (props: Props) => {
         data={displayedFilters}
         identifier={identifier}
         initialSortColumnKey="filter_name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name or project")} />}
         selectable={true}
         onSelect={onSelect}

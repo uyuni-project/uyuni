@@ -191,7 +191,6 @@ class TaskoTop extends React.Component<Props> {
               identifier={(row) => row["id"]}
               cssClassFunction={(row) => (row["status"] === "skipped" ? "text-muted" : null)}
               initialSortColumnKey="status"
-              initialItemsPerPage={window.userPrefPageSize}
               searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
             >
               <Column columnKey="id" comparator={Utils.sortById} header={t("Task Id")} cell={(row) => row["id"]} />
