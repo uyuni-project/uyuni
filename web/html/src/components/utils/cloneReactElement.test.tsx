@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { render, screen } from "utils/test-utils";
+
 import { cloneReactElement } from "./cloneReactElement";
 
 describe("cloneReactElement", () => {

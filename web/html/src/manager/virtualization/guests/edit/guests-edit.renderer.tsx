@@ -1,7 +1,10 @@
 import * as React from "react";
-import { GuestsEdit } from "./guests-edit";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { ActionChain } from "components/action-schedule";
+
+import { GuestsEdit } from "./guests-edit";
 
 type RendererProps = {
   host: any;

@@ -1,6 +1,5 @@
+import { Comparator, PagedData } from "./index";
 import PageControl from "./page-control";
-
-import { PagedData, Comparator } from "./index";
 
 export default class SimpleDataProvider {
   data: Array<any>;

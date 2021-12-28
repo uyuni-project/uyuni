@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { IconTag } from "./icontag";
 
 function statusDisplay(system: any, isAdmin: boolean) {

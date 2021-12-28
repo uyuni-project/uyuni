@@ -1,4 +1,5 @@
 import { SpiceMainConn } from "@spice-project/spice-html5";
+
 import { ConsoleClientType } from "./guests-console-types";
 
 class SpiceClient implements ConsoleClientType {

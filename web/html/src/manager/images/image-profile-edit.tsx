@@ -1,17 +1,21 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages } from "components/messages";
-import Network from "utils/network";
-import { SubmitButton, Button } from "components/buttons";
+
+import { default as ReactSelect } from "react-select";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { Button, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Select } from "components/input/Select";
-import { default as ReactSelect } from "react-select";
 import { Text } from "components/input/Text";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { Utils } from "utils/functions";
-import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/edit-profile.jade
 declare global {

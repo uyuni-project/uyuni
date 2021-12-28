@@ -1,7 +1,9 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { Button } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
-import SpaRenderer from "core/spa/spa-renderer";
 
 type MinionResultViewProps = {
   id?: any;

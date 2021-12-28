@@ -1,28 +1,33 @@
+import "./project.css";
+
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import Sources from "../shared/components/panels/sources/sources";
-import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
-import Build from "../shared/components/panels/build/build";
-import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
-import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+
+import _groupBy from "lodash/groupBy";
 import _isEmpty from "lodash/isEmpty";
-import "./project.css";
+import _last from "lodash/last";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+import useInterval from "core/hooks/use-interval";
+
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import withPageWrapper from "components/general/with-page-wrapper";
+import { TopPanel } from "components/panels/TopPanel";
+import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 
-import { ProjectType } from "../shared/type/project.type";
-import _last from "lodash/last";
-import _groupBy from "lodash/groupBy";
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
-import useInterval from "core/hooks/use-interval";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
-import FiltersProject from "../shared/components/panels/filters-project/filters-project";
-import statesEnum from "../shared/business/states.enum";
 import { getClmFilterDescription } from "../shared/business/filters.enum";
+import statesEnum from "../shared/business/states.enum";
+import Build from "../shared/components/panels/build/build";
+import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
+import FiltersProject from "../shared/components/panels/filters-project/filters-project";
+import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
+import Sources from "../shared/components/panels/sources/sources";
+import { ProjectType } from "../shared/type/project.type";
 
 type Props = {
   project: ProjectType;

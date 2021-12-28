@@ -1,5 +1,6 @@
 import * as React from "react";
-import { render, screen, openMenu, select, getFieldValuesByName, clearFirst, type } from "utils/test-utils";
+
+import { clearFirst, getFieldValuesByName, openMenu, render, screen, select, type } from "utils/test-utils";
 
 import { Form } from "./Form";
 import { Select } from "./Select";

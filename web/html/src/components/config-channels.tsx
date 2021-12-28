@@ -1,13 +1,16 @@
 import * as React from "react";
-import { AsyncButton } from "../components/buttons";
+
 import { InnerPanel } from "components/panels/InnerPanel";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import { AsyncButton } from "../components/buttons";
 import { TextField } from "../components/fields";
 import { Messages, MessageType } from "../components/messages";
 import { Utils as MessagesUtils } from "../components/messages";
-import Network from "../utils/network";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { RankingTable } from "../components/ranking-table";
 import { SaltStatePopup } from "../components/salt-state-popup";
+import Network from "../utils/network";
 
 function channelKey(channel) {
   return channel.label;

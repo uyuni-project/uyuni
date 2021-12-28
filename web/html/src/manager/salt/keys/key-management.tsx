@@ -1,13 +1,16 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 import { Highlight } from "components/table/Highlight";
-import SpaRenderer from "core/spa/spa-renderer";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 function listKeys() {
   return Network.get("/rhn/manager/api/systems/keys");

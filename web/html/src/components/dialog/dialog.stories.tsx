@@ -1,9 +1,11 @@
 import * as React from "react";
+
 import { storiesOf } from "@storybook/react";
-import { DeleteDialog } from "./DeleteDialog";
-import { ActionConfirm } from "./ActionConfirm";
-import { ModalLink } from "./ModalLink";
+
 import { Button } from "../buttons";
+import { ActionConfirm } from "./ActionConfirm";
+import { DeleteDialog } from "./DeleteDialog";
+import { ModalLink } from "./ModalLink";
 
 storiesOf("Dialogs", module)
   .add("delete dialog", () => (

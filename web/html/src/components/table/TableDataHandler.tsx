@@ -1,14 +1,15 @@
 import * as React from "react";
 
-import { Header } from "./Header";
-import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
-import { SearchPanel } from "./SearchPanel";
-import { SearchField } from "./SearchField";
-import { PageControl, SimpleDataProvider, AsyncDataProvider } from "utils/data-providers";
-import { Utils } from "utils/functions";
 import { pageSize } from "core/user-preferences";
 
-import { PagedData, Comparator } from "utils/data-providers";
+import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
+import { Comparator, PagedData } from "utils/data-providers";
+import { Utils } from "utils/functions";
+
+import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
+import { Header } from "./Header";
+import { SearchField } from "./SearchField";
+import { SearchPanel } from "./SearchPanel";
 
 type ChildrenArgsProps = {
   currItems: Array<any>;

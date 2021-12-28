@@ -1,10 +1,13 @@
 import * as React from "react";
-import { AnsiblePath } from "./ansible-path-type";
-import Network from "utils/network";
-import { Messages, Utils } from "components/messages";
-import { Loading } from "components/utils/Loading";
+
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
+import { Messages, Utils } from "components/messages";
+import { Loading } from "components/utils/Loading";
+
+import Network from "utils/network";
+
+import { AnsiblePath } from "./ansible-path-type";
 
 type PropsType = {
   path: AnsiblePath;

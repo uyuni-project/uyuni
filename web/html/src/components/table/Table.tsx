@@ -1,5 +1,7 @@
-import { Button } from "components/buttons";
 import * as React from "react";
+
+import { Button } from "components/buttons";
+
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
 import { TableDataHandler } from "./TableDataHandler";

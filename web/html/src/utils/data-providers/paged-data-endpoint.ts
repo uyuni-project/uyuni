@@ -1,8 +1,9 @@
 import { debounce } from "lodash";
-import Network from "utils/network";
-import PageControl from "./page-control";
 
 import { Cancelable } from "utils/functions";
+import Network from "utils/network";
+
+import PageControl from "./page-control";
 
 /**
  * Provides a data endpoint with pagination, filtering and sorting capabilities
