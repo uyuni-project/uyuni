@@ -3694,7 +3694,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="solution" xml:space="preserve">
         <source>Solution</source>
-        <target/>
+        <target>Riešenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3702,7 +3702,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="buglistId" xml:space="preserve">
         <source>Bug ID</source>
-        <target/>
+        <target>ID chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3710,7 +3710,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="buglistSummary" xml:space="preserve">
         <source>Bug Summary</source>
-        <target/>
+        <target>Zhrnutie chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3718,7 +3718,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="keywords" xml:space="preserve">
         <source>Keywords</source>
-        <target/>
+        <target>Kľúčové slová</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3726,42 +3726,42 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="Upgrade" xml:space="preserve">
         <source>Upgrade</source>
-        <target/>
+        <target>Zvýšiť verziu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Install" xml:space="preserve">
         <source>Install</source>
-        <target/>
+        <target>Inštalovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remove" xml:space="preserve">
         <source>Remove</source>
-        <target/>
+        <target>Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Groups" xml:space="preserve">
         <source>Groups</source>
-        <target/>
+        <target>Skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Events" xml:space="preserve">
         <source>Events</source>
-        <target/>
+        <target>Udalosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="type" xml:space="preserve">
         <source>Type</source>
-        <target/>
+        <target>Typ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyCreate.do</context>
         </context-group>
