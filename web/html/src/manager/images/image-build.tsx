@@ -74,15 +74,6 @@ class BuildImage extends React.Component<Props, State> {
       messages: [],
     };
 
-    [
-      "handleProfileChange",
-      "onFormChange",
-      "onValidate",
-      "onBuild",
-      "onDateTimeChanged",
-      "onActionChainChanged",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
-
     this.getProfiles();
   }
 
@@ -141,9 +132,9 @@ class BuildImage extends React.Component<Props, State> {
     });
   }
 
-  handleProfileChange(name, value) {
+  handleProfileChange = (name, value) => {
     this.changeProfile(value);
-  }
+  };
 
   changeProfile(id) {
     const model = Object.assign({}, this.state.model);
@@ -172,19 +163,19 @@ class BuildImage extends React.Component<Props, State> {
     return encodeURIComponent("/rhn/manager/cm/build" + (qstr ? "?" + qstr : ""));
   }
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  onDateTimeChanged(value: moment.Moment) {
+  onDateTimeChanged = (value: moment.Moment) => {
     const model: State["model"] = Object.assign({}, this.state.model, {
       earliest: value,
       actionChain: null,
@@ -193,9 +184,9 @@ class BuildImage extends React.Component<Props, State> {
       actionChain: null,
       model,
     });
-  }
+  };
 
-  onActionChainChanged(actionChain: ActionChain | null) {
+  onActionChainChanged = (actionChain: ActionChain | null) => {
     const model: State["model"] = Object.assign({}, this.state.model, {
       actionChain: actionChain?.text,
     });
@@ -203,9 +194,9 @@ class BuildImage extends React.Component<Props, State> {
       actionChain,
       model,
     });
-  }
+  };
 
-  onBuild(model) {
+  onBuild = (model) => {
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
         const msg = MessagesUtils.info(
@@ -238,7 +229,7 @@ class BuildImage extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   renderProfileSummary() {
     var p = this.state.profile;

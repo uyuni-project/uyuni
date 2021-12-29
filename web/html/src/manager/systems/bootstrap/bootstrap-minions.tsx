@@ -75,104 +75,86 @@ class BootstrapMinions extends React.Component<Props, State> {
     };
 
     this.state = this.initState;
-
-    [
-      "hostChanged",
-      "portChanged",
-      "userChanged",
-      "authMethodChanged",
-      "passwordChanged",
-      "privKeyPwdChanged",
-      "privKeyFileChanged",
-      "privKeyLoaded",
-      "onBootstrap",
-      "ignoreHostKeysChanged",
-      "manageWithSSHChanged",
-      "activationKeyChanged",
-      "reactivationKeyChanged",
-      "clearFields",
-      "proxyChanged",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
   }
 
-  hostChanged(event) {
+  hostChanged = (event) => {
     this.setState({
       host: event.target.value,
     });
-  }
+  };
 
-  portChanged(event) {
+  portChanged = (event) => {
     this.setState({
       port: event.target.value,
     });
-  }
+  };
 
-  userChanged(event) {
+  userChanged = (event) => {
     this.setState({
       user: event.target.value,
     });
-  }
+  };
 
-  authMethodChanged(event) {
+  authMethodChanged = (event) => {
     this.setState({
       authMethod: event.target.value,
     });
-  }
+  };
 
-  passwordChanged(event) {
+  passwordChanged = (event) => {
     this.setState({
       password: event.target.value,
     });
-  }
+  };
 
-  privKeyFileChanged(event) {
+  privKeyFileChanged = (event) => {
     this.setState({
       privKeyLoading: true,
     });
     const reader = new FileReader();
     reader.onload = (e) => this.privKeyLoaded(e.target?.result);
     reader.readAsText(event.target.files[0]);
-  }
+  };
 
-  privKeyLoaded(keyString) {
+  privKeyLoaded = (keyString) => {
     this.setState({
       // replace CRLF from Windows
       privKey: keyString.replace(/\r\n/g, "\n"),
       privKeyLoading: false,
     });
-  }
+  };
 
-  privKeyPwdChanged(event) {
+  privKeyPwdChanged = (event) => {
     this.setState({
       privKeyPwd: event.target.value,
     });
-  }
+  };
 
-  ignoreHostKeysChanged(event) {
+  ignoreHostKeysChanged = (event) => {
     this.setState({
       ignoreHostKeys: event.target.checked,
     });
-  }
+  };
 
-  manageWithSSHChanged(event) {
+  manageWithSSHChanged = (event) => {
     this.setState({
       manageWithSSH: event.target.checked,
     });
-  }
+  };
 
-  activationKeyChanged(event) {
+  activationKeyChanged = (event) => {
     this.setState({
       activationKey: event.target.value,
     });
-  }
+  };
 
-  reactivationKeyChanged(event) {
+  reactivationKeyChanged = (event) => {
     this.setState({
       reactivationKey: event.target.value,
     });
-  }
+  };
 
-  proxyChanged(event) {
+  proxyChanged = (event) => {
     var proxyId = event.target.value;
     var proxy = this.props.proxies.find((p) => DEPRECATED_unsafeEquals(p.id, proxyId));
     var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
@@ -180,9 +162,9 @@ class BootstrapMinions extends React.Component<Props, State> {
       proxy: event.target.value,
       showProxyHostnameWarn: showWarn,
     });
-  }
+  };
 
-  onBootstrap() {
+  onBootstrap = () => {
     this.setState({ messages: [], loading: true });
     var formData: any = {};
     formData["host"] = this.state.host.trim();
@@ -242,11 +224,11 @@ class BootstrapMinions extends React.Component<Props, State> {
       }
     );
     return request;
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState(this.initState);
-  }
+  };
 
   render() {
     var messages: React.ReactNode = null;

@@ -49,16 +49,6 @@ type State = {
 class VirtualHostManager extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    [
-      "deleteSelected",
-      "deleteVhm",
-      "handleBackAction",
-      "handleDetailsAction",
-      "handleEditAction",
-      "handleResponseError",
-      "getAvailableModules",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       vhms: [],
       messages: [],
@@ -85,11 +75,11 @@ class VirtualHostManager extends React.Component<Props, State> {
     this.clearMessages();
   }
 
-  handleResponseError(jqXHR) {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -107,17 +97,17 @@ class VirtualHostManager extends React.Component<Props, State> {
       .catch(this.handleResponseError);
   }
 
-  getAvailableModules() {
+  getAvailableModules = () => {
     return Network.get("/rhn/manager/api/vhms/modules")
       .then((data) => this.setState({ availableModules: data }))
       .catch(this.handleResponseError);
-  }
+  };
 
-  deleteSelected() {
+  deleteSelected = () => {
     this.deleteVhm(this.state.selected);
-  }
+  };
 
-  deleteVhm(item) {
+  deleteVhm = (item) => {
     if (!item) return false;
     return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
       .then((data) => {
@@ -127,34 +117,34 @@ class VirtualHostManager extends React.Component<Props, State> {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   getCreateType() {
     const types = ["file", "vmware", "kubernetes", "amazonec2", "googlece", "azure", "nutanixahv"];
     return types.includes(this.state.id) ? this.state.id : types[0];
   }
 
-  handleBackAction() {
+  handleBackAction = () => {
     this.getVhmList().then((data) => {
       const loc = window.location;
       window.history.pushState(null, "", loc.pathname + loc.search);
     });
     this.getAvailableModules();
-  }
+  };
 
-  handleDetailsAction(row) {
+  handleDetailsAction = (row) => {
     this.getVhmDetails(row.id).then((data) => {
       this.setState({ selected: data.data, action: "details" });
       window.history.pushState(null, "", "#/details/" + row.id);
     });
-  }
+  };
 
-  handleEditAction(row) {
+  handleEditAction = (row) => {
     this.getVhmDetails(row.id).then((data) => {
       this.setState({ selected: data.data, action: "edit" });
       window.history.pushState(null, "", "#/edit/" + row.id);
     });
-  }
+  };
 
   getPanelTitle() {
     const action = this.state.action;

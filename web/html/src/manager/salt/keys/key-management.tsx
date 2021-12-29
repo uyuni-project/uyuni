@@ -100,7 +100,6 @@ type State = {
 class KeyManagement extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["searchData", "rowKey", "reloadKeys"].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       keys: [],
       isOrgAdmin: false,
@@ -109,7 +108,7 @@ class KeyManagement extends React.Component<Props, State> {
     this.reloadKeys();
   }
 
-  reloadKeys() {
+  reloadKeys = () => {
     this.setState({ loading: true });
     return listKeys().then((data) => {
       this.setState({
@@ -118,13 +117,13 @@ class KeyManagement extends React.Component<Props, State> {
         loading: false,
       });
     });
-  }
+  };
 
-  rowKey(rowData) {
+  rowKey = (rowData) => {
     return rowData.id;
-  }
+  };
 
-  searchData(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return (
         datum.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
@@ -132,7 +131,7 @@ class KeyManagement extends React.Component<Props, State> {
       );
     }
     return true;
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
