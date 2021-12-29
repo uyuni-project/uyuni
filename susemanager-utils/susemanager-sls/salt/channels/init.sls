@@ -5,7 +5,7 @@
 {%- set is_dnf = salt['pkg.version']("dnf") %}
 
 {%- if is_dnf %}
-{%- set dnf_plugins = salt['cmd.run']("find /usr/lib -type d -name dnf-plugins -printf "%T@ %p\n" | sort -nr | cut -d " " -s -f 2- | head -n 1", python_shell=True) %}
+{%- set dnf_plugins = salt['cmd.run']("find /usr/lib -type d -name dnf-plugins -printf '%T@ %p\n' | sort -nr | cut -d ' ' -s -f 2- | head -n 1", python_shell=True) %}
 {%- if dnf_plugins %}
 mgrchannels_susemanagerplugin_dnf:
   file.managed:
