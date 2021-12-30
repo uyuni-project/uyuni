@@ -3768,35 +3768,35 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="patch.applynone" xml:space="preserve">
         <source>No patches selected.</source>
-        <target/>
+        <target>Žiadne opravy neboli vybrané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.lastcheckin" xml:space="preserve">
         <source>System last check-in:</source>
-        <target/>
+        <target>Posledné prihlásenie do systému:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.current" xml:space="preserve">
         <source>Current @@PRODUCT_NAME@@ time:</source>
-        <target/>
+        <target>Aktuálny čas @@PRODUCT_NAME@@:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.awol" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; This system has not checked into the @@PRODUCT_NAME@@ recently. Since a system cannot be updated if it does not check in to @@PRODUCT_NAME@@, it is unlikely that this action will succeed.&lt;br/&gt;&lt;br/&gt; Please check the system logs.</source>
-        <target/>
+        <target>&lt;strong&gt;POZNÁMKA:&lt;/strong&gt; Tento systém sa v poslednom čase neprihlásil do @@PRODUCT_NAME@@. Keďže systém nie je možné aktualizovať, ak sa neprihlási k @@PRODUCT_NAME@@, je nepravdepodobné, že táto akcia bude úspešná.&lt;br/&gt;&lt;br/&gt; Prosím, skontrolujte systémové záznamy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.categorizeFormat" xml:space="preserve">
         <source>{0} {1} {2}</source>
-        <target/>
+        <target>{0} {1} {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
           <context context-type="paramnotes">14 days ago</context>
@@ -3805,7 +3805,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="timetag.categorizeLongFormat" xml:space="preserve">
         <source>{0} {1}</source>
-        <target/>
+        <target>{0} {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
           <context context-type="paramnotes">{14 days 5 hours 37 minutes} {ago}</context>
@@ -3814,28 +3814,28 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="timetag.futuretense" xml:space="preserve">
         <source>from now</source>
-        <target/>
+        <target>odteraz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.pasttense" xml:space="preserve">
         <source>ago</source>
-        <target/>
+        <target>pred</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.year" xml:space="preserve">
         <source>year</source>
-        <target/>
+        <target>rok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.years" xml:space="preserve">
         <source>years</source>
-        <target/>
+        <target>roky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
