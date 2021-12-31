@@ -3842,70 +3842,70 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="timetag.month" xml:space="preserve">
         <source>month</source>
-        <target/>
+        <target>mesiac</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.months" xml:space="preserve">
         <source>months</source>
-        <target/>
+        <target>mesiace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.week" xml:space="preserve">
         <source>week</source>
-        <target/>
+        <target>týždeň</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.weeks" xml:space="preserve">
         <source>weeks</source>
-        <target/>
+        <target>týždne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.day" xml:space="preserve">
         <source>day</source>
-        <target/>
+        <target>deň</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.days" xml:space="preserve">
         <source>days</source>
-        <target/>
+        <target>dni</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.hour" xml:space="preserve">
         <source>hour</source>
-        <target/>
+        <target>hodina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.hours" xml:space="preserve">
         <source>hours</source>
-        <target/>
+        <target>hodiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.minute" xml:space="preserve">
         <source>minute</source>
-        <target/>
+        <target>minúta</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.minutes" xml:space="preserve">
         <source>minutes</source>
-        <target/>
+        <target>minúty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
