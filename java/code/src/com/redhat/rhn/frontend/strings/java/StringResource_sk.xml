@@ -4061,63 +4061,63 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="filterCreate.success" xml:space="preserve">
         <source>The filter {0} was successfully created</source>
-        <target/>
+        <target>Filter {0} bol úspešne vytvorený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.FilterCreateAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filterEdit.success" xml:space="preserve">
         <source>The filter {0} was successfully changed</source>
-        <target/>
+        <target>Filter {0} bol úspešne zmenený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.FilterEditAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.nopackagestosync" xml:space="preserve">
         <source>There are no packages to sync.</source>
-        <target/>
+        <target>Nie sú žiadne balíky na synchronizáciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.FilterEditAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="punctuation.colonwithspace" xml:space="preserve">
         <source>: </source>
-        <target/>
+        <target>: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.systems.monitoring.BaseProbeAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.duplicateprofilename" xml:space="preserve">
         <source>{0} is already in use. Please enter a different profile name.</source>
-        <target/>
+        <target>{0} sa už používa. Prosím, zadajte iný názov profilu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.serverdeleted.param" xml:space="preserve">
         <source>System profile &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Systémový profil &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.serverdeleted" xml:space="preserve">
         <source>System profile deleted.</source>
-        <target/>
+        <target>Systémový profil vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.servernotdeleted" xml:space="preserve">
         <source>System profile {0} could not be deleted.</source>
-        <target/>
+        <target>Systémový profil {0} sa nepodarilo vymazať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.servernotdeleted_cobbler" xml:space="preserve">
         <source>System profile {0} could not be deleted. Check cobbler service.</source>
-        <target/>
+        <target>Systémový profil {0} sa nepodarilo vymazať. Skontrolujte službu cobbler.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
