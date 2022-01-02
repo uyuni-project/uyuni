@@ -3975,7 +3975,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="Filters" xml:space="preserve">
         <source>Filters</source>
-        <target state="needs-translation">Filtre</target>
+        <target state="translated">Filtre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -3989,63 +3989,63 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="message.install" xml:space="preserve">
         <source>Install</source>
-        <target/>
+        <target>Inštalovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.actionremove" xml:space="preserve">
         <source>Remove</source>
-        <target/>
+        <target>Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.actiondowngrade" xml:space="preserve">
         <source>Downgrade to {0}</source>
-        <target/>
+        <target>Znížiť verziu na {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.actionupgrade" xml:space="preserve">
         <source>Upgrade to {0}</source>
-        <target/>
+        <target>Zvýšiť verziu na {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.profileneedsbasechannel" xml:space="preserve">
         <source>This system must be subscribed to a base channel before a package profile can be created.</source>
-        <target/>
+        <target>Tento systém musí byť pred vytvorením profilu balíka prihlásený k základnému kanálu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratum.delete" xml:space="preserve">
         <source>Deleted patches &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Vymazané opravy &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Delete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Active Filters" xml:space="preserve">
         <source>Active Filters</source>
-        <target/>
+        <target>Aktívne filtre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expired Filters" xml:space="preserve">
         <source>Expired Filters</source>
-        <target/>
+        <target>Vypršané filtre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.syncpackages" xml:space="preserve">
         <source>You have successfully &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a package profile sync for &lt;strong&gt;{2}&lt;/strong&gt; from &lt;strong&gt;{3}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Úspešne ste &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;naplánovali&lt;/a&gt;&lt;/strong&gt; synchronizáciu profilov balíkov pre &lt;strong&gt;{2}&lt;/strong&gt; z &lt;strong&gt;{3}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
@@ -4053,7 +4053,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
-        <target/>
+        <target>&lt;strong&gt;POZNÁMKA:&lt;/strong&gt; @@PRODUCT_NAME@@ má &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;naplánované&lt;/a&gt;&lt;/strong&gt; obnovenie hardvéru pre &lt;strong&gt;{2}&lt;/strong&gt;, ktoré sa má spustiť pred synchronizáciou profilov balíkov.  Toto je potrebné na overenie, či systém dokáže porovnávať balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
