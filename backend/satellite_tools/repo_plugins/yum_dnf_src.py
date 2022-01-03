@@ -17,6 +17,7 @@
 
 import dnf
 import hashlib
+import hawkey
 import logging
 import re
 import os.path
@@ -140,9 +141,6 @@ class ContentSource(zypper_ContentSource):
                 # pylint: disable=W0212
                 repo._populate(self.configparser, name, yumsrc_conf)
 
-            # Configure as module hotfix repo to avoid unwanted package filter (bz#2035577)
-            repo.module_hotfixes = "true"
-
             self.repo = repo
 
             self.yumbase = self.dnfbase # for compatibility
@@ -259,7 +257,7 @@ class ContentSource(zypper_ContentSource):
             except RepoError:
                 pass
 
-        rawpkglist = self.dnfbase.sack.query().run()
+        rawpkglist = self.dnfbase.sack.query(flags=hawkey.IGNORE_MODULAR_EXCLUDES).run()
         self.num_packages = len(rawpkglist)
 
         if not filters:
@@ -285,7 +283,7 @@ class ContentSource(zypper_ContentSource):
     def list_packages(self, filters, latest):
         """ list packages"""
         self.dnfbase.fill_sack(load_system_repo=False,load_available_repos=True)
-        pkglist = self.dnfbase.sack.query()
+        pkglist = self.dnfbase.sack.query(flags=hawkey.IGNORE_MODULAR_EXCLUDES)
         self.num_packages = len(pkglist)
         if latest:
             pkglist = pkglist.latest()
@@ -402,7 +400,7 @@ class ContentSource(zypper_ContentSource):
             else:
                 matches |= hkpkgs
         result = list(matches)
-        a = pkgSack.query().available() # Load all available packages from the repository
+        a = pkgSack.query(flags=hawkey.IGNORE_MODULAR_EXCLUDES).available() # Load all available packages from the repository
         result = a.filter(pkg=result).latest().run()
         return result
 
@@ -466,7 +464,7 @@ class ContentSource(zypper_ContentSource):
 #        Output: List of packages
 #
         results = {}
-        a = pkgSack.query().available()
+        a = pkgSack.query(flags=hawkey.IGNORE_MODULAR_EXCLUDES).available()
         for pkg in pkgs:
             results[pkg] = {}
             reqs = pkg.requires

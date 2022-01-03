@@ -1,4 +1,4 @@
-- Configure as module hotfix repo to avoid unwanted package filter (bz#2035577)
+- Ignore local modules when querying repositories.
 - Fixed mirror link usage for dnf.
 - Retrieve and store copyright information about patches
 - Unify decompression of metadata with uyuni.common.fileutils
