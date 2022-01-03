@@ -39,12 +39,6 @@ type ImageViewPatchesProps = {
 };
 
 class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
-  constructor(props) {
-    super(props);
-
-    ["renderType"].forEach((method) => (this[method] = this[method].bind(this)));
-  }
-
   searchData(row, criteria) {
     if (criteria) {
       return (
@@ -59,7 +53,7 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
     return criteria && criteria.length > 0;
   }
 
-  renderType(row) {
+  renderType = (row) => {
     let icon = [<i key={row.type} className={typeIcons[row.type]} title={typeTitles[row.type]} />];
 
     for (let k of row.keywords) {
@@ -67,7 +61,7 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
     }
 
     return icon;
-  }
+  };
 
   render() {
     const data = this.props.data;

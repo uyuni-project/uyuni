@@ -76,9 +76,6 @@ class CVEAudit extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    ["onCVEChange", "searchData", "handleSelectItems", "audit", "onCVEYearChange", "onTargetChange"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
     this.state = {
       cveNumber: "",
       cveYear: CURRENT_YEAR,
@@ -90,14 +87,14 @@ class CVEAudit extends React.Component<Props, State> {
     };
   }
 
-  searchData(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return datum.name.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
     }
     return true;
-  }
+  };
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     const removed = this.state.selectedItems.filter((i) => !items.includes(i));
     const isAdd = removed.length === 0;
     const list = isAdd ? items : removed;
@@ -109,23 +106,23 @@ class CVEAudit extends React.Component<Props, State> {
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
-  }
+  };
 
-  onTargetChange(e) {
+  onTargetChange = (e) => {
     const value = e.target.value;
     this.setState({
       target: value,
     });
-  }
+  };
 
-  onCVEYearChange(e) {
+  onCVEYearChange = (e) => {
     const value = e.target.value;
     this.setState({
       cveYear: value,
     });
-  }
+  };
 
-  onCVEChange(e) {
+  onCVEChange = (e) => {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
     if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
@@ -142,13 +139,13 @@ class CVEAudit extends React.Component<Props, State> {
         cveNumber: value,
       });
     }
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
   }
 
-  audit(target) {
+  audit = (target) => {
     cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
       if (data.success) {
         this.setState({
@@ -165,7 +162,7 @@ class CVEAudit extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   render() {
     return (
