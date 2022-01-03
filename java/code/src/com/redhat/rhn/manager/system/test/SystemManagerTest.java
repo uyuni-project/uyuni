@@ -120,6 +120,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -195,12 +196,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         });
         SaltApi saltApi = new TestSaltApi();
         VirtManager virtManager = new TestVirtManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager();
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
         createMetadataFiles();
