@@ -140,7 +140,7 @@ public class Router implements SparkApplication {
 
         // Admin Router
         AdminViewsController.initRoutes(jade);
-        AdminApiController.initRoutes();
+        AdminApiController.initRoutes(taskomaticApi);
 
         // Minions
         MinionController.initRoutes(jade);
