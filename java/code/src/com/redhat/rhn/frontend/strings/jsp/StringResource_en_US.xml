@@ -23715,6 +23715,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="schedule.jsp.noschedules" xml:space="preserve">
         <source>There're no schedules available.</source>
         <context-group name="ctx">
@@ -25152,6 +25158,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Products" xml:space="preserve">
         <source>Products</source>
+      </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
       </trans-unit>
       <trans-unit id="Bootstrap" xml:space="preserve">
         <source>Bootstrap</source>
