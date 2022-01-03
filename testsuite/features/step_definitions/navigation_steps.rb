@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -76,6 +76,13 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
     rescue Capybara::ModalNotFound
       # ignored
     end
+  end
+end
+
+When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do |seconds, text|
+  next if has_no_text?(text, wait: 3)
+  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
+    break if has_no_text?(text, wait: 3)
   end
 end
 
