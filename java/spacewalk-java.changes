@@ -1,3 +1,4 @@
+- SLES PAYG client support on cloud
 - Store formula pillar data in database
 - Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
 - Generate flat repositories metadata for Debian based systems
