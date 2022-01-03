@@ -230,7 +230,8 @@ suseContentFilter              :: web_customer
 suseContentFilterProject       :: suseContentProject suseContentFilter
 suseContentEnvironment         :: suseContentProject
 suseContentEnvironmentTarget   :: suseContentEnvironment rhnChannel
-suseCredentials                :: suseCredentialsType web_contact
+suseCredentials                :: suseCredentialsType web_contact susePaygSshData
+suseCloudRmtHost               :: susePaygSshData
 suseCVEImageChannel            :: suseImageInfo rhnChannel
 suseCVEServerChannel           :: rhnServer rhnChannel
 suseDockerfileProfile          :: suseImageProfile

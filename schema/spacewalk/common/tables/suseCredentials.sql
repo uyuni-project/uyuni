@@ -28,9 +28,14 @@ CREATE TABLE suseCredentials
     username VARCHAR(64) NOT NULL,
     password VARCHAR(4096) NOT NULL,
     created  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    modified TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
-)
+    modified TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
+    extra_auth bytea,
+    payg_ssh_data_id NUMERIC
+        CONSTRAINT suse_credentials_payg_ssh_data_id_fk
+            REFERENCES susePaygSshData (id)
+);
 
-;
+ALTER TABLE susecredentials
+    ADD CONSTRAINT suse_credentials_payg_ssh_data_id_uq unique (payg_ssh_data_id);
 
 CREATE SEQUENCE suse_credentials_id_seq;
