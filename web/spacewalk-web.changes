@@ -1,3 +1,4 @@
+- SLES PAYG client support on cloud
 - Migrate the displaying of the date/time to rhn:formatDate, get rid of the legacy fmt:formatDate glue
 - Fix header search autofocus
 - Fix virtual systems list request error (bsc#1194397)
