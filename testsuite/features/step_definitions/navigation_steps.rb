@@ -85,7 +85,7 @@ When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do 
     break if has_no_text?(text, wait: 3)
     begin
       accept_prompt do
-       # execute_script 'window.location.reload()'
+      # execute_script 'window.location.reload()'
       end
     rescue Capybara::ModalNotFound
       # ignored
