@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type Props = {
   onFocusOut: () => void;
