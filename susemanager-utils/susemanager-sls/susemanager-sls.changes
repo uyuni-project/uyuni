@@ -1,3 +1,5 @@
+- enforce correct minion configuration similar to bootstrapping
+  (bsc#1192510)
 - Add state for changing proxy
 - Update proxy path on minion connection
 - Fix problem installing/removing packages using action chains
