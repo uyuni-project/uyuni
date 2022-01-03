@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsType;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -56,7 +57,19 @@ import javax.persistence.Transient;
                         " join r.products pr " +
                         " join pr.product p " +
                         " join p.channelFamily cf " +
-                        "where cf.label = :channelFamily")
+                        "where cf.label = :channelFamily"),
+        @NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
+                query = "select r from SCCRepository r " +
+                        "where r.url like :urlEndpoint"),
+        @NamedQuery(name = "SCCRepository.lookupByProductNameAndArch",
+                query = "select distinct r from SCCRepository r " +
+                        " join r.products pr " +
+                        " join pr.product p " +
+                        " join p.arch a " +
+                        " where lower(p.name) = lower(:product_name) " +
+                        " and lower(a.label) = lower(:arch_name) " +
+                        " and pr.channelLabel not like '%debuginfo%' " +
+                        " and r.installerUpdates = 'N' ")
 })
 public class SCCRepository extends BaseDomainHelper {
 
@@ -271,10 +284,31 @@ public class SCCRepository extends BaseDomainHelper {
                 }
             }
             else {
-                if (a.getOptionalCredentials().orElse(new Credentials()).getUrl() != null) {
+                Optional<CredentialsType> currentCredType =
+                        Optional.ofNullable(a.getOptionalCredentials().orElse(new Credentials()).getType());
+
+                // if the credentials are of type SCC and have URL that means it the primary one
+                if (a.getOptionalCredentials().orElse(new Credentials()).getUrl() != null &&
+                        (currentCredType.isEmpty() ||
+                                !Credentials.TYPE_CLOUD_RMT.equals(currentCredType.get().getLabel()))) {
                     return Optional.of(a);
                 }
+                else {
+                    Optional<CredentialsType> resultType = result.isPresent() ?
+                            Optional.ofNullable(result.get().getOptionalCredentials()
+                                    .orElse(new Credentials()).getType()) : Optional.empty();
+
+                    if (currentCredType.isPresent() &&
+                            Credentials.TYPE_CLOUD_RMT.equals(currentCredType.get().getLabel())) {
+                        // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
+                        if (result.isEmpty() || resultType.isEmpty() ||
+                                !Credentials.TYPE_SCC.equals(resultType.get().getLabel())) {
+                            result = Optional.of(a);
+                        }
+                    }
+                }
             }
+
             if (result.isEmpty() || a.getId() < result.get().getId()) {
                 // get always the same result and use the oldest alternative if there are multiple
                 result = Optional.of(a);
