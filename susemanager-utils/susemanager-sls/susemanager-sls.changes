@@ -1,3 +1,5 @@
+- enforce correct minion configuration similar to bootstrapping
+  (bsc#1192510)
 - Fix issues running mgr_events on Salt 3004
 
 -------------------------------------------------------------------
