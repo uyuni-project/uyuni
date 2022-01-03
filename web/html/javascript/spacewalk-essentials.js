@@ -253,14 +253,6 @@ function onDocumentReadyAutoBootstrapGrid() {
   });
 }
 
-// Put the focus on a given form element
-function formFocus(form, name) {
-  var focusControl = document.forms[form].elements[name];
-  if (focusControl.type != "hidden" && !focusControl.disabled) {
-     focusControl.focus();
-  }
-}
-
 // Humanizes all the time elements with the human class
 function humanizeDates() {
   jQuery("time.human-from, time.human-calendar").each(function (index) {
