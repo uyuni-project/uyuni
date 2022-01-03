@@ -89,6 +89,7 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import java.util.HashMap;
@@ -206,6 +207,7 @@ public class HandlerFactory {
         factory.addHandler("taskomatic.org", new TaskomaticOrgHandler());
         factory.addHandler("user", new UserHandler(serverGroupManager));
         factory.addHandler("user.external", new UserExternalHandler());
+        factory.addHandler("admin.payg", new AdminPaygHandler(taskomaticApi));
         return factory;
     }
 
