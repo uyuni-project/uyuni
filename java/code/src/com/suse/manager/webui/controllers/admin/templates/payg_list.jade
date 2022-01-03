@@ -1,0 +1,18 @@
+include /templates/common.jade
+
+#list-payg
+
+div#init_data_payg_instances(style="display: none")
+    | #{contentPaygInstances}
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/list-payg')
+        .then(function(module) {
+            module.renderer(
+                'list-payg',
+                {
+                    payg_instances: document.getElementById('init_data_payg_instances').textContent,
+                    flashMessage: "#{flashMessage}"
+                }
+            );
+        });
