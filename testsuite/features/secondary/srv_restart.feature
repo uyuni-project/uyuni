@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 # After clicking the button we wait until we dont see the text. This normally
 # means that the page was refreshed, but in case of a timeout or other error,
