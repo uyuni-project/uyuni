@@ -462,6 +462,20 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Returns a list of repositories for a product, independent of the version, and arch.
+     *
+     * @param productName name of the product we want to filter
+     * @param archName arch name we want to filter
+     * @return List of repositories for all version of one product and arch
+     */
+    public static List<SCCRepository> lookupRepositoriesByProductNameAndArch(String productName, String archName) {
+        return getSession().getNamedQuery("SCCRepository.lookupByProductNameAndArch")
+                .setParameter("product_name", productName)
+                .setParameter("arch_name", archName)
+                .getResultList();
+    }
+
+    /**
      * Find a compatible SCCRepository using a json repository
      * @param repos collection of available repositories
      * @param j the Json version of the repo
