@@ -116,7 +116,9 @@ import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
@@ -182,11 +184,11 @@ public class SystemManager extends BaseManager {
         this.serverGroupFactory = serverGroupFactoryIn;
         this.saltApi = saltApiIn;
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
+        VirtManager virtManager = new VirtManagerSalt(saltApiIn);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltApiIn), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltApiIn, new VirtManagerSalt(saltApiIn),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApiIn, virtManager, monitoringManager, serverGroupManager)
         );
     }
 
