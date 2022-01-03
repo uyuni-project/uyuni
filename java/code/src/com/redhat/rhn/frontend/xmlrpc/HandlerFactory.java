@@ -76,15 +76,17 @@ import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import java.util.HashMap;
@@ -143,6 +145,7 @@ public class HandlerFactory {
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", new ActivationKeyHandler(serverGroupManager));
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
+        factory.addHandler("admin.payg", new AdminPaygHandler(taskomaticApi));
         factory.addHandler("ansible", new AnsibleHandler());
         factory.addHandler("api", new ApiHandler(factory));
         factory.addHandler("audit", new CVEAuditHandler());
