@@ -4124,14 +4124,14 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="message.groupdeleted" xml:space="preserve">
         <source>System group deleted.</source>
-        <target/>
+        <target>Systémová skupina vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.groupcreated" xml:space="preserve">
         <source>System group &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Systémová skupina &lt;strong&gt;{0}&lt;/strong&gt; vytvorená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="paramnotes">System group DumpPile created.</context>
@@ -4139,133 +4139,133 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
           <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-        <target/>
+        <target>Dátum "{0}" nie je platný a bol nastavený na jeho predvolené hodnoty. Skontrolujte, či má vybraný mesiac toľko dní.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
       </trans-unit>
       <trans-unit id="daterangepicker.error.start.before.end" xml:space="preserve">
           <source>The start date "{0}" must be before the end date "{1}"</source>
-        <target/>
+        <target>Dátum začiatku "{0}" musí byť pred dátumom konca "{1}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
       </trans-unit>
       <trans-unit id="monitoring.services.restarted" xml:space="preserve">
         <source>Configuration updated, Monitoring services restarted.</source>
-        <target/>
+        <target>Konfigurácia aktualizovaná, monitorovacie služby reštartované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="monitoring.services.novalueschanged" xml:space="preserve">
         <source>No changes made.</source>
-        <target/>
+        <target>Žiadne zmeny neboli vykonané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AD" xml:space="preserve">
         <source>Andorra</source>
-        <target/>
+        <target>Andorra</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AE" xml:space="preserve">
         <source>United Arab Emirates</source>
-        <target/>
+        <target>Spojené arabské emiráty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AF" xml:space="preserve">
         <source>Afghanistan</source>
-        <target/>
+        <target>Afganistan</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AG" xml:space="preserve">
         <source>Antigua and Barbuda</source>
-        <target/>
+        <target>Antigua a Barbuda</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AI" xml:space="preserve">
         <source>Anguilla</source>
-        <target/>
+        <target>Anguilla</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AL" xml:space="preserve">
         <source>Albania</source>
-        <target/>
+        <target>Albánsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AM" xml:space="preserve">
         <source>Armenia</source>
-        <target/>
+        <target>Arménsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AN" xml:space="preserve">
         <source>Netherlands Antilles</source>
-        <target/>
+        <target>Holandské Antily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AO" xml:space="preserve">
         <source>Angola</source>
-        <target/>
+        <target>Angola</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AQ" xml:space="preserve">
         <source>Antarctica</source>
-        <target/>
+        <target>Antarktída</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AR" xml:space="preserve">
         <source>Argentina</source>
-        <target/>
+        <target>Argentína</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AS" xml:space="preserve">
         <source>American Samoa</source>
-        <target/>
+        <target>Americká Samoa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AT" xml:space="preserve">
         <source>Austria</source>
-        <target/>
+        <target>Rakúsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AU" xml:space="preserve">
         <source>Australia</source>
-        <target/>
+        <target>Austrália</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AW" xml:space="preserve">
         <source>Aruba</source>
-        <target/>
+        <target>Aruba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
