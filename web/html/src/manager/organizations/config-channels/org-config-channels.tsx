@@ -24,7 +24,6 @@ function applyRequest(component) {
     type: "ORG",
     states: ["custom_org"],
   }).then((data) => {
-    console.log("apply action queued:" + data);
     component.setState({
       messages: MessagesUtils.info(
         t("Applying the config channels has been scheduled for each minion server in this organization")

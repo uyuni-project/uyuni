@@ -133,7 +133,7 @@ function groupSelector(groups, element) {
   const NO_GROUP_LABEL = "** NO GROUP **";
   const data: any[] = [];
   let onChange = function (data) {
-    console.log("data changed: " + data);
+    // Do nothing
   };
   groups = Array.from(new Set(groups));
 

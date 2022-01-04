@@ -754,7 +754,7 @@ export class FormulaFormContextProvider extends React.Component<
               }
             }
           } catch (err) {
-            console.log("Error matching regex: '" + meta["match"] + "':" + err);
+            console.error("Error matching regex: '" + meta["match"] + "':" + err);
           }
         }
         return true;

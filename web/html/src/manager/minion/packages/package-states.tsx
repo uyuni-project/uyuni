@@ -79,8 +79,8 @@ const PackageStates = ({ serverId }: PropsType) => {
 
   const applyPackageState = () => {
     onActionPackageStatesApi({ type: "Apply", serverId })
-      .then((data) => {
-        console.log("apply action queued:" + data);
+      .then(() => {
+        // Do nothing
       })
       .catch((error) => {
         showErrorToastr(error, { autoHide: false });
@@ -187,8 +187,6 @@ const PackageStates = ({ serverId }: PropsType) => {
       for (const state in changed) {
         if (changed.hasOwnProperty(state)) {
           rows.push(changed[state]);
-        } else {
-          console.log("Cannot display emtpy object.");
         }
       }
     }

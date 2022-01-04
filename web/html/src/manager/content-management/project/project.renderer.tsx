@@ -17,7 +17,7 @@ export const renderer = (id: string, { project, wasFreshlyCreatedMessage }: Rend
   try {
     projectJson = JSON.parse(project || "");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

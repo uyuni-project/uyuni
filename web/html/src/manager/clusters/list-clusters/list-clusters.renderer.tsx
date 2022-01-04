@@ -18,7 +18,7 @@ export const renderer = (id: string, { clusters, flashMessage }: RendererProps =
   try {
     clustersJson = JSON.parse(clusters || "");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   SpaRenderer.renderNavigationReact(
