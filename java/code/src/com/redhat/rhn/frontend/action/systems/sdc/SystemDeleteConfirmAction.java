@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -45,16 +46,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemDeleteConfirmAction extends RhnAction {
 
-    private final SystemManager systemManager;
+    private final SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
 
-    /**
-     * Constructor
-     *
-     * @param systemManagerIn the system manager
-     */
-    public SystemDeleteConfirmAction(SystemManager systemManagerIn) {
-        systemManager = systemManagerIn;
-    }
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
