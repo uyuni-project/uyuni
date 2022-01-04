@@ -78,13 +78,9 @@ const PackageStates = ({ serverId }: PropsType) => {
   }
 
   const applyPackageState = () => {
-    onActionPackageStatesApi({ type: "Apply", serverId })
-      .then(() => {
-        // Do nothing
-      })
-      .catch((error) => {
-        showErrorToastr(error, { autoHide: false });
-      });
+    onActionPackageStatesApi({ type: "Apply", serverId }).catch((error) => {
+      showErrorToastr(error, { autoHide: false });
+    });
   };
 
   const save = (): Promise<any> => {
