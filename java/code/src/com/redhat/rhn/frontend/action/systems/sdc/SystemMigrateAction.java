@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -52,16 +53,8 @@ public class SystemMigrateAction extends RhnAction {
     public static final String SID = "sid";
     public static final String ORG = "to_org";
 
-    private final MigrationManager migrationManager;
+    private final MigrationManager migrationManager = GlobalInstanceHolder.MIGRATION_MANAGER;
 
-    /**
-     * Constructor
-     *
-     * @param migrationManagerIn the migration manager
-     */
-    public SystemMigrateAction(MigrationManager migrationManagerIn) {
-        migrationManager = migrationManagerIn;
-    }
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping, ActionForm form,
