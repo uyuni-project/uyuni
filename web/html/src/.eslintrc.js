@@ -1,3 +1,10 @@
+const productionRules = {
+  // Make stylistic issues fail production lint
+  "prettier/prettier": "error",
+  "@typescript-eslint/no-unused-vars": "error",
+  "no-console": ["error", { allow: ["warn", "error"] }],
+};
+
 module.exports = {
   parser: "@typescript-eslint/parser",
   root: true,
@@ -62,6 +69,7 @@ module.exports = {
       },
     ],
     "sort-imports": "off",
+    ...(process.env.NODE_ENV === "production" ? productionRules : {}),
   },
 
   settings: {
