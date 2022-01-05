@@ -4272,210 +4272,210 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="AX" xml:space="preserve">
         <source>Aland Islands</source>
-        <target/>
+        <target>Alandské ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="AZ" xml:space="preserve">
         <source>Azerbaijan</source>
-        <target/>
+        <target>Azerbajdžan</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BA" xml:space="preserve">
         <source>Bosnia and Herzegovina</source>
-        <target/>
+        <target>Bosna a Hercegovina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BB" xml:space="preserve">
         <source>Barbados</source>
-        <target/>
+        <target>Barbados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BD" xml:space="preserve">
         <source>Bangladesh</source>
-        <target/>
+        <target>Bangladéš</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BE" xml:space="preserve">
         <source>Belgium</source>
-        <target/>
+        <target>Belgicko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BF" xml:space="preserve">
         <source>Burkina Faso</source>
-        <target/>
+        <target>Burkina Faso</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BG" xml:space="preserve">
         <source>Bulgaria</source>
-        <target/>
+        <target>Bulharsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BH" xml:space="preserve">
         <source>Bahrain</source>
-        <target/>
+        <target>Bahrajn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BI" xml:space="preserve">
         <source>Burundi</source>
-        <target/>
+        <target>Burundi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BJ" xml:space="preserve">
         <source>Benin</source>
-        <target/>
+        <target>Benin</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BL" xml:space="preserve">
         <source>Saint Barthelemy</source>
-        <target/>
+        <target>Svätý Bartolomej</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BM" xml:space="preserve">
         <source>Bermuda</source>
-        <target/>
+        <target>Bermudy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BN" xml:space="preserve">
         <source>Brunei</source>
-        <target/>
+        <target>Brunej</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BO" xml:space="preserve">
         <source>Bolivia</source>
-        <target/>
+        <target>Bolívia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BQ" xml:space="preserve">
         <source>Bonaire, Sint Eustatius and Saba</source>
-        <target/>
+        <target>Bonaire, Svätý Eustach a Saba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BR" xml:space="preserve">
         <source>Brazil</source>
-        <target/>
+        <target>Brazília</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BS" xml:space="preserve">
         <source>Bahamas</source>
-        <target/>
+        <target>Bahamy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BT" xml:space="preserve">
         <source>Bhutan</source>
-        <target/>
+        <target>Bhután</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BV" xml:space="preserve">
         <source>Bouvet Island</source>
-        <target/>
+        <target>Bouvetov ostrov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BW" xml:space="preserve">
         <source>Botswana</source>
-        <target/>
+        <target>Botswana</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BY" xml:space="preserve">
         <source>Belarus</source>
-        <target/>
+        <target>Bielorusko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BZ" xml:space="preserve">
         <source>Belize</source>
-        <target/>
+        <target>Belize</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CA" xml:space="preserve">
         <source>Canada</source>
-        <target/>
+        <target>Kanada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CC" xml:space="preserve">
         <source>Cocos (Keeling) Islands</source>
-        <target/>
+        <target>Kokosové ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CD" xml:space="preserve">
         <source>CONGO, The Democratic Republic of the</source>
-        <target/>
+        <target>Konžská demokratická republika</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CF" xml:space="preserve">
         <source>Central African Republic</source>
-        <target/>
+        <target>Stredoafrická republika</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CG" xml:space="preserve">
         <source>Congo</source>
-        <target/>
+        <target>Kongo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CH" xml:space="preserve">
         <source>Switzerland</source>
-        <target/>
+        <target>Švajčiarsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CI" xml:space="preserve">
         <source>Côte d'Ivoire</source>
-        <target/>
+        <target>Pobrežie Slonoviny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
