@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -82,6 +82,7 @@ Feature: Setup Uyuni for Retail branch network
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
     And I check enable SLAAC with routing box
     And I uncheck enable route box
+    And I uncheck enable NAT box
     And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -99,7 +100,7 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "range begin" in dynamic IP range begin field
     And I enter the local IP address of "range end" in dynamic IP range end field
     And I enter the local IP address of "broadcast" in broadcast address field
-    And I enter the local IP address of "proxy" in routers field
+    And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
     And I enter the local IP address of "sle_client" in first reserved IP field
