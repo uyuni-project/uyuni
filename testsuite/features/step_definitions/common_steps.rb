@@ -22,15 +22,100 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
   $server.run("umount #{iso_path}; mount #{iso_path}")
 end
 
-Then(/^I can see all system information for "([^"]*)"$/) do |host|
+Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   step %(I should see a "#{node.hostname}" text)
+end
+
+Then(/^the kernel for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
   kernel_version, _code = node.run('uname -r')
-  puts 'I should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
+end
+
+Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
   os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
+end
+
+Then(/^the IPv4 address for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  step %(I should see a "#{node.public_ip}" text)
+end
+
+Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  # query and modify OS ID string.
+  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
+  os_family = os_family_raw.strip.split('=')[1]
+  os_family.delete! '"'
+  # ubuntu has a different default interface name
+  if os_family == 'ubuntu'
+    ipv6, _code = node.run('ip -6 addr show ens3 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
+  else
+    ipv6, _code = node.run('ip -6 addr show eth0 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
+  end
+  step %(I should see a "#{ipv6}" text)
+end
+
+Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  step %(I am logged in via XML\-RPC actionchain as user "admin" and password "admin")
+  client_id = @system_api.search_by_name(get_system_name(host)).first['id']
+  step %(I should see a "#{client_id.to_s}" text)
+end
+
+Then(/^the system name for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  system_name = get_system_name(host)
+  step %(I should see a "#{system_name}" text)
+end
+
+Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  uptime_days, _code = node.run("awk '{print $1/86400}' /proc/uptime")
+  uptime_hours, _code = node.run("awk '{print $1/3600}' /proc/uptime")
+  uptime_minutes, _code = node.run("awk '{print $1/60}' /proc/uptime")
+  uptime_seconds, _code = node.run("awk '{print $1}' /proc/uptime")
+  uptime_days = uptime_days.to_f
+  uptime_hours = uptime_hours.to_f
+  uptime_minutes = uptime_minutes.to_f
+  uptime_seconds = uptime_seconds.to_f
+
+  if uptime_days < 2.0 and uptime_days > 0.9
+    step %(I should see a "#{uptime_days.round} day ago" text)
+  elsif uptime_days < 1.0 and uptime_hours >= 2.0
+    step %(I should see a "#{uptime_hours.round} hours ago" text)
+  elsif uptime_days < 1.0 and uptime_hours < 2.0
+    step %(I should see a "#{uptime_hours.round} hour ago" text)
+  elsif uptime_hours < 1.0 and uptime_minutes >= 2.0
+    step %(I should see a "#{uptime_minutes.round} minutes ago" text)
+  elsif uptime_hours < 1.0 and uptime_minutes < 2.0
+    step %(I should see a "#{uptime_minutes.round} minute ago" text)
+  elsif uptime_minutes < 1.0 and uptime_seconds >= 2.0
+    step %(I should see a "#{uptime_seconds.round} seconds ago" text)
+  elsif uptime_minutes < 1.0 and uptime_seconds < 2.0
+    step %(I should see a "#{uptime_seconds.round} second ago" text)
+  else
+    step %(I should see a "#{uptime_days.round} days ago" text)
+  end
+end
+
+Then(/^I can see several text fields for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  steps %(Then I should see a "UUID" text
+    And I should see a "Virtualization" text
+    And I should see a "Installed Products" text
+    And I should see a "Checked In" text
+    And I should see a "Registered" text
+    And I should see a "Contact Method" text
+    And I should see a "Auto Patch Update" text
+    And I should see a "Maintenance Schedule" text
+    And I should see a "Description" text
+    And I should see a "Location" text
+  )
 end
 
 Then(/^I should see the terminals imported from the configuration file$/) do

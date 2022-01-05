@@ -21,7 +21,16 @@ Feature: Smoke tests for <client>
 
   Scenario: Client <client> grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "<client>"
-    Then I can see all system information for "<client>"
+    Then the hostname for "<client>" should be correct
+    And the kernel for "<client>" should be correct
+    And the OS version for "<client>" should be correct
+    And the IPv4 address for "<client>" should be correct
+    # disabled for the moment due to a possible bug (#bsc1193858)
+    # And the IPv6 address for "<client>" should be correct
+    And the system ID for "<client>" should be correct
+    And the system name for "<client>" should be correct
+    And the uptime for "<client>" should be correct
+    And I can see several text fields for "<client>"
 
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
