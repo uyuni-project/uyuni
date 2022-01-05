@@ -120,19 +120,16 @@ bootstrap_repo:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
 
 mgr_repository_refresh:
-{%- if grains['os_family'] == 'Suse' %}
   cmd.run:
+{%- if grains['os_family'] == 'Suse' %}
     - name: zypper -n clean --all; zypper -n refresh || /bin/true
 {%- elif grains['os_family'] == 'Debian' %}
-  cmd.run:
     - name: apt-get -q update || /bin/true
 {%- elif grains['os_family'] == 'RedHat' %}
-  mgrcompat.module_run:
-    - name: pkg.refresh_db
   {%- if grains['osmajorrelease']|int >= 8 %}
-    - setopt: skip_if_unavailable=true
+    - name:  dnf --quiet --assumeyes clean expire-cache && dnf --quiet --assumeyes check-update --setopt=skip_if_unavailable=true || /bin/true
   {%- else %}
-    - setopt: cr.skip_if_unavailable=true
+    - name:  yum --quiet --assumeyes clean expire-cache && yum --quiet --assumeyes check-update --setopt=cr.skip_if_unavailable=true || /bin/true
   {%- endif %}
 {%- endif %}
 
@@ -148,6 +145,14 @@ mgr_repository_refresh:
 {%- set salt_config_dir = '/etc/venv-salt-minion' %}
 {%- endif -%}
 
+{%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease']|int >= 8 %}
+salt-minion-package:
+  cmd.run:
+    - name: dnf --setopt=skip_if_unavailable=1 install -C --nobest {{ salt_minion_name }}
+    - require:
+      - file: bootstrap_repo
+{%- set salt_minion_pkg_require = 'cmd: salt-minion-package' %}
+{%- else %}
 salt-minion-package:
   pkg.installed:
     - name: {{ salt_minion_name }}
@@ -155,6 +160,8 @@ salt-minion-package:
     - refresh: False
     - require:
       - file: bootstrap_repo
+{%- set salt_minion_pkg_require = 'pkg: salt-minion-package' %}
+{% endif %}
 
 {{ salt_config_dir }}/minion.d/susemanager.conf:
   file.managed:
@@ -163,16 +170,17 @@ salt-minion-package:
     - template: jinja
     - mode: 644
     - require:
-      - pkg: salt-minion-package
+      - {{ salt_minion_pkg_require }}
 
 {{ salt_config_dir }}/minion_id:
   file.managed:
     - contents_pillar: minion_id
     - require:
-      - pkg: salt-minion-package
+      - {{ salt_minion_pkg_require }}
 
 {% include 'bootstrap/remove_traditional_stack.sls' %}
 
+{%- if grains['os_family'] != 'RedHat' %}
 mgr_update_basic_pkgs:
   pkg.latest:
     - pkgs:
@@ -184,12 +192,11 @@ mgr_update_basic_pkgs:
 {%- endif %}
 {%- if grains['os_family'] == 'Suse' %}
       - zypper
-{%- elif grains['os_family'] == 'RedHat' %}
-      - yum
 {%- endif %}
     - refresh: False
+{%- endif %}
 
-# Manage minion key files in case they are provided in the pillar
+{# Manage minion key files in case they are provided in the pillar #}
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
 {{ salt_config_dir }}/pki/minion/minion.pub:
   file.managed:
@@ -197,7 +204,7 @@ mgr_update_basic_pkgs:
     - mode: 644
     - makedirs: True
     - require:
-      - pkg: salt-minion-package
+      - {{ salt_minion_pkg_require }}
 
 {{ salt_config_dir }}/pki/minion/minion.pem:
   file.managed:
@@ -205,14 +212,14 @@ mgr_update_basic_pkgs:
     - mode: 400
     - makedirs: True
     - require:
-      - pkg: salt-minion-package
+      - {{ salt_minion_pkg_require }}
 
 {{ salt_minion_name }}:
   service.running:
     - name: {{ salt_minion_name }}
     - enable: True
     - require:
-      - pkg: salt-minion-package
+      - {{ salt_minion_pkg_require }}
       - host: mgr_server_localhost_alias_absent
     - watch:
       - file: {{ salt_config_dir }}/minion_id
@@ -224,7 +231,7 @@ mgr_update_basic_pkgs:
   service.running:
     - enable: True
     - require:
-      - pkg: salt-minion-package
+      - {{ salt_minion_pkg_require }}
       - host: mgr_server_localhost_alias_absent
     - watch:
       - file: {{ salt_config_dir }}/minion_id
