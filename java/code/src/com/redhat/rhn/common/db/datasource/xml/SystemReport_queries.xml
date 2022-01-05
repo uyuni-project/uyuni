@@ -1,0 +1,16 @@
+<datasource_modes>
+
+<mode name="system" class="">
+  <query>
+    select id as server_id, name as profile_name, hostname,
+           ( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
+           rhnserver.created as registration_time,
+           ( select checkin from rhnserverinfo where rhnserver.id = server_id ) as last_checkin_time,
+           running_kernel as kernel_version,
+           ( select name from web_customer where rhnserver.org_id = web_customer.id ) as organization,
+           machine_id
+    from rhnServer
+  </query>
+</mode>
+
+</datasource_modes>
