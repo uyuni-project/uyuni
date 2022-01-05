@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,9 +25,9 @@ import java.util.Properties;
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions related to the reporting database.
  */
-class ReportDbConnectionManager extends AbstractConnectionManager {
+public class ReportDbConnectionManager extends AbstractConnectionManager {
 
-    ReportDbConnectionManager() {
+    public ReportDbConnectionManager() {
         super(Collections.emptySet());
     }
 
