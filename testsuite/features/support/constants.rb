@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ADDRESSES = { 'network'        => '0',
@@ -61,7 +61,8 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
 
 BOX_IDS = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
             'include forwarders'        => 'bind#config#include_forwarders',
-            'enable route'              => 'branch_network#firewall#enable_route' }.freeze
+            'enable route'              => 'branch_network#firewall#enable_route',
+            'enable NAT'                => 'branch_network#firewall#enable_NAT' }.freeze
 
 BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'warning' => 'fa-hand-o-right text-danger',

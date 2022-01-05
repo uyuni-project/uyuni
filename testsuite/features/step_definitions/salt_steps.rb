@@ -1,4 +1,4 @@
-# Copyright 2015-2021 SUSE LLC
+# Copyright 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -467,6 +467,11 @@ end
 When(/^I press "Remove Item" in (.*) CNAME of (.*) zone section$/) do |alias_name, zone|
   cname_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//input[@name='Alias' and @value='#{alias_name}']/ancestor::div[@class='form-group']"
   find(:xpath, "#{cname_xpath}/button").click
+end
+
+When(/^I press "Remove" in the routers section$/) do
+  cname_xpath = "//div[@id='dhcpd#subnets#0#routers#0']/button"
+  find(:xpath, cname_xpath).click
 end
 
 When(/^I press minus sign in (.*) section$/) do |section|

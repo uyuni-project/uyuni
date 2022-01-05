@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC
+# Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -88,6 +88,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Parametrize the branch network
     When I follow first "Branch Network" in the content area
     And I uncheck enable route box
+    And I uncheck enable NAT box
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
