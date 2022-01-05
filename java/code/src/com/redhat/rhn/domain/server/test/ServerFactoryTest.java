@@ -137,7 +137,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
     private static final SaltApi SALT_API = new TestSaltApi();
-    private static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager();
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     private static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
     private static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
             SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER);
@@ -152,7 +152,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             SALT_KEY_UTILS
     );
     private static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
-    private static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
+    private static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
             new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER)

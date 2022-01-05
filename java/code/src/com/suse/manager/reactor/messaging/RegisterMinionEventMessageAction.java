@@ -19,16 +19,13 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -52,14 +49,22 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -76,7 +81,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -103,6 +107,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     // Reference to the SaltService instance
     private final SaltApi saltApi;
     private final SystemQuery systemQuery;
+    private final SystemEntitlementManager entitlementManager;
 
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
@@ -116,6 +121,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         saltApi = saltApiIn;
         systemQuery = systemQueryIn;
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
+        entitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(virtManager, monitoringManager, groupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
+        );
     }
 
     /**
@@ -349,8 +361,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             MinionPillarManager.INSTANCE.generatePillar(registeredMinion);
 
-            migrateMinionFormula(minionId, Optional.of(oldMinionId));
-
             saltApi.deleteKey(oldMinionId);
             SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
                     oldMinionId + "' has been updated to '" + minionId + "'");
@@ -500,7 +510,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             giveCapabilities(minion, isSaltSSH);
 
             // Assign the Salt base entitlement by default
-            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
+            entitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));
@@ -510,12 +520,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minion, org, grains);
                 applySaltboot(minion);
-                migrateMinionFormula(minionId, originalMinionId);
                 return;
             }
 
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
-            migrateMinionFormula(minionId, originalMinionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -526,32 +534,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
-    }
-
-    private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
-        // after everything is done, if minionId has changed, we want to put the formula data
-        // to the correct location on the FS
-        originalMinionId.ifPresent(oldId -> {
-            if (!oldId.equals(minionId)) {
-                try {
-                    List<String> minionFormulas = FormulaFactory.getFormulasByMinionId(oldId);
-                    FormulaFactory.saveServerFormulas(minionId, minionFormulas);
-                    for (String minionFormula : minionFormulas) {
-                        Optional<Map<String, Object>> formulaValues =
-                                FormulaFactory.getFormulaValuesByNameAndMinionId(minionFormula, oldId);
-                        if (formulaValues.isPresent()) {
-                            // handle via Optional.get because of exception handling
-                            FormulaFactory.saveServerFormulaData(formulaValues.get(), minionId, minionFormula);
-                            FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
-                        }
-                    }
-                    FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
-                }
-                catch (IOException | ValidatorException e) {
-                    LOG.warn("Error when converting formulas from minionId " + oldId + "to minionId " + minionId);
-                }
-            }
-        });
     }
 
     private Optional<Org> getProxyOrg(String master, boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
@@ -638,8 +620,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     branchIdGroupName + "\")! Aborting registration.");
         }
 
-        SystemManager.addServerToServerGroup(minion, terminalsGroup);
-        SystemManager.addServerToServerGroup(minion, branchIdGroup);
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServerToServerGroup(minion, terminalsGroup);
+        systemManager.addServerToServerGroup(minion, branchIdGroup);
         if (hwGroup != null) {
             // if the system is already assigned to some HWTYPE group, skip assignment and log this only
             if (minion.getManagedGroups().stream().anyMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
@@ -647,7 +630,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         ". The minion is already in a HW group.");
             }
             else {
-                SystemManager.addServerToServerGroup(minion, hwGroup);
+                systemManager.addServerToServerGroup(minion, hwGroup);
             }
         }
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade

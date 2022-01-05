@@ -1,7 +1,8 @@
-import { ActionChain } from "components/action-schedule";
-
 import * as React from "react";
+
+import { ActionChain } from "components/action-schedule";
 import { TopPanel } from "components/panels/TopPanel";
+
 import { SimpleActionApi } from "../../SimpleActionApi";
 import { NetworkProperties } from "../network-properties";
 

@@ -1,8 +1,10 @@
 import * as React from "react";
-import SpaRenderer from "core/spa/spa-renderer";
+
 import { RolesProvider } from "core/auth/roles-context";
-import { MessagesContainer } from "components/toastr/toastr";
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { ServerMessageType } from "components/messages";
+import { MessagesContainer } from "components/toastr/toastr";
 
 import Cluster from "./cluster";
 

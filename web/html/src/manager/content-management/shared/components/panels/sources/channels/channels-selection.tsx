@@ -1,23 +1,26 @@
 import * as React from "react";
-import Select from "react-select";
 import { useEffect } from "react";
-import { Loading } from "components/utils/Loading";
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
-import styles from "./channels-selection.css";
-import GroupChannels from "./group-channels";
+
+import Select from "react-select";
 import { useImmerReducer } from "use-immer";
 
+import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
+import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
+import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
+import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
+import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
+
+import { Loading } from "components/utils/Loading";
+
+import styles from "./channels-selection.css";
 import { ActionChannelsSelectionType, FilterType, StateChannelsSelectionType } from "./channels-selection.state";
 import {
   getChannelsFiltersAvailableValues,
   initialStateChannelsSelection,
   reducerChannelsSelection,
 } from "./channels-selection.state";
-import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
 import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
-import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
-import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
+import GroupChannels from "./group-channels";
 
 type PropsType = {
   isSourcesApiLoading: boolean;

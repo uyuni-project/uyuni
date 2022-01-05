@@ -1,4 +1,4 @@
-import { screen as rawScreen, Screen, getDefaultNormalizer } from "@testing-library/react";
+import { getDefaultNormalizer, Screen, screen as rawScreen } from "@testing-library/react";
 
 // Utility type, if a function TargetFunction returns a Promise, return an intersection with Promise<T>, otherwise with T
 type ReturnFromWith<

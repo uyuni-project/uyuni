@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Form } from "./Form";
-import { Check } from "./Check";
+
 import { SubmitButton } from "components/buttons";
+
+import { Check } from "./Check";
+import { Form } from "./Form";
 
 export default {
   component: Check,

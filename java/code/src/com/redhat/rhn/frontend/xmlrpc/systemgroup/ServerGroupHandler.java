@@ -660,7 +660,7 @@ public class ServerGroupHandler extends BaseHandler {
                 ).orElseThrow(() -> new LookupServerGroupException(systemGroupName));
 
         List<Formula> formulas = FormulaFactory.listFormulas();
-        List<String> assigned = FormulaFactory.getFormulasByGroupId(group.getId());
+        List<String> assigned = FormulaFactory.getFormulasByGroup(group);
         return formulas.stream().filter(f -> assigned.contains(f.getName())).collect(Collectors.toList());
     }
 }

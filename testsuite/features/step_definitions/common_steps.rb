@@ -76,7 +76,31 @@ end
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   uptime_days, _code = node.run("awk '{print $1/86400}' /proc/uptime")
-  step %(I should see a "#{uptime_days.to_f.round} days ago" text)
+  uptime_hours, _code = node.run("awk '{print $1/3600}' /proc/uptime")
+  uptime_minutes, _code = node.run("awk '{print $1/60}' /proc/uptime")
+  uptime_seconds, _code = node.run("awk '{print $1}' /proc/uptime")
+  uptime_days = uptime_days.to_f
+  uptime_hours = uptime_hours.to_f
+  uptime_minutes = uptime_minutes.to_f
+  uptime_seconds = uptime_seconds.to_f
+
+  if uptime_days < 2.0 and uptime_days > 0.9
+    step %(I should see a "#{uptime_days.round} day ago" text)
+  elsif uptime_days < 1.0 and uptime_hours >= 2.0
+    step %(I should see a "#{uptime_hours.round} hours ago" text)
+  elsif uptime_days < 1.0 and uptime_hours < 2.0
+    step %(I should see a "#{uptime_hours.round} hour ago" text)
+  elsif uptime_hours < 1.0 and uptime_minutes >= 2.0
+    step %(I should see a "#{uptime_minutes.round} minutes ago" text)
+  elsif uptime_hours < 1.0 and uptime_minutes < 2.0
+    step %(I should see a "#{uptime_minutes.round} minute ago" text)
+  elsif uptime_minutes < 1.0 and uptime_seconds >= 2.0
+    step %(I should see a "#{uptime_seconds.round} seconds ago" text)
+  elsif uptime_minutes < 1.0 and uptime_seconds < 2.0
+    step %(I should see a "#{uptime_seconds.round} second ago" text)
+  else
+    step %(I should see a "#{uptime_days.round} days ago" text)
+  end
 end
 
 Then(/^I can see several text fields for "([^"]*)"$/) do |host|

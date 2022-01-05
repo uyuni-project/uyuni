@@ -307,7 +307,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     }
 
     private SSHPushWorkerSalt successWorker(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);

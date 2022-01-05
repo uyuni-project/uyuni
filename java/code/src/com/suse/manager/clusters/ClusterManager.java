@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -324,13 +324,13 @@ public class ClusterManager {
 
         // enable settings formula
         List<String> formulas = new ArrayList<>();
-        formulas.addAll(FormulaFactory.getFormulasByGroupId(group.getId()));
+        formulas.addAll(FormulaFactory.getFormulasByGroup(group));
         formulas.add(settingsFormula);
-        FormulaFactory.saveGroupFormulas(group.getId(), formulas, user.getOrg());
+        FormulaFactory.saveGroupFormulas(group, formulas);
 
         // save settings data
         Map<String, Object> settingsInNamespace = adjustNamespace(label, "settings", managementSettings);
-        FormulaFactory.saveGroupFormulaData(settingsInNamespace, group.getId(), user.getOrg(), settingsFormula);
+        FormulaFactory.saveGroupFormulaData(settingsInNamespace, group, settingsFormula);
 
         // add management node to group
         serverGroupManager.addServers(group, Arrays.asList(managementNode), user);
@@ -386,7 +386,7 @@ public class ClusterManager {
                     "Couldn't find formula with key " + formulaKey + " in cluster provider " + cluster.getProvider());
         }
         Map<String, Object> formDataInNamespace = adjustNamespace(cluster.getLabel(), formulaKey, formData);
-        FormulaFactory.saveGroupFormulaData(formDataInNamespace, group.getId(), user.getOrg(), formulaName.get());
+        FormulaFactory.saveGroupFormulaData(formDataInNamespace, group, formulaName.get());
         List<String> minionIds = group.getServers().stream()
                 .flatMap(s -> Opt.stream(s.asMinionServer()))
                 .map(MinionServer::getMinionId).collect(Collectors.toList());

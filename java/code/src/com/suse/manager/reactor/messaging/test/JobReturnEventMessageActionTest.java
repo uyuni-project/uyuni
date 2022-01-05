@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -83,6 +83,8 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -159,12 +161,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
+        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
         );
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         clusterManager = new ClusterManager(
@@ -183,6 +185,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);
         Files.createFile(systemLockFile);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
     }
 
     /**
@@ -719,10 +725,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         minion.setMinionId("caasp-worker-orion-cluster-1.openstack.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
 
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
-
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
@@ -740,7 +742,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinionId(minion.getMinionId()));
+        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinion(minion));
         assertTrue(ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock", "minion_blackout",
                 "true"));
     }
@@ -818,7 +820,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertTrue(FormulaFactory.getFormulasByMinionId(minion.getMinionId()).isEmpty());
+        assertTrue(FormulaFactory.getFormulasByMinion(minion).isEmpty());
     }
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {

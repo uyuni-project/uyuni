@@ -1,16 +1,19 @@
 import * as React from "react";
-import { LinkButton, AsyncButton } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Highlight } from "components/table/Highlight";
-import { Messages } from "components/messages";
+
 import SpaRenderer from "core/spa/spa-renderer";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import { AsyncButton, LinkButton } from "components/buttons";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { Highlight } from "components/table/Highlight";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
 import { localizedMoment } from "utils";
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
 const AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT";
@@ -83,9 +86,6 @@ class CVEAudit extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    ["onCVEChange", "searchData", "handleSelectItems", "audit", "onCVEYearChange", "onTargetChange"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
     this.state = {
       cveNumber: "",
       cveYear: CURRENT_YEAR,
@@ -97,14 +97,14 @@ class CVEAudit extends React.Component<Props, State> {
     };
   }
 
-  searchData(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return datum.name.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
     }
     return true;
-  }
+  };
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     const removed = this.state.selectedItems.filter((i) => !items.includes(i));
     const isAdd = removed.length === 0;
     const list = isAdd ? items : removed;
@@ -116,23 +116,23 @@ class CVEAudit extends React.Component<Props, State> {
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
-  }
+  };
 
-  onTargetChange(e) {
+  onTargetChange = (e) => {
     const value = e.target.value;
     this.setState({
       target: value,
     });
-  }
+  };
 
-  onCVEYearChange(e) {
+  onCVEYearChange = (e) => {
     const value = e.target.value;
     this.setState({
       cveYear: value,
     });
-  }
+  };
 
-  onCVEChange(e) {
+  onCVEChange = (e) => {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
     if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
@@ -149,13 +149,13 @@ class CVEAudit extends React.Component<Props, State> {
         cveNumber: value,
       });
     }
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
   }
 
-  audit(target) {
+  audit = (target) => {
     cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
       if (data.success) {
         this.setState({
@@ -172,7 +172,7 @@ class CVEAudit extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   render() {
     return (
@@ -255,7 +255,6 @@ class CVEAudit extends React.Component<Props, State> {
             data={this.state.results}
             identifier={(row) => row.id}
             initialSortColumnKey="id"
-            initialItemsPerPage={window.userPrefPageSize}
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
             selectedItems={this.state.selectedItems}

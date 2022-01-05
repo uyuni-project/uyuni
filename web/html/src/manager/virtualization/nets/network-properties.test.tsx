@@ -1,15 +1,17 @@
 import * as React from "react";
+
 import _cloneDeep from "lodash/cloneDeep";
+
 import {
+  click,
+  fireEvent,
+  getFieldValuesByName,
   render,
-  waitForElementToBeRemoved,
   screen,
+  select,
   server,
   type,
-  click,
-  select,
-  getFieldValuesByName,
-  fireEvent,
+  waitForElementToBeRemoved,
 } from "utils/test-utils";
 
 import { NetworkProperties } from "./network-properties";

@@ -1,18 +1,17 @@
 import * as React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
+import { Check } from "components/input/Check";
 import { Form, FormContext } from "components/input/Form";
 import { Select } from "components/input/Select";
-import { Check } from "components/input/Check";
 import { Utils as MessagesUtils } from "components/messages";
-
-import CancelActionsDialog from "../shared/cancel-actions-dialog";
-
 import { MessageType } from "components/messages";
 
 import Network from "utils/network";
+
+import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 type ScheduleType = {
   id: number;

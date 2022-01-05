@@ -1,12 +1,14 @@
 import * as React from "react";
 
 import { DateTimePicker } from "components/datetime";
-import { Combobox } from "../combobox";
-import { ComboboxItem } from "../combobox";
 import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
-import styles from "./recurring-event-picker.css";
+
 import { localizedMoment } from "utils";
+
+import { Combobox } from "../combobox";
+import { ComboboxItem } from "../combobox";
+import styles from "./recurring-event-picker.css";
 
 type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
 type CronTimes = {
