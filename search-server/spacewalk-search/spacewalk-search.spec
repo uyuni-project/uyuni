@@ -25,6 +25,9 @@
 %global apache_group apache
 %endif
 
+%define apache_commons_httpclient (apache-commons-httpclient or jakarta-commons-httpclient)
+%define oro (oro or jakarta-oro)
+
 Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
@@ -51,8 +54,8 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  doc-indexes
 BuildRequires:  hadoop
-BuildRequires:  jakarta-commons-httpclient
-BuildRequires:  jakarta-oro
+BuildRequires:  %{apache_commons_httpclient}
+BuildRequires:  %{oro}
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
@@ -80,8 +83,8 @@ Requires:       apache-mybatis
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       hadoop
-Requires:       jakarta-commons-httpclient
-Requires:       jakarta-oro
+Requires:       %{apache_commons_httpclient}
+Requires:       %{oro}
 Requires:       javapackages-tools
 Requires:       lucene == 2.4.1
 Requires:       nutch-core
