@@ -4482,70 +4482,70 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="CK" xml:space="preserve">
         <source>Cook Islands</source>
-        <target/>
+        <target>Cookove ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CL" xml:space="preserve">
         <source>Chile</source>
-        <target/>
+        <target>Čile</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CM" xml:space="preserve">
         <source>Cameroon</source>
-        <target/>
+        <target>Kamerun</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CN" xml:space="preserve">
         <source>China</source>
-        <target/>
+        <target>Čína</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CO" xml:space="preserve">
         <source>Colombia</source>
-        <target/>
+        <target>Kolumbia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CR" xml:space="preserve">
         <source>Costa Rica</source>
-        <target/>
+        <target>Kostarika</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CS" xml:space="preserve">
         <source>Serbia and Montenegro</source>
-        <target/>
+        <target>Srbsko a Čierna Hora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CU" xml:space="preserve">
         <source>Cuba</source>
-        <target/>
+        <target>Kuba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CV" xml:space="preserve">
         <source>Cape Verde</source>
-        <target/>
+        <target>Kapverdy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CW" xml:space="preserve">
         <source>Curaçao</source>
-        <target/>
+        <target>Curaçao</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
