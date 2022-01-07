@@ -33,12 +33,10 @@ const FinishAddCluster = (props: Props) => {
           window.location.href = `/rhn/manager/cluster/${data}`;
         })
         .catch((err: ErrorMessagesType) => {
-          console.log(err);
+          console.error(err);
           props.setMessages(err.messages);
           throw err;
         });
-    } else {
-      console.log("form is not valid");
     }
   };
 

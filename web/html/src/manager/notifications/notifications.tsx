@@ -45,7 +45,7 @@ class Notifications extends React.Component<Props, State> {
       });
     };
     ws.onerror = (e) => {
-      console.log("Websocket error: " + JSON.stringify(e));
+      console.error("Websocket error: " + JSON.stringify(e));
       if (this.state.websocket != null) {
         this.state.websocket.close();
       }

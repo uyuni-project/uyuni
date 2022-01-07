@@ -195,7 +195,6 @@ class ImageImport extends React.Component {
         .catch(this.handleResponseError);
     } else {
       // should not happen
-      console.log("Not all required values present in model");
       this.setState({
         messages: MessagesUtils.error("Not all required values present."),
       });

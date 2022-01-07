@@ -56,7 +56,6 @@ const HashRouter = ({ initialPath, children }: HashRouterProps) => {
   };
 
   const replaceWith = (hash: string): void => {
-    console.log("replace " + hash);
     history.replaceState(null, "", "#/" + hash);
     setHash(hash);
   };

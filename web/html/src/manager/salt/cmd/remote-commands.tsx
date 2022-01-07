@@ -353,7 +353,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       });
     };
     ws.onerror = (e) => {
-      console.log("Websocket error: " + e);
+      console.error("Websocket error: " + e);
       this.setState({
         errors: [t("Error connecting to server. Refresh the page to try again.")],
         websocketErr: true,
