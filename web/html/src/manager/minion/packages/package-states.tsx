@@ -78,13 +78,9 @@ const PackageStates = ({ serverId }: PropsType) => {
   }
 
   const applyPackageState = () => {
-    onActionPackageStatesApi({ type: "Apply", serverId })
-      .then((data) => {
-        console.log("apply action queued:" + data);
-      })
-      .catch((error) => {
-        showErrorToastr(error, { autoHide: false });
-      });
+    onActionPackageStatesApi({ type: "Apply", serverId }).catch((error) => {
+      showErrorToastr(error, { autoHide: false });
+    });
   };
 
   const save = (): Promise<any> => {
@@ -187,8 +183,6 @@ const PackageStates = ({ serverId }: PropsType) => {
       for (const state in changed) {
         if (changed.hasOwnProperty(state)) {
           rows.push(changed[state]);
-        } else {
-          console.log("Cannot display emtpy object.");
         }
       }
     }
