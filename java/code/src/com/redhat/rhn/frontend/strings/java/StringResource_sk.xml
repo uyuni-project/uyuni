@@ -4552,140 +4552,140 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="CX" xml:space="preserve">
         <source>Christmas Island</source>
-        <target/>
+        <target>Vianočne ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CY" xml:space="preserve">
         <source>Cyprus</source>
-        <target/>
+        <target>Cyprus</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CZ" xml:space="preserve">
         <source>Czech Republic</source>
-        <target/>
+        <target>Česká republika</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DE" xml:space="preserve">
         <source>Germany</source>
-        <target/>
+        <target>Nemecko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DJ" xml:space="preserve">
         <source>Djibouti</source>
-        <target/>
+        <target>Džibutsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DK" xml:space="preserve">
         <source>Denmark</source>
-        <target/>
+        <target>Dánsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DM" xml:space="preserve">
         <source>Dominica</source>
-        <target/>
+        <target>Dominika</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DO" xml:space="preserve">
         <source>Dominican Republic</source>
-        <target/>
+        <target>Dominikánska republika</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DZ" xml:space="preserve">
         <source>Algeria</source>
-        <target/>
+        <target>Alžírsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="EC" xml:space="preserve">
         <source>Ecuador</source>
-        <target/>
+        <target>Ekvádor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="EE" xml:space="preserve">
         <source>Estonia</source>
-        <target/>
+        <target>Estónsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="EG" xml:space="preserve">
         <source>Egypt</source>
-        <target/>
+        <target>Egypt</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="EH" xml:space="preserve">
         <source>Western Sahara</source>
-        <target/>
+        <target>Západná Sahara</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ER" xml:space="preserve">
         <source>Eritrea</source>
-        <target/>
+        <target>Eritrea</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ES" xml:space="preserve">
         <source>Spain</source>
-        <target/>
+        <target>Španielsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ET" xml:space="preserve">
         <source>Ethiopia</source>
-        <target/>
+        <target>Etiópia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FI" xml:space="preserve">
         <source>Finland</source>
-        <target/>
+        <target>Fínsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FJ" xml:space="preserve">
         <source>Fiji</source>
-        <target/>
+        <target>Fidži</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FK" xml:space="preserve">
         <source>Falkland Islands</source>
-        <target/>
+        <target>Falklandské ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FM" xml:space="preserve">
         <source>Micronesia</source>
-        <target/>
+        <target>Mikronézia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
