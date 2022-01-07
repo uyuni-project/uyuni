@@ -31,7 +31,7 @@ type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 function request<Returns>(
   url: string,
   type: "GET" | "POST" | "DELETE" | "PUT",
-  headers: Record<string, string>,
+  headers: Record<string, string> | undefined,
   data: any,
   contentType: string,
   processData: boolean = true
@@ -87,7 +87,7 @@ function put<Returns = any, Payload = any>(
 }
 
 function get<Returns = any>(url: string, contentType: string = "application/json"): Cancelable<Returns> {
-  return request<Returns>(url, "GET", {}, {}, contentType);
+  return request<Returns>(url, "GET", undefined, undefined, contentType);
 }
 
 function errorMessageByStatus(status: number): Array<string> {

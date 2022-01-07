@@ -1,3 +1,4 @@
+- Fix virtual systems list request error (bsc#1194397)
 - UI for changing proxy
 - Fix legacy timepicker passing wrong time to the backend if server and
   user time differ (bsc#1192699)
