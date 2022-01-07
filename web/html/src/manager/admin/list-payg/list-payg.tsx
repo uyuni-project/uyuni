@@ -106,7 +106,8 @@ const ListPayg = (props: Props) => {
     <Table
       data={props.payg_instances}
       identifier={(row) => row.host}
-      initialSortColumnKey="name"
+      selectable={false}
+      initialSortColumnKey="host"
       searchField={<SearchField filter={searchData} placeholder={t("Filter by any value")} />}
     >
       <Column
