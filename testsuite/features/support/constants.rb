@@ -1,14 +1,14 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-ADDRESSES = { 'network'     => '0',
-              'client'      => '2',
-              'minion'      => '3',
-              'pxeboot'     => '4',
-              'range begin' => '128',
-              'range end'   => '253',
-              'proxy'       => '254',
-              'broadcast'   => '255' }.freeze
+ADDRESSES = { 'network'        => '0',
+              'sle_client'     => '2',
+              'sle_minion'     => '3',
+              'pxeboot_minion' => '4',
+              'range begin'    => '128',
+              'range end'      => '253',
+              'proxy'          => '254',
+              'broadcast'      => '255' }.freeze
 
 FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'IP'                              => 'branch_network#ip',
@@ -95,6 +95,11 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'timezone name'                   => 'timezone#name',
               'language'                        => 'keyboard_and_language#language',
               'keyboard layout'                 => 'keyboard_and_language#keyboard_layout' }.freeze
+
+BOX_IDS = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
+            'include forwarders'        => 'bind#config#include_forwarders',
+            'enable route'              => 'branch_network#firewall#enable_route',
+            'enable NAT'                => 'branch_network#firewall#enable_NAT' }.freeze
 
 BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'warning' => 'fa-hand-o-right text-danger',

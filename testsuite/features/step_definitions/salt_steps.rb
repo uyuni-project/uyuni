@@ -1,4 +1,4 @@
-# Copyright 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -270,16 +270,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'tftpd#listen_ip',
                'vsftpd internal network address' => 'vsftpd_config#listen_address' }
-  addresses = { 'network'     => '0',
-                'client'      => '2',
-                'minion'      => '3',
-                'pxeboot'     => '4',
-                'range begin' => '128',
-                'range end'   => '253',
-                'proxy'       => '254',
-                'broadcast'   => '255' }
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  fill_in fieldids[field], with: net_prefix + addresses[host]
+  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
 end
 
 When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
@@ -299,16 +290,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do 
                'third A address'          => 'bind#available_zones#0#records#A#2#1',
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
                'internal network address' => 'vsftpd_config#listen_address' }
-  addresses = { 'network'     => '0',
-                'client'      => '2',
-                'minion'      => '3',
-                'pxeboot'     => '4',
-                'range begin' => '128',
-                'range end'   => '253',
-                'proxy'       => '254',
-                'broadcast'   => '255' }
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  fill_in fieldids[field], with: net_prefix + addresses[host]
+  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
 end
 
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
@@ -457,16 +439,15 @@ When(/^I press "Remove Item" in (.*) section$/) do |section|
   find(:xpath, "//div[@id='#{sectionids[section]}']/button").click
 end
 
+When(/^I press "Remove" in the routers section$/) do
+  cname_xpath = "//div[@id='dhcpd#subnets#0#routers#0']/button"
+  find(:xpath, cname_xpath).click
+end
+
 When(/^I press minus sign in (.*) section$/) do |section|
   sectionids = { 'third configured zone' => 'bind#configured_zones#2',
                  'third available zone'  => 'bind#available_zones#2' }
   find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
-end
-
-When(/^I check (.*) box$/) do |box|
-  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
-             'include forwarders'        => 'bind#config#include_forwarders' }
-  check boxids[box]
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
@@ -493,7 +474,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
+  $server.run("salt '#{$minion.full_hostname}' saltutil.refresh_pillar wait=True")
 end
 
 def pillar_get(key, minion)
@@ -731,7 +712,6 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
 end
 
 When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   cred = "--api-user admin --api-pass admin"
   dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
   names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"

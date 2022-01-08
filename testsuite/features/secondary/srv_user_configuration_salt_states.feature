@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -51,7 +51,6 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I should see "role_activation_key_admin" as checked
     And I should see "role_image_admin" as unchecked
     And I should see "role_config_admin" as checked
-    And I should see "role_cluster_admin" as unchecked
     And I should see "role_channel_admin" as unchecked
     And I should see "role_system_group_admin" as unchecked
 
