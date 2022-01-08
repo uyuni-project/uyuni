@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -708,7 +708,7 @@ When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
@@ -944,7 +944,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   else # As Ubuntu has no support, must be CentOS/SLES_ES
     node.run('yum install wget', timeout: 600)
   end
-  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
   puts node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"

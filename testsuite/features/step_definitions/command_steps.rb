@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2021 SUSE LLC.
+# Copyright (c) 2014-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -17,16 +17,22 @@ end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("getent hosts #{node.ip}", check_errors: false)
+  result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+  raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
-Then(/^"([^"]*)" should communicate with the server$/) do |host|
+Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -c1 #{$server.full_hostname}")
-  $server.run("ping -c1 #{node.full_hostname}")
+  node.run("ping -4 -c 1 -I #{node.public_interface} #{$server.full_hostname}")
+  $server.run("ping -4 -c 1 #{node.public_ip}")
+end
+
+Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
+  node = get_target(host)
+  node.run_until_fail("ping -4 -c 1 -I #{node.private_interface} #{$server.full_hostname}")
+  $server.run_until_fail("ping -4 -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -368,7 +374,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  node.run("wget http://#{$server.ip}/#{file}")
+  node.run("wget http://#{$server.full_hostname}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
@@ -506,7 +512,7 @@ When(/^I stop salt-minion on the PXE boot minion$/) do
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
+  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
@@ -526,7 +532,7 @@ When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   gpg_keys = get_gpg_keys(node)
   gpg_keys.each do |key|
     gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
   end
 end
 
@@ -818,7 +824,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client.ip} --register #{bootstrap} --tunnel\n" \
+  script = "spawn spacewalk-ssh-push-init --client #{$client.full_hostname} --register #{bootstrap} --tunnel\n" \
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
@@ -1138,7 +1144,6 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
     STDOUT.puts "#{output}"
   end
   # reverse name resolution
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   client = net_prefix + "2"
   [client, "8.8.8.8"].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
@@ -1149,7 +1154,7 @@ end
 
 When(/^I configure the proxy$/) do
   # prepare the settings file
-  settings = "RHN_PARENT=#{$server.ip}\n" \
+  settings = "RHN_PARENT=#{$server.full_hostname}\n" \
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
@@ -1159,7 +1164,7 @@ When(/^I configure the proxy$/) do
              "SSL_PASSWORD=spacewalk\n" \
              "SSL_ORG=SUSE\n" \
              "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{$proxy.ip}\n" \
+             "SSL_COMMON=#{$proxy.full_hostname}\n" \
              "SSL_CITY=Nuremberg\n" \
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
@@ -1540,11 +1545,11 @@ When(/^I prepare the retail configuration file on server$/) do
   sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
   sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
   sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
-  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
+  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot_minion']}/; "
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
-  sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
+  sed_values << "s/<MINION>/#{ADDRESSES['sle_minion']}/; "
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
-  sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
+  sed_values << "s/<CLIENT>/#{ADDRESSES['sle_client']}/; "
   sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
   sed_values << "s/<IMAGE>/#{compute_image_name}/"
   $server.run("sed -i '#{sed_values}' #{dest}")
@@ -1641,4 +1646,12 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('mkinitrd')
   end
+end
+
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
 end

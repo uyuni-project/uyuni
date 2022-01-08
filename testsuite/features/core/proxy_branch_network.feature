@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -57,6 +57,8 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
     And I check enable SLAAC with routing box
+    And I uncheck enable route box
+    And I uncheck enable NAT box
     And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -74,14 +76,14 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "range begin" in dynamic IP range begin field
     And I enter the local IP address of "range end" in dynamic IP range end field
     And I enter the local IP address of "broadcast" in broadcast address field
-    And I enter the local IP address of "proxy" in routers field
+    And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
-    And I enter the local IP address of "client" in first reserved IP field
+    And I enter the local IP address of "sle_client" in first reserved IP field
     And I enter the MAC address of "sle_client" in first reserved MAC field
     And I press "Add Item" in host reservations section
     And I enter "minion" in second reserved hostname field
-    And I enter the local IP address of "minion" in second reserved IP field
+    And I enter the local IP address of "sle_minion" in second reserved IP field
     And I enter the MAC address of "sle_minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -106,10 +108,10 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "admin@example.org." in first contact field
     And I press "Add Item" in first A section
     And I enter "client" in first A name field
-    And I enter the local IP address of "client" in first A address field
+    And I enter the local IP address of "sle_client" in first A address field
     And I press "Add Item" in first A section
     And I enter "minion" in second A name field
-    And I enter the local IP address of "minion" in second A address field
+    And I enter the local IP address of "sle_minion" in second A address field
     And I press "Add Item" in first A section
     And I enter "proxy" in third A name field
     And I enter the local IP address of "proxy" in third A address field
@@ -144,7 +146,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I follow first "Dhcpd" in the content area
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
-    And I enter the local IP address of "pxeboot" in third reserved IP field
+    And I enter the local IP address of "pxeboot_minion" in third reserved IP field
     And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -152,7 +154,7 @@ Feature: Setup SUSE Manager for Retail branch network
     When I follow first "Bind" in the content area
     And I press "Add Item" in first A section
     And I enter "pxeboot" in fourth A name field
-    And I enter the local IP address of "pxeboot" in fourth A address field
+    And I enter the local IP address of "pxeboot_minion" in fourth A address field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -183,3 +185,9 @@ Feature: Setup SUSE Manager for Retail branch network
     And name resolution should work on terminal "sle_client"
     And terminal "sle_minion" should have got a retail network IP address
     And name resolution should work on terminal "sle_minion"
+
+@proxy
+@private_net
+  Scenario: The terminals should not reach the server
+    Then "sle_client" should not communicate with the server using private interface
+    And "sle_minion" should not communicate with the server using private interface

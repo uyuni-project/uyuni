@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC
+# Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -16,6 +16,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Install proxy software
     When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
+    And I allow all SSL protocols on the proxy's apache
     And I let squid use avahi on the proxy
 
   Scenario: Log in as admin user
@@ -78,6 +79,15 @@ Feature: Setup SUSE Manager proxy
     And I press "Add Item" in config options section
     And I enter "empty-zones-enable" in first option field
     And I enter "no" in first value field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@proxy
+@private_net
+  Scenario: Parametrize the branch network
+    When I follow first "Branch Network" in the content area
+    And I uncheck enable route box
+    And I uncheck enable NAT box
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 

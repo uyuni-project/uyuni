@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 SUSE LLC.
+# Copyright (c) 2016-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
@@ -182,7 +182,7 @@ end
 
 # This function returns the net prefix, caching it
 def net_prefix
-  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil?
+  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil? && !$private_net.nil?
   $net_prefix
 end
 
@@ -313,6 +313,7 @@ def client_public_ip(host)
               else
                 raise "Unknown net interface for #{host}"
               end
+  node.init_public_interface(interface)
   output, code = node.run("ip address show dev #{interface} | grep 'inet '")
   raise 'Cannot resolve public ip' unless code.zero?
 
@@ -325,10 +326,13 @@ $nodes.each do |node|
   next if node.nil?
   next if node.is_a?(String) && node.empty?
 
-  node.init_ip(node.full_hostname)
-
   host = $host_by_node[node]
   raise "Cannot resolve host for node: '#{node.hostname}'" if host.nil? || host == ''
+
+  if (ADDRESSES.key? host) && !$private_net.nil?
+    node.init_private_ip(net_prefix + ADDRESSES[host])
+    node.init_private_interface('eth1')
+  end
 
   ip = client_public_ip host
   node.init_public_ip ip
