@@ -124,4 +124,5 @@ mgrchannels_yum_clean_all:
 {%- endif %}
 {%- endif %}
 
+{% include 'channels/gpg-vendor-keys.sls' %}
 {% include 'channels/gpg-keys.sls' %}

@@ -12,6 +12,8 @@ no_ssh_push_key_authorized:
     - source: salt://salt_ssh/mgr_ssh_id.pub
     - comment: susemanager-default-contact-method
 
+{%- include 'channels/gpg-vendor-keys.sls' %}
+
 # disable all susemanager:* repos
 {% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
