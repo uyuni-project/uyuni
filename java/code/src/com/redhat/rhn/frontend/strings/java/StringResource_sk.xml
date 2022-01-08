@@ -4692,67 +4692,67 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="FO" xml:space="preserve">
         <source>Faroe Islands</source>
-        <target/>
+        <target>Faerské ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FR" xml:space="preserve">
         <source>France</source>
-        <target/>
+        <target>Francúzsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FX" xml:space="preserve">
         <source>France (European Territory)</source>
-        <target/>
+        <target>Metropolitné Francúzsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GA" xml:space="preserve">
         <source>Gabon</source>
-        <target/>
+        <target>Gabon</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GB" xml:space="preserve">
         <source>United Kingdom</source>
-        <target/>
+        <target>Spojené kráľovstvo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GB-Eire" xml:space="preserve">
         <source>Ireland</source>
-        <target/>
+        <target>Írsko</target>
       </trans-unit>
       <trans-unit id="GD" xml:space="preserve">
         <source>Grenada</source>
-        <target/>
+        <target>Grenada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GE" xml:space="preserve">
         <source>Georgia</source>
-        <target/>
+        <target>Gruzínsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GF" xml:space="preserve">
         <source>French Guiana</source>
-        <target/>
+        <target>Francúzska Guyana</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GG" xml:space="preserve">
         <source>Guernsey</source>
-        <target/>
+        <target>Guernsey</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
