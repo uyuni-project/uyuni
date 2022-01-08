@@ -14,8 +14,8 @@ no_ssh_push_key_authorized:
 
 {%- include 'channels/gpg-vendor-keys.sls' %}
 
-# disable all susemanager:* repos
-{% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
+# disable all repos
+{% set repos_disabled = {'match_str': 'keeprepos:', 'matching': false} %}
 {%- include 'channels/disablelocalrepos.sls' %}
 
 # SUSE OS Family
