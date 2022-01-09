@@ -5970,56 +5970,56 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="method.createsuccess" xml:space="preserve">
         <source>Notification Method '{0}' created.</source>
-        <target/>
+        <target>Metóda upozorňovania '{0}' vytvorená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="method.nametaken" xml:space="preserve">
         <source>Notification Method with name '{0}' is already in use.  Please choose a different name.</source>
-        <target/>
+        <target>Metóda upozorňovania s názvom '{0}' sa už používa.  Prosím, vyberte si iný názov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bootstrap Script" xml:space="preserve">
         <source>Bootstrap Script</source>
-        <target/>
+        <target>Zavádzací skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Restart" xml:space="preserve">
         <source>Restart</source>
-        <target/>
+        <target>Reštart</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.firstusercreated" xml:space="preserve">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
-        <target/>
+        <target>Práve ste vytvorili svojho prvého používateľa @@PRODUCT_NAME@@. Na dokončenie svojej inštalácie, prosím, použite &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Sprievodcu inštaláciou&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
-        <target/>
+        <target>Prihlásili ste sa ako externe overený &lt;strong&gt;{0}&lt;/strong&gt; používateľ. Ak sa chcete prihlásiť pomocou tohto účtu s prihlasovacím menom a heslom, prosím, nastavte svoje heslo na &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;stránke používateľa {0}&lt;/strong&gt;&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hostname" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ server hostname</source>
-        <target/>
+        <target>Názov hostiteľa servera @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.10" xml:space="preserve">
         <source>A script with that name already exists</source>
-        <target/>
+        <target>Skript s týmto názvom už existuje</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
