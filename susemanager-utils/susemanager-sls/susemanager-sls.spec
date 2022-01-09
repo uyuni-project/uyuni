@@ -23,8 +23,10 @@
 
 %if 0%{?suse_version}
 %global wwwdocroot /srv/www/htdocs
+%global serverdir /srv
 %else
 %global wwwdocroot %{_var}/www/html
+%global serverdir  %{_localstatedir}
 %endif
 
 
@@ -84,7 +86,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
 mkdir -p %{buildroot}/usr/share/susemanager/reactor
 mkdir -p %{buildroot}/usr/share/susemanager/scap
-mkdir -p %{buildroot}/srv/formula_metadata
+mkdir -p %{buildroot}%{serverdir}/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
@@ -92,7 +94,7 @@ cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
 cp -R modules/engines/* %{buildroot}/usr/share/susemanager/modules/engines
 cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
-cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
+cp -R formula_metadata/* %{buildroot}%{serverdir}/formula_metadata
 cp -R reactor/* %{buildroot}/usr/share/susemanager/reactor
 cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 
@@ -147,7 +149,7 @@ fi
 /usr/share/susemanager/formulas
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap
-/srv/formula_metadata
+%{serverdir}/formula_metadata
 %exclude /usr/share/susemanager/salt/_modules/uyuni_config.py
 %exclude /usr/share/susemanager/salt/_states/uyuni_config.py
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
