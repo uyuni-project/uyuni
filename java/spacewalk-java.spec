@@ -29,7 +29,6 @@
 %define omit_tests      1
 
 %if 0%{?suse_version}
-%define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define serverdir       /srv
 %define apache_group    www
@@ -37,7 +36,6 @@
 %define apache2         apache2
 %define java_version    11
 %else
-%define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %define serverdir       %{_localstatedir}/lib
 %define apache_group    apache
@@ -525,8 +523,8 @@ export NO_BRP_STALE_LINK_ERROR=yes
 
 %if 0%{?suse_version}
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
-install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
-install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
+install -d -m 755 $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/
+install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
@@ -712,30 +710,30 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(644,tomcat,tomcat,775)
 %attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
 %attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-%attr(775, root, tomcat) %dir %{appdir}
+%attr(775, root, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{serverdir}/susemanager
 %dir %{serverdir}/susemanager/salt
 %attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
 %attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
 %dir %{serverdir}/susemanager/formula_data
 %attr(750, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
-%dir %{appdir}/rhn/
-%{appdir}/rhn/apidoc/
-%{appdir}/rhn/css/
-%{appdir}/rhn/errata/
-%{appdir}/rhn/img/
-%{appdir}/rhn/META-INF/
-%{appdir}/rhn/schedule/
-%{appdir}/rhn/systems/
-%{appdir}/rhn/users/
-%{appdir}/rhn/errors/
-%{appdir}/rhn/*.jsp
-%{appdir}/rhn/WEB-INF/classes
-%{appdir}/rhn/WEB-INF/decorators
-%{appdir}/rhn/WEB-INF/includes
-%{appdir}/rhn/WEB-INF/nav
-%{appdir}/rhn/WEB-INF/pages
-%{appdir}/rhn/WEB-INF/*.xml
+%dir %{serverdir}/tomcat/webapps/rhn/
+%{serverdir}/tomcat/webapps/rhn/apidoc/
+%{serverdir}/tomcat/webapps/rhn/css/
+%{serverdir}/tomcat/webapps/rhn/errata/
+%{serverdir}/tomcat/webapps/rhn/img/
+%{serverdir}/tomcat/webapps/rhn/META-INF/
+%{serverdir}/tomcat/webapps/rhn/schedule/
+%{serverdir}/tomcat/webapps/rhn/systems/
+%{serverdir}/tomcat/webapps/rhn/users/
+%{serverdir}/tomcat/webapps/rhn/errors/
+%{serverdir}/tomcat/webapps/rhn/*.jsp
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/classes
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/decorators
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/includes
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/nav
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/pages
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/*.xml
 # list of all jar symlinks without any version numbers
 # and wildcards (except non-symlink velocity)
 %{jardir}/antlr.jar
@@ -862,7 +860,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %if 0%{?suse_version}
-%config(noreplace) %{appdir}/rhn/META-INF/context.xml
+%config(noreplace) %{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
@@ -870,7 +868,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/subscription-matcher
-%dir %{appdir}/rhn/WEB-INF
+%dir %{serverdir}/tomcat/webapps/rhn/WEB-INF
 %dir %{jardir}
 
 %files -n spacewalk-taskomatic
