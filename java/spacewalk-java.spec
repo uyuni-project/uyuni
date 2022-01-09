@@ -31,6 +31,7 @@
 %if 0%{?suse_version}
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
+%define serverdir       /srv
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
@@ -38,6 +39,7 @@
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
+%define serverdir       %{_localstatedir}/lib
 %define apache_group    apache
 %define salt_user_group salt
 %define apache2         httpd
@@ -554,13 +556,13 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -d $RPM_BUILD_ROOT/srv/susemanager/salt
-install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
-install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data/images
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/formula_data
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
@@ -708,15 +710,15 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(-,root,root)
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir /srv/susemanager/salt/salt_ssh
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir /srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, root, tomcat) %dir %{appdir}
-%dir /srv/susemanager
-%dir /srv/susemanager/salt
-%attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data
-%attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data/images
-%dir /srv/susemanager/formula_data
-%attr(750, tomcat, %{salt_user_group}) %dir /srv/susemanager/tmp
+%dir %{serverdir}/susemanager
+%dir %{serverdir}/susemanager/salt
+%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
+%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
+%dir %{serverdir}/susemanager/formula_data
+%attr(750, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
