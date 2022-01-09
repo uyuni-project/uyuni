@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-09 15:26+0100\n"
-"PO-Revision-Date: 2021-12-24 10:12+0000\n"
+"PO-Revision-Date: 2022-01-09 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2892,14 +2892,12 @@ msgid "Patches"
 msgstr "Opravy"
 
 #: ../html/src/manager/header/search/search.tsx:22
-#, fuzzy
 msgid "Documentation"
-msgstr "dokumentácia"
+msgstr "Dokumentácia"
 
 #: ../html/src/manager/header/search/search.tsx:56
-#, fuzzy
 msgid "Open search"
-msgstr "Vymazať vyhľadávanie"
+msgstr "Otvoriť vyhľadávanie"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
