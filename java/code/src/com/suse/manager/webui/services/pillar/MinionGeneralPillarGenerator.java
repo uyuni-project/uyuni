@@ -135,12 +135,22 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
             // three state field. yes, no or default
             chanProps.put("repo_gpgcheck", "default");
             chanProps.put("pkg_gpgcheck", "default");
+            if (chan.isTypeRpm()) {
+                // we need the vendor GPG key for RPM signature check
+                // /etc/pki/rpm-gpg/mgr-gpg-pub.key is automatically added via SLS file
+                Optional.ofNullable(chan.getGPGKeyUrl()).ifPresent(url -> chanProps.put("gpgkeyurl", url));
+            }
+            else {
+                chanProps.put("gpgkeyurl", "file:///usr/share/keyrings/mgr-archive-keyring.gpg");
+            }
         }
-        else {
+        else if (chan.isTypeRpm()) {
+            Optional.ofNullable(chan.getGPGKeyUrl()).ifPresent(url -> chanProps.put("gpgkeyurl", url));
             chanProps.put("gpgcheck", "0");
             chanProps.put("repo_gpgcheck", "0");
             chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
         }
+        // For Type deb the packages are not signed. No need to set a GPG key here.
 
         // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
         chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());
