@@ -32,7 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
-%global documentroot /var/www/html 
+%global documentroot %{_localstatedir}/www/html 
 %global m2crypto python3-m2crypto
 %endif
 
