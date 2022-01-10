@@ -524,7 +524,7 @@ public class MenuTree {
                     .withTarget("_blank"))
             .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
-                            "https://www.uyuni-project.org/uyuni-docs/uyuni/index.html" :
+                            "https://www.uyuni-project.org/uyuni-docs/en/uyuni/index.html" :
                             "https://documentation.suse.com/suma/")
                     .withTarget("_blank"));
     }
