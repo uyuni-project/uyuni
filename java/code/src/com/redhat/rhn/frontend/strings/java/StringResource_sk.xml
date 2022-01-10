@@ -6026,35 +6026,35 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.11" xml:space="preserve">
         <source>Invalid script name</source>
-        <target/>
+        <target>Neplatný názov skriptu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.12" xml:space="preserve">
         <source>Invalid arguments</source>
-        <target/>
+        <target>Neplatné argumenty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.13" xml:space="preserve">
         <source>Could not parse httpd proxy URL</source>
-        <target/>
+        <target>Nepodarilo sa spracovať URL proxy httpd</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.14" xml:space="preserve">
         <source>Cannot find pub tree</source>
-        <target/>
+        <target>Nemožno nájsť strom pub</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.15" xml:space="preserve">
         <source>The hostname was not valid</source>
-        <target/>
+        <target>Názov hostiteľa nebol platný</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
@@ -6062,35 +6062,35 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.16" xml:space="preserve">
         <source>Could not find the CA certificate</source>
-        <target/>
+        <target>Nepodarilo sa nájsť certifikát CA</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.17" xml:space="preserve">
         <source>Could not find GPG key</source>
-        <target/>
+        <target>Nepodarilo sa nájsť kľúč GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.127" xml:space="preserve">
         <source>Unhandled error</source>
-        <target/>
+        <target>Neošetrená chyba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.success" xml:space="preserve">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
-        <target/>
+        <target>Zavádzací skript bol úspešne vygenerovaný.  Môžete k nemu pristúpiť &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
-        <target/>
+        <target>Pri reštartovaní @@PRODUCT_NAME@@ došlo k chybe  Môže sa manuálne reštartovať z konzoly zadaním príkazu: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Pre viac informácií, prosím, kontaktujte podporu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
