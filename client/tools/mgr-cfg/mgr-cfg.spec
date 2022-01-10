@@ -69,7 +69,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.2.3
+Version:        4.2.4
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
@@ -95,9 +95,11 @@ Requires:       %{pythonX}-%{name} = %{version}-%{release}
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires:  spacewalk-client-tools
-%if %{?suse_version} >= 1110
-# Only on SLES11
+%if 0%{?suse_version} >= 1110 && 0%{?suse_version} < 1500
 Requires:       python-selinux
+%endif
+%if 0%{?suse_version} >= 1500
+Requires:       python3-selinux
 %endif
 %else
 Requires:       libselinux-python

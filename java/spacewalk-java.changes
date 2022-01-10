@@ -1,3 +1,13 @@
+- Add additional matchers to package (nevra) filter
+- Add greater equals matcher to package (nevra) filter
+- fix XML syntax in cobbler snippets (bsc#1193694)
+- Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
+- Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
+- Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
+- UI and API call for changing proxy
+- require postgresql14 on SLE15 SP4
+- Update proxy path on minion connection
+- fix actionchain stuck in pending/picked up (bsc#1189561)
 - fix parsing error by making SCAP Profile description attribute optional
   (bsc#1192321)
 - Show salt ssh error message in failed action details

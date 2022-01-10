@@ -142,6 +142,8 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
                       'debian10_ssh_minion' => 'bison',
+                      'debian11_minion' => 'bison',
+                      'debian11_ssh_minion' => 'bison',
                       'opensuse153arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
@@ -190,6 +192,8 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
                            'debian10_ssh_minion' => 'debian-10-pool',
+                           'debian11_minion' => 'debian-11-pool',
+                           'debian11_ssh_minion' => 'debian-11-pool',
                            'opensuse153arm_minion' => 'openSUSE Leap 15.3 (aarch64)' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
@@ -207,6 +211,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-prod
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
+                          'debian-11-pool' => 'debian-11-pool-amd64',
                           'openSUSE Leap 15.3 (aarch64)' => 'opensuse_leap15_3-aarch64' }.freeze
 
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'SUMA-42-PROXY-x86_64',
@@ -224,6 +229,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' =>
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'debian-9-pool' => 'debian9-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
+                                    'debian-11-pool' => 'debian11-amd64',
                                     'openSUSE Leap 15.3 (aarch64)' => 'openSUSE-Leap-15.3-aarch64-uyuni' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
@@ -241,6 +247,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-P
                                            'ubuntu-2004-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64',
+                                           'debian-11-pool' => 'debian-11-pool-amd64',
                                            'openSUSE Leap 15.3 (aarch64)' => nil }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
@@ -283,6 +290,8 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
                       'debian10_ssh_minion' => 'amd64',
+                      'debian11_minion' => 'amd64',
+                      'debian11_ssh_minion' => 'amd64',
                       'opensuse153arm_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {

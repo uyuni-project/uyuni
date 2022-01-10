@@ -1,13 +1,18 @@
 import * as React from "react";
+
 import * as d3 from "d3";
+
 import SpaRenderer from "core/spa/spa-renderer";
-import Network from "../../utils/network";
+
 import { TopPanel } from "components/panels/TopPanel";
-import * as DataTree from "./data-tree";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import Network from "../../utils/network";
 import * as Preprocessing from "./data-processing/preprocessing";
+import * as DataTree from "./data-tree";
 import * as UI from "./ui/components";
 import * as Utils from "./utils";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 // See java/code/src/com/suse/manager/webui/templates/visualization/hierarchy.jade
 declare global {

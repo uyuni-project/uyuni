@@ -1,7 +1,10 @@
 import * as React from "react";
+
 import ReactDOM from "react-dom";
-import { localizedMoment } from "utils";
+
 import { DateTime } from "components/datetime";
+
+import { localizedMoment } from "utils";
 
 function mountDateTimeTo(mountingPoint: HTMLElement | null) {
   if (!mountingPoint) {

@@ -1,12 +1,13 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { Panel } from "components/panels/Panel";
-import { Button } from "components/buttons";
-import { Loading } from "components/utils/Loading";
-import useClustersApi, { withErrorMessages } from "../shared/api/use-clusters-api";
+import { useEffect, useState } from "react";
 
-import { ClusterType, ErrorMessagesType } from "../shared/api/use-clusters-api";
+import { Button } from "components/buttons";
 import { MessageType } from "components/messages";
+import { Panel } from "components/panels/Panel";
+import { Loading } from "components/utils/Loading";
+
+import useClustersApi, { withErrorMessages } from "../shared/api/use-clusters-api";
+import { ClusterType, ErrorMessagesType } from "../shared/api/use-clusters-api";
 
 type Props = {
   cluster: ClusterType;

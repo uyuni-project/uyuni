@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import ReactModal from "react-modal";
 
 export type DialogProps = {

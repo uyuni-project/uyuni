@@ -1,17 +1,20 @@
 import * as React from "react";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
+
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
 import {
   FormulaFormContext,
   FormulaFormContextProvider,
   FormulaFormRenderer,
-  text,
   get,
+  text,
 } from "./formulas/FormulaComponentGenerator";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 

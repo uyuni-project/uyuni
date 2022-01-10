@@ -1,5 +1,6 @@
 import * as React from "react";
-import { render, screen, clear, type, waitForElementToBeRemoved } from "utils/test-utils";
+
+import { clear, render, screen, type, waitForElementToBeRemoved } from "utils/test-utils";
 
 import { Form } from "./Form";
 import { Range } from "./Range";

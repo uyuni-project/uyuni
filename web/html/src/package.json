@@ -15,7 +15,7 @@
     "build": "node build",
     "build:novalidate": "BUILD_VALIDATION=false node build",
     "lint": "eslint . -f codeframe --fix",
-    "lint:production": "eslint . -f codeframe --config .eslintrc.production.js",
+    "lint:production": "NODE_ENV=production eslint . -f codeframe",
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",

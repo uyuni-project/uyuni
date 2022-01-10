@@ -17,6 +17,7 @@ function fillSpecFile() {
   return new Promise(function (resolve, reject) {
     fs.readFile(specFileLocation, "utf8", function (err, specFile) {
       if (err) {
+        reject(err);
         throw err;
       }
       var specFileEdited = specFile.replace(
@@ -26,6 +27,7 @@ function fillSpecFile() {
 
       fs.writeFile(specFileLocation, specFileEdited, "utf8", function (err) {
         if (err) {
+          reject(err);
           throw err;
         }
 

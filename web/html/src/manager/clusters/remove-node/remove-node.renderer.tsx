@@ -1,10 +1,13 @@
 import * as React from "react";
-import SpaRenderer from "core/spa/spa-renderer";
+
 import { RolesProvider } from "core/auth/roles-context";
+import SpaRenderer from "core/spa/spa-renderer";
 import { UserLocalizationProvider } from "core/user-localization/user-localization-context";
-import { MessagesContainer } from "components/toastr/toastr";
-import RemoveNode from "./remove-node";
+
 import { ServerMessageType } from "components/messages";
+import { MessagesContainer } from "components/toastr/toastr";
+
+import RemoveNode from "./remove-node";
 
 type RendererProps = {
   cluster?: string;
@@ -17,14 +20,14 @@ export const renderer = (id: string, { cluster, nodes, flashMessage }: RendererP
   try {
     clusterObj = JSON.parse(cluster || "");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   let nodesObj: any = {};
   try {
     nodesObj = JSON.parse(nodes || "");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

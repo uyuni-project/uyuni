@@ -1,11 +1,12 @@
 import * as React from "react";
-import { useState, useRef } from "react";
-import { Panel } from "components/panels/Panel";
-import { AsyncButton, Button } from "components/buttons";
-import { withErrorMessages } from "../shared/api/use-clusters-api";
-import { Label } from "components/input/Label";
+import { useRef, useState } from "react";
 
+import { AsyncButton, Button } from "components/buttons";
+import { Label } from "components/input/Label";
 import { MessageType } from "components/messages";
+import { Panel } from "components/panels/Panel";
+
+import { withErrorMessages } from "../shared/api/use-clusters-api";
 import { ErrorMessagesType } from "../shared/api/use-clusters-api";
 
 type Props = {
@@ -32,12 +33,10 @@ const FinishAddCluster = (props: Props) => {
           window.location.href = `/rhn/manager/cluster/${data}`;
         })
         .catch((err: ErrorMessagesType) => {
-          console.log(err);
+          console.error(err);
           props.setMessages(err.messages);
           throw err;
         });
-    } else {
-      console.log("form is not valid");
     }
   };
 

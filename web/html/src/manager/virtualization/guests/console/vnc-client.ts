@@ -1,4 +1,5 @@
 import RFB from "@novnc/novnc/core/rfb";
+
 import { ConsoleClientType } from "./guests-console-types";
 
 class VncClient implements ConsoleClientType {

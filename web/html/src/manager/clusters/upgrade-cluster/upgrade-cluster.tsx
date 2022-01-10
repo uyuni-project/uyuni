@@ -1,17 +1,19 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useState } from "react";
+
+import withPageWrapper from "components/general/with-page-wrapper";
+import { MessageType, ServerMessageType } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { HashRouter, Route, Switch } from "components/utils/HashRouter";
-import withPageWrapper from "components/general/with-page-wrapper";
-import useClustersApi, { withErrorMessages } from "../shared/api/use-clusters-api";
-import ScheduleClusterAction from "../shared/ui/schedule-cluster-action";
-import FormulaConfig from "../shared/ui/formula-config";
-import UpgradeClusterPlan from "./upgrade-cluster-plan";
 
+import useClustersApi, { withErrorMessages } from "../shared/api/use-clusters-api";
 import { FormulaValuesType } from "../shared/api/use-clusters-api";
 import { ClusterType } from "../shared/api/use-clusters-api";
-import { MessageType, ServerMessageType } from "components/messages";
+import FormulaConfig from "../shared/ui/formula-config";
+import ScheduleClusterAction from "../shared/ui/schedule-cluster-action";
+import UpgradeClusterPlan from "./upgrade-cluster-plan";
 
 type Props = {
   cluster: ClusterType;

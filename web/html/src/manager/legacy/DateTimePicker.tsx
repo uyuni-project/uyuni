@@ -5,9 +5,12 @@
  */
 import * as React from "react";
 import { useState } from "react";
+
 import ReactDOM from "react-dom";
-import { localizedMoment } from "utils";
+
 import { DateTimePicker } from "components/datetime";
+
+import { localizedMoment } from "utils";
 
 function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
   if (!mountingPoint) {

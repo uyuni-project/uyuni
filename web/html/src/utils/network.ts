@@ -1,5 +1,6 @@
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 import { showErrorToastr } from "components/toastr";
+
 import { Utils } from "utils/functions";
 import { Cancelable } from "utils/functions";
 
@@ -30,7 +31,7 @@ type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 function request<Returns>(
   url: string,
   type: "GET" | "POST" | "DELETE" | "PUT",
-  headers: Record<string, string>,
+  headers: Record<string, string> | undefined,
   data: any,
   contentType: string,
   processData: boolean = true
@@ -86,7 +87,7 @@ function put<Returns = any, Payload = any>(
 }
 
 function get<Returns = any>(url: string, contentType: string = "application/json"): Cancelable<Returns> {
-  return request<Returns>(url, "GET", {}, {}, contentType);
+  return request<Returns>(url, "GET", undefined, undefined, contentType);
 }
 
 function errorMessageByStatus(status: number): Array<string> {
@@ -110,10 +111,10 @@ function responseErrorMessage(
   messageMapFunc: MapFuncType | null | undefined = null
 ): Array<MessageType> {
   if (jqXHR instanceof Error) {
-    console.log("Error: " + jqXHR.toString());
+    console.error("Error: " + jqXHR.toString());
     throw jqXHR;
   } else {
-    console.log("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText);
+    console.error("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText);
   }
 
   if (

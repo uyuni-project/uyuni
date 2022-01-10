@@ -1,13 +1,15 @@
 import * as React from "react";
 
-import { Header } from "./Header";
-import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
-import { SearchPanel } from "./SearchPanel";
-import { SearchField } from "./SearchField";
-import { PageControl, SimpleDataProvider, AsyncDataProvider } from "utils/data-providers";
+import { pageSize } from "core/user-preferences";
+
+import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
+import { Comparator, PagedData } from "utils/data-providers";
 import { Utils } from "utils/functions";
 
-import { PagedData, Comparator } from "utils/data-providers";
+import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
+import { Header } from "./Header";
+import { SearchField } from "./SearchField";
+import { SearchPanel } from "./SearchPanel";
 
 type ChildrenArgsProps = {
   currItems: Array<any>;
@@ -109,7 +111,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       data: [],
       provider: this.getProvider(),
       currentPage: 1,
-      itemsPerPage: this.props.initialItemsPerPage || window.userPrefPageSize || 15,
+      itemsPerPage: this.props.initialItemsPerPage || pageSize,
       totalItems: 0,
       criteria: undefined,
       sortColumnKey: this.props.initialSortColumnKey || null,

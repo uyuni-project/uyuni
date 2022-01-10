@@ -1,12 +1,16 @@
 import * as React from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { Messages, Utils } from "components/messages";
 import { Panel } from "components/panels/Panel";
-import Network from "utils/network";
-import NewAnsiblePath from "./new-ansible-path";
-import EditAnsiblePath from "./edit-ansible-path";
-import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
 import { Loading } from "components/utils/Loading";
+
+import Network from "utils/network";
+
+import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
+import EditAnsiblePath from "./edit-ansible-path";
+import NewAnsiblePath from "./new-ansible-path";
 
 type PropsType = {
   minionServerId: number;

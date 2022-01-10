@@ -1,4 +1,5 @@
-import { render, server, click, waitFor, screen } from "utils/test-utils";
+import { click, render, screen, server, waitFor } from "utils/test-utils";
+
 import AccordionPathContent from "./accordion-path-content";
 import { createNewAnsiblePath } from "./ansible-path-type";
 

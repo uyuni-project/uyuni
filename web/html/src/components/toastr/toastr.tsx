@@ -1,7 +1,9 @@
-import * as React from "react";
-import { ToastContainer, toast, cssTransition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./toastr.css";
+
+import * as React from "react";
+
+import { cssTransition, toast, ToastContainer } from "react-toastify";
 
 type OptionalParams = {
   autoHide: boolean;

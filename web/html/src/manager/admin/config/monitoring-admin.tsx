@@ -1,16 +1,21 @@
+import "./monitoring-admin.css";
+
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useEffect } from "react";
+
+import { AsyncButton, Button } from "components/buttons";
+import withPageWrapper from "components/general/with-page-wrapper";
+import { IconTag as Icon } from "components/icontag";
+import { Messages, Utils as MessagesUtils } from "components/messages";
 import { Panel } from "components/panels/Panel";
 import { HelpLink } from "components/utils/HelpLink";
-import { Button, AsyncButton } from "components/buttons";
-import Network from "utils/network";
-import { Messages, Utils as MessagesUtils } from "components/messages";
+
 import { Utils } from "utils/functions";
-import { IconTag as Icon } from "components/icontag";
-import withPageWrapper from "components/general/with-page-wrapper";
+import Network from "utils/network";
+
 import useMonitoringApi from "./use-monitoring-api";
-import "./monitoring-admin.css";
 
 const { capitalize } = Utils;
 
@@ -72,18 +77,17 @@ const ExporterIcon = (props: {
         ? "item-enabled-pending"
         : "item-enabled";
     if (props.message) {
-      tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + (props.message ? props.message : "")]; // double check props.message to keep flow happy
+      tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Enabled");
     }
   } else if (props.status === false) {
-    console.log("disabled " + props.name + " " + (props.message ? props.message : "null"));
     type =
       props.message === "restart" || props.message === "enable" || props.message === "disable"
         ? "item-error-pending"
         : "item-error";
     if (props.message) {
-      tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + (props.message ? props.message : "")]; // double check props.message to keep flow happy
+      tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Disabled");
     }

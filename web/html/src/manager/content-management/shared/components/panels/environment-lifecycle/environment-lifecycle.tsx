@@ -1,20 +1,22 @@
 import * as React from "react";
+
 import ReactHtmlParser from "html-react-parser";
-import EnvironmentView from "./environment-view";
-import EnvironmentForm from "./environment-form";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import { Messages, Utils as MsgUtils } from "components/messages";
 import CreatorPanel from "components/panels/CreatorPanel";
-import { Loading } from "components/utils/Loading";
-import Promote from "../promote/promote";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
-import { mapAddEnvironmentRequest, mapUpdateEnvironmentRequest } from "./environment.utils";
+import { Loading } from "components/utils/Loading";
 
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-import getRenderedMessages from "../../messages/messages";
-
 import { ProjectEnvironmentType, ProjectHistoryEntry, ProjectMessageType } from "../../../type";
+import getRenderedMessages from "../../messages/messages";
+import Promote from "../promote/promote";
+import { mapAddEnvironmentRequest, mapUpdateEnvironmentRequest } from "./environment.utils";
+import EnvironmentForm from "./environment-form";
+import EnvironmentView from "./environment-view";
 
 type Props = {
   projectId: string;

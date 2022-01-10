@@ -275,6 +275,20 @@ Feature: Sanity checks
     And "debian10_ssh_minion" should communicate with the server
     And the clock from "debian10_ssh_minion" should be exact
 
+@debian11_minion
+  Scenario: The Debian 11 minion is healthy
+    Then "debian11_minion" should have a FQDN
+    And reverse resolution should work for "debian11_minion"
+    And "debian11_minion" should communicate with the server
+    And the clock from "debian11_minion" should be exact
+
+@debian11_ssh_minion
+  Scenario: The Debian 11 Salt SSH minion is healthy
+    Then "debian11_ssh_minion" should have a FQDN
+    And reverse resolution should work for "debian11_ssh_minion"
+    And "debian11_ssh_minion" should communicate with the server
+    And the clock from "debian11_ssh_minion" should be exact
+
 @sle11sp4_buildhost
   Scenario: The SLES 11 SP4 build host is healthy
     Then "sle11sp4_buildhost" should have a FQDN

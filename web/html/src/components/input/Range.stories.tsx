@@ -1,7 +1,9 @@
 import * as React from "react";
+
+import { SubmitButton } from "components/buttons";
+
 import { Form } from "./Form";
 import { Range } from "./Range";
-import { SubmitButton } from "components/buttons";
 
 export default {
   component: Range,

@@ -1,11 +1,13 @@
 import * as React from "react";
+
+import { Dialog } from "components/dialog/LegacyDialog";
+import { ModalLink } from "components/dialog/ModalLink";
+
 import produce from "utils/produce";
 
 import { ProjectPropertiesType } from "../../../type/project.type";
-import { getVersionMessage } from "./properties.utils";
-import { ModalLink } from "components/dialog/ModalLink";
-import { Dialog } from "components/dialog/LegacyDialog";
 import BuildVersion from "../build/build-version";
+import { getVersionMessage } from "./properties.utils";
 
 type Props = {
   properties: ProjectPropertiesType;

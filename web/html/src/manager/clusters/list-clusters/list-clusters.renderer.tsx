@@ -1,8 +1,10 @@
 import * as React from "react";
+
 import { RolesProvider } from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";
-import { MessagesContainer } from "components/toastr/toastr";
+
 import { ServerMessageType } from "components/messages";
+import { MessagesContainer } from "components/toastr/toastr";
 
 import ListClusters from "./list-clusters";
 
@@ -16,7 +18,7 @@ export const renderer = (id: string, { clusters, flashMessage }: RendererProps =
   try {
     clustersJson = JSON.parse(clusters || "");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

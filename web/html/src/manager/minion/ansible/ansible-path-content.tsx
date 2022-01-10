@@ -1,10 +1,14 @@
 import * as React from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { Messages, Utils } from "components/messages";
-import Network from "utils/network";
-import { AnsiblePath } from "./ansible-path-type";
-import AccordionPathContent, { PlaybookDetails } from "./accordion-path-content";
 import { Loading } from "components/utils/Loading";
+
+import Network from "utils/network";
+
+import AccordionPathContent, { PlaybookDetails } from "./accordion-path-content";
+import { AnsiblePath } from "./ansible-path-type";
 import SchedulePlaybook from "./schedule-playbook";
 
 type PropsType = {

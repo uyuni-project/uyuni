@@ -34,6 +34,7 @@ BuildArch:      noarch
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
 BuildRequires:  python3
+BuildRequires:  python3-rpm-macros
 %if 0%{?pylint_check}
 BuildRequires:  python3-solv
 BuildRequires:  python3-uyuni-common-libs

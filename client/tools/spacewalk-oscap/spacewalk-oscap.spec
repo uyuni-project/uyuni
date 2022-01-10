@@ -80,6 +80,7 @@ Requires:       python3-rhn-check >= 2.8.4
 Requires:       python3-rhnlib >= 2.8.3
 BuildRequires:  python3-devel
 BuildRequires:  python3-rhnlib >= 2.8.3
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
