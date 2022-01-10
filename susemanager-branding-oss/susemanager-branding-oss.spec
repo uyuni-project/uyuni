@@ -70,6 +70,6 @@ install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 %dir %_defaultdocdir/susemanager
 %_defaultdocdir/susemanager/license.txt
 %dir %{wwwdocroot}/help
-%[wwwdocroot}/help/eula.html
+%{wwwdocroot}/help/eula.html
 
 %changelog
