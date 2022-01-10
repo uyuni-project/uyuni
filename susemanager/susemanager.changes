@@ -1,4 +1,6 @@
+- fix pg-migrate to check version of postgresql??-server (bsc#1192368)
 - remove obsoleted sysv init script (bsc#1191857)
+
 -------------------------------------------------------------------
 Wed Nov 17 12:40:32 CET 2021 - jmassaguerpla@suse.de
 
