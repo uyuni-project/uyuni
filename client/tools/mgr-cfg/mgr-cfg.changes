@@ -1,4 +1,8 @@
-- Fix python selinux package name depending on build target (bsc#1193600)
+-------------------------------------------------------------------
+Mon Jan 10 13:10:00 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.4-1
+  * Fix python selinux package name depending on build target (bsc#1193600)
 
 -------------------------------------------------------------------
 Fri Jul 16 14:03:33 CEST 2021 - jgonzalez@suse.com
