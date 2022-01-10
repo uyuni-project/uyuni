@@ -280,7 +280,8 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %{insserv_cleanup}
 %endif
 # Cleanup
-sed -i '/You can access .* via https:\/\//d' /etc/motd
+sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
+
 
 %files -f susemanager.lang
 %defattr(-,root,root,-)
