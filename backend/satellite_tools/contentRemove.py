@@ -369,7 +369,7 @@ def delete_channels(channelLabels, force=0, justdb=0, skip_packages=0, skip_chan
 
 
 def __rmtree_error(op, name, exc):
-    print("Error calling %s for %s: %s" % (op.__name__, name, exc[1]))
+    sys.stderr.write("Error calling %s for %s: %s\n" % (op.__name__, name, exc[1]))
     raise exc[1]
 
 
