@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-09 15:26+0100\n"
-"PO-Revision-Date: 2021-11-07 18:12+0000\n"
+"PO-Revision-Date: 2022-01-11 12:14+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:491
 msgid "remaining"
@@ -91,7 +91,7 @@ msgstr "Es gibt nicht gespeicherte Änderungen. Möchten sie fortfahren?"
 
 #: ../html/src/components/config-channels.tsx:109
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "State Zuweisungen wurden gespeichert"
 
 #: ../html/src/components/config-channels.tsx:116
 msgid "An error occurred on save."
