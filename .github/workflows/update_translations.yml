@@ -3,7 +3,25 @@ name: Update translation files
 on:
   push:
     branches:
-      - master
+      - master-weblate
+    paths:
+      - 'web/po/*.po'
+      - 'backend/po/*.po'
+      - 'susemanager/po/*.po'
+      - 'spacecmd/po/*.po'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/database/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/database/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/nav/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/nav/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/template/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/template/StringResource_en_US.xml'
+      - 'client/rhel/yum-rhn-plugin/po/*.po'
+      - 'client/rhel/mgr-daemon/po/*.po'
+      - 'client/rhel/spacewalk-client-tools/po/*.po'
 
 jobs:
  run:
