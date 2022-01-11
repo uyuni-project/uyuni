@@ -1,3 +1,4 @@
+- Change order of 'Relevant' and 'All' in patches menu
 - Handle multiple Kiwi bundles (bsc#1194905)
 - Install product by default after a channel is subscribed
 - Improve token validation logs
