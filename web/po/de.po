@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-09 15:26+0100\n"
-"PO-Revision-Date: 2022-01-11 12:14+0000\n"
+"PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -91,7 +91,7 @@ msgstr "Es gibt nicht gespeicherte Änderungen. Möchten sie fortfahren?"
 
 #: ../html/src/components/config-channels.tsx:109
 msgid "State assignments have been saved."
-msgstr "State Zuweisungen wurden gespeichert"
+msgstr "State Zuweisungen wurden gespeichert."
 
 #: ../html/src/components/config-channels.tsx:116
 msgid "An error occurred on save."
@@ -166,7 +166,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:353
 msgid "There are no states assigned."
-msgstr ""
+msgstr "Es sind keine States zugewiesen."
 
 #: ../html/src/components/config-channels.tsx:361
 msgid "Channel Name"
