@@ -41,13 +41,10 @@ jobs:
      run: sudo apt-get install -y make git gettext intltool python3
 
    - name: Setup git
-     env:
-       GIT_USER: galaxy-ci
-       GIT_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
      run: |
        git config --global user.name "Galaxy CI"
-       git config --global user.email "galaxy-ci@suse.de" 
-       git config credential.helper "env --username=GIT_USER --password=GIT_TOKEN"
+       git config --global user.email "galaxy-ci@suse.de"
+       git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN_GALAXY_CI }}@github.com/${{ github.repository }}
 
    - name: Align translations files
      run: scripts/translation/update-all-translation-strings.sh
