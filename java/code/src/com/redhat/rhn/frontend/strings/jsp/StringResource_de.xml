@@ -929,7 +929,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.orgdetail" xml:space="preserve">
           <source>Can not display Organization Details</source>
-        <target>Kann Organisationsdetails nicht anzeigen.</target>
+        <target>Kann Organisationsdetails nicht anzeigen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -1896,7 +1896,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target> Adressen in Verbindung mit Ihrem @@PRODUCT_NAME@@ Account sind unten aufgelistet.</target>
+        <target> Adressen in Verbindung mit Ihrem @@PRODUCT_NAME@@ Account sind unten aufgelistet. </target>
       </trans-unit>
       <trans-unit id="address.jsp.associated" xml:space="preserve">
         <source> The following addresses are associated with this user's account. </source>
