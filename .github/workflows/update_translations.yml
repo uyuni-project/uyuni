@@ -49,7 +49,9 @@ jobs:
      run: scripts/translation/update-all-translation-strings.sh
      env:
        ADDITIONAL_SAFE_BRANCHNAME: master
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
    - name: Push changes
      run: git push origin HEAD
+     env:
+       GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
