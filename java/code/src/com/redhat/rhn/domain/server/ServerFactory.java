@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
@@ -1369,7 +1370,7 @@ public class ServerFactory extends HibernateFactory {
      * @return map from server id to map of package name to package version in evr format
      */
     @SuppressWarnings("unchecked")
-    public static Map<Long, Map<String, String>> listNewestPkgsForServerErrata(
+    public static Map<Long, Map<String, Tuple2<String, String>>> listNewestPkgsForServerErrata(
             Set<Long> serverIds, Set<Long> errataIds) {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
             return new HashMap<>();
@@ -1385,7 +1386,7 @@ public class ServerFactory extends HibernateFactory {
                 Collectors.groupingBy(row -> (Long) row[0],
                         // Map from package name to version (requires package names
                         // to be unique which is guaranteed by the sql query
-                        toMap(row -> (String)row[1], row -> (String)row[2])
+                        toMap(row -> (String)row[1], row -> new Tuple2<>((String)row[2], (String)row[3]))
                 )
         );
     }
