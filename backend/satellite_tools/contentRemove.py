@@ -270,7 +270,10 @@ def delete_channels(channelLabels, force=0, justdb=0, skip_packages=0, skip_chan
         _delete_rpms(rpms_ids)
 
     if not skip_kickstart_trees and not justdb:
-        _delete_ks_files(channelLabels)
+        try:
+            _delete_ks_files(channelLabels)
+        except OSError:
+            return
 
     if not justdb and not skip_packages and not just_kickstart_trees:
         _delete_files(rpms_paths + srpms_paths)
@@ -359,14 +362,22 @@ def delete_channels(channelLabels, force=0, justdb=0, skip_packages=0, skip_chan
         h.executemany(channel_id=channel_ids)
 
     if not justdb and not just_kickstart_trees:
-        __deleteRepoData(channelLabels)
+        try:
+            __deleteRepoData(channelLabels)
+        except OSError:
+            return
+
+
+def __rmtree_error(op, name, exc):
+    sys.stderr.write("Error calling %s for %s: %s\n" % (op.__name__, name, exc[1]))
+    raise exc[1]
 
 
 def __deleteRepoData(labels):
     directory = '/var/cache/' + CFG.repomd_path_prefix
     for label in labels:
         if os.path.isdir(directory + '/' + label):
-            shutil.rmtree(directory + '/' + label)
+            shutil.rmtree(directory + '/' + label, onerror=__rmtree_error)
 
 
 def list_packages_without_channels(org_id, sources=0):
@@ -598,7 +609,9 @@ def _delete_ks_files(channel_labels):
         if not os.path.exists(path):
             log_debug(1, "Not removing %s: no such file" % path)
             continue
-        shutil.rmtree(path)
+        shutil.rmtree(path, onerror=__rmtree_error)
+
+
 class UserError(Exception):
 
     def __init__(self, msg):
