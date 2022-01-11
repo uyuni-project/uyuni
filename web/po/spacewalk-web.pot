@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-09 15:26+0100\n"
+"POT-Creation-Date: 2022-01-11 15:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,28 @@ msgstr ""
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:22
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
+msgid "Please input required fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:158
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
+msgid "Invalid format of fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:208
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
 msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:49
@@ -247,32 +269,6 @@ msgstr ""
 msgid "Are you sure you want to delete project "
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:22
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
-msgid "Please input required fields: {0}"
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:158
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
-msgid "Invalid format of fields: {0}"
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:208
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-
-#: ../html/src/components/formulas/EditGroup.tsx:321
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr ""
@@ -296,9 +292,13 @@ msgid "Save"
 msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:299
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:62
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 msgid "Formulas"
+msgstr ""
+
+#: ../html/src/components/formulas/EditGroup.tsx:321
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
@@ -324,7 +324,6 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.stories.tsx:124
 #: ../html/src/components/input/FormMultiInput.stories.tsx:166
 #: ../html/src/components/input/FormMultiInput.stories.tsx:235
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:66
@@ -333,6 +332,7 @@ msgstr ""
 #: ../html/src/components/input/Range.stories.tsx:46
 #: ../html/src/components/input/Select.stories.tsx:35
 #: ../html/src/components/input/Text.stories.tsx:44
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
@@ -350,8 +350,8 @@ msgid "Users"
 msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:55
-#: ../html/src/components/input/form.stories.tsx:29
 #: ../html/src/components/input/Text.stories.tsx:29
+#: ../html/src/components/input/form.stories.tsx:29
 msgid "First Name"
 msgstr ""
 
@@ -360,12 +360,12 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.stories.tsx:116
 #: ../html/src/components/input/FormMultiInput.stories.tsx:218
 #: ../html/src/components/input/FormMultiInput.stories.tsx:226
-#: ../html/src/components/input/form.stories.tsx:31
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
 #: ../html/src/components/input/Text.stories.tsx:31
 #: ../html/src/components/input/Text.stories.tsx:40
+#: ../html/src/components/input/form.stories.tsx:31
 msgid "Minimum 2 characters"
 msgstr ""
 
@@ -630,8 +630,8 @@ msgstr ""
 #: ../html/src/components/table/TableDataHandler.tsx:346
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:464
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
@@ -1583,31 +1583,6 @@ msgstr ""
 msgid "Your subscriptions"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Edit Virtual Host Managers"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:89
-msgid "Subscription Matching"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:154
-msgid "Subscriptions"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
-msgid "Unmatched Products"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
-msgid "Pins "
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
-msgid "Messages "
-msgstr ""
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:59
 msgid "Product name"
 msgstr ""
@@ -1623,6 +1598,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:92
 msgid "No unmatching products are found."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Unmatched Products"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:145
@@ -1647,6 +1627,26 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Edit Virtual Host Managers"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:89
+msgid "Subscription Matching"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:154
+msgid "Subscriptions"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
+msgid "Pins "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
+msgid "Messages "
 msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:39
@@ -2740,38 +2740,38 @@ msgid ""
 "this group"
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid "Formula saved. Apply the "
-msgstr ""
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr ""
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-msgid " for the changes to take effect."
-msgstr ""
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
-msgid "Invalid target type."
-msgstr ""
-
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:16
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
+msgid " for the changes to take effect."
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
+msgid "Invalid target type."
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+msgid "Formula saved. Apply the "
 msgstr ""
 
 #: ../html/src/manager/header/search/search.tsx:10
@@ -3909,8 +3909,8 @@ msgstr ""
 msgid "Applying the config channels has been "
 msgstr ""
 
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:62
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 msgid "Configuration"
 msgstr ""
 
@@ -4436,6 +4436,14 @@ msgstr ""
 msgid "Target Type"
 msgstr ""
 
+#: ../html/src/manager/state/recurring-states-utils.tsx:4
+msgid "Minion"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:6
+msgid "Group"
+msgstr ""
+
 #: ../html/src/manager/state/recurring-states.tsx:142
 msgid "Schedule successfully"
 msgstr ""
@@ -4448,14 +4456,6 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {0}. The scheduled "
 "time will be the server time."
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:4
-msgid "Minion"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:6
-msgid "Group"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
@@ -4870,6 +4870,27 @@ msgstr ""
 msgid "Confirm Software Channel Change"
 msgstr ""
 
+#: ../html/src/manager/systems/virtual-list.tsx:42
+msgid "Virtual Systems"
+msgstr ""
+
+#: ../html/src/manager/systems/virtual-list.tsx:60
+msgid "No Virtual Systems."
+msgstr ""
+
+#: ../html/src/manager/systems/virtual-list.tsx:65
+msgid "Virtual Host"
+msgstr ""
+
+#: ../html/src/manager/systems/virtual-list.tsx:73
+msgid "Virtual System"
+msgstr ""
+
+#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
+msgid "Base Software Channel"
+msgstr ""
+
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:54
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr ""
@@ -4977,61 +4998,22 @@ msgstr ""
 msgid "Add a virtual host manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
-msgid "Virtual Systems"
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
-msgid "No Virtual Systems."
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
+#: ../html/src/manager/virtualization/ListTab.tsx:162
+msgid "{0} selected"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr ""
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
-msgid "Base Software Channel"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
+#: ../html/src/manager/virtualization/ListTab.tsx:242
+msgid "Action Status"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
@@ -5101,6 +5083,55 @@ msgstr ""
 msgid "Graphics"
 msgstr ""
 
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
+msgid "Retry"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
+msgid "Connecting..."
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
+msgid "Disconnected"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
+msgid "Failed to connect"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
+msgid "Toggle full size"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
+msgid "Guest is not running"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
+msgid "Unknown guest"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
+msgid "Something went wrong, connection is closed"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
+msgid "Create Virtual Machine"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+msgid "Migrate"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
+msgid "Select where to migrate the virtual guest to."
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
+msgid "Target Host"
+msgstr ""
+
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:34
 msgid "Start / Resume"
 msgstr ""
@@ -5160,19 +5191,6 @@ msgstr ""
 msgid "Graphical Console"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-msgid "Migrate"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr ""
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
 msgid "Device type"
 msgstr ""
@@ -5203,10 +5221,6 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr ""
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
 msgid "Source storage pool"
 msgstr ""
@@ -5221,6 +5235,10 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
 msgid "Source template image URL"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
+msgid "Disks"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
@@ -5248,24 +5266,6 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
-msgstr ""
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr ""
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.tsx:162
-msgid "{0} selected"
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.tsx:242
-msgid "Action Status"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
@@ -5500,42 +5500,6 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
-
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
 msgid "Network address"
 msgstr ""
@@ -5630,6 +5594,42 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
 msgid "Untagged"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27

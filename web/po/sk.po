@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-09 15:26+0100\n"
-"PO-Revision-Date: 2021-12-24 10:12+0000\n"
+"POT-Creation-Date: 2022-01-11 15:34+0000\n"
+"PO-Revision-Date: 2022-01-09 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -41,6 +41,30 @@ msgid ""
 msgstr ""
 "Prehliadač Internet Explorer nie je podporovaný. Skúste použiť Firefox, "
 "Chrome, alebo Edge"
+
+#: ../html/src/components/FormulaForm.tsx:22
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
+msgid "Please input required fields: {0}"
+msgstr "Prosím, zadajte požadované polia: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:158
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
+msgid "Invalid format of fields: {0}"
+msgstr "Neplatný formát polí: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:208
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
+"a konfiguráciu softvéru."
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -255,36 +279,6 @@ msgstr "Vymazať projekt"
 msgid "Are you sure you want to delete project "
 msgstr "Naozaj chcete vymazať projekt "
 
-#: ../html/src/components/FormulaForm.tsx:22
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
-msgid "Please input required fields: {0}"
-msgstr "Prosím, zadajte požadované polia: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:158
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
-msgid "Invalid format of fields: {0}"
-msgstr "Neplatný formát polí: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:208
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
-"a konfiguráciu softvéru."
-
-#: ../html/src/components/formulas/EditGroup.tsx:321
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových "
-"údajoch."
-
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr " Žiadna skupina"
@@ -311,10 +305,16 @@ msgid "Save"
 msgstr "Uložiť"
 
 #: ../html/src/components/formula-selection.tsx:299
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:62
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 msgid "Formulas"
 msgstr "Vzorce"
+
+#: ../html/src/components/formulas/EditGroup.tsx:321
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+"Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových "
+"údajoch."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
@@ -339,7 +339,6 @@ msgstr "Prepnúť viditeľnosť sekcie"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:124
 #: ../html/src/components/input/FormMultiInput.stories.tsx:166
 #: ../html/src/components/input/FormMultiInput.stories.tsx:235
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:66
@@ -348,6 +347,7 @@ msgstr "Prepnúť viditeľnosť sekcie"
 #: ../html/src/components/input/Range.stories.tsx:46
 #: ../html/src/components/input/Select.stories.tsx:35
 #: ../html/src/components/input/Text.stories.tsx:44
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
@@ -365,8 +365,8 @@ msgid "Users"
 msgstr "Používatelia"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:55
-#: ../html/src/components/input/form.stories.tsx:29
 #: ../html/src/components/input/Text.stories.tsx:29
+#: ../html/src/components/input/form.stories.tsx:29
 msgid "First Name"
 msgstr "Krstné meno"
 
@@ -375,12 +375,12 @@ msgstr "Krstné meno"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:116
 #: ../html/src/components/input/FormMultiInput.stories.tsx:218
 #: ../html/src/components/input/FormMultiInput.stories.tsx:226
-#: ../html/src/components/input/form.stories.tsx:31
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
 #: ../html/src/components/input/Text.stories.tsx:31
 #: ../html/src/components/input/Text.stories.tsx:40
+#: ../html/src/components/input/form.stories.tsx:31
 msgid "Minimum 2 characters"
 msgstr "Minimálne 2 znaky"
 
@@ -647,8 +647,8 @@ msgstr "Vybrať všetko"
 #: ../html/src/components/table/TableDataHandler.tsx:346
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:464
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
@@ -1656,31 +1656,6 @@ msgstr "Nenašli sa žiadne predplatné."
 msgid "Your subscriptions"
 msgstr "Vaše predplatné"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Edit Virtual Host Managers"
-msgstr "Upraviť správcov virtuálnych hostiteľov"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:89
-msgid "Subscription Matching"
-msgstr "Priraďovanie predplatného"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:154
-msgid "Subscriptions"
-msgstr "Predplatné"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
-msgid "Unmatched Products"
-msgstr "Nepriradené produkty"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
-msgid "Pins "
-msgstr "Pripnutia "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
-msgid "Messages "
-msgstr "Správy "
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:59
 msgid "Product name"
 msgstr "Názov produktu"
@@ -1697,6 +1672,11 @@ msgstr "Zobraziť zoznam systémov"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:92
 msgid "No unmatching products are found."
 msgstr "Nenašli sa žiadne nepriraďované produkty."
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Unmatched Products"
+msgstr "Nepriradené produkty"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:145
 msgid "System name"
@@ -1721,6 +1701,26 @@ msgstr "1-2 sokety alebo 1-2 virtuálne stroje"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "Na inštanciu"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Edit Virtual Host Managers"
+msgstr "Upraviť správcov virtuálnych hostiteľov"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:89
+msgid "Subscription Matching"
+msgstr "Priraďovanie predplatného"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:154
+msgid "Subscriptions"
+msgstr "Predplatné"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
+msgid "Pins "
+msgstr "Pripnutia "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
+msgid "Messages "
+msgstr "Správy "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:39
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:51
@@ -2838,33 +2838,6 @@ msgstr ""
 "Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
 "tejto skupine"
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid "Formula saved. Apply the "
-msgstr "Vzorec bol uložený. Použiť "
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-msgid " for the changes to take effect."
-msgstr " aby sa prejavili zmeny."
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
-msgid "Invalid target type."
-msgstr "Neplatný typ cieľa."
-
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:16
 msgid ""
@@ -2873,6 +2846,33 @@ msgid ""
 msgstr ""
 "Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
 "použiť "
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
+msgid " for the changes to take effect."
+msgstr " aby sa prejavili zmeny."
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
+msgid "Invalid target type."
+msgstr "Neplatný typ cieľa."
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+msgid "Formula saved. Apply the "
+msgstr "Vzorec bol uložený. Použiť "
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -2892,14 +2892,12 @@ msgid "Patches"
 msgstr "Opravy"
 
 #: ../html/src/manager/header/search/search.tsx:22
-#, fuzzy
 msgid "Documentation"
-msgstr "dokumentácia"
+msgstr "Dokumentácia"
 
 #: ../html/src/manager/header/search/search.tsx:56
-#, fuzzy
 msgid "Open search"
-msgstr "Vymazať vyhľadávanie"
+msgstr "Otvoriť vyhľadávanie"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
@@ -4039,8 +4037,8 @@ msgstr "Vykonanie scenára bolo"
 msgid "Applying the config channels has been "
 msgstr "Použitie konfiguračných kanálov bolo "
 
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:62
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 msgid "Configuration"
 msgstr "Konfigurácia"
 
@@ -4568,6 +4566,14 @@ msgstr "Frekvencia"
 msgid "Target Type"
 msgstr "Typ cieľa"
 
+#: ../html/src/manager/state/recurring-states-utils.tsx:4
+msgid "Minion"
+msgstr "Minion"
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:6
+msgid "Group"
+msgstr "Skupina"
+
 #: ../html/src/manager/state/recurring-states.tsx:142
 msgid "Schedule successfully"
 msgstr "Naplánované úspešne"
@@ -4583,14 +4589,6 @@ msgid ""
 msgstr ""
 "Nižšie uvedené časy sa zobrazujú v časovom pásme servera {0}. Naplánovaný "
 "čas bude časom servera."
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:4
-msgid "Minion"
-msgstr "Minion"
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:6
-msgid "Group"
-msgstr "Skupina"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -5040,6 +5038,27 @@ msgstr "Nie sú k dispozícii žiadne kanály potomkov."
 msgid "Confirm Software Channel Change"
 msgstr "Potvrďte zmenu softvérového kanála"
 
+#: ../html/src/manager/systems/virtual-list.tsx:42
+msgid "Virtual Systems"
+msgstr "Virtuálne systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:60
+msgid "No Virtual Systems."
+msgstr "Žiadne virtuálne systémy."
+
+#: ../html/src/manager/systems/virtual-list.tsx:65
+msgid "Virtual Host"
+msgstr "Virtuálny hostiteľ"
+
+#: ../html/src/manager/systems/virtual-list.tsx:73
+msgid "Virtual System"
+msgstr "Virtuálny systém"
+
+#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
+msgid "Base Software Channel"
+msgstr "Základný softvérový kanál"
+
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:54
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr "Bolo spustené obnovenie dát pre tohto správcu virtuálnych hostiteľov."
@@ -5147,62 +5166,25 @@ msgstr "Správcovia virtuálnych hostiteľov"
 msgid "Add a virtual host manager"
 msgstr "Pridať správcu virtuálnych hostiteľov"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
-msgid "Virtual Systems"
-msgstr "Virtuálne systémy"
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
+msgstr "Prosím, nainštalujte modul libvirt python."
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
-msgid "No Virtual Systems."
-msgstr "Žiadne virtuálne systémy."
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr ""
+"KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly jadra "
+"sú načítané."
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
-msgstr "Virtuálny hostiteľ"
+#: ../html/src/manager/virtualization/ListTab.tsx:162
+msgid "{0} selected"
+msgstr "Vybrané {0}"
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr "Virtuálny systém"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
-msgid "Base Software Channel"
-msgstr "Základný softvérový kanál"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "Odpojené"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "Nepodarilo sa pripojiť"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "Prepnúť plnú veľkosť"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "Hosť nie je spustený"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "Neznámy hosť"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "Znovu"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "Pripájanie..."
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "Niečo sa pokazilo, pripojenie je ukončené"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "Vytvoriť virtuálny stroj"
+#: ../html/src/manager/virtualization/ListTab.tsx:242
+msgid "Action Status"
+msgstr "Stav akcie"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:225
@@ -5271,6 +5253,55 @@ msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
 msgid "Graphics"
 msgstr "Grafika"
 
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
+msgid "Retry"
+msgstr "Znovu"
+
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
+msgid "Connecting..."
+msgstr "Pripájanie..."
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
+msgid "Disconnected"
+msgstr "Odpojené"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
+msgid "Failed to connect"
+msgstr "Nepodarilo sa pripojiť"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
+msgid "Toggle full size"
+msgstr "Prepnúť plnú veľkosť"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
+msgid "Guest is not running"
+msgstr "Hosť nie je spustený"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
+msgid "Unknown guest"
+msgstr "Neznámy hosť"
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
+msgid "Something went wrong, connection is closed"
+msgstr "Niečo sa pokazilo, pripojenie je ukončené"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
+msgid "Create Virtual Machine"
+msgstr "Vytvoriť virtuálny stroj"
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+msgid "Migrate"
+msgstr "Migrovať"
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
+msgid "Select where to migrate the virtual guest to."
+msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
+msgid "Target Host"
+msgstr "Cieľový hostiteľ"
+
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:34
 msgid "Start / Resume"
 msgstr "Spustiť / Pokračovať"
@@ -5332,19 +5363,6 @@ msgstr "pozastavené"
 msgid "Graphical Console"
 msgstr "Grafická konzola"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-msgid "Migrate"
-msgstr "Migrovať"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "Cieľový hostiteľ"
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
 msgid "Device type"
 msgstr "Typ zariadenia"
@@ -5375,10 +5393,6 @@ msgstr "Súbor"
 msgid "Format"
 msgstr "Formát"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "Disky"
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
 msgid "Source storage pool"
 msgstr "Zdrojový úložný fond"
@@ -5394,6 +5408,10 @@ msgstr "Veľkosť disku (GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
 msgid "Source template image URL"
 msgstr "URL zdrojového dočasného obrazu"
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
+msgid "Disks"
+msgstr "Disky"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
@@ -5421,26 +5439,6 @@ msgstr "Vymazať polia"
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
 msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "Prosím, nainštalujte modul libvirt python."
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-"KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly jadra "
-"sú načítané."
-
-#: ../html/src/manager/virtualization/ListTab.tsx:162
-msgid "{0} selected"
-msgstr "Vybrané {0}"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:242
-msgid "Action Status"
-msgstr "Stav akcie"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
 msgid "Create Virtual Network"
@@ -5677,47 +5675,6 @@ msgstr "Záznamy TXT"
 msgid "Value"
 msgstr "Hodnota"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané žiadne "
-"pravidlo iptables, IP adresa alebo služba DHCP/DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP a NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel "
-"pre firewall a NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-"Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "fond SR-IOV"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "Prejsť cez jedno zariadenie fondu virtuálnych funkcií SR-IOV"
-
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
 msgid "Network address"
 msgstr "Sieťová adresa"
@@ -5813,6 +5770,47 @@ msgstr "Označené"
 #: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
 msgid "Untagged"
 msgstr "Neoznačené"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané žiadne "
+"pravidlo iptables, IP adresa alebo služba DHCP/DNS"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP a NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+"Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel "
+"pre firewall a NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr ""
+"Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr "fond SR-IOV"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "Prejsť cez jedno zariadenie fondu virtuálnych funkcií SR-IOV"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."
