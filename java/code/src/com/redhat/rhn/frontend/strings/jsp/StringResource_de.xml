@@ -922,7 +922,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.orglist" xml:space="preserve">
           <source>Can not display Organization List</source>
-        <target>Kann Organisationsliste nicht anzeigen.</target>
+        <target>Kann Organisationsliste nicht anzeigen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
