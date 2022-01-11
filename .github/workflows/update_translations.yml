@@ -36,6 +36,8 @@ jobs:
 
    - name: Checkout repo
      uses: actions/checkout@v2
+     with:
+       token: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
    - name: Setup tooling
      run: sudo apt-get install -y make git gettext intltool python3
@@ -44,7 +46,6 @@ jobs:
      run: |
        git config --global user.name "Galaxy CI"
        git config --global user.email "galaxy-ci@suse.de"
-       git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN_GALAXY_CI }}@github.com/${{ github.repository }}
 
    - name: Align translations files
      run: scripts/translation/update-all-translation-strings.sh
