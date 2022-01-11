@@ -26,6 +26,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -1031,14 +1032,21 @@ public class SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
             Set<Long> errataIds, boolean allowVendorChange) {
-        Set<Long> minionServerIds = minionSummaries.stream().map(MinionSummary::getServerId)
+        Map<Boolean, List<MinionSummary>> byUbuntu = minionSummaries.stream()
+                .collect(partitioningBy(m -> m.getOs().equals("Ubuntu")));
+
+        Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> ubuntuErrataInstallCalls =
+                errataToPackageInstallCalls(byUbuntu.get(true), errataIds);
+
+        Set<Long> minionServerIds = byUbuntu.get(false).stream()
+                .map(MinionSummary::getServerId)
                 .collect(Collectors.toSet());
 
         Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos = ServerFactory
                 .listErrataNamesForServers(minionServerIds, errataIds);
 
         // Group targeted minions by errata names
-        Map<Set<ErrataInfo>, List<MinionSummary>> collect = minionSummaries.stream()
+        Map<Set<ErrataInfo>, List<MinionSummary>> collect = byUbuntu.get(false).stream()
                 .collect(Collectors.groupingBy(minionId -> errataInfos.get(minionId.getServerId())
                         .entrySet().stream()
                         .map(Map.Entry::getValue)
@@ -1047,7 +1055,7 @@ public class SaltServerActionService {
         ));
 
         // Convert errata names to LocalCall objects of type State.apply
-        return collect.entrySet().stream()
+        Map<LocalCall<?>, List<MinionSummary>> patchableCalls = collect.entrySet().stream()
             .collect(Collectors.toMap(entry -> {
                 Map<String, Object> params = new HashMap<>();
                 params.put(PARAM_REGULAR_PATCHES,
@@ -1055,7 +1063,7 @@ public class SaltServerActionService {
                         .filter(e -> !e.isUpdateStack())
                         .map(e -> e.getName())
                         .sorted()
-                        .collect(Collectors.toList())
+                        .collect(toList())
                 );
                 params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
@@ -1063,11 +1071,11 @@ public class SaltServerActionService {
                         .filter(e -> e.isUpdateStack())
                         .map(e -> e.getName())
                         .sorted()
-                        .collect(Collectors.toList())
+                        .collect(toList())
                 );
                 if (!entry.getKey().stream()
                         .filter(e -> e.includeSalt())
-                        .collect(Collectors.toList()).isEmpty()) {
+                        .collect(toList()).isEmpty()) {
                     params.put("include_salt_upgrade", true);
                 }
                 return State.apply(
@@ -1076,6 +1084,8 @@ public class SaltServerActionService {
                 );
             },
             Map.Entry::getValue));
+        patchableCalls.putAll(ubuntuErrataInstallCalls);
+        return patchableCalls;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
@@ -1095,6 +1105,38 @@ public class SaltServerActionService {
             ret.put(localCall, mSums);
         }
         return ret;
+    }
+
+    private Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
+            List<MinionSummary> minions,
+            Set<Long> errataIds) {
+        Set<Long> minionIds = minions.stream()
+                .map(MinionSummary::getServerId).collect(Collectors.toSet());
+        Map<Long, Map<String, Tuple2<String, String>>> longMapMap =
+                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
+
+        // group minions by packages that need to be updated
+        Map<Map<String, Tuple2<String, String>>, List<MinionSummary>> nameArchVersionToMinions =
+                minions.stream().collect(
+                        Collectors.groupingBy(minion -> longMapMap.get(minion.getServerId()))
+                );
+
+        return nameArchVersionToMinions.entrySet().stream().collect(toMap(
+                entry -> State.apply(
+                        singletonList(PACKAGES_PKGINSTALL),
+                        Optional.of(singletonMap(PARAM_PKGS,
+                                entry.getKey().entrySet()
+                                        .stream()
+                                        .map(e -> List.of(
+                                                e.getKey(),
+                                                e.getValue().getA().replaceAll("-deb$", ""),
+                                                e.getValue().getB().endsWith("-X") ?
+                                                    e.getValue().getB().substring(0, e.getValue().getB().length() - 2) :
+                                                    e.getValue().getB()))
+                                        .collect(Collectors.toList())))
+                ),
+                Map.Entry::getValue
+        ));
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(

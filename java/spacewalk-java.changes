@@ -1,3 +1,4 @@
+- add ubuntu errata data and install handling
 - fix possible race condition in job handling (bsc#1192510)
 - Remove verbose token log
 - FIX errors when an image profile / store is deleted
