@@ -20,8 +20,12 @@
 %global default_py3 1
 %endif
 
+%if !( 0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
+%global build_py2   1
 %global __python /usr/bin/python2
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%endif
+
 %define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
@@ -50,6 +54,7 @@ Requires:       e2fsprogs
 This tool read data from the local system required
 for a registration
 
+%if 0%{?build_py2}
 %package -n python2-%{name}
 Summary:        Python 2 specific files for %{name}
 Group:          Productivity/Other
@@ -64,6 +69,8 @@ BuildRequires:  python-devel
 
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
+
+%endif # 0%{?build_py2}
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
@@ -87,14 +94,18 @@ Python 2 specific files for %{name}.
 %install
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/parse_release_info %{buildroot}/usr/lib/suseRegister/bin/parse_release_info
+%if 0%{?build_py2}
 make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python_sitelib} PYTHON_BIN=%{pythonX}
+%endif
 
 %if 0%{?build_py3}
 make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib} PYTHON_BIN=%{pythonX}
 %endif
 
 %if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
@@ -106,9 +117,11 @@ make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib
 %dir /usr/lib/suseRegister/bin
 /usr/lib/suseRegister/bin/parse_release_info
 
+%if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root)
 %{python_sitelib}/suseRegister
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}

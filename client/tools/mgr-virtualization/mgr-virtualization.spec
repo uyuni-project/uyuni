@@ -35,7 +35,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400)
 %global build_py2   1
 %endif
 
@@ -215,18 +215,9 @@ sed -i 's,@PYTHON@,/usr/bin/python,; s,@PYTHONPATH@,%{python_sitelib},;' \
 
 %if 0%{?suse_version}
 rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
-%endif
-
-%if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
-%if 0%{?build_py3}
-%py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
-%endif
-
-%if 0%{?suse_version}
-rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
-%py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif

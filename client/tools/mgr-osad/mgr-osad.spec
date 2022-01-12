@@ -41,7 +41,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400)
 %global build_py2   1
 %endif
 
@@ -153,6 +153,7 @@ BuildRequires:  python3-rpm-macros
 Python 3 specific files for %{name}
 %endif
 
+%if 0%{?build_py2}
 %package -n python2-mgr-osa-common
 Summary:        OSA common files
 Group:          System Environment/Daemons
@@ -166,6 +167,7 @@ Provides:       python2-osa-common = %{oldversion}
 
 %description -n python2-mgr-osa-common
 Python 2 common files needed by mgr-osad and mgr-osa-dispatcher
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-mgr-osa-common
@@ -214,6 +216,7 @@ OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
+%if 0%{?build_py2}
 %package -n python2-mgr-osa-dispatcher
 Summary:        OSA dispatcher
 Group:          System Environment/Daemons
@@ -231,6 +234,7 @@ Requires:       python2-mgr-osa-common = %{version}-%{release}
 
 %description -n python2-mgr-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-mgr-osa-dispatcher
@@ -290,7 +294,12 @@ sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python3 -s@' invocation.py
 %endif
 
 %build
+%if 0%{?build_py2}
 make -f Makefile.osad all PYTHONPATH=%{python_sitelib}
+%endif
+%if 0%{?build_py3}
+make -f Makefile.osad all PYTHONPATH=%{python3_sitelib}
+%endif
 
 %if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
@@ -310,8 +319,11 @@ done
 
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
+%if 0%{?build_py2}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version}
+%endif
+
 %if 0%{?build_py3}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version}
@@ -361,17 +373,14 @@ install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
-%if ! 0%{?build_py2}
-rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/osad/osad*
-rm -f $RPM_BUILD_ROOT/usr/sbin/osad-%{python_version}
-%endif
-
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
@@ -616,12 +625,14 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-mgr-osa-dispatcher
 %defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python_version}
 %dir %{python_sitelib}/osad
 %{python_sitelib}/osad/osa_dispatcher.py*
 %{python_sitelib}/osad/dispatcher_client.py*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-mgr-osa-dispatcher
@@ -634,11 +645,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python3_sitelib}/osad/__pycache__/dispatcher_client.*
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-mgr-osa-common
 %defattr(-,root,root)
 %{python_sitelib}/osad/__init__.py*
 %{python_sitelib}/osad/jabber_lib.py*
 %{python_sitelib}/osad/rhn_log.py*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-mgr-osa-common
