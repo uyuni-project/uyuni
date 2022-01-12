@@ -16,7 +16,7 @@
 #
 
 Name:           mgr-libmod
-Version:        4.1.9
+Version:        4.1.10
 Release:        1
 Summary:        libmod app
 License:        MIT
