@@ -1,4 +1,4 @@
-- do not build python 2 package for SLE15
+- Do not build python 2 package for SLE15SP4 and higher
 
 -------------------------------------------------------------------
 Mon Aug 09 11:01:18 CEST 2021 - jgonzalez@suse.com
