@@ -36,6 +36,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I should see a "Virtualization" text
     When I check the "virtualization-host" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "virtualization-host" formula should be checked
 
   Scenario: Parametrize the Xen virtualization host

@@ -43,6 +43,7 @@ Feature: PXE boot a Retail terminal
     And I check the "vsftpd" formula
     And I check the "pxe" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "tftpd" formula should be checked
     And the "vsftpd" formula should be checked
     And the "pxe" formula should be checked
@@ -51,14 +52,14 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    And I press "Add Item" in first CNAME section
-    And I enter "ftp" in first CNAME alias field
-    And I enter "proxy" in first CNAME name field
-    And I press "Add Item" in first CNAME section
-    And I enter "tftp" in second CNAME alias field
-    And I enter "proxy" in second CNAME name field
-    And I press "Add Item" in first CNAME section
-    And I enter the hostname of "proxy" in third CNAME name field
+    And I press "Add Item" in CNAME section of example.org zone
+    And I enter "ftp" in first CNAME alias field of example.org zone
+    And I enter "proxy" in first CNAME name field of example.org zone
+    And I press "Add Item" in CNAME section of example.org zone
+    And I enter "tftp" in second CNAME alias field of example.org zone
+    And I enter "proxy" in second CNAME name field of example.org zone
+    And I press "Add Item" in CNAME section of example.org zone
+    And I enter the hostname of "proxy" in third CNAME name field of example.org zone
 
   # Note: Avahi does not cross networks, so we need to cheat by serving tf.local
   Scenario: Configure avahi info for PXE part of DNS on the branch server
@@ -67,15 +68,15 @@ Feature: PXE boot a Retail terminal
     And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
     And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in third file name field
-    And I enter the hostname of "proxy" in third name server field
-    And I enter "admin@tf.local." in third contact field
-    And I enter "salt" in third CNAME alias field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "proxy" in fifth A name field
-    And I enter the IP address of "proxy" in fifth A address field
-    And I press "Add Item" in third NS section
-    And I enter the hostname of "proxy" in third NS field
+    And I enter "master/db.tf.local" in file name field of tf.local zone
+    And I enter the hostname of "proxy" in SOA name server field of tf.local zone
+    And I enter "admin@tf.local." in SOA contact field of tf.local zone
+    And I enter "salt" in third CNAME alias field of example.org zone
+    And I press "Add Item" in A section of tf.local zone
+    And I enter the hostname of "proxy" in first A name field of tf.local zone
+    And I enter the IP address of "proxy" in first A address field of tf.local zone
+    And I press "Add Item" in NS section of tf.local zone
+    And I enter the hostname of "proxy" in first NS field of tf.local zone
     And I scroll to the top of the page
     And I should see a "Bind" text
     And I click on "Save Formula"
@@ -164,6 +165,7 @@ Feature: PXE boot a Retail terminal
     And I follow "Formulas" in the content area
     And I check the "saltboot" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "saltboot" formula should be checked
 
   Scenario: Parametrize the Saltboot formula
@@ -248,6 +250,7 @@ Feature: PXE boot a Retail terminal
     And I uncheck the "tftpd" formula
     And I uncheck the "pxe" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "tftpd" formula should be unchecked
     And the "pxe" formula should be unchecked
 
@@ -255,9 +258,9 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    And I press "Remove Item" in third CNAME section
-    And I press "Remove Item" in second CNAME section
-    And I press "Remove Item" in first CNAME section
+    And I press "Remove Item" in salt CNAME of example.org zone section
+    And I press "Remove Item" in tftp CNAME of example.org zone section
+    And I press "Remove Item" in ftp CNAME of example.org zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -295,6 +298,7 @@ Feature: PXE boot a Retail terminal
     And I check the "tftpd" formula
     And I check the "vsftpd" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "pxe" formula should be checked
     And the "saltboot" formula should be checked
     And the "tftpd" formula should be checked
@@ -315,14 +319,14 @@ Feature: PXE boot a Retail terminal
     And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
     And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in third file name field
-    And I enter the hostname of "proxy" in third name server field
-    And I enter "admin@tf.local." in third contact field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "proxy" in fifth A name field
-    And I enter the IP address of "proxy" in fifth A address field
-    And I press "Add Item" in third NS section
-    And I enter the hostname of "proxy" in third NS field
+    And I enter "master/db.tf.local" in file name field of tf.local zone
+    And I enter the hostname of "proxy" in SOA name server field of tf.local zone
+    And I enter "admin@tf.local." in SOA contact field of tf.local zone
+    And I press "Add Item" in A section of tf.local zone
+    And I enter the hostname of "proxy" in first A name field of tf.local zone
+    And I enter the IP address of "proxy" in first A address field of tf.local zone
+    And I press "Add Item" in NS section of tf.local zone
+    And I enter the hostname of "proxy" in first NS field of tf.local zone
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -406,15 +410,15 @@ Feature: PXE boot a Retail terminal
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
     # direct zone example.org:
-    And I press "Remove Item" in fifth CNAME section
-    And I press "Remove Item" in fourth CNAME section
-    And I press "Remove Item" in third CNAME section
-    And I press "Remove Item" in second CNAME section
-    And I press "Remove Item" in first CNAME section
+    And I press "Remove Item" in salt CNAME of example.org zone section
+    And I press "Remove Item" in tftp CNAME of example.org zone section
+    And I press "Remove Item" in ftp CNAME of example.org zone section
+    And I press "Remove Item" in dhcp CNAME of example.org zone section
+    And I press "Remove Item" in dns CNAME of example.org zone section
     # direct zone tf.local:
     And I scroll to the top of the page
-    And I press minus sign in third configured zone section
-    And I press minus sign in third available zone section
+    And I press minus sign in tf.local configured zone section
+    And I press minus sign in tf.local available zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -426,6 +430,7 @@ Feature: PXE boot a Retail terminal
     And I uncheck the "tftpd" formula
     And I uncheck the "vsftpd" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "pxe" formula should be unchecked
     And the "saltboot" formula should be unchecked
     And the "tftpd" formula should be unchecked

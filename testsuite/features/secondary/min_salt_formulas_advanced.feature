@@ -29,6 +29,7 @@ Feature: Use advanced features of Salt formulas
      And I should see a "Testform" text
      When I check the "testform" formula
      And I click on "Save"
+     And I wait until I see "Formula saved." text
      And I follow "Target Systems"
      And I check the "sle_minion" client
      And I click on "Add Systems"
@@ -215,21 +216,12 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
 #TODO test for adding/removing items in edit-group
-
-# this should not be necessary, but it is currently required to run this test repeatedly
-# https://github.com/SUSE/spacewalk/issues/4513
-  Scenario: Cleanup: remove "Testform" formula from "test-formula-group"
-     When I follow the left menu "Systems > System Groups"
-     And I follow "test-formula-group" in the content area
-     And I follow "Formulas" in the content area
-     Then I should see a "Choose formulas:" text
-     And I should see a "Testform" text
-     When I uncheck the "testform" formula
+  Scenario: Cleanup: remove formula from minion
+     When I follow "Formulas" in the content area
+     And I uncheck the "testform" formula
      And I click on "Save"
-     Then I should see a "Formula saved" text
-#    The refresh is necessary, bsc#1028285 does not cover this.
-     When I refresh the pillar data
-     Then the pillar data for "testing" should be empty on "sle_minion"
+     And I wait until I see "Formula saved." text
+     Then the "testform" formula should be unchecked
 
   Scenario: Cleanup: remove "test-formula-group" system group
      When I follow the left menu "Systems > System Groups"
@@ -239,6 +231,5 @@ Feature: Use advanced features of Salt formulas
      Then I should see a "System group" text
      Then I should see a "test-formula-group" text
      And I should see a "deleted" text
-#    The refresh is necessary, bsc#1028285 does not cover this.
-     When I refresh the pillar data
+     And I wait until there is no pillar refresh salt job active
      Then the pillar data for "testing" should be empty on "sle_minion"
