@@ -1,8 +1,12 @@
-- Run Prometheus JMX exporter as Java agent (bsc#1184617)
-- Fix problem installing/removing packages using action chains
-  in transactional systems
-- Don't create skeleton /srv/salt/top.sls
-- Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
+-------------------------------------------------------------------
+Wed Jan 12 16:11:26 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.32-1
+  * Run Prometheus JMX exporter as Java agent (bsc#1184617)
+  * Fix problem installing/removing packages using action chains
+    in transactional systems
+  * Don't create skeleton /srv/salt/top.sls
+  * Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
 -------------------------------------------------------------------
 Thu Oct 28 12:10:46 CEST 2021 - jgonzalez@suse.com
 
