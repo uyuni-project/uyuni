@@ -45,7 +45,7 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  apache2
 BuildRequires:  nodejs-packaging
 BuildRequires:  susemanager-nodejs-sdk-devel
-BuildRequires:  nodejs
+BuildRequires:  nodejs14
 
 %endif
 
