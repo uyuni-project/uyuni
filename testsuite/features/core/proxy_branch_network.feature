@@ -77,7 +77,9 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "range begin" in dynamic IP range begin field
     And I enter the local IP address of "range end" in dynamic IP range end field
     And I enter the local IP address of "broadcast" in broadcast address field
-    And I press "Remove" in the routers section
+    # WORKAROUND
+    # Uncomment when https://build.suse.de/request/show/262046 is approved
+    # And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
     And I enter the local IP address of "sle_client" in first reserved IP field
