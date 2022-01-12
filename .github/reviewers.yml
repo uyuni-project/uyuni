@@ -6,8 +6,8 @@ reviewers:
       - maximenoel8
       - srbarrios
       - Bischoff
-      - nodeg
       - orestis87
+      - vandabarata
 
 files:
   # Keys are glob expressions.
