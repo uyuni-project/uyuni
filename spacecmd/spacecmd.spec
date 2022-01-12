@@ -44,7 +44,7 @@
 %endif
 
 Name:           spacecmd
-Version:        4.1.15
+Version:        4.1.16
 Release:        1%{?dist}
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 %if %{_vendor} == "debbuild"
