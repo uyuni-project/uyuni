@@ -1,3 +1,4 @@
+- Do not build python 2 package for SLE15SP4 and higher
 - require python macros for building
 
 -------------------------------------------------------------------

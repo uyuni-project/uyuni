@@ -1,3 +1,5 @@
+- Do not build python 2 package for SLE15SP4 and higher
+
 -------------------------------------------------------------------
 Wed Jan 12 13:55:42 CET 2022 - jmassaguerpla@suse.de
 
