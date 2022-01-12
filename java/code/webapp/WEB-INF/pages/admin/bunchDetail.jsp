@@ -52,7 +52,7 @@
                         </c:when>
                         <c:otherwise>
                             <a href="/rhn/admin/ScheduleDetail.do?schid=${current.schedule_id}">
-                              <span class="legacy-date-time"><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ssZ" value="${current.start_time}"/></span>
+                              <rhn:formatDate value="${current.start_time}" />
                             </a>
                         </c:otherwise>
                     </c:choose>
@@ -61,7 +61,7 @@
                 <rl:column bound="false"
                            headerkey="task.edit.jsp.endtime"
                            sortattr="end_time" >
-                           <span class="legacy-date-time"><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ssZ" value="${current.end_time}"/></span>
+                           <rhn:formatDate value="${current.end_time}" />
                 </rl:column>
 
                 <rl:column bound="false"

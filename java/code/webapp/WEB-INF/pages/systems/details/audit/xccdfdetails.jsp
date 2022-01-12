@@ -98,11 +98,12 @@
   </tr>
   <tr>
     <th><bean:message key="system.audit.xccdfdetails.jsp.started"/>:</th>
-    <td><c:out value="${testResult.startTime}"/></td>
+    <td><rhn:formatDate value="${testResult.startTime}" /></td>
   </tr>
   <tr>
     <th><bean:message key="system.audit.xccdfdetails.jsp.completed"/>:</th>
-    <td><c:out value="${testResult.endTime}"/></td>
+    <td><rhn:formatDate value="${testResult.endTime}" /></td>
+
   </tr>
   <tr>
     <th><bean:message key="system.audit.xccdfdetails.jsp.errors"/>:</th>

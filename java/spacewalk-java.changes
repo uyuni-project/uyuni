@@ -1,3 +1,4 @@
+- Migrate the displaying of the date/time to rhn:formatDate
 - Add additional matchers to package (nevra) filter
 - Add greater equals matcher to package (nevra) filter
 - fix XML syntax in cobbler snippets (bsc#1193694)

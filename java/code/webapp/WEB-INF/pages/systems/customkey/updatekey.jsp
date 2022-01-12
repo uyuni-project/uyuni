@@ -45,14 +45,14 @@
                     <label class="col-lg-3 control-label">
                         <bean:message key="system.jsp.customkey.created"/>:
                     </label>
-                    <div class="col-lg-6">${created} by ${creator}</div>
+                    <div class="col-lg-6"><rhn:formatDate value="${created}" /> by ${creator}</div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">
                         <bean:message key="system.jsp.customkey.modified"/>:
                     </label>
-                    <div class="col-lg-6">${modified} by ${modifier}</div>
+                    <div class="col-lg-6"><rhn:formatDate value="${modified}" /> by ${modifier}</div>
                 </div>
 
                 <div class="form-group">
