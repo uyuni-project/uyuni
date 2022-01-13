@@ -412,7 +412,7 @@ Then(/^the tomcat logs should not contain errors$/) do
   end
 end
 
-When(/^I restart the cobbler service in the server$/) do
+When(/^I restart cobbler on the server$/) do
   $server.run('systemctl restart cobblerd.service')
 end
 
