@@ -12,7 +12,7 @@ Feature: Restart the spacewalk services via UI
     When I follow the left menu "Admin > Manager Configuration > Restart"
     And I check "restart"
     And I click on "Restart"
-    And I wait until I see "SUSE Manager restarting" text
-    And I wait at most "300" seconds until I do not see "SUSE Manager restarting" text
+    And I wait until I see "restarting. If this page" text
+    And I wait at most "300" seconds until I do not see "restarting. If this page" text
     And I refresh the page
     Then I follow the left menu "Admin > Manager Configuration > Restart"
