@@ -54,7 +54,7 @@ module.exports = (env, argv) => {
         publicPath: "/",
       },
       optimization: {
-        minimizer: [new TerserPlugin({ extractComments: true, sourceMap: true })],
+        minimizer: [new TerserPlugin({ extractComments: true })],
         splitChunks: {
           cacheGroups: {
             vendor: {
@@ -112,6 +112,7 @@ module.exports = (env, argv) => {
       resolve: {
         alias: webpackAlias,
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+        symlinks: false,
       },
       plugins: pluginsInUse,
       devServer: {
