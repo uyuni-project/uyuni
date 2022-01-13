@@ -9239,7 +9239,7 @@ administrator privileges.</source>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.summary" xml:space="preserve">
         <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
-Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
+Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;{0}/pub/bootstrap&lt;/strong&gt;</source>
         <target> নিম্নলিখিত তথ্যের সাহায্যে বুটস্ট্র্যাপ স্ক্রিপ্ট নির্মাণ করা হবে। এই বুটস্ট্র্যাপ স্ক্রিপ্ট প্রয়োগ করে একটি ক্লায়েন্ট কনফিগার করে এই @@PRODUCT_NAME@@ সহযোগে আপডেট প্রাপ্ত করা যাবে। বুটস্ট্র্যাপ স্ক্রিপ্ট নির্মাণের পরে সেগুলি &lt;a href="/pub/bootstrap"&gt;এই সার্ভারে&lt;/a&gt; উপলব্ধ করা হয়।  উল্লেখ্য, ব্যবহারকারীর দ্বারা এই স্ক্রিপ্টের কনফিগারেশনে কিছু ফের বদল করার প্রয়োজন হতে পারে। @@PRODUCT_NAME@@ সার্ভারের ফাইল-সিস্টেমের মধ্যে চিহ্নিত স্থান এই বুটস্ট্র্যাপ স্ক্রিপ্ট প্রাপ্ত করা যাবে: &lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>

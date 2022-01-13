@@ -2,6 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ page import="com.redhat.rhn.common.conf.Config" %>
 
 <html:html>
     <body>
@@ -9,7 +10,7 @@
                      helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/bootstrap-script.html">
             <bean:message key="bootstrap.jsp.toolbar"/>
         </rhn:toolbar>
-        <p><bean:message key="bootstrap.jsp.summary"/></p>
+        <p><bean:message key="bootstrap.jsp.summary" arg0="${Config.get().getString('documentroot')}"/></p>
         <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/sat_config.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <div class="panel panel-default">
             <div class="panel-heading">

@@ -9835,12 +9835,12 @@ administrator privileges.</source>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.summary" xml:space="preserve">
         <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
-Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
+Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;{0}/pub/bootstrap&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
         <target state="translated"> ブートストラップスクリプトの生成には以下の情報が使用されます。これらのブートストラップスクリプトを使用すると、クライアントが更新を受け取る際、にこの @@PRODUCT_NAME@@ を使用するよう設定することができます。ブートストラップスクリプトの生成が完了すると、&lt;a href="/pub/bootstrap"&gt;このサーバ&lt;/a&gt; から使用できるようになります。&lt;br/&gt;&lt;br/&gt;
-なお、スクリプトに関して何らかの手作業が必要になる場合がありますので注意してください。ブートストラップスクリプトは @@PRODUCT_NAME@@ サーバのファイルシステム内の &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&gt; にあります。</target>
+なお、スクリプトに関して何らかの手作業が必要になる場合がありますので注意してください。ブートストラップスクリプトは @@PRODUCT_NAME@@ サーバのファイルシステム内の &lt;strong&gt;{0}/pub/bootstrap&gt; にあります。</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.header2" xml:space="preserve">
         <source>Client Bootstrap Script Configuration</source>
