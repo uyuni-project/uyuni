@@ -414,6 +414,10 @@ When(/^I shutdown the spacewalk service$/) do
   $server.run('spacewalk-service stop')
 end
 
+When(/^I restart cobbler on the server$/) do
+  $server.run('systemctl restart cobblerd.service')
+end
+
 When(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
   code = file_extract($server, "/tmp/spacewalk-debug.tar.bz2", "spacewalk-debug.tar.bz2")
@@ -644,7 +648,7 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   when 'proxy'
     cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{ENV['SERVER']} \
---proxy-fqdn=#{ENV['PROXY']}"
+--proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
   end
 end

@@ -92,6 +92,8 @@ Feature: PXE boot a terminal with Cobbler
     When I configure tftp on the "server"
     And I start tftp on the proxy
     And I configure tftp on the "proxy"
+    And I restart cobbler on the server
+    And I wait for "5" seconds
     And I synchronize the tftp configuration on the proxy with the server
 
   Scenario: PXE boot the PXE boot minion
