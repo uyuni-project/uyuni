@@ -55,25 +55,6 @@ module.exports = (env, argv) => {
         chunkFilename: "javascript/manager/[name].bundle.js",
         publicPath: "/",
       },
-      // optimization: {
-      //   minimizer: [new TerserPlugin({ extractComments: true })],
-      //   splitChunks: {
-      //     cacheGroups: {
-      //       vendor: {
-      //         test: /node_modules/,
-      //         chunks: "all",
-      //         name: "vendors/vendors",
-      //         enforce: true,
-      //       },
-      //       core: {
-      //         test: /[\\/]core.*/,
-      //         chunks: "all",
-      //         name: "core",
-      //         enforce: true,
-      //       },
-      //     },
-      //   },
-      // },
       devtool: isProductionMode ? "source-map" : "eval-source-map",
       module: {
         rules: [
