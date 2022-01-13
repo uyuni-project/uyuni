@@ -4,8 +4,6 @@ All the routes exported on the files '<*folder_name*>/index.js' will be automati
 Check the file content-management/index.js for an example
 */
 
-console.log("ENTRY");
-
 import "./polyfills";
 import "react-hot-loader";
 import "core/spa/spa-engine";
@@ -52,8 +50,6 @@ const pages = {
   ...Virtualization,
   ...Visualization,
 };
-
-console.log("FIRE");
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {
   SpaRenderer.addReactApp(pageName);
