@@ -1,3 +1,5 @@
+- When adding a product, check if the new vendor channels conflicts
+  with any of the existing custom channel (bsc#1193448)
 - Use uyuni roster salt module instead of flat roster files
 - Improvements on list packages query processing by using query elaborator (bsc#1187333)
 - add ubuntu errata data and install handling
