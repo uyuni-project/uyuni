@@ -237,10 +237,10 @@ public class ProductsController {
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(null)) {
             log.fatal("addProduct failed: Product Data refresh needed");
-            return json(response, identifiers.stream().collect(Collectors.toMap(Function.identity(), ident -> Map.of(
-                "success", false,
-                "error", LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
-            ))));
+            return json(response, identifiers.stream().collect(Collectors.toMap(
+                Function.identity(),
+                ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
+            )));
         }
 
         LogMF.debug(log, "Add/Sync products: {}", identifiers);
@@ -249,19 +249,11 @@ public class ProductsController {
         Map<String, Optional<? extends Exception>> productStatusMap = psm.addProducts(identifiers, user);
 
         // Convert to a map specifying operation result for each product while logging the errors that have happened
-        Map<String, HashMap<String, Object>> resultMap = productStatusMap.entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey, entry -> {
-                // Return the outcome and the error message to give a better notification in the frontend
-                final HashMap<String, Object> productResult = new HashMap<>();
-                productResult.put("success", entry.getValue().isEmpty());
-                entry.getValue().ifPresent(ex -> {
-                    log.fatal("addProduct() failed for " + entry.getKey(), ex);
-                    productResult.put("error", ex.getMessage());
-                });
-                return productResult;
-            })
-        );
+        Map<String, String> resultMap = new HashMap<>();
+        productStatusMap.forEach((product, error) -> {
+            error.ifPresent(ex -> log.fatal("addProduct() failed for " + product, ex));
+            resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
+        });
 
         return json(response, resultMap);
     }
