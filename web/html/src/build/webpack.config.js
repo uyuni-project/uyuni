@@ -127,23 +127,30 @@ module.exports = (env, argv) => {
         server: {
           type: "https",
         },
-        devMiddleware: {
-          // TODO: Check https://webpack.js.org/configuration/dev-server/#devserverproxy
-          index: false,
-          publicPath: "/",
-          // TODO: Check this?
-          writeToDisk: true,
-        },
+        /**
+         * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
+         * See https://webpack.js.org/configuration/dev-server/#devserverproxy and https://github.com/chimurai/http-proxy-middleware#options
+         */
         proxy: [
           {
             target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
+            // Proxy everything
             context: () => true,
-            path: "!/rhn/websocket",
+            // ...including websockets
             ws: true,
             changeOrigin: true,
+            // Ignore sertificate errors for dev servers
             secure: false,
+            // TODO: Is this redundant or not?
+            // path: "!/rhn/websocket",
           },
         ],
+        devMiddleware: {
+          publicPath: "/",
+          writeToDisk: true,
+          // Allow proxying requests to root (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
+          index: false,
+        },
       },
     },
   ];
