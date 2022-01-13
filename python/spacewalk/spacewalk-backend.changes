@@ -1,3 +1,4 @@
+- Less strict package-list parsing in debPackage importlib
 - implement more decompression algorithms for reposync (bsc#1196704)
 
 -------------------------------------------------------------------
