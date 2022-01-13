@@ -23,12 +23,13 @@ module.exports = (env, argv) => {
   if (isProductionMode) {
     pluginsInUse = [
       ...pluginsInUse,
+      // TODO: Set `allow: "..."` and `emitError: true` for both to disallow unwanted licenses at build time here
       new LicenseCheckerWebpackPlugin({
-        outputFilename: "../vendors/npm.licenses.structured.js",
+        outputFilename: path.resolve(__dirname, "../vendors/npm.licenses.structured.js"),
         outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
       }),
       new LicenseCheckerWebpackPlugin({
-        outputFilename: "../vendors/npm.licenses.txt",
+        outputFilename: path.resolve(__dirname, "../vendors/npm.licenses.txt"),
       }),
     ];
   } else {
