@@ -128,7 +128,8 @@ module.exports = (env, argv) => {
           type: "https",
         },
         devMiddleware: {
-          index: true,
+          // TODO: Check https://webpack.js.org/configuration/dev-server/#devserverproxy
+          index: false,
           publicPath: "/",
           // TODO: Check this?
           writeToDisk: true,
@@ -136,8 +137,9 @@ module.exports = (env, argv) => {
         proxy: [
           {
             target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
+            context: () => true,
             path: "!/rhn/websocket",
-            ws: true,
+            ws: false,
             changeOrigin: true,
             secure: false,
           },
