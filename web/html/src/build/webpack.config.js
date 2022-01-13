@@ -139,7 +139,7 @@ module.exports = (env, argv) => {
             target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
             context: () => true,
             path: "!/rhn/websocket",
-            ws: false,
+            ws: true,
             changeOrigin: true,
             secure: false,
           },
