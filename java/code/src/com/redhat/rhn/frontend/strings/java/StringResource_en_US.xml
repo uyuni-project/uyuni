@@ -9379,6 +9379,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="bootstrap.minion.error.salt">
         <source>Error during applying the bootstrap state, message: {0}</source>
       </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh">
+        <source>Product data needs refresh.</source>
+      </trans-unit>
+      <trans-unit id="setup.product.error.notfound">
+        <source>Product cannot be found: missing identifier {0}.</source>
+      </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict">
+        <source>There are conflicting channel labels {0}.</source>
+      </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict">
+        <source>A parent product conflicts with existing channels.</source>
+      </trans-unit>
+      <trans-unit id="setup.product.error.unknown">
+        <source>Unexpected error while adding the product.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
