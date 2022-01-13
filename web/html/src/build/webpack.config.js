@@ -2,7 +2,6 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
 
 module.exports = (env, argv) => {
