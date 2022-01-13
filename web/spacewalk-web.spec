@@ -220,11 +220,6 @@ install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_RO
 %{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
 cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
-%{__mkdir_p} %{buildroot}/%{www_path}/vendors
-cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/vendors/vendors.bundle.js
-cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/vendors/vendors.bundle.js.map
-cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vendors/vendors.bundle.js.LICENSE
-
 %find_lang spacewalk-web
 
 %files -n susemanager-web-libs
