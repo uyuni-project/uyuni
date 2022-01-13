@@ -412,6 +412,10 @@ Then(/^the tomcat logs should not contain errors$/) do
   end
 end
 
+When(/^I restart the cobbler service in the server$/) do
+  $server.run('systemctl restart cobblerd.service')
+end
+
 When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
@@ -650,7 +654,7 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   when 'proxy'
     cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{ENV['SERVER']} \
---proxy-fqdn=#{ENV['PROXY']}"
+--proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
   end
 end
