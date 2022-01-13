@@ -23,13 +23,14 @@ module.exports = (env, argv) => {
   if (isProductionMode) {
     pluginsInUse = [
       ...pluginsInUse,
+      // TODO: The outputWriter doesn't work correctly
       // TODO: Set `allow: "..."` and `emitError: true` for both to disallow unwanted licenses at build time here
       new LicenseCheckerWebpackPlugin({
-        outputFilename: path.resolve(__dirname, "../vendors/npm.licenses.structured.js"),
+        outputFilename: "../vendors/npm.licenses.structured.js",
         outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
       }),
       new LicenseCheckerWebpackPlugin({
-        outputFilename: path.resolve(__dirname, "../vendors/npm.licenses.txt"),
+        outputFilename: "../vendors/npm.licenses.txt",
       }),
     ];
   } else {
@@ -54,25 +55,25 @@ module.exports = (env, argv) => {
         chunkFilename: "javascript/manager/[name].bundle.js",
         publicPath: "/",
       },
-      optimization: {
-        minimizer: [new TerserPlugin({ extractComments: true })],
-        splitChunks: {
-          cacheGroups: {
-            vendor: {
-              test: /node_modules/,
-              chunks: "all",
-              name: "../../vendors/vendors",
-              enforce: true,
-            },
-            core: {
-              test: /[\\/]core.*/,
-              chunks: "all",
-              name: "core",
-              enforce: true,
-            },
-          },
-        },
-      },
+      // optimization: {
+      //   minimizer: [new TerserPlugin({ extractComments: true })],
+      //   splitChunks: {
+      //     cacheGroups: {
+      //       vendor: {
+      //         test: /node_modules/,
+      //         chunks: "all",
+      //         name: "vendors/vendors",
+      //         enforce: true,
+      //       },
+      //       core: {
+      //         test: /[\\/]core.*/,
+      //         chunks: "all",
+      //         name: "core",
+      //         enforce: true,
+      //       },
+      //     },
+      //   },
+      // },
       devtool: isProductionMode ? "source-map" : "eval-source-map",
       module: {
         rules: [
@@ -117,16 +118,25 @@ module.exports = (env, argv) => {
       },
       plugins: pluginsInUse,
       devServer: {
-        contentBase: path.resolve(__dirname, "../dist"),
-        publicPath: "/",
-        progress: true,
-        https: true,
+        hot: true,
         open: true,
-        writeToDisk: argv && argv.writeToDisk,
+        static: {
+          directory: path.resolve(__dirname, "../dist"),
+          publicPath: "/",
+        },
+        server: {
+          type: "https",
+        },
+        devMiddleware: {
+          index: true,
+          publicPath: "/",
+          // TODO: Check this?
+          writeToDisk: true,
+        },
         proxy: [
           {
             context: ["!/sockjs-node/**"],
-            target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
+            target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
             ws: true,
             secure: false,
           },
