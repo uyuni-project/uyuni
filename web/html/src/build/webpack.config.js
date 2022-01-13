@@ -135,9 +135,10 @@ module.exports = (env, argv) => {
         },
         proxy: [
           {
-            context: ["!/sockjs-node/**"],
             target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
+            path: "!/rhn/websocket",
             ws: true,
+            changeOrigin: true,
             secure: false,
           },
         ],
