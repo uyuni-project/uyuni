@@ -12,7 +12,6 @@
     "dev": "webpack --config build/webpack.config.js --mode development",
     "watch": "webpack --config build/webpack.config.js --mode development --watch",
     "proxy": "NODE_OPTIONS=\"--trace-warnings --unhandled-rejections=strict\" webpack-dev-server --mode development --config build/webpack.config.js",
-    "foo": "webpack-dev-server --help",
     "build": "NODE_OPTIONS=\"--trace-warnings --unhandled-rejections=strict\" node build",
     "build:novalidate": "NODE_OPTIONS=\"--trace-warnings --unhandled-rejections=strict\" BUILD_VALIDATION=false node build",
     "lint": "eslint . -f codeframe --fix",

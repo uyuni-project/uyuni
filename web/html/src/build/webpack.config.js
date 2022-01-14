@@ -4,6 +4,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
 
+const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
+
 module.exports = (env, argv) => {
   const isProductionMode = argv && argv.mode !== "development";
 
@@ -23,7 +25,7 @@ module.exports = (env, argv) => {
     pluginsInUse = [
       ...pluginsInUse,
       new LicenseCheckerWebpackPlugin({
-        // If we want, we could check licenses at build time via https://github.com/openSUSE/obs-service-format_spec_file or similar
+        // If we want, we could check licenses at build time via https://github.com/openSUSE/obs-service-format_spec_file or similar in the future
         // allow: [...],
         // emitError: true,
         outputFilename: "../vendors/npm.licenses.structured.js",
@@ -104,9 +106,17 @@ module.exports = (env, argv) => {
         static: {
           directory: path.resolve(__dirname, "../dist"),
           publicPath: "/",
+          // This is currently redundant, but will become relevant when we include static files in Webpack
+          watch: true,
         },
         server: {
           type: "https",
+        },
+        client: {
+          webSocketURL: {
+            // Hardcode this so it always matches
+            pathname: DEVSERVER_WEBSOCKET_PATHNAME,
+          },
         },
         /**
          * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
@@ -115,21 +125,24 @@ module.exports = (env, argv) => {
         proxy: [
           {
             target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
-            // Proxy everything
-            context: () => true,
-            // ...including websockets
+            // Proxy everything, including websockets, besides the Webpack updates websocket
+            context: ["!" + DEVSERVER_WEBSOCKET_PATHNAME],
             ws: true,
+            /**
+             * Rewrite the host and port on redirects, so we stay on the proxy after logging, out etc
+             * See https://github.com/http-party/node-http-proxy/issues/1227
+             */
+            autoRewrite: true,
             changeOrigin: true,
             // Ignore sertificate errors for dev servers
             secure: false,
-            // TODO: Is this redundant or not?
-            // path: "!/rhn/websocket",
           },
         ],
         devMiddleware: {
           publicPath: "/",
-          writeToDisk: true,
-          // Allow proxying requests to root (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
+          // Don't write changes to disk so we can do hard reloads only on static file changes in the future
+          writeToDisk: false,
+          // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
           index: false,
         },
       },
