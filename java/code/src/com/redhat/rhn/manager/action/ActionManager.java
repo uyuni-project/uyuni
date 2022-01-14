@@ -383,6 +383,7 @@ public class ActionManager extends BaseManager {
                         a.getServerActions().stream()
                             .filter(sa -> isMinionServer(sa.getServer()))
                             .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                            .filter(sa -> servers.contains(sa.getServer()))
                             .map(sa -> sa.getServer())
                             .collect(toSet())
                         )
