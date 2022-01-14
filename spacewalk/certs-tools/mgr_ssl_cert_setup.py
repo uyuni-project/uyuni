@@ -23,6 +23,7 @@ import subprocess
 from datetime import datetime
 
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean
+from uyuni.common.fileutils import getUidGid
 
 logfile = '/var/log/rhn/mgr-ssl-cert-setup.log'
 PKI_DIR = '/etc/pki/'
@@ -32,6 +33,7 @@ SRV_KEY_NAME = "spacewalk.key"
 APACHE_CRT_NAME = "spacewalk.crt"
 APACHE_CRT_FILE = os.path.join(PKI_DIR, "tls", "certs", APACHE_CRT_NAME)
 APACHE_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", SRV_KEY_NAME)
+PG_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", "pg-" + SRV_KEY_NAME)
 
 JABBER_CRT_NAME = "server.pem"
 JABBER_CRT_FILE = os.path.join(PKI_DIR, "spacewalk", "jabberd", JABBER_CRT_NAME)
@@ -370,6 +372,17 @@ def deployJabberd(workdir):
         log_error("Certificate for Jabberd not found")
         sys.exit(1)
 
+def deployPg(workdir):
+    pg_uid, pg_gid = getUidGid('postgres', 'postgres')
+    if pg_uid and pg_gid:
+        # deploy only the key with different permissions
+        # the certificate is the same as for apache
+        if os.path.exists(PG_KEY_FILE):
+            os.remove(PG_KEY_FILE)
+        shutil.copy(os.path.join(workdir, SRV_KEY_NAME), PG_KEY_FILE)
+        os.chmod(PG_KEY_FILE, int('0600',8))
+        os.chown(PG_KEY_FILE, pg_uid, pg_gid)
+
 def deployCAUyuni(certData):
     for h, ca in certData.items():
         if ca['root']:
@@ -419,6 +432,7 @@ def _main():
             sys.exit(1)
 
         deployApache(workdir)
+        deployPg(workdir)
         deployJabberd(workdir)
         deployCAUyuni(certData)
 
