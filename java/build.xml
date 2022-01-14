@@ -132,6 +132,8 @@
 
   <target name="init-install" depends="set-default-config-dir">
     <property name="installbuild" value="true" />
+    <property name="sharedserverdir" value="/srv" />
+    <replace file="code/src/com/suse/manager/webui/services/SaltConstants.java" token="@SHAREDSERVDIR@" value="${sharedserverdir}" />
   </target>
 
   <target name="cctarget"

@@ -452,7 +452,9 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
 %endif
 
 # compile only java sources (no packing here)
-ant -Dprefix=$RPM_BUILD_ROOT -Dproduct.name="'$PRODUCT_NAME'" init-install compile
+ant -Dprefix=$RPM_BUILD_ROOT -Dproduct.name="'$PRODUCT_NAME'" -Dsharedserverdir=%{serverdir} init-install compile
+
+
 
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
@@ -494,13 +496,13 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
           END { exit $exit }'
 
 echo "Building apidoc docbook sources"
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT init-install apidoc-docbook
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dsharedserverdir=%{serverdir} init-install apidoc-docbook
 pushd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
 popd
 
 echo "Building apidoc asciidoc sources"
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT init-install apidoc-asciidoc
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dsharedserverdir=%{serverdir} init-install apidoc-asciidoc
 
 # Don't use Java module com.sun.xml.bind if it isn't available. (only SUSE has it)
 if [[ ! `java --list-modules | grep com.sun.xml.bind` ]]; then
@@ -520,11 +522,11 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
 export NO_BRP_STALE_LINK_ERROR=yes
 
 %if 0%{?suse_version}
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" -Dsharedserverdir=%{serverdir} install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT install-tomcat
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dsharedserverdir=%{serverdir} install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 644 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
