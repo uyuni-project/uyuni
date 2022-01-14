@@ -1,3 +1,4 @@
+- Pass only selected servers to taskomatic for cancelation (bsc#1194044)
 - Added rights field to generated updateinfo.xml to handle copyright
 - provide static configuration key name for SSHMinionActionExecutor
   parallel threads
