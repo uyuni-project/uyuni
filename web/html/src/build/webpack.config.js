@@ -129,7 +129,7 @@ module.exports = (env, argv) => {
             context: ["!" + DEVSERVER_WEBSOCKET_PATHNAME],
             ws: true,
             /**
-             * Rewrite the host and port on redirects, so we stay on the proxy after logging, out etc
+             * Rewrite the host and port on redirects, so we stay on the proxy after logging in, logging out etc
              * See https://github.com/http-party/node-http-proxy/issues/1227
              */
             autoRewrite: true,
