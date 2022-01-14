@@ -283,29 +283,20 @@ public class SCCRepository extends BaseDomainHelper {
                     return Optional.of(a);
                 }
             }
-            else {
-                Optional<CredentialsType> currentCredType =
-                        Optional.ofNullable(a.getOptionalCredentials().orElse(new Credentials()).getType());
-
-                // if the credentials are of type SCC and have URL that means it the primary one
-                if (a.getOptionalCredentials().orElse(new Credentials()).getUrl() != null &&
-                        (currentCredType.isEmpty() ||
-                                !Credentials.TYPE_CLOUD_RMT.equals(currentCredType.get().getLabel()))) {
-                    return Optional.of(a);
-                }
-                else {
-                    Optional<CredentialsType> resultType = result.isPresent() ?
-                            Optional.ofNullable(result.get().getOptionalCredentials()
-                                    .orElse(new Credentials()).getType()) : Optional.empty();
-
-                    if (currentCredType.isPresent() &&
-                            Credentials.TYPE_CLOUD_RMT.equals(currentCredType.get().getLabel())) {
-                        // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
-                        if (result.isEmpty() || resultType.isEmpty() ||
-                                !Credentials.TYPE_SCC.equals(resultType.get().getLabel())) {
-                            result = Optional.of(a);
-                        }
+            // Credentials present
+            else if (a.getOptionalCredentials().isPresent()){
+                Credentials ct = a.getOptionalCredentials().get();
+                if (ct.getType().getLabel().equals(Credentials.TYPE_CLOUD_RMT)) {
+                    // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
+                    if (result.flatMap(r -> r.getOptionalCredentials())
+                            .map(c -> !Credentials.TYPE_SCC.equals(c.getType().getLabel()))
+                            .orElse(true)) {
+                        result = Optional.of(a);
                     }
+                }
+                // Not RMT
+                else if (a.getOptionalCredentials().flatMap(c -> Optional.ofNullable(c.getUrl())).isPresent()) {
+                    return Optional.of(a);
                 }
             }
 
