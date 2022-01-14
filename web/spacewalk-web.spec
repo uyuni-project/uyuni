@@ -222,17 +222,6 @@ cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
 %find_lang spacewalk-web
 
-%files -n susemanager-web-libs
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.js
-%{www_path}/vendors/*.js.LICENSE
-
-%files -n susemanager-web-libs-debug
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.map
-
 %files -n spacewalk-base
 %defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
