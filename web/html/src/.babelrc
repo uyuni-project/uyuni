@@ -2,7 +2,7 @@
   "presets": [
     ["@babel/preset-env", { "modules": false }],
     ["@babel/preset-react", { "runtime": "automatic" }],
-    "@babel/preset-typescript",
+    "@babel/preset-typescript"
   ],
   "plugins": [
     "@babel/plugin-proposal-class-properties",
@@ -11,6 +11,10 @@
     "@babel/plugin-proposal-logical-assignment-operators",
     "@babel/plugin-syntax-object-rest-spread",
     "@babel/plugin-syntax-dynamic-import",
+    // These are only required by Storybook
+    "@babel/plugin-proposal-private-methods",
+    "@babel/plugin-proposal-private-property-in-object",
+    // HMR
     "react-hot-loader/babel"
   ],
   "env": {

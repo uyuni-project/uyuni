@@ -1,5 +1,6 @@
+<!-- These will currently fail due to CORS, but will be fixed once we move branding into web-->
 <!-- import default fonts/icons styles -->
-<link rel="stylesheet" href="font-awesome.css?cb=${cb_version}" />
+<link rel="stylesheet" href="https://localhost:8080/fonts/font-awesome/css/font-awesome.css?cb=${cb_version}" />
 <!-- import custom fonts/icons styles -->
 <link rel="stylesheet" href="https://localhost:8080/fonts/font-spacewalk/css/spacewalk-font.css?cb=${cb_version}" />
 
@@ -26,8 +27,9 @@
   type="text/javascript"
 ></script>
 <script type="text/javascript">
-  function translate(value) {
-    return value;
+  // See web/html/src/utils/test-utils/setup/t.ts
+  function t(template, ...substitutions) {
+    return (template || "").replaceAll(/{(\d)}/g, (_, match) => substitutions[match]);
   }
-  window.t = translate;
+  window.t = t;
 </script>

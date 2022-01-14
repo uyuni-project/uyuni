@@ -30,6 +30,13 @@ module.exports = async ({ config, mode }) => {
       use: {
         loader: "babel-loader",
       },
+    },
+    {
+      test: /\.po$/,
+      type: "json",
+      use: {
+        loader: path.resolve(__dirname, "../build/loaders/po-loader.js"),
+      },
     }
   );
   return config;
