@@ -113,7 +113,9 @@ def _prepareSQL(*args, **kwargs):
             return None
 
 
-def _getSSHOptions(minion_id=None, proxies=None, tunnel=False, user=None, ssh_push_port=SSH_PUSH_PORT):
+def _getSSHOptions(
+    minion_id=None, proxies=None, tunnel=False, user=None, ssh_push_port=SSH_PUSH_PORT
+):
     proxyCommand = "ProxyCommand='"
     i = 0
     for proxy in proxies:
@@ -153,7 +155,9 @@ def _getSSHOptions(minion_id=None, proxies=None, tunnel=False, user=None, ssh_pu
     return [proxyCommand]
 
 
-def _getSSHMinion(minion_id=None, proxies=[], tunnel=False, ssh_push_port=SSH_PUSH_PORT):
+def _getSSHMinion(
+    minion_id=None, proxies=[], tunnel=False, ssh_push_port=SSH_PUSH_PORT
+):
     user = SSH_PUSH_SUDO_USER if SSH_PUSH_SUDO_USER else "root"
     minion = {
         "host": minion_id,
@@ -262,8 +266,10 @@ def targets(tgt, tgt_type="glob", **kwargs):
     while True:
         if prow is not None and (row is None or row["server_id"] != prow["server_id"]):
             ret[prow["minion_id"]] = _getSSHMinion(
-                minion_id=prow["minion_id"], proxies=proxies, tunnel=prow["tunnel"],
-                ssh_push_port=prow["ssh_push_port"]
+                minion_id=prow["minion_id"],
+                proxies=proxies,
+                tunnel=prow["tunnel"],
+                ssh_push_port=prow["ssh_push_port"],
             )
             proxies = []
         if row is None:
