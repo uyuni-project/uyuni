@@ -22,9 +22,10 @@ module.exports = (env, argv) => {
   if (isProductionMode) {
     pluginsInUse = [
       ...pluginsInUse,
-      // TODO: The outputWriter doesn't work correctly
-      // TODO: Set `allow: "..."` and `emitError: true` for both to disallow unwanted licenses at build time here
       new LicenseCheckerWebpackPlugin({
+        // If we want, we could check licenses at build time via https://github.com/openSUSE/obs-service-format_spec_file or similar
+        // allow: [...],
+        // emitError: true,
         outputFilename: "../vendors/npm.licenses.structured.js",
         outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
       }),
