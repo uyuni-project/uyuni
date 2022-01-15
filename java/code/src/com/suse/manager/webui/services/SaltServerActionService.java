@@ -1507,7 +1507,7 @@ public class SaltServerActionService {
                         try {
                             //TODO: maybe from the database
                             certificate = Files.readAllLines(
-                                    Paths.get(Config.get().getString('documentroot') + "/pub/RHN-ORG-TRUSTED-SSL-CERT"),
+                                    Paths.get(Config.get().getString("documentroot") + "/pub/RHN-ORG-TRUSTED-SSL-CERT"),
                                     Charset.defaultCharset()
                             ).stream().collect(Collectors.joining("\n\n"));
                         }
