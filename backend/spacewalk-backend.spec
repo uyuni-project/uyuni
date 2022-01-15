@@ -32,7 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
-%global documentroot /var/www/html 
+%global documentroot %{_localstatedir}/www/html 
 %global m2crypto python3-m2crypto
 %endif
 
@@ -234,7 +234,7 @@ BuildRequires:  systemd-rpm-macros
 
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
-Requires:       python3-urlgrabber < 4
+Requires:       python3-urlgrabber >= 4
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools

@@ -118,7 +118,7 @@ public class Router implements SparkApplication {
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
-        FormulaController formulaController = new FormulaController(systemQuery, saltApi);
+        FormulaController formulaController = new FormulaController(saltApi);
         ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));

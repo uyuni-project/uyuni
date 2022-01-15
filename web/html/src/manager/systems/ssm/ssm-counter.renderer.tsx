@@ -1,6 +1,8 @@
 import * as React from "react";
-import { SsmCounter } from "./ssm-counter";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { SsmCounter } from "./ssm-counter";
 
 type RendererProps = {
   count?: number;

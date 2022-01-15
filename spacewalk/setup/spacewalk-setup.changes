@@ -1,3 +1,4 @@
+- Merge all external pillars into one
 - During upgrade, set tomcat connector connectionTimeout
   to 900000 if the previous values is the old default (20000)
 - Increase "max_event_size" value for the Salt master (bsc#1191340)

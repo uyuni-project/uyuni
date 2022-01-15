@@ -1,5 +1,5 @@
 - require python macros for building
-- do not build python 2 package for SLE15
+- Do not build python 2 package for SLE15SP4 and higher
 
 -------------------------------------------------------------------
 Fri Nov 05 13:34:38 CET 2021 - jgonzalez@suse.com

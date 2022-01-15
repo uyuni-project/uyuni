@@ -25,14 +25,14 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -4 -c 1 -I #{node.public_interface} #{$server.full_hostname}")
-  $server.run("ping -4 -c 1 #{node.public_ip}")
+  node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  $server.run("ping -c 1 #{node.public_ip}")
 end
 
 Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
-  node.run_until_fail("ping -4 -c 1 -I #{node.private_interface} #{$server.full_hostname}")
-  $server.run_until_fail("ping -4 -c 1 #{node.private_ip}")
+  node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
+  $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -1061,6 +1061,11 @@ end
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
   out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
   STDOUT.puts "Installed #{product} product: #{out}"
+end
+
+When(/^I adapt zyppconfig$/) do
+   cmd = "sed -i 's/^rpm.install.excludedocs =.*$/rpm.install.excludedocs = no/' /etc/zypp/zypp.conf"
+   $proxy.run(cmd)
 end
 
 When(/^I install proxy pattern on the proxy$/) do

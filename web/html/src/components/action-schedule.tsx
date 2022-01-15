@@ -1,11 +1,14 @@
 import * as React from "react";
+
 import { DateTimePicker } from "components/datetime";
+import { Loading } from "components/utils/Loading";
+
+import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
 import { Combobox } from "./combobox";
 import { ComboboxItem } from "./combobox";
-import Network from "utils/network";
-import { Loading } from "components/utils/Loading";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
-import { localizedMoment } from "utils";
 
 export type MaintenanceWindow = {
   id: number;
@@ -112,7 +115,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   handleResponseError = (jqXHR) => {
-    console.log(Network.responseErrorMessage(jqXHR));
+    console.error(Network.responseErrorMessage(jqXHR));
     this.setState({ loading: false });
   };
 

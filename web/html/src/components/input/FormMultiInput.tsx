@@ -1,7 +1,9 @@
 import * as React from "react";
+
+import { Button } from "components/buttons";
 import { Panel } from "components/panels/Panel";
 import { PanelRow } from "components/panels/PanelRow";
-import { Button } from "components/buttons";
+
 import { FormContext } from "./Form";
 
 type Props = {

@@ -182,7 +182,7 @@ end
 
 # This function returns the net prefix, caching it
 def net_prefix
-  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil?
+  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil? && !$private_net.nil?
   $net_prefix
 end
 
@@ -341,7 +341,7 @@ $nodes.each do |node|
   host = $host_by_node[node]
   raise "Cannot resolve host for node: '#{node.hostname}'" if host.nil? || host == ''
 
-  if ADDRESSES.key? host
+  if (ADDRESSES.key? host) && !$private_net.nil?
     node.init_private_ip(net_prefix + ADDRESSES[host])
     node.init_private_interface('eth1')
   end

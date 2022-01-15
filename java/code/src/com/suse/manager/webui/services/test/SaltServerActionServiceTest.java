@@ -77,6 +77,7 @@ import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -86,6 +87,7 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.results.Result;
 
@@ -119,6 +121,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
     private SystemEntitlementManager systemEntitlementManager;
+    private ServerGroupManager serverGroupManager;
     private TaskomaticApi taskomaticMock;
 
     @Override
@@ -136,15 +139,18 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.of(Result.success(new JsonObject()));
             }
+
+            @Override
+            public void refreshPillar(MinionList minionList) {
+            }
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
         saltServerActionService = createSaltServerActionService(saltService, saltService);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltService);
+        serverGroupManager = new ServerGroupManager(saltService);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltService, virtManager, monitoringManager, serverGroupManager)
         );
 
         taskomaticMock = mock(TaskomaticApi.class);
@@ -152,7 +158,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
                 saltApi, systemQuery, serverGroupManager, formulaManager
@@ -475,7 +480,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
                 saltApi, systemQuery, serverGroupManager, formulaManager
@@ -964,7 +968,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager) {
             @Override

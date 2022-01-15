@@ -1555,8 +1555,8 @@ public class SaltUtils {
                     "grains.items"
             ));
             try {
-                formulaManager.enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                formulaManager.enableFormula(server, SYSTEM_LOCK_FORMULA);
+                FormulaFactory.saveServerFormulaData(data, server, SYSTEM_LOCK_FORMULA);
                 saltApi.refreshPillar(new MinionList(server.getMinionId()));
             }
             catch (IOException | ValidatorException e) {

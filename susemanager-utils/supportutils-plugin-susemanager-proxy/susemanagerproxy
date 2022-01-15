@@ -89,7 +89,7 @@ find_and_plog_files /var/log/salt -type f
 
 section_header "SSL Configuration"
 
-pconf_files /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
             /etc/apache2/ssl.crt/server.crt
 
 

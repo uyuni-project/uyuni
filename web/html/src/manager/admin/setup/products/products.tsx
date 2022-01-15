@@ -1,22 +1,25 @@
-import { searchCriteriaInExtension } from "./products.utils";
-
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import * as React from "react";
-import Network from "utils/network";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { AsyncButton, Button } from "components/buttons";
+import { CustomDiv } from "components/custom-objects";
+import { ModalLink } from "components/dialog/ModalLink";
+import { ChannelLink } from "components/links";
 import { Messages, MessageType } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { PopUp } from "components/popup";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
-import { ModalLink } from "components/dialog/ModalLink";
-import { Button, AsyncButton } from "components/buttons";
-import { SCCDialog } from "./products-scc-dialog";
-import { PopUp } from "components/popup";
-import { CustomDiv } from "components/custom-objects";
 import { Toggler } from "components/toggler";
 import { HelpLink } from "components/utils/HelpLink";
-import { ChannelLink } from "components/links";
-import SpaRenderer from "core/spa/spa-renderer";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
+import { searchCriteriaInExtension } from "./products.utils";
+import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
   interface Window {
@@ -539,7 +542,6 @@ class Products extends React.Component<ProductsProps> {
         <CustomDataHandler
           data={this.buildRows(this.filterDataByArch([...this.props.data]).sort(this.compareProducts))}
           identifier={(raw) => raw.identifier}
-          initialItemsPerPage={window.userPrefPageSize}
           loading={this.props.loading}
           additionalFilters={[archFilter]}
           searchField={

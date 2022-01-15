@@ -83,7 +83,7 @@ public class ClusterManagerTest extends JMockBaseTestCaseWithUser {
 
         ClusterManager clusterManager = new ClusterManager(saltServiceMock,
                 saltServiceMock,
-                new ServerGroupManager(),
+                new ServerGroupManager(saltServiceMock),
                 formulaManagerMock);
         Optional<String> plan = clusterManager.getUpgradePlan(cluster);
         assertTrue(plan.isPresent());

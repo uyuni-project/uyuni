@@ -1,9 +1,12 @@
 import * as React from "react";
-import { Form } from "./Form";
-import { Text } from "./Text";
-import { FormMultiInput } from "./FormMultiInput";
-import { SubmitButton } from "components/buttons";
+
 import { action } from "@storybook/addon-actions";
+
+import { SubmitButton } from "components/buttons";
+
+import { Form } from "./Form";
+import { FormMultiInput } from "./FormMultiInput";
+import { Text } from "./Text";
 
 export default {
   component: FormMultiInput,

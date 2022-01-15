@@ -76,7 +76,31 @@ end
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   uptime_days, _code = node.run("awk '{print $1/86400}' /proc/uptime")
-  step %(I should see a "#{uptime_days.to_f.round} days ago" text)
+  uptime_hours, _code = node.run("awk '{print $1/3600}' /proc/uptime")
+  uptime_minutes, _code = node.run("awk '{print $1/60}' /proc/uptime")
+  uptime_seconds, _code = node.run("awk '{print $1}' /proc/uptime")
+  uptime_days = uptime_days.to_f.round
+  uptime_hours = uptime_hours.to_f.round
+  uptime_minutes = uptime_minutes.to_f.round
+  uptime_seconds = uptime_seconds.to_f.round
+
+  if uptime_days < 2 and uptime_days >= 1
+    step %(I should see a "#{uptime_days.round} day ago" text)
+  elsif uptime_days < 1 and uptime_hours >= 2
+    step %(I should see a "#{uptime_hours.round} hours ago" text)
+  elsif uptime_days < 1 and uptime_hours < 2
+    step %(I should see a "#{uptime_hours.round} hour ago" text)
+  elsif uptime_hours < 1 and uptime_minutes >= 2
+    step %(I should see a "#{uptime_minutes.round} minutes ago" text)
+  elsif uptime_hours < 1 and uptime_minutes < 2
+    step %(I should see a "#{uptime_minutes.round} minute ago" text)
+  elsif uptime_minutes < 1 and uptime_seconds >= 2
+    step %(I should see a "#{uptime_seconds.round} seconds ago" text)
+  elsif uptime_minutes < 1 and uptime_seconds < 2
+    step %(I should see a "#{uptime_seconds.round} second ago" text)
+  else
+    step %(I should see a "#{uptime_days.round} days ago" text)
+  end
 end
 
 Then(/^I can see several text fields for "([^"]*)"$/) do |host|
@@ -140,7 +164,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
     begin
-      break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
+      break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4]/time[contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../../td[3]/a[1]", wait: 1)
     rescue Capybara::ElementNotFound
       # ignored - pending actions cannot be found
     end
@@ -158,7 +182,7 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   now = Time.now
   current_minute = now.strftime('%H:%M')
   previous_minute = (now - 60).strftime('%H:%M')
-  xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]"
+  xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4]/time[contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../../td[3]/a[1]"
   element = find_and_wait_click(:xpath, xpath_query)
   element.click
 end
@@ -670,11 +694,7 @@ When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$
 end
 
 When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
-  # force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
-  # $proxy.run("mgr-bootstrap #{force_bundle}")
-  $proxy.run("mgr-bootstrap ")
-
+  $proxy.run('mgr-bootstrap')
   $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise "Key: #{key} not included" unless output.include? key

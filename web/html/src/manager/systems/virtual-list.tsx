@@ -1,11 +1,13 @@
 import * as React from "react";
-import Network from "utils/network";
-import * as Systems from "components/systems";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
 import { IconTag } from "components/icontag";
+import * as Systems from "components/systems";
+import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
@@ -54,7 +56,6 @@ export function VirtualSystems(props: Props) {
         selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
         emptyText={t("No Virtual Systems.")}
       >

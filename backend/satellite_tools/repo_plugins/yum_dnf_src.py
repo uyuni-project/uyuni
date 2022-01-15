@@ -181,7 +181,8 @@ class ContentSource(zypper_ContentSource):
         repo.metadata_expire=0
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
-        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
+        with cfg_component('server.satellite') as CFG:
+            pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
         if not os.path.isdir(pkgdir):
             fileutils.makedirs(pkgdir, user=APACHE_USER, group=APACHE_GROUP)
         repo.pkgdir = pkgdir
