@@ -227,6 +227,8 @@ Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       systemd
 BuildRequires:  systemd
 %if 0%{?rhel}
+Requires:       python3-dnf
+Requires:       python3-hawkey
 BuildRequires:  systemd-rpm-macros
 %else
 %{?systemd_requires}
