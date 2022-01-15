@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.help;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
@@ -36,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
  * EULA action page.
  */
 public class EulaAction extends org.apache.struts.action.Action {
-    private static final File EULA_PATH = new File("/srv/www/htdocs/help/eula.html");
+    private static final File EULA_PATH = new File(Config.get().getString('documentroot') + "/help/eula.html");
 
     /** {@inheritDoc} */
     @Override
