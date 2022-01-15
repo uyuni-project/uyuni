@@ -1284,7 +1284,7 @@ public class SaltServerActionService {
         String script = scriptAction.getScriptActionDetails().getScriptContents();
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
+        // write script to @SHAREDSERVDIR@/susemanager/salt/scripts/script_<action_id>.sh
         Path scriptFile = saltUtils.getScriptPath(scriptAction.getId());
         try {
             if (!Files.exists(scriptFile)) {
