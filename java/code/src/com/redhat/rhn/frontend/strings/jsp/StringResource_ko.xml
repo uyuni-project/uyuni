@@ -9997,8 +9997,8 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.jsp.summary2" xml:space="preserve">
-          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
-        <target>cobbler가 수동으로 변경되었을 경우 Cobbler 동기화를 사용하여 /srv/tftpboot 또는 /srv/www/cobbler 내용을 복구하거나 다시 작성합니다.</target>
+          <source>Cobbler sync is used to repair or rebuild the contents {0}/tftpboot or {1}/www/cobbler when manual modification of cobbler has occurred.</source>
+        <target>cobbler가 수동으로 변경되었을 경우 Cobbler 동기화를 사용하여 {0}/tftpboot 또는 {1}/www/cobbler 내용을 복구하거나 다시 작성합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>
         </context-group>

@@ -9399,7 +9399,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         </trans-unit>
         <trans-unit id="cobbler.jsp.summary2" xml:space="preserve">
-          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
+          <source>Cobbler sync is used to repair or rebuild the contents {0}/tftpboot or {1}/www/cobbler when manual modification of cobbler has occurred.</source>
           <target>কোনো কারণবস্ত ব্যবহারকারী দ্বারা cobbler পরিবর্তিত হলে Cobbler sync সহযোগে /tftpboot অথবা /var/www/cobbler-র তথ্য সংশোধন অথবা পুনরায় গঠন করা হয়।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>

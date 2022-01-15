@@ -9436,7 +9436,7 @@ Tenga en cuenta que podría ser necesario configurar manualmente estos scripts. 
         </context-group>
         </trans-unit>
         <trans-unit id="cobbler.jsp.summary2" xml:space="preserve">
-          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source> <target>La sincronización de Cobbler se utiliza para reparar o reconstruir el contenido de cobbler /tftpboot o /var/www/ cuando la modificación manual de cobbler ha ocurrido.</target>
+          <source>Cobbler sync is used to repair or rebuild the contents {0}/tftpboot or {1}/www/cobbler when manual modification of cobbler has occurred.</source> <target>La sincronización de Cobbler se utiliza para reparar o reconstruir el contenido de cobbler /tftpboot o /var/www/ cuando la modificación manual de cobbler ha ocurrido.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>
         </context-group>

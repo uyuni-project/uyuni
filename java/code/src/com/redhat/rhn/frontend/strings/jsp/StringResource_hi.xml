@@ -9541,7 +9541,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         </trans-unit>
         <trans-unit id="cobbler.jsp.summary2" xml:space="preserve">
-          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
+          <source>Cobbler sync is used to repair or rebuild the contents {0}/tftpboot or {1}/www/cobbler when manual modification of cobbler has occurred.</source>
           <target>कोब्बलर सिंक को /tftpboot या /var/www/ कोब्बलर सामग्री को सुधारने या पुनर्निर्माण करने में प्रयोग किया जाता है जब कोब्बलर का दस्ती रूपांतरण होता है.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>

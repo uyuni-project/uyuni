@@ -29,12 +29,14 @@
 %define omit_tests      1
 
 %if 0%{?suse_version}
+%define customserverdir /srv
 %define serverdir       /srv
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
 %define java_version    11
 %else
+%define customserverdir %{_localstatedir}
 %define serverdir       %{_sharedstatedir}
 %define apache_group    apache
 %define salt_user_group salt
@@ -452,7 +454,7 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
 %endif
 
 # compile only java sources (no packing here)
-ant -Dprefix=$RPM_BUILD_ROOT -Dproduct.name="'$PRODUCT_NAME'" -Dsharedserverdir=%{serverdir} init-install compile
+ant -Dprefix=$RPM_BUILD_ROOT -Dproduct.name="'$PRODUCT_NAME'" -Dsharedserverdir=%{serverdir} -Dcustomserverdir=%{customserverdir} init-install compile
 
 
 

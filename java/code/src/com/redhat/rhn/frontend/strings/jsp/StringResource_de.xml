@@ -9872,7 +9872,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.jsp.summary2" xml:space="preserve">
-          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
+          <source>Cobbler sync is used to repair or rebuild the contents {0}/tftpboot or {1}/www/cobbler when manual modification of cobbler has occurred.</source>
         <target>Cobbler Sync wird zur Reparatur oder Wiederherstellung der Inhalte von /tftpboot oder /var/www/cobbler benutzt, wenn eine manuelle Modifikation von Cobbler erfolgte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>

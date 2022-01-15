@@ -14,7 +14,7 @@
         <bean:message key="cobbler.jsp.summary1"/>
     </p>
     <p>
-        <bean:message key="cobbler.jsp.summary2"/>
+        <bean:message key="cobbler.jsp.summary2" arg0="@SHAREDSERVDIR@" arg1="@CUSTOMSERVDIR@" />
     </p>
     <p>
         <bean:message key="cobbler.jsp.summary3"/>
