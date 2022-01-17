@@ -118,8 +118,15 @@ create() {
         exit 1
     }
     [ ! -s "$SSL_KEY" ] && {
-        echo "SSL Private Key ($SSL_KEY) not found" >&2
-        exit 1
+        if [ -s /etc/pki/tls/private/spacewalk.key ]; then
+            # SUMA 4.2 and earlier did not create the postgresql private key file
+            cp /etc/pki/tls/private/spacewalk.key $SSL_KEY
+	    chown postgres:postgres $SSL_KEY
+	    chmod 0600 $SSL_KEY
+        else
+            echo "SSL Private Key ($SSL_KEY) not found" >&2
+            exit 1
+        fi
     }
 
     [ -z "$PGNAME" ] && ask true "Database name: " PGNAME
