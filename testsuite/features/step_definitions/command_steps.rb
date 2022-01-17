@@ -463,74 +463,6 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I restart the network on the PXE boot minion$/) do
-  # We have no IPv4 address on that machine yet,
-  # so the only way to contact it is via IPv6 link-local.
-  # We convert MAC address to IPv6 link-local address:
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  file = 'restart-network-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  # We have no direct access to the PXE boot minion
-  # so we run the command from the proxy
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I reboot the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  STDOUT.puts "Rebooting #{ipv6}..."
-  file = 'reboot-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I stop and disable avahi on the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
-  file = 'stop-avahi-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I stop salt-minion on the PXE boot minion$/) do
-  file = 'cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
-  file = 'uyuni.key'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($server, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  system_name = get_system_name('pxeboot_minion')
-  $server.run("salt-cp #{system_name} #{dest} #{dest}")
-  $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
-end
-
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   node = get_target(host)
   gpg_keys = get_gpg_keys(node)
@@ -611,27 +543,6 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
   node = get_target(host)
   output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", check_errors: false)
   raise "Not found:\n#{output}" unless output.include?(text)
-end
-
-When(/^I start tftp on the proxy$/) do
-  case $product
-  # TODO: Should we handle this in Sumaform?
-  when 'Uyuni'
-    step %(I enable repositories before installing branch server)
-    cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
-          'zypper --non-interactive install tftp && ' \
-          'systemctl enable tftp.service && ' \
-          'systemctl start tftp.service'
-    $proxy.run(cmd)
-    step %(I disable repositories after installing branch server)
-  else
-    cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
-    $proxy.run(cmd)
-  end
-end
-
-When(/^I stop tftp on the proxy$/) do
-  $proxy.run('systemctl stop tftp.service')
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
@@ -1090,72 +1001,6 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
-When(/^I set up the private network on the terminals$/) do
-  proxy = net_prefix + ADDRESSES['proxy']
-  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
-  nodes = [$client, $minion]
-  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
-  file = "/etc/sysconfig/network/ifcfg-eth1"
-  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
-  file2 = "/etc/resolv.conf"
-  nodes.each do |node|
-    next if node.nil?
-    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
-  end
-  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [$ceos_minion]
-  file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
-  conf2 = "GATEWAYDEV=eth0"
-  file2 = "/etc/sysconfig/network"
-  nodes.each do |node|
-    next if node.nil?
-    domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
-    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
-  end
-  # /etc/netplan/01-netcfg.yaml
-  nodes = [$ubuntu_minion]
-  source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
-  dest = "/etc/netplan/01-netcfg.yaml"
-  nodes.each do |node|
-    next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('netplan apply')
-  end
-  # PXE boot minion
-  if $pxeboot_mac
-    step %(I restart the network on the PXE boot minion)
-  end
-end
-# rubocop:enable Metrics/BlockLength
-
-Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
-  node = get_target(host)
-  output, return_code = node.run("ip -4 address show eth1")
-  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
-end
-
-Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
-  node = get_target(host)
-  # we need "host" utility
-  step "I install package \"bind-utils\" on this \"#{host}\""
-  # direct name resolution
-  ["proxy.example.org", "dns.google.com"].each do |dest|
-    output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
-  end
-  # reverse name resolution
-  client = net_prefix + "2"
-  [client, "8.8.8.8"].each do |dest|
-    output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
-  end
-end
-
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.full_hostname}\n" \
@@ -1536,60 +1381,6 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
     sleep 1
     break unless result.include? pkg
   end
-end
-
-When(/^I prepare the retail configuration file on server$/) do
-  source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  dest = '/tmp/massive-import-terminals.yml'
-  return_code = file_inject($server, source, dest)
-  raise "File #{file} couldn't be copied to server" unless return_code.zero?
-
-  sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
-  sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
-  sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
-  sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
-  sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
-  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot_minion']}/; "
-  sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
-  sed_values << "s/<MINION>/#{ADDRESSES['sle_minion']}/; "
-  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
-  sed_values << "s/<CLIENT>/#{ADDRESSES['sle_client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
-  sed_values << "s/<IMAGE>/#{compute_image_name}/"
-  $server.run("sed -i '#{sed_values}' #{dest}")
-end
-
-When(/^I import the retail configuration using retail_yaml command$/) do
-  filepath = '/tmp/massive-import-terminals.yml'
-  $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
-end
-
-When(/^I delete all the imported terminals$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-    puts "Deleting terminal with name: #{terminal}"
-    steps %(
-      When I follow "#{terminal}" terminal
-      And I follow "Delete System"
-      And I should see a "Confirm System Profile Deletion" text
-      And I click on "Delete Profile"
-      Then I should see a "has been deleted" text
-    )
-  end
-end
-
-When(/^I remove all the DHCP hosts created by retail_yaml$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
-  end
-end
-
-When(/^I remove the bind zones created by retail_yaml$/) do
-  domain = read_branch_prefix_from_yaml
-  raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
-  raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
 end
 
 Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
