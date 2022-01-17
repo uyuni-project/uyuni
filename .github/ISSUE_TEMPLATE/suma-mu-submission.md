@@ -28,7 +28,7 @@ Add more tasks if needed.
 
 - [ ] For any new packages that will be added to the codestreams, fetch the groups what will maintain them (one per package)
 - [ ] Ask the Doc Squad to submit an update of the doc package to the relevant `Devel:Galaxy:Manager:X.Y` project, and a MR for the [repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma) used for documentation.suse.com (they need to give us a URL for a MR)
-- [ ] Ask @parlt91 (backup: @hustodemon) to prepare the PR for the code translations. They will ask a brief period of branch freeze to prepare it. Ideally this should happen close to the branch freeze date.
+- [ ] Ask @mcalmer (backup: @parlt91) to prepare the PR for the code translations. They will ask a brief period of branch freeze to prepare it. Ideally this should happen close to the branch freeze date.
 - [ ] Confirm that the documentation is ready
 - [ ] Ask the Ion Squad to promote all salt versions that have updates (not needed for MUs without salt/client tools)
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
