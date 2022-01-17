@@ -1,8 +1,8 @@
 # Container used to test SUSE Manager Head
 #
-# VERSION                4.1.2
+# VERSION                4.1.3
 
-FROM registry.suse.de/suse/sle-15-sp2/update/cr/images/suse/sle15:15.2
+FROM opensuse/leap:15.2
 MAINTAINER Julio Gonzalez "jgonzalez@suse.com"
 
 # Add the repositories

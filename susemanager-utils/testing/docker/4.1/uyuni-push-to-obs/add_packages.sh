@@ -7,4 +7,5 @@ zypper --non-interactive in osc \
              tito \
 	     build \
 	     npm \
-	     ca-certificates-suse
+         ca-certificates-suse \
+         nodejs14
