@@ -38,6 +38,7 @@ BuildRequires:  fdupes
 BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 Requires:       %{sbinpath}/restorecon
+Requires:       %{name}-utility
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
@@ -53,13 +54,20 @@ BuildRequires:  fdupes
 susemanager-schema is the SQL schema for the SUSE Manager server.
 
 %package sanity
-Summary:        Schema source sanity check for Spacewalk database scripts.
+Summary:        Schema source sanity check for Spacewalk database scripts
 Group:          Applications/Internet
 
 Requires:       perl(Digest::SHA)
 
+%package utility
+Summary:        Utility used by any DB schema in Spacewalk
+Group:          Applications/Internet
+
 %description sanity
 Provides schema-source-sanity-check.pl script for external usage.
+
+%description utility
+Provides spacewalk-schema-upgrade and spacewalk-sql.
 
 %prep
 
@@ -115,15 +123,18 @@ systemctl try-restart uyuni-check-database.service ||:
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/schema-upgrade
-%{_bindir}/spacewalk-schema-upgrade
-%{_bindir}/spacewalk-sql
-%{_mandir}/man1/spacewalk-schema-upgrade*
-%{_mandir}/man1/spacewalk-sql*
 %if 0%{?suse_version}
 %dir /usr/share/susemanager
 /usr/share/susemanager/update-messages.txt
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
 %endif
+
+%files utility
+%defattr(-,root,root)
+%{_bindir}/spacewalk-schema-upgrade
+%{_bindir}/spacewalk-sql
+%{_mandir}/man1/spacewalk-schema-upgrade*
+%{_mandir}/man1/spacewalk-sql*
 
 %files sanity
 %defattr(-,root,root)
