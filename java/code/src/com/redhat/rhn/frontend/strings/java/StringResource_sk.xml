@@ -6531,70 +6531,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
-        <target/>
+        <target>Systém {0} nemôže byť automaticky nainštalovaný, pretože nemá základný kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nosuchdevice" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
-        <target/>
+        <target>Systém {0} nemôže byť automaticky nainštalovaný, pretože nemá sieťové zariadenie &lt;strong&gt; {1} &lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <target/>
+        <target>Nepodarilo sa nájsť potrebné balíky poskytujúce @@PRODUCT_NAME@@ dané aktuálnym základným kanálom tohto systému a požadovaným cieľovým kanálom: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
         <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <target/>
+        <target>Nemáte žiadne zostávajúce predplatné ku kanálu poskytujúcemu @@PRODUCT_NAME@@ pre aktuálny základný kanál &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
         <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <target/>
+        <target>Nemáte žiadne zostávajúce predplatné ku kanálu {0} pre aktuálny základný kanál &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target/>
+        <target>Automatická inštalácia nebola naplánovaná na &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
-        <target/>
+        <target>Pre tento systém bolo začaté nové sedenie automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.newtokennote" xml:space="preserve">
         <source>Autoinstallation re-activation key for {0}.</source>
-        <target/>
+        <target>Reaktivačný kľúč automatickej inštalácie pre {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.ppc64lewarning" xml:space="preserve">
         <source>Warning: Kickstart Profile list includes PPC64LE profiles but they will not function properly unless your CPU is POWER8 or better.</source>
-        <target/>
+        <target>Varovanie: Zoznam profilov Kickstart obsahuje profily PPC64LE, ktoré však nebudú fungovať správne, ak váš CPU nie je POWER8 alebo lepší.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.profile.default_session" xml:space="preserve">
         <source>Default session activation key for profile {0}.</source>
-        <target/>
+        <target>Aktivačný kľúč predvoleného sedenia pre profil {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
