@@ -1,3 +1,5 @@
+- Explicitly require and buildrequire log4j12
+
 -------------------------------------------------------------------
 Mon Aug 09 11:05:06 CEST 2021 - jgonzalez@suse.com
 
