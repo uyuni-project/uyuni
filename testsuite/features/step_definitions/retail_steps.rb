@@ -554,8 +554,8 @@ When(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
   )
 end
 
-When(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
-  # It doesn't exist any navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
+When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) do |org|
+  # There is no navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
   visit("https://#{$server.full_hostname}/os-images/#{org}/")
 end
 
@@ -596,9 +596,9 @@ When(/^I execute "([^"]*)" for "([^"]*)" via semi-xmlrpc-tester$/) do |scenario,
   system("cd #{path}; ./semi-xmlrpc-tester #{environment} #{scenario} -y --silent") or raise StandardError, "Scenario '#{scenario}' provided by semi-xmlrpc-tester failed!"
 end
 
-When(/^I prepare kiwi profile for SLE11 SP4 buildhost$/) do
-  # Git clone is not possible with SLE11 system, so we need to provide kiwi profiles via different way
-  system('git clone https://github.com/SUSE/manager-build-profiles /root/manager-build-profiles') or raise StandardError, 'Cannot clone kiwi profiles!'
-  system("scp -o StrictHostKeyChecking=no -r /root/manager-build-profiles/ root@#{$sle11sp4_buildhost.full_hostname}:/manager-build-profiles") or raise StandardError, 'Cannot push kiwi profiles to SLE11 SP4 buildhost!'
+When(/^I prepare Kiwi profile for SLE11 SP4 build host$/) do
+  # Git clone is not possible with SLE11 system, so we need to provide Kiwi profiles via different way
+  system('git clone https://github.com/SUSE/manager-build-profiles /root/manager-build-profiles') or raise StandardError, 'Cannot clone Kiwi profiles!'
+  system("scp -o StrictHostKeyChecking=no -r /root/manager-build-profiles/ root@#{$sle11sp4_buildhost.full_hostname}:/manager-build-profiles") or raise StandardError, 'Cannot push Kiwi profiles to SLE11 SP4 buildhost!'
   system('rm -rf /root/manager-build-profiles')
 end
