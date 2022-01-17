@@ -103,7 +103,7 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   end
 end
 
-Then(/^I can see several text fields for "([^"]*)"$/) do |host|
+Then(/^I should see several text fields for "([^"]*)"$/) do |host|
   node = get_target(host)
   steps %(Then I should see a "UUID" text
     And I should see a "Virtualization" text
