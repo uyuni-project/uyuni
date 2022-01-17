@@ -653,7 +653,7 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
     $server.run("configure-tftpsync.sh #{ENV['PROXY']}")
   when 'proxy'
     cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
---server-fqdn='proxy.example.org' \
+--server-fqdn=#{ENV['SERVER']} \
 --proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
   end
