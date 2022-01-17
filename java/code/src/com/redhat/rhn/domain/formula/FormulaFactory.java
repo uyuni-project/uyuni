@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.formula;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
@@ -23,13 +21,23 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.EndpointInfo;
 import com.redhat.rhn.domain.dto.FormulaData;
-import com.redhat.rhn.domain.server.*;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.utils.Maps;
 import com.suse.utils.Opt;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -37,8 +45,24 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
