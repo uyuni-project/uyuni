@@ -58,8 +58,15 @@ Group:          Applications/Internet
 
 Requires:       perl(Digest::SHA)
 
+%package core
+Summary:        Utility used by any DB schema in Spacewalk.
+Group:          Applications/Internet
+
 %description sanity
 Provides schema-source-sanity-check.pl script for external usage.
+
+%description core
+Provides spacewalk-schema-upgrade and spacewalk-sql
 
 %prep
 
@@ -111,6 +118,13 @@ systemctl is-active --quiet uyuni-check-database.service && {
 systemctl try-restart uyuni-check-database.service ||:
 
 %files
+%if 0%{?suse_version}
+%dir /usr/share/susemanager
+/usr/share/susemanager/update-messages.txt
+%ghost /var/adm/update-messages/%{name}-%{version}-%{release}
+%endif
+
+%files core
 %defattr(-,root,root)
 %dir %{rhnroot}
 %{postgres}
@@ -119,11 +133,6 @@ systemctl try-restart uyuni-check-database.service ||:
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
-%if 0%{?suse_version}
-%dir /usr/share/susemanager
-/usr/share/susemanager/update-messages.txt
-%ghost /var/adm/update-messages/%{name}-%{version}-%{release}
-%endif
 
 %files sanity
 %defattr(-,root,root)
