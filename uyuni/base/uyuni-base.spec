@@ -29,8 +29,8 @@
 %define apache_group www
 %else
 %define www_path %{_var}
-%define apache_user apache
-%define apache_group apache
+%define apache_user root
+%define apache_group root
 %endif
 
 Name:           uyuni-base
