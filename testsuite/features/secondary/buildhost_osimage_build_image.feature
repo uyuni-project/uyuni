@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -44,7 +44,7 @@ Feature: Build OS images
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed
-    And I am on the image store of the kiwi image for organization "1"
+    And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image
 
 @proxy
