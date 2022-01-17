@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021 SUSE LLC.
+# Copyright (c) 2013-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -14,62 +14,6 @@ def generate_temp_file(name, content)
   Tempfile.open(name) do |file|
     file.write(content)
     return file.path
-  end
-end
-
-# extract various data from Retail yaml configuration
-def read_terminals_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['terminals'].keys
-end
-
-def read_branch_prefix_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['branch_prefix']
-end
-
-def read_server_domain_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['server_domain']
-end
-
-# determine image for PXE boot tests
-def compute_image_filename
-  case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp3', 'sles15sp3o'
-    # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
-    $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
-  when 'sles15sp2', 'sles15sp2o'
-    'Kiwi/POS_Image-JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    # 'Kiwi/POS_Image-JeOS6_41' for 4.1 branch
-    # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
-    'Kiwi/POS_Image-JeOS6_head'
-  else
-    raise 'Is this a supported image version?'
-  end
-end
-
-def compute_image_name
-  case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp3', 'sles15sp3o'
-    # 'POS_Image_JeOS7_42' for 4.2 branch
-    $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
-  when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    # 'POS_Image_JeOS6_41' for 4.1 branch
-    # 'POS_Image_JeOS6_42' for 4.2 branch
-    'POS_Image_JeOS6_head'
-  else
-    raise 'Is this a supported image version?'
   end
 end
 
