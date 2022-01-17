@@ -1,3 +1,4 @@
+- create susemanager-schema-utility RPM package
 - Add upgrade script to migrate pillar and formula data to database
 - Remove minion_pillars PL/SQL function
 - Force metadata files regeneration for Debian based repos
