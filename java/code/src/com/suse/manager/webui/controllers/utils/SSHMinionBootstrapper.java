@@ -98,12 +98,16 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                                                .map(SaltSSHService::proxyPathToHostnames)
                                                .orElse(Collections.emptyList());
 
-                MinionPendingRegistrationService.addMinion(user, minionId,
+                MinionPendingRegistrationService.addMinion(
+                        user,
+                        minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
-                        proxyPath);
-                getRegisterAction().registerSSHMinion(
-                        minionId, params.getProxyId(),
-                        params.getFirstActivationKey());
+                        proxyPath,
+                        params.getPort().orElse(SSH_PUSH_PORT)
+                );
+
+                getRegisterAction().registerSSHMinion(minionId, params.getPort().orElse(SSH_PUSH_PORT),
+                    params.getProxyId(), params.getFirstActivationKey());
             }
         }
         finally {
@@ -128,8 +132,6 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         if (StringUtils.isEmpty(input.getUser())) {
             params.setUser(getSSHUser());
         }
-
-        params.setPort(Optional.of(SSH_PUSH_PORT));
 
         return params;
     }

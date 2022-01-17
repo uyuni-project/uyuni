@@ -41,12 +41,12 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testProxyCommandNoProxy() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(Collections.emptyList(), "ssh-push", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(Collections.emptyList(), "ssh-push", "minion", 22);
         assertFalse(res.isPresent());
     }
 
     public void testProxyCommandSSHPush1Proxy() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(List.of("proxy1"), "ssh-push", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(List.of("proxy1"), "ssh-push", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
@@ -55,8 +55,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testProxyCommandSSHPushTunnel1Proxy() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(
-                List.of("proxy1"), "ssh-push-tunnel", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(List.of("proxy1"), "ssh-push-tunnel", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
@@ -67,7 +66,8 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testProxyCommandSSHPush2Proxies() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1", "proxy2"), "ssh-push", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(
+                Arrays.asList("proxy1", "proxy2"), "ssh-push", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +
@@ -77,7 +77,8 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testProxyCommandSSHPushTunnel2Proxies() {
-        Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion");
+        Optional<String> res = SaltSSHService.sshProxyCommandOption(
+                Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(
                 "ProxyCommand='" +

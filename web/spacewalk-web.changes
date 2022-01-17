@@ -1,3 +1,4 @@
+- Add support for custom SSH port for SSH minions
 - SLES PAYG client support on cloud
 - Migrate the displaying of the date/time to rhn:formatDate, get rid of the legacy fmt:formatDate glue
 - Fix header search autofocus
