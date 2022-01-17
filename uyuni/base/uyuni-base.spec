@@ -60,7 +60,7 @@ Requires(pre):  httpd
 %description common
 Basic filesystem hierarchy for Uyuni server and proxy.
 
-%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
+%if ! (0%{?suse_version} == 1110)
 %package server
 Summary:        Base structure for Uyuni server
 Group:          System/Fhs
@@ -98,12 +98,12 @@ Basic filesystem hierarchy for Uyuni proxy.
 %install
 mkdir -p %{buildroot}/etc/rhn
 mkdir -p %{buildroot}/usr/share/rhn/proxy
-%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
+%if ! (0%{?suse_version} == 1110)
 mkdir -p %{buildroot}/var/spacewalk
 %endif
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 
-%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
+%if !(0%{?suse_version} == 1110)
 %pre server
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
 getent passwd salt >/dev/null && %{_sbindir}/usermod -a -G susemanager salt
@@ -119,7 +119,7 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %dir %{_prefix}/share/rhn
 %dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
-%if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
+%if ! (0%{?suse_version} == 1110)
 %files server
 %defattr(-,root,root)
 %if 0%{?rhel}
