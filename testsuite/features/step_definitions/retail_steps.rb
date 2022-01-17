@@ -534,10 +534,12 @@ When(/^I press minus sign in (.*) section$/) do |section|
   find(:xpath, "#{sectionids[section]}/div[1]/i[@class='fa fa-minus']").click
 end
 
-When(/^I check (.*) box$/) do |box|
-  boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
-             'include forwarders'        => 'bind#config#include_forwarders' }
-  check boxids[box]
+When(/^I check (.*) box$/) do |checkbox_name|
+  check BOX_IDS[checkbox_name]
+end
+
+When(/^I uncheck (.*) box$/) do |checkbox_name|
+  uncheck BOX_IDS[checkbox_name]
 end
 
 # OS image build
