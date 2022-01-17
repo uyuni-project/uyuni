@@ -1,3 +1,4 @@
+- create susemanager-schema-utility RPM package
 - FIX error when an image profile / store is deleted
   during build / inspect action (bsc#1191597, bsc#1192150)
 - SLES PAYG client support on cloud
