@@ -39,7 +39,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -871,35 +870,6 @@ public class FormulaFactory {
         else {
             return false;
         }
-    }
-
-    /**
-     * Get the value from a nested map structure by a colon separated path.
-     * E.g. key1:key2:key3 for a map with a depth of 3.
-     * @param data the nested map
-     * @param path the path
-     * @return a value if available
-     */
-    public static Optional<Object> getValueByPath(Map<String, Object> data, String path) {
-        String[] tokens = StringUtils.split(path, ":");
-        Map<String, Object> current = data;
-        for (int i = 0; i < tokens.length; i++) {
-            String token = tokens[i];
-            Object val = current.get(token);
-            if (i == tokens.length - 1) {
-                return Optional.ofNullable(val);
-            }
-            if (val == null) {
-                return Optional.empty();
-            }
-            if (val instanceof Map) {
-                current = (Map<String, Object>)val;
-            }
-            else {
-                return Optional.empty();
-            }
-        }
-        return Optional.empty();
     }
 
     /**
