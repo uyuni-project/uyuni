@@ -69,7 +69,7 @@ def add(args):
         print("DEBUG: Adding user {} as the only maintainer".format(auth_user))
         for user in root.findall("person"):
             root.remove(user)
-        for group in root.finall("group"):
+        for group in root.findall("group"):
             root.remove(group)
         new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(auth_user))
         root.append(new_person)
