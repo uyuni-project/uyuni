@@ -63,9 +63,6 @@ BuildRequires:  sudo
 %endif
 Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 
-Requires(post): salt
-Requires(post): acl
-
 %description
 Common Spacewalk configuration files and templates.
 
@@ -192,9 +189,6 @@ if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
   mv /etc/sudoers.d/spacewalk.rpmsave /root/sudoers-spacewalk.save
 fi
 rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
-
-setfacl -m user:salt:r-x /etc/rhn
-setfacl -m user:salt:r-- /etc/rhn/rhn.conf
 
 ### TO-REMOVE AFTER: 2023-12-01
 if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
