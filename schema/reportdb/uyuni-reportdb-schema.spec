@@ -19,7 +19,7 @@
 
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
-Name:           susemanager-reportdb-schema
+Name:           uyuni-reportdb-schema
 Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
