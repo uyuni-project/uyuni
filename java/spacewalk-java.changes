@@ -1,27 +1,31 @@
-- Remove cluster management feature
-- Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
-- Store formula pillar data in database
-- Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
-- Generate flat repositories metadata for Debian based systems
-- Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
-- Added rights field to generated updateinfo.xml to handle copyright
-- fix XML syntax in cobbler snippets (bsc#1193694)
-- Migrate the displaying of the date/time to rhn:formatDate
-- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
-- Add route for virtual systems ReactJS page
-- fix actionchain stuck in pending/picked up (bsc#1189561)
-- provide static configuration key name for SSHMinionActionExecutor
-  parallel threads
-- Add link to the original vendor advisory in the patch details page
-- fix issue with empty action chains getting deleted too early (bsc#1191377)
-- Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
-- Add additional matchers to package (nevra) filter
-- Add greater equals matcher to package (nevra) filter
-- Add support for custom SSH port for SSH minions
-- UI and API call for changing proxy
-- Use an 'allow' filter for the kernel packages with live patching
-  filter templates (bsc#1191460)
-- require postgresql14 on SLE15 SP4
+-------------------------------------------------------------------
+Tue Jan 18 13:52:58 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Remove cluster management feature
+  * Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
+  * Store formula pillar data in database
+  * Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
+  * Generate flat repositories metadata for Debian based systems
+  * Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
+  * Added rights field to generated updateinfo.xml to handle copyright
+  * fix XML syntax in cobbler snippets (bsc#1193694)
+  * Migrate the displaying of the date/time to rhn:formatDate
+  * Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+  * Add route for virtual systems ReactJS page
+  * fix actionchain stuck in pending/picked up (bsc#1189561)
+  * provide static configuration key name for SSHMinionActionExecutor
+    parallel threads
+  * Add link to the original vendor advisory in the patch details page
+  * fix issue with empty action chains getting deleted too early (bsc#1191377)
+  * Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
+  * Add additional matchers to package (nevra) filter
+  * Add greater equals matcher to package (nevra) filter
+  * Add support for custom SSH port for SSH minions
+  * UI and API call for changing proxy
+  * Use an 'allow' filter for the kernel packages with live patching
+    filter templates (bsc#1191460)
+  * require postgresql14 on SLE15 SP4
 
 -------------------------------------------------------------------
 Fri Dec 03 12:21:41 CET 2021 - jgonzalez@suse.com
