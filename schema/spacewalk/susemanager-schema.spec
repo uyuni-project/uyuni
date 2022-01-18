@@ -66,7 +66,7 @@ Group:          Applications/Internet
 Provides schema-source-sanity-check.pl script for external usage.
 
 %description utility
-Provides spacewalk-schema-upgrade and spacewalk-sql
+Provides spacewalk-schema-upgrade and spacewalk-sql.
 
 %prep
 
