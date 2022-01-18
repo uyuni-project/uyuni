@@ -10665,10 +10665,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
         <target>在 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt; 上运行 state.apply 时出错</target>
       </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
-        <source>Package {0} not found in subscribed channels</source>
-        <target>在订阅的频道中找不到软件包 {0}</target>
-      </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
         <context-group name="ctx">
@@ -10745,25 +10741,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
         <target state="translated">虚拟网络删除</target>
-      </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve">
-        <source>Cluster Administrator</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-        <target state="translated">群集管理员</target>
-      </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve">
-        <source>Clusters</source>
-        <target state="translated">群集</target>
-      </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve">
-        <source>Overview</source>
-        <target state="translated">概览</target>
-      </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve">
-        <source>Add</source>
-        <target state="translated">添加</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
