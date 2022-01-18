@@ -1,3 +1,4 @@
+- Remove cluster management
 - Fix virtual systems list request error (bsc#1194397)
 - Fix header search autofocus
 - Migrate the displaying of the date/time to rhn:formatDate, get rid of the legacy fmt:formatDate glue

@@ -13,7 +13,6 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import Admin from "./admin";
 import Audit from "./audit";
-import Clusters from "./clusters";
 import ContentManagement from "./content-management";
 import Errors from "./errors";
 import Groups from "./groups";
@@ -50,7 +49,6 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Visualization,
-  ...Clusters,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

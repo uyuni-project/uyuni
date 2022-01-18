@@ -1,4 +1,5 @@
 - Improve token validation logs
+- Remove cluster management feature
 - Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
 - Store formula pillar data in database
 - Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus

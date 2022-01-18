@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -400,18 +399,6 @@ public class FormulaManager {
             response.put(groupID, responseEntry);
         }
         return response;
-    }
-
-    /**
-     * Gets the data for a cluster formula.
-     * @param cluster the cluster
-     * @param formulaKey the formula key
-     * @return the formula data
-     */
-    public Optional<Map<String, Object>> getClusterFormulaData(Cluster cluster, String formulaKey) {
-        Optional<String> formulaName = FormulaFactory.getClusterProviderFormulaName(cluster.getProvider(), formulaKey);
-        return formulaName
-                .flatMap(name -> FormulaFactory.getGroupFormulaValuesByNameAndGroup(name, cluster.getGroup()));
     }
 
     /**

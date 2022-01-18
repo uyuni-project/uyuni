@@ -15,6 +15,8 @@ Feature: Setup Uyuni proxy
 
   Scenario: Install proxy software
     When I refresh the metadata for "proxy"
+    # workaround for bug 1192195, remove when fixed
+    And I adapt zyppconfig
     # uncomment when product is out:
     # When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy

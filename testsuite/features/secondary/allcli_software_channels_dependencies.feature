@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # TODO
@@ -6,7 +6,7 @@
 # It has to be rewritten using fake packages (orion-dummy etc) instead of real synched packages
 
 @scope_changing_software_channels
-Feature: Chanel subscription with recommended/required dependencies
+Feature: Channel subscription with recommended or required dependencies
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

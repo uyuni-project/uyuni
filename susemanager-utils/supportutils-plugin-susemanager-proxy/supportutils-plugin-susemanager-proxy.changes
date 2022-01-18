@@ -1,3 +1,6 @@
+- Build the package with a dynamic html docroot, to allow
+  compatibility with other operating systems
+
 -------------------------------------------------------------------
 Mon Aug 09 10:43:54 CEST 2021 - jgonzalez@suse.com
 
