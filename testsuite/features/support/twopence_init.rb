@@ -73,11 +73,8 @@ if $build_validation
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
   $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
-  $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
-  $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
-  $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
   $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
