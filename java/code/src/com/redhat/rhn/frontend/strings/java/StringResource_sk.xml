@@ -6097,161 +6097,161 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="config.storeconfig.error" xml:space="preserve">
         <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
-        <target/>
+        <target>Vyskytla sa chyba a vaše zmeny konfigurácie @@PRODUCT_NAME@@ nebolo možné uložiť. Pre viac informácií, prosím, kontaktujte podporu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="restart.config.success" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ sa reštartuje.  Ak sa táto stránka neobnoví do 5 minút, kliknite &lt;a href="/rhn/YourRhn.do"&gt;sem&lt;/a&gt; a skúste to ručne. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="restart.config.norestart" xml:space="preserve">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
-        <target/>
+        <target>Prosím, potvrďte, že chcete reštartovať @@PRODUCT_NAME@@ zaškrtnutím políčka v nižšie uvedenom formulári.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="restart.config.restarted" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ has been restarted.</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ bol reštartovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scout.default.name" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Monitoring Scout</source>
-        <target/>
+        <target>Monitorovací skaut @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Panic Destination" xml:space="preserve">
         <source>Panic Destination</source>
-        <target/>
+        <target>Cieľová destinácia Panic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Name of Monitoring Notification Method that is created during setup/install process.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.gpg" xml:space="preserve">
         <source>GPG</source>
-        <target/>
+        <target>GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.ssl" xml:space="preserve">
         <source>SSL</source>
-        <target/>
+        <target>SSL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.nokey" xml:space="preserve">
         <source>No file contents found. Please select a proper key file from your local machine to upload.</source>
-        <target/>
+        <target>Nenašiel sa žiadny obsah súboru. Prosím, vyberte správny súbor kľúča z svojho lokálneho počítača, ktorý sa má nahrať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.success" xml:space="preserve">
         <source>Key updated.</source>
-        <target/>
+        <target>Kľúč aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cryptokey.delete.success" xml:space="preserve">
         <source>Key deleted successfully.</source>
-        <target/>
+        <target>Kľúč bol úspešne vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.descinuse" xml:space="preserve">
         <source>This description is already in use.  Please type a new description for this key.</source>
-        <target/>
+        <target>Tento popis sa už používa.  Prosím, napíšte nový popis tohto kľúča.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="label" xml:space="preserve">
         <source>Label</source>
-        <target/>
+        <target>Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="emptyselectionerror" xml:space="preserve">
         <source>There was no selection. Please make your selection and try again.</source>
-        <target/>
+        <target>Nebol žiadny výber. Prosím, vykonajte svoj výber a skúste to znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/PreservationList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nocripterror" xml:space="preserve">
         <source>Please enable Javascript or use a Javascript enabled browser before proceeding with this action.</source>
-        <target/>
+        <target>Prosím, pred vykonaním tejto akcie povoľte Javascript alebo použite prehliadač s povoleným Javascript.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/PreservationList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="root_confirm_passwds.mismatch" xml:space="preserve">
         <source>The two passwords are not the same.</source>
-        <target/>
+        <target>Obe heslá nie sú rovnaké.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preservation.key.success" xml:space="preserve">
         <source>File Preservation list updated.</source>
-        <target/>
+        <target>Zoznam uchovaní súborov bol aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preservation.key.labelexists" xml:space="preserve">
         <source>File Preservation label already exists. Please choose a unique File Preservation label. </source>
-        <target/>
+        <target>Označenie uchovania súborov už existuje. Prosím, vyberte si jedinečné označenie uchovania súborov. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filelists.jsp.selectafilelist" xml:space="preserve">
         <source>No File List(s) selected.</source>
-        <target/>
+        <target>Nie je vybraný žiadny zoznam(y) súborov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/PreservationList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart_activation_keys.added" xml:space="preserve">
         <source>{0} Activation Key(s) added.</source>
-        <target/>
+        <target>Pridaný {0} aktivačný kľúč(e).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeys.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart_activation_keys.removed" xml:space="preserve">
         <source>{0} Activation Key(s) removed.</source>
-        <target/>
+        <target>Odstránený {0} aktivačný kľúč(e).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeys.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_lists.removed" xml:space="preserve">
         <source>{0} File Preservation List(s) removed.</source>
-        <target/>
+        <target>Odstránený {0} zoznam(y) uchovaní súborov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/FilePreservationLists.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_lists.added" xml:space="preserve">
         <source>{0} File Preservation List(s) added.</source>
-        <target/>
+        <target>Pridaný {0} zoznam(y) uchovaní súborov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/FilePreservationLists.do</context>
         </context-group>
@@ -6268,253 +6268,263 @@ Please note that inactive systems cannot receive any updates.
 
 Follow this url to see the full list of inactive systems:
 {1}</source>
-        <target/>
+        <target>Systémy, ktoré nie sú prihlásené:
+-------------------------
+Nasledujúce systémy sa nedávno prestali prihlasovať s @@PRODUCT_NAME@@:
+
+{0}
+
+
+Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadne aktualizácie.
+
+Úplný zoznam neaktívnych systémov nájdete na tomto url:
+{1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic.daily.sid" xml:space="preserve">
         <source>System Id</source>
-        <target/>
+        <target>Systémové Id</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic.daily.systemname" xml:space="preserve">
         <source>System Name</source>
-        <target/>
+        <target>Názov systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic.daily.checkin" xml:space="preserve">
         <source>Last Checkin</source>
-        <target/>
+        <target>Posledné prihlásenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic.daily.errata" xml:space="preserve">
         <source>Patch Synopses:</source>
-        <target/>
+        <target>Súhrny opráv:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic.notavailable" xml:space="preserve">
         <source>Taskomatic is not available.</source>
-        <target/>
+        <target>Taskomatic nie je dostupný.</target>
       </trans-unit>
       <trans-unit id="taskscheduler.down" xml:space="preserve">
         <source>There was an error while scheduling a task. Please make sure that the task scheduler is running.</source>
-        <target/>
+        <target>Pri plánovaní úlohy sa vyskytla chyba. Prosím, preverte, či je spustený plánovač úloh.</target>
       </trans-unit>
       <trans-unit id="kickstart.software.success" xml:space="preserve">
         <source>Kickstart Operating System selection successfully updated.</source>
-        <target/>
+        <target>Výber operačného systému Kickstart bol úspešne aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.software.notree" xml:space="preserve">
         <source>The specified base channel and kickstart tree was not found.</source>
-        <target/>
+        <target>Špecifikovaný základný kanál a strom kickstart nebol nájdený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.software.changeencryption" xml:space="preserve">
         <source>This kickstart profile uses a different type of encryption by default than the root password is currently using. You must reset the root password to encrypt it with the new method.</source>
-        <target/>
+        <target>Tento profil kickstart používa v predvolenom nastavení iný typ šifrovania, ako momentálne používa heslo správcu systému. Musíte znovu nastaviť heslo správcu systému, aby sa šifrovalo novou metódou.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="gpgssl_keys.added" xml:space="preserve">
         <source>{0} Key(s) added.</source>
-        <target/>
+        <target>{0} kľúč(e) pridané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="gpgssl_keys.removed" xml:space="preserve">
         <source>{0} Key(s) removed.</source>
-        <target/>
+        <target>{0} kľúč(e) odstránené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.success" xml:space="preserve">
         <source>Kickstart Script successfully updated.</source>
-        <target/>
+        <target>Skript Kickstart bol úspešne aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="language" xml:space="preserve">
         <source>Language</source>
-        <target/>
+        <target>Jazyk</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPreEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contents" xml:space="preserve">
         <source>Script Contents</source>
-        <target/>
+        <target>Obsah skriptov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="script_name" xml:space="preserve">
         <source>Script Name</source>
-        <target/>
+        <target>Názov skriptu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.pre" xml:space="preserve">
         <source>Pre Script</source>
-        <target/>
+        <target>Predbežný skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.post" xml:space="preserve">
         <source>Post Script</source>
-        <target/>
+        <target>Následný skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.order.fakename" xml:space="preserve">
         <source>Registration and server actions</source>
-        <target/>
+        <target>Registrácia a akcie servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.order.fakeinterpreter" xml:space="preserve">
         <source>Not Applicable</source>
-        <target/>
+        <target>Nepoužiteľné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.order.success" xml:space="preserve">
         <source>Kickstart Script order was successfully updated.</source>
-        <target/>
+        <target>Poradie skriptov Kickstart bolo úspešne aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="listdisplaytag.viewall" xml:space="preserve">
         <source>View All</source>
-        <target/>
+        <target>Zobraziť všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.success" xml:space="preserve">
         <source>Autoinstallation options updated.</source>
-        <target/>
+        <target>Voľby automatickej inštalácie boli aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.delete.success" xml:space="preserve">
         <source>Autoinstallable Distribution deleted successfully.</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia úspešne vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.edit.invalid_tree" xml:space="preserve">
         <source>Autoinstallable distribution is invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia je chybná z dôvodu nesprávnej alebo neexistujúcej základnej cesty k obrazu jadra alebo initrd. Ak chcete, aby bola vaša vlastná distribúcia platná, prosím, vyberte distribúciu a vhodne upravte jej základnú cestu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
         <source>Extra kernel parameters can be no longer than 2048 characters.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Dodatočné parametre jadra nemôžu byť dlhšie ako 2048 znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
-        <target/>
+        <target>Možnosti lokalizácie Kickstart aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Locale.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.locale.validation.timezone.invalid" xml:space="preserve">
         <source>Invalid timezone.</source>
-        <target/>
+        <target>Neplatné časové pásmo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Locale.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.delete" xml:space="preserve">
         <source>Kickstart Script Deleted.</source>
-        <target/>
+        <target>Skript Kickstart vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptDelete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.clone.success" xml:space="preserve">
         <source>Autoinstallation cloned successfully.  You are now editing the cloned Autoinstallation.</source>
-        <target/>
+        <target>Automatická inštalácia bola úspešne klonovaná.  Teraz upravujete klonovanú automatickú inštaláciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.success" xml:space="preserve">
         <source>Autoinstallation canceled.</source>
-        <target/>
+        <target>Automatická inštalácia zrušená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.user_canceled" xml:space="preserve">
         <source>Autoinstallation canceled by user: {0}</source>
-        <target/>
+        <target>Automatická inštalácia zrušená používateľom: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSessionCancel.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.success" xml:space="preserve">
         <source>System autoinstallation scheduled for {0}</source>
-        <target/>
+        <target>Automatická inštalácia systému naplánovaná na {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate" xml:space="preserve">
         <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
-        <target/>
+        <target>Systémový záznam vytvorený pre {0} v Cobbler.  Toto vám umožní automatickú inštaláciu tohto systému pomocou profilu {1} z terminálu {0} s použitím príkazu 'koan'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate.bootstrap" xml:space="preserve">
         <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
-        <target/>
+        <target>Systémový záznam vytvorený pre {0} v Cobbler. Toto spustí inštaláciu hneď po štarte systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.schedule.success" xml:space="preserve">
         <source>System Autoinstallation scheduled for {0}. Please check the system console for status information.</source>
-        <target/>
+        <target>Automatická inštalácia systému naplánovaná pre {0}. Prosím, skontrolujte informácie o stave v systémovej konzole.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noprofiles" xml:space="preserve">
         <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
-        <target/>
+        <target>Nenašli sa žiadne profily kompatibilné s týmto systémom.  Buď ste nevytvorili žiadne profily automatickej inštalácie, alebo tento systém nemá základný kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>

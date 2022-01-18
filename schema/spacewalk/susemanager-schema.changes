@@ -1,3 +1,5 @@
+- Continue with index migration when the expected indexes do not exist
+  (bsc#1192566)
 - Add upgrade script to migrate pillar and formula data to database
 - Remove minion_pillars PL/SQL function
 - Force metadata files regeneration for Debian based repos

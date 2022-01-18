@@ -71,11 +71,6 @@ create or replace
 	    return 1;
 	end if;
 
-	if role_in = 'cluster_admin' and rhn_user.check_role(user_id_in, 'org_admin') = 1
-	then
-	    return 1;
-	end if;
-
 	return 0;
     end;
 $$ language plpgsql;

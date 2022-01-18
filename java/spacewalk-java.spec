@@ -49,7 +49,6 @@
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
-%define log4j                      (log4j or log4j12)
 
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
@@ -138,7 +137,7 @@ BuildRequires:  libxml2-devel
 %else
 BuildRequires:  libxml2-tools
 %endif
-BuildRequires:  %{log4j}
+BuildRequires:  log4j12
 BuildRequires:  slf4j-log4j12
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
@@ -230,11 +229,10 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat-taglibs-standard
-Requires:       uyuni-cluster-provider-caasp
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
-Requires:       %{log4j}
+Requires:       log4j12
 Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
@@ -378,7 +376,7 @@ Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
 %endif
-Requires:       %{log4j}
+Requires:       log4j12
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon

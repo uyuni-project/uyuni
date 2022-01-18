@@ -1,3 +1,4 @@
+- Remove cluster management feature
 - Fix dnf plugin path calculation when using Salt Bundle
 - Use global import for which_bin in sumautil module
 - Get the formula pillar data from the database

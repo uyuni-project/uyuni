@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -103,7 +103,7 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   end
 end
 
-Then(/^I can see several text fields for "([^"]*)"$/) do |host|
+Then(/^I should see several text fields for "([^"]*)"$/) do |host|
   node = get_target(host)
   steps %(Then I should see a "UUID" text
     And I should see a "Virtualization" text
@@ -116,25 +116,6 @@ Then(/^I can see several text fields for "([^"]*)"$/) do |host|
     And I should see a "Description" text
     And I should see a "Location" text
   )
-end
-
-Then(/^I should see the terminals imported from the configuration file$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
-end
-
-Then(/^I should not see any terminals imported from the configuration file$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-    step %(I should not see a "#{terminal}" text)
-  end
-end
-
-When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
-  domain = read_branch_prefix_from_yaml
-  puts "The hostname of #{host} terminal is #{host}.#{domain}"
-  step %(I enter "#{host}.#{domain}" as "#{hostname}")
 end
 
 # events
@@ -687,37 +668,6 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", timeout: 600)
 end
 
-When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
-  $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
-  output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-end
-
-When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
-  # force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
-  # $proxy.run("mgr-bootstrap #{force_bundle}")
-  $proxy.run("mgr-bootstrap ")
-
-  $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
-  output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-end
-
-When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
-  file = 'bootstrap-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I accept key of pxeboot minion in the Salt master$/) do
-  $server.run("salt-key -y --accept=pxeboot.example.org")
-end
-
 # rubocop:disable Metrics/BlockLength
 When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
@@ -786,12 +736,6 @@ Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used
   else
     puts 'Record not added - avahi domain is not detected'
   end
-end
-
-Then(/^the image should exist on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  images, _code = node.run("ls /srv/saltboot/image/")
-  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
 end
 
 # Repository steps
@@ -892,34 +836,6 @@ When(/^I disable repositories after installing Docker$/) do
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
     puts $build_host.run("zypper mr --disable #{repos}")
-  end
-end
-
-When(/^I enable repositories before installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  puts $proxy.run("zypper mr --enable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
-    puts $proxy.run("zypper mr --enable #{repos}")
-  end
-end
-
-When(/^I disable repositories after installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  puts $proxy.run("zypper mr --disable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
-    puts $proxy.run("zypper mr --disable #{repos}")
   end
 end
 
