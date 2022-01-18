@@ -9582,9 +9582,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
       </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
-        <source>Package {0} not found in subscribed channels</source>
-      </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
         <context-group name="ctx">
@@ -9660,25 +9657,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new"/>
-      </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve">
-        <source>Cluster Administrator</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-        <target state="new"/>
-      </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve">
-        <source>Clusters</source>
-        <target state="new"/>
-      </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve">
-        <source>Overview</source>
-        <target state="new"/>
-      </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve">
-        <source>Add</source>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
