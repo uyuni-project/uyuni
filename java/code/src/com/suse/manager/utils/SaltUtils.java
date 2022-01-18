@@ -145,8 +145,6 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -527,7 +525,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
-            if (output.startsWith("\"ERROR") && output.contains("Minion in blackout mode")) {
+            if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
                 serverAction.setResultMsg(output);
                 return;
             }
@@ -722,8 +720,7 @@ public class SaltUtils {
         statesResult.setReturnCode(retcode);
 
         // Set the output to the result
-        statesResult.setOutput(YamlHelper.INSTANCE
-                .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
+        statesResult.setOutput(getJsonResultWithPrettyPrint(jsonResult).getBytes());
 
         // Create the result message depending on the action status
         String states = applyStatesAction.getDetails().getMods().isEmpty() ?
@@ -912,9 +909,7 @@ public class SaltUtils {
      * @param jsonResult json result with pretty print
      */
     private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        return gson.toJson(returnObject);
+        return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -938,7 +933,7 @@ public class SaltUtils {
             });
 
             serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
-                    jsonResult);
+                    getJsonResultWithPrettyPrint(jsonResult));
         }
     }
 
@@ -1146,11 +1141,7 @@ public class SaltUtils {
         Optional<ImageBuildActionDetails> details = Optional.ofNullable(ba.getDetails());
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
-        // Pretty-print the whole return map (or whatever fits into 1024 characters)
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(returnObject);
-        serverAction.setResultMsg(json);
+        serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             details.ifPresentOrElse(det -> {
