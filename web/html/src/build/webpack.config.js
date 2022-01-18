@@ -124,7 +124,7 @@ module.exports = (env, argv) => {
          */
         proxy: [
           {
-            target: (env && env.server) || "https://suma-refhead-srv.mgr.suse.de",
+            target: env && env.server,
             // Proxy everything, including websockets, besides the Webpack updates websocket
             context: ["!" + DEVSERVER_WEBSOCKET_PATHNAME],
             ws: true,
