@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-11 15:34+0000\n"
+"POT-Creation-Date: 2022-01-18 21:13+0000\n"
 "PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -46,19 +46,15 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
 
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
+#: ../html/src/components/FormulaForm.tsx:151
 msgid "Please input required fields: {0}"
 msgstr "Zadejte prosím povinná pole: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:158
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
+#: ../html/src/components/FormulaForm.tsx:154
 msgid "Invalid format of fields: {0}"
 msgstr "Neplatný formát polí: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:208
+#: ../html/src/components/FormulaForm.tsx:204
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -129,11 +125,6 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďte stavy."
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:94
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:146
-#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:51
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:105
 #: ../html/src/manager/images/image-view.tsx:786
 #: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -220,7 +211,6 @@ msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:113
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:167
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
@@ -293,8 +283,6 @@ msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:279
 #: ../html/src/components/panels/CreatorPanel.tsx:124
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:83
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:177
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -392,7 +380,6 @@ msgid "Login"
 msgstr "Přihlášení"
 
 #: ../html/src/components/input/FormMultiInput.tsx:148
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:94
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -483,11 +470,6 @@ msgstr "Předchozí"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/setup/products/products.tsx:400
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:27
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:103
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:155
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:114
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:46
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -779,7 +761,6 @@ msgstr "Nastala chyba. Stav monitorování neznámý. Obnovte stránku."
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:60
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:332
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
@@ -915,7 +896,6 @@ msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:222
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:371
@@ -1286,10 +1266,6 @@ msgstr "Auditovat obrazy"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:281
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:96
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:154
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
@@ -1601,8 +1577,6 @@ msgstr "Zpět k výběru systému"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:156
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:276
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -1708,313 +1682,6 @@ msgstr "Piny "
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
 msgid "Messages "
 msgstr "Zprávy "
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:39
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:51
-msgid "Add Cluster"
-msgstr "Přidat cluster"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:58
-msgid "Select management node"
-msgstr "Vyberte uzel správy"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:76
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:105
-#: ../html/src/manager/clusters/cluster/cluster.tsx:127
-msgid "Provider Settings"
-msgstr "Nastavení poskytovatele"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:99
-msgid "Provider:"
-msgstr "Poskytovatel:"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:103
-msgid "Management Node:"
-msgstr "Uzel správy:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:46
-msgid "Add cluster"
-msgstr "Přidat klastr"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:60
-msgid "Add"
-msgstr "Přidat"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:79
-msgid "Name:"
-msgstr "Název:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:91
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
-msgid "Label:"
-msgstr "Jmenovka:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:105
-msgid "Description:"
-msgstr "Popis:"
-
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:21
-msgid "Available cluster providers"
-msgstr "Dostupní poskytovatelé klastrů"
-
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:62
-msgid "Settings saved successfully"
-msgstr "Nastavení uloženo úspěšně"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
-msgid "Yes"
-msgstr "Ano"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
-msgid "No"
-msgstr "Ne"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:41
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:334
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
-msgid "(none)"
-msgstr "(žádný)"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:91
-msgid "System group refresh action scheduled successfully"
-msgstr "Akce obnovení systémové skupiny byla úspěšně naplánována"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:117
-msgid "Cluster properties updated successfully"
-msgstr "Vlastnosti klastru aktualizovány úspěšně"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:190
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:257
-msgid "Edit cluster details"
-msgstr "Upravit podrobnosti klastru"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:203
-msgid "Join node"
-msgstr "Připojit uzel"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:213
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:51
-msgid "Remove node"
-msgstr "Odebrat uzel"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:230
-msgid "Upgrade cluster"
-msgstr "Upgradovat klastr"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:240
-msgid "Refresh system group"
-msgstr "Obnovit systémovou skupinu"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:250
-msgid "Cluster Properties"
-msgstr "Vlastnosti klastru"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:256
-msgid "Edit properties"
-msgstr "Upravit vlastnosti"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
-#: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
-#: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
-msgid "Label"
-msgstr "Označení"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:280
-msgid "Cluster provider"
-msgstr "Poskytovatel klastrů"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:284
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:119
-msgid "Management node"
-msgstr "Uzel správy"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:290
-msgid "System group"
-msgstr "Systémová skupina"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:306
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:91
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:127
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
-msgid "Filter by any value"
-msgstr "Filtrovat podle libovolné hodnoty"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:326
-msgid "Node Hostname"
-msgstr "Název hostitele uzlu"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:28
-msgid "Action has been "
-msgstr "Akce byla "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:29
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
-msgid "scheduled"
-msgstr "naplánována"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:30
-msgid " successfully."
-msgstr " úspěšně."
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:35
-#: ../html/src/manager/images/image-build.tsx:205
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
-msgid "Action has been successfully added to the Action Chain "
-msgstr "Akce byla úspěšně přidána do Řetězce akcí "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:41
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:27
-msgid "Cluster "
-msgstr "Klastr "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:43
-msgid " has been added successfully."
-msgstr " bylo úspěšně přidáno."
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:93
-#: ../html/src/manager/clusters/cluster/cluster.tsx:105
-msgid "Delete cluster"
-msgstr "Odstranit klastr"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:94
-msgid "Delete Cluster"
-msgstr "Odstranit Klastr"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:108
-msgid "Are you sure you want to delete cluster?"
-msgstr "Opravdu chcete odstranit klastr?"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:109
-msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:124
-#: ../html/src/manager/images/image-view.tsx:764
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
-msgid "Overview"
-msgstr "Přehled"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:48
-msgid "Join "
-msgstr "Připojit "
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:53
-msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr "POZOR: před připojením k novému uzlu se ujistěte, že uzel má:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:57
-msgid ""
-"Container as a Service Platform (CaaSP) channels assigned - or any children "
-"channels of CaaSP channels"
-msgstr ""
-"Přiřazené kanály kontejneru jako platformy služeb (CaaSP) - nebo jakékoli "
-"podřízené kanály kanálů CaaSP"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:60
-msgid ""
-"The management node can access the node as root via ssh without password"
-msgstr "Uzel správy může přistupovat k uzlu jako root pomocí ssh bez hesla"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:68
-msgid "Select system to join"
-msgstr "Vyberte systém, kam se chcete připojit"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:83
-msgid "New node configuration"
-msgstr "Konfigurace nového uzlu"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:103
-msgid "Schedule join node"
-msgstr "Naplánovat připojení uzlu"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:107
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:74
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:78
-msgid "Cluster:"
-msgstr "Klastr:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:111
-msgid "Node to join:"
-msgstr "Uzel k připojení:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:121
-msgid "Join"
-msgstr "Připojit"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:29
-msgid " has been deleted successfully."
-msgstr " bylo úspěšně odstraněno."
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:50
-msgid "Add an existing cluster"
-msgstr "Přidat existující klastr"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:82
-msgid "Clusters"
-msgstr "Klastry"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:106
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:31
-#: ../html/src/manager/images/image-stores.tsx:184
-#: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:617
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:502
-#: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Type"
-msgstr "Typ"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:45
-msgid "Remove nodes"
-msgstr "Odebrat uzly"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:70
-msgid "Schedule remove node"
-msgstr "Naplánovat odstranění uzlu"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:78
-msgid "Nodes to remove:"
-msgstr "Uzly k odebrání:"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:41
-msgid "Upgrade plan"
-msgstr "Plán upgradu"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:38
-msgid "Upgrade "
-msgstr "Upgradovat "
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:57
-msgid "Configuration override"
-msgstr "Překonání konfigurace"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:74
-msgid "Schedule upgrade cluster"
-msgstr "Naplánovat upgrade clusteru"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:84
-msgid "Upgrade"
-msgstr "Upgrade (povýšení verze)"
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:32
 msgid "You do not have permissions to perform this action"
@@ -2307,6 +1974,10 @@ msgstr "Vytvořit projekt"
 msgid "Content Lifecycle Projects"
 msgstr "Projekty životního cyklu obsahu"
 
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
+msgid "Filter by any value"
+msgstr "Filtrovat podle libovolné hodnoty"
+
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:116
 msgid "Last Build"
 msgstr "Poslední sestavení"
@@ -2552,6 +2223,20 @@ msgstr "Historie verze {0}"
 msgid "Version {0} successfully built into {1}"
 msgstr "Verze {0} úspěšně zabudována do {1}"
 
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
+#: ../html/src/manager/images/image-build.tsx:258
+#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-profiles.tsx:177
+#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-stores.tsx:177
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+msgid "Label"
+msgstr "Označení"
+
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
 msgstr "Vložte před"
@@ -2715,6 +2400,10 @@ msgstr "Vlastnosti projektu aktualizovány úspěšně"
 msgid "Editing properties.."
 msgstr "Úprava vlastností.."
 
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
+msgid "Label:"
+msgstr "Jmenovka:"
+
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:56
 msgid "Versions history:"
 msgstr "Historie verzí:"
@@ -2763,6 +2452,17 @@ msgstr "Tento kanál je povinný"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:536
 msgid "mandatory"
 msgstr "povinné"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:31
+#: ../html/src/manager/images/image-stores.tsx:184
+#: ../html/src/manager/images/image-view-patches.tsx:79
+#: ../html/src/manager/images/image-view.tsx:617
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
+#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/state/highstate-summary.tsx:73
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
+msgid "Type"
+msgstr "Typ"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:52
 msgid "has unsynchronized patches"
@@ -2907,9 +2607,25 @@ msgid ""
 msgstr ""
 "Při plánování úkolu došlo k chybě. Ujistěte se, že je spuštěn plánovač úloh."
 
+#: ../html/src/manager/images/image-build.tsx:205
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
+msgid "Action has been successfully added to the Action Chain "
+msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+
 #: ../html/src/manager/images/image-build.tsx:210
 msgid "Building the image has been "
 msgstr "Sestavení obrazu bylo "
+
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+msgid "scheduled"
+msgstr "naplánována"
 
 #: ../html/src/manager/images/image-build.tsx:241
 msgid "Profile Summary"
@@ -3512,6 +3228,11 @@ msgstr "Opravdu chcete odstranit vybraný obraz?"
 #: ../html/src/manager/images/image-view.tsx:717
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "Opravdu chcete odstranit vybrané obrazy? (Vybráno {0} obrazů)"
+
+#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+msgid "Overview"
+msgstr "Přehled"
 
 #: ../html/src/manager/login/login.tsx:53
 msgid ""
@@ -4914,6 +4635,11 @@ msgstr "(Nový základní kanál se nepodařilo určit)"
 msgid "system(s) to subscribe"
 msgstr "systém(y) k odběru"
 
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
+msgid "(none)"
+msgstr "(žádný)"
+
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
 msgid "system(s) incompatible"
@@ -5869,6 +5595,14 @@ msgstr "Filtrovat podle názvu fondu nebo svazku"
 msgid "Partition separator"
 msgstr "Oddělovač oddílů"
 
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+msgid "Yes"
+msgstr "Ano"
+
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
+msgid "No"
+msgstr "Ne"
+
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
 msgid "Host name"
 msgstr "Název hostitele"
@@ -6126,6 +5860,170 @@ msgstr "nedefinováno"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} čaj {1}"
+
+#~ msgid "Add Cluster"
+#~ msgstr "Přidat cluster"
+
+#~ msgid "Select management node"
+#~ msgstr "Vyberte uzel správy"
+
+#~ msgid "Provider Settings"
+#~ msgstr "Nastavení poskytovatele"
+
+#~ msgid "Provider:"
+#~ msgstr "Poskytovatel:"
+
+#~ msgid "Management Node:"
+#~ msgstr "Uzel správy:"
+
+#~ msgid "Add cluster"
+#~ msgstr "Přidat klastr"
+
+#~ msgid "Add"
+#~ msgstr "Přidat"
+
+#~ msgid "Name:"
+#~ msgstr "Název:"
+
+#~ msgid "Description:"
+#~ msgstr "Popis:"
+
+#~ msgid "Available cluster providers"
+#~ msgstr "Dostupní poskytovatelé klastrů"
+
+#~ msgid "Settings saved successfully"
+#~ msgstr "Nastavení uloženo úspěšně"
+
+#~ msgid "System group refresh action scheduled successfully"
+#~ msgstr "Akce obnovení systémové skupiny byla úspěšně naplánována"
+
+#~ msgid "Cluster properties updated successfully"
+#~ msgstr "Vlastnosti klastru aktualizovány úspěšně"
+
+#~ msgid "Edit cluster details"
+#~ msgstr "Upravit podrobnosti klastru"
+
+#~ msgid "Join node"
+#~ msgstr "Připojit uzel"
+
+#~ msgid "Remove node"
+#~ msgstr "Odebrat uzel"
+
+#~ msgid "Upgrade cluster"
+#~ msgstr "Upgradovat klastr"
+
+#~ msgid "Refresh system group"
+#~ msgstr "Obnovit systémovou skupinu"
+
+#~ msgid "Cluster Properties"
+#~ msgstr "Vlastnosti klastru"
+
+#~ msgid "Edit properties"
+#~ msgstr "Upravit vlastnosti"
+
+#~ msgid "Cluster provider"
+#~ msgstr "Poskytovatel klastrů"
+
+#~ msgid "Management node"
+#~ msgstr "Uzel správy"
+
+#~ msgid "System group"
+#~ msgstr "Systémová skupina"
+
+#~ msgid "Node Hostname"
+#~ msgstr "Název hostitele uzlu"
+
+#~ msgid "Action has been "
+#~ msgstr "Akce byla "
+
+#~ msgid " successfully."
+#~ msgstr " úspěšně."
+
+#~ msgid "Cluster "
+#~ msgstr "Klastr "
+
+#~ msgid " has been added successfully."
+#~ msgstr " bylo úspěšně přidáno."
+
+#~ msgid "Delete cluster"
+#~ msgstr "Odstranit klastr"
+
+#~ msgid "Delete Cluster"
+#~ msgstr "Odstranit Klastr"
+
+#~ msgid "Are you sure you want to delete cluster?"
+#~ msgstr "Opravdu chcete odstranit klastr?"
+
+#~ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
+#~ msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
+
+#~ msgid "Join "
+#~ msgstr "Připojit "
+
+#~ msgid "NOTE: before joining a new node, make sure that the node has:"
+#~ msgstr "POZOR: před připojením k novému uzlu se ujistěte, že uzel má:"
+
+#~ msgid ""
+#~ "Container as a Service Platform (CaaSP) channels assigned - or any "
+#~ "children channels of CaaSP channels"
+#~ msgstr ""
+#~ "Přiřazené kanály kontejneru jako platformy služeb (CaaSP) - nebo jakékoli "
+#~ "podřízené kanály kanálů CaaSP"
+
+#~ msgid ""
+#~ "The management node can access the node as root via ssh without password"
+#~ msgstr "Uzel správy může přistupovat k uzlu jako root pomocí ssh bez hesla"
+
+#~ msgid "Select system to join"
+#~ msgstr "Vyberte systém, kam se chcete připojit"
+
+#~ msgid "New node configuration"
+#~ msgstr "Konfigurace nového uzlu"
+
+#~ msgid "Schedule join node"
+#~ msgstr "Naplánovat připojení uzlu"
+
+#~ msgid "Cluster:"
+#~ msgstr "Klastr:"
+
+#~ msgid "Node to join:"
+#~ msgstr "Uzel k připojení:"
+
+#~ msgid "Join"
+#~ msgstr "Připojit"
+
+#~ msgid " has been deleted successfully."
+#~ msgstr " bylo úspěšně odstraněno."
+
+#~ msgid "Add an existing cluster"
+#~ msgstr "Přidat existující klastr"
+
+#~ msgid "Clusters"
+#~ msgstr "Klastry"
+
+#~ msgid "Remove nodes"
+#~ msgstr "Odebrat uzly"
+
+#~ msgid "Schedule remove node"
+#~ msgstr "Naplánovat odstranění uzlu"
+
+#~ msgid "Nodes to remove:"
+#~ msgstr "Uzly k odebrání:"
+
+#~ msgid "Upgrade plan"
+#~ msgstr "Plán upgradu"
+
+#~ msgid "Upgrade "
+#~ msgstr "Upgradovat "
+
+#~ msgid "Configuration override"
+#~ msgstr "Překonání konfigurace"
+
+#~ msgid "Schedule upgrade cluster"
+#~ msgstr "Naplánovat upgrade clusteru"
+
+#~ msgid "Upgrade"
+#~ msgstr "Upgrade (povýšení verze)"
 
 #~ msgid ""
 #~ "provided channel that corresponds to the installed SUSE Linux version. "
