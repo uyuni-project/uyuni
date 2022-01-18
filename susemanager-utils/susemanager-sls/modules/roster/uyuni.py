@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Read in the roster from Uyuni DB
 """
@@ -16,23 +15,23 @@ import salt.cache
 import salt.config
 import salt.loader
 
-log = logging.getLogger(__name__)
-
 try:
-    from spacewalk.common.rhnConfig import CFG, initCFG
-    from spacewalk.server import rhnSQL
+    import psycopg2
 
-    HAS_UYUNI = True
+    HAS_PSYCOPG2 = True
 except ImportError:
-    HAS_UYUNI = False
-except TypeError:
-    log.warning("Unable to read Uyuni config file: /etc/rhn/rhn.conf")
-    HAS_UYUNI = False
+    HAS_PSYCOPG2 = False
 
 
 __virtualname__ = "uyuni"
 
+log = logging.getLogger(__name__)
+
 cache = None
+
+DB_CONNECT_STR = None
+DB_CONNECTION = None
+DB_CURSOR = None
 
 COBBLER_HOST = "localhost"
 PROXY_SSH_PUSH_USER = "mgrsshtunnel"
@@ -51,64 +50,90 @@ SSL_PORT = 443
 def __virtual__():
     global cache
     global SSH_PUSH_PORT_HTTPS
+    global SSH_PUSH_SUDO_USER
     global SALT_SSH_CONNECT_TIMEOUT
     global COBBLER_HOST
+    global DB_CONNECT_STR
 
-    if HAS_UYUNI:
-        initCFG("web")
-        try:
-            SSH_PUSH_PORT_HTTPS = int(CFG.SSH_PUSH_PORT_HTTPS)
-        except (AttributeError, ValueError):
-            log.debug("Unable to get `ssh_push_port_https`. Fallback to default.")
-        try:
-            SSH_PUSH_SUDO_USER = CFG.SSH_PUSH_SUDO_USER
-        except AttributeError:
-            log.debug("Unable to get `ssh_push_sudo_user`. Fallback to default.")
-        initCFG("java")
-        try:
-            SALT_SSH_CONNECT_TIMEOUT = int(CFG.SALT_SSH_CONNECT_TIMEOUT)
-        except (AttributeError, ValueError):
-            log.debug("Unable to get `salt_ssh_connect_timeout`. Fallback to default.")
-        # Hacky solution to prevent output to the stderr about missing file
-        with redirect_stderr(io.StringIO()) as f:
-            initCFG("cobbler")
-            s = f.getvalue()
-            if s:
-                log.debug("initCFG stderr: %s" % s)
-            try:
-                COBBLER_HOST = CFG.HOST
-            except AttributeError:
-                log.debug("Unable to get `cobbler.host`. Fallback to default.")
-        log.debug("ssh_push_port_https: %d" % (SSH_PUSH_PORT_HTTPS))
-        log.debug("salt_ssh_connect_timeout: %d" % (SALT_SSH_CONNECT_TIMEOUT))
-        log.debug("cobbler.host: %s" % (COBBLER_HOST))
+    if not HAS_PSYCOPG2:
+        return (False, "psycopg2 is not available")
+
+    db_config = __opts__.get("postgres")
+    uyuni_roster_config = __opts__.get("uyuni_roster")
+
+    if db_config and uyuni_roster_config:
+        SSH_PUSH_PORT_HTTPS = uyuni_roster_config.get(
+            "ssh_push_port_https", SSH_PUSH_PORT_HTTPS
+        )
+        SSH_PUSH_SUDO_USER = uyuni_roster_config.get(
+            "ssh_push_sudo_user", SSH_PUSH_SUDO_USER
+        )
+        SALT_SSH_CONNECT_TIMEOUT = uyuni_roster_config.get(
+            "ssh_connect_timeout", SALT_SSH_CONNECT_TIMEOUT
+        )
+        COBBLER_HOST = uyuni_roster_config.get("host", COBBLER_HOST)
+
+        if "port" in db_config:
+            DB_CONNECT_STR = "dbname='{db}' user='{user}' host='{host}' port='{port}' password='{pass}'".format(
+                **db_config
+            )
+        else:
+            DB_CONNECT_STR = (
+                "dbname='{db}' user='{user}' host='{host}' password='{pass}'".format(
+                    **db_config
+                )
+            )
+
+        log.trace("db_connect string: %s" % DB_CONNECT_STR)
+        log.debug("ssh_push_port_https: %d" % SSH_PUSH_PORT_HTTPS)
+        log.debug("ssh_push_sudo_user: %s" % SSH_PUSH_SUDO_USER)
+        log.debug("salt_ssh_connect_timeout: %d" % SALT_SSH_CONNECT_TIMEOUT)
+        log.debug("cobbler.host: %s" % COBBLER_HOST)
 
         _initDB()
 
         cache = salt.cache.Cache(__opts__)
 
-    return (HAS_UYUNI and __virtualname__, "Uyuni is not installed on the system")
+        return __virtualname__
+
+    return (False, "Uyuni is not installed on the system")
 
 
 def _initDB():
+    global DB_CONNECT_STR
+    global DB_CONNECTION
+    global DB_CURSOR
+
     try:
-        rhnSQL.initDB()
-    except rhnSQL.sql_base.SQLConnectError as e:
+        DB_CONNECTION = psycopg2.connect(DB_CONNECT_STR)
+        DB_CURSOR = DB_CONNECTION.cursor()
+    except psycopg2.OperationalError as err:
         log.warning(
-            "Unable to connect to the Uyuni DB: \n%s\nWill try to connect later." % (e)
+            "Unable to connect to the Uyuni DB: \n%sWill try to reconnect later."
+            % (err)
         )
 
 
-def _prepareSQL(*args, **kwargs):
+def _executeQuery(*args, **kwargs):
+    global DB_CONNECTION
+    global DB_CURSOR
+
+    if DB_CURSOR is None:
+        _initDB()
+        if DB_CURSOR is None:
+            return None
+
     try:
-        return rhnSQL.prepare(*args, **kwargs)
-    except SystemError as e:
-        log.warning("Error during SQL prepare: %s" % (e))
+        DB_CURSOR.execute(*args, **kwargs)
+        return DB_CURSOR
+    except psycopg2.OperationalError as err:
+        log.warning("Error during SQL prepare: %s" % (err))
         log.warning("Trying to reinit DB connection...")
         _initDB()
         try:
-            return rhnSQL.prepare(*args, **kwargs)
-        except SystemError as e:
+            DB_CURSOR.execute(*args, **kwargs)
+            return DB_CURSOR
+        except psycopg2.OperationalError:
             log.warning("Unable to re-establish connection to the Uyuni DB")
             return None
 
@@ -219,16 +244,16 @@ def targets(tgt, tgt_type="glob", **kwargs):
                          WHERE SSCM.label IN ('ssh-push', 'ssh-push-tunnel')
                      )
     """
-    h = _prepareSQL(query)
+    h = _executeQuery(query)
     if h is not None:
-        h.execute()
-        row = h.fetchone_dict()
-        if row and "fp" in row:
-            new_fp = hashlib.sha256(row["fp"].encode()).hexdigest()
+        row = h.fetchone()
+        if row and row[0]:
+            new_fp = hashlib.sha256(row[0].encode()).hexdigest()
             if new_fp == cache_fp and "minions" in cache_data and cache_data["minions"]:
-                ret = cache_data["minions"]
                 log.debug("Return the cached data")
-                return __utils__["roster_matcher.targets"](ret, tgt, tgt_type)
+                return __utils__["roster_matcher.targets"](
+                    cache_data["minions"], tgt, tgt_type
+                )
             else:
                 log.debug("Invalidate cache")
                 cache_fp = new_fp
@@ -237,7 +262,7 @@ def targets(tgt, tgt_type="glob", **kwargs):
         log.warning(
             "Unable to reconnect to the Uyuni DB. Returning cached data instead."
         )
-        return __utils__["roster_matcher.targets"](ret, tgt, tgt_type)
+        return __utils__["roster_matcher.targets"](cache_data["minions"], tgt, tgt_type)
 
     query = """
         SELECT S.id AS server_id,
@@ -256,28 +281,27 @@ def targets(tgt, tgt_type="glob", **kwargs):
         ORDER BY S.id, SP.position DESC
     """
 
-    h = _prepareSQL(query)
-    h.execute()
+    h = _executeQuery(query)
 
     prow = None
     proxies = []
 
-    row = h.fetchone_dict()
+    row = h.fetchone()
     while True:
-        if prow is not None and (row is None or row["server_id"] != prow["server_id"]):
-            ret[prow["minion_id"]] = _getSSHMinion(
-                minion_id=prow["minion_id"],
+        if prow is not None and (row is None or row[0] != prow[0]):
+            ret[prow[1]] = _getSSHMinion(
+                minion_id=prow[1],
                 proxies=proxies,
-                tunnel=prow["tunnel"],
-                ssh_push_port=prow["ssh_push_port"],
+                tunnel=prow[3],
+                ssh_push_port=int(prow[2]),
             )
             proxies = []
         if row is None:
             break
-        if row["proxy_hostname"]:
-            proxies.append(row["proxy_hostname"])
+        if row[4]:
+            proxies.append(row[4])
         prow = row
-        row = h.fetchone_dict()
+        row = h.fetchone()
 
     cache.store("roster/uyuni", "minions", {"fp": cache_fp, "minions": ret})
     log.trace("Uyuni DB roster:\n%s" % dump(ret))
