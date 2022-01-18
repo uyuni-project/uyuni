@@ -1,3 +1,4 @@
+- Improve token validation logs
 - fix possible race condition in job handling (bsc#1192510)
 - Migrate the displaying of the date/time to rhn:formatDate
 - Add additional matchers to package (nevra) filter
