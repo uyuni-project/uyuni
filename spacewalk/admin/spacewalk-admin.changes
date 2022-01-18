@@ -1,4 +1,8 @@
-- check DB version on SUSE 15.4
+-------------------------------------------------------------------
+Tue Jan 18 13:38:15 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * check the database version on SUSE Linux Enterprise 15 SP4
 
 -------------------------------------------------------------------
 Fri Nov 05 14:13:23 CET 2021 - jgonzalez@suse.com
