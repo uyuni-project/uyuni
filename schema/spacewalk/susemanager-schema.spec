@@ -58,14 +58,14 @@ Group:          Applications/Internet
 
 Requires:       perl(Digest::SHA)
 
-%package core
+%package utility
 Summary:        Utility used by any DB schema in Spacewalk.
 Group:          Applications/Internet
 
 %description sanity
 Provides schema-source-sanity-check.pl script for external usage.
 
-%description core
+%description utility
 Provides spacewalk-schema-upgrade and spacewalk-sql
 
 %prep
@@ -124,7 +124,7 @@ systemctl try-restart uyuni-check-database.service ||:
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
 %endif
 
-%files core
+%files utility
 %defattr(-,root,root)
 %dir %{rhnroot}
 %{postgres}
