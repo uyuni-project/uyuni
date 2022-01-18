@@ -1,4 +1,3 @@
-- Update server-migrator to dist-upgrade to openSUSE 15.4
 - Bootstrap repo configureable.
 - Added installation on Rocky Linux 8.
 - fix pg-migrate to check version of postgresql??-server (bsc#1192368)
