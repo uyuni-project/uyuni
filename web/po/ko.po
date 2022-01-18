@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-11 15:34+0000\n"
+"POT-Creation-Date: 2022-01-18 21:13+0000\n"
 "PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -46,19 +46,15 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
 
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
+#: ../html/src/components/FormulaForm.tsx:151
 msgid "Please input required fields: {0}"
 msgstr "필수 필드 입력: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:158
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
+#: ../html/src/components/FormulaForm.tsx:154
 msgid "Invalid format of fields: {0}"
 msgstr "잘못된 필드 유형: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:208
+#: ../html/src/components/FormulaForm.tsx:204
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -129,11 +125,6 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:94
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:146
-#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:51
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:105
 #: ../html/src/manager/images/image-view.tsx:786
 #: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -220,7 +211,6 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:113
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:167
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
@@ -293,8 +283,6 @@ msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:279
 #: ../html/src/components/panels/CreatorPanel.tsx:124
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:83
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:177
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -390,7 +378,6 @@ msgid "Login"
 msgstr "로그인"
 
 #: ../html/src/components/input/FormMultiInput.tsx:148
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:94
 msgid "Remove"
 msgstr "제거"
 
@@ -481,11 +468,6 @@ msgstr "이전"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/setup/products/products.tsx:400
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:27
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:103
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:155
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:114
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:46
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -780,7 +762,6 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:60
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:332
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
@@ -916,7 +897,6 @@ msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:222
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:371
@@ -1284,10 +1264,6 @@ msgstr "감사 이미지"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:281
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:96
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:154
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
@@ -1597,8 +1573,6 @@ msgstr "시스템 선택으로 돌아가기"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:156
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:276
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -1704,316 +1678,6 @@ msgstr "핀 "
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
 msgid "Messages "
 msgstr "메시지 "
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:39
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:51
-msgid "Add Cluster"
-msgstr "클러스터 추가"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:58
-msgid "Select management node"
-msgstr "관리 노드 선택"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:76
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:105
-#: ../html/src/manager/clusters/cluster/cluster.tsx:127
-msgid "Provider Settings"
-msgstr "공급자 설정"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:99
-msgid "Provider:"
-msgstr "공급자:"
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:103
-msgid "Management Node:"
-msgstr "관리 노드:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:46
-msgid "Add cluster"
-msgstr "클러스터 추가"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:60
-msgid "Add"
-msgstr "추가"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:79
-msgid "Name:"
-msgstr "이름:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:91
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
-msgid "Label:"
-msgstr "레이블:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:105
-msgid "Description:"
-msgstr "설명:"
-
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:21
-msgid "Available cluster providers"
-msgstr "사용할 수 있는 클러스터 공급자"
-
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:62
-msgid "Settings saved successfully"
-msgstr "설정 저장됨"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
-msgid "Yes"
-msgstr "예"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
-msgid "No"
-msgstr "아니요"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:41
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:334
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
-msgid "(none)"
-msgstr "(없음)"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:91
-msgid "System group refresh action scheduled successfully"
-msgstr "시스템 그룹 새로 고침 작업 예약됨"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:117
-msgid "Cluster properties updated successfully"
-msgstr "클러스터 속성 업데이트됨"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:190
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:257
-msgid "Edit cluster details"
-msgstr "클러스터 세부 사항 편집"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:203
-msgid "Join node"
-msgstr "노드 조인"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:213
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:51
-msgid "Remove node"
-msgstr "노드 제거"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:230
-msgid "Upgrade cluster"
-msgstr "클러스터 업그레이드"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:240
-msgid "Refresh system group"
-msgstr "시스템 그룹 새로 고침"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:250
-msgid "Cluster Properties"
-msgstr "클러스터 속성"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:256
-msgid "Edit properties"
-msgstr "속성 편집"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
-#: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
-#: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
-msgid "Label"
-msgstr "레이블"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:280
-msgid "Cluster provider"
-msgstr "클러스터 공급자"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:284
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:119
-msgid "Management node"
-msgstr "관리 노드"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:290
-msgid "System group"
-msgstr "시스템 그룹"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:306
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:91
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:127
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
-msgid "Filter by any value"
-msgstr "값을 기준으로 필터링"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:326
-msgid "Node Hostname"
-msgstr "노드 호스트 이름"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:28
-msgid "Action has been "
-msgstr "작업이 "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:29
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
-msgid "scheduled"
-msgstr "예약됨"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:30
-msgid " successfully."
-msgstr " 성공"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:35
-#: ../html/src/manager/images/image-build.tsx:205
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
-msgid "Action has been successfully added to the Action Chain "
-msgstr "작업이 작업 체인에 추가되었습니다. "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:41
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:27
-msgid "Cluster "
-msgstr "클러스터 "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:43
-msgid " has been added successfully."
-msgstr " 추가되었습니다."
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:93
-#: ../html/src/manager/clusters/cluster/cluster.tsx:105
-msgid "Delete cluster"
-msgstr "클러스터 삭제"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:94
-msgid "Delete Cluster"
-msgstr "클러스터 삭제"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:108
-msgid "Are you sure you want to delete cluster?"
-msgstr "클러스터를 삭제하시겠습니까?"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:109
-msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
-"이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:124
-#: ../html/src/manager/images/image-view.tsx:764
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
-msgid "Overview"
-msgstr "개요"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:48
-msgid "Join "
-msgstr "조인 "
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:53
-msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr "참고: 새 노드를 조인하기 전 노드에 다음이 있는지 확인:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:57
-msgid ""
-"Container as a Service Platform (CaaSP) channels assigned - or any children "
-"channels of CaaSP channels"
-msgstr ""
-"CaaSP(Container as a Service Platform) 채널 할당됨 - 또는 CaaSP 채널의 모든 "
-"하위 채널"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:60
-msgid ""
-"The management node can access the node as root via ssh without password"
-msgstr ""
-"관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 있"
-"습니다."
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:68
-msgid "Select system to join"
-msgstr "조인할 시스템 선택"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:83
-msgid "New node configuration"
-msgstr "새 노드 구성"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:103
-msgid "Schedule join node"
-msgstr "노드 조인 예약"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:107
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:74
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:78
-msgid "Cluster:"
-msgstr "클러스터:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:111
-msgid "Node to join:"
-msgstr "조인할 노드:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:121
-msgid "Join"
-msgstr "가입"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:29
-msgid " has been deleted successfully."
-msgstr " 삭제되었습니다."
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:50
-msgid "Add an existing cluster"
-msgstr "기존 클러스터 추가"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:82
-msgid "Clusters"
-msgstr "클러스터"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:106
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:31
-#: ../html/src/manager/images/image-stores.tsx:184
-#: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:617
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:502
-#: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Type"
-msgstr "유형"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:45
-msgid "Remove nodes"
-msgstr "노드 제거"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:70
-msgid "Schedule remove node"
-msgstr "노드 제거 예약"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:78
-msgid "Nodes to remove:"
-msgstr "제거할 노드:"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:41
-msgid "Upgrade plan"
-msgstr "업그레이드 계획"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:38
-msgid "Upgrade "
-msgstr "업그레이드 "
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:57
-msgid "Configuration override"
-msgstr "구성 재정의"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:74
-msgid "Schedule upgrade cluster"
-msgstr "클러스터 업그레이드 예약"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:84
-msgid "Upgrade"
-msgstr "업그레이드"
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:32
 msgid "You do not have permissions to perform this action"
@@ -2301,6 +1965,10 @@ msgstr "프로젝트 만들기"
 msgid "Content Lifecycle Projects"
 msgstr "컨텐트 라이프싸이클 프로젝트"
 
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
+msgid "Filter by any value"
+msgstr "값을 기준으로 필터링"
+
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:116
 msgid "Last Build"
 msgstr "마지막 빌드"
@@ -2547,6 +2215,20 @@ msgstr "버전 {0} 기록"
 msgid "Version {0} successfully built into {1}"
 msgstr "{0} 버전이 {1}(으)로 빌드됨"
 
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
+#: ../html/src/manager/images/image-build.tsx:258
+#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-profiles.tsx:177
+#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-stores.tsx:177
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+msgid "Label"
+msgstr "레이블"
+
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
 msgstr "다음 앞에 삽입"
@@ -2708,6 +2390,10 @@ msgstr "프로젝트 속성 업데이트됨"
 msgid "Editing properties.."
 msgstr "속성을 편집하는 중..."
 
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
+msgid "Label:"
+msgstr "레이블:"
+
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:56
 msgid "Versions history:"
 msgstr "버전 기록:"
@@ -2756,6 +2442,17 @@ msgstr "이 채널은 필수입니다."
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:536
 msgid "mandatory"
 msgstr "필수"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:31
+#: ../html/src/manager/images/image-stores.tsx:184
+#: ../html/src/manager/images/image-view-patches.tsx:79
+#: ../html/src/manager/images/image-view.tsx:617
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
+#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/state/highstate-summary.tsx:73
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
+msgid "Type"
+msgstr "유형"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:52
 msgid "has unsynchronized patches"
@@ -2899,9 +2596,25 @@ msgstr ""
 "작업을 예약하는 동안 오류가 발생했습니다. 작업 스케줄러가 실행 중인지 확인하"
 "십시오."
 
+#: ../html/src/manager/images/image-build.tsx:205
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
+msgid "Action has been successfully added to the Action Chain "
+msgstr "작업이 작업 체인에 추가되었습니다. "
+
 #: ../html/src/manager/images/image-build.tsx:210
 msgid "Building the image has been "
 msgstr "이미지 빌드가 "
+
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+msgid "scheduled"
+msgstr "예약됨"
 
 #: ../html/src/manager/images/image-build.tsx:241
 msgid "Profile Summary"
@@ -3502,6 +3215,11 @@ msgstr "선택한 이미지를 삭제하시겠습니까?"
 #: ../html/src/manager/images/image-view.tsx:717
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "선택한 이미지를 삭제하시겠습니까?({0}개 이미지 선택됨)"
+
+#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+msgid "Overview"
+msgstr "개요"
 
 #: ../html/src/manager/login/login.tsx:53
 msgid ""
@@ -4903,6 +4621,11 @@ msgstr "(새 기본 채널을 결정할 수 없음)"
 msgid "system(s) to subscribe"
 msgstr "가입할 시스템"
 
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
+msgid "(none)"
+msgstr "(없음)"
+
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
 msgid "system(s) incompatible"
@@ -5845,6 +5568,14 @@ msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 msgid "Partition separator"
 msgstr "파티션 구분자"
 
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+msgid "Yes"
+msgstr "예"
+
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
+msgid "No"
+msgstr "아니요"
+
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
 msgid "Host name"
 msgstr "호스트 이름"
@@ -6099,6 +5830,173 @@ msgstr "정의되지 않음"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "푸 {0} 티 {1}"
+
+#~ msgid "Add Cluster"
+#~ msgstr "클러스터 추가"
+
+#~ msgid "Select management node"
+#~ msgstr "관리 노드 선택"
+
+#~ msgid "Provider Settings"
+#~ msgstr "공급자 설정"
+
+#~ msgid "Provider:"
+#~ msgstr "공급자:"
+
+#~ msgid "Management Node:"
+#~ msgstr "관리 노드:"
+
+#~ msgid "Add cluster"
+#~ msgstr "클러스터 추가"
+
+#~ msgid "Add"
+#~ msgstr "추가"
+
+#~ msgid "Name:"
+#~ msgstr "이름:"
+
+#~ msgid "Description:"
+#~ msgstr "설명:"
+
+#~ msgid "Available cluster providers"
+#~ msgstr "사용할 수 있는 클러스터 공급자"
+
+#~ msgid "Settings saved successfully"
+#~ msgstr "설정 저장됨"
+
+#~ msgid "System group refresh action scheduled successfully"
+#~ msgstr "시스템 그룹 새로 고침 작업 예약됨"
+
+#~ msgid "Cluster properties updated successfully"
+#~ msgstr "클러스터 속성 업데이트됨"
+
+#~ msgid "Edit cluster details"
+#~ msgstr "클러스터 세부 사항 편집"
+
+#~ msgid "Join node"
+#~ msgstr "노드 조인"
+
+#~ msgid "Remove node"
+#~ msgstr "노드 제거"
+
+#~ msgid "Upgrade cluster"
+#~ msgstr "클러스터 업그레이드"
+
+#~ msgid "Refresh system group"
+#~ msgstr "시스템 그룹 새로 고침"
+
+#~ msgid "Cluster Properties"
+#~ msgstr "클러스터 속성"
+
+#~ msgid "Edit properties"
+#~ msgstr "속성 편집"
+
+#~ msgid "Cluster provider"
+#~ msgstr "클러스터 공급자"
+
+#~ msgid "Management node"
+#~ msgstr "관리 노드"
+
+#~ msgid "System group"
+#~ msgstr "시스템 그룹"
+
+#~ msgid "Node Hostname"
+#~ msgstr "노드 호스트 이름"
+
+#~ msgid "Action has been "
+#~ msgstr "작업이 "
+
+#~ msgid " successfully."
+#~ msgstr " 성공"
+
+#~ msgid "Cluster "
+#~ msgstr "클러스터 "
+
+#~ msgid " has been added successfully."
+#~ msgstr " 추가되었습니다."
+
+#~ msgid "Delete cluster"
+#~ msgstr "클러스터 삭제"
+
+#~ msgid "Delete Cluster"
+#~ msgstr "클러스터 삭제"
+
+#~ msgid "Are you sure you want to delete cluster?"
+#~ msgstr "클러스터를 삭제하시겠습니까?"
+
+#~ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
+#~ msgstr ""
+#~ "이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
+
+#~ msgid "Join "
+#~ msgstr "조인 "
+
+#~ msgid "NOTE: before joining a new node, make sure that the node has:"
+#~ msgstr "참고: 새 노드를 조인하기 전 노드에 다음이 있는지 확인:"
+
+#~ msgid ""
+#~ "Container as a Service Platform (CaaSP) channels assigned - or any "
+#~ "children channels of CaaSP channels"
+#~ msgstr ""
+#~ "CaaSP(Container as a Service Platform) 채널 할당됨 - 또는 CaaSP 채널의 모"
+#~ "든 하위 채널"
+
+#~ msgid ""
+#~ "The management node can access the node as root via ssh without password"
+#~ msgstr ""
+#~ "관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 "
+#~ "있습니다."
+
+#~ msgid "Select system to join"
+#~ msgstr "조인할 시스템 선택"
+
+#~ msgid "New node configuration"
+#~ msgstr "새 노드 구성"
+
+#~ msgid "Schedule join node"
+#~ msgstr "노드 조인 예약"
+
+#~ msgid "Cluster:"
+#~ msgstr "클러스터:"
+
+#~ msgid "Node to join:"
+#~ msgstr "조인할 노드:"
+
+#~ msgid "Join"
+#~ msgstr "가입"
+
+#~ msgid " has been deleted successfully."
+#~ msgstr " 삭제되었습니다."
+
+#~ msgid "Add an existing cluster"
+#~ msgstr "기존 클러스터 추가"
+
+#~ msgid "Clusters"
+#~ msgstr "클러스터"
+
+#~ msgid "Remove nodes"
+#~ msgstr "노드 제거"
+
+#~ msgid "Schedule remove node"
+#~ msgstr "노드 제거 예약"
+
+#~ msgid "Nodes to remove:"
+#~ msgstr "제거할 노드:"
+
+#~ msgid "Upgrade plan"
+#~ msgstr "업그레이드 계획"
+
+#~ msgid "Upgrade "
+#~ msgstr "업그레이드 "
+
+#~ msgid "Configuration override"
+#~ msgstr "구성 재정의"
+
+#~ msgid "Schedule upgrade cluster"
+#~ msgstr "클러스터 업그레이드 예약"
+
+#~ msgid "Upgrade"
+#~ msgstr "업그레이드"
 
 #~ msgid ""
 #~ "provided channel that corresponds to the installed SUSE Linux version. "
