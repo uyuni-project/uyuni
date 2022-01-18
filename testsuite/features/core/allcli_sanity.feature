@@ -93,6 +93,7 @@ Feature: Sanity checks
     And "xen_server" should communicate with the server using public interface
     And the clock from "xen_server" should be exact
 
+@cloud_compatibility
   Scenario: The external resources can be reached
     Then it should be possible to reach the test packages
     And it should be possible to reach the build sources
