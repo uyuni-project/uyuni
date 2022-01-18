@@ -1,0 +1,6 @@
+
+SUSE Manager Report Database Schema Update
+
+This patch updates the report database schema.
+The patch will be applied automatically at the end
+of the update.
