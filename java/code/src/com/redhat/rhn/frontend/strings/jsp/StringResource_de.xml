@@ -2156,7 +2156,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
+        <target> Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles" xml:space="preserve">
         <source>Roles</source>
@@ -2556,7 +2556,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>Bitte geben Sie Ihre Informationen im unten zur Verfügung gestellten Formular ein.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
+        <target> Bitte geben Sie Ihre Informationen im unten zur Verfügung gestellten Formular ein.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -2846,7 +2846,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target>Die folgenden Aktionen wurden eingeplant und warten darauf, von einem oder von mehreren Systemen ausgeführt zu werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden. </target>
+        <target> Die folgenden Aktionen wurden eingeplant und warten darauf, von einem oder von mehreren Systemen ausgeführt zu werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden. </target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.nogroups" xml:space="preserve">
         <source>No actions pending.</source>
@@ -9710,7 +9710,7 @@ zuweisen oder entfernen.</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.summary" xml:space="preserve">
         <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
-Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;{0}/pub/bootstrap&lt;/strong&gt;</source>
+Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
@@ -9872,7 +9872,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.jsp.summary2" xml:space="preserve">
-          <source>Cobbler sync is used to repair or rebuild the contents {0}/tftpboot or {1}/www/cobbler when manual modification of cobbler has occurred.</source>
+          <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
         <target>Cobbler Sync wird zur Reparatur oder Wiederherstellung der Inhalte von /tftpboot oder /var/www/cobbler benutzt, wenn eine manuelle Modifikation von Cobbler erfolgte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>
