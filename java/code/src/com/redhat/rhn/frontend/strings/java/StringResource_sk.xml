@@ -6601,70 +6601,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.session.newprofile" xml:space="preserve">
         <source>Profile for autoinstall session {0}.</source>
-        <target/>
+        <target>Profil pre sedenie automatickej inštalácie {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2dateinchannel" xml:space="preserve">
         <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
-        <target/>
+        <target>Na kickstart systému potrebujeme verziu {0} alebo vyššiu pre up2date. &lt;strong&gt;{2}&lt;/strong&gt; má nainštalované {1}, ale v kanáloch tohto systému sme nenašli verziu up2date, aby sme ju mohli aktualizovať na požadovanú alebo vyššiu verziu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.guesttimedout" xml:space="preserve">
         <source>&lt;p&gt;The guest system has not communicated with @@PRODUCT_NAME@@ in the past {0} minutes. The install process might be progressing slowly due to hardware constraints, or it might be frozen.&lt;/p&gt; &lt;p&gt;You may wish to troubleshoot this issue by running &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; on the host system. This command will allow you to connect to the text console of the guest as it is installing, which may provide additional information about this guest system's installation status.&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Hosťovský systém za posledných {0} minút nekomunikoval s @@PRODUCT_NAME@@. Inštalačný proces môže postupovať pomaly kvôli hardvérovým obmedzeniam alebo môže byť zamrznutý.&lt;/p&gt; &lt;p&gt;Tento problém môžete riešiť spustením &lt;em&gt;virsh console &lt;strong&gt;názov_hosťa&lt;/strong&gt;&lt;/em&gt; na hostiteľskom systéme. Tento príkaz vám umožní pripojiť sa k textovej konzole hosťa počas jeho inštalácie, čo vám môže poskytnúť ďalšie informácie o stave inštalácie tohto hosťovského systému.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.edit.success" xml:space="preserve">
         <source>Autoinstallable Distribution Updated</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia aktualizovaná</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.create.success" xml:space="preserve">
         <source>Autoinstallable Distribution Created</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia vytvorená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.edit.missingcobblerentry" xml:space="preserve">
         <source>The Cobbler entry for this distribution is missing. It will be automatically recreated shortly.</source>
-        <target/>
+        <target>Záznam Cobbler pre túto distribúciu chýba. Automaticky sa čoskoro obnoví.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
         <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
-        <target/>
+        <target>Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
-        <target/>
+        <target>Jadro sa nepodarilo nájsť na zadanom mieste: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidinitrd" xml:space="preserve">
         <source>The initrd could not be found at the specified location: {0}</source>
-        <target/>
+        <target>initrd sa nepodarilo nájsť na zadanom mieste: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.inuse" xml:space="preserve">
         <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia, ktorú ste sa vybrali na vymazanie, sa používa.  Prosím, vymažte alebo zmeňte distribúciu pre profily automatickej inštalácie, ktoré používajú túto distribúciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
