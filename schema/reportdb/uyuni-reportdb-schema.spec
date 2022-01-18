@@ -76,7 +76,7 @@ fi
 %endif
 
 %posttrans
-#TODO Run uyuni-check-reportdb.service
+#TODO Run uyuni-check-reportdb.service. We should probably not start report service if it fails
 #systemctl is-active --quiet uyuni-check-database.service && {
 #  echo "  Running DB schema upgrade. This may take a while."
 #  echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
