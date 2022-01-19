@@ -225,12 +225,14 @@ def targets(tgt, tgt_type="glob", **kwargs):
     cache_data = cache.fetch("roster/uyuni", "minions")
     cache_fp = cache_data.get("fp", None)
     query = """
-        SELECT FORMAT('%s|%s|%s|%s',
+        SELECT ENCODE(SHA256(FORMAT('%s|%s|%s|%s|%s|%s',
                       EXTRACT(EPOCH FROM MAX(S.modified)),
                       COUNT(S.id),
                       EXTRACT(EPOCH FROM MAX(SP.modified)),
-                      COUNT(SP.proxy_server_id)
-               ) AS fp
+                      COUNT(SP.proxy_server_id),
+                      EXTRACT(EPOCH FROM MAX(SMI.modified)),
+                      COUNT(SMI.server_id)
+               )::bytea), 'hex') AS fp
                FROM rhnServer AS S
                INNER JOIN suseMinionInfo AS SMI ON
                      (SMI.server_id=S.id)
@@ -246,7 +248,7 @@ def targets(tgt, tgt_type="glob", **kwargs):
     if h is not None:
         row = h.fetchone()
         if row and row[0]:
-            new_fp = hashlib.sha256(row[0].encode()).hexdigest()
+            new_fp = row[0]
             if new_fp == cache_fp and "minions" in cache_data and cache_data["minions"]:
                 log.debug("Return the cached data")
                 return __utils__["roster_matcher.targets"](
