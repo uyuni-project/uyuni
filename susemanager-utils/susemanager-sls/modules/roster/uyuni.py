@@ -232,15 +232,13 @@ def targets(tgt, tgt_type="glob", **kwargs):
                       COUNT(SP.proxy_server_id)
                ) AS fp
                FROM rhnServer AS S
-               INNER JOIN suseServerContactMethod AS SSCM ON
-                     (SSCM.id=S.contact_method_id)
                INNER JOIN suseMinionInfo AS SMI ON
                      (SMI.server_id=S.id)
                LEFT JOIN rhnServerPath AS SP ON
                     (SP.server_id=S.id)
                WHERE S.contact_method_id IN (
                          SELECT SSCM.id
-                         FROM suseServerContactMethod AS SCCM
+                         FROM suseServerContactMethod AS SSCM
                          WHERE SSCM.label IN ('ssh-push', 'ssh-push-tunnel')
                      )
     """
