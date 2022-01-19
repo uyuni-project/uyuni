@@ -1,3 +1,4 @@
+- Install product by default after a channel is subscribed
 - Improve token validation logs
 - fix possible race condition in job handling (bsc#1192510)
 - Migrate the displaying of the date/time to rhn:formatDate
