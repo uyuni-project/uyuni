@@ -157,25 +157,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Test the enable formula method
-     * @throws Exception if the formula cannot be enabled
-     */
-    public void testEnableFormula() throws Exception {
-        String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
-        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
-
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
-        manager.enableFormula(minion, FORMULA_NAME);
-        List<String> enabledFormulas = FormulaFactory.getFormulasByMinion(minion);
-        assertNotNull(enabledFormulas);
-        assertEquals(true, enabledFormulas.contains(FORMULA_NAME));
-    }
-
-    /**
      * Test the saved server formula data
      * @throws Exception
      */

@@ -30,7 +30,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -305,21 +304,6 @@ public class FormulaManager {
      */
     private Map<String, Object> getFormulaLayout(String formulaName) {
         return FormulaFactory.getFormulaLayoutByName(formulaName).orElseGet(Collections::emptyMap);
-    }
-
-    /**
-     * Enable formula on the given minion
-     * @param minion minion
-     * @param formulaName formula name
-     * @throws IOException if saving the formula encountered an error
-     */
-    public void enableFormula(MinionServer minion, String formulaName) throws IOException {
-        List<String> enabledFormulas = new ArrayList<>(FormulaFactory.getFormulasByMinion(minion));
-        if (!enabledFormulas.contains(formulaName)) {
-            enabledFormulas.add(formulaName);
-            FormulaFactory.saveServerFormulas(minion, enabledFormulas);
-            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
-        }
     }
 
     /**
