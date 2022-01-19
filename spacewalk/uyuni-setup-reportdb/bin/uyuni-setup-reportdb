@@ -219,6 +219,8 @@ report_db_password = $PGPASSWORD
 report_db_name = $PGNAME
 report_db_host = $FQDN
 report_db_port = $PORT
+report_db_ssl_enabled = 1
+report_db_sslrootcert = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
 EOF
     else
         cat >> $RHN_CONF <<EOF
@@ -228,6 +230,8 @@ report_db_password = $PGPASSWORD
 report_db_name = $PGNAME
 report_db_host = $FQDN
 report_db_port = $PORT
+report_db_ssl_enabled = 1
+report_db_sslrootcert = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
 EOF
     fi
 
