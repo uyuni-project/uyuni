@@ -1,3 +1,5 @@
+- Detect interactive mode for system_applyerrata (bsc#1194363)
+
 -------------------------------------------------------------------
 Tue Jan 18 13:37:17 CET 2022 - jgonzalez@suse.com
 
