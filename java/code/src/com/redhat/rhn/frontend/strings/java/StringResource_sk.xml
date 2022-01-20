@@ -6706,35 +6706,35 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profile.jsp" xml:space="preserve">
         <source>Could not find a matching profile for system &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Nepodarilo sa nájsť zodpovedajúci profil pre systém &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.not.defined.jsp" xml:space="preserve">
         <source>If you want to create a bonded network after installation you must specefy a bond name and at least one slave interface.</source>
-        <target/>
+        <target>Ak chcete po inštalácii vytvoriť prepojenú sieť, musíte zadať názov prepojenia a aspoň jedno podriadené rozhranie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.bad.ip.address.jsp" xml:space="preserve">
         <source>The IP address specified for the bonded network interface is not valid.</source>
-        <target/>
+        <target>Adresa IP zadaná pre rozhranie prepojenej siete nie je platná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.bad.netmask.jsp" xml:space="preserve">
         <source>The netmask specified for the bonded network interface is not valid.</source>
-        <target/>
+        <target>Maska siete zadaná pre rozhranie prepojenej siete nie je platná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.bad.gateway.jsp" xml:space="preserve">
         <source>The gateway specified for the bonded network interface is not valid.</source>
-        <target/>
+        <target>Brána zadaná pre rozhranie prepojenej siete nie je platná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -6826,21 +6826,21 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="usageLimit" xml:space="preserve">
           <source>Usage Limit</source>
-        <target/>
+        <target>Obmedzenie používania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="key" xml:space="preserve">
           <source>Key</source>
-        <target/>
+        <target>Kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_size.b" xml:space="preserve">
         <source>{0} B</source>
-        <target/>
+        <target>{0} B</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">40 B</context>
@@ -6848,7 +6848,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="file_size.kb" xml:space="preserve">
         <source>{0} KB</source>
-        <target/>
+        <target>{0} KB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">40 KB</context>
@@ -6856,7 +6856,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="file_size.mb" xml:space="preserve">
         <source>{0} MB</source>
-        <target/>
+        <target>{0} MB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">40 MB</context>
