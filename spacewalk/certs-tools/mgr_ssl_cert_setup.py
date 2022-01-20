@@ -25,7 +25,7 @@ from datetime import datetime
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean
 from uyuni.common.fileutils import getUidGid
 
-logfile = '/var/log/rhn/mgr-ssl-cert-setup.log'
+LOGFILE = '/var/log/rhn/mgr-ssl-cert-setup.log'
 PKI_DIR = '/etc/pki/'
 SRV_CERT_NAME = "spacewalk.pem"
 SRV_KEY_NAME = "spacewalk.key"
@@ -81,7 +81,7 @@ def processCommandline():
      parser.add_argument('--verbose', '-v', action='count', default=0)
 
      options = parser.parse_args()
-     initLOG(logfile, options.verbose or 1)
+     initLOG(LOGFILE, options.verbose or 1)
 
      log(sys.argv, 1)
      return options
@@ -421,7 +421,6 @@ def _main():
     checkOptions(options)
 
     with tempfile.TemporaryDirectory() as workdir:
-        #import pdb; pdb.set_trace()
         certData = prepareWorkdir(options, workdir)
         checks(options, workdir, certData)
         ret = generateApacheCert(options, workdir, certData)
