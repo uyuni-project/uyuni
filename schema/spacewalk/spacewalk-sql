@@ -9,15 +9,16 @@ use Getopt::Long ();
 use Cwd 'abs_path';
 
 sub usage {
-        die "Usage: $0 [-i | [ OPTIONS ] [sql-file-to-use.sql | - ]]\n    where possible OPTIONS are\n        --verbose\n        --select-mode or --select-mode-direct\n";
+        die "Usage: $0 [-i | [ OPTIONS ] [sql-file-to-use.sql | - ]]\n    where possible OPTIONS are\n        --verbose\n        --reportdb\n        --select-mode or --select-mode-direct\n";
 }
 
-my ($verbose, $select_mode, $select_direct, $interactive);
+my ($verbose, $select_mode, $select_direct, $interactive, $reportdb);
 if (not Getopt::Long::GetOptions(
         'verbose' => \$verbose,
         'select-mode' => \$select_mode,
         'select-mode-direct' => \$select_direct,
         'interactive' => \$interactive,
+        'reportdb' => \$reportdb,
         )) {
         usage();
 }
@@ -48,6 +49,12 @@ if (not -e $config_file) {
 
 my %options;
 Spacewalk::Setup::read_config($config_file, \%options);
+
+if ($reportdb) {
+    for my $n (qw( db_backend db_name db_user db_password db_host db_port db_ssl_enabled )) {
+        $options{$n} = $options{'report_'.$n} if (defined $options{'report_'.$n});
+    }
+}
 
 my @missing;
 for my $n (qw( db_backend db_name db_user db_password )) {
@@ -150,7 +157,7 @@ __END__
 
 =head1 NAME
 
-spacewalk-sql - utility for feeding SQL to Spacewalk's database
+spacewalk-sql - utility for feeding SQL to Spacewalk's and Report database.
 
 =head1 SYNOPSIS
 
@@ -194,6 +201,9 @@ Start the interactive session.
 This option cannot be used together with the B<--select-mode*>
 options.
 
+=item --reportdb
+Use the report DB instead of the main spacewalk DB.
+
 =item --verbose
 
 If this option is used, the command which will be invoked including
@@ -205,12 +215,7 @@ rough idea about what is being called.
 
 =head1 DESCRIPTION
 
-Depending on the database backend of Spacewalk, PostgreSQL or
-Oracle RDBMS, different client tools have to be used when feeding
-native SQL to the databases -- B<psql> or B<sqlplus>. They have
-different invocation options.
-
-The B<spacewalk-sql> does the right thing for both database backends.
+The B<spacewalk-sql> does the right thing for spacewalk databases.
 It fetches the database backend type and the connect information from
 Spacewalk config files, selects the correct command line tool, runs it
 and feeds it the SQL from file specified as parameter. If single
