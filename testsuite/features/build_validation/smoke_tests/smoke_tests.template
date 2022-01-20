@@ -6,6 +6,7 @@ Feature: Smoke tests for <client>
   In order to test <client>
   As an authorized user
   I want to :
+  - View the details of the system
   - Install a package via Web UI
   - Install a patch via Web UI
   - Remove a package via Web UI
