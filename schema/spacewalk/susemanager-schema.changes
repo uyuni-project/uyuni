@@ -1,3 +1,4 @@
+- Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
 - Continue with index migration when the expected indexes do not exist
   (bsc#1192566)
 - Fix changing of existing proxy path
