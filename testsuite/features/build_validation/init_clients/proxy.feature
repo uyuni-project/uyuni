@@ -13,10 +13,9 @@ Feature: Setup SUSE Manager proxy
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
 
-  Scenario: Install proxy software
+  Scenario: Install proxy software for build validation
     When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
-    And I allow all SSL protocols on the proxy's apache
     And I let squid use avahi on the proxy
 
   Scenario: Log in as admin user
@@ -44,6 +43,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Copy the keys and configure the proxy
     When I copy server's keys to the proxy
     And I configure the proxy
+    And I allow all SSL protocols on the proxy's apache
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
