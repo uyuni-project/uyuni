@@ -74,61 +74,36 @@ if (defined $filename and $filename ne '-') {
 chdir '/';
 
 my ($pid, $wfh, $rfh);
-if ($options{db_backend} eq 'oracle') {
-        my @silent_option = ( $interactive ? () : '-S' );
-        my @command = ( 'sqlplus', @silent_option, qq!$options{db_user}/"$options{db_password}"\@$options{db_name}!);
-        if ($interactive and -x '/usr/bin/rlwrap') {
-                unshift @command, '/usr/bin/rlwrap';
-        }
-        if ($verbose) {
-                print STDERR "Running: @command\n";
-        }
-        if ($interactive) {
-                exec(@command) or die "young\n";
-        }
-        $pid = IPC::Open3::open3($wfh, $rfh, '>&STDERR', @command) or return 2;
-        print $wfh <<'EOF';
-whenever oserror exit failure
-whenever sqlerror exit sql.sqlcode
-set linesize 4000
-set pagesize 50000
-EOF
-        if ($filename eq '-') {
-                print { $wfh } <>;
-        } else {
-                print $wfh "\@$filename\n";
-        }
-        close $wfh;
-} elsif ($options{db_backend} eq 'postgresql') {
-        my @command = ( 'psql', '-U', $options{db_user}, '-d', $options{db_name});
-        if (defined $options{db_host} and $options{db_host}) {
-                push @command, '-h', $options{db_host};
-                if (defined $options{db_port} and $options{db_port}) {
-                        push @command, '-p', $options{db_port};
-                }
-        }
-        if (not $interactive) {
-                push @command, ( '-v', 'ON_ERROR_STOP=ON', '-f', $filename );
-        }
-        $ENV{PGPASSWORD} = $options{db_password};
-        if ($verbose) {
-                print STDERR "Running: @command\n";
-        }
-        if ($interactive) {
-                exec(@command) or die "young\n";
-        }
-        $ENV{PGOPTIONS} = '--client-min-messages=error -c standard_conforming_strings=on';
-        if ($filename eq '-') {
-                $wfh = '<&STDIN';
-        }
-        if ($select_direct) {
-                exec(@command) or die "young\n";
-        } else {
-                $pid = IPC::Open3::open3($wfh, $rfh, '>&STDERR', @command) or return 2;
-        }
-        close $wfh;
+if ($options{db_backend} eq 'postgresql') {
+      my @command = ( 'psql', '-U', $options{db_user}, '-d', $options{db_name});
+      if (defined $options{db_host} and $options{db_host}) {
+              push @command, '-h', $options{db_host};
+              if (defined $options{db_port} and $options{db_port}) {
+                      push @command, '-p', $options{db_port};
+              }
+      }
+      if (not $interactive) {
+              push @command, ( '-v', 'ON_ERROR_STOP=ON', '-f', $filename );
+      }
+      $ENV{PGPASSWORD} = $options{db_password};
+      if ($verbose) {
+              print STDERR "Running: @command\n";
+      }
+      if ($interactive) {
+              exec(@command) or die "young\n";
+      }
+      $ENV{PGOPTIONS} = '--client-min-messages=error -c standard_conforming_strings=on';
+      if ($filename eq '-') {
+              $wfh = '<&STDIN';
+      }
+      if ($select_direct) {
+              exec(@command) or die "young\n";
+      } else {
+              $pid = IPC::Open3::open3($wfh, $rfh, '>&STDERR', @command) or return 2;
+      }
+      close $wfh;
 } else {
-        die "The config file [$config_file] specifies unknown db_backend [$options{db_backend}] \n";
+      die "The config file [$config_file] specifies unknown db_backend [$options{db_backend}] \n";
 }
 
 if ($select_direct) {
