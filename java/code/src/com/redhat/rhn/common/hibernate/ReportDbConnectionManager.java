@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,9 +38,9 @@ public class ReportDbConnectionManager extends AbstractConnectionManager {
      */
     ReportDbConnectionManager() {
         this(
-            Config.get().getString("reporting.db_user"),
-            Config.get().getString("reporting.db_password"),
-            Config.get().getString("reporting.db_url")
+            Config.get().getString(ConfigDefaults.REPORT_DB_USER),
+            Config.get().getString(ConfigDefaults.REPORT_DB_PASSWORD),
+            ConfigDefaults.get().getReportingJdbcConnectionString()
         );
     }
 
