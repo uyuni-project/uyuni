@@ -47,16 +47,9 @@ end
 
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  # query and modify OS ID string.
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
-  os_family = os_family_raw.strip.split('=')[1]
-  os_family.delete! '"'
-  # ubuntu has a different default interface name
-  if os_family == 'ubuntu'
-    ipv6, _code = node.run('ip -6 addr show ens3 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
-  else
-    ipv6, _code = node.run('ip -6 addr show eth0 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
-  end
+  interface, code = node.run("ip -6 address show #{node.public_interface}")
+  raise unless code.zero?
+  ipv6 = interface.lines.grep(/inet6 .* global/).last.scan(/2620[:0-9a-f]*/).first
   step %(I should see a "#{ipv6}" text)
 end
 
