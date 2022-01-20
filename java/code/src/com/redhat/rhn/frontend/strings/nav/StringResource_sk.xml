@@ -702,14 +702,14 @@
       </trans-unit>
       <trans-unit id="Master Setup" xml:space="preserve">
         <source>Master Setup</source>
-        <target>Hlavné nastavenie</target>
+        <target>Nastavenie nadradeného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Slave Setup" xml:space="preserve">
         <source>Slave Setup</source>
-        <target>Podriadené nastavenie</target>
+        <target>Nastavenie podriadeného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
