@@ -957,7 +957,7 @@ class TestSCErrata:
         assert not shell.help_errata_apply.called
         assert not logger.warning.called
         assert not logger.debug.called
-        assert not shell.user_confirm.called
+        assert shell.user_confirm.called
         assert shell.client.system.scheduleApplyErrata.called
         assert shell.check_api_version.called
         assert shell.client.system.getUnscheduledErrata.called
@@ -1027,7 +1027,7 @@ class TestSCErrata:
         assert not shell.help_errata_apply.called
         assert logger.warning.called
         assert not logger.debug.called
-        assert not shell.user_confirm.called
+        assert shell.user_confirm.called
         assert shell.client.system.scheduleApplyErrata.called
         assert shell.check_api_version.called
         assert shell.client.system.getUnscheduledErrata.called
