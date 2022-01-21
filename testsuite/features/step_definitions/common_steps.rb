@@ -69,21 +69,24 @@ end
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   uptime_seconds, _return_code = node.run("awk '{print $1}' /proc/uptime") # run code on node only once, to get uptime in seconds
-  uptime_days = (uptime_seconds / 86400.0) # 60 seconds * 60 minutes * 24 hours; the .0 forces a float division
-  uptime_hours = (uptime_seconds / 3600.0) # 60 seconds * 60 minutes
-  uptime_minutes = (uptime_seconds / 60.0) # 60 seconds
+  uptime_minutes = (uptime_seconds.to_f / 60.0) # 60 seconds; the .0 forces a float division
+  uptime_hours = (uptime_minutes / 60.0) # 60 minutes
+  uptime_days = (uptime_hours / 24.0) # 24 hours
 
   # rounded values to nearest integer number
   rounded_uptime_minutes = uptime_minutes.round
   rounded_uptime_hours = uptime_hours.round
-  rounded_uptime_days = uptime_days.round
+
+  # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
+  eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
+  rounded_uptime_days = ((uptime_seconds + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
 
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
     step %(I should see a "a day ago" text)
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
     step %(I should see a "#{rounded_uptime_hours} hours ago" text)
-  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1,5 hours
+  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
     step %(I should see a "an hour ago" text)
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
     step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
