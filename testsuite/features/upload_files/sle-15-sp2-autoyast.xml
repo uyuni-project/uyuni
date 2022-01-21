@@ -3,21 +3,21 @@
     <add_on_products config:type="list">
       <listentry>
         <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://proxy.example.org/ks/dist/child/sle-product-sles15-sp2-updates-x86_64/$distrotree</media_url>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-product-sles15-sp2-updates-x86_64/$distrotree</media_url>
         <name>sle-product-sles15-updates-x86_64</name>
         <product>SLES15</product>
         <product_dir>/</product_dir>
       </listentry>
       <listentry>
         <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://proxy.example.org/ks/dist/child/sle-module-basesystem15-sp2-pool-x86_64/$distrotree</media_url>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp2-pool-x86_64/$distrotree</media_url>
         <name>basesystem pool</name>
         <product>Basesystem Module</product>
         <product_dir>/</product_dir>
       </listentry>
       <listentry>
         <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://proxy.example.org/ks/dist/child/sle-module-basesystem15-sp2-updates-x86_64/$distrotree</media_url>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp2-updates-x86_64/$distrotree</media_url>
         <name>basesystem updates</name>
         <product>Basesystem Module</product>
         <product_dir>/</product_dir>
