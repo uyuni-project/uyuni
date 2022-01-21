@@ -1,11 +1,6 @@
 """
 Read in the roster from Uyuni DB
 """
-from __future__ import absolute_import, print_function, unicode_literals
-
-from contextlib import redirect_stderr
-from yaml import dump
-
 import hashlib
 import io
 import logging
@@ -17,17 +12,20 @@ import salt.loader
 
 try:
     import psycopg2
+    from psycopg2.extras import NamedTupleCursor
 
     HAS_PSYCOPG2 = True
 except ImportError:
     HAS_PSYCOPG2 = False
+
+from yaml import dump
 
 
 __virtualname__ = "uyuni"
 
 log = logging.getLogger(__name__)
 
-cache = None
+CACHE = None
 
 DB_CONNECT_STR = None
 DB_CONNECTION = None
@@ -48,7 +46,7 @@ SSL_PORT = 443
 
 
 def __virtual__():
-    global cache
+    global CACHE
     global SSH_PUSH_PORT_HTTPS
     global SSH_PUSH_SUDO_USER
     global SALT_SSH_CONNECT_TIMEOUT
@@ -84,28 +82,30 @@ def __virtual__():
                 )
             )
 
-        log.trace("db_connect string: %s" % DB_CONNECT_STR)
-        log.debug("ssh_push_port_https: %d" % SSH_PUSH_PORT_HTTPS)
-        log.debug("ssh_push_sudo_user: %s" % SSH_PUSH_SUDO_USER)
-        log.debug("salt_ssh_connect_timeout: %d" % SALT_SSH_CONNECT_TIMEOUT)
-        log.debug("cobbler.host: %s" % COBBLER_HOST)
+        log.trace("db_connect string: %s", DB_CONNECT_STR)
+        log.debug("ssh_push_port_https: %d", SSH_PUSH_PORT_HTTPS)
+        log.debug("ssh_push_sudo_user: %s", SSH_PUSH_SUDO_USER)
+        log.debug("salt_ssh_connect_timeout: %d", SALT_SSH_CONNECT_TIMEOUT)
+        log.debug("cobbler.host: %s", COBBLER_HOST)
 
-        _initDB()
+        _init_db()
 
-        cache = salt.cache.Cache(__opts__)
+        CACHE = salt.cache.Cache(__opts__)
 
         return __virtualname__
 
     return (False, "Uyuni is not installed on the system")
 
 
-def _initDB():
+def _init_db():
     global DB_CONNECT_STR
     global DB_CONNECTION
     global DB_CURSOR
 
     try:
-        DB_CONNECTION = psycopg2.connect(DB_CONNECT_STR)
+        DB_CONNECTION = psycopg2.connect(
+            DB_CONNECT_STR, cursor_factory=NamedTupleCursor
+        )
         DB_CURSOR = DB_CONNECTION.cursor()
     except psycopg2.OperationalError as err:
         log.warning(
@@ -114,12 +114,12 @@ def _initDB():
         )
 
 
-def _executeQuery(*args, **kwargs):
+def _execute_query(*args, **kwargs):
     global DB_CONNECTION
     global DB_CURSOR
 
     if DB_CURSOR is None:
-        _initDB()
+        _init_db()
         if DB_CURSOR is None:
             return None
 
@@ -129,7 +129,7 @@ def _executeQuery(*args, **kwargs):
     except psycopg2.OperationalError as err:
         log.warning("Error during SQL prepare: %s" % (err))
         log.warning("Trying to reinit DB connection...")
-        _initDB()
+        _init_db()
         try:
             DB_CURSOR.execute(*args, **kwargs)
             return DB_CURSOR
@@ -138,26 +138,28 @@ def _executeQuery(*args, **kwargs):
             return None
 
 
-def _getSSHOptions(
+def _get_ssh_options(
     minion_id=None, proxies=None, tunnel=False, user=None, ssh_push_port=SSH_PUSH_PORT
 ):
-    proxyCommand = "ProxyCommand='"
+    proxy_command = []
     i = 0
     for proxy in proxies:
-        proxyCommand += (
-            "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s %s %s "
-            % (
-                SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
-                PROXY_SSH_PUSH_USER,
-                "-W %s:%s" % (minion_id, ssh_push_port)
+        proxy_command.append(
+            "/usr/bin/ssh -i {ssh_key_path} -o StrictHostKeyChecking=no "
+            "-o User={ssh_push_user} {in_out_forward} {proxy_host}".format(
+                ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
+                ssh_push_user=PROXY_SSH_PUSH_USER,
+                in_out_forward="-W {host}:{port}".format(
+                    host=minion_id, port=ssh_push_port
+                )
                 if not tunnel and i == len(proxies) - 1
                 else "",
-                proxy,
+                proxy_host=proxy,
             )
         )
         i += 1
     if tunnel:
-        proxyCommand += (
+        proxy_command.append(
             "/usr/bin/ssh -i {pushKey} -o StrictHostKeyChecking=no "
             "-o User={user} -R {pushPort}:{proxy}:{sslPort} {minion} "
             "ssh -i {ownKey} -W {minion}:{sshPort} "
@@ -175,12 +177,11 @@ def _getSSHOptions(
                 sshPort=ssh_push_port,
             )
         )
-    proxyCommand += "'"
 
-    return [proxyCommand]
+    return ["ProxyCommand='{}'".format(" ".join(proxy_command))]
 
 
-def _getSSHMinion(
+def _get_ssh_minion(
     minion_id=None, proxies=[], tunnel=False, ssh_push_port=SSH_PUSH_PORT
 ):
     user = SSH_PUSH_SUDO_USER if SSH_PUSH_SUDO_USER else "root"
@@ -195,7 +196,7 @@ def _getSSHMinion(
     if proxies:
         minion.update(
             {
-                "ssh_options": _getSSHOptions(
+                "ssh_options": _get_ssh_options(
                     minion_id=minion_id,
                     proxies=proxies,
                     tunnel=tunnel,
@@ -222,7 +223,7 @@ def targets(tgt, tgt_type="glob", **kwargs):
 
     ret = {}
 
-    cache_data = cache.fetch("roster/uyuni", "minions")
+    cache_data = CACHE.fetch("roster/uyuni", "minions")
     cache_fp = cache_data.get("fp", None)
     query = """
         SELECT ENCODE(SHA256(FORMAT('%s|%s|%s|%s|%s|%s',
@@ -244,7 +245,7 @@ def targets(tgt, tgt_type="glob", **kwargs):
                          WHERE SSCM.label IN ('ssh-push', 'ssh-push-tunnel')
                      )
     """
-    h = _executeQuery(query)
+    h = _execute_query(query)
     if h is not None:
         row = h.fetchone()
         if row and row[0]:
@@ -281,29 +282,31 @@ def targets(tgt, tgt_type="glob", **kwargs):
         ORDER BY S.id, SP.position DESC
     """
 
-    h = _executeQuery(query)
+    h = _execute_query(query)
 
     prow = None
     proxies = []
 
     row = h.fetchone()
     while True:
-        if prow is not None and (row is None or row[0] != prow[0]):
-            ret[prow[1]] = _getSSHMinion(
-                minion_id=prow[1],
+        if prow is not None and (row is None or row.server_id != prow.server_id):
+            ret[prow.minion_id] = _get_ssh_minion(
+                minion_id=prow.minion_id,
                 proxies=proxies,
-                tunnel=prow[3],
-                ssh_push_port=int(prow[2]),
+                tunnel=prow.tunnel,
+                ssh_push_port=int(prow.ssh_push_port),
             )
             proxies = []
         if row is None:
             break
-        if row[4]:
-            proxies.append(row[4])
+        if row.proxy_hostname:
+            proxies.append(row.proxy_hostname)
         prow = row
         row = h.fetchone()
 
-    cache.store("roster/uyuni", "minions", {"fp": cache_fp, "minions": ret})
-    log.trace("Uyuni DB roster:\n%s" % dump(ret))
+    CACHE.store("roster/uyuni", "minions", {"fp": cache_fp, "minions": ret})
+
+    if log.isEnabledFor(logging.TRACE):
+        log.trace("Uyuni DB roster:\n%s", dump(ret))
 
     return __utils__["roster_matcher.targets"](ret, tgt, tgt_type)
