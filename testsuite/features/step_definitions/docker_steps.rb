@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC.
+# Copyright (c) 2017-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -22,21 +22,18 @@ def retrieve_build_host_id
   build_host_id
 end
 
-# OS image build
-Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
+When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
+  git_profiles = ENV['GITPROFILES']
+  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
+end
+
+When(/^I enter URI, username and password for registry$/) do
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
-    When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest scheduled by kiwikiwi" is completed
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
   )
-end
-
-Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
-  # It doesn't exist any navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
-  visit("https://#{$server.full_hostname}/os-images/#{org}/")
-end
-
-Then(/^I should see the name of the image$/) do
-  step %(I should see a "#{compute_image_name}" text)
 end
 
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|

@@ -172,14 +172,6 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
 end
 
-When(/^I check (.*) box$/) do |checkbox_name|
-  check BOX_IDS[checkbox_name]
-end
-
-When(/^I uncheck (.*) box$/) do |checkbox_name|
-  uncheck BOX_IDS[checkbox_name]
-end
-
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(),'#{option}')]"
   xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
@@ -295,18 +287,6 @@ end
 #
 When(/^I follow first "([^"]*)"$/) do |text|
   click_link_and_wait(text, match: :first)
-end
-
-#
-# Click on the terminal
-#
-When(/^I follow "([^"]*)" terminal$/) do |host|
-  domain = read_branch_prefix_from_yaml
-  if !host.include? 'pxeboot'
-    step %(I follow "#{domain}.#{host}")
-  else
-    step %(I follow "#{host}.#{domain}")
-  end
 end
 
 #
@@ -978,27 +958,6 @@ When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise "#{title} modal did not appear" unless dialog
-end
-
-# Image-specific steps
-When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
-  git_profiles = ENV['GITPROFILES']
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
-  git_profiles = ENV['GITPROFILES']
-  path = compute_image_filename
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter URI, username and password for registry$/) do
-  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
-  steps %(
-    When I enter "#{$auth_registry}" as "uri"
-    And I enter "#{auth_registry_username}" as "username"
-    And I enter "#{auth_registry_password}" as "password"
-  )
 end
 
 When(/^I scroll to the top of the page$/) do

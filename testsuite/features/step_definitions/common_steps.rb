@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -75,35 +75,37 @@ end
 
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  uptime_days, _code = node.run("awk '{print $1/86400}' /proc/uptime")
-  uptime_hours, _code = node.run("awk '{print $1/3600}' /proc/uptime")
-  uptime_minutes, _code = node.run("awk '{print $1/60}' /proc/uptime")
-  uptime_seconds, _code = node.run("awk '{print $1}' /proc/uptime")
-  uptime_days = uptime_days.to_f.round
-  uptime_hours = uptime_hours.to_f.round
-  uptime_minutes = uptime_minutes.to_f.round
-  uptime_seconds = uptime_seconds.to_f.round
+  uptime_seconds, _return_code = node.run("awk '{print $1}' /proc/uptime") # run code on node only once, to get uptime in seconds
+  uptime_days = (uptime_seconds / 86400.0) # 60 seconds * 60 minutes * 24 hours; the .0 forces a float division
+  uptime_hours = (uptime_seconds / 3600.0) # 60 seconds * 60 minutes
+  uptime_minutes = (uptime_seconds / 60.0) # 60 seconds
 
-  if uptime_days < 2 and uptime_days >= 1
-    step %(I should see a "#{uptime_days.round} day ago" text)
-  elsif uptime_days < 1 and uptime_hours >= 2
-    step %(I should see a "#{uptime_hours.round} hours ago" text)
-  elsif uptime_days < 1 and uptime_hours < 2
-    step %(I should see a "#{uptime_hours.round} hour ago" text)
-  elsif uptime_hours < 1 and uptime_minutes >= 2
-    step %(I should see a "#{uptime_minutes.round} minutes ago" text)
-  elsif uptime_hours < 1 and uptime_minutes < 2
-    step %(I should see a "#{uptime_minutes.round} minute ago" text)
-  elsif uptime_minutes < 1 and uptime_seconds >= 2
-    step %(I should see a "#{uptime_seconds.round} seconds ago" text)
-  elsif uptime_minutes < 1 and uptime_seconds < 2
-    step %(I should see a "#{uptime_seconds.round} second ago" text)
+  # rounded values to nearest integer number
+  rounded_uptime_minutes = uptime_minutes.round
+  rounded_uptime_hours = uptime_hours.round
+  rounded_uptime_days = uptime_days.round
+
+  # the moment.js library being used has some weird rules, which these conditionals follow
+  if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
+    step %(I should see a "a day ago" text)
+  elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
+    step %(I should see a "#{rounded_uptime_hours} hours ago" text)
+  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1,5 hours
+    step %(I should see a "an hour ago" text)
+  elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
+    step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
+  elsif uptime_seconds >= 45 && rounded_uptime_minutes == 1
+    step %(I should see a "a minute ago" text)
+  elsif uptime_seconds < 45
+    step %(I should see a "a few seconds ago" text)
+  elsif rounded_uptime_days < 25
+    step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
   else
-    step %(I should see a "#{uptime_days.round} days ago" text)
+    step %(I should see a "a month ago" text)
   end
 end
 
-Then(/^I can see several text fields for "([^"]*)"$/) do |host|
+Then(/^I should see several text fields for "([^"]*)"$/) do |host|
   node = get_target(host)
   steps %(Then I should see a "UUID" text
     And I should see a "Virtualization" text
@@ -116,25 +118,6 @@ Then(/^I can see several text fields for "([^"]*)"$/) do |host|
     And I should see a "Description" text
     And I should see a "Location" text
   )
-end
-
-Then(/^I should see the terminals imported from the configuration file$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
-end
-
-Then(/^I should not see any terminals imported from the configuration file$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-    step %(I should not see a "#{terminal}" text)
-  end
-end
-
-When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
-  domain = read_branch_prefix_from_yaml
-  puts "The hostname of #{host} terminal is #{host}.#{domain}"
-  step %(I enter "#{host}.#{domain}" as "#{hostname}")
 end
 
 # events
@@ -687,33 +670,6 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", timeout: 600)
 end
 
-When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
-  $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
-  output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-end
-
-When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  $proxy.run('mgr-bootstrap')
-  $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
-  output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-end
-
-When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
-  file = 'bootstrap-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I accept key of pxeboot minion in the Salt master$/) do
-  $server.run("salt-key -y --accept=pxeboot.example.org")
-end
-
 # rubocop:disable Metrics/BlockLength
 When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
@@ -782,12 +738,6 @@ Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used
   else
     puts 'Record not added - avahi domain is not detected'
   end
-end
-
-Then(/^the image should exist on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  images, _code = node.run("ls /srv/saltboot/image/")
-  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
 end
 
 # Repository steps
@@ -888,34 +838,6 @@ When(/^I disable repositories after installing Docker$/) do
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
     puts $build_host.run("zypper mr --disable #{repos}")
-  end
-end
-
-When(/^I enable repositories before installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  puts $proxy.run("zypper mr --enable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
-    puts $proxy.run("zypper mr --enable #{repos}")
-  end
-end
-
-When(/^I disable repositories after installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  puts $proxy.run("zypper mr --disable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
-    puts $proxy.run("zypper mr --disable #{repos}")
   end
 end
 

@@ -70,7 +70,6 @@ import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -143,7 +142,6 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(MinionRecurringAction.class);
         ANNOTATION_CLASSES.add(GroupRecurringAction.class);
         ANNOTATION_CLASSES.add(OrgRecurringAction.class);
-        ANNOTATION_CLASSES.add(Cluster.class);
         ANNOTATION_CLASSES.add(MaintenanceSchedule.class);
         ANNOTATION_CLASSES.add(MaintenanceCalendar.class);
         ANNOTATION_CLASSES.add(SCCRegCacheItem.class);

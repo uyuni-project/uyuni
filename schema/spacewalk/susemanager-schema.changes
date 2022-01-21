@@ -1,16 +1,20 @@
-- Continue with index migration when the expected indexes do not exist
-  (bsc#1192566)
-- Add upgrade script to migrate pillar and formula data to database
-- Remove minion_pillars PL/SQL function
-- Force metadata files regeneration for Debian based repos
-  to change the format of the repos to flat
-- Added rights column to rhnerrata to handle copyright information
-- Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
-- Change rhnPackageCapability name data type to TEXT
-- Add support for custom SSH port for SSH minions
-- Fix changing of existing proxy path
-- Add pillars to Apply States action
-- require postgresql14 on SLE15 SP4
+-------------------------------------------------------------------
+Tue Jan 18 14:07:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Continue with index migration when the expected indexes do not exist
+    (bsc#1192566)
+  * Add upgrade script to migrate pillar and formula data to database
+  * Remove minion_pillars PL/SQL function
+  * Force metadata files regeneration for Debian based repos
+    to change the format of the repos to flat
+  * Added rights column to rhnerrata to handle copyright information
+  * Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
+  * Change rhnPackageCapability name data type to TEXT
+  * Add support for custom SSH port for SSH minions
+  * Fix changing of existing proxy path
+  * Add pillars to Apply States action
+  * require PostgreSQL14 on SUSE Linux Enteprise 15 SP4
 
 -------------------------------------------------------------------
 Fri Dec 03 12:32:54 CET 2021 - jgonzalez@suse.com

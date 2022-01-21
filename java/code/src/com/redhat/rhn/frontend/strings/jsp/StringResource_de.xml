@@ -2156,7 +2156,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
+        <target> Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles" xml:space="preserve">
         <source>Roles</source>
@@ -2556,7 +2556,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>Bitte geben Sie Ihre Informationen im unten zur Verfügung gestellten Formular ein.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
+        <target> Bitte geben Sie Ihre Informationen im unten zur Verfügung gestellten Formular ein.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -2846,7 +2846,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target>Die folgenden Aktionen wurden eingeplant und warten darauf, von einem oder von mehreren Systemen ausgeführt zu werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden. </target>
+        <target> Die folgenden Aktionen wurden eingeplant und warten darauf, von einem oder von mehreren Systemen ausgeführt zu werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden. </target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.nogroups" xml:space="preserve">
         <source>No actions pending.</source>

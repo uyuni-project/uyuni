@@ -58,7 +58,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.6
+Version:        4.3.7
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -227,7 +227,6 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat-taglibs-standard
-Requires:       uyuni-cluster-provider-caasp
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
