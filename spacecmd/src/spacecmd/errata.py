@@ -92,19 +92,23 @@ def complete_errata_apply(self, text, line, beg, end):
     return self.tab_complete_errata(text)
 
 
-def do_errata_apply(self, args, errata=None, only_systems=None):
+def do_errata_apply(self, args, errata_list=None, only_systems=None):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('errata', nargs="*")
     arg_parser.add_argument('-s', '--start-time')
 
     args, options = parse_command_arguments(args, arg_parser)
     only_systems = only_systems or []
-    errata = options.errata or errata
-    del options.errata
 
-    if not args and not errata:
+    if not options.errata and not errata_list:
         self.help_errata_apply()
         return 1
+
+    if not errata_list:
+        # allow globbing and searching via arguments
+        errata_list = self.expand_errata(options.errata)
+        # Do not assume non-interactive mode
+        del options.errata
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -117,9 +121,8 @@ def do_errata_apply(self, args, errata=None, only_systems=None):
             start_time = parse_time_input('now')
         else:
             start_time = parse_time_input(options.start_time)
-
-    # allow globbing and searching via arguments
-    errata_list = self.expand_errata(errata)
+            # Do not assume non-interactive mode
+            del options.start_time
 
     systems = []
     summary = []
