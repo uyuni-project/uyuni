@@ -6742,70 +6742,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <!-- Activation Keys -->
       <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
           <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-        <target/>
+        <target>Označenie aktivačného kľúča &lt;strong&gt;{0}&lt;/strong&gt; obsahuje jeden alebo viacero z nasledujúcich neplatných znakov &lt;strong&gt;{1}&lt;/strong&gt;. Prosím, odstráňte tieto znaky z označenia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.exists" xml:space="preserve">
           <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
-        <target/>
+        <target>Aktivačný kľúč s označením '{0}' je už obsadený. Prosím, zvoľte si iné označenie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.created" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol vytvorený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.deleted" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.cloned" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol klonovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.modified" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol zmenený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
           <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Názov kľúča &lt;strong&gt;{0}&lt;/strong&gt; bol zmenený na &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.allowed-values" xml:space="preserve">
           <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
-        <target/>
+        <target>Aktivačný kľúč nie je možné uložiť: kľúč môže obsahovať iba čísla [0-9], písmená [a-z A-Z], '-', '_' a '.'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
-        <target/>
+        <target>Tento systém zatiaľ nemá možnosť nasadenia konfigurácie. Nasadenie konfigurácie vyžaduje, že na vašom systéme je nainštalovaný a povolený určitý softvér.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-        <target/>
+        <target>Môžete zaistiť, že možnosť nasadenia konfigurácie bude v tomto systéme povolená, výberom tohto systému na obrazovke  &lt;a href={0}&gt;{1}&lt;/a&gt; a potom kliknutím na "{2}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
