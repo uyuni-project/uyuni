@@ -10364,7 +10364,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp" xml:space="preserve">
           <source> Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source>
-        <target>Plant Kickstart-Aktionen für ausgewählte Systeme. Diese Aktionen werden die ausgewählten Systeme unter Verwendung der angegebenen Kickstart-Optionen neu installieren.</target>
+        <target> Plant Kickstart-Aktionen für ausgewählte Systeme. Diese Aktionen werden die ausgewählten Systeme unter Verwendung der angegebenen Kickstart-Optionen neu installieren.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
