@@ -6926,7 +6926,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.success" xml:space="preserve">
         <source>{0} configuration file(s) successfully deleted.</source>
-        <target/>
+        <target>{0} konfiguračný súbor(y) bol úspešne vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully deleted.</context>
@@ -6934,7 +6934,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.failure" xml:space="preserve">
         <source>{0} file deletion(s) failed.</source>
-        <target/>
+        <target>{0} vymazanie(a) súborov zlyhalo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 file deletions failed.</context>
@@ -6942,7 +6942,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.success" xml:space="preserve">
         <source>{0} configuration file(s) successfully imported.</source>
-        <target/>
+        <target>{0} konfiguračný súbor(y) bol úspešne importovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully imported.</context>
@@ -6950,7 +6950,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.failure" xml:space="preserve">
         <source>{0} file import(s) failed.</source>
-        <target/>
+        <target>{0} import(y) súborov zlyhal.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 file imports failed.</context>
@@ -6958,7 +6958,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.failure" xml:space="preserve">
         <source>Failed to unsubscribe {0} system(s).</source>
-        <target/>
+        <target>Nepodarilo sa odhlásiť {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6966,7 +6966,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.success" xml:space="preserve">
         <source>Successfully unsubscribed {0} system(s).</source>
-        <target/>
+        <target>Úspešne odhlásený {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
@@ -6974,7 +6974,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.failure" xml:space="preserve">
         <source>Failed to subscribe {0} system(s).</source>
-        <target/>
+        <target>Nepodarilo sa prihlásiť {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6982,7 +6982,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.success" xml:space="preserve">
         <source>Successfully subscribed {0} system(s).</source>
-        <target/>
+        <target>Úspešne prihlásený {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
@@ -6990,7 +6990,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_channel_name.local" xml:space="preserve">
         <source>local override for {0}</source>
-        <target/>
+        <target>lokálne prepísanie pre {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">local override for devserv.tootles.com</context>
@@ -6998,7 +6998,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_channel_name.sandbox" xml:space="preserve">
         <source>sandbox for {0}</source>
-        <target/>
+        <target>sandbox pre {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">sandbox for devserv.tootles.com</context>
