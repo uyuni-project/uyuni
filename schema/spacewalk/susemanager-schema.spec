@@ -49,6 +49,8 @@ BuildRequires:  fdupes
 
 %define rhnroot /etc/sysconfig/rhn/
 %define postgres %{rhnroot}/postgres
+%define spacewalk_folder Spacewalk
+%define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
 
 %description
 susemanager-schema is the SQL schema for the SUSE Manager server.
@@ -86,6 +88,10 @@ install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
 install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
+install -m 0755 -d $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 lib/%{schema_upgrade_folder}/MainDb.pm $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 lib/%{schema_upgrade_folder}/ReportDb.pm $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+
 install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
@@ -131,6 +137,10 @@ systemctl try-restart uyuni-check-database.service ||:
 
 %files utility
 %defattr(-,root,root)
+%dir %{perl_vendorlib}/%{spacewalk_folder}
+%dir %{perl_vendorlib}/%{schema_upgrade_folder}
+%{perl_vendorlib}/%{schema_upgrade_folder}/MainDb.pm
+%{perl_vendorlib}/%{schema_upgrade_folder}/ReportDb.pm
 %{_bindir}/spacewalk-schema-upgrade
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
