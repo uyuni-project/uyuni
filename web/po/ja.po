@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-18 21:13+0000\n"
-"PO-Revision-Date: 2021-11-10 09:12+0000\n"
+"PO-Revision-Date: 2022-01-24 17:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:491
 msgid "remaining"
@@ -1235,24 +1235,23 @@ msgstr "サーバエラーです。ログファイルをご確認ください。
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:33
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "影響を受ける、割り当てられていないチャンネルで利用可能なパッチ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:37
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "影響を受ける、製品の移行ターゲットで利用可能なパッチ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 msgid "Not affected"
-msgstr ""
+msgstr "影響を受けません"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
-#, fuzzy
 msgid "Patched"
-msgstr "パッチ"
+msgstr "パッチ適用済み"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:180
 msgid "CVE Audit"
@@ -1307,27 +1306,26 @@ msgstr "動作"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:302
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:349
-#, fuzzy
 msgid "No action required"
-msgstr "要再起動"
+msgstr "アクションは必要ありません"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:308
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "このシステムに新しいパッチをインストールします。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:325
 msgid "Patch available, but system needs to be migrated to a newer Product."
-msgstr ""
+msgstr "パッチは利用可能ですが、システムを新しい製品に移行する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "パッチが使用可能ですが、チャンネルにクローンを作成する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:345
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:375
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "このレポートが表示された場合はバグです。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
 #: ../html/src/manager/images/image-view-overview.tsx:595
@@ -1336,7 +1334,7 @@ msgstr "再ビルド"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:364
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "パッチが利用可能ですが、チャンネルにクローンを作成する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:367
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
@@ -1347,7 +1345,7 @@ msgstr "チャンネル"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:368
 msgid "Errata"
-msgstr ""
+msgstr "Errata"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:393
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
@@ -2110,20 +2108,17 @@ msgstr "指定した名前が等しいパッケージ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "lower"
-msgstr ""
+msgstr "古い"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-#, fuzzy
 msgid "lower than"
-msgstr "バージョン上限"
+msgstr "指定したものより新しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-#, fuzzy
 msgid "lower or equal"
 msgstr "新しいか等しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-#, fuzzy
 msgid "lower or equal than"
 msgstr "指定したものよりも新しいか等しい"
 
@@ -2132,24 +2127,20 @@ msgid "equal"
 msgstr "等しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "greater or equal"
 msgstr "新しいか等しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "greater or equal than"
 msgstr "指定したものよりも新しいか等しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
-#, fuzzy
 msgid "greater"
-msgstr "作成"
+msgstr "新しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
-#, fuzzy
 msgid "greater than"
-msgstr "作成日時"
+msgstr "指定したものより新しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
@@ -2597,14 +2588,12 @@ msgid "Patches"
 msgstr "パッチ"
 
 #: ../html/src/manager/header/search/search.tsx:22
-#, fuzzy
 msgid "Documentation"
 msgstr "ドキュメンテーション"
 
 #: ../html/src/manager/header/search/search.tsx:56
-#, fuzzy
 msgid "Open search"
-msgstr "検索の消去"
+msgstr "検索を開く"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
@@ -3671,7 +3660,6 @@ msgid "Unknown Hostnames"
 msgstr "不明ホスト名"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:190
-#, fuzzy
 msgid "bootstrap"
 msgstr "ブートストラップ"
 
@@ -4438,7 +4426,6 @@ msgstr ""
 "す。 {0} はシステムを遠隔から準備し、登録処理を実施します。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
-#, fuzzy
 msgid "Host"
 msgstr "ホスト"
 
@@ -4447,16 +4434,14 @@ msgid "e.g., host.domain.com"
 msgstr "例: host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
-#, fuzzy
 msgid "SSH Port"
-msgstr "ポート"
+msgstr "SSHポート"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
-#, fuzzy
 msgid "User"
 msgstr "ユーザー"
 
@@ -4474,11 +4459,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
 msgid "Authentication Method"
-msgstr ""
+msgstr "認証メソッド"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:443
 msgid "Ansible control node"
-msgstr ""
+msgstr "Ansible 制御ノード"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:491
@@ -4487,13 +4472,12 @@ msgid "None"
 msgstr "なし"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
-#, fuzzy
 msgid "Reactivation Key"
-msgstr "アクティベーションキー"
+msgstr "再アクティベーションキー"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "再アクティベーションが不要な場合は空のままにします"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
 msgid "Proxy"
@@ -4509,17 +4493,16 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "ブートストラッププロセス中にSSHの厳密なホストキーチェックを無効にする"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "SSH 経由でシステムを完全に管理する(エージェントをインストールしない)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:559
-#, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
+msgstr "ブートストラップ中にこのページを閉じてもよろしいですか?"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4546,36 +4529,32 @@ msgstr "削除の確認"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "ミニオンのリストを選択してください(プロキシや従来のクライアントではありません)。"
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "プロキシサーバが変更されました "
 
 #: ../html/src/manager/systems/proxy.tsx:101
 #: ../html/src/manager/systems/proxy.tsx:117
-#, fuzzy
 msgid "Change Proxy"
-msgstr "変更"
+msgstr "プロキシの変更"
 
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "ミニオンを別のプロキシサーバに接続します。"
 
 #: ../html/src/manager/systems/proxy.tsx:120
-#, fuzzy
 msgid "New Proxy"
-msgstr "プロキシ"
+msgstr "新しいプロキシ"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
-#, fuzzy
 msgid "system selected"
-msgstr "削除を選択しました"
+msgstr "システムを選択しました"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
-#, fuzzy
 msgid "systems selected"
-msgstr "削除を選択しました"
+msgstr "システムを選択しました"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
@@ -4802,24 +4781,20 @@ msgid "Confirm Software Channel Change"
 msgstr "ソフトウェアチャンネルの変更確認"
 
 #: ../html/src/manager/systems/virtual-list.tsx:42
-#, fuzzy
 msgid "Virtual Systems"
-msgstr "ホストされている仮想システム"
+msgstr "仮想システム"
 
 #: ../html/src/manager/systems/virtual-list.tsx:60
-#, fuzzy
 msgid "No Virtual Systems."
-msgstr "ホストされている仮想システム"
+msgstr "仮想システムがありません。"
 
 #: ../html/src/manager/systems/virtual-list.tsx:65
-#, fuzzy
 msgid "Virtual Host"
-msgstr "仮想ホストマネージャ"
+msgstr "仮想ホスト"
 
 #: ../html/src/manager/systems/virtual-list.tsx:73
-#, fuzzy
 msgid "Virtual System"
-msgstr "ホストされている仮想システム"
+msgstr "仮想システム"
 
 #: ../html/src/manager/systems/virtual-list.tsx:101
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
