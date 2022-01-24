@@ -1,5 +1,9 @@
-- Fix the migration for users that had  CentOS8 and/or Oracle Linux8 and
-  AlmaLinux 8 and/or Rocky Linux 8 as well.
+-------------------------------------------------------------------
+Mon Jan 24 17:02:22 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Fix the migration for users that had CentOS 8 and/or Oracle
+    Linux 8, and AlmaLinux 8 and/or Rocky Linux 8 as well
 
 -------------------------------------------------------------------
 Tue Jan 18 14:07:37 CET 2022 - jgonzalez@suse.com
