@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-18 21:13+0000\n"
-"PO-Revision-Date: 2021-11-11 05:37+0000\n"
+"PO-Revision-Date: 2022-01-24 03:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:491
 msgid "remaining"
@@ -1226,25 +1226,29 @@ msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:33
+#, fuzzy
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:37
+#, fuzzy
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "제품 마이그레이션 대상에서 사용 가능한 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
+#, fuzzy
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
+#, fuzzy
 msgid "Not affected"
-msgstr ""
+msgstr "적용되지 않음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 #, fuzzy
 msgid "Patched"
-msgstr "패치"
+msgstr "패치됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:180
 msgid "CVE Audit"
@@ -1301,25 +1305,29 @@ msgstr "동작"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:349
 #, fuzzy
 msgid "No action required"
-msgstr "재부팅 필요"
+msgstr "아무 동작도 필요하지 않음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:308
+#, fuzzy
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "해당 시스템에 새 패치를 설치합니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:325
+#, fuzzy
 msgid "Patch available, but system needs to be migrated to a newer Product."
-msgstr ""
+msgstr "사용 가능한 패치지만 시스템은 최신 제품으로 마이그레이트해야합니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
+#, fuzzy
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:345
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:375
+#, fuzzy
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "보게 된다면 버그를 보고하십시오."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
 #: ../html/src/manager/images/image-view-overview.tsx:595
@@ -1327,8 +1335,9 @@ msgid "Rebuild"
 msgstr "다시 빌드"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:364
+#, fuzzy
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:367
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
@@ -1338,8 +1347,9 @@ msgid "Channel"
 msgstr "채널"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:368
+#, fuzzy
 msgid "Errata"
-msgstr ""
+msgstr "Errata"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:393
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
@@ -2087,8 +2097,9 @@ msgid "contains package which provides name equal"
 msgstr "동일한 이름을 제공하는 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#, fuzzy
 msgid "lower"
-msgstr ""
+msgstr "미만"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 #, fuzzy
@@ -2098,12 +2109,12 @@ msgstr "다음 미만 버전"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 #, fuzzy
 msgid "lower or equal"
-msgstr "이상"
+msgstr "이하"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 #, fuzzy
 msgid "lower or equal than"
-msgstr "다음 이상"
+msgstr "다음 이하"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "equal"
@@ -2127,7 +2138,7 @@ msgstr "만들기"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
 #, fuzzy
 msgid "greater than"
-msgstr "생성 시간"
+msgstr "다음 이상"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
@@ -2577,7 +2588,7 @@ msgstr "문서"
 #: ../html/src/manager/header/search/search.tsx:56
 #, fuzzy
 msgid "Open search"
-msgstr "검색 지우기"
+msgstr "검색 열기"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
@@ -4396,7 +4407,7 @@ msgstr "예: host.domain.com"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
 #, fuzzy
 msgid "SSH Port"
-msgstr "포트"
+msgstr "SSH 포트"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
@@ -4420,12 +4431,14 @@ msgstr ""
 "정됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#, fuzzy
 msgid "Authentication Method"
-msgstr ""
+msgstr "인증 메소드"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:443
+#, fuzzy
 msgid "Ansible control node"
-msgstr ""
+msgstr "Ansible 제어 노드"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:491
@@ -4439,8 +4452,9 @@ msgid "Reactivation Key"
 msgstr "활성화 키"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
+#, fuzzy
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "재활성화를 원하지 않으면 비워두십시오"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
 msgid "Proxy"
@@ -4455,12 +4469,14 @@ msgstr ""
 "가 발생할 수 있습니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
+#, fuzzy
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "부스트랩 프로세스 중 SSH strict 호스트 키 확인 비활성화"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
+#, fuzzy
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "SSH를 통해 시스템을 완전히 관리합니다(에이전트를 설치하지 않음)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:559
 #, fuzzy
@@ -4490,12 +4506,14 @@ msgid "Confirm Deletion"
 msgstr "삭제 확인"
 
 #: ../html/src/manager/systems/proxy.tsx:44
+#, fuzzy
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "미니언 목록을 선택하십시오(프록시나 전통적인 클라이언트 제외)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
+#, fuzzy
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "프록시 서버 변경이 되었습니다. "
 
 #: ../html/src/manager/systems/proxy.tsx:101
 #: ../html/src/manager/systems/proxy.tsx:117
@@ -4504,8 +4522,9 @@ msgid "Change Proxy"
 msgstr "변경 사항"
 
 #: ../html/src/manager/systems/proxy.tsx:117
+#, fuzzy
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "미니언을 다른 프록시 서버에 연결하십시오."
 
 #: ../html/src/manager/systems/proxy.tsx:120
 #, fuzzy
