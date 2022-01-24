@@ -11038,13 +11038,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
         <target state="final">チャンネルモジュールを取得できません。詳細については、サーバログを確認してください。</target>
       </trans-unit>
-    <trans-unit id="ovalfiles" xml:space="preserve">
+      <trans-unit id="ovalfiles" xml:space="preserve" approved="yes">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">オプションのOVALファイル(カンマ区切り)</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
