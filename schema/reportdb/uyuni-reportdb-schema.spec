@@ -42,8 +42,7 @@ BuildRequires:  fdupes
 
 %define rhnroot /etc/sysconfig/rhn/
 
-#TODO the folder should be the same where spacewalk-startup-helper expects to have schema files  
-%define postgres %{rhnroot}/postgres
+%define postgres %{rhnroot}/reportdb
 
 %description
 uyuni-reportdb-schema is the SQL schema for the SUSE Manager server.
@@ -57,8 +56,8 @@ install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
 
 
 #TODO Install SQL Upgrade Script
-#install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
-#( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
+#install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade
+#( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade && tar xf - ) )
 
 %posttrans
 #TODO Run uyuni-check-reportdb.service. We should probably not start report service if it fails
@@ -72,6 +71,6 @@ install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
 %defattr(-,root,root)
 %dir %{rhnroot}
 %{postgres}
-%{rhnroot}/schema-upgrade
+%{rhnroot}/reportdb-schema-upgrade
 
 %changelog
