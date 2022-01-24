@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-18 21:13+0000\n"
+"POT-Creation-Date: 2022-01-24 17:14+0000\n"
 "PO-Revision-Date: 2022-01-24 17:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -1243,7 +1243,8 @@ msgstr "影響を受ける、製品の移行ターゲットで利用可能なパ
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr "影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
+msgstr ""
+"影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 msgid "Not affected"
@@ -4529,7 +4530,9 @@ msgstr "削除の確認"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr "ミニオンのリストを選択してください(プロキシや従来のクライアントではありません)。"
+msgstr ""
+"ミニオンのリストを選択してください(プロキシや従来のクライアントではありませ"
+"ん)。"
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
