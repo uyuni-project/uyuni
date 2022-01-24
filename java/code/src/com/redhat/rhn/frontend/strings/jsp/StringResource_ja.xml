@@ -24626,9 +24626,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.activation.header" xml:space="preserve">
+      <trans-unit id="sdc.details.activation.header" xml:space="preserve" approved="yes">
         <source>System Reactivation Key</source>
-        <target state="needs-adaptation">システムのアクティベーションキー</target>
+        <target state="final">システムの再アクティベーションキー</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -29746,34 +29746,34 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStream</target>
       </trans-unit>
-    <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve">
+      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve" approved="yes">
           <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve">
+        <target state="final">ミニオンを別の &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;に接続します</target>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve" approved="yes">
           <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="sdc.details.connection.change" xml:space="preserve">
+        <target state="final">プロキシ</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.connection.change" xml:space="preserve" approved="yes">
         <source>Change</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve">
+        <target state="final">変更</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve" approved="yes">
         <source>Vendor Advisory</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">ベンダアドバイザリー</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
