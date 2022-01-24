@@ -42,6 +42,7 @@ end
 
 Then(/^the IPv4 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
+  puts node.public_ip
   step %(I should see a "#{node.public_ip}" text)
 end
 
@@ -49,8 +50,10 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   interface, code = node.run("ip -6 address show #{node.public_interface}")
   raise unless code.zero?
-  ipv6 = interface.lines.grep(/inet6 .* global/).last.scan(/2620[:0-9a-f]*/).first
-  step %(I should see a "#{ipv6}" text)
+  last_ipv6_line = interface.lines.grep(/inet6 /).last
+  ipv6_address = last_ipv6_line.scan(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/).first
+  puts ipv6_address
+  step %(I should see a "#{ipv6_address}" text)
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
