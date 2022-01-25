@@ -7006,14 +7006,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_channel.local_override" xml:space="preserve">
         <source>Locally-Managed</source>
-        <target/>
+        <target>Lokálne-spravované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config_channel.normal" xml:space="preserve">
         <source>Normal</source>
-        <target/>
+        <target>Normálny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
@@ -7027,21 +7027,21 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_channel.server_import" xml:space="preserve">
         <source>Sandbox</source>
-        <target/>
+        <target>Sandbox</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scheduledeploy.ssm.success" xml:space="preserve">
         <source>Configuration Deploy Action is being scheduled for &lt;strong&gt;1 system&lt;/strong&gt;.</source>
-        <target/>
+        <target>Akcia nasadenia konfigurácie sa plánuje pre &lt;strong&gt;1 systém&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Deploy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scheduledeploy.ssm.successes" xml:space="preserve">
         <source>Configuration Deploy Actions are being scheduled for &lt;strong&gt;{0} systems&lt;/strong&gt;, it may take several minutes for this to complete.</source>
-        <target/>
+        <target>Akcie nasadenia konfigurácie sa plánujú pre &lt;strong&gt;{0} systémov&lt;/strong&gt;, dokončenie môže trvať niekoľko minút.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Deploy.do</context>
           <context context-type="paramnotes">Configuration Deploy Actions scheduled successfully for {0} systems.</context>
@@ -7049,21 +7049,21 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="scheduledeploy.ssm.failure" xml:space="preserve">
         <source>Failed to schedule Configuration Deploy Action.</source>
-        <target/>
+        <target>Zlyhalo naplánovanie akcie nasadenia konfigurácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Deploy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedulediff.ssm.success" xml:space="preserve">
         <source>Configuration Comparison Action is being scheduled for &lt;strong&gt;1 system&lt;/strong&gt;.</source>
-        <target/>
+        <target>Akcia porovnania konfigurácie sa plánuje pre &lt;strong&gt;1 systém&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedulediff.ssm.successes" xml:space="preserve">
         <source>Configuration Comparison Actions are being scheduled for &lt;strong&gt;{0} systems&lt;/strong&gt;, it may take several minutes for this to complete.</source>
-        <target/>
+        <target>Akcie porovnania konfigurácie sa plánujú pre &lt;strong&gt;{0} systémov&lt;/strong&gt;, dokončenie môže trvať niekoľko minút.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
           <context context-type="paramnotes">Configuration Comparison Action scheduled successfully for {0} systems.</context>
@@ -7071,14 +7071,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="schedulediff.ssm.failure" xml:space="preserve">
         <source>Failed to schedule Configuration Comparison Action</source>
-        <target/>
+        <target>Zlyhalo naplánovanie akcie porovnania konfigurácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="unsubscribe.ssm.success" xml:space="preserve">
         <source>System successfully unsubscribed from configuration channels.</source>
-        <target/>
+        <target>Systém je úspešne odhlásený z konfiguračných kanálov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
