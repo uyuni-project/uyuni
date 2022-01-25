@@ -29751,7 +29751,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="final">ミニオンを別の &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;に接続します</target>
+        <target state="final">ミニオンを別の&lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;に接続します</target>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve" approved="yes">
           <source>Proxy</source>
