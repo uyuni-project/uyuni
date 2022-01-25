@@ -24624,9 +24624,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.activation.header" xml:space="preserve">
+      <trans-unit id="sdc.details.activation.header" xml:space="preserve" approved="yes">
         <source>System Reactivation Key</source>
-        <target state="needs-translation">시스템 재활성화 키</target>
+        <target state="final">시스템 재활성화 키</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
