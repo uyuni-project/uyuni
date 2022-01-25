@@ -29732,33 +29732,33 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">앱 스트림</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve">
+      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve" approved="yes">
           <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="needs-translation">미니언을 다른 &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;프록시 서버&lt;/a&gt;에 연결하십시오.</target>
+        <target state="final">미니언을 다른 &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;프록시 서버&lt;/a&gt;에 연결하십시오.</target>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve">
+      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve" approved="yes">
           <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="needs-translation">대리인</target>
+        <target state="final">프록시</target>
       </trans-unit>
-      <trans-unit id="sdc.details.connection.change" xml:space="preserve">
+      <trans-unit id="sdc.details.connection.change" xml:space="preserve" approved="yes">
         <source>Change</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
-        <target state="needs-translation">변경</target>
+        <target state="final">변경</target>
       </trans-unit>
-      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve">
+      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve" approved="yes">
         <source>Vendor Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="needs-translation">벤더 자문</target>
+        <target state="final">벤더 자문</target>
       </trans-unit>
     </body>
   </file>
