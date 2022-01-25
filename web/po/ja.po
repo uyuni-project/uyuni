@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-24 17:14+0000\n"
-"PO-Revision-Date: 2022-01-24 17:13+0000\n"
+"PO-Revision-Date: 2022-01-25 03:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1320,7 +1320,7 @@ msgstr "パッチは利用可能ですが、システムを新しい製品に移
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr "パッチが使用可能ですが、チャンネルにクローンを作成する必要があります。"
+msgstr "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:345
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
@@ -1335,7 +1335,7 @@ msgstr "再ビルド"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:364
 msgid "Patch available but needs to be cloned into Channel."
-msgstr "パッチが利用可能ですが、チャンネルにクローンを作成する必要があります。"
+msgstr "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:367
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
@@ -2113,15 +2113,15 @@ msgstr "古い"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "lower than"
-msgstr "指定したものより新しい"
+msgstr "指定したものより古い"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower or equal"
-msgstr "新しいか等しい"
+msgstr "古いか等しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 msgid "lower or equal than"
-msgstr "指定したものよりも新しいか等しい"
+msgstr "指定したものよりも古いか等しい"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "equal"
@@ -4444,7 +4444,7 @@ msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
 msgid "User"
-msgstr "ユーザー"
+msgstr "ユーザ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
 msgid ""
@@ -4478,7 +4478,7 @@ msgstr "再アクティベーションキー"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
 msgid "Leave empty when no reactivation is wanted"
-msgstr "再アクティベーションが不要な場合は空のままにします"
+msgstr "再アクティベーションが不要な場合は空のままにする"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
 msgid "Proxy"
@@ -4494,7 +4494,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr "ブートストラッププロセス中にSSHの厳密なホストキーチェックを無効にする"
+msgstr "ブートストラッププロセス中にSSH厳密ホストキーの確認を無効にする"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
 msgid "Manage system completely via SSH (will not install an agent)"
