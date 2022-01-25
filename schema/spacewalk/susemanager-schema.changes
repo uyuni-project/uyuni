@@ -1,5 +1,9 @@
-- Rerun the migration from CentOS8 client tools to EL8 client
-  tools, for users that workarounded the problem
+-------------------------------------------------------------------
+Tue Jan 25 17:32:06 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Rerun the migration from CentOS8 client tools to EL8 client
+    tools, for users that workarounded the problem
 
 -------------------------------------------------------------------
 Mon Jan 24 17:02:22 CET 2022 - jgonzalez@suse.com
