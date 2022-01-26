@@ -1501,7 +1501,10 @@ class RepoSync(object):
         if not date:
             ret = datetime.utcnow()
         elif date.isdigit():
-            ret = datetime.fromtimestamp(float(date))
+            try:
+                ret = datetime.fromtimestamp(float(date))
+            except ValueError:
+                ret = datetime.fromtimestamp(float(date)/1000)
         else:
             ret = parse_date(date)
             try:
@@ -1524,9 +1527,9 @@ class RepoSync(object):
             # old suse style; we need to append the version to id
             # to get a seperate patch for every issue
             try:
-                notice['update_id'] = notice['update_id'] + '-' + notice['version']
+                notice['update_id'] = "%s-%s" % (notice['update_id'], notice['version'])
             except TypeError: # yum in RHEL5 does not have __setitem__
-                notice._md['update_id'] = notice['update_id'] + '-' + notice['version']
+                notice._md['update_id'] = "%s-%s" % (notice['update_id'], notice['version'])
         return notice
 
     def get_errata(self, update_id):
