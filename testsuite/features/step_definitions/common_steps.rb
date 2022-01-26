@@ -82,7 +82,7 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
 
   # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
   eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
-  rounded_uptime_days = ((uptime_seconds + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
+  rounded_uptime_days = ((uptime_seconds.to_f + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
 
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
