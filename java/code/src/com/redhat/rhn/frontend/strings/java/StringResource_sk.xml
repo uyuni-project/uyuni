@@ -7085,7 +7085,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="unsubscribe.ssm.successes" xml:space="preserve">
         <source>Systems successfully unsubscribed from configuration channels.</source>
-        <target/>
+        <target>Systémy sú úspešne odhlásené z konfiguračných kanálov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
           <context context-type="paramnotes">3 systems successfully unsubscribed from configuration channels.</context>
@@ -7094,21 +7094,21 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <!-- config-channel form bean I18N -->
       <trans-unit id="cofName" xml:space="preserve">
         <source>Configuration channel name</source>
-        <target/>
+        <target>Názov konfiguračného kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cofLabel" xml:space="preserve">
         <source>Configuration channel label</source>
-        <target/>
+        <target>Označenie konfiguračného kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cofDescription" xml:space="preserve">
         <source>Configuration channel description</source>
-        <target/>
+        <target>Popis konfiguračného kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
@@ -7116,42 +7116,42 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <!-- config-file form-bean I18N -->
       <trans-unit id="cffUid" xml:space="preserve">
         <source>User name or id</source>
-        <target/>
+        <target>Používateľské meno alebo id</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cffGid" xml:space="preserve">
         <source>Group name or id</source>
-        <target/>
+        <target>Názov skupiny alebo id</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cffPermissions" xml:space="preserve">
         <source>File permissions setting</source>
-        <target/>
+        <target>Nastavenie oprávnení súborov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cffSELinuxCtx" xml:space="preserve">
         <source>SELinux context</source>
-        <target/>
+        <target>Kontext SELinux</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cffMacroStart" xml:space="preserve">
         <source>Macro start tag</source>
-        <target/>
+        <target>Začiatočná značka makra</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cffMacroEnd" xml:space="preserve">
         <source>Macro end tag</source>
-        <target/>
+        <target>Koncová značka makra</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
