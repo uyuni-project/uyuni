@@ -1,3 +1,5 @@
+- Fix stack overflow when building a CLM project from modular sources (bsc#1194990)
+
 -------------------------------------------------------------------
 Wed Jan 12 16:06:03 CET 2022 - jmassaguerpla@suse.de
 

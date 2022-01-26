@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 26 12:13:10 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.32-1
+* Fix stack overflow when building a CLM project from modular
+  sources (bsc#1194990) 
+
+-------------------------------------------------------------------
 Wed Jan 26 11:12:42 CET 2022 - jmassaguerpla@suse.de
 
 - version 4.1.31-1
