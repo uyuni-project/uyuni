@@ -1,3 +1,5 @@
+- Fix reposync update notice formatting and date parsing (bsc#1194447)
+
 -------------------------------------------------------------------
 Tue Jan 18 13:49:59 CET 2022 - jgonzalez@suse.com
 
