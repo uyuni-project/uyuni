@@ -2,7 +2,7 @@
 
 set -ex
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
+export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
 
 echo Going to reset PGSQL database
