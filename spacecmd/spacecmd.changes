@@ -1,3 +1,4 @@
+- implement system.bootstrap (bsc#1194909)
 - Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
 
 -------------------------------------------------------------------
