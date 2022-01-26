@@ -521,7 +521,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = serverAction.getParentAction();
+        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             handleStateApplyData(serverAction, jsonResult, retcode, success);
