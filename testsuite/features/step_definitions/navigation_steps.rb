@@ -50,8 +50,6 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', $product
-  # TODO: get rid of this substitution, using another step
   next if has_content?(text, wait: 3)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
@@ -526,8 +524,7 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = 'You have just created your first $PRODUCT user. To finalize your installation please use the Setup Wizard'
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
+  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   raise 'The welcome message is not shown' unless has_content?(text)
 end
 
@@ -561,7 +558,6 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
   raise "Text '#{text}' not found" unless has_content?(text)
 end
 
