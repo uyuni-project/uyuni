@@ -1,3 +1,4 @@
+- Added rights field to generated updateinfo.xml to handle copyright
 - provide static configuration key name for SSHMinionActionExecutor
   parallel threads
 - Add support for custom SSH port for SSH minions
