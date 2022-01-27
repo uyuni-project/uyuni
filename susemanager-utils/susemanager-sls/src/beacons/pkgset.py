@@ -15,10 +15,10 @@ import salt.config
 
 __virtualname__ = "pkgset"
 
-SALT_CONFIG_DIR = os.environ.get("SALT_CONFIG_DIR")
+SALT_CONFIG_DIR = os.environ.get("SALT_CONFIG_DIR", "/etc/salt")
 
 __opts__ = salt.config.minion_config(
-    os.path.join("/etc/salt" if SALT_CONFIG_DIR is None else SALT_CONFIG_DIR, "minion")
+    os.path.join(SALT_CONFIG_DIR, "minion")
 )
 
 CACHE = salt.cache.Cache(__opts__)
