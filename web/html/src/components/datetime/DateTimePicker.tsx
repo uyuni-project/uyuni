@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
@@ -53,11 +54,6 @@ type DatePickerProps = {
 class DatePicker extends React.PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
-  constructor(props: DatePickerProps) {
-    super(props);
-    this.setVisible.bind(this);
-  }
-
   componentDidMount() {
     this._input?.datepicker({});
     this.setVisible(this.props.open);
@@ -109,13 +105,13 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     return date;
   }
 
-  setVisible(visible?: boolean) {
+  setVisible = (visible?: boolean) => {
     if (visible) {
       this._input?.datepicker("show");
     } else {
       this._input?.datepicker("hide");
     }
-  }
+  };
 
   render() {
     return (

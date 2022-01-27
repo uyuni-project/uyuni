@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import { InnerPanel } from "components/panels/InnerPanel";
-import { Button } from "components/buttons";
 
-import MaintenanceScheduleList from "./schedule-list";
+import { Button } from "components/buttons";
+import { InnerPanel } from "components/panels/InnerPanel";
+
 import MaintenanceCalendarList from "./calendar-list";
+import MaintenanceScheduleList from "./schedule-list";
 
 type MaintenanceListProps = {
   type: "schedule" | "calendar";

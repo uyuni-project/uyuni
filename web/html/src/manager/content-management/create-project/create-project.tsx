@@ -1,14 +1,18 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useState } from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import TopPanelButtons from "./top-panel-buttons";
-import PropertiesCreate from "../shared/components/panels/properties/properties-create";
-import { showErrorToastr } from "components/toastr/toastr";
-import withPageWrapper from "components/general/with-page-wrapper";
-import useRoles from "core/auth/use-roles";
+
 import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
+import withPageWrapper from "components/general/with-page-wrapper";
+import { TopPanel } from "components/panels/TopPanel";
+import { showErrorToastr } from "components/toastr/toastr";
+
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
+import PropertiesCreate from "../shared/components/panels/properties/properties-create";
+import TopPanelButtons from "./top-panel-buttons";
 
 const CreateProject = () => {
   const [project, setProject] = useState({

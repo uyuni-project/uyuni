@@ -32,7 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
-%global documentroot /var/www/html 
+%global documentroot %{_localstatedir}/www/html 
 %global m2crypto python3-m2crypto
 %endif
 
@@ -49,7 +49,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.3.6
+Version:        4.3.7
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -234,7 +234,7 @@ BuildRequires:  systemd-rpm-macros
 
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
-Requires:       python3-urlgrabber < 4
+Requires:       python3-urlgrabber >= 4
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools

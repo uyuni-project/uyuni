@@ -50,6 +50,17 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
     public static final String KEY_TYPE = "key_type";
     private static final int MAX_LIMIT = 3;
 
+    private final SystemManager systemManager;
+
+    /**
+     * Constructor
+     *
+     * @param systemManagerIn the system manager
+     */
+    public DuplicateSystemsCompareAction(SystemManager systemManagerIn) {
+        systemManager = systemManagerIn;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -85,7 +96,7 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
                                                     context.getCurrentUser());
                     String name = server.getName();
                     server = null;
-                    SystemManager.deleteServer(context.getCurrentUser(), id);
+                    systemManager.deleteServer(context.getCurrentUser(), id);
                     getStrutsDelegate().saveMessage("message.serverdeleted.param",
                                                     new String[] {name}, request);
                     itr.remove();

@@ -1,8 +1,23 @@
-- Migrate the displaying of the date/time to rhn:formatDate, get rid of the legacy fmt:formatDate glue
-- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
-- Button to add selected systems to SSM in virtual systems list
-- Add support for custom SSH port for SSH minions
-- UI for changing proxy
+-------------------------------------------------------------------
+Mon Jan 24 11:17:00 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Wed Jan 19 11:36:23 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Remove cluster management
+  * Fix virtual systems list request error (bsc#1194397)
+  * Fix header search autofocus
+  * Migrate the displaying of the date/time to rhn:formatDate, get
+    rid of the legacy fmt:formatDate glue
+  * Suggest Product Migration when patch for CVE is in a successor
+    Product (bsc#1191360)
+  * Button to add selected systems to SSM in virtual systems list
+  * Add support for custom SSH port for SSH minions
+  * UI for changing proxy
 
 -------------------------------------------------------------------
 Fri Dec 03 12:30:08 CET 2021 - jgonzalez@suse.com

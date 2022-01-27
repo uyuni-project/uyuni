@@ -1763,7 +1763,7 @@ public class SystemHandler extends BaseHandler {
 
     public int deleteSystem(String clientCert) throws FaultException {
         Server server = validateClientCertificate(clientCert);
-        SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
+        systemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
                 server.getId(),
                 SystemManager.ServerCleanupType.NO_CLEANUP
                 );
@@ -1808,7 +1808,7 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
-        SystemManager.deleteServerAndCleanup(loggedInUser,
+        systemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
                 SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
                                     new IllegalArgumentException(
@@ -6585,7 +6585,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
-            return SystemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
+            return systemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
         }
         catch (SystemsExistException e) {
             throw new SystemsExistFaultException(e.getSystemIds());

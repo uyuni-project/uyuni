@@ -1,5 +1,6 @@
-import { usePrevious } from "./hooks";
 import { render, screen } from "utils/test-utils";
+
+import { usePrevious } from "./hooks";
 
 describe("usePrevious", () => {
   const TestComponent = (props: { value: string }) => {

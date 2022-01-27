@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -50,8 +50,6 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', $product
-  # TODO: get rid of this substitution, using another step
   next if has_content?(text, wait: 3)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
@@ -76,6 +74,13 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
     rescue Capybara::ModalNotFound
       # ignored
     end
+  end
+end
+
+When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do |seconds, text|
+  next if has_no_text?(text, wait: 3)
+  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
+    break if has_no_text?(text, wait: 3)
   end
 end
 
@@ -163,14 +168,6 @@ end
 
 When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
-end
-
-When(/^I check (.*) box$/) do |checkbox_name|
-  check BOX_IDS[checkbox_name]
-end
-
-When(/^I uncheck (.*) box$/) do |checkbox_name|
-  uncheck BOX_IDS[checkbox_name]
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
@@ -288,18 +285,6 @@ end
 #
 When(/^I follow first "([^"]*)"$/) do |text|
   click_link_and_wait(text, match: :first)
-end
-
-#
-# Click on the terminal
-#
-When(/^I follow "([^"]*)" terminal$/) do |host|
-  domain = read_branch_prefix_from_yaml
-  if !host.include? 'pxeboot'
-    step %(I follow "#{domain}.#{host}")
-  else
-    step %(I follow "#{host}.#{domain}")
-  end
 end
 
 #
@@ -540,8 +525,7 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = 'You have just created your first $PRODUCT user. To finalize your installation please use the Setup Wizard'
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
+  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   raise 'The welcome message is not shown' unless has_content?(text)
 end
 
@@ -575,7 +559,6 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
   raise "Text '#{text}' not found" unless has_content?(text)
 end
 
@@ -971,27 +954,6 @@ When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise "#{title} modal did not appear" unless dialog
-end
-
-# Image-specific steps
-When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
-  git_profiles = ENV['GITPROFILES']
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
-  git_profiles = ENV['GITPROFILES']
-  path = compute_image_filename
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter URI, username and password for registry$/) do
-  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
-  steps %(
-    When I enter "#{$auth_registry}" as "uri"
-    And I enter "#{auth_registry_username}" as "username"
-    And I enter "#{auth_registry_password}" as "password"
-  )
 end
 
 When(/^I scroll to the top of the page$/) do

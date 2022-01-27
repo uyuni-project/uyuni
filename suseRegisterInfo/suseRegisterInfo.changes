@@ -1,5 +1,9 @@
-- require python macros for building
-- do not build python 2 package for SLE15
+-------------------------------------------------------------------
+Tue Jan 18 14:02:57 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * require python macros for building
+  * Do not build python 2 package for SLE15 and higher
 
 -------------------------------------------------------------------
 Mon Aug 09 11:08:57 CEST 2021 - jgonzalez@suse.com

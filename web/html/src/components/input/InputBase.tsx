@@ -2,9 +2,9 @@ import * as React from "react";
 
 import _isNil from "lodash/isNil";
 
-import { Label } from "./Label";
-import { FormGroup } from "./FormGroup";
 import { FormContext } from "./Form";
+import { FormGroup } from "./FormGroup";
+import { Label } from "./Label";
 
 type Validator = (...args: any[]) => boolean | Promise<boolean>;
 

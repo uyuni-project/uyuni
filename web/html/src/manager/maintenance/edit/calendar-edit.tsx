@@ -1,13 +1,14 @@
 import * as React from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+
 import validator from "validator";
-import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+
+import { Button } from "components/buttons";
+import { DangerDialog } from "components/dialog/LegacyDangerDialog";
+import { ModalButton } from "components/dialog/ModalButton";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
-import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
-import { DangerDialog } from "components/dialog/LegacyDangerDialog";
-
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 
 type CalendarEditProps = {

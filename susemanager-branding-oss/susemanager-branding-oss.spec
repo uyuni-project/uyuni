@@ -15,9 +15,15 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version}
+%global wwwdocroot /srv/www/htdocs
+%else
+%global wwwdocroot %{_localstatedir}/www/html
+%endif
+
 
 Name:           susemanager-branding-oss
-Version:        4.3.2
+Version:        4.3.3
 Release:        1
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
@@ -52,10 +58,10 @@ cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
 echo "</p>" >> eula.html
 
 %install
-mkdir -p $RPM_BUILD_ROOT/srv/www/htdocs/help/
+mkdir -p $RPM_BUILD_ROOT/%{wwwdocroot}/help/
 mkdir -p $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 # final license
-install -m 644 eula.html $RPM_BUILD_ROOT/srv/www/htdocs/help/
+install -m 644 eula.html $RPM_BUILD_ROOT/%{wwwdocroot}/help/
 install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 
 %files
@@ -63,7 +69,7 @@ install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 %docdir %_defaultdocdir/susemanager
 %dir %_defaultdocdir/susemanager
 %_defaultdocdir/susemanager/license.txt
-%dir /srv/www/htdocs/help
-/srv/www/htdocs/help/eula.html
+%dir %{wwwdocroot}/help
+%{wwwdocroot}/help/eula.html
 
 %changelog

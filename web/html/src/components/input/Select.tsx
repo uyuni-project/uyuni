@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useEffect } from "react";
+
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
-import { InputBase, InputBaseProps } from "./InputBase";
+
 import { FormContext } from "./Form";
+import { InputBase, InputBaseProps } from "./InputBase";
 
 type SingleMode = InputBaseProps<string> & {
   /** Set to true to allow multiple selected values */

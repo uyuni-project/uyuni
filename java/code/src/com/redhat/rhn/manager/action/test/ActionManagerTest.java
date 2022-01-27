@@ -60,6 +60,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -138,13 +139,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
+    private final SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, new ServerGroupFactory(), saltApi);
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -199,7 +202,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
 
-        SystemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(user, server.getId());
 
         try {
             // Regular users cannot see orphan actions
@@ -223,7 +226,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
 
-        SystemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(user, server.getId());
         // Admins should see orphan actions
         result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);

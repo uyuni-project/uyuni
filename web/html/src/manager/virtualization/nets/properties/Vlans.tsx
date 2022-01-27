@@ -1,9 +1,10 @@
 import * as React from "react";
-import Validation from "components/validation";
+
 import { FormContext } from "components/input/Form";
 import { FormMultiInput } from "components/input/FormMultiInput";
-import { Text } from "components/input/Text";
 import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
+import Validation from "components/validation";
 
 type Props = {};
 

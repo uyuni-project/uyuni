@@ -1,10 +1,12 @@
 import * as React from "react";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { Messages, MessageType } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
-import Network from "utils/network";
+
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
+import { Messages, MessageType } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
+
+import Network from "utils/network";
 
 type ProxyType = {
   hostname: string;

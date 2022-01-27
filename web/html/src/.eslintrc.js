@@ -1,7 +1,14 @@
+const productionRules = {
+  // Make stylistic issues fail production lint
+  "prettier/prettier": "error",
+  "@typescript-eslint/no-unused-vars": "error",
+  "no-console": ["error", { allow: ["warn", "error"] }],
+};
+
 module.exports = {
   parser: "@typescript-eslint/parser",
   root: true,
-  plugins: ["react-hooks", "@typescript-eslint", "eslint-plugin-local-rules", "prettier"],
+  plugins: ["react-hooks", "@typescript-eslint", "eslint-plugin-local-rules", "simple-import-sort", "prettier"],
   extends: [
     // This requires `eslint-plugin-flowtype` but we don't actually use it, see https://github.com/facebook/create-react-app/issues/6129
     "react-app",
@@ -36,6 +43,33 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     // This rule is misleading, using [] as a dependency array is completely valid, see https://stackoverflow.com/a/58579462/1470607
     "react-hooks/exhaustive-deps": "off",
+    // Enforce sanity in imports
+    "simple-import-sort/imports": [
+      "error",
+      {
+        // See https://github.com/lydell/eslint-plugin-simple-import-sort/#custom-grouping
+        groups: [
+          // Side effect imports
+          ["^\\u0000"],
+          // HMR needs to be imported before everything else
+          ["^react-hot-loader/root"],
+          ["^react$"],
+          // Fullcalendar needs to be imported before its plugins
+          ["^@fullcalendar/react"],
+          // Packages
+          ["^@?\\w"],
+          // Root imports, each grouped together
+          ["^manager"],
+          ["^core"],
+          ["^components"],
+          ["^utils"],
+          // Relative imports
+          ["^\\."],
+        ],
+      },
+    ],
+    "sort-imports": "off",
+    ...(process.env.NODE_ENV === "production" ? productionRules : {}),
   },
 
   settings: {

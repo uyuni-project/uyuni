@@ -1,17 +1,20 @@
 import * as React from "react";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
+
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
 import {
   FormulaFormContext,
   FormulaFormContextProvider,
   FormulaFormRenderer,
-  text,
   get,
+  text,
 } from "./formulas/FormulaComponentGenerator";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
@@ -112,11 +115,7 @@ class FormulaForm extends React.Component<Props, State> {
           metadata: {},
         });
       else {
-        if (
-          data.formula_list.filter(
-            (formula) => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name)
-          ).length > 1
-        ) {
+        if (data.formula_list.filter((formula) => DEPRECATED_unsafeEquals(formula, data.formula_name)).length > 1) {
           this.state.warnings.push(
             t(
               'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',

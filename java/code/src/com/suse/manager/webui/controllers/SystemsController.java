@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
@@ -212,7 +213,9 @@ public class SystemsController {
 
         try {
             // Now we can remove the system
-            SystemManager.deleteServer(user, sid);
+            SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                    saltApi);
+            systemManager.deleteServer(user, sid);
             createSuccessMessage(request.raw(), "message.serverdeleted.param",
                     Long.toString(sid));
         }

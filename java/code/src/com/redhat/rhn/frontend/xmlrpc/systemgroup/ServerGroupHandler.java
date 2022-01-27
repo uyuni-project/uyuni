@@ -42,8 +42,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.clusters.ClusterFactory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -257,12 +255,6 @@ public class ServerGroupHandler extends BaseHandler {
     public int delete(User loggedInUser, String systemGroupName) {
         ensureSystemGroupAdmin(loggedInUser);
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
-        ClusterFactory.findClusterByGroupId(group.getId()).ifPresent(cluster -> {
-            throw new FaultException(1234, "group_owned_by_cluster",
-                    String.format("Group can't be deleted because it's owned by cluster '%s'." +
-                                    " Delete cluster to delete this group.",
-                            cluster.getName()));
-        });
         serverGroupManager.remove(loggedInUser, group);
         return 1;
     }
@@ -660,7 +652,7 @@ public class ServerGroupHandler extends BaseHandler {
                 ).orElseThrow(() -> new LookupServerGroupException(systemGroupName));
 
         List<Formula> formulas = FormulaFactory.listFormulas();
-        List<String> assigned = FormulaFactory.getFormulasByGroupId(group.getId());
+        List<String> assigned = FormulaFactory.getFormulasByGroup(group);
         return formulas.stream().filter(f -> assigned.contains(f.getName())).collect(Collectors.toList());
     }
 }

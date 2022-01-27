@@ -1,14 +1,18 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import Network from "utils/network";
+
 import { Button } from "components/buttons";
 import { showDialog } from "components/dialog/util";
 import { hideDialog } from "components/dialog/util";
-import { VncClient } from "./vnc-client";
-import { ConsoleClientType } from "./guests-console-types";
-import { SpiceClient } from "./spice-client";
-import { MessagePopUp, PopupState } from "./MessagePopUp";
+
+import Network from "utils/network";
+
 import styles from "./guests-console.css";
+import { ConsoleClientType } from "./guests-console-types";
+import { MessagePopUp, PopupState } from "./MessagePopUp";
+import { SpiceClient } from "./spice-client";
+import { VncClient } from "./vnc-client";
 
 type Props = {
   hostId?: string;
