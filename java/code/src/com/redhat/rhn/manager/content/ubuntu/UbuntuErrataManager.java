@@ -14,13 +14,12 @@
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.mockobjects.util.NotImplementedException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
@@ -74,7 +73,7 @@ public class UbuntuErrataManager {
             .registerTypeAdapter(Instant.class, new TypeAdapter<Instant>() {
                 @Override
                 public void write(JsonWriter jsonWriter, Instant instant) throws IOException {
-                    throw new NotImplementedException();
+                    throw new UnsupportedOperationException();
                 }
 
                 @Override
