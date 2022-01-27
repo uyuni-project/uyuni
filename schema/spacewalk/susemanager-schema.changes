@@ -1,3 +1,4 @@
+- Add support for custom SSH port for SSH minions
 - add ubuntu errata data and install handling
 - SLES PAYG client support on cloud
 - Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)

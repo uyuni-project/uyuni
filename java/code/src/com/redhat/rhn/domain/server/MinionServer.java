@@ -37,6 +37,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private String minionId;
     private String osFamily;
     private String kernelLiveVersion;
+    private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
 
     /**
@@ -94,6 +95,14 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setKernelLiveVersion(String kernelLiveVersionIn) {
         this.kernelLiveVersion = kernelLiveVersionIn;
+    }
+
+    public Integer getSSHPushPort() {
+        return sshPushPort;
+    }
+
+    public void setSSHPushPort(Integer sshPushPortIn) {
+        this.sshPushPort = sshPushPortIn;
     }
 
     /**
