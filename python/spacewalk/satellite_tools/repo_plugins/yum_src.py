@@ -77,9 +77,6 @@ REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.c
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
-APACHE_USER = 'wwwrun'
-APACHE_GROUP = 'www'
-
 class ZyppoSync:
     """
     This class prepares a environment for running Zypper inside a dedicated reposync root
@@ -167,9 +164,9 @@ class ZypperRepo:
            self.urls[0] += '/'
        # Make sure root paths are created
        if not os.path.isdir(self.root):
-           fileutils.makedirs(self.root, user=APACHE_USER, group=APACHE_GROUP)
+           fileutils.makedirs(self.root, user=CFG.httpd_user, group=CFG.httpd_group)
        if not os.path.isdir(self.pkgdir):
-           fileutils.makedirs(self.pkgdir, user=APACHE_USER, group=APACHE_GROUP)
+           fileutils.makedirs(self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
        self.is_configured = False
        self.includepkgs = []
        self.exclude = []

@@ -9,7 +9,7 @@
     notifempty
     missingok
     size=10M
-#LOGROTATE-3.8#    su root apache
+    su root @HTTPD_GROUP@ 
 }
 
 /var/log/rhn/cdnsync/*.log {

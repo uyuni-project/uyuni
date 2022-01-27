@@ -38,6 +38,7 @@ import fcntl
 import atexit
 from uyuni.common.fileutils import getUidGid
 from uyuni.common.rhnLib import isSUSE
+from spacewalk.common.rhnConfig import CFG
 
 LOG = None
 
@@ -99,10 +100,7 @@ def initLOG(log_file="stderr", level=0):
                    log_path, sys.exc_info()[:2])
 
         # fetch uid, gid so we can do a "chown ..."
-        if isSUSE():
-            apache_uid, apache_gid = getUidGid('wwwrun', 'www')
-        else:
-            apache_uid, apache_gid = getUidGid('apache', 'apache')
+        apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
 
         try:
             os.makedirs(log_path)
@@ -187,10 +185,7 @@ class rhnLog:
             self.fd = open(self.file, "a", 1)
             set_close_on_exec(self.fd)
             if newfileYN:
-                if isSUSE():
-                    apache_uid, apache_gid = getUidGid('wwwrun', 'www')
-                else:
-                    apache_uid, apache_gid = getUidGid('apache', 'apache')
+                apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
                 os.chown(self.file, apache_uid, apache_gid)
                 os.chmod(self.file, int('0660', 8))
         except:

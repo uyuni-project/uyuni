@@ -8,5 +8,5 @@
     compress
     notifempty
     missingok
-    su wwwrun www
+    su @HTTPD_USER@ @HTTPD_GROUP@
 }
