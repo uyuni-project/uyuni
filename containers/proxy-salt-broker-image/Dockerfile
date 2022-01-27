@@ -1,8 +1,6 @@
 #!BuildTag: proxy-salt-broker:latest proxy-salt-broker:%PKG_VERSION% proxy-salt-broker:%PKG_VERSION%.%RELEASE%
 
-# HACK: Open Build Service currently only supports short names. Assume short name by default, allow to override to qualified name via ARG
-ARG BASE_IMAGE_PREFIX=
-FROM ${BASE_IMAGE_PREFIX}suse/sle15:15.3 AS fat
+FROM registry.suse.com/suse/sle15:15.3 AS fat
 
 # Distro repos
 RUN zypper addrepo http://download.opensuse.org/distribution/leap/15.3/repo/oss/ main
@@ -23,7 +21,7 @@ COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
 # Define slim image
-FROM ${BASE_IMAGE_PREFIX}suse/sle15:15.3 AS slim
+FROM registry.suse.com/suse/sle15:15.3 AS slim
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML python3-pyzmq
 COPY --from=fat /target /
