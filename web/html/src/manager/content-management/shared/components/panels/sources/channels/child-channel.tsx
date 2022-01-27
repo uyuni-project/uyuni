@@ -8,6 +8,7 @@ import styles from "./channels-selection.css";
 type Props = {
   definition: ChildRowDefinition;
   search: string;
+  selectedRows: Set<number>;
   onToggleChannelSelect: (id: number) => void;
 };
 
@@ -26,10 +27,8 @@ const getTooltip = (tooltipData: ChildRowDefinition["tooltipData"]) => {
 };
 
 const ChildChannel = (props: Props) => {
-  // TODO: Implement
-  const isSelected = false;
-
   const { id, channelName, isRecommended, isRequired, isRequiredBySelectedBaseChannel, tooltipData } = props.definition;
+  const isSelected = props.selectedRows.has(id);
   const identifier = "child_" + id;
   const tooltip = getTooltip(tooltipData);
 

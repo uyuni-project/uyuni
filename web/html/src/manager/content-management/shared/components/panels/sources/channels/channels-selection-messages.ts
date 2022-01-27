@@ -3,7 +3,7 @@ enum Messages {
   SET_SEARCH,
   SET_SELECTED_BASE_CHANNEL_ID,
   SET_ACTIVE_FILTERS,
-  STATE_CHANGED,
+  ROWS_AVAILABLE,
 }
 
 export default Messages;

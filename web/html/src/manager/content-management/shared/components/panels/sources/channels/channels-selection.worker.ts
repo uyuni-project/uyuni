@@ -13,6 +13,8 @@ const context: Worker = self as any;
 
 const state = new ChannelProcessor();
 
+let batchIdentifier = 0;
+
 // React to messages from parent thread
 context.addEventListener("message", async ({ data }) => {
   let payload: WorkerPayload = {};
@@ -73,8 +75,22 @@ context.addEventListener("message", async ({ data }) => {
 
   // Apply filters, search etc and convert whatever we have remaining into row definitions and related info and pass to the main thread
   const { rows } = result;
-  context.postMessage({
-    type: WorkerMessages.STATE_CHANGED,
-    rows,
-  });
+
+  // Send rows in batches to give the UI thread a chance to do other work inbetween
+  const batchSize = 1000;
+  for (let ii = 0; ii <= Math.floor(rows.length / batchSize); ii++) {
+    const identifier = batchIdentifier;
+
+    // eslint-disable-next-line no-restricted-globals
+    self.setTimeout(() => {
+      const start = ii * batchSize;
+      context.postMessage({
+        type: WorkerMessages.ROWS_AVAILABLE,
+        rows: rows.slice(start, start + batchSize),
+        rowCount: rows.length,
+        batchIdentifier: identifier,
+      });
+    });
+  }
+  batchIdentifier += 1;
 });

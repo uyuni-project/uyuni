@@ -1,22 +1,19 @@
 import * as React from "react";
-import { memo, useEffect, useState, useCallback } from "react";
+import { memo, useEffect, useState, useCallback, useRef } from "react";
 import debounce from "lodash/debounce";
 import xor from "lodash/xor";
 
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
-import { VirtualTree } from "components/virtual-list";
+import { VirtualList } from "components/virtual-list";
 import { ProjectSoftwareSourceType } from "manager/content-management/shared/type";
 
 import styles from "./channels-selection.css";
 import { getInitialFiltersState } from "./channels-filters-types";
 import BaseChannel from "./base-channel";
-import ChildChannel from "./child-channel";
-import RecommendedToggle from "./recommended-toggle";
 import ChannelsFilters from "./channels-filters";
 import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-api";
-import { RowType, RowDefinition } from "./channels-selection-rows";
-import EmptyChild from "./empty-child";
+import { RowType, BaseRowDefinition } from "./channels-selection-rows";
 
 import Worker from "./channels-selection.worker.ts";
 import WorkerMessages from "./channels-selection-messages";
@@ -28,35 +25,19 @@ type PropsType = {
   onChange: (channelLabels: string[]) => void;
 };
 
-const getTreeWalker = (nodes: RowDefinition[], getNodeData: (...args: any[]) => any) => {
-  return function* treeWalker() {
-    // Get all root nodes
-    for (let i = 0; i < nodes.length; i++) {
-      yield getNodeData(nodes[i], 0, i === 0);
-    }
-
-    // Get all children
-    while (true) {
-      const parent = yield;
-
-      for (let i = 0; i < parent.node.children?.length; i++) {
-        yield getNodeData(parent.node.children?.[i], parent.nestingLevel + 1);
-      }
-    }
-  };
-};
+let rowBatchIdentifier: undefined | number = undefined;
+let rowBuffer: BaseRowDefinition[] = [];
 
 const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadSelectOptions] = useLoadSelectOptions();
   const [channelsWithMandatoryPromise] = useChannelsWithMandatoryApi();
+  const listRef = useRef<typeof VirtualList>(null);
 
   const [worker] = useState(new Worker());
-  const [tree, setTree] = useState<RowDefinition[] | undefined>(undefined);
-  const [treeWalker, setTreeWalker] = useState<(() => Generator<any>) | undefined>(undefined);
-  const [selectedNodes, setSelectedNodes] = useState<Set<number>>(new Set());
-  // TODO: This is obsolete
-  const [selectedChannelsCount, setSelectedChannelsCount] = useState<number>(0);
+  const [rows, setRows] = useState<BaseRowDefinition[] | undefined>(undefined);
+  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
+  const [openRows, setOpenRows] = useState<Set<number>>(new Set());
   const [activeFilters, setActiveFilters] = useState<string[]>(getInitialFiltersState());
   const [search, setSearch] = useState("");
 
@@ -74,19 +55,29 @@ const ChannelsSelection = (props: PropsType) => {
   );
 
   const onToggleChannelSelect = (channelId: number) => {
-    console.log(tree);
-    if (selectedNodes.has(channelId)) {
-      // TODO
+    // TODO: Also requires and requiredBy
+    console.log("toggle select", channelId);
+    if (selectedRows.has(channelId)) {
+      selectedRows.delete(channelId);
+      setSelectedRows(new Set([...selectedRows]));
+    } else {
+      setSelectedRows(new Set([...selectedRows, channelId]));
     }
-    // worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId });
   };
 
   const onSetRecommendedChildrenSelected = (channelId: number, selected: boolean) => {
     // worker.postMessage({ type: WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED, channelId, selected });
   };
 
-  const onToggleChannelOpen = (channelId: number) => {
-    // worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_OPEN, channelId });
+  const onToggleChannelOpen = (channelId: number, rowIndex: number) => {
+    if (openRows.has(channelId)) {
+      openRows.delete(channelId);
+      setOpenRows(new Set([...openRows]));
+    } else {
+      setOpenRows(new Set([...openRows, channelId]));
+    }
+    // TODO: Fix types
+    (listRef.current as any)?.resetAfterIndex(rowIndex);
   };
 
   useEffect(() => {
@@ -110,15 +101,27 @@ const ChannelsSelection = (props: PropsType) => {
 
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
-        case WorkerMessages.STATE_CHANGED: {
+        case WorkerMessages.ROWS_AVAILABLE: {
           if (!Array.isArray(data.rows)) {
             throw new RangeError("Received no valid rows");
           }
-          setTree(data.rows);
-          setTreeWalker(() => getTreeWalker(data.rows, getNodeData));
-          // setRows(data.rows);
-          // TODO: Implement
-          // setSelectedChannelsCount(data.selectedChannelsCount);
+          if (typeof data.batchIdentifier === "undefined") {
+            throw new TypeError("No batch identifier");
+          }
+          if (data.batchIdentifier === rowBatchIdentifier) {
+            // Append rows to an existing batch
+            rowBuffer.push(...data.rows);
+          } else {
+            // New batch of rows
+            rowBatchIdentifier = data.batchIdentifier;
+            rowBuffer = data.rows;
+          }
+          // If we've received everything from the worker, flush the buffer
+          if (rowBuffer.length === data.rowCount) {
+            setRows(rowBuffer);
+            rowBuffer = [];
+          }
+          // TODO: onToggleChannelSelect with the first row if conditions?
           // TODO: Implement
           // props.onChange(data.selectedChannelLabels);
           return;
@@ -134,75 +137,36 @@ const ChannelsSelection = (props: PropsType) => {
     };
   }, []);
 
-  // TODO: Types
-  const getNodeData = (node: RowDefinition & {}, nestingLevel: number, isFirstNode?: boolean) => {
-    // The tree component requires all ids to be strings
-    const id = node.id.toString();
-    return {
-      data: {
-        ...node,
-        id,
-        // TODO: Types
-        defaultHeight: rowHeight(node.type),
-        // TODO: Implement
-        // true if we have a search string, or if id matches the current selected base
-        isOpenByDefault: Boolean(isFirstNode || search), // This is a mandatory field
-      },
-      node,
-      nestingLevel,
-    };
+  const Row = (definition: BaseRowDefinition, index: number) => {
+    return (
+      <BaseChannel
+        rowDefinition={definition}
+        search={search}
+        openRows={openRows}
+        selectedRows={selectedRows}
+        onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
+        onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId, index)}
+      />
+    );
   };
 
-  const Row = ({ data, isOpen, setOpen }) => {
-    const definition: RowDefinition = data;
-    switch (definition.type) {
-      case RowType.Parent:
-        return (
-          <BaseChannel
-            rowDefinition={definition}
-            search={search}
-            isOpen={isOpen}
-            isSelected={selectedNodes.has(definition.id)}
-            onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
-            onToggleChannelOpen={() => setOpen(!isOpen)}
-          />
-        );
-      case RowType.Child:
-        return (
-          <ChildChannel
-            definition={definition}
-            search={search}
-            onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
-          />
-        );
-      case RowType.EmptyChild:
-        return <EmptyChild />;
-      case RowType.RecommendedToggle:
-        return (
-          <RecommendedToggle
-            definition={definition}
-            onSetRecommendedChildrenSelected={(channelId, selected) =>
-              onSetRecommendedChildrenSelected(channelId, selected)
-            }
-          />
-        );
-      default:
-        throw new RangeError("Incorrect channel render type in renderer");
-    }
-  };
-
-  const rowHeight = (type: RowType) => {
-    switch (type) {
-      case RowType.Parent:
-        return 30;
-      case RowType.Child:
-        return 25;
-      case RowType.EmptyChild:
-        return 25;
-      case RowType.RecommendedToggle:
-        return 20;
-      default:
-        throw new RangeError("Incorrect channel render type in height");
+  const rowHeight = (row: BaseRowDefinition) => {
+    const parentHeight = 30;
+    if (openRows.has(row.id)) {
+      return row.children.reduce((total, child) => {
+        switch (child.type) {
+          case RowType.Child:
+            return total + 25;
+          case RowType.EmptyChild:
+            return total + 25;
+          case RowType.RecommendedToggle:
+            return total + 20;
+          default:
+            throw new RangeError("Incorrect channel render type in height");
+        }
+      }, parentHeight);
+    } else {
+      return parentHeight;
     }
   };
 
@@ -242,11 +206,11 @@ const ChannelsSelection = (props: PropsType) => {
           }}
         />
       </div>
-      {treeWalker && (
+      {rows && (
         <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
             <div className="row" style={{ marginBottom: "30px" }}>
-              {`${t("Child Channels")} (${selectedChannelsCount})`}
+              {`${t("Child Channels")} (${selectedRows.size})`}
             </div>
             <div className="row panel panel-default panel-body text-left">
               <div style={{ position: "relative" }}>
@@ -283,21 +247,14 @@ const ChannelsSelection = (props: PropsType) => {
               />
             </div>
           </label>
-          <VirtualTree
-            treeWalker={treeWalker}
-            renderRow={Row}
-            // By default, assume we have a base channel row
-            estimatedRowHeight={30}
-          />
-          {/*
           <VirtualList
+            ref={listRef}
             items={rows}
             renderRow={Row}
             rowHeight={rowHeight}
             // By default, assume we have a base channel row
             estimatedRowHeight={30}
           />
-          */}
         </div>
       )}
     </React.Fragment>

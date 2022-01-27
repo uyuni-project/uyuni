@@ -7,7 +7,7 @@ type ChannelsResponse = RawChannelType[];
 
 const pageSize = window.userPrefPageSize || 15;
 const MOCK_ID_START = 10000000;
-const MOCK_COUNT = 100;
+const MOCK_COUNT = 10000;
 
 const useChannelsApi = () => {
   const [channelsPromise, setChannelsPromise] = useState<Promise<ChannelsResponse> | undefined>(undefined);
