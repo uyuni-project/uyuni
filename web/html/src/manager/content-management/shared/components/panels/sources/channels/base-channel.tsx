@@ -7,14 +7,19 @@ import styles from "./channels-selection.css";
 type Props = {
   rowDefinition: BaseRowDefinition;
   search: string;
+  isOpen: boolean;
+  isSelected: boolean;
   onToggleChannelSelect: (id: number) => void;
-  onToggleChannelOpen: (id: number) => void;
+  onToggleChannelOpen: () => void;
 };
 
 const BaseChannel = (props: Props) => {
-  const { id, channelName, isSelected, selectedChildrenCount, isSelectedBaseChannel, isOpen } = props.rowDefinition;
+  // TODO: Implement
+  const selectedChildrenCount = 0;
+
+  const { id, channelName, isSelectedBaseChannel } = props.rowDefinition;
   const identifier = "base_" + id;
-  const totalSelectedCount = Number(isSelected) + selectedChildrenCount;
+  const totalSelectedCount = Number(props.isSelected) + selectedChildrenCount;
 
   return (
     <h4
@@ -24,7 +29,7 @@ const BaseChannel = (props: Props) => {
         cursor: "pointer",
       }}
       {...(isSelectedBaseChannel ? { title: "New base channel" } : {})}
-      onClick={() => props.onToggleChannelOpen(id)}
+      onClick={() => props.onToggleChannelOpen()}
     >
       <input
         type="checkbox"
@@ -32,7 +37,7 @@ const BaseChannel = (props: Props) => {
         name={identifier}
         className={styles.toggle}
         readOnly
-        checked={isSelected}
+        checked={props.isSelected}
         value={id}
         onClick={(event) => {
           // Since this element is in another clickable element, don't propagate the event
@@ -41,7 +46,7 @@ const BaseChannel = (props: Props) => {
         }}
         disabled={isSelectedBaseChannel}
       />
-      <i className={`${styles.arrow} fa ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
+      <i className={`${styles.arrow} fa ${props.isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
       <Highlight
         className={styles.collapsible}
         enabled={props.search.length > 0}

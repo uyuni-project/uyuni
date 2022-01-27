@@ -2,7 +2,13 @@ import produce from "utils/produce";
 
 import { DerivedBaseChannel } from "core/channels/type/channels.type";
 
-import { RowDefinition, RowType } from "./channels-selection-rows";
+import {
+  ChildRowDefinition,
+  EmptyChildRowDefinition,
+  RecommendedToggleRowDefinition,
+  RowDefinition,
+  RowType,
+} from "./channels-selection-rows";
 import ChannelProcessor from "./channels-processor";
 import { channelsFiltersAvailable } from "./channels-filters-types";
 
@@ -28,42 +34,35 @@ export function derivedChannelsToRowDefinitions(
 
   // TODO: Here and elsewhere, this reduce can become just a regular for loop if we want to go faster
   return derivedChannels.reduce((result, channel) => {
-    // TODO: Either is open or matches search
-    const isOpen = this.isOpen(channel.id);
-    const isSelected = this.isSelected(channel.id);
-
-    // We need to figure out what state the children are in before we can store the parent state
-    let children: RowDefinition[] = [];
-    let selectedChildrenCount = 0;
+    let children: (ChildRowDefinition | EmptyChildRowDefinition | RecommendedToggleRowDefinition)[] = [];
     let recommendedChildrenCount = 0;
-    let selectedRecommendedChildrenCount = 0;
     const parentRequires = this.requiresMap.get(channel.id);
+
     if (channel.children.length) {
       channel.children.forEach((child) => {
-        const isChildSelected = this.isSelected(child.id);
-        selectedChildrenCount += Number(isChildSelected);
-        const isChildRecommended = child.recommended;
-        recommendedChildrenCount += Number(isChildRecommended);
-        selectedRecommendedChildrenCount += Number(isChildSelected && isChildRecommended);
-
-        if (isOpen) {
-          const isRequiredBySelectedBaseChannel = Boolean(selectedBaseChannelRequires?.has(child));
-          children.push({
-            type: RowType.Child,
-            id: child.id,
-            channelName: child.name,
-            isSelected: isChildSelected,
-            isRecommended: child.recommended,
-            isRequired: Boolean(parentRequires?.has(child)),
-            isRequiredBySelectedBaseChannel,
-            tooltipData: getTooltipData.call(this, child.id),
-          });
-        }
+        const isRequiredBySelectedBaseChannel = Boolean(selectedBaseChannelRequires?.has(child));
+        recommendedChildrenCount += Number(child.recommended);
+        children.push({
+          type: RowType.Child,
+          id: child.id,
+          channelName: child.name,
+          isRecommended: child.recommended,
+          isRequired: Boolean(parentRequires?.has(child)),
+          isRequiredBySelectedBaseChannel,
+          tooltipData: getTooltipData.call(this, child.id),
+        });
       });
-    } else if (isOpen) {
+    } else {
       children.push({
         type: RowType.EmptyChild,
         id: `empty_child_${channel.id}`,
+      });
+    }
+    if (recommendedChildrenCount) {
+      children.unshift({
+        type: RowType.RecommendedToggle,
+        id: `recommended_toggle_${channel.id}`,
+        channelId: channel.id,
       });
     }
 
@@ -71,20 +70,9 @@ export function derivedChannelsToRowDefinitions(
       type: RowType.Parent,
       id: channel.id,
       channelName: channel.name,
-      isOpen,
-      isSelected,
       isSelectedBaseChannel: channel.id === this.selectedBaseChannelId,
-      selectedChildrenCount,
+      children,
     });
-    if (isOpen && recommendedChildrenCount) {
-      result.push({
-        type: RowType.RecommendedToggle,
-        id: `recommended_toggle_${channel.id}`,
-        channelId: channel.id,
-        areAllRecommendedChildrenSelected: recommendedChildrenCount === selectedRecommendedChildrenCount,
-      });
-    }
-    result.push(...children);
 
     return result;
   }, [] as RowDefinition[]);
@@ -114,20 +102,14 @@ export function filterBaseChannels(this: ChannelProcessor, channels: DerivedBase
         // If the base channel name matches search or we have any children left after the above, include the base channel
         const matchesSearch = channel.standardizedName.includes(search) || channel.children.length > 0;
 
+        // TODO: Do this in the parent or whatever
         // If the search *changed* then open base channels that match, otherwise leave the user's selection be
-        if (typeof newSearch !== "undefined") {
-          if (matchesSearch) {
-            this.openBaseChannelIds.add(channel.id);
-          } else {
-            this.openBaseChannelIds.delete(channel.id);
-          }
-        }
 
         return matchesSearch;
       });
     } else if (typeof newSearch !== "undefined") {
       // If the search was cleared, close all base channels
-      this.openBaseChannelIds.clear();
+      // this.openBaseChannelIds.clear();
     }
   });
   return baseChannels;

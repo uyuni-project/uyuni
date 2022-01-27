@@ -26,8 +26,10 @@ const getTooltip = (tooltipData: ChildRowDefinition["tooltipData"]) => {
 };
 
 const ChildChannel = (props: Props) => {
-  const { id, channelName, isSelected, isRecommended, isRequired, isRequiredBySelectedBaseChannel, tooltipData } =
-    props.definition;
+  // TODO: Implement
+  const isSelected = false;
+
+  const { id, channelName, isRecommended, isRequired, isRequiredBySelectedBaseChannel, tooltipData } = props.definition;
   const identifier = "child_" + id;
   const tooltip = getTooltip(tooltipData);
 

@@ -12,17 +12,14 @@ export type BaseRowDefinition = Identifiable & {
   type: RowType.Parent;
   id: number;
   channelName: string;
-  isOpen: boolean;
-  isSelected: boolean;
   isSelectedBaseChannel: boolean;
-  selectedChildrenCount: number;
+  children: (RecommendedToggleRowDefinition | ChildRowDefinition | EmptyChildRowDefinition)[];
 };
 
 export type ChildRowDefinition = Identifiable & {
   type: RowType.Child;
   id: number;
   channelName: string;
-  isSelected: boolean;
   isRecommended: boolean;
   isRequired: boolean;
   isRequiredBySelectedBaseChannel: boolean;
@@ -41,7 +38,7 @@ export type RecommendedToggleRowDefinition = Identifiable & {
   type: RowType.RecommendedToggle;
   id: string; // The id is a merged string here to avoid collisions
   channelId: number; // TODO: Make this obsolete
-  areAllRecommendedChildrenSelected: boolean;
+  // areAllRecommendedChildrenSelected: boolean;
 };
 
 export type RowDefinition =

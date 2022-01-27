@@ -5,7 +5,6 @@
 import "manager/polyfills.ts";
 
 import WorkerMessages from "./channels-selection-messages";
-import { isBaseChannel } from "core/channels/type/channels.type";
 import { rawChannelsToDerivedChannels } from "./channels-selection-transforms";
 import ChannelProcessor, { WorkerPayload } from "./channels-processor";
 
@@ -25,7 +24,6 @@ context.addEventListener("message", async ({ data }) => {
         throw new TypeError("Insufficient channel data");
       }
       const selectedBaseChannelId: number | undefined = data.initialSelectedBaseChannelId;
-      const select: number[] | undefined = data.initialSelectedChannelIds;
       const { baseChannels, channelsMap, requiresMap, requiredByMap } = rawChannelsToDerivedChannels(
         data.channels,
         data.mandatoryChannelsMap
@@ -36,7 +34,6 @@ context.addEventListener("message", async ({ data }) => {
         requiresMap,
         requiredByMap,
         selectedBaseChannelId,
-        select,
       };
       break;
     }
@@ -53,7 +50,7 @@ context.addEventListener("message", async ({ data }) => {
       if (typeof selectedBaseChannelId !== "number" || isNaN(selectedBaseChannelId)) {
         throw new TypeError("No base channel id");
       }
-      payload = { selectedBaseChannelId, select: [selectedBaseChannelId], open: [selectedBaseChannelId] };
+      payload = { selectedBaseChannelId };
       break;
     }
     case WorkerMessages.SET_ACTIVE_FILTERS: {
@@ -62,57 +59,6 @@ context.addEventListener("message", async ({ data }) => {
         throw new TypeError("No valid active filters");
       }
       payload = { activeFilters };
-      break;
-    }
-    case WorkerMessages.TOGGLE_IS_CHANNEL_OPEN: {
-      const channelId = data.channelId;
-      if (typeof channelId === "undefined") {
-        throw new TypeError("Channel not found");
-      }
-      if (state.isOpen(channelId)) {
-        payload = { close: [channelId] };
-      } else {
-        payload = { open: [channelId] };
-      }
-      break;
-    }
-    case WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED: {
-      const channelId = data.channelId;
-      const channel = state.channelsMap.get(channelId);
-      if (typeof channel === "undefined") {
-        throw new TypeError("Channel not found");
-      }
-
-      if (state.isSelected(channelId)) {
-        payload.deselect = [channelId];
-      } else {
-        payload.select = [channelId];
-        // If we selected a parent on the first level, also select all recommended children
-        const channel = state.channelsMap.get(channelId);
-        if (isBaseChannel(channel)) {
-          channel.children.forEach((child) => {
-            if (child.recommended) {
-              payload.select?.push(child.id);
-            }
-          });
-        }
-      }
-      break;
-    }
-    case WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED: {
-      const channelId = data.channelId;
-      const channel = state.channelsMap.get(channelId);
-      if (typeof channel === "undefined" || !isBaseChannel(channel)) {
-        throw new TypeError("Channel is not a base channel or is not found");
-      }
-
-      if (data.selected) {
-        payload.select = [];
-        channel.recommendedChildrenIds.forEach((id) => payload.select?.push(id));
-      } else {
-        payload.deselect = [];
-        channel.recommendedChildrenIds.forEach((id) => payload.deselect?.push(id));
-      }
       break;
     }
     default:
@@ -126,11 +72,9 @@ context.addEventListener("message", async ({ data }) => {
   }
 
   // Apply filters, search etc and convert whatever we have remaining into row definitions and related info and pass to the main thread
-  const { rows, selectedChannelsCount, selectedChannelLabels } = result;
+  const { rows } = result;
   context.postMessage({
     type: WorkerMessages.STATE_CHANGED,
     rows,
-    selectedChannelsCount,
-    selectedChannelLabels,
   });
 });

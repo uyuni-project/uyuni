@@ -1,14 +1,8 @@
-import { DerivedBaseChannel, DerivedChannel, isBaseChannel, isChildChannel } from "core/channels/type/channels.type";
+import { DerivedBaseChannel, DerivedChannel } from "core/channels/type/channels.type";
 
 import { derivedChannelsToRowDefinitions, filterBaseChannels } from "./channels-processor-transforms";
 
-export type WorkerPayload = Partial<ChannelProcessor> & {
-  // Since selection-deselection involves resolving required channels etc, they have special handling
-  select?: number[];
-  deselect?: number[];
-  open?: number[];
-  close?: number[];
-};
+export type WorkerPayload = Partial<ChannelProcessor>;
 
 export default class ChannelProcessor {
   /** An array of all base channels after they've passed initial processing */
@@ -20,9 +14,9 @@ export default class ChannelProcessor {
   /** A map from a channel id to a set of channels that require this channel */
   requiredByMap: Map<number, Set<DerivedChannel> | undefined> = new Map();
   /** Set of currently open base channel ids */
-  openBaseChannelIds: Set<number> = new Set();
+  // openBaseChannelIds: Set<number> = new Set();
   /** Set of currently selected channel ids */
-  selectedChannels: Set<DerivedChannel> = new Set();
+  // selectedChannels: Set<DerivedChannel> = new Set();
   /** Currently selected base channel id */
   selectedBaseChannelId: number | undefined = undefined;
   /** User search string */
@@ -48,82 +42,20 @@ export default class ChannelProcessor {
       this.baseChannels = this.sortChannels(this.baseChannels);
     }
 
-    // Update selections and open-close states
-    const { select, deselect, open, close } = payload;
-    if (typeof select !== "undefined") {
-      select.forEach((channelId) => this.selectRecursively(this.channelsMap.get(channelId)));
-    }
-    if (typeof deselect !== "undefined") {
-      deselect.forEach((channelId) => this.deselectRecursively(this.channelsMap.get(channelId)));
-    }
-    if (typeof open !== "undefined") {
-      open.forEach((channelId) => this.openBaseChannelIds.add(channelId));
-    }
-    if (typeof close !== "undefined") {
-      close.forEach((channelId) => this.openBaseChannelIds.delete(channelId));
-    }
-
     const filteredBaseChannels = this.filterBaseChannels(this.baseChannels, payload.search);
     const rows = this.derivedChannelsToRowDefinitions(filteredBaseChannels);
-    const sortedSelectedChannels = this.sortChannels(Array.from(this.selectedChannels));
 
     return {
       rows,
-      selectedChannelsCount: this.selectedChannels.size,
-      selectedChannelLabels: sortedSelectedChannels.map((channel) => channel?.label),
     };
-  };
-
-  /** Is a channel currently selected */
-  isSelected = (channelId: number) => {
-    const channel = this.channelsMap.get(channelId);
-    return Boolean(channel && this.selectedChannels.has(channel));
-  };
-
-  /** Is a base channel currently open */
-  isOpen = (channelId: number) => {
-    return this.openBaseChannelIds.has(channelId);
   };
 
   private filterBaseChannels = filterBaseChannels.bind(this);
   private derivedChannelsToRowDefinitions = derivedChannelsToRowDefinitions.bind(this);
 
   private ingest(payload: WorkerPayload = {}) {
-    const { select, deselect, open, close, ...rest } = payload;
-    Object.assign(this, rest);
+    Object.assign(this, payload);
   }
-
-  /** Resolve and select all channels that are required along with this channel */
-  private selectRecursively = (channel?: DerivedChannel) => {
-    if (!channel || this.selectedChannels.has(channel)) {
-      return;
-    }
-    this.selectedChannels.add(channel);
-
-    if (isChildChannel(channel)) {
-      // If we selected a child, open the parent
-      this.openBaseChannelIds.add(channel.parent.id);
-    }
-
-    // Also select any channels that this channel requires
-    this.requiresMap.get(channel.id)?.forEach((requiresChannel) => this.selectRecursively(requiresChannel));
-  };
-
-  /** Resolve and deselect all channels that require this channel */
-  private deselectRecursively = (channel?: DerivedChannel) => {
-    if (!channel || !this.selectedChannels.has(channel)) {
-      return;
-    }
-    this.selectedChannels.delete(channel);
-
-    // If we deselected a parent, deselect all of its children
-    if (isBaseChannel(channel)) {
-      channel.children.forEach((child) => this.deselectRecursively(child));
-    }
-
-    // Also deselect any channels that require this channel
-    this.requiredByMap.get(channel.id)?.forEach((requiredByChannel) => this.deselectRecursively(requiredByChannel));
-  };
 
   private sortChannels = <T extends DerivedChannel>(channels: T[]) => {
     return channels.sort((a, b) => {

@@ -11,7 +11,9 @@ type Props = {
 };
 
 const RecommendedToggle = (props: Props) => {
-  const { channelId, areAllRecommendedChildrenSelected } = props.definition;
+  // TODO: Implement
+  const areAllRecommendedChildrenSelected = false;
+  const { channelId } = props.definition;
   return (
     <div className={styles.nested_row}>
       <Toggler

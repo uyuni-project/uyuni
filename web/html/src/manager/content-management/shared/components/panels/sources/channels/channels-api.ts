@@ -6,6 +6,8 @@ import { RawChannelType } from "core/channels/type/channels.type";
 type ChannelsResponse = RawChannelType[];
 
 const pageSize = window.userPrefPageSize || 15;
+const MOCK_ID_START = 10000000;
+const MOCK_COUNT = 100;
 
 const useChannelsApi = () => {
   const [channelsPromise, setChannelsPromise] = useState<Promise<ChannelsResponse> | undefined>(undefined);
@@ -16,8 +18,41 @@ const useChannelsApi = () => {
   const promise = Network.get<JsonResult<ChannelsResponse>>(`/rhn/manager/api/channels?filterClm=true`)
     .then(Network.unwrap)
     .then((channels) => {
+      // TODO: Only for testing
+      if (true) {
+        for (var ii = 0; ii < MOCK_COUNT; ii++) {
+          const id = MOCK_ID_START + ii;
+          channels.push({
+            base: {
+              id,
+              name: `mock channel ${ii} ${"filler ".repeat(100)}`,
+              label: `mock_channel_${ii}`,
+              archLabel: "channel-x86_64",
+              custom: true,
+              isCloned: false,
+              subscribable: true,
+              recommended: false,
+            },
+            children: [
+              {
+                id: id * 2,
+                name: `mock channel child ${ii} ${"filler ".repeat(100)}`,
+                label: `mock_channel_child_${ii}`,
+                archLabel: "channel-x86_64",
+                custom: true,
+                isCloned: false,
+                subscribable: true,
+                recommended: false,
+              },
+            ],
+          });
+        }
+      }
+
+      // TODO: Revert to
+      // return channels.sort((a, b) => a.base.id - b.base.id);
       // TODO: This matches the current behavior but this should already be done on the server side, with a separate flag if necessary
-      return channels.sort((a, b) => a.base.id - b.base.id);
+      return channels.sort((a, b) => a.base.toString().localeCompare(b.base.toString()));
     });
   setChannelsPromise(promise);
   return [promise];
@@ -62,10 +97,13 @@ export const useChannelsWithMandatoryApi = () => {
   }
 
   const promise = channelsPromise.then((channels) => {
-    const channelIds = channels.reduce((ids, channel) => {
-      ids.push(channel.base.id, ...channel.children.map((child) => child.id));
-      return ids;
-    }, [] as number[]);
+    const channelIds = channels
+      .reduce((ids, channel) => {
+        ids.push(channel.base.id, ...channel.children.map((child) => child.id));
+        return ids;
+      }, [] as number[])
+      // TODO: This is only for testing mock values, remove later
+      .filter((id) => id < MOCK_ID_START);
 
     return Network.post<JsonResult<MandatoryChannelsResponse>>("/rhn/manager/api/admin/mandatoryChannels", channelIds)
       .then(Network.unwrap)

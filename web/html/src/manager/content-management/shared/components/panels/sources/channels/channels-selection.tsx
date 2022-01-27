@@ -5,7 +5,7 @@ import xor from "lodash/xor";
 
 import { Loading } from "components/utils/Loading";
 import { Select } from "components/input/Select";
-import { VirtualList } from "components/virtual-list";
+import { VirtualTree } from "components/virtual-list";
 import { ProjectSoftwareSourceType } from "manager/content-management/shared/type";
 
 import styles from "./channels-selection.css";
@@ -28,19 +28,41 @@ type PropsType = {
   onChange: (channelLabels: string[]) => void;
 };
 
+const getTreeWalker = (nodes: RowDefinition[], getNodeData: (...args: any[]) => any) => {
+  return function* treeWalker() {
+    // Get all root nodes
+    for (let i = 0; i < nodes.length; i++) {
+      yield getNodeData(nodes[i], 0, i === 0);
+    }
+
+    // Get all children
+    while (true) {
+      const parent = yield;
+
+      for (let i = 0; i < parent.node.children?.length; i++) {
+        yield getNodeData(parent.node.children?.[i], parent.nestingLevel + 1);
+      }
+    }
+  };
+};
+
 const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadSelectOptions] = useLoadSelectOptions();
   const [channelsWithMandatoryPromise] = useChannelsWithMandatoryApi();
 
   const [worker] = useState(new Worker());
-  const [rows, setRows] = useState<RowDefinition[] | undefined>(undefined);
+  const [tree, setTree] = useState<RowDefinition[] | undefined>(undefined);
+  const [treeWalker, setTreeWalker] = useState<(() => Generator<any>) | undefined>(undefined);
+  const [selectedNodes, setSelectedNodes] = useState<Set<number>>(new Set());
+  // TODO: This is obsolete
   const [selectedChannelsCount, setSelectedChannelsCount] = useState<number>(0);
   const [activeFilters, setActiveFilters] = useState<string[]>(getInitialFiltersState());
   const [search, setSearch] = useState("");
 
   const onSelectedBaseChannelIdChange = (channelId: number) => {
     worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: channelId });
+    onToggleChannelSelect(channelId);
   };
 
   // Debounce searching so the worker is not overloaded during typing when working with large data sets
@@ -52,15 +74,19 @@ const ChannelsSelection = (props: PropsType) => {
   );
 
   const onToggleChannelSelect = (channelId: number) => {
-    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId });
+    console.log(tree);
+    if (selectedNodes.has(channelId)) {
+      // TODO
+    }
+    // worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_SELECTED, channelId });
   };
 
   const onSetRecommendedChildrenSelected = (channelId: number, selected: boolean) => {
-    worker.postMessage({ type: WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED, channelId, selected });
+    // worker.postMessage({ type: WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED, channelId, selected });
   };
 
   const onToggleChannelOpen = (channelId: number) => {
-    worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_OPEN, channelId });
+    // worker.postMessage({ type: WorkerMessages.TOGGLE_IS_CHANNEL_OPEN, channelId });
   };
 
   useEffect(() => {
@@ -85,16 +111,16 @@ const ChannelsSelection = (props: PropsType) => {
     worker.addEventListener("message", async ({ data }) => {
       switch (data.type) {
         case WorkerMessages.STATE_CHANGED: {
-          if (
-            !Array.isArray(data.rows) ||
-            typeof data.selectedChannelsCount !== "number" ||
-            !Array.isArray(data.selectedChannelLabels)
-          ) {
+          if (!Array.isArray(data.rows)) {
             throw new RangeError("Received no valid rows");
           }
-          setRows(data.rows);
-          setSelectedChannelsCount(data.selectedChannelsCount);
-          props.onChange(data.selectedChannelLabels);
+          setTree(data.rows);
+          setTreeWalker(() => getTreeWalker(data.rows, getNodeData));
+          // setRows(data.rows);
+          // TODO: Implement
+          // setSelectedChannelsCount(data.selectedChannelsCount);
+          // TODO: Implement
+          // props.onChange(data.selectedChannelLabels);
           return;
         }
         default:
@@ -108,15 +134,37 @@ const ChannelsSelection = (props: PropsType) => {
     };
   }, []);
 
-  const Row = (definition: RowDefinition) => {
+  // TODO: Types
+  const getNodeData = (node: RowDefinition & {}, nestingLevel: number, isFirstNode?: boolean) => {
+    // The tree component requires all ids to be strings
+    const id = node.id.toString();
+    return {
+      data: {
+        ...node,
+        id,
+        // TODO: Types
+        defaultHeight: rowHeight(node.type),
+        // TODO: Implement
+        // true if we have a search string, or if id matches the current selected base
+        isOpenByDefault: Boolean(isFirstNode || search), // This is a mandatory field
+      },
+      node,
+      nestingLevel,
+    };
+  };
+
+  const Row = ({ data, isOpen, setOpen }) => {
+    const definition: RowDefinition = data;
     switch (definition.type) {
       case RowType.Parent:
         return (
           <BaseChannel
             rowDefinition={definition}
             search={search}
+            isOpen={isOpen}
+            isSelected={selectedNodes.has(definition.id)}
             onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
-            onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId)}
+            onToggleChannelOpen={() => setOpen(!isOpen)}
           />
         );
       case RowType.Child:
@@ -143,8 +191,8 @@ const ChannelsSelection = (props: PropsType) => {
     }
   };
 
-  const rowHeight = (channel: RowDefinition) => {
-    switch (channel.type) {
+  const rowHeight = (type: RowType) => {
+    switch (type) {
       case RowType.Parent:
         return 30;
       case RowType.Child:
@@ -194,7 +242,7 @@ const ChannelsSelection = (props: PropsType) => {
           }}
         />
       </div>
-      {rows && (
+      {treeWalker && (
         <div className="row" style={{ display: "flex" }}>
           <label className="col-lg-3 control-label">
             <div className="row" style={{ marginBottom: "30px" }}>
@@ -235,6 +283,13 @@ const ChannelsSelection = (props: PropsType) => {
               />
             </div>
           </label>
+          <VirtualTree
+            treeWalker={treeWalker}
+            renderRow={Row}
+            // By default, assume we have a base channel row
+            estimatedRowHeight={30}
+          />
+          {/*
           <VirtualList
             items={rows}
             renderRow={Row}
@@ -242,6 +297,7 @@ const ChannelsSelection = (props: PropsType) => {
             // By default, assume we have a base channel row
             estimatedRowHeight={30}
           />
+          */}
         </div>
       )}
     </React.Fragment>
