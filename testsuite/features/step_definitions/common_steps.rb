@@ -42,17 +42,22 @@ end
 
 Then(/^the IPv4 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  puts node.public_ip
-  step %(I should see a "#{node.public_ip}" text)
+  ipv4_address = node.public_ip
+  puts "IPv4 address: #{ipv4_address}"
+  step %(I should see a "#{ipv4_address}" text)
 end
 
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   interface, code = node.run("ip -6 address show #{node.public_interface}")
   raise unless code.zero?
-  last_ipv6_line = interface.lines.grep(/inet6 /).last
-  ipv6_address = last_ipv6_line.scan(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/).first
-  puts ipv6_address
+  lines = interface.lines
+  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global temporary dynamic/).first
+  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global dynamic mngtmpaddr/).first if ipv6_line.nil?
+  ipv6_line = lines.grep(/inet6 fe80:[:0-9a-f]*\/64 scope link/).first if ipv6_line.nil?
+  next if ipv6_line.nil?
+  ipv6_address = ipv6_line.scan(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/).first
+  puts "IPv6 address: #{ipv6_address}"
   step %(I should see a "#{ipv6_address}" text)
 end
 
