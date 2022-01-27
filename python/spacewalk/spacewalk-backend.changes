@@ -1,3 +1,4 @@
+- Moved static Apache Webserver users to config file.
 - drop unused cert handler
 - Less strict package-list parsing in debPackage importlib
 - implement more decompression algorithms for reposync (bsc#1196704)
