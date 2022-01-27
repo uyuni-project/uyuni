@@ -1,8 +1,6 @@
 #!BuildTag: proxy-squid:latest proxy-squid:%PKG_VERSION% proxy-squid:%PKG_VERSION%.%RELEASE%
 
-# HACK: Open Build Service currently only supports short names. Assume short name by default, allow to override to qualified name via ARG
-ARG BASE_IMAGE_PREFIX=
-FROM ${BASE_IMAGE_PREFIX}suse/sle15:15.3
+FROM registry.suse.com/suse/sle15:15.3
 
 # Distro repos
 RUN zypper addrepo http://download.opensuse.org/distribution/leap/15.3/repo/oss/ main
