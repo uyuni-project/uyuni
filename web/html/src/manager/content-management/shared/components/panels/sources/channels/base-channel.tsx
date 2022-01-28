@@ -17,13 +17,15 @@ type Props = {
 };
 
 const BaseChannel = (props: Props) => {
-  // TODO: Implement
-  const selectedChildrenCount = 0;
-
-  const { id, channelName, isSelectedBaseChannel } = props.rowDefinition;
+  const { id, channelName, isSelectedBaseChannel, children } = props.rowDefinition;
   const isOpen = props.openRows.has(id);
   const isSelected = props.selectedRows.has(id);
   const identifier = "base_" + id;
+  const selectedChildrenCount = children
+    .map((child) => child.id)
+    .reduce((total: number, id) => {
+      return total + Number(props.selectedRows.has(id as number));
+    }, 0);
   const totalSelectedCount = Number(isSelected) + selectedChildrenCount;
 
   return (
