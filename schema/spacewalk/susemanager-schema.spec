@@ -106,6 +106,7 @@ install -m 0644 update-messages.txt $RPM_BUILD_ROOT/usr/share/susemanager/
 %endif
 
 install -m 755 schema-source-sanity-check.pl $RPM_BUILD_ROOT%{_bindir}/schema-source-sanity-check.pl
+install -m 755 blend $RPM_BUILD_ROOT%{_bindir}/blend
 
 %if 0%{?suse_version}
 %post
@@ -149,5 +150,6 @@ systemctl try-restart uyuni-check-database.service ||:
 %files sanity
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/schema-source-sanity-check.pl
+%attr(755,root,root) %{_bindir}/blend
 
 %changelog
