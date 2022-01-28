@@ -12,7 +12,6 @@
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
 @buildhost
-@long_test
 @proxy
 @private_net
 @pxeboot_minion
