@@ -7159,14 +7159,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <!-- FileDetail errors -->
       <trans-unit id="configmanager.filedetails.path.empty" xml:space="preserve">
         <source>No file path specified</source>
-        <target/>
+        <target>Nie je zadaná žiadna cesta k súboru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configmanager.filedetails.path.no-starting-slash" xml:space="preserve">
         <source>{0}: Configuration file path names must start with a '/'</source>
-        <target/>
+        <target>{0}: Názvy ciest ku konfiguračným súborom musia začínať s '/'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">etc/tomcat5: Configuration file path names must start with a '/'</context>
@@ -7174,7 +7174,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configmanager.filedetails.path.has-ending-slash" xml:space="preserve">
         <source>{0}: Configuration file path names may not end with a '/'</source>
-        <target/>
+        <target>{0}: Názvy ciest ku konfiguračným súborom nesmú končiť s '/'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">/etc/tomcat5/: Configuration file path names may not end with a '/'</context>
@@ -7182,7 +7182,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configmanager.filedetails.path.has-relative-dirs" xml:space="preserve">
         <source>{0}: Configuration file path names must be absolute paths - '..' is not allowed</source>
-        <target/>
+        <target>{0}: Názvy ciest ku konfiguračným súborom musia byť absolútne cesty - '..' nie je povolené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">/etc/../etc/tomcat5: Configuration file path names must be absolute paths - '..' is not allowed</context>
@@ -7190,7 +7190,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configmanager.filedetails.content.no-macro-name" xml:space="preserve">
         <source>Cannot find a macro function name - make sure the file isn't a binary file! '{0}'</source>
-        <target/>
+        <target>Nie je možné nájsť názov makro funkcie - uistite sa, že to nie je binárny súbor! '{0}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">Cannot find a macro function name  - make sure the file isn't a binary file!\n'() = default-value'</context>
@@ -7198,7 +7198,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configmanager.filedetails.content.bad-macro-name" xml:space="preserve">
         <source>Invalid macro function name {0}</source>
-        <target/>
+        <target>Nesprávny názov makro funkcie {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">Invalid macro function name foo.bar.blech</context>
@@ -7206,7 +7206,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configmanager.filedetails.content.bad-arg-content" xml:space="preserve">
         <source>Invalid arguments '{1}' to macro function '{0}'</source>
-        <target/>
+        <target>Neplatné argumenty '{1}' pre makro funkciu '{0}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">Invalid arguments '{]*' to macro function 'rhn.system.net_interface.ip_address'</context>
@@ -7214,7 +7214,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configmanager.filedetails.content.bad-macro" xml:space="preserve">
         <source>Invalid macro - make sure the file isn't a binary file! '{0}'</source>
-        <target/>
+        <target>Neplatné makro - uistite sa, že to nie je binárny súbor! '{0}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">Invalid macro - make sure the file isn't a binary file!\n'kjhafkjgy((7623=' </context>
@@ -7252,7 +7252,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="channel" xml:space="preserve">
         <source>Channel</source>
-        <target/>
+        <target>Kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -7266,7 +7266,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="traceback_mail" xml:space="preserve">
         <source>Email address</source>
-        <target/>
+        <target>Emailová adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
