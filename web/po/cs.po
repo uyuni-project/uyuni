@@ -5687,6 +5687,14 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Saturday"
 #~ msgstr "Sobota"
 
+#, fuzzy
+#~ msgid "Patched"
+#~ msgstr "Záplaty"
+
+#, fuzzy
+#~ msgid "No action required"
+#~ msgstr "Nutný restart systému"
+
 #~ msgid "Package Provides Name"
 #~ msgstr "Balíček poskytuje název"
 
@@ -5707,6 +5715,34 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "obsahuje balíček poskytující shodný název"
+
+#, fuzzy
+#~ msgid "lower than"
+#~ msgstr "verze nižší než"
+
+#, fuzzy
+#~ msgid "lower or equal"
+#~ msgstr "pozdější nebo shodný"
+
+#, fuzzy
+#~ msgid "lower or equal than"
+#~ msgstr "pozdější než nebo shodný"
+
+#, fuzzy
+#~ msgid "greater or equal"
+#~ msgstr "pozdější nebo shodný"
+
+#, fuzzy
+#~ msgid "greater or equal than"
+#~ msgstr "pozdější než nebo shodný"
+
+#, fuzzy
+#~ msgid "greater"
+#~ msgstr "Vytvořit"
+
+#, fuzzy
+#~ msgid "greater than"
+#~ msgstr "Vytvořeno v"
 
 #~ msgid "provides name"
 #~ msgstr "poskytuje název"
@@ -5733,6 +5769,14 @@ msgstr "Kód chyby HTTP "
 #~ msgstr ""
 #~ "Vzorec uložen. Upravte možnosti konfigurace v povolených vzorcích a "
 #~ "aplikujte "
+
+#, fuzzy
+#~ msgid "Documentation"
+#~ msgstr "dokumentace"
+
+#, fuzzy
+#~ msgid "Open search"
+#~ msgstr "Výmaz hledání"
 
 #~ msgid "Kiwi options"
 #~ msgstr "Volby kiwi"
@@ -5774,6 +5818,10 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Custom Inventory"
 #~ msgstr "Vlastní inventář"
 
+#, fuzzy
+#~ msgid "bootstrap"
+#~ msgstr "Zavést systém"
+
 #~ msgid "Flush Ansible fact cache"
 #~ msgstr "Vyprázdnění mezipaměti faktů Ansible"
 
@@ -5793,14 +5841,66 @@ msgstr "Kód chyby HTTP "
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
 
-#~ msgid "Unknown guest"
-#~ msgstr "Neznámý host"
+#, fuzzy
+#~ msgid "Host"
+#~ msgstr "Hostitelé"
 
-#~ msgid "Retry"
-#~ msgstr "Další pokus"
+#, fuzzy
+#~ msgid "SSH Port"
+#~ msgstr "Port"
 
-#~ msgid "Connecting..."
-#~ msgstr "Připojování..."
+#, fuzzy
+#~ msgid "User"
+#~ msgstr "Uživatelé"
+
+#, fuzzy
+#~ msgid "Reactivation Key"
+#~ msgstr "Aktivační klíč"
+
+#, fuzzy
+#~ msgid ""
+#~ "Are you sure you want to close this page while bootstrapping is in "
+#~ "progress ?"
+#~ msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+
+#, fuzzy
+#~ msgid "Change Proxy"
+#~ msgstr "Změny"
+
+#, fuzzy
+#~ msgid "New Proxy"
+#~ msgstr "Proxy"
+
+#, fuzzy
+#~ msgid "system selected"
+#~ msgstr "Odstranit vybrané"
+
+#, fuzzy
+#~ msgid "systems selected"
+#~ msgstr "Odstranit vybrané"
+
+#, fuzzy
+#~ msgid "Virtual Systems"
+#~ msgstr "Hostované virtuální systémy"
+
+#, fuzzy
+#~ msgid "No Virtual Systems."
+#~ msgstr "Hostované virtuální systémy"
+
+#, fuzzy
+#~ msgid "Virtual Host"
+#~ msgstr "Správce virtuálních hostiteľů"
+
+#, fuzzy
+#~ msgid "Virtual System"
+#~ msgstr "Hostované virtuální systémy"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM ani Xen neběží. Přesvědčte se, že jsou nainstalovány a moduly jádra "
+#~ "načteny."
 
 #~ msgid "Enable UEFI"
 #~ msgstr "Povolit UEFI"
@@ -5821,6 +5921,15 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Path to the cluster shared folder for VM definitions"
 #~ msgstr "Cesta ke sdílené složce clusteru pro definice virtuálních počítačů"
 
+#~ msgid "Retry"
+#~ msgstr "Další pokus"
+
+#~ msgid "Connecting..."
+#~ msgstr "Připojování..."
+
+#~ msgid "Unknown guest"
+#~ msgstr "Neznámý host"
+
 #~ msgid "Migrate"
 #~ msgstr "Migrovat"
 
@@ -5832,13 +5941,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "Jediný virtuální stroj využívající téměř všechny zdroje hostitele"
-
-#~ msgid ""
-#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-#~ "modules are loaded."
-#~ msgstr ""
-#~ "KVM ani Xen neběží. Přesvědčte se, že jsou nainstalovány a moduly jádra "
-#~ "načteny."
 
 #~ msgid ""
 #~ "Network based on macvtap driver to use a pool of physical interfaces. "

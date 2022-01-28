@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-11-10 09:12+0000\n"
+"PO-Revision-Date: 2022-01-25 03:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5735,6 +5735,46 @@ msgstr "HTTP エラーコード "
 #~ msgid "Saturday"
 #~ msgstr "土曜"
 
+#~ msgid "Affected, patches available in channels which are not assigned"
+#~ msgstr "影響を受ける、割り当てられていないチャンネルで利用可能なパッチ"
+
+#~ msgid "Affected, patches available in a Product Migration target"
+#~ msgstr "影響を受ける、製品の移行ターゲットで利用可能なパッチ"
+
+#~ msgid "Affected, at least one patch available in an assigned channel"
+#~ msgstr ""
+#~ "影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
+
+#~ msgid "Not affected"
+#~ msgstr "影響を受けません"
+
+#~ msgid "Patched"
+#~ msgstr "パッチ適用済み"
+
+#~ msgid "No action required"
+#~ msgstr "アクションは必要ありません"
+
+#~ msgid "Install a new patch on this system."
+#~ msgstr "このシステムに新しいパッチをインストールします。"
+
+#~ msgid "Patch available, but system needs to be migrated to a newer Product."
+#~ msgstr ""
+#~ "パッチは利用可能ですが、システムを新しい製品に移行する必要があります。"
+
+#~ msgid "Patch available, but needs to be cloned into Channel."
+#~ msgstr ""
+#~ "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
+
+#~ msgid "If you see this report a bug."
+#~ msgstr "このレポートが表示された場合はバグです。"
+
+#~ msgid "Patch available but needs to be cloned into Channel."
+#~ msgstr ""
+#~ "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
+
+#~ msgid "Errata"
+#~ msgstr "Errata"
+
 #~ msgid "Package Provides Name"
 #~ msgstr "名前を指定するパッケージ"
 
@@ -5755,6 +5795,30 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "指定した名前が等しいパッケージ"
+
+#~ msgid "lower"
+#~ msgstr "古い"
+
+#~ msgid "lower than"
+#~ msgstr "指定したものより古い"
+
+#~ msgid "lower or equal"
+#~ msgstr "古いか等しい"
+
+#~ msgid "lower or equal than"
+#~ msgstr "指定したものよりも古いか等しい"
+
+#~ msgid "greater or equal"
+#~ msgstr "新しいか等しい"
+
+#~ msgid "greater or equal than"
+#~ msgstr "指定したものよりも新しいか等しい"
+
+#~ msgid "greater"
+#~ msgstr "新しい"
+
+#~ msgid "greater than"
+#~ msgstr "指定したものより新しい"
 
 #~ msgid "provides name"
 #~ msgstr "名前が指定されているもの"
@@ -5781,6 +5845,12 @@ msgstr "HTTP エラーコード "
 #~ msgstr ""
 #~ "formula を保存しました。有効化された formula 内で設定オプションを編集し、"
 #~ "下記を適用してください "
+
+#~ msgid "Documentation"
+#~ msgstr "ドキュメンテーション"
+
+#~ msgid "Open search"
+#~ msgstr "検索を開く"
 
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwiオプション"
@@ -5822,6 +5892,9 @@ msgstr "HTTP エラーコード "
 #~ msgid "Custom Inventory"
 #~ msgstr "カスタムインベントリ"
 
+#~ msgid "bootstrap"
+#~ msgstr "ブートストラップ"
+
 #~ msgid "Flush Ansible fact cache"
 #~ msgstr "Ansibleファクトキャッシュをフラッシュする"
 
@@ -5841,14 +5914,81 @@ msgstr "HTTP エラーコード "
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
 
-#~ msgid "Unknown guest"
-#~ msgstr "不明ゲスト"
+#~ msgid "Host"
+#~ msgstr "ホスト"
 
-#~ msgid "Retry"
-#~ msgstr "再試行"
+#~ msgid "SSH Port"
+#~ msgstr "SSHポート"
 
-#~ msgid "Connecting..."
-#~ msgstr "接続中..."
+#~ msgid "User"
+#~ msgstr "ユーザ"
+
+#~ msgid "Authentication Method"
+#~ msgstr "認証メソッド"
+
+#~ msgid "Ansible control node"
+#~ msgstr "Ansible 制御ノード"
+
+#~ msgid "Reactivation Key"
+#~ msgstr "再アクティベーションキー"
+
+#~ msgid "Leave empty when no reactivation is wanted"
+#~ msgstr "再アクティベーションが不要な場合は空のままにする"
+
+#~ msgid "Disable SSH strict host key checking during bootstrap process"
+#~ msgstr "ブートストラッププロセス中にSSH厳密ホストキーの確認を無効にする"
+
+#~ msgid "Manage system completely via SSH (will not install an agent)"
+#~ msgstr ""
+#~ "SSH 経由でシステムを完全に管理する(エージェントをインストールしない)"
+
+#~ msgid ""
+#~ "Are you sure you want to close this page while bootstrapping is in "
+#~ "progress ?"
+#~ msgstr "ブートストラップ中にこのページを閉じてもよろしいですか?"
+
+#~ msgid ""
+#~ "Please select a list of minions (not proxies or traditional clients)."
+#~ msgstr ""
+#~ "ミニオンのリストを選択してください(プロキシや従来のクライアントではありま"
+#~ "せん)。"
+
+#~ msgid "Change of proxy server has been "
+#~ msgstr "プロキシサーバが変更されました "
+
+#~ msgid "Change Proxy"
+#~ msgstr "プロキシの変更"
+
+#~ msgid "Connect minion(s) to another proxy server."
+#~ msgstr "ミニオンを別のプロキシサーバに接続します。"
+
+#~ msgid "New Proxy"
+#~ msgstr "新しいプロキシ"
+
+#~ msgid "system selected"
+#~ msgstr "システムを選択しました"
+
+#~ msgid "systems selected"
+#~ msgstr "システムを選択しました"
+
+#~ msgid "Virtual Systems"
+#~ msgstr "仮想システム"
+
+#~ msgid "No Virtual Systems."
+#~ msgstr "仮想システムがありません。"
+
+#~ msgid "Virtual Host"
+#~ msgstr "仮想ホスト"
+
+#~ msgid "Virtual System"
+#~ msgstr "仮想システム"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVMもXenも実行されていません。KVMとXenがインストールされ、カーネルモジュー"
+#~ "ルがロードされていることを確認してください。"
 
 #~ msgid "Enable UEFI"
 #~ msgstr "UEFIの有効化"
@@ -5870,6 +6010,15 @@ msgstr "HTTP エラーコード "
 #~ msgid "Path to the cluster shared folder for VM definitions"
 #~ msgstr "VM定義用のクラスタ共有フォルダへのパス"
 
+#~ msgid "Retry"
+#~ msgstr "再試行"
+
+#~ msgid "Connecting..."
+#~ msgstr "接続中..."
+
+#~ msgid "Unknown guest"
+#~ msgstr "不明ゲスト"
+
 #~ msgid "Migrate"
 #~ msgstr "移行"
 
@@ -5881,13 +6030,6 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"
-
-#~ msgid ""
-#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-#~ "modules are loaded."
-#~ msgstr ""
-#~ "KVMもXenも実行されていません。KVMとXenがインストールされ、カーネルモジュー"
-#~ "ルがロードされていることを確認してください。"
 
 #~ msgid ""
 #~ "Network based on macvtap driver to use a pool of physical interfaces. "

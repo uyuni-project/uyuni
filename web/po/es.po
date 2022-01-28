@@ -5671,6 +5671,14 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
+#~ msgid "Patched"
+#~ msgstr "Parches"
+
+#, fuzzy
+#~ msgid "No action required"
+#~ msgstr "Se necesita un reinicio"
+
+#, fuzzy
 #~ msgid "Provides Name"
 #~ msgstr "Nombre del filtro"
 
@@ -5683,12 +5691,24 @@ msgstr ""
 #~ msgstr "Gravedad"
 
 #, fuzzy
+#~ msgid "greater"
+#~ msgstr "Crear"
+
+#, fuzzy
+#~ msgid "greater than"
+#~ msgstr "Creación"
+
+#, fuzzy
 #~ msgid "provides name"
 #~ msgstr "Tipo de fuente"
 
 #, fuzzy
 #~ msgid "This channel is mandatory"
 #~ msgstr "Este canal está recomendado"
+
+#, fuzzy
+#~ msgid "Documentation"
+#~ msgstr "documentación"
 
 #, fuzzy
 #~ msgid "Playbook File Name"
@@ -5703,12 +5723,54 @@ msgstr ""
 #~ msgstr "Nombre del canal"
 
 #, fuzzy
-#~ msgid "Unknown guest"
-#~ msgstr "Nombre de anfitrión del nodo"
+#~ msgid "User"
+#~ msgstr "Usuarios"
+
+#, fuzzy
+#~ msgid "Reactivation Key"
+#~ msgstr "Clave de activación"
+
+#, fuzzy
+#~ msgid ""
+#~ "Are you sure you want to close this page while bootstrapping is in "
+#~ "progress ?"
+#~ msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
+
+#, fuzzy
+#~ msgid "Change Proxy"
+#~ msgstr "Cambios"
+
+#, fuzzy
+#~ msgid "system selected"
+#~ msgstr "Sistema bloqueado"
+
+#, fuzzy
+#~ msgid "systems selected"
+#~ msgstr "Sistema bloqueado"
+
+#, fuzzy
+#~ msgid "Virtual Systems"
+#~ msgstr "Sistemas virtuales alojados"
+
+#, fuzzy
+#~ msgid "No Virtual Systems."
+#~ msgstr "Sistemas virtuales alojados"
+
+#, fuzzy
+#~ msgid "Virtual Host"
+#~ msgstr "Redes"
+
+#, fuzzy
+#~ msgid "Virtual System"
+#~ msgstr "Sistemas virtuales alojados"
 
 #, fuzzy
 #~ msgid "Enable UEFI"
 #~ msgstr "Activar"
+
+#, fuzzy
+#~ msgid "Unknown guest"
+#~ msgstr "Nombre de anfitrión del nodo"
 
 #, fuzzy
 #~ msgid "Target Host"

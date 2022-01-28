@@ -5526,8 +5526,32 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
+#~ msgid "Patched"
+#~ msgstr "Patch"
+
+#, fuzzy
 #~ msgid "Last Build"
 #~ msgstr "Crea"
+
+#, fuzzy
+#~ msgid "New Proxy"
+#~ msgstr "Proxy"
+
+#, fuzzy
+#~ msgid "Virtual Systems"
+#~ msgstr "Gestori di host virtuali"
+
+#, fuzzy
+#~ msgid "No Virtual Systems."
+#~ msgstr "Gestori di host virtuali"
+
+#, fuzzy
+#~ msgid "Virtual Host"
+#~ msgstr "Gestore dell'host virtuale"
+
+#, fuzzy
+#~ msgid "Virtual System"
+#~ msgstr "Gestore dell'host virtuale"
 
 #, fuzzy
 #~ msgid "Virtual Storage Pool"

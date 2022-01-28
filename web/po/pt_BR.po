@@ -5571,6 +5571,18 @@ msgstr ""
 #~ msgstr "Nome do Canal"
 
 #, fuzzy
+#~ msgid "User"
+#~ msgstr "Usuários"
+
+#, fuzzy
+#~ msgid "Change Proxy"
+#~ msgstr "Mudanças"
+
+#, fuzzy
+#~ msgid "Virtual System"
+#~ msgstr "Sistemas"
+
+#, fuzzy
 #~ msgid "foo {0} tea {1}"
 #~ msgstr "Página {0} de {1}"
 

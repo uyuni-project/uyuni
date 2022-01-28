@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-10-31 17:12+0000\n"
+"PO-Revision-Date: 2022-01-09 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -2304,7 +2304,7 @@ msgstr "obsahuje balík s obdobím/verziou/vydaním väčším ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
 msgid "equal"
-msgstr "rovnaký"
+msgstr "rovnaká"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "later or equal"
@@ -5713,6 +5713,43 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Saturday"
 #~ msgstr "Sobota"
 
+#~ msgid "Affected, patches available in channels which are not assigned"
+#~ msgstr "Ovplyvnené, opravy dostupné v kanáloch, ktoré nie sú priradené"
+
+#~ msgid "Affected, patches available in a Product Migration target"
+#~ msgstr "Ovplyvnené, opravy dostupné v cieli migrácie produktu"
+
+#~ msgid "Affected, at least one patch available in an assigned channel"
+#~ msgstr "Ovplyvnené, v priradenom kanáli je k dispozícii aspoň jedna oprava"
+
+#~ msgid "Not affected"
+#~ msgstr "Neovplyvnené"
+
+#~ msgid "Patched"
+#~ msgstr "Opravené"
+
+#~ msgid "No action required"
+#~ msgstr "Nevyžaduje sa žiadna akcia"
+
+#~ msgid "Install a new patch on this system."
+#~ msgstr "Inštalovať novú opravu na tento systém."
+
+#~ msgid "Patch available, but system needs to be migrated to a newer Product."
+#~ msgstr ""
+#~ "Oprava je k dispozícii, ale systém je potrebné migrovať na novší produkt."
+
+#~ msgid "Patch available, but needs to be cloned into Channel."
+#~ msgstr "Oprava je k dispozícii, ale je potrebné ju naklonovať do kanála."
+
+#~ msgid "If you see this report a bug."
+#~ msgstr "Ak vidíte toto, nahláste chybu."
+
+#~ msgid "Patch available but needs to be cloned into Channel."
+#~ msgstr "Oprava je k dispozícii, ale je potrebné ju naklonovať do kanála."
+
+#~ msgid "Errata"
+#~ msgstr "Opravy chýb"
+
 #~ msgid "Package Provides Name"
 #~ msgstr "Balík poskytuje názov"
 
@@ -5733,6 +5770,30 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "obsahuje balík, ktorý poskytuje rovnaký názov"
+
+#~ msgid "lower"
+#~ msgstr "nižšia"
+
+#~ msgid "lower than"
+#~ msgstr "nižšia ako"
+
+#~ msgid "lower or equal"
+#~ msgstr "nižšia alebo rovnaká"
+
+#~ msgid "lower or equal than"
+#~ msgstr "nižšia alebo rovnaká ako"
+
+#~ msgid "greater or equal"
+#~ msgstr "vyššia alebo rovnaká"
+
+#~ msgid "greater or equal than"
+#~ msgstr "vyššia alebo rovnaká ako"
+
+#~ msgid "greater"
+#~ msgstr "vyššia"
+
+#~ msgid "greater than"
+#~ msgstr "vyššia ako"
 
 #~ msgid "provides name"
 #~ msgstr "poskytuje názov"
@@ -5759,6 +5820,12 @@ msgstr "Kód chyby HTTP "
 #~ msgstr ""
 #~ "Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
 #~ "použiť "
+
+#~ msgid "Documentation"
+#~ msgstr "Dokumentácia"
+
+#~ msgid "Open search"
+#~ msgstr "Otvoriť vyhľadávanie"
 
 #~ msgid "Kiwi options"
 #~ msgstr "Voľby kiwi"
@@ -5801,6 +5868,9 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Custom Inventory"
 #~ msgstr "Vlastný inventár"
 
+#~ msgid "bootstrap"
+#~ msgstr "zavádzať"
+
 #~ msgid "Flush Ansible fact cache"
 #~ msgstr "Vyprázdniť vyrovnávaciu pamäť faktov Ansible"
 
@@ -5820,14 +5890,81 @@ msgstr "Kód chyby HTTP "
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
 
-#~ msgid "Unknown guest"
-#~ msgstr "Neznámy hosť"
+#~ msgid "Host"
+#~ msgstr "Hostiteľ"
 
-#~ msgid "Retry"
-#~ msgstr "Znovu"
+#~ msgid "SSH Port"
+#~ msgstr "Port SSH"
 
-#~ msgid "Connecting..."
-#~ msgstr "Pripájanie..."
+#~ msgid "User"
+#~ msgstr "Používateľ"
+
+#~ msgid "Authentication Method"
+#~ msgstr "Metóda overenia"
+
+#~ msgid "Ansible control node"
+#~ msgstr "Riadiaci uzol Ansible"
+
+#~ msgid "Reactivation Key"
+#~ msgstr "Reaktivačný kľúč"
+
+#~ msgid "Leave empty when no reactivation is wanted"
+#~ msgstr "Ponechať prázdne, ak sa nevyžaduje reaktivácia"
+
+#~ msgid "Disable SSH strict host key checking during bootstrap process"
+#~ msgstr ""
+#~ "Zakázať prísnu kontrolu kľúča hostiteľa SSH počas zavádzacieho procesu"
+
+#~ msgid "Manage system completely via SSH (will not install an agent)"
+#~ msgstr "Spravovať systém kompletne cez SSH (neinštaluje sa agent)"
+
+#~ msgid ""
+#~ "Are you sure you want to close this page while bootstrapping is in "
+#~ "progress ?"
+#~ msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
+
+#~ msgid ""
+#~ "Please select a list of minions (not proxies or traditional clients)."
+#~ msgstr ""
+#~ "Prosím, vyberte zoznam klientov minion (nie proxy serverov alebo "
+#~ "tradičných klientov)."
+
+#~ msgid "Change of proxy server has been "
+#~ msgstr "Zmena proxy servera bola "
+
+#~ msgid "Change Proxy"
+#~ msgstr "Zmena proxy"
+
+#~ msgid "Connect minion(s) to another proxy server."
+#~ msgstr "Pripojiť agenta(ov) minion k ďalšiemu proxy serveru."
+
+#~ msgid "New Proxy"
+#~ msgstr "Nový proxy"
+
+#~ msgid "system selected"
+#~ msgstr "vybraný systém"
+
+#~ msgid "systems selected"
+#~ msgstr "vybrané systémy"
+
+#~ msgid "Virtual Systems"
+#~ msgstr "Virtuálne systémy"
+
+#~ msgid "No Virtual Systems."
+#~ msgstr "Žiadne virtuálne systémy."
+
+#~ msgid "Virtual Host"
+#~ msgstr "Virtuálny hostiteľ"
+
+#~ msgid "Virtual System"
+#~ msgstr "Virtuálny systém"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly "
+#~ "jadra sú načítané."
 
 #~ msgid "Enable UEFI"
 #~ msgstr "Povoliť UEFI"
@@ -5848,6 +5985,15 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Path to the cluster shared folder for VM definitions"
 #~ msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
 
+#~ msgid "Retry"
+#~ msgstr "Znovu"
+
+#~ msgid "Connecting..."
+#~ msgstr "Pripájanie..."
+
+#~ msgid "Unknown guest"
+#~ msgstr "Neznámy hosť"
+
 #~ msgid "Migrate"
 #~ msgstr "Migrovať"
 
@@ -5859,13 +6005,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"
-
-#~ msgid ""
-#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-#~ "modules are loaded."
-#~ msgstr ""
-#~ "KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly "
-#~ "jadra sú načítané."
 
 #~ msgid ""
 #~ "Network based on macvtap driver to use a pool of physical interfaces. "

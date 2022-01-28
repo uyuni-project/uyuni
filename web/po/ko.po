@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-11-11 05:37+0000\n"
+"PO-Revision-Date: 2022-01-25 07:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5662,6 +5662,43 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Saturday"
 #~ msgstr "토요일"
 
+#~ msgid "Affected, patches available in channels which are not assigned"
+#~ msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
+
+#~ msgid "Affected, patches available in a Product Migration target"
+#~ msgstr "제품 마이그레이션 대상에서 사용 가능한 패치가 적용됨"
+
+#~ msgid "Affected, at least one patch available in an assigned channel"
+#~ msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
+
+#~ msgid "Not affected"
+#~ msgstr "적용되지 않음"
+
+#~ msgid "Patched"
+#~ msgstr "패치됨"
+
+#~ msgid "No action required"
+#~ msgstr "동작이 필요하지 않음"
+
+#~ msgid "Install a new patch on this system."
+#~ msgstr "이 시스템에 새 패치를 설치합니다."
+
+#~ msgid "Patch available, but system needs to be migrated to a newer Product."
+#~ msgstr ""
+#~ "사용 가능한 패치지만 시스템은 최신 제품으로 마이그레이트해야 합니다."
+
+#~ msgid "Patch available, but needs to be cloned into Channel."
+#~ msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
+
+#~ msgid "If you see this report a bug."
+#~ msgstr "보게 된다면, 버그를 보고하십시오."
+
+#~ msgid "Patch available but needs to be cloned into Channel."
+#~ msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
+
+#~ msgid "Errata"
+#~ msgstr "Errata"
+
 #~ msgid "Package Provides Name"
 #~ msgstr "패키지 이름 제공"
 
@@ -5682,6 +5719,30 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "동일한 이름을 제공하는 패키지 포함"
+
+#~ msgid "lower"
+#~ msgstr "작음"
+
+#~ msgid "lower than"
+#~ msgstr "다음보다 작음"
+
+#~ msgid "lower or equal"
+#~ msgstr "작거나 같음"
+
+#~ msgid "lower or equal than"
+#~ msgstr "다음보다 작거나 같음"
+
+#~ msgid "greater or equal"
+#~ msgstr "크거나 같음"
+
+#~ msgid "greater or equal than"
+#~ msgstr "다음보다 크거나 같음"
+
+#~ msgid "greater"
+#~ msgstr "큼"
+
+#~ msgid "greater than"
+#~ msgstr "다음보다 큼"
 
 #~ msgid "provides name"
 #~ msgstr "이름 제공"
@@ -5706,6 +5767,12 @@ msgstr "HTTP 오류 코드 "
 #~ "apply the "
 #~ msgstr ""
 #~ "수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 적용합니다. "
+
+#~ msgid "Documentation"
+#~ msgstr "문서"
+
+#~ msgid "Open search"
+#~ msgstr "검색 열기"
 
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 옵션"
@@ -5747,6 +5814,9 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Custom Inventory"
 #~ msgstr "사용자 지정 인벤토리"
 
+#~ msgid "bootstrap"
+#~ msgstr "부트스트랩"
+
 #~ msgid "Flush Ansible fact cache"
 #~ msgstr "Ansible 팩트 캐시 플러시"
 
@@ -5766,14 +5836,78 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
 
-#~ msgid "Unknown guest"
-#~ msgstr "알 수 없는 게스트"
+#~ msgid "Host"
+#~ msgstr "호스트"
 
-#~ msgid "Retry"
-#~ msgstr "재시도"
+#~ msgid "SSH Port"
+#~ msgstr "SSH 포트"
 
-#~ msgid "Connecting..."
-#~ msgstr "연결 중..."
+#~ msgid "User"
+#~ msgstr "사용자"
+
+#~ msgid "Authentication Method"
+#~ msgstr "인증 방법"
+
+#~ msgid "Ansible control node"
+#~ msgstr "Ansible 제어 노드"
+
+#~ msgid "Reactivation Key"
+#~ msgstr "활성화 키"
+
+#~ msgid "Leave empty when no reactivation is wanted"
+#~ msgstr "재활성화를 원하지 않는 경우 비워둡니다."
+
+#~ msgid "Disable SSH strict host key checking during bootstrap process"
+#~ msgstr "부트스트랩 프로세스 중 SSH strict 호스트 키 확인 비활성화"
+
+#~ msgid "Manage system completely via SSH (will not install an agent)"
+#~ msgstr "SSH를 통해 시스템을 완전히 관리합니다(에이전트를 설치하지 않음)."
+
+#~ msgid ""
+#~ "Are you sure you want to close this page while bootstrapping is in "
+#~ "progress ?"
+#~ msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습니까?"
+
+#~ msgid ""
+#~ "Please select a list of minions (not proxies or traditional clients)."
+#~ msgstr "미니언 목록을 선택하십시오(프록시나 기존 클라이언트 제외)."
+
+#~ msgid "Change of proxy server has been "
+#~ msgstr "프록시 서버가 변경되었습니다. "
+
+#~ msgid "Change Proxy"
+#~ msgstr "프록시 변경"
+
+#~ msgid "Connect minion(s) to another proxy server."
+#~ msgstr "미니언을 다른 프록시 서버에 연결하십시오."
+
+#~ msgid "New Proxy"
+#~ msgstr "새 프록시"
+
+#~ msgid "system selected"
+#~ msgstr "시스템 선택됨"
+
+#~ msgid "systems selected"
+#~ msgstr "시스템 선택됨"
+
+#~ msgid "Virtual Systems"
+#~ msgstr "가상 시스템"
+
+#~ msgid "No Virtual Systems."
+#~ msgstr "가상 시스템 없음"
+
+#~ msgid "Virtual Host"
+#~ msgstr "가상 호스트"
+
+#~ msgid "Virtual System"
+#~ msgstr "가상 시스템"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 "
+#~ "확인하십시오."
 
 #~ msgid "Enable UEFI"
 #~ msgstr "UEFI 활성화"
@@ -5794,6 +5928,15 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Path to the cluster shared folder for VM definitions"
 #~ msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
 
+#~ msgid "Retry"
+#~ msgstr "재시도"
+
+#~ msgid "Connecting..."
+#~ msgstr "연결 중..."
+
+#~ msgid "Unknown guest"
+#~ msgstr "알 수 없는 게스트"
+
 #~ msgid "Migrate"
 #~ msgstr "마이그레이트"
 
@@ -5805,13 +5948,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
-
-#~ msgid ""
-#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-#~ "modules are loaded."
-#~ msgstr ""
-#~ "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 "
-#~ "확인하십시오."
 
 #~ msgid ""
 #~ "Network based on macvtap driver to use a pool of physical interfaces. "

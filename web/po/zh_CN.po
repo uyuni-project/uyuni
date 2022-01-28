@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-11-09 09:11+0000\n"
+"PO-Revision-Date: 2022-01-24 10:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -5571,6 +5571,42 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Saturday"
 #~ msgstr "星期六"
 
+#~ msgid "Affected, patches available in channels which are not assigned"
+#~ msgstr "受影响，频道中有可用补丁，但未指派"
+
+#~ msgid "Affected, patches available in a Product Migration target"
+#~ msgstr "受影响，产品迁移目标中有可用补丁"
+
+#~ msgid "Affected, at least one patch available in an assigned channel"
+#~ msgstr "受影响，指派的频道中至少有一个可用补丁"
+
+#~ msgid "Not affected"
+#~ msgstr "不受影响"
+
+#~ msgid "Patched"
+#~ msgstr "已修补"
+
+#~ msgid "No action required"
+#~ msgstr "不需要采取措施"
+
+#~ msgid "Install a new patch on this system."
+#~ msgstr "在此系统上安装新补丁。"
+
+#~ msgid "Patch available, but system needs to be migrated to a newer Product."
+#~ msgstr "补丁可用，但系统需要迁移到更新的产品。"
+
+#~ msgid "Patch available, but needs to be cloned into Channel."
+#~ msgstr "补丁可用，但需要克隆到频道中。"
+
+#~ msgid "If you see this report a bug."
+#~ msgstr "如果您看到此情况，请报告 Bug。"
+
+#~ msgid "Patch available but needs to be cloned into Channel."
+#~ msgstr "补丁可用，但需要克隆到频道中。"
+
+#~ msgid "Errata"
+#~ msgstr "勘误"
+
 #~ msgid "Package Provides Name"
 #~ msgstr "软件包提供名称"
 
@@ -5591,6 +5627,30 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "包含所提供名称等于以下值的软件包"
+
+#~ msgid "lower"
+#~ msgstr "更低"
+
+#~ msgid "lower than"
+#~ msgstr "低于"
+
+#~ msgid "lower or equal"
+#~ msgstr "更低或相同"
+
+#~ msgid "lower or equal than"
+#~ msgstr "低于或等于"
+
+#~ msgid "greater or equal"
+#~ msgstr "更高或相同"
+
+#~ msgid "greater or equal than"
+#~ msgstr "高于或等于"
+
+#~ msgid "greater"
+#~ msgstr "更高"
+
+#~ msgid "greater than"
+#~ msgstr "高于"
 
 #~ msgid "provides name"
 #~ msgstr "提供名称"
@@ -5613,6 +5673,12 @@ msgstr "HTTP 错误代码 "
 #~ "Formula saved. Edit configuration options in the enabled formulas and "
 #~ "apply the "
 #~ msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 "
+
+#~ msgid "Documentation"
+#~ msgstr "文档"
+
+#~ msgid "Open search"
+#~ msgstr "开放式搜索"
 
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 选项"
@@ -5647,6 +5713,9 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Custom Inventory"
 #~ msgstr "自定义库存"
 
+#~ msgid "bootstrap"
+#~ msgstr "引导"
+
 #~ msgid "Flush Ansible fact cache"
 #~ msgstr "刷新 Ansible 事实缓存"
 
@@ -5664,14 +5733,76 @@ msgstr "HTTP 错误代码 "
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
 
-#~ msgid "Unknown guest"
-#~ msgstr "未知 Guest"
+#~ msgid "Host"
+#~ msgstr "主机"
 
-#~ msgid "Retry"
-#~ msgstr "重试"
+#~ msgid "SSH Port"
+#~ msgstr "SSH 端口"
 
-#~ msgid "Connecting..."
-#~ msgstr "正在连接..."
+#~ msgid "User"
+#~ msgstr "用户"
+
+#~ msgid "Authentication Method"
+#~ msgstr "身份验证方法"
+
+#~ msgid "Ansible control node"
+#~ msgstr "Ansible 控制节点"
+
+#~ msgid "Reactivation Key"
+#~ msgstr "重新激活密钥"
+
+#~ msgid "Leave empty when no reactivation is wanted"
+#~ msgstr "如不需要重新激活，则留空"
+
+#~ msgid "Disable SSH strict host key checking during bootstrap process"
+#~ msgstr "在引导期间禁用 SSH 严格主机密钥检查"
+
+#~ msgid "Manage system completely via SSH (will not install an agent)"
+#~ msgstr "完全通过 SSH 管理系统（将不安装代理）"
+
+#~ msgid ""
+#~ "Are you sure you want to close this page while bootstrapping is in "
+#~ "progress ?"
+#~ msgstr "正在进行引导，您确定要关闭此页面吗？"
+
+#~ msgid ""
+#~ "Please select a list of minions (not proxies or traditional clients)."
+#~ msgstr "请选择受控端（不是代理或传统客户端）列表。"
+
+#~ msgid "Change of proxy server has been "
+#~ msgstr "代理服务器更改已 "
+
+#~ msgid "Change Proxy"
+#~ msgstr "更改代理"
+
+#~ msgid "Connect minion(s) to another proxy server."
+#~ msgstr "将受控端连接到其他代理服务器。"
+
+#~ msgid "New Proxy"
+#~ msgstr "新代理"
+
+#~ msgid "system selected"
+#~ msgstr "个系统已选定"
+
+#~ msgid "systems selected"
+#~ msgstr "个系统已选定"
+
+#~ msgid "Virtual Systems"
+#~ msgstr "虚拟系统"
+
+#~ msgid "No Virtual Systems."
+#~ msgstr "没有虚拟系统。"
+
+#~ msgid "Virtual Host"
+#~ msgstr "虚拟主机"
+
+#~ msgid "Virtual System"
+#~ msgstr "虚拟系统"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
 
 #~ msgid "Enable UEFI"
 #~ msgstr "启用 UEFI"
@@ -5691,6 +5822,15 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Path to the cluster shared folder for VM definitions"
 #~ msgstr "群集 VM 定义共享文件夹路径"
 
+#~ msgid "Retry"
+#~ msgstr "重试"
+
+#~ msgid "Connecting..."
+#~ msgstr "正在连接..."
+
+#~ msgid "Unknown guest"
+#~ msgstr "未知 Guest"
+
 #~ msgid "Migrate"
 #~ msgstr "迁移"
 
@@ -5702,11 +5842,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Single virtual machine using almost all the host resources"
 #~ msgstr "单个虚拟机几乎使用了所有主机资源"
-
-#~ msgid ""
-#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-#~ "modules are loaded."
-#~ msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
 
 #~ msgid ""
 #~ "Network based on macvtap driver to use a pool of physical interfaces. "
