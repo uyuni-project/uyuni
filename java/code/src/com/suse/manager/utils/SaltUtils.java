@@ -1060,11 +1060,6 @@ public class SaltUtils {
             LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
             return;
         }
-        Optional<Long> imageStoreId = Optional.ofNullable(details.get().getImageStoreId());
-        if (imageStoreId.isEmpty()) { // It happens when the store is deleted during an inspect action
-            LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
-            return;
-        }
         ImageInfoFactory
                 .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
