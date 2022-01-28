@@ -21,11 +21,11 @@ import WorkerMessages from "./channels-selection-messages";
 type PropsType = {
   isSourcesApiLoading: boolean;
   initialSelectedSources: ProjectSoftwareSourceType[];
-  // For some reason, the wrapper expects labels, not channels, but that's fine by us
+  // For some reason, the wrapper expects labels, not channels or ids, but that's fine by us
   onChange: (channelLabels: string[]) => void;
 };
 
-let rowBatchIdentifier: undefined | number = undefined;
+let rowBufferIdentifier: undefined | number = undefined;
 let rowBuffer: BaseRowDefinition[] = [];
 
 const ChannelsSelection = (props: PropsType) => {
@@ -42,8 +42,6 @@ const ChannelsSelection = (props: PropsType) => {
 
   const onSelectedBaseChannelIdChange = (channelId: number) => {
     worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: channelId });
-    // TODO: Fix
-    // onToggleChannelSelect(channelId);
   };
 
   // Debounce searching so the worker is not overloaded during typing when working with large data sets
@@ -64,6 +62,8 @@ const ChannelsSelection = (props: PropsType) => {
       channel.requires.forEach((id) => selectedRows.add(id));
       setSelectedRows(new Set([...selectedRows]));
     }
+    // TODO: Get labels and propagate changes
+    // props.onChange(data.selectedChannelLabels);
   };
 
   const onToggleChannelOpen = (channelId: number, rowIndex: number) => {
@@ -100,26 +100,26 @@ const ChannelsSelection = (props: PropsType) => {
           if (!Array.isArray(data.rows)) {
             throw new RangeError("Received no valid rows");
           }
-          if (typeof data.batchIdentifier === "undefined") {
+          if (typeof data.bufferIdentifier === "undefined") {
             throw new TypeError("No batch identifier");
           }
-          if (data.batchIdentifier === rowBatchIdentifier) {
+          /** The worker sends data over in batches to avoid overloading the UI thread with work */
+          if (data.bufferIdentifier === rowBufferIdentifier) {
             // Append rows to an existing batch
             rowBuffer.push(...data.rows);
           } else {
             // New batch of rows
-            rowBatchIdentifier = data.batchIdentifier;
+            rowBufferIdentifier = data.bufferIdentifier;
             rowBuffer = data.rows;
+            // Select the first row since it's the new base
+            onToggleChannelSelect(rowBuffer[0], true);
           }
+
           // If we've received everything from the worker, flush the buffer
           if (rowBuffer.length === data.rowCount) {
             setRows(rowBuffer);
-            onToggleChannelSelect(rowBuffer[0]);
             rowBuffer = [];
           }
-          // TODO: onToggleChannelSelect with the first row if conditions?
-          // TODO: Implement
-          // props.onChange(data.selectedChannelLabels);
           return;
         }
         default:

@@ -13,7 +13,7 @@ const context: Worker = self as any;
 
 const state = new ChannelProcessor();
 
-let batchIdentifier = 0;
+let bufferIdentifier = 0;
 
 // React to messages from parent thread
 context.addEventListener("message", async ({ data }) => {
@@ -77,20 +77,20 @@ context.addEventListener("message", async ({ data }) => {
   const { rows } = result;
 
   // Send rows in batches to give the UI thread a chance to do other work inbetween
-  const batchSize = 1000;
-  for (let ii = 0; ii <= Math.floor(rows.length / batchSize); ii++) {
-    const identifier = batchIdentifier;
+  const bufferSize = 1000;
+  for (let ii = 0; ii <= Math.floor(rows.length / bufferSize); ii++) {
+    const identifier = bufferIdentifier;
 
     // eslint-disable-next-line no-restricted-globals
     self.setTimeout(() => {
-      const start = ii * batchSize;
+      const start = ii * bufferSize;
       context.postMessage({
         type: WorkerMessages.ROWS_AVAILABLE,
-        rows: rows.slice(start, start + batchSize),
+        rows: rows.slice(start, start + bufferSize),
         rowCount: rows.length,
-        batchIdentifier: identifier,
+        bufferIdentifier: identifier,
       });
     });
   }
-  batchIdentifier += 1;
+  bufferIdentifier += 1;
 });
