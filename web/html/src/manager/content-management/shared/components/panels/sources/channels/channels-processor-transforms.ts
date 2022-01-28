@@ -35,14 +35,13 @@ export function derivedChannelsToRowDefinitions(
   // TODO: Here and elsewhere, this reduce can become just a regular for loop if we want to go faster
   return derivedChannels.reduce((result, channel) => {
     let children: (ChildRowDefinition | EmptyChildRowDefinition | RecommendedToggleRowDefinition)[] = [];
-    let recommendedChildrenCount = 0;
+    let recommendedChildren: ChildRowDefinition[] = [];
     const parentRequires = this.requiresMap.get(channel.id);
 
     if (channel.children.length) {
       channel.children.forEach((child) => {
         const isRequiredBySelectedBaseChannel = Boolean(selectedBaseChannelRequires?.has(child));
-        recommendedChildrenCount += Number(child.recommended);
-        children.push({
+        const childDefinition: ChildRowDefinition = {
           type: RowType.Child,
           id: child.id,
           channelName: child.name,
@@ -50,7 +49,13 @@ export function derivedChannelsToRowDefinitions(
           isRequired: Boolean(parentRequires?.has(child)),
           isRequiredBySelectedBaseChannel,
           tooltipData: getTooltipData.call(this, child.id),
-        });
+          requires: Array.from(this.requiresMap.get(child.id) || []).map((item) => item.id),
+          requiredBy: Array.from(this.requiredByMap.get(child.id) || []).map((item) => item.id),
+        };
+        children.push(childDefinition);
+        if (child.recommended) {
+          recommendedChildren.push(childDefinition);
+        }
       });
     } else {
       children.push({
@@ -58,11 +63,10 @@ export function derivedChannelsToRowDefinitions(
         id: `empty_child_${channel.id}`,
       });
     }
-    if (recommendedChildrenCount) {
+    if (recommendedChildren.length) {
       children.unshift({
         type: RowType.RecommendedToggle,
         id: `recommended_toggle_${channel.id}`,
-        channelId: channel.id,
       });
     }
 
@@ -71,7 +75,10 @@ export function derivedChannelsToRowDefinitions(
       id: channel.id,
       channelName: channel.name,
       isSelectedBaseChannel: channel.id === this.selectedBaseChannelId,
+      requires: Array.from(this.requiresMap.get(channel.id) || []).map((item) => item.id),
+      requiredBy: Array.from(this.requiredByMap.get(channel.id) || []).map((item) => item.id),
       children,
+      recommendedChildren,
     });
 
     return result;

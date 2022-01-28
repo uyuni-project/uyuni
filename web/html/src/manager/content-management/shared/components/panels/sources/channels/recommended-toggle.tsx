@@ -1,24 +1,30 @@
 import * as React from "react";
 import { Toggler } from "components/toggler";
 
-import { RecommendedToggleRowDefinition } from "./channels-selection-rows";
+import { BaseRowDefinition, ChildRowDefinition, RecommendedToggleRowDefinition } from "./channels-selection-rows";
 
 import styles from "./channels-selection.css";
 
 type Props = {
   definition: RecommendedToggleRowDefinition;
-  onSetRecommendedChildrenSelected: (id: number, selected: boolean) => void;
+  parent: BaseRowDefinition;
+  selectedRows: Set<number>;
+  onToggleChannelSelect: (channel: BaseRowDefinition | ChildRowDefinition, toState?: boolean) => void;
 };
 
 const RecommendedToggle = (props: Props) => {
-  // TODO: Implement
-  const areAllRecommendedChildrenSelected = false;
-  const { channelId } = props.definition;
+  const { parent, selectedRows } = props;
+  const recommendedChildren = parent.recommendedChildren;
+  const areAllRecommendedChildrenSelected = recommendedChildren.every((child) => selectedRows.has(child.id));
   return (
     <div className={styles.nested_row}>
       <Toggler
         value={areAllRecommendedChildrenSelected}
-        handler={() => props.onSetRecommendedChildrenSelected(channelId, !areAllRecommendedChildrenSelected)}
+        handler={() => {
+          recommendedChildren.forEach((child) =>
+            props.onToggleChannelSelect(child, !areAllRecommendedChildrenSelected)
+          );
+        }}
         text={t("include recommended")}
       />
     </div>

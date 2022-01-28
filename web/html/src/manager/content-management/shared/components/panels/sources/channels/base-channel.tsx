@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Highlight } from "components/table/Highlight";
-import { BaseRowDefinition, RowType } from "./channels-selection-rows";
+import { BaseRowDefinition, ChildRowDefinition, RowType } from "./channels-selection-rows";
 import ChildChannel from "./child-channel";
 import RecommendedToggle from "./recommended-toggle";
 import EmptyChild from "./empty-child";
@@ -12,7 +12,7 @@ type Props = {
   search: string;
   openRows: Set<number>;
   selectedRows: Set<number>;
-  onToggleChannelSelect: (id: number) => void;
+  onToggleChannelSelect: (channel: BaseRowDefinition | ChildRowDefinition, toState?: boolean) => void;
   onToggleChannelOpen: (id: number) => void;
 };
 
@@ -48,7 +48,7 @@ const BaseChannel = (props: Props) => {
           onClick={(event) => {
             // Since this element is in another clickable element, don't propagate the event
             event.stopPropagation();
-            props.onToggleChannelSelect(id);
+            props.onToggleChannelSelect(props.rowDefinition);
           }}
           disabled={isSelectedBaseChannel}
         />
@@ -71,7 +71,7 @@ const BaseChannel = (props: Props) => {
                     definition={child}
                     search={props.search}
                     selectedRows={props.selectedRows}
-                    onToggleChannelSelect={(channelId) => props.onToggleChannelSelect(channelId)}
+                    onToggleChannelSelect={props.onToggleChannelSelect}
                   />
                 );
               case RowType.EmptyChild:
@@ -81,11 +81,9 @@ const BaseChannel = (props: Props) => {
                   <RecommendedToggle
                     key={child.id}
                     definition={child}
-                    onSetRecommendedChildrenSelected={(channelId, selected) => {
-                      // TODO: Implement
-                      // onSetRecommendedChildrenSelected(channelId, selected)
-                      return;
-                    }}
+                    parent={props.rowDefinition}
+                    selectedRows={props.selectedRows}
+                    onToggleChannelSelect={props.onToggleChannelSelect}
                   />
                 );
               default:

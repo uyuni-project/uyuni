@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Highlight } from "components/table/Highlight";
 import { ChannelAnchorLink } from "components/links";
-import { ChildRowDefinition } from "./channels-selection-rows";
+import { BaseRowDefinition, ChildRowDefinition } from "./channels-selection-rows";
 
 import styles from "./channels-selection.css";
 
@@ -9,7 +9,7 @@ type Props = {
   definition: ChildRowDefinition;
   search: string;
   selectedRows: Set<number>;
-  onToggleChannelSelect: (id: number) => void;
+  onToggleChannelSelect: (channel: BaseRowDefinition | ChildRowDefinition, toState?: boolean) => void;
 };
 
 const getTooltip = (tooltipData: ChildRowDefinition["tooltipData"]) => {
@@ -41,7 +41,7 @@ const ChildChannel = (props: Props) => {
         name="childChannels"
         readOnly
         checked={isSelected}
-        onClick={() => props.onToggleChannelSelect(id)}
+        onClick={() => props.onToggleChannelSelect(props.definition)}
         disabled={isRequiredBySelectedBaseChannel}
       />
       <label className={`${styles.collapsible} ${styles.child_name}`} title={tooltip || undefined} htmlFor={identifier}>

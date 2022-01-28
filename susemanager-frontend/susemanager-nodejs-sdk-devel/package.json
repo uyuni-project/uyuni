@@ -106,6 +106,7 @@
     "react-select": "^4.3.1",
     "react-select-async-paginate": "^0.6.0",
     "react-toastify": "^6.0.5",
+    "react-virtuoso": "^2.5.1",
     "react-vtree": "3.0.0-beta.3",
     "react-window": "^1.8.6",
     "senna": "^2.7.8",

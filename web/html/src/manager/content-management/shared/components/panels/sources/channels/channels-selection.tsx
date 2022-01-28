@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo, useEffect, useState, useCallback, useRef } from "react";
+import { memo, useEffect, useState, useCallback } from "react";
 import debounce from "lodash/debounce";
 import xor from "lodash/xor";
 
@@ -13,7 +13,7 @@ import { getInitialFiltersState } from "./channels-filters-types";
 import BaseChannel from "./base-channel";
 import ChannelsFilters from "./channels-filters";
 import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-api";
-import { RowType, BaseRowDefinition } from "./channels-selection-rows";
+import { BaseRowDefinition, ChildRowDefinition } from "./channels-selection-rows";
 
 import Worker from "./channels-selection.worker.ts";
 import WorkerMessages from "./channels-selection-messages";
@@ -32,7 +32,6 @@ const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadSelectOptions] = useLoadSelectOptions();
   const [channelsWithMandatoryPromise] = useChannelsWithMandatoryApi();
-  const listRef = useRef<typeof VirtualList>(null);
 
   const [worker] = useState(new Worker());
   const [rows, setRows] = useState<BaseRowDefinition[] | undefined>(undefined);
@@ -43,7 +42,8 @@ const ChannelsSelection = (props: PropsType) => {
 
   const onSelectedBaseChannelIdChange = (channelId: number) => {
     worker.postMessage({ type: WorkerMessages.SET_SELECTED_BASE_CHANNEL_ID, selectedBaseChannelId: channelId });
-    onToggleChannelSelect(channelId);
+    // TODO: Fix
+    // onToggleChannelSelect(channelId);
   };
 
   // Debounce searching so the worker is not overloaded during typing when working with large data sets
@@ -54,19 +54,16 @@ const ChannelsSelection = (props: PropsType) => {
     []
   );
 
-  const onToggleChannelSelect = (channelId: number) => {
-    // TODO: Also requires and requiredBy
-    console.log("toggle select", channelId);
-    if (selectedRows.has(channelId)) {
-      selectedRows.delete(channelId);
+  const onToggleChannelSelect = (channel: BaseRowDefinition | ChildRowDefinition, toState?: boolean) => {
+    if (toState === false || (typeof toState === "undefined" && selectedRows.has(channel.id))) {
+      selectedRows.delete(channel.id);
+      channel.requiredBy.forEach((id) => selectedRows.delete(id));
       setSelectedRows(new Set([...selectedRows]));
     } else {
-      setSelectedRows(new Set([...selectedRows, channelId]));
+      selectedRows.add(channel.id);
+      channel.requires.forEach((id) => selectedRows.add(id));
+      setSelectedRows(new Set([...selectedRows]));
     }
-  };
-
-  const onSetRecommendedChildrenSelected = (channelId: number, selected: boolean) => {
-    // worker.postMessage({ type: WorkerMessages.SET_RECOMMENDED_CHILDREN_ARE_SELECTED, channelId, selected });
   };
 
   const onToggleChannelOpen = (channelId: number, rowIndex: number) => {
@@ -76,8 +73,6 @@ const ChannelsSelection = (props: PropsType) => {
     } else {
       setOpenRows(new Set([...openRows, channelId]));
     }
-    // TODO: Fix types
-    (listRef.current as any)?.resetAfterIndex(rowIndex);
   };
 
   useEffect(() => {
@@ -119,6 +114,7 @@ const ChannelsSelection = (props: PropsType) => {
           // If we've received everything from the worker, flush the buffer
           if (rowBuffer.length === data.rowCount) {
             setRows(rowBuffer);
+            onToggleChannelSelect(rowBuffer[0]);
             rowBuffer = [];
           }
           // TODO: onToggleChannelSelect with the first row if conditions?
@@ -137,37 +133,17 @@ const ChannelsSelection = (props: PropsType) => {
     };
   }, []);
 
-  const Row = (definition: BaseRowDefinition, index: number) => {
+  const Row = (channel: BaseRowDefinition, index: number) => {
     return (
       <BaseChannel
-        rowDefinition={definition}
+        rowDefinition={channel}
         search={search}
         openRows={openRows}
         selectedRows={selectedRows}
-        onToggleChannelSelect={(channelId) => onToggleChannelSelect(channelId)}
+        onToggleChannelSelect={(selfOrChild) => onToggleChannelSelect(selfOrChild)}
         onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId, index)}
       />
     );
-  };
-
-  const rowHeight = (row: BaseRowDefinition) => {
-    const parentHeight = 30;
-    if (openRows.has(row.id)) {
-      return row.children.reduce((total, child) => {
-        switch (child.type) {
-          case RowType.Child:
-            return total + 25;
-          case RowType.EmptyChild:
-            return total + 25;
-          case RowType.RecommendedToggle:
-            return total + 20;
-          default:
-            throw new RangeError("Incorrect channel render type in height");
-        }
-      }, parentHeight);
-    } else {
-      return parentHeight;
-    }
   };
 
   if (isLoading || props.isSourcesApiLoading) {
@@ -247,14 +223,7 @@ const ChannelsSelection = (props: PropsType) => {
               />
             </div>
           </label>
-          <VirtualList
-            ref={listRef}
-            items={rows}
-            renderRow={Row}
-            rowHeight={rowHeight}
-            // By default, assume we have a base channel row
-            estimatedRowHeight={30}
-          />
+          <VirtualList items={rows} renderItem={Row} />
         </div>
       )}
     </React.Fragment>
