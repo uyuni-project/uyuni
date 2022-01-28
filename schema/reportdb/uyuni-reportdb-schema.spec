@@ -33,12 +33,12 @@ URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
-Requires:       susemanager-schema-utility
-Requires:       susemanager-schema-sanity
-
+BuildRequires:       susemanager-schema-sanity
 %if 0%{?suse_version}
 BuildRequires:  fdupes
 %endif
+
+Requires:       susemanager-schema-utility
 
 %define rhnroot /etc/sysconfig/rhn/
 
@@ -47,25 +47,21 @@ BuildRequires:  fdupes
 %description
 uyuni-reportdb-schema is the SQL schema for the SUSE Manager server.
 
+%prep
+
+%setup -q
+
+%build
+make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
+
 %install
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}
 install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
-#TODO Install SQL Script
-#install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
-#install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
+install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
+install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 
-
-#TODO Install SQL Upgrade Script
-#install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade
-#( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade && tar xf - ) )
-
-%posttrans
-#TODO Run uyuni-check-reportdb.service. We should probably not start report service if it fails
-#systemctl is-active --quiet uyuni-check-database.service && {
-#  echo "  Running DB schema upgrade. This may take a while."
-#  echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
-#} ||:
-#systemctl try-restart uyuni-check-database.service ||:
+install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade
+( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade && tar xf - ) )
 
 %files
 %defattr(-,root,root)
