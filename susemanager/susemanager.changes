@@ -1,3 +1,4 @@
+- mgr-setup: do not concanate www and apache groups (bsc#1195171)
 - fix pg-migrate to check version of postgresql??-server (bsc#1192368)
 - remove obsoleted sysv init script (bsc#1191857)
 
