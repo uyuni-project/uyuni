@@ -39,6 +39,8 @@ Requires:       postgresql-server > 12
 Requires:       postgresql-contrib >= 12
 %endif
 Requires:       lsof
+Requires:       uyuni-reportdb-schema
+Requires:       susemanager-schema-utility
 
 %description
 Script, which will setup PostgreSQL database as reporting DB for Uyuni and SUSE Manager Server
