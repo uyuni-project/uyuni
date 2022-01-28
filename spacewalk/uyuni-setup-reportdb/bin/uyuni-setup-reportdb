@@ -260,6 +260,12 @@ EOF
 
     postgresql_service reload
 
+    if ! exists_schema ; then
+            /usr/bin/spacewalk-sql --reportdb /etc/sysconfig/rhn/reportdb/main.sql
+    else
+	    /usr/bin/spacewalk-schema-upgrade --reportdb -y
+    fi
+
 }
 
 remove() {
@@ -337,6 +343,11 @@ exists_user() {
     else
         return 1
     fi
+}
+
+exists_schema() {
+    EXISTS=$(spacewalk-sql --reportdb --select-mode - <<< "select 1 from VersionInfo;" 2>/dev/null)
+    return $?
 }
 
 postgres_reconfig() {
