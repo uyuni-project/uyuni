@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

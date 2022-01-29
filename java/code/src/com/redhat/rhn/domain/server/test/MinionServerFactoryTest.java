@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -91,6 +91,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Create a {@link MinionServer} for testing.
      *
+     * @param owner the user owning the server
      * @return the MinionServer object
      * @throws Exception in case of an error
      */

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,26 +17,14 @@ package com.redhat.rhn.frontend.xmlrpc.packages.test;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
-import com.redhat.rhn.domain.rhnpackage.PackageCapability;
-import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
-import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
-import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
-import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
-import com.redhat.rhn.domain.rhnpackage.PackageProvides;
-import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
-import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
-import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
-import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
-import com.redhat.rhn.domain.rhnpackage.test.PackageCapabilityTest;
+import com.redhat.rhn.domain.rhnpackage.test.PackageFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.packages.PackagesHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
@@ -104,141 +92,50 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depProvides");
-            PackageProvides dependency = new PackageProvides();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depRequires");
-            PackageRequires dependency = new PackageRequires();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depObsoletes");
-            PackageObsoletes dependency = new PackageObsoletes();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depConflicts");
-            PackageConflicts dependency = new PackageConflicts();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depRecommends");
-            PackageRecommends dependency = new PackageRecommends();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depSuggests");
-            PackageSuggests dependency = new PackageSuggests();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depSupplements");
-            PackageSupplements dependency = new PackageSupplements();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depEnhances");
-            PackageEnhances dependency = new PackageEnhances();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depPreDepends");
-            PackagePreDepends dependency = new PackagePreDepends();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        {
-            PackageCapability cap = PackageCapabilityTest.createTestCapability("depBreaks");
-            PackageBreaks dependency = new PackageBreaks();
-            dependency.setCapability(cap);
-            dependency.setPack(pkg);
-            dependency.setSense(0L);
-            TestUtils.saveAndFlush(dependency);
-        }
-        Object[] result = handler.listDependencies(admin,
-              pkg.getId().intValue());
+        PackageFactoryTest.createPackageProperties(pkg);
+        Object[] result = handler.listDependencies(admin, pkg.getId().intValue());
 
         assertEquals(10, result.length);
 
-        {
-            Map res = getDependencyByType(result, "requires");
-            assertEquals("depRequires", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "provides");
-            assertEquals("depProvides", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "obsoletes");
-            assertEquals("depObsoletes", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "conflicts");
-            assertEquals("depConflicts", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "recommends");
-            assertEquals("depRecommends", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "suggests");
-            assertEquals("depSuggests", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "supplements");
-            assertEquals("depSupplements", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "enhances");
-            assertEquals("depEnhances", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "predepends");
-            assertEquals("depPreDepends", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
-        {
-            Map res = getDependencyByType(result, "breaks");
-            assertEquals("depBreaks", res.get("dependency"));
-            assertEquals(" -1.0", res.get("dependency_modifier"));
-        }
+        Map res = getDependencyByType(result, "requires");
+        assertEquals("depRequires", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "provides");
+        assertEquals("depProvides", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "obsoletes");
+        assertEquals("depObsoletes", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "conflicts");
+        assertEquals("depConflicts", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "recommends");
+        assertEquals("depRecommends", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "suggests");
+        assertEquals("depSuggests", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "supplements");
+        assertEquals("depSupplements", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "enhances");
+        assertEquals("depEnhances", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "predepends");
+        assertEquals("depPreDepends", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
+
+        res = getDependencyByType(result, "breaks");
+        assertEquals("depBreaks", res.get("dependency"));
+        assertEquals(" -1.0", res.get("dependency_modifier"));
     }
 
     private Map getDependencyByType(Object[] result, String type) {

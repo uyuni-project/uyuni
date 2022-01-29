@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,12 +25,14 @@ import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 
-import com.impossibl.postgres.api.jdbc.PGConnection;
-import com.impossibl.postgres.api.jdbc.PGNotificationListener;
-import com.impossibl.postgres.jdbc.PGDataSource;
 import com.suse.salt.netapi.event.AbstractEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.parser.JsonParser;
+
+import com.impossibl.postgres.api.jdbc.PGConnection;
+import com.impossibl.postgres.api.jdbc.PGNotificationListener;
+import com.impossibl.postgres.jdbc.PGDataSource;
+
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 

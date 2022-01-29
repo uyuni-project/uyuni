@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,9 +31,13 @@ import com.redhat.rhn.frontend.dto.TrustedOrgDto;
 import com.redhat.rhn.frontend.xmlrpc.org.OrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.org.trusts.OrgTrustHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.org.MigrationManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,7 @@ import java.util.Map;
 public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
     private OrgTrustHandler handler = new OrgTrustHandler();
-    private OrgHandler orgHandler = new OrgHandler();
+    private OrgHandler orgHandler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
     public void setUp() throws Exception {
         super.setUp();

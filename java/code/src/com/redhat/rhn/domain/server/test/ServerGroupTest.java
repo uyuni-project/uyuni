@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -30,6 +31,11 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * ServerGroupTest
@@ -95,5 +101,34 @@ public class ServerGroupTest extends RhnBaseTestCase {
                 .orElseThrow();
         assertNotNull(serverGroup.getGroupType().getFeatures());
         assertTrue(serverGroup.getGroupType().getFeatures().size() > 0);
+    }
+
+    public void testServerGroupPillar() throws Exception {
+        Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        ServerGroup group = createTestServerGroup(org1, ServerConstants.getServerGroupTypeSaltEntitled());
+        Set<Pillar> pillars = new HashSet<>();
+        Map<String, Object> pillar1 = new HashMap<>();
+        pillar1.put("data1", "foo");
+        pillar1.put("data2", 123);
+        pillars.add(new Pillar("category1", pillar1, group));
+        Map<String, Object> pillar2 = new HashMap<>();
+        pillar1.put("bar1", "baz");
+        pillar1.put("bar2", 456);
+        pillars.add(new Pillar("category2", pillar2, group));
+
+        group.setPillars(pillars);
+        TestUtils.saveAndFlush(group);
+        group = reload(group);
+
+        Pillar actual = group.getPillars().stream()
+                .filter(item -> "category1".equals(item.getCategory()))
+                .findFirst()
+                .get();
+        assertNotNull(actual);
+        assertEquals(123, actual.getPillar().get("data2"));
+        assertFalse(actual.isMinionPillar());
+        assertFalse(actual.isGlobalPillar());
+        assertTrue(actual.isGroupPillar());
+        assertFalse(actual.isOrgPillar());
     }
 }

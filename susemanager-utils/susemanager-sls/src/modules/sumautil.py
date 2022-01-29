@@ -13,6 +13,12 @@ import time
 import salt.utils
 from salt.exceptions import CommandExecutionError
 
+try:
+    from salt.utils.path import which_bin as _which_bin
+except:
+    from salt.utils import which_bin as _which_bin
+
+
 __salt__ = {
     'cmd.run_all': salt.modules.cmdmod.run_all,
 }
@@ -140,10 +146,6 @@ def _klp():
     :return:
     '''
     # get 'kgr' for versions prior to SLE 15
-    try:
-        from salt.utils.path import which_bin as _which_bin
-    except:
-        from salt.utils import which_bin as _which_bin
 
     klp = _which_bin(['klp', 'kgr'])
     patchname = None

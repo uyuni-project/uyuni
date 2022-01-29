@@ -1,29 +1,26 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
-const TerserPlugin = require('terser-webpack-plugin')
-const webpackAlias = require('./webpack.alias');
+const TerserPlugin = require("terser-webpack-plugin");
+const webpackAlias = require("./webpack.alias");
 
 module.exports = (env, argv) => {
-
-  const  isProductionMode = argv && argv.mode !== "development";
+  const isProductionMode = argv && argv.mode !== "development";
 
   let pluginsInUse = [
-    new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
+    new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, "../") }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }
+        { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") },
       ],
     }),
     new CopyWebpackPlugin({
-      patterns: [
-        { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") }
-      ],
+      patterns: [{ from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") }],
     }),
   ];
 
-  if(isProductionMode) {
+  if (isProductionMode) {
     pluginsInUse = [
       ...pluginsInUse,
       new LicenseCheckerWebpackPlugin({
@@ -33,102 +30,106 @@ module.exports = (env, argv) => {
       new LicenseCheckerWebpackPlugin({
         outputFilename: "../vendors/npm.licenses.txt",
       }),
-    ]
+    ];
   } else {
     pluginsInUse = [
       ...pluginsInUse,
       new CopyWebpackPlugin({
         patterns: [
-          { from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") }
+          { from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") },
         ],
       }),
-    ]
+    ];
   }
 
-  return [{
-    entry: {
-      'javascript/manager/main': './manager/index.ts'
-    },
-    output: {
-      filename: `[name].bundle.js`,
-      path: path.resolve(__dirname, "../dist/" ),
-      chunkFilename: 'javascript/manager/[name].bundle.js',
-      publicPath: '/'
-    },
-    optimization: {
-      minimizer: [new TerserPlugin({extractComments: true, sourceMap: true})],
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /node_modules/,
-            chunks: "all",
-            name: "../../vendors/vendors",
-            enforce: true
+  return [
+    {
+      entry: {
+        "javascript/manager/main": "./manager/index.ts",
+      },
+      output: {
+        filename: `[name].bundle.js`,
+        path: path.resolve(__dirname, "../dist/"),
+        chunkFilename: "javascript/manager/[name].bundle.js",
+        publicPath: "/",
+      },
+      optimization: {
+        minimizer: [new TerserPlugin({ extractComments: true, sourceMap: true })],
+        splitChunks: {
+          cacheGroups: {
+            vendor: {
+              test: /node_modules/,
+              chunks: "all",
+              name: "../../vendors/vendors",
+              enforce: true,
+            },
+            core: {
+              test: /[\\/]core.*/,
+              chunks: "all",
+              name: "core",
+              enforce: true,
+            },
           },
-          core: {
-            test: /[\\/]core.*/,
-            chunks: "all",
-            name: "core",
-            enforce: true
-          }
-        }
-      }
-    },
-    devtool: isProductionMode ? 'source-map' : 'eval-source-map',
-    module: {
-      rules: [
-        {
-          test: /\.(ts|js)x?$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader"
-          }
         },
-        {
-          test: /\.css$/,
-          exclude: /node_modules/,
-          use: [
-            {loader: 'style-loader'},
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true
-              }
-            }
-          ]
-        },
-        {
-          test: /\.css$/,
-          include: /node_modules/,
-          use: [{loader: 'style-loader'}, {loader: 'css-loader'}]
-        },
-        {
-          test: /\.po$/,
-          type: 'json',
-          use: {
-            loader: path.resolve(__dirname, 'loaders/po-loader.js')
-          }
-        }
-      ]
+      },
+      devtool: isProductionMode ? "source-map" : "eval-source-map",
+      module: {
+        rules: [
+          {
+            test: /\.(ts|js)x?$/,
+            exclude: /node_modules/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+          {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [
+              { loader: "style-loader" },
+              {
+                loader: "css-loader",
+                options: {
+                  modules: true,
+                },
+              },
+            ],
+          },
+          {
+            test: /\.css$/,
+            include: /node_modules/,
+            use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+          },
+          {
+            test: /\.po$/,
+            type: "json",
+            use: {
+              loader: path.resolve(__dirname, "loaders/po-loader.js"),
+            },
+          },
+        ],
+      },
+      resolve: {
+        alias: webpackAlias,
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+      },
+      plugins: pluginsInUse,
+      devServer: {
+        contentBase: path.resolve(__dirname, "../dist"),
+        publicPath: "/",
+        progress: true,
+        https: true,
+        open: true,
+        writeToDisk: argv && argv.writeToDisk,
+        proxy: [
+          {
+            context: ["!/sockjs-node/**"],
+            target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
+            ws: true,
+            secure: false,
+          },
+        ],
+      },
     },
-    resolve: {
-      alias: webpackAlias,
-      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
-    },
-    plugins: pluginsInUse,
-    devServer: {
-      contentBase: path.resolve(__dirname, "../dist"),
-      publicPath: "/",
-      progress: true,
-      https: true,
-      open: true,
-      writeToDisk: argv && argv.writeToDisk,
-      proxy: [{
-        context: ['!/sockjs-node/**'],
-        target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
-        ws: true,
-        secure: false
-      }]
-    },
-  }]
+  ];
 };

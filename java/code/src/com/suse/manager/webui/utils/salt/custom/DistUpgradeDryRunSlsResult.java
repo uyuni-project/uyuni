@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,9 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.annotations.SerializedName;
 import com.suse.salt.netapi.results.StateApplyResult;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Object representation of the results of a call to state.apply distupgrade.

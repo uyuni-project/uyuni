@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,15 +22,21 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
+
+import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 /**
  * This is what automatically schedules automatic errata update actions.
@@ -51,23 +57,30 @@ public class AutoErrataTask extends RhnJavaJob {
 
     private Queue<Action> actionsToSchedule = new LinkedList<>();
 
+    @Override
+    public String getConfigNamespace() {
+        return "auto_errata";
+    }
+
     /**
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext context)
         throws JobExecutionException {
 
-        List<Map<String, Long>> results = getErrataToProcess();
-        if (results == null || results.size() == 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("No unapplied auto errata found... exiting");
-            }
+        List<Long> systems = getAutoErrataSystems();
+        if (systems == null || systems.size() == 0) {
+            log.debug("No systems with auto errata enabled");
             return;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("=== Scheduling " + results.size() + " auto errata updates");
+        List<Map<String, Long>> results = getErrataToProcess(filterSystemsInMaintenanceMode(systems));
+        if (results == null || results.size() == 0) {
+            log.debug("No unapplied auto errata found. Skipping systems not in maintenance mode... exiting");
+            return;
         }
+
+        log.debug("=== Scheduling " + results.size() + " auto errata updates");
 
         for (Map<String, Long> result : results) {
             Long errataId = result.get("errata_id");
@@ -87,11 +100,35 @@ public class AutoErrataTask extends RhnJavaJob {
                         serverId, e);
                 throw new JobExecutionException(e);
             }
-            if (log.isDebugEnabled()) {
-                log.debug("Scheduling auto update actions for server " + serverId +
-                        " and erratum " + errataId);
-            }
+            log.debug("Scheduling auto update actions for server " + serverId + " and erratum " + errataId);
         }
+    }
+
+    /**
+     * Return the list of systems that have the auto errata update function enabled
+     *
+     * @return list of systems with auto errata update enabled
+     */
+    protected List<Long> getAutoErrataSystems() {
+        SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_AUTO_ERRATA_SYSTEMS);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Long>> results = select.execute();
+        return results.stream().map(system -> system.get("id")).collect(Collectors.toList());
+    }
+
+    /**
+     * Return list of systems that are in maintenance mode
+     *
+     * @param systems systems with auto errata enabled
+     * @return list of systems in maintenance mode
+     */
+    protected List<Long> filterSystemsInMaintenanceMode(List<Long> systems) {
+        MaintenanceManager mm = new MaintenanceManager();
+        return ServerFactory.lookupByIds(systems).stream()
+                .filter(mm::isSystemInMaintenanceMode)
+                .map(Server::getId)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -109,10 +146,11 @@ public class AutoErrataTask extends RhnJavaJob {
      *
      * @return maps of errata_id, server_id, and org_id that need actions
      */
-    protected List<Map<String, Long>> getErrataToProcess() {
+    protected List<Map<String, Long>> getErrataToProcess(List<Long> sids) {
         /*
          * Additional check might be needed. Do not schedule anything
-         * if a task with bunch name "repo-sync-bunch" is ready or running.
+         * if a task with bunch name "repo-sync-bunch" is ready or running
+         * or a CLM build is in process.
          *
          * select 1
          *  from rhnTaskoSchedule rts
@@ -121,10 +159,14 @@ public class AutoErrataTask extends RhnJavaJob {
          * where rtb.name = 'repo-sync-bunch'
          *   and rtr.status in ('RUNNING','READY')
          */
+        if (sids == null || sids.size() == 0) {
+            return new ArrayList<>();
+        }
+
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_CANDIDATES);
         @SuppressWarnings("unchecked")
-        List<Map<String, Long>> results = select.execute();
+        List<Map<String, Long>> results = select.execute(sids);
         return results;
     }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,13 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import com.google.gson.Gson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -22,6 +28,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
@@ -29,14 +36,17 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
+
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.Gson;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import spark.Request;
-import spark.Response;
+import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,12 +55,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
+import spark.Request;
+import spark.Response;
 
 /**
  * Spark controller ContentManagement Filter Api.
@@ -61,6 +67,7 @@ public class FilterApiController {
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
     private static final FilterTemplateManager TEMPLATE_MGR = ControllerApiUtils.TEMPLATE_MGR;
     private static final LocalizationService LOC = LocalizationService.getInstance();
+    private static final Logger LOG = Logger.getLogger(FilterApiController.class);
 
     private FilterApiController() {
     }
@@ -162,7 +169,13 @@ public class FilterApiController {
                 break;
             case "AppStreamsWithDefaults":
                 Channel channel = ChannelManager.lookupByIdAndUser(createFilterRequest.getChannelId(), user);
-                createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
+                try {
+                    createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
+                }
+                catch (ModulemdApiException e) {
+                    LOG.error(e);
+                    return json(GSON, res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
+                }
                 break;
             default:
                 return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Collections.emptyList(),

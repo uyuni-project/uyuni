@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM portus.mgr.suse.de:5000/cucutest/suma-head-testsuite
+FROM registry.mgr.suse.de:5000/cucutest/suma-head-testsuite
 MAINTAINER Michael Calmer "mc@suse.com"
 
 ARG repo

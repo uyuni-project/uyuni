@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,12 +19,12 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
-
-import org.apache.commons.io.FileUtils;
 
 public class ConfigTest extends RhnBaseTestCase {
     static final String TEST_KEY = "user";

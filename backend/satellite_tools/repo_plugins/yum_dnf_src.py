@@ -26,7 +26,7 @@ from shutil import rmtree
 from libdnf.conf import ConfigParser
 from dnf.exceptions import Error, RepoError
 from uyuni.common import checksum, fileutils
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.context_managers import cfg_component
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
@@ -69,9 +69,10 @@ class RawSolvablePackage:
 
 class ContentSource(zypper_ContentSource):
 
-    def __init__(self, url, name, insecure=False, interactive=False, yumsrc_conf=YUMSRC_CONF, org="1", channel_label="",
+    def __init__(self, url, name, insecure=False, interactive=False, yumsrc_conf=YUMSRC_CONF, org="1",
+                 channel_label="",
                  no_mirrors=True, ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None):
+                 client_key_file=None, channel_arch=""):
         # insecure and interactive are not implemented for this module.
         """
         Plugin constructor.
@@ -106,14 +107,9 @@ class ContentSource(zypper_ContentSource):
         self.dnfbase.conf.cachedir = os.path.join(CACHE_DIR, self.org)
 
 
-        # store the configuration and restore it at the end.
-        comp = CFG.getComponent()
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
-        initCFG('server.satellite')
-
-        # ensure the config namespace will be switched back in any case
-        try:
+        with cfg_component('server.satellite') as CFG:
             # keep authtokens for mirroring
             (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
             if query:
@@ -167,9 +163,6 @@ class ContentSource(zypper_ContentSource):
 
             self.repo = self.dnfbase.repos[self.repoid]
             self.get_metadata_paths()
-        finally:
-            # set config component back to original
-            initCFG(comp)
 
 
     def __del__(self):
@@ -186,7 +179,8 @@ class ContentSource(zypper_ContentSource):
         repo.metadata_expire=0
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
-        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
+        with cfg_component('server.satellite') as CFG:
+            pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
         if not os.path.isdir(pkgdir):
             fileutils.makedirs(pkgdir, user=APACHE_USER, group=APACHE_GROUP)
         repo.pkgdir = pkgdir

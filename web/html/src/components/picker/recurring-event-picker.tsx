@@ -1,60 +1,67 @@
 import * as React from "react";
 
-import { DateTimePicker } from "../datetimepicker";
-import { Combobox } from "../combobox";
-import { ComboboxItem } from "../combobox";
+import { DateTimePicker } from "components/datetime";
 import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
-import { Utils } from "utils/functions";
+
+import { localizedMoment } from "utils";
+
+import { Combobox } from "../combobox";
+import { ComboboxItem } from "../combobox";
 import styles from "./recurring-event-picker.css";
 
 type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
-// TODO: This should be `Record<string, string>` or `Record<string, number>`, but currently they're used mixed up
-type CronTimesType = Record<string, string | number>;
+type CronTimes = {
+  // TODO: These should be `string` or `number`, but currently they're used mixed up
+  minute: number | string;
+  hour: number | string;
+  dayOfMonth: string;
+  dayOfWeek: string;
+};
 
 type RecurringEventPickerProps = {
   timezone: string;
   scheduleName: string;
   type: RecurringType;
   cron: string;
-  cronTimes: CronTimesType;
+  cronTimes: CronTimes;
   onScheduleNameChanged: (scheduleName: string) => void;
   onTypeChanged: (type: string) => void;
-  onCronTimesChanged: (cronTimes: CronTimesType) => void;
+  onCronTimesChanged: (cronTimes: CronTimes) => void;
   onCronChanged: (cron: string) => void;
 };
 
 type RecurringEventPickerState = {
   scheduleName: string;
   type: RecurringType;
-  time: Date;
+  time: moment.Moment;
   minutes: ComboboxItem;
   weekDay: ComboboxItem;
   monthDay: ComboboxItem;
   cron: string;
-  cronTimes: CronTimesType;
+  cronTimes: CronTimes;
 };
 
 class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
-  minutes = Array.from(Array(60).keys()).map(id => ({ id: Number(id), text: id.toString() }));
+  minutes = Array.from(Array(60).keys()).map((id) => ({ id: Number(id), text: id.toString() }));
 
   weekDays = [
-    { id: Number(1), text: "Sunday" },
-    { id: Number(2), text: "Monday" },
-    { id: Number(3), text: "Tuesday" },
-    { id: Number(4), text: "Wednesday" },
-    { id: Number(5), text: "Thursday" },
-    { id: Number(6), text: "Friday" },
-    { id: Number(7), text: "Saturday" },
+    { id: Number(1), text: t("Sunday") },
+    { id: Number(2), text: t("Monday") },
+    { id: Number(3), text: t("Tuesday") },
+    { id: Number(4), text: t("Wednesday") },
+    { id: Number(5), text: t("Thursday") },
+    { id: Number(6), text: t("Friday") },
+    { id: Number(7), text: t("Saturday") },
   ];
 
-  monthDays = Array.from(Array(28).keys()).map(id => ({ id: Number(id + 1), text: (id + 1).toString() }));
+  monthDays = Array.from(Array(28).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
 
   constructor(props: RecurringEventPickerProps) {
     super(props);
 
     this.state = {
-      time: Utils.dateWithTimezone(localTime || ""),
+      time: localizedMoment(),
       scheduleName: props.scheduleName || "",
       type: props.type || "weekly",
       cronTimes: props.cronTimes || { minute: "", hour: "", dayOfMonth: "", dayOfWeek: "" },
@@ -64,25 +71,42 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
       monthDay: this.monthDays[0],
     };
 
-    this.props.cronTimes ? this.setTimeAndDays(this.state.time) : this.initialize();
+    this.props.cronTimes ? this.setInitialTimeAndDays(this.state.time) : this.initialize();
+  }
+
+  /**
+   * In this view, for legacy reasons, the user selects time values (without any date values) that are used as inputs to
+   * Quartz cron configuration without regarding time zones. To accommodate for this, we manually offset the values as
+   * needed. This is a very specific use case and should **NOT** be used elsewhere where dates and times are concerned.
+   */
+  private fromLegacyServerTime(value: moment.Moment, hour: number, minute: number): moment.Moment {
+    const serverTime = localizedMoment(value).tz(localizedMoment.serverTimeZone);
+    if (!isNaN(hour)) {
+      serverTime.hours(hour);
+    }
+    if (!isNaN(minute)) {
+      serverTime.minutes(minute);
+    }
+    return localizedMoment(serverTime);
+  }
+
+  private toLegacyServerTime(value: moment.Moment): { hour: number; minute: number } {
+    const serverTime = localizedMoment(value).tz(localizedMoment.serverTimeZone);
+    return {
+      hour: serverTime.hours(),
+      minute: serverTime.minutes(),
+    };
   }
 
   initialize = () => {
+    // TODO: This logic needs to be lifted up since this internally calls `setState()` which is not valid while mounting
     this.onSelectWeekly();
   };
 
-  setTimeAndDays = (date: Date) => {
-    const hours = Number(this.state.cronTimes.hour);
-    const minutes = Number(this.state.cronTimes.minute);
-    const time = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      isNaN(hours) ? date.getHours() : hours,
-      isNaN(minutes) ? date.getMinutes() : minutes,
-      date.getSeconds(),
-      date.getMilliseconds()
-    );
+  setInitialTimeAndDays = (value: moment.Moment) => {
+    const hour = Number(this.state.cronTimes.hour);
+    const minute = Number(this.state.cronTimes.minute);
+    const time = this.fromLegacyServerTime(value, hour, minute);
     Object.assign(this.state, {
       time: time,
       cron: this.state.cron,
@@ -93,7 +117,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     });
   };
 
-  setScheduleName = model => {
+  setScheduleName = (model) => {
     const scheduleName = model.scheduleName;
     this.setState({
       scheduleName: scheduleName,
@@ -119,7 +143,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     this.selectType("hourly");
   };
 
-  onSelectMinutes = event => {
+  onSelectMinutes = (event) => {
     this.onMinutesChanged({
       id: isNaN(event.target.valueAsNumber) ? "" : event.target.valueAsNumber,
       text: event.target.value,
@@ -148,21 +172,19 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
 
   onSelectDaily = () => {
     this.props.onCronTimesChanged({
-      minute: this.state.time.getMinutes(),
-      hour: this.state.time.getHours(),
+      ...this.toLegacyServerTime(this.state.time),
       dayOfMonth: "",
       dayOfWeek: "",
     });
     this.selectType("daily");
   };
 
-  onDailyTimeChanged = (date: Date) => {
+  onDailyTimeChanged = (value: moment.Moment) => {
     this.setState({
-      time: date,
+      time: value,
     });
     this.props.onCronTimesChanged({
-      minute: date.getMinutes(),
-      hour: date.getHours(),
+      ...this.toLegacyServerTime(value),
       dayOfMonth: "",
       dayOfWeek: "",
     });
@@ -171,8 +193,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
 
   onSelectWeekly = () => {
     this.props.onCronTimesChanged({
-      minute: this.state.time.getMinutes(),
-      hour: this.state.time.getHours(),
+      ...this.toLegacyServerTime(this.state.time),
       dayOfMonth: "",
       dayOfWeek: this.state.weekDay.id,
     });
@@ -202,21 +223,19 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
       weekDay: newWeekDay,
     });
     this.props.onCronTimesChanged({
-      minute: this.state.time.getMinutes(),
-      hour: this.state.time.getHours(),
+      ...this.toLegacyServerTime(this.state.time),
       dayOfMonth: "",
       dayOfWeek: selectedItem.id,
     });
     this.selectType("weekly");
   };
 
-  onWeeklyTimeChanged = (date: Date) => {
+  onWeeklyTimeChanged = (value: moment.Moment) => {
     this.setState({
-      time: date,
+      time: value,
     });
     this.props.onCronTimesChanged({
-      minute: date.getMinutes(),
-      hour: date.getHours(),
+      ...this.toLegacyServerTime(value),
       dayOfMonth: "",
       dayOfWeek: this.state.weekDay.id,
     });
@@ -225,8 +244,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
 
   onSelectMonthly = () => {
     this.props.onCronTimesChanged({
-      minute: this.state.time.getMinutes(),
-      hour: this.state.time.getHours(),
+      ...this.toLegacyServerTime(this.state.time),
       dayOfMonth: this.state.monthDay.id,
       dayOfWeek: "",
     });
@@ -256,21 +274,19 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
       monthDay: newMonthDay,
     });
     this.props.onCronTimesChanged({
-      minute: this.state.time.getMinutes(),
-      hour: this.state.time.getHours(),
+      ...this.toLegacyServerTime(this.state.time),
       dayOfMonth: selectedItem.id,
       dayOfWeek: "",
     });
     this.selectType("monthly");
   };
 
-  onMonthlyTimeChanged = (date: Date) => {
+  onMonthlyTimeChanged = (value: moment.Moment) => {
     this.setState({
-      time: date,
+      time: value,
     });
     this.props.onCronTimesChanged({
-      minute: date.getMinutes(),
-      hour: date.getHours(),
+      ...this.toLegacyServerTime(value),
       dayOfMonth: this.state.monthDay.id,
       dayOfWeek: "",
     });
@@ -290,7 +306,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     this.selectCustom();
   };
 
-  onCronChanged = cron => {
+  onCronChanged = (cron) => {
     this.setState({
       cron: cron.target.value,
     });
@@ -367,8 +383,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                   <DateTimePicker
                     onChange={this.onDailyTimeChanged}
                     value={this.state.time}
-                    timezone={this.props.timezone}
-                    hideDatePicker={true}
+                    hideDatePicker
+                    serverTimeZone
                     id="time-daily"
                   />
                 </div>
@@ -401,8 +417,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                   <DateTimePicker
                     onChange={this.onWeeklyTimeChanged}
                     value={this.state.time}
-                    timezone={this.props.timezone}
-                    hideDatePicker={true}
+                    hideDatePicker
+                    serverTimeZone
                     id="time-weekly"
                   />
                 </div>
@@ -435,8 +451,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                   <DateTimePicker
                     onChange={this.onMonthlyTimeChanged}
                     value={this.state.time}
-                    timezone={this.props.timezone}
-                    hideDatePicker={true}
+                    hideDatePicker
+                    serverTimeZone
                     id="time-monthly"
                   />
                 </div>
@@ -462,15 +478,19 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                   </label>
                 </div>
                 <div className="col-sm-3">
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="cron"
-                    value={this.state.cron}
-                    placeholder={t('e.g. "0 15 2 ? * 7"')}
-                    id="custom-cron"
-                    onChange={this.onCronChanged}
-                  />
+                  <div className="input-group">
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="cron"
+                      value={this.state.cron}
+                      placeholder={t('e.g. "0 15 2 ? * 7"')}
+                      id="custom-cron"
+                      onChange={this.onCronChanged}
+                    />
+                    {/* This field is always in the server time zone, but just be explicit to the user */}
+                    <span className="input-group-addon">{localizedMoment.serverTimeZone}</span>
+                  </div>
                 </div>
               </div>
             </div>

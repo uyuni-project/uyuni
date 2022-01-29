@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,6 @@
  */
 package com.redhat.rhn.domain.config.test;
 
-import java.io.ByteArrayInputStream;
-import java.util.Date;
-
-import org.hibernate.Session;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
@@ -33,6 +28,11 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.hibernate.Session;
+
+import java.io.ByteArrayInputStream;
+import java.util.Date;
 
 public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 

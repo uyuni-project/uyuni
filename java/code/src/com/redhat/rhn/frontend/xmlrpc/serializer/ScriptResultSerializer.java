@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,17 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import org.apache.commons.codec.binary.Base64;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import org.apache.commons.codec.binary.Base64;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**

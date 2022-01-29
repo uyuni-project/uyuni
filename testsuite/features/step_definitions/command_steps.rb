@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2021 SUSE LLC.
+# Copyright (c) 2014-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -17,16 +17,22 @@ end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("getent hosts #{node.ip}", check_errors: false)
+  result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution for #{node.ip} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+  raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
-Then(/^"([^"]*)" should communicate with the server$/) do |host|
+Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -c1 #{$server.full_hostname}")
-  $server.run("ping -c1 #{node.full_hostname}")
+  node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  $server.run("ping -c 1 #{node.public_ip}")
+end
+
+Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
+  node = get_target(host)
+  node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
+  $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -123,8 +129,8 @@ When(/^I use spacewalk\-channel to list available channels$/) do
   $command_output, _code = $client.run(command)
 end
 
-When(/^I use spacewalk\-common\-channel to add Debian channel "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-common-channels -u admin -p admin -a amd64-deb #{child_channel}"
+When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
+  command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = $server.run(command)
 end
 
@@ -180,7 +186,11 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  if host == 'server'
+    salt = 'salt'
+  end
+  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -189,7 +199,9 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
+  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     puts line
@@ -368,7 +380,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  node.run("wget http://#{$server.ip}/#{file}")
+  node.run("wget http://#{$server.full_hostname}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
@@ -398,6 +410,10 @@ Then(/^the tomcat logs should not contain errors$/) do
   msgs.each do |msg|
     raise "-#{msg}-  msg found on tomcat logs" if output.include? msg
   end
+end
+
+When(/^I restart cobbler on the server$/) do
+  $server.run('systemctl restart cobblerd.service')
 end
 
 When(/^I restart the spacewalk service$/) do
@@ -453,80 +469,12 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I restart the network on the PXE boot minion$/) do
-  # We have no IPv4 address on that machine yet,
-  # so the only way to contact it is via IPv6 link-local.
-  # We convert MAC address to IPv6 link-local address:
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  file = 'restart-network-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  # We have no direct access to the PXE boot minion
-  # so we run the command from the proxy
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I reboot the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  STDOUT.puts "Rebooting #{ipv6}..."
-  file = 'reboot-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I stop and disable avahi on the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
-  file = 'stop-avahi-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I stop salt-minion on the PXE boot minion$/) do
-  file = 'cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
-  file = 'uyuni.key'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($server, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  system_name = get_system_name('pxeboot_minion')
-  $server.run("salt-cp #{system_name} #{dest} #{dest}")
-  $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
-end
-
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   node = get_target(host)
   gpg_keys = get_gpg_keys(node)
   gpg_keys.each do |key|
     gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
   end
 end
 
@@ -603,24 +551,6 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-When(/^I start tftp on the proxy$/) do
-  node = get_target('proxy')
-  case $product
-  # TODO: Should we handle this in Sumaform?
-  when 'Uyuni'
-    step %(I enable repositories before installing branch server)
-    cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
-          'zypper --non-interactive install tftp && ' \
-          'systemctl enable tftp.socket && ' \
-          'systemctl start tftp.socket'
-    node.run(cmd)
-    step %(I disable repositories after installing branch server)
-  else
-    cmd = "systemctl enable tftp.socket && systemctl start tftp.socket"
-    node.run(cmd)
-  end
-end
-
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
   output, _code = $server.run("cobbler system report --name #{name}", check_errors: false)
   raise "Not found:\n#{output}" unless output.include?(text)
@@ -635,14 +565,14 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   when 'proxy'
     cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{ENV['SERVER']} \
---proxy-fqdn=#{ENV['PROXY']}"
+--proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
   end
 end
 
 When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failt' if out.include? 'Push failed'
+  raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
 When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
@@ -815,7 +745,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client.ip} --register #{bootstrap} --tunnel\n" \
+  script = "spawn spacewalk-ssh-push-init --client #{$client.full_hostname} --register #{bootstrap} --tunnel\n" \
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
@@ -838,8 +768,9 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
   # use sumaform states to migrate to latest SP the system repositories:
-  node.run('salt-call --local --file-root /root/salt/ state.apply repos')
+  node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
   node.run("for repo in $(zypper lr | awk 'NR>7 && !/susemanager:/ {print $3}'); do zypper mr -d $repo; done")
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
@@ -853,11 +784,21 @@ When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          "zypper mr --#{action} #{repos}"
+          mand_repos = ""
+          opt_repos = ""
+          repos.split(' ').map do |repo|
+            if repo =~ /_ltss_/
+              opt_repos = "#{opt_repos} #{repo}"
+            else
+              mand_repos = "#{mand_repos} #{repo}"
+            end
+          end
+          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
         else
           cmd_list = if action == 'enable'
                        repos.split(' ').map do |repo|
@@ -880,6 +821,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
         end
   node.run(cmd, check_errors: error_control.empty?)
 end
+# rubocop:enable Metrics/BlockLength
 
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
@@ -926,7 +868,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   else
-    raise "The node #{node.hostname} has not a supported OS Family"
+    raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
@@ -994,6 +936,10 @@ When(/^I install package tftpboot-installation on the server$/) do
   $server.run("rpm -i #{package}")
 end
 
+When(/^I reset tftp defaults on the proxy$/) do
+  $proxy.run("echo 'TFTP_USER=\"tftp\"\nTFTP_OPTIONS=\"\"\nTFTP_DIRECTORY=\"/srv/tftpboot\"\n' > /etc/sysconfig/tftp")
+end
+
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if host == 'sle_minion'
@@ -1032,6 +978,11 @@ When(/^I install "([^"]*)" product on the proxy$/) do |product|
   STDOUT.puts "Installed #{product} product: #{out}"
 end
 
+When(/^I adapt zyppconfig$/) do
+   cmd = "sed -i 's/^rpm.install.excludedocs =.*$/rpm.install.excludedocs = no/' /etc/zypp/zypp.conf"
+   $proxy.run(cmd)
+end
+
 When(/^I install proxy pattern on the proxy$/) do
   pattern = $product == 'Uyuni' ? 'uyuni_proxy' : 'suma_proxy'
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
@@ -1062,76 +1013,9 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
-When(/^I set up the private network on the terminals$/) do
-  proxy = net_prefix + ADDRESSES['proxy']
-  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
-  nodes = [$client, $minion]
-  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
-  file = "/etc/sysconfig/network/ifcfg-eth1"
-  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
-  file2 = "/etc/resolv.conf"
-  nodes.each do |node|
-    next if node.nil?
-    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
-  end
-  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [$ceos_minion]
-  file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
-  conf2 = "GATEWAYDEV=eth0"
-  file2 = "/etc/sysconfig/network"
-  nodes.each do |node|
-    next if node.nil?
-    domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
-    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
-  end
-  # /etc/netplan/01-netcfg.yaml
-  nodes = [$ubuntu_minion]
-  source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
-  dest = "/etc/netplan/01-netcfg.yaml"
-  nodes.each do |node|
-    next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('netplan apply')
-  end
-  # PXE boot minion
-  if $pxeboot_mac
-    step %(I restart the network on the PXE boot minion)
-  end
-end
-# rubocop:enable Metrics/BlockLength
-
-Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
-  node = get_target(host)
-  output, return_code = node.run("ip -4 address show eth1")
-  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
-end
-
-Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
-  node = get_target(host)
-  # we need "host" utility
-  step "I install package \"bind-utils\" on this \"#{host}\""
-  # direct name resolution
-  ["proxy.example.org", "dns.google.com"].each do |dest|
-    output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
-  end
-  # reverse name resolution
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  client = net_prefix + "2"
-  [client, "8.8.8.8"].each do |dest|
-    output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
-  end
-end
-
 When(/^I configure the proxy$/) do
   # prepare the settings file
-  settings = "RHN_PARENT=#{$server.ip}\n" \
+  settings = "RHN_PARENT=#{$server.full_hostname}\n" \
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
@@ -1140,7 +1024,7 @@ When(/^I configure the proxy$/) do
              "SSL_PASSWORD=spacewalk\n" \
              "SSL_ORG=SUSE\n" \
              "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{$proxy.ip}\n" \
+             "SSL_COMMON=#{$proxy.full_hostname}\n" \
              "SSL_CITY=Nuremberg\n" \
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
@@ -1582,60 +1466,6 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   end
 end
 
-When(/^I prepare the retail configuration file on server$/) do
-  source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  dest = '/tmp/massive-import-terminals.yml'
-  return_code = file_inject($server, source, dest)
-  raise "File #{file} couldn't be copied to server" unless return_code.zero?
-
-  sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
-  sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
-  sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
-  sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
-  sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
-  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
-  sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
-  sed_values << "s/<MINION>/#{ADDRESSES['minion']}/; "
-  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
-  sed_values << "s/<CLIENT>/#{ADDRESSES['client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
-  sed_values << "s/<IMAGE>/#{compute_image_name}/"
-  $server.run("sed -i '#{sed_values}' #{dest}")
-end
-
-When(/^I import the retail configuration using retail_yaml command$/) do
-  filepath = '/tmp/massive-import-terminals.yml'
-  $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
-end
-
-When(/^I delete all the imported terminals$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-    puts "Deleting terminal with name: #{terminal}"
-    steps %(
-      When I follow "#{terminal}" terminal
-      And I follow "Delete System"
-      And I should see a "Confirm System Profile Deletion" text
-      And I click on "Delete Profile"
-      Then I should see a "has been deleted" text
-    )
-  end
-end
-
-When(/^I remove all the DHCP hosts created by retail_yaml$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
-  end
-end
-
-When(/^I remove the bind zones created by retail_yaml$/) do
-  domain = read_branch_prefix_from_yaml
-  raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
-  raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
-end
-
 Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   node = get_target(client)
   _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", check_errors: false)
@@ -1654,11 +1484,15 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
+  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  if host == 'server'
+    salt_call = 'salt-call'
+  end
   source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
-  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+  node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
@@ -1688,22 +1522,38 @@ And(/^I copy vCenter configuration file on server$/) do
 end
 
 When(/^I export "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  node = get_target("server")
-  node.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+  $server.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
-  node = get_target("server")
-  node.run("inter-server-sync import --importDir=#{path}")
+  $server.run("inter-server-sync import --importDir=#{path}")
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
 end
 
-Then(/^Export folder "(.*?)" doesn't exists on server$/) do |folder|
-     raise "Folder exists" if folder_exists?($server, folder)
+Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
+  raise "Folder exists" if folder_exists?($server, folder)
 end
-When(/^I ensure folder "(.*?)" doesn't exists$/) do |folder|
-    folder_delete($server, folder) if folder_exists?($server, folder)
+
+When(/^I ensure folder "(.*?)" doesn't exist$/) do |folder|
+  folder_delete($server, folder) if folder_exists?($server, folder)
+end
+
+When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  # HACK: initrd is not regenerated after patching SLES 11 kernel
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('mkinitrd')
+  end
+end
+
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
 end

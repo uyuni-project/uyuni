@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -137,11 +137,13 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         tgtChannel.getPackages().add(pack2);
         ChannelFactory.refreshNewestPackageCache(tgtChannel, "java::alignPackages");
-        assertEquals(pack2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
+        assertEquals(pack2.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
-        assertEquals(pkg.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+        assertEquals(pkg.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
     }
 
@@ -175,9 +177,11 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         ChannelFactory.refreshNewestPackageCache(tgtChannel, "java::alignPackages");
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pkg.getPackageName().getName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "name", pkg.getPackageName().getName());
         ContentFilter filter = contentManager.createFilter("test-filter-1234", DENY, PACKAGE, criteria, user);
-        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pack2.getPackageName().getName());
+        FilterCriteria criteria2 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "name", pack2.getPackageName().getName());
         ContentFilter filter2 = contentManager.createFilter("test-filter-12345", DENY, PACKAGE, criteria2, user);
 
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChannel, tgtChannel, user);
@@ -248,8 +252,10 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         setInstalledPackage(server, olderPkg);
 
         // we fake the cache entry here
-        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null, Collections.singletonList(otherPkg.getId()));
-        List<SystemOverview> systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, otherPkg.getId());
+        ErrataCacheManager.insertCacheForChannelPackages(
+                tgtChannel.getId(), null, Collections.singletonList(otherPkg.getId()));
+        List<SystemOverview> systemsWithNeededPackage =
+                SystemManager.listSystemsWithNeededPackage(user, otherPkg.getId());
         assertEquals(1, systemsWithNeededPackage.size());
         assertEquals(server.getId(), systemsWithNeededPackage.get(0).getId());
 
@@ -296,7 +302,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
                 .containsAll(Arrays.asList(pack1.getId(), pack2.getId())));
 
         // 2. align with a filter - 1 package should be filtered out and removed from the cache
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", pack1.getPackageName().getName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "name", pack1.getPackageName().getName());
         ContentFilter filter = contentManager.createFilter("test-filter-1234", DENY, PACKAGE, criteria, user);
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter), srcChan, tgtChannel, user);
 
@@ -354,11 +361,14 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(2, needingUpdates.size());
         assertTrue(needingUpdates.stream()
-                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack1.getId()) && errata1.getId().equals(errataCache.getErrataId())));
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack1.getId()) &&
+                        errata1.getId().equals(errataCache.getErrataId())));
         assertTrue(needingUpdates.stream()
-                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errata2.getId().equals(errataCache.getErrataId())));
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) &&
+                        errata2.getId().equals(errataCache.getErrataId())));
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata1.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_name", errata1.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
 
         // 2. let's align the channel again and check that the errata1 and its package is not in the cache anymore
@@ -366,7 +376,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
         assertTrue(needingUpdates.stream()
-                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errata2.getId().equals(errataCache.getErrataId())));
+                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) &&
+                        errata2.getId().equals(errataCache.getErrataId())));
     }
 
     /**
@@ -377,7 +388,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      */
     public void testErrataRemoved() throws Exception {
         // this errata is in the target channel and is supposed to be removed after align
-        Errata toRemove = ErrataFactoryTest.createTestErrata(user.getOrg().getId());;
+        Errata toRemove = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         tgtChannel.addErrata(toRemove);
 
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
@@ -392,7 +403,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      * Test filtering out errata after channel alignment
      */
     public void testErrataFilters() {
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter("test-filter-123", DENY, ERRATUM, criteria, user);
 
         contentManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
@@ -435,10 +447,12 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         tgtChan.addErrata(e5);
         tgtChan.addErrata(e6);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", e2.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_name", e2.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
 
-        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", e6.getAdvisoryName());
+        FilterCriteria criteria2 = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_name", e6.getAdvisoryName());
         ContentFilter filter2 = contentManager.createFilter("test-filter-1235", DENY, ERRATUM, criteria2, user);
 
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChan, tgtChan, user);
@@ -480,7 +494,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      * Test combination of ALLOW and DENY filter on an erratum
      */
     public void testAllowDenyFiltersErrata() {
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter denyFilter = contentManager.createFilter("denyfilter123", DENY, ERRATUM, criteria, user);
 
         // using only DENY filter filters the erratum out
@@ -548,7 +563,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Package olderPkg = copyPackage(pkg, user, "0.9.9");
         srcChannel.addPackage(olderPkg);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter("test-filter-1234", DENY, ERRATUM, criteria, user);
 
         contentManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
@@ -578,7 +594,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());
         pkg2.setPackageName(pkg.getPackageName());
         PackageEvr evr = pkg.getPackageEvr();
-        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
+        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         retracted.addPackage(pkg2);
@@ -590,7 +607,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         DataResult needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertTrue(needingUpdates.isEmpty());
         // nor should it be reported as the newest package in the channel
-        assertEquals(pkg.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+        assertEquals(pkg.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
     }
 
     /**
@@ -613,7 +631,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());
         pkg2.setPackageName(pkg.getPackageName());
         PackageEvr evr = pkg.getPackageEvr();
-        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
+        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata patch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         patch.addPackage(pkg2);
         srcChannel.addPackage(pkg2);
@@ -630,9 +649,11 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
         assertTrue(needingUpdates.stream()
-                .anyMatch(c -> c.getPackageId().equals(pkg2.getId()) && sourceClone.getErratas().iterator().next().getId().equals(c.getErrataId())));
+                .anyMatch(c -> c.getPackageId().equals(pkg2.getId()) &&
+                        sourceClone.getErratas().iterator().next().getId().equals(c.getErrataId())));
         // and it should be reported as the newest package in the channel
-        assertEquals(pkg2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+        assertEquals(pkg2.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
     }
 
     /**
@@ -662,7 +683,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());
         pkg2.setPackageName(pkg.getPackageName());
         PackageEvr evr = pkg.getPackageEvr();
-        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
+        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata patch2 = ErrataFactoryTest.createTestErrata(null);
         patch2.addPackage(pkg2);
         srcChannel.addPackage(pkg2);
@@ -671,7 +693,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // create a (non-retracted) patch that upgrades pkg to 3.0.0
         Package pkg3 = PackageTest.createTestPackage(user.getOrg());
         pkg3.setPackageName(pkg.getPackageName());
-        pkg3.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "3.0.0", evr.getRelease(), pkg.getPackageType()));
+        pkg3.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                evr.getEpoch(), "3.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata patch3 = ErrataFactoryTest.createTestErrata(null);
         patch3.addPackage(pkg3);
         srcChannel.addPackage(pkg3);
@@ -684,12 +707,15 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // tests
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
-        // after building, the cache should contain 4 entries (2 for each package (one of them with errata, one without))
+        // after building he cache should contain 4 entries (2 for each package (one of them with errata, one without))
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(2, needingUpdates.size());
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
-        assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
+        assertEquals(pkg3.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
         // now we retract the patch
         // after building, the cache should not contain any entries related to the retracted patch and package
@@ -697,8 +723,10 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
-        assertFalse(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
-        assertEquals(pkg2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+        assertFalse(needingUpdates.stream()
+                .anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
+        assertEquals(pkg2.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
         // now we make the patch final again
         // after building, the cache should contain entries related to the previously retracted patch and package
@@ -706,9 +734,12 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(2, needingUpdates.size());
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
-        assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
+        assertTrue(needingUpdates.stream()
+                .anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
+        assertEquals(pkg3.getId(),
+                ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
     }
 
     /**

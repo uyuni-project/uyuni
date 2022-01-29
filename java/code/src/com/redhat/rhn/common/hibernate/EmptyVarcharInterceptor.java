@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,15 +14,8 @@
  */
 package com.redhat.rhn.common.util.http;
 
-import java.io.IOException;
-import java.net.URI;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import javax.net.ssl.SSLContext;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpException;
@@ -49,8 +42,17 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import java.io.IOException;
+import java.net.URI;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import javax.net.ssl.SSLContext;
+
+import spark.route.HttpMethod;
 
 /**
  * Adapter class holding an {@link HttpClient} object and offering a simple API to execute
@@ -101,9 +103,12 @@ public class HttpClientAdapter {
         Optional<SSLConnectionSocketFactory> sslSocketFactory = Optional.empty();
         try {
             SSLContext sslContext = SSLContext.getDefault();
+            List<String> supportedProtocols = Arrays.asList(sslContext.getSupportedSSLParameters().getProtocols());
+            List<String> wantedProtocols = Arrays.asList("TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3");
+            wantedProtocols.retainAll(supportedProtocols);
             sslSocketFactory = Optional.of(new SSLConnectionSocketFactory(
                     sslContext,
-                    new String[]{"TLSv1", "TLSv1.1", "TLSv1.2"},
+                    wantedProtocols.toArray(new String[0]),
                     null,
                     SSLConnectionSocketFactory.getDefaultHostnameVerifier()));
         }

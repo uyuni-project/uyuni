@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Text, Select, Form } from "components/input";
+
+import { Form, Select, Text } from "components/input";
 
 import { ProjectEnvironmentType } from "../../../type";
 
@@ -15,7 +16,7 @@ const EnvironmentForm = (props: Props) => (
   <Form
     model={props.environment}
     errors={props.errors}
-    onChange={model => {
+    onChange={(model) => {
       props.onChange(model);
     }}
   >
@@ -52,8 +53,8 @@ const EnvironmentForm = (props: Props) => (
             divClass="col-md-8"
             isClearable
             options={props.environments}
-            getOptionValue={option => option.label}
-            getOptionLabel={option => option.name}
+            getOptionValue={(option) => option.label}
+            getOptionLabel={(option) => option.name}
           />
         </div>
       )}

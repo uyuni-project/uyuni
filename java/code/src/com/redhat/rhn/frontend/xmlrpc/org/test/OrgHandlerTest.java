@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,17 +32,21 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.org.OrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.org.OrgManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class OrgHandlerTest extends BaseHandlerTestCase {
 
-    private OrgHandler handler = new OrgHandler();
+    private OrgHandler handler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
     private static final String LOGIN = "fakeadmin";
     private static final String PASSWORD = "fakeadmin";
@@ -101,7 +105,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     public void testListOrgs() throws Exception {
         Org testOrg = createOrg();
         OrgDto dto = OrgManager.toDetailsDto(testOrg);
-        List <OrgDto> orgs = handler.listOrgs(admin);
+        List<OrgDto> orgs = handler.listOrgs(admin);
         assertTrue(orgs.contains(dto));
     }
 
@@ -114,12 +118,12 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
             // expected
         }
     }
-    
+
     public void testContentStagingSettings() {
         Org testOrg = createOrg();
         int testId = testOrg.getId().intValue();
         assertFalse(handler.isContentStagingEnabled(admin, testId));
-        handler.setContentStaging(admin,testId, true);
+        handler.setContentStaging(admin, testId, true);
         assertTrue(handler.isContentStagingEnabled(admin, testId));
         handler.setContentStaging(admin, testId, false);
         assertFalse(handler.isContentStagingEnabled(admin, testId));
@@ -134,7 +138,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
     public void testListActiveUsers() throws Exception {
         Org testOrg = createOrg();
-        List <MultiOrgUserOverview> users = handler.listUsers(admin,
+        List<MultiOrgUserOverview> users = handler.listUsers(admin,
                                                 testOrg.getId().intValue());
         assertTrue(users.size() == 1);
         User user = UserFactory.lookupByLogin(

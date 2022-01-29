@@ -44,12 +44,12 @@
 
       <tr>
         <th><bean:message key="system.jsp.customkey.created"/>:</th>
-        <td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${created}"/> by ${creator}</td>
+        <td><rhn:formatDate value="${created}" /> by ${creator}</td>
       </tr>
 
       <tr>
         <th><bean:message key="system.jsp.customkey.modified"/>:</th>
-        <td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${modified}"/> by ${modifier}</td>
+        <td><rhn:formatDate value="${modified}" /> by ${creator}</td>
       </tr>
     </table>
 

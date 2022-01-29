@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,7 +24,28 @@ public class ProjectPropertiesResponse {
     private String label;
     private String name;
     private String description;
+    private String lastBuildDate;
     private List<ProjectHistoryEntryResponse> historyEntries;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLastBuildDate() {
+        return lastBuildDate;
+    }
+
+    public List<ProjectHistoryEntryResponse> getHistoryEntries() {
+        return historyEntries;
+    }
 
     public void setLabel(String labelIn) {
         this.label = labelIn;
@@ -36,6 +57,10 @@ public class ProjectPropertiesResponse {
 
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
+    }
+
+    public void setLastBuildDate(String lastBuildDateIn) {
+        this.lastBuildDate = lastBuildDateIn;
     }
 
     public void setHistoryEntries(List<ProjectHistoryEntryResponse> historyEntriesIn) {

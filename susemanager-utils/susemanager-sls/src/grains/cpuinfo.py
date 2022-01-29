@@ -138,7 +138,10 @@ def cpu_data():
                     "Stepping": "cpu_stepping",
                     "Core(s) per socket": "cpu_cores",
                 }
-                values = {name_map[entry["field"][:-1]]: entry["data"] for entry in data.get("lscpu") if entry["field"][:-1] in name_map.keys()}
+                values = {}
+                for entry in data.get("lscpu"):
+                    if entry["field"][:-1] in name_map.keys():
+                        values[name_map[entry["field"][:-1]]] = entry["data"]
                 log.debug(values)
                 return values
             else:

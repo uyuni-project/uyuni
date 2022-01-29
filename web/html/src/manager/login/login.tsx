@@ -1,15 +1,16 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import { useInputValue } from "components/hooks/forms/useInputValue";
-import { Messages, MessageType } from "components/messages";
+
 import { AsyncButton } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
+import { useInputValue } from "components/hooks/forms/useInputValue";
+import { Messages, MessageType } from "components/messages";
 
-import useLoginApi from "./use-login-api";
 import styles from "./login.css";
-
-import LoginHeader from "./login-header";
 import LoginFooter from "./login-footer";
+import LoginHeader from "./login-header";
+import useLoginApi from "./use-login-api";
 
 const products = {
   suma: {
@@ -40,11 +41,11 @@ const products = {
   },
 };
 
-const getGlobalMessages = (validationErrors, schemaUpgradeRequired) => {
+const getGlobalMessages = (validationErrors, schemaUpgradeRequired, diskspaceSeverity) => {
   let messages: MessageType[] = [];
 
   if (validationErrors && validationErrors.length > 0) {
-    messages = messages.concat(validationErrors.map(msg => ({ severity: "error", text: msg })));
+    messages = messages.concat(validationErrors.map((msg) => ({ severity: "error", text: msg })));
   }
 
   if (schemaUpgradeRequired) {
@@ -52,6 +53,38 @@ const getGlobalMessages = (validationErrors, schemaUpgradeRequired) => {
       "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
     );
     messages = messages.concat({ severity: "error", text: schemaUpgradeError });
+  }
+
+  if (diskspaceSeverity !== "ok") {
+    const severity_messages = {
+      undefined: Messages.info(
+        t(
+          "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
+        )
+      ),
+      misconfiguration: Messages.warning(
+        t(
+          "Some important directories are missing. Please contact your system administrator to review the configuration."
+        )
+      ),
+      alert: Messages.warning(
+        t(
+          "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
+        )
+      ),
+      critical: Messages.error(
+        t(
+          "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
+        )
+      ),
+    };
+
+    if (diskspaceSeverity in severity_messages) {
+      messages = messages.concat(severity_messages[diskspaceSeverity]);
+    } else {
+      console.warn("Unknown disk space severity level: " + diskspaceSeverity);
+      messages = messages.concat(severity_messages["undefined"]);
+    }
   }
 
   return messages;
@@ -63,7 +96,7 @@ const getFormMessages = (success, messages) => {
   }
 
   if (messages.length > 0) {
-    return messages.map(msg => ({ severity: "error", text: msg }));
+    return messages.map((msg) => ({ severity: "error", text: msg }));
   }
 
   return [];
@@ -81,6 +114,7 @@ type Props = {
   legalNote: string;
   loginLength: string;
   passwordLength: string;
+  diskspaceSeverity: string;
 };
 
 const Login = (props: Props) => {
@@ -98,7 +132,9 @@ const Login = (props: Props) => {
         <section id="spacewalk-content">
           <div className="wrap">
             <div className="container">
-              <Messages items={getGlobalMessages(props.validationErrors, props.schemaUpgradeRequired)} />
+              <Messages
+                items={getGlobalMessages(props.validationErrors, props.schemaUpgradeRequired, props.diskspaceSeverity)}
+              />
               <React.Fragment>
                 <div className="col-sm-6">
                   <h1>{product.bodyTitle}</h1>
@@ -116,7 +152,7 @@ const Login = (props: Props) => {
                 <div className="col-sm-5 col-sm-offset-1">
                   <Messages items={getFormMessages(success, messages)} />
                   <h2 className="gray-text">{t("Sign In")}</h2>
-                  <form onSubmit={event => event.preventDefault()} name="loginForm">
+                  <form onSubmit={(event) => event.preventDefault()} name="loginForm">
                     <div className="margins-updown">
                       <input
                         id="username-field"
@@ -147,7 +183,7 @@ const Login = (props: Props) => {
                           onLogin({
                             login: loginInput.value,
                             password: passwordInput.value,
-                          }).then(success => success && window.location.replace(props.bounce))
+                          }).then((success) => success && window.location.replace(props.bounce))
                         }
                       />
                     </div>

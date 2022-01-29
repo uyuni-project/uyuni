@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.frontend.action.systems.RegisteredSetupAction;
@@ -27,6 +28,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
+
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 /**
  * RegisteredSetupActionTest
@@ -44,7 +48,9 @@ public class RegisteredSetupActionTest extends RhnPostMockStrutsTestCase {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(server, group);
+        SaltApi saltApi = new TestSaltApi();
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         for (int j = 0; j < RegisteredSetupAction.OPTIONS.length; ++j) {

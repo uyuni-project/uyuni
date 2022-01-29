@@ -1,16 +1,20 @@
 import * as React from "react";
-import { DisplayHighstate } from "./display-highstate";
-import { Messages } from "components/messages";
-import { LinkButton } from "components/buttons";
-import { Utils as MessagesUtils } from "components/messages";
-import { ActionSchedule } from "components/action-schedule";
-import { AsyncButton } from "components/buttons";
-import { Toggler } from "components/toggler";
-import Network from "utils/network";
-import { InnerPanel } from "components/panels/InnerPanel";
-import { Utils, Formats } from "utils/functions";
-import { ActionLink, ActionChainLink } from "components/links";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { ActionSchedule } from "components/action-schedule";
+import { LinkButton } from "components/buttons";
+import { AsyncButton } from "components/buttons";
+import { ActionChainLink, ActionLink } from "components/links";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { InnerPanel } from "components/panels/InnerPanel";
+import { Toggler } from "components/toggler";
+
+import { localizedMoment } from "utils";
+import Network from "utils/network";
+
+import { DisplayHighstate } from "./display-highstate";
 
 // See java/code/src/com/suse/manager/webui/templates/groups/highstate.jade
 declare global {
@@ -30,7 +34,7 @@ type HighstateProps = {};
 
 type HighstateState = {
   messages: any[];
-  earliest: Date;
+  earliest: moment.Moment;
   test: boolean;
   actionChain?: any;
 };
@@ -40,23 +44,20 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     super(props);
     var state = {
       messages: [],
-      earliest: Utils.dateWithTimezone(window.localTime),
+      earliest: localizedMoment(),
       test: false,
     };
     this.state = state;
   }
 
   applyHighstate = () => {
-    const request = Network.post(
-      "/rhn/manager/api/states/applyall",
-      {
-        ids: window.minions?.map(m => m.id),
-        earliest: Formats.LocalDateTime(this.state.earliest),
-        actionChain: this.state.actionChain ? this.state.actionChain.text : null,
-        test: this.state.test,
-      }
-    )
-      .then(data => {
+    const request = Network.post("/rhn/manager/api/states/applyall", {
+      ids: window.minions?.map((m) => m.id),
+      earliest: this.state.earliest,
+      actionChain: this.state.actionChain ? this.state.actionChain.text : null,
+      test: this.state.test,
+    })
+      .then((data) => {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>
@@ -87,17 +88,17 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     return request;
   };
 
-  handleResponseError = jqXHR => {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
   };
 
-  onDateTimeChanged = date => {
+  onDateTimeChanged = (date) => {
     this.setState({ earliest: date });
   };
 
-  onActionChainChanged = actionChain => {
+  onActionChainChanged = (actionChain) => {
     this.setState({ actionChain: actionChain });
   };
 
@@ -148,13 +149,11 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
           </div>
           <div className="panel-body">
             <ActionSchedule
-              timezone={window.timezone}
-              localTime={localTime}
               earliest={this.state.earliest}
               actionChains={window.actionChains}
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
-              systemIds={window.minions?.map(m => m.id)}
+              systemIds={window.minions?.map((m) => m.id)}
               actionType="states.apply"
             />
           </div>

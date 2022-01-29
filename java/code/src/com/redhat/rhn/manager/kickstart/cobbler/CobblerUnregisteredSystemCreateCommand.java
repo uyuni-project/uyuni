@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011--2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,18 +14,18 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Network;
 import org.cobbler.SystemRecord;
 
-import com.redhat.rhn.domain.server.NetworkInterface;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerNetAddress4;
-import com.redhat.rhn.domain.user.User;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Create a cobbler system record for a bare metal system (via XMLRPC) that is

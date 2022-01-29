@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,8 +18,7 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 
 import com.redhat.rhn.domain.server.MinionServer;
-
-import com.suse.manager.webui.utils.SaltPillar;
+import com.redhat.rhn.domain.server.Pillar;
 
 import org.apache.log4j.Logger;
 
@@ -42,7 +41,7 @@ public class MinionVirtualizationPillarGenerator implements MinionPillarGenerato
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
+    public Optional<Pillar> generatePillarData(MinionServer minion) {
         // The virtpoller pillar data used to be created on minions in the past.
         // We want to ensure those are not lingering around.
         return Optional.empty();
@@ -51,5 +50,10 @@ public class MinionVirtualizationPillarGenerator implements MinionPillarGenerato
     @Override
     public String getFilename(String minionId) {
         return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + "virtualization" + "." + PILLAR_DATA_FILE_EXT;
+    }
+
+    @Override
+    public String getCategory() {
+        return "virtualization";
     }
 }

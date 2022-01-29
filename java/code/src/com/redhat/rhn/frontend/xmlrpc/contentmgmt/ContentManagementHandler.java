@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,11 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
+
+import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -37,17 +42,13 @@ import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
 
 /**
  * Content Management XMLRPC handler

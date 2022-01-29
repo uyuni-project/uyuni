@@ -47,7 +47,7 @@
                 <rl:column bound="false"
                            headerkey="registeredlist.jsp.date"
                            >
-                        <fmt:formatDate value="${current.created}" type="both" dateStyle="short" timeStyle="long"/>
+                        <rhn:formatDate value="${current.created}" />
                 </rl:column>
 
                 <rl:column bound="false"

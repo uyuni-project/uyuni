@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,13 +14,14 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.suse.manager.webui.services.iface.SystemQuery;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.exception.SaltException;
+
+import org.apache.log4j.Logger;
 
 
 /**

@@ -18,12 +18,13 @@
 
 
 Name:           spacewalk
-Version:        4.3.1
+Version:        4.3.3
 Release:        1
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+Source:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -85,17 +86,6 @@ Requires:       susemanager-sls
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
-%if 0%{?rhel} || 0%{?fedora}
-# SELinux
-Requires:       mgr-osa-dispatcher-selinux
-Requires:       spacewalk-selinux
-Obsoletes:      spacewalk-monitoring-selinux < 2.3
-%endif
-
-%if 0%{?rhel} == 6
-Requires:       selinux-policy-base >= 3.7.19-93
-%endif
-
 Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
 
@@ -115,19 +105,19 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-%if 0%{?sle_version} >= 150300
+%if 0%{?sle_version} >= 150400
+Requires:       postgresql14
+Requires:       postgresql14-contrib
+# we do not support postgresql versions > 14.x yet
+Conflicts:      postgresql-implementation >= 15
+Conflicts:      postgresql-contrib-implementation >= 15
+%else # not sle_version >= 150400
 Requires:       postgresql13
 Requires:       postgresql13-contrib
 # we do not support postgresql versions > 13.x yet
 Conflicts:      postgresql-implementation >= 14
 Conflicts:      postgresql-contrib-implementation >= 14
-%else # not sle_version >= 150300
-Requires:       postgresql12
-Requires:       postgresql12-contrib
-# we do not support postgresql versions > 13.x yet
-Conflicts:      postgresql-implementation >= 13
-Conflicts:      postgresql-contrib-implementation >= 13
-%endif # if sle_version >= 150300
+%endif # if sle_version >= 150400
 %else # not suse_version
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12
@@ -142,7 +132,7 @@ inventory, provision, update and control your Linux machines.
 Version for PostgreSQL database backend.
 
 %prep
-#nothing to do here
+%setup -q
 
 %build
 #nothing to do here
@@ -166,6 +156,8 @@ done
 
 %files common
 %{_sysconfdir}/*-release
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup

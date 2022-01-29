@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,10 +29,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Date;
 import java.util.HashMap;

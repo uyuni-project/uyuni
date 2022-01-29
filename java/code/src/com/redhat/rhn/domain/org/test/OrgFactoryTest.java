@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.Token;
@@ -34,7 +35,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -100,6 +104,34 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertEquals(!staging, org2.getOrgConfig().isStagingContentEnabled());
     }
 
+    public void testOrgPillars() throws Exception {
+        Org org = createTestOrg();
+
+        Set<Pillar> pillars = new HashSet<>();
+        Map<String, Object> pillar1 = new HashMap<>();
+        pillar1.put("data1", "foo");
+        pillar1.put("data2", 123);
+        pillars.add(new Pillar("category1", pillar1, org));
+        Map<String, Object> pillar2 = new HashMap<>();
+        pillar1.put("bar1", "baz");
+        pillar1.put("bar2", 456);
+        pillars.add(new Pillar("category2", pillar2, org));
+        org.setPillars(pillars);
+
+        TestUtils.saveAndFlush(org);
+        Org org2 = OrgFactory.lookupById(org.getId());
+
+        Pillar actual = org2.getPillars().stream()
+                .filter(item -> "category1".equals(item.getCategory()))
+                .findFirst()
+                .get();
+        assertNotNull(actual);
+        assertEquals(123, actual.getPillar().get("data2"));
+        assertFalse(actual.isMinionPillar());
+        assertFalse(actual.isGlobalPillar());
+        assertFalse(actual.isGroupPillar());
+        assertTrue(actual.isOrgPillar());
+    }
 
     private Org createTestOrg() throws Exception {
         Org org1 = OrgFactory.createOrg();

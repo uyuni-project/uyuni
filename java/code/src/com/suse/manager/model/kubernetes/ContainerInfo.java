@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,13 +15,13 @@
 
 package com.suse.manager.model.kubernetes;
 
-import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
-
-import java.util.Optional;
-
 import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_OUTOFDATE;
 import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_UNKNOWN;
 import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_UPTODATE;
+
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+
+import java.util.Optional;
 
 /**
  * Information about the usage of a Docker container in

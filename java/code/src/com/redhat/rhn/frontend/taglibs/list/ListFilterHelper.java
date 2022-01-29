@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
+import com.redhat.rhn.frontend.struts.Expandable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.redhat.rhn.frontend.struts.Expandable;
 
 /**
  * ListFilterHelper

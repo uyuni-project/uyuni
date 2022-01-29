@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +26,6 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Tag to easy display the icons

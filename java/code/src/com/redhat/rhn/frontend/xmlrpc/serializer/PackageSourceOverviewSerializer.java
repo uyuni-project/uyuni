@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,15 +14,14 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.frontend.dto.PackageSourceOverview;
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
 import java.io.IOException;
 import java.io.Writer;
 
-import com.redhat.rhn.frontend.dto.PackageSourceOverview;
-
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
-
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * PackageSourceOverviewSerializer

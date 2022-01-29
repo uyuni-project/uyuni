@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,12 +15,24 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageCapability;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageProvides;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.ErrataTestUtils;
@@ -33,13 +45,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 /**
  * Tests for {@link ContentFilter}
@@ -95,21 +100,211 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertFalse(filter.test(pack));
     }
 
-    public void testPackageNevraFilter() throws Exception {
+    public void testPackageNevraFilterRPM() throws Exception {
         Package pack = PackageTest.createTestPackage(user.getOrg());
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr(
+                "1", "1.0.0", "3", PackageType.RPM);
+        pack.setPackageEvr(evr);
         String packageName = pack.getPackageName().getName();
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
-        ContentFilter filter = contentManager.createFilter(packageName + "-nevra-filter", DENY, PACKAGE, criteria, user);
+        String evrLower = "-1:0.9.9-5";
+        String evrEquals = "-1:1.0.0-3";
+        String evrGreater = "-1:1.1.0-1";
+
+        // LOWER
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", "should-fail" + evrGreater);
+        ContentFilter filter = contentManager.createFilter(packageName + "nevra-lower-filter1",
+                DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + ".x86_64");
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + "." + pack.getPackageArch().getLabel());
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter4", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter5", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter6", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // LOWEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter1", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // EQUALS
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
+        filter = contentManager.createFilter(packageName + "-nevra-equals-filter1", DENY, PACKAGE, criteria, user);
         assertTrue(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
-        filter = contentManager.createFilter(packageName + "nevra2-filter", DENY, PACKAGE, criteria, user);
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter2", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
-        filter = contentManager.createFilter(packageName + "nevra3-filter", DENY, PACKAGE, criteria, user);
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter3", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
+
+        // GREATEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATER
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+    }
+
+    public void testPackageNevraFilterDeb() throws Exception {
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr(
+                "1", "2.3~.4a+b", "5+abc.6~", PackageType.DEB);
+        pack.setPackageEvr(evr);
+        String packageName = pack.getPackageName().getName();
+
+        String evrLower = "-1:2.2~.4a+b-4+abc.6~";
+        String evrEquals = "-1:2.3~.4a+b-5+abc.6~";
+        String evrGreater = "-1:2.4~.4a+b-6+abc.6~";
+
+        // LOWER
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", "should-fail" + evrGreater);
+        ContentFilter filter = contentManager.createFilter(packageName + "nevra-lower-filter1",
+                DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + ".x86_64");
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + "." + pack.getPackageArch().getLabel());
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter4", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter5", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter6", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // LOWEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter1", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // EQUALS
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
+        filter = contentManager.createFilter(packageName + "-nevra-equals-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATER
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+    }
+
+    public void testPackageProvidesNameFilter() throws Exception {
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+
+        PackageCapability capability = new PackageCapability();
+        capability.setName("installhint(reboot-needed)");
+        capability = TestUtils.saveAndReload(capability);
+
+        PackageProvides packageProvides = new PackageProvides();
+        packageProvides.setCapability(capability);
+        packageProvides.setPack(pack);
+        packageProvides.setSense(0L);
+        TestUtils.saveAndFlush(packageProvides);
+
+        pack = TestUtils.saveAndReload(pack);
+        String packageName = pack.getPackageName().getName();
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.PROVIDES_NAME, "provides_name",
+                "installhint(reboot-needed)");
+        ContentFilter filter = contentManager.createFilter(packageName + "-provides-filter", DENY, PACKAGE,
+                criteria, user);
+        assertTrue(filter.test(pack));
     }
 
     /**
@@ -119,9 +314,11 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataAdvisoryFilter() throws Exception {
         String cveName = TestUtils.randomString().substring(0, 13);
-        Errata erratum = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
+        Errata erratum = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS,
+                "advisory_name", erratum.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum));
 
@@ -132,13 +329,16 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     public void testErrataAdvisoryMatchesFilter() throws Exception {
         String cveName = TestUtils.randomString().substring(0, 13);
-        Errata erratum = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
+        Errata erratum = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName)));
         erratum.setAdvisoryName("SUSE-SLE-SERVER-2019-1123");
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name", "^SUSE-SLE-\\w+-\\d+-\\d+$");
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name",
+                "^SUSE-SLE-\\w+-\\d+-\\d+$");
         ContentFilter filter = contentManager.createFilter(cveName + "-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum));
 
-        criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name", "^SUSE-SLE-\\d+-\\d+$");
+        criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "advisory_name",
+                "^SUSE-SLE-\\d+-\\d+$");
         filter = contentManager.createFilter(cveName + "-filter-2", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum));
     }
@@ -150,16 +350,20 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByDateFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setIssueDate(new Date(1556604000000L));
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setIssueDate(new Date(1556694000000L));
         String cveName3 = TestUtils.randomString().substring(0, 13);
-        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
         erratum3.setIssueDate(new Date(1556668800000L)); // "2019-05-01 00:00:00 +0000"
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "issue_date", "2019-05-01T00:00:00+00:00");
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "issue_date",
+                "2019-05-01T00:00:00+00:00");
         ContentFilter filter = contentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
         assertTrue(filter.test(erratum2));
@@ -173,23 +377,28 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByDate2Filter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setIssueDate(new Date(1556604000000L));
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setIssueDate(new Date(1556694000000L));
         String cveName3 = TestUtils.randomString().substring(0, 13);
-        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
         erratum3.setIssueDate(new Date(1556668800000L)); // "2019-05-01 00:00:00 +0000"
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date", "2019-05-01T00:00:00+00:00");
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "issue_date",
+                "2019-05-01T00:00:00+00:00");
         ContentFilter filter = contentManager.createFilter("bydate-filter", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
         assertTrue(filter.test(erratum2));
 
-        ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        assertTrue(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString()
-                + " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
+        ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00",
+                DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        assertTrue(erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString() +
+                " should be equal " +  criteriaDate.toString(), filter.test(erratum3));
     }
 
     /**
@@ -199,13 +408,16 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByEqualSynopsisFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("recommended update: " + cveName2);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "synopsis", erratum1.getSynopsis());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "synopsis",
+                erratum1.getSynopsis());
         ContentFilter filter = contentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
@@ -218,23 +430,28 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByContainsSynopsisFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("recommended update: " + cveName2);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", erratum1.getSynopsis());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis",
+                erratum1.getSynopsis());
         ContentFilter filter = contentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
 
-        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", "recommended update:");
+        FilterCriteria criteria2 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "synopsis", "recommended update:");
         ContentFilter filter2 = contentManager.createFilter("synopsis-filter2", DENY, ERRATUM, criteria2, user);
         assertTrue(filter2.test(erratum1));
         assertTrue(filter2.test(erratum2));
 
-        FilterCriteria criteria3 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "synopsis", "imsurethisdoesntexist");
+        FilterCriteria criteria3 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "synopsis", "imsurethisdoesntexist");
         ContentFilter filter3 = contentManager.createFilter("synopsis-filter3", DENY, ERRATUM, criteria3, user);
         assertFalse(filter3.test(erratum1));
         assertFalse(filter3.test(erratum2));
@@ -247,16 +464,20 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataByMatchesSynopsisFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("security update: " + cveName2);
         String cveName3 = TestUtils.randomString().substring(0, 13);
-        Errata erratum3 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
+        Errata erratum3 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName3)));
         erratum3.setSynopsis("update: " + cveName3);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "synopsis", ".+update:.+");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.MATCHES, "synopsis", ".+update:.+");
         ContentFilter filter = contentManager.createFilter("synopsis-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertTrue(filter.test(erratum2));
@@ -270,10 +491,12 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
      */
     public void testErrataTypeFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_type", "Security Advisory");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "advisory_type", "Security Advisory");
         ContentFilter filter = contentManager.createFilter("sec-type-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
 
@@ -284,24 +507,30 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     public void testErrataContainsPackageName() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         String pkgName = erratum1.getPackages().iterator().next().getPackageName().getName();
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName);
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName);
         ContentFilter filter = contentManager.createFilter("contains-name-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
 
-        criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName + "noFound");
+        criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS_PKG_NAME, "package_name", pkgName + "noFound");
         filter = contentManager.createFilter("contains-name-filter2", DENY, ERRATUM, criteria, user);
         assertFalse(filter.test(erratum1));
     }
 
     public void testErrataMatchesPackageName() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(
+                user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "\\d+JavaTest.*");
-        ContentFilter filter = contentManager.createFilter("matches-name-filter", DENY, ERRATUM, criteria, user);
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "\\d+JavaTest.*");
+        ContentFilter filter = contentManager.createFilter(
+                "matches-name-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES_PKG_NAME, "package_name", "JavaTest.*");
@@ -311,7 +540,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     public void testErrataContainsPackageEvr() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         Package pkg1 = erratum1.getPackages().iterator().next();
         String pkgName = pkg1.getPackageName().getName();
         String equalEvrString = "1:1.0.0-1"; // PackageEvrFactoryTest.createTestPackageEvr()
@@ -368,26 +598,65 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Erratum Filter Test: test for errata containing a package which has a special provides
+     *
+     * @throws Exception is anything goes wrong
+     */
+    public void testErrataContainsPackageProvidesName() throws Exception {
+
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+
+        PackageCapability capability = new PackageCapability();
+        capability.setName("installhint(reboot-needed)");
+        capability = TestUtils.saveAndReload(capability);
+
+        PackageProvides packageProvides = new PackageProvides();
+        packageProvides.setCapability(capability);
+        packageProvides.setPack(pack);
+        packageProvides.setSense(0L);
+        TestUtils.saveAndFlush(packageProvides);
+
+        pack = TestUtils.saveAndReload(pack);
+
+        String cveName1 = TestUtils.randomString().substring(0, 13);
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME,
+                "package_provides_name", "installhint(reboot-needed)");
+        ContentFilter filter = contentManager.createFilter("contains-prv-name-filter", DENY, ERRATUM, criteria, user);
+        assertFalse(filter.test(erratum1));
+
+        erratum1.addPackage(pack);
+        filter = contentManager.createFilter("contains-prv-name-filter2", DENY, ERRATUM, criteria, user);
+        assertTrue(filter.test(erratum1));
+    }
+
+    /**
      * Test basic Errata filtering: match keywords
      *
      * @throws Exception if anything goes wrong
      */
     public void testErrataContainsKeywordFilter() throws Exception {
         String cveName1 = TestUtils.randomString().substring(0, 13);
-        Errata erratum1 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
+        Errata erratum1 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName1)));
         erratum1.setSynopsis("recommended update: " + cveName1);
         erratum1.addKeyword("reboot_suggested");
         String cveName2 = TestUtils.randomString().substring(0, 13);
-        Errata erratum2 = ErrataTestUtils.createTestErrata(user, Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
+        Errata erratum2 = ErrataTestUtils.createTestErrata(user,
+                Collections.singleton(ErrataTestUtils.createTestCve(cveName2)));
         erratum2.setSynopsis("recommended update: " + cveName2);
         erratum2.addKeyword("restart_suggested");
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "keyword", "reboot_suggested");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "keyword", "reboot_suggested");
         ContentFilter filter = contentManager.createFilter("reboot-filter", DENY, ERRATUM, criteria, user);
         assertTrue(filter.test(erratum1));
         assertFalse(filter.test(erratum2));
 
-        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "keyword", "restart_suggested");
+        FilterCriteria criteria2 = new FilterCriteria(
+                FilterCriteria.Matcher.CONTAINS, "keyword", "restart_suggested");
         ContentFilter filter2 = contentManager.createFilter("restart-filter2", DENY, ERRATUM, criteria2, user);
         assertFalse(filter2.test(erratum1));
         assertTrue(filter2.test(erratum2));
@@ -402,7 +671,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         Module module3 = new Module("mymodule2", "mystream2");
 
         // Filter by module name only
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1");
+        FilterCriteria criteria = new FilterCriteria(
+                FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1");
         ContentFilter filter = contentManager.createFilter("mymodule-filter-1", ALLOW, MODULE, criteria, user);
         assertTrue(filter.test(module1));
         assertTrue(filter.test(module2));

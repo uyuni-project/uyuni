@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,19 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.configchannel;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -34,6 +21,7 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
 import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -42,6 +30,18 @@ import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.DirectoryData;
 import com.redhat.rhn.manager.configuration.file.SymlinkData;
 import com.redhat.rhn.manager.configuration.file.TextFileData;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  *

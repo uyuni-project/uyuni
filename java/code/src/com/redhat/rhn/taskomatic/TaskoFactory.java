@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,12 +16,12 @@ package com.redhat.rhn.taskomatic;
 
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;

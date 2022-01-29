@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.SCCSystemRegistrationManager;
-
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -37,6 +37,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ForwardRegistrationTask extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "forward_registration";
+    }
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {

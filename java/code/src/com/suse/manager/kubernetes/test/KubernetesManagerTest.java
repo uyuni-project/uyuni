@@ -1,13 +1,13 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
- * <p>
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- * <p>
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -24,12 +24,14 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.salt.netapi.parser.JsonParser;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -73,7 +75,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
 
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.setRevisionNumber(1);
@@ -98,10 +100,12 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         VirtualHostManager cluster1 = createVirtHostManager();
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production:latest", "latest", user);
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo(
+                "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production:latest", "latest", user);
 
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
-                "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production@sha256:362f5f5d8d3670c9c499ae171ce059e9fa1889c879bfc2db78b97f37998dc717");
+                "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production@sha256:" +
+                        "362f5f5d8d3670c9c499ae171ce059e9fa1889c879bfc2db78b97f37998dc717");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.setRevisionNumber(1);
@@ -131,9 +135,9 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
 
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
         ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.getBuildHistory().add(history2);
@@ -163,9 +167,9 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
 
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
         ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.getBuildHistory().add(history2);
@@ -204,7 +208,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "latest", user);
         imgInfo.setStore(store);
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.setRevisionNumber(1);
@@ -233,7 +237,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
 
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
-                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
+            "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.setRevisionNumber(1);

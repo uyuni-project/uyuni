@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -41,6 +41,16 @@ import java.util.Optional;
  * This really just calls a python script.
  */
 public class RepoSyncTask extends RhnJavaJob {
+
+    @Override
+    public int getDefaultRescheduleTime() {
+        return 30;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "reposync";
+    }
 
     /**
      * {@inheritDoc}

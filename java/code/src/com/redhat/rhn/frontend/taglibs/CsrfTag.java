@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2011 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,11 +16,11 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 
+import org.apache.struts.taglib.html.HiddenTag;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
-
-import org.apache.struts.taglib.html.HiddenTag;
 
 /**
  * HiddenTag

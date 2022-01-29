@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -28,6 +28,11 @@ import java.util.HashMap;
  * Deletes duplicated uuids for same system id from rhnVirtualInstances
  */
 public class UuidCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "uuid_cleanup";
+    }
 
     /**
      * {@inheritDoc}

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,8 +20,8 @@ import com.redhat.rhn.testing.httpservermock.Responder;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
-import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemJson;
 
@@ -223,7 +223,8 @@ public class SCCClientTest extends TestCase {
             assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
             assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586", r.getUrl());
             assertEquals(true, r.isAutorefresh());
-        } finally {
+        }
+        finally {
             this.removeTempDir(tmpDir);
         }
     }

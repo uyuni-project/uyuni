@@ -2,6 +2,9 @@
 # DO NOT EDIT !!!
 #
 
+from spacewalk.common.rhnConfig import CFG
+DOCUMENT_ROOT = CFG.documentroot
+
 # package list format
 #
 # | alternative. Example: "a|b" when package "a" cannot be found try "b". First match wins.
@@ -179,7 +182,8 @@ PKGLIST12 = [
 ONLYSLE12 = [
     "libzmq3",
     "gio-branding-SLE",
-    "wallpaper-branding-SLE"
+    "wallpaper-branding-SLE",
+    "venv-salt-minion",
 ]
 
 PKGLIST12_X86_ARM = [
@@ -352,7 +356,8 @@ RES7 = [
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
-    "python2-hwdata"
+    "python2-hwdata",
+    "venv-salt-minion",
 ]
 
 RES7_X86 = [
@@ -382,7 +387,8 @@ RES8 = [
     "python3-pysocks",
     "python3-pytz",
     "python3-setuptools",
-    "python3-distro"
+    "python3-distro",
+    "venv-salt-minion",
 ]
 
 RES8_X86 = [
@@ -427,6 +433,7 @@ PKGLIST15_SALT = [
     "libpgm-5_2-0",
     "libsodium23",
     "libzmq5",
+    "openssl",
     "python3-Babel",
     "python3-certifi",
     "python3-chardet",
@@ -450,6 +457,7 @@ PKGLIST15_SALT = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "venv-salt-minion",
 ]
 
 PKGLIST15SP0SP1_SALT = [
@@ -603,6 +611,8 @@ PKGLISTUBUNTU1804 = [
     "python-apt-common",
     "python3-distro",
     "python3-gnupg",
+    "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTUBUNTU2004 = [
@@ -621,11 +631,18 @@ PKGLISTUBUNTU2004 = [
     "python3-zmq",
     "salt-common",
     "salt-minion",
+    "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTDEBIAN9 = [
-    "dctrl-tools",
     "apt-transport-https",
+    "bsdmainutils",
+    "dctrl-tools",
+    "debconf-utils",
+    "gnupg1",
+    "gnupg1-curl",
+    "gnupg1-l10n",
     "javascript-common",
     "libjs-jquery",
     "libjs-sphinxdoc",
@@ -650,9 +667,11 @@ PKGLISTDEBIAN9 = [
     "python-cryptography",
     "python-dateutil",
     "python-enum34",
+    "python-gnupg",
     "python-idna",
     "python-ipaddress",
     "python-jinja2",
+    "python-mako",
     "python-markupsafe",
     "python-minimal",
     "python-msgpack",
@@ -673,13 +692,18 @@ PKGLISTDEBIAN9 = [
     "salt-common",
     "salt-minion",
     "dmidecode",
+    "gnupg",
+    "gnupg1",
+    "venv-salt-minion",
 ]
+
 
 PKGLISTDEBIAN10 = [
     "dctrl-tools",
     "debconf-utils",
     "dirmngr",
     "distro-info-data",
+    "dmidecode",
     "gnupg",
     "gnupg-l10n",
     "gnupg-utils",
@@ -728,7 +752,35 @@ PKGLISTDEBIAN10 = [
     "python3-zmq",
     "python-apt-common",
     "salt-common",
-    "salt-minion"
+    "salt-minion",
+    "gnupg",
+    "venv-salt-minion",
+]
+
+PKGLISTDEBIAN11 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.4-2",
+    "libldap-common",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    # end of gnupg dependencies
+    "venv-salt-minion"
 ]
 
 PKGLISTASTRALINUXOREL = [
@@ -778,635 +830,685 @@ PKGLISTASTRALINUXOREL = [
     "python2.7",
     "python2.7-minimal",
     "salt-common",
-    "salt-minion"
+    "salt-minion",
+    "gnupg",
 ]
 
 DATA = {
     'SLE-11-SP1-i586' : {
         'PDID' : 684, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/1/bootstrap/'
     },
     'SLE-11-SP1-ia64' : {
         'PDID' : 1033, 'PKGLIST' : PKGLIST11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/1/bootstrap/'
     },
     'SLE-11-SP1-ppc64' : {
         'PDID' : 940, 'PKGLIST' : PKGLIST11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/1/bootstrap/'
     },
     'SLE-11-SP1-s390x' : {
         'PDID' : 745, 'PKGLIST' : PKGLIST11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/1/bootstrap/'
     },
     'SLE-11-SP1-x86_64' : {
         'PDID' : 769, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/1/bootstrap/'
     },
     'SLE-11-SP2-i586' : {
         'PDID' : 811, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/2/bootstrap/'
     },
     'SLE-11-SP2-ia64' : {
         'PDID' : 1034, 'PKGLIST' : PKGLIST11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/2/bootstrap/'
     },
     'SLE-11-SP2-ppc64' : {
         'PDID' : 946, 'PKGLIST' : PKGLIST11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/2/bootstrap/'
     },
     'SLE-11-SP2-s390x' : {
         'PDID' : 755, 'PKGLIST' : PKGLIST11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/2/bootstrap/'
     },
     'SLE-11-SP2-x86_64' : {
         'PDID' : 690, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/2/bootstrap/'
     },
     'SLE-11-SP3-i586' : {
         'PDID' : 793, 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/3/bootstrap/'
     },
     'SLE-11-SP3-ia64' : {
         'PDID' : 1037, 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/3/bootstrap/'
     },
     'SLE-11-SP3-ppc64' : {
         'PDID' : 949, 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/3/bootstrap/'
     },
     'SLE-11-SP3-s390x' : {
         'PDID' : 693, 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/3/bootstrap/'
     },
     'SLE-11-SP3-x86_64' : {
         'PDID' : 814, 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/3/bootstrap/'
     },
     'SLE-11-SP4-i586' : {
         'PDID' : [1299], 'BETAPDID' : [2071], 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLE-11-SP4-ia64' : {
         'PDID' : 1302, 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLE-11-SP4-ppc64' : {
         'PDID' : [1301], 'BETAPDID' : [2072], 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLE-11-SP4-s390x' : {
         'PDID' : [1303], 'BETAPDID' : [2073], 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLE-11-SP4-x86_64' : {
         'PDID' : [1300], 'BETAPDID' : [2074], 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLE-10-SP3-i586' : {
         'PDID' : 785, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
     },
     'SLE-10-SP3-ia64' : {
         'PDID' : 740, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
     },
     'SLE-10-SP3-ppc' : {
         'PDID' : 787, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
     },
     'SLE-10-SP3-s390x' : {
         'PDID' : 682, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
     },
     'SLE-10-SP3-x86_64' : {
         'PDID' : 721, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
     },
     'SLE-10-SP4-i586' : {
         'PDID' : 752, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
     },
     'SLE-10-SP4-ia64' : {
         'PDID' : 770, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
     },
     'SLE-10-SP4-ppc' : {
         'PDID' : 711, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
     },
     'SLE-10-SP4-s390x' : {
         'PDID' : 771, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
     },
     'SLE-10-SP4-x86_64' : {
         'PDID' : 832, 'PKGLIST' : PKGLIST10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
     },
     'SLES4SAP-11-SP1-x86_64' : {
         'PDID' : 1129, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/1/bootstrap/'
     },
     'SLES4SAP-11-SP2-x86_64' : {
         'PDID' : 1130, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/2/bootstrap/'
     },
     'SLES4SAP-11-SP3-x86_64' : {
         'PDID' : 1131, 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/3/bootstrap/'
     },
     'SLES4SAP-11-SP4-x86_64' : {
         'PDID' : [1329], 'BETAPDID' : [2074], 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLES4SAP-11-SP4-ppc64' : {
         'PDID' : [1331], 'BETAPDID' : [2072], 'PKGLIST' : PKGLIST11 + ENHANCE11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
     },
     'SLE-12-ppc64le' : {
         'PDID' : 1116, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/bootstrap/'
     },
     'SLE-12-s390x' : {
         'PDID' : 1115, 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/bootstrap/'
     },
     'SLE-12-x86_64' : {
         'PDID' : 1117, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/bootstrap/'
     },
     'SLES4SAP-12-x86_64' : {
         'PDID' : 1319, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/1/bootstrap/'
     },
     'SLE-12-SP1-ppc64le' : {
         'PDID' : 1334, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLE-12-SP1-s390x' : {
         'PDID' : [1335, 1535], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLE-12-SP1-x86_64' : {
         'PDID' : [1322, 1533], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-ppc64le' : {
         'PDID' : 1437, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/0/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-x86_64' : {
         'PDID' : 1346, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/0/1/bootstrap/'
     },
     'RES6-x86_64' : {
         'PDID' : [1138], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/6/bootstrap/'
     },
     'RES7-x86_64' : {
         'PDID' : [1251], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
     },
     'SLE-12-SP2-aarch64' : {
         'PDID' : 1375, 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLES_RPI-12-SP2-aarch64' : {
         'PDID' : 1418, 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-ppc64le' : {
         'PDID' : [1355, 1737], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-s390x' : {
         'PDID' : [1356, 1738], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-x86_64' : {
         'PDID' : [1357, 1739], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLES4SAP-12-SP2-x86_64' : {
         'PDID' : 1414, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLES4SAP-12-SP2-ppc64le' : {
         'PDID' : 1521, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP3-aarch64' : {
         'PDID' : [1424, 2002], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-ppc64le' : {
         'PDID' : [1422, 1930], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-s390x' : {
         'PDID' : [1423, 1931], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-x86_64' : {
         'PDID' : [1421, 1932], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLES4SAP-12-SP3-x86_64' : {
         'PDID' : 1426, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLES4SAP-12-SP3-ppc64le' : {
         'PDID' : 1572, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP4-aarch64' : {
         'PDID' : [1628, 2114], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-ppc64le' : {
         'PDID' : [1626, 2115], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-s390x' : {
         'PDID' : [1627, 2116], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-x86_64' : {
         'PDID' : [1625, 2117], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLED-12-SP4-x86_64' : {
         'PDID' : [1629], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLES4SAP-12-SP4-x86_64' : {
         'PDID' : [1755], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLES4SAP-12-SP4-ppc64le' : {
         'PDID' : [1754], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE4HPC-12-SP4-x86_64' : {
         'PDID' : [1759], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE4HPC-12-SP4-aarch64' : {
         'PDID' : [1758], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP5-aarch64' : {
         'PDID' : [1875], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-12-SP5-ppc64le' : {
         'PDID' : [1876], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-12-SP5-s390x' : {
         'PDID' : [1877], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-12-SP5-x86_64' : {
         'PDID' : [1878], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + ENHANCE12SP5_X86 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLES4SAP-12-SP5-x86_64' : {
         'PDID' : [1880], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + ENHANCE12SP5_X86 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLES4SAP-12-SP5-ppc64le' : {
         'PDID' : [1879], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE4HPC-12-SP5-x86_64' : {
         'PDID' : [1873], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + ENHANCE12SP5_X86 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE4HPC-12-SP5-aarch64' : {
         'PDID' : [1872], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'OES2018-x86_64' : {
         'PDID' : 45, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/2/bootstrap/'
     },
     'OES2018-SP1-x86_64' : {
         'PDID' : 46, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
     'OES2018-SP2-x86_64' : {
         'PDID' : -9, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'OES2018-SP3-x86_64' : {
         'PDID' : -21, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-15-aarch64' : {
         'PDID' : [1589, 2053, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-ppc64le' : {
         'PDID' : [1588, 2054, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-s390x' : {
         'PDID' : [1587, 2055, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-x86_64' : {
         'PDID' : [1576, 2056, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
+    },
+    'SLES4SAP-15-ppc64le' : {
+        'PDID' : [1588, 1613, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
+    },
+    'SLES4SAP-15-x86_64' : {
+        'PDID' : [1576, 1612, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-SP1-aarch64' : {
         'PDID' : [1769, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-ppc64le' : {
         'PDID' : [1770, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-s390x' : {
         'PDID' : [1771, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-x86_64' : {
         'PDID' : [1772, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SUMA-40-PROXY-x86_64' : {
         'PDID' : [1772, 1908], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP2-aarch64' : {
         'PDID' : [1943, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-ppc64le' : {
         'PDID' : [1944, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-s390x' : {
         'PDID' : [1945, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-x86_64' : {
         'PDID' : [1946, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SUMA-41-PROXY-x86_64' : {
         'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP3-aarch64' : {
         'PDID' : [2142, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-ppc64le' : {
         'PDID' : [2143, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-s390x' : {
         'PDID' : [2144, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-x86_64' : {
         'PDID' : [2145, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SUMA-42-PROXY-x86_64' : {
         'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'openSUSE-Leap-42.3-x86_64' : {
         'BASECHANNEL' : 'opensuse_leap42_3-x86_64', 'PKGLIST' : PKGLIST12 + ONLYOPENSUSE42 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/42/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/42/3/bootstrap/'
     },
     'openSUSE-Leap-15-x86_64' : {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/0/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/0/bootstrap/'
     },
     'openSUSE-Leap-15.1-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_1-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/1/bootstrap/'
     },
     'openSUSE-Leap-15.1-aarch64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_1-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/1/bootstrap/'
     },
     'openSUSE-Leap-15.1-x86_64' : {
         'PDID' : [1929], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/1/bootstrap/'
     },
     'openSUSE-Leap-15.2-x86_64' : {
         'PDID' : [2001], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'openSUSE-Leap-15.2-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_2-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'openSUSE-Leap-15.2-aarch64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_2-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'openSUSE-Leap-15.3-x86_64' : {
         'PDID' : [2236], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
+    },
+    'openSUSE-Leap-15.3-aarch64' : {
+        'PDID' : [2233], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
     'openSUSE-Leap-15.3-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_3-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
     'openSUSE-Leap-15.3-aarch64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_3-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/3/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
     },
     'centos-7-x86_64' : {
         'PDID' : [-12, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/7/bootstrap/'
+    },
+    'centos-7-aarch64' : {
+        'PDID' : [-31, 2361], 'BETAPDID' : [2363], 'PKGLIST' : RES7,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/7/bootstrap/'
     },
     'centos-8-x86_64' : {
         'PDID' : [-13, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
+    },
+    'centos-8-aarch64' : {
+        'PDID' : [-30, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
     },
     'centos-6-x86_64-uyuni' : {
         'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
     },
     'centos-7-x86_64-uyuni' : {
         'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/7/bootstrap/'
     },
     'centos-7-ppc64le-uyuni' : {
         'BASECHANNEL' : 'centos7-ppc64le', 'PKGLIST' : RES7,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/7/bootstrap/'
     },
     'centos-7-aarch64-uyuni' : {
         'BASECHANNEL' : 'centos7-aarch64', 'PKGLIST' : RES7,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/7/bootstrap/'
     },
     'centos-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
     },
     'centos-8-ppc64le-uyuni' : {
         'BASECHANNEL' : 'centos8-ppc64le', 'PKGLIST' : RES8,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
     },
     'centos-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'centos8-aarch64', 'PKGLIST' : RES8,
-        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
     },
     'oracle-6-x86_64' : {
         'PDID' : [-15, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/6/bootstrap/'
     },
     'oracle-7-x86_64' : {
         'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/7/bootstrap/'
+    },
+    'oracle-7-aarch64' : {
+        'PDID' : [-28, 2361], 'BETAPDID' : [2363], 'PKGLIST' : RES7,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/7/bootstrap/'
     },
     'oracle-8-x86_64' : {
         'PDID' : [-17, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
+    },
+    'oracle-8-aarch64' : {
+        'PDID' : [-29, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
     'oracle-6-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux6-x86_64', 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/6/bootstrap/'
     },
     'oracle-7-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux7-x86_64', 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/7/bootstrap/'
     },
     'oracle-7-aarch64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux7-aarch64', 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/7/bootstrap/'
     },
     'oracle-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
     'oracle-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux8-aarch64', 'PKGLIST' : RES8,
-        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
     'amazonlinux-2-x86_64' : {
         'PDID' : [-22, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
-        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
+    },
+    'amazonlinux-2-aarch64' : {
+        'PDID' : [-28, 2361], 'BETAPDID' : [2363], 'PKGLIST' : RES7 + AMAZONLINUX2,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
     },
     'amazonlinux-2-x86_64-uyuni' : {
         'BASECHANNEL' : 'amazonlinux2-core-x86_64', 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
-        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
     },
     'amazonlinux-2-aarch64-uyuni' : {
         'BASECHANNEL' : 'amazonlinux2-core-aarch64', 'PKGLIST' : RES7 + AMAZONLINUX2,
-        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
     },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/6/bootstrap/'
     },
     'RHEL6-i386' : {
         'PDID' : [-6, 1681], 'BETAPDID' : [2063], 'PKGLIST' : RES6,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/6/bootstrap/'
     },
     'RHEL7-x86_64' : {
         'PDID' : [-7, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
     },
     'SLE-ES8-x86_64' : {
         'PDID' : [-8, 1921, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
     'RHEL8-x86_64' : {
         'PDID' : [-8, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
-        'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
+        'DEST': DOCUMENT_ROOT + '/pub/repositories/alibaba/2/bootstrap/'
     },
     'alibaba-2-aarch64-uyuni': {
         'BASECHANNEL': 'alibaba-2-aarch64', 'PKGLIST': RES7,
-        'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
+        'DEST': DOCUMENT_ROOT + '/pub/repositories/alibaba/2/bootstrap/'
     },
     'almalinux-8-x86_64' : {
         'PDID' : [-23, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
+    'almalinux-8-aarch64' : {
+        'PDID' : [-26, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
     },
     'almalinux-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
-    },    
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
+    'almalinux-8-aarch64-uyuni' : {
+        'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
     'rockylinux-8-x86_64' : {
         'PDID' : [-24, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
+    },
+    'rockylinux-8-aarch64' : {
+        'PDID' : [-27, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
     },
     'rockylinux-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'rockylinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
-        'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
     },
     'rockylinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'rockylinux8-aarch64', 'PKGLIST' : RES8,
-        'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
         'PDID' : [-2, 1917], 'BETAPDID' : [2061], 'PKGLIST' : PKGLISTUBUNTU1604,
-        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/16/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-18.04-amd64' : {
         'PDID' : [-1, 1918], 'BETAPDID' : [2062], 'PKGLIST' : PKGLISTUBUNTU1804,
-        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-20.04-amd64' : {
         'PDID' : [-18, 2113], 'BETAPDID' : [2112], 'PKGLIST' : PKGLISTUBUNTU2004,
-        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/20/4/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/20/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-16.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-16.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1604,
-        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/16/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-18.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-18.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1804,
-        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-20.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-20.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2004,
-        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/20/4/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/20/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {
         'PDID' : [-19, 2208], 'BETAPDID' : [2209], 'PKGLIST' : PKGLISTDEBIAN9,
-        'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/9/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian10-amd64' : {
         'PDID' : [-20, 2210], 'BETAPDID' : [2211], 'PKGLIST' : PKGLISTDEBIAN10,
-        'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/10/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-9-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN9,
-         'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/9/bootstrap/',
          'TYPE' : 'deb'
      },
      'debian10-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-10-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN10,
-         'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/10/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'debian11-amd64-uyuni' : {
+         'BASECHANNEL' : 'debian-11-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN11,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/11/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {
          'BASECHANNEL' : 'astralinux-orel-pool-amd64', 'PKGLIST' : PKGLISTASTRALINUXOREL,
-         'DEST' : '/srv/www/htdocs/pub/repositories/astra/orel/bootstrap/',
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/astra/orel/bootstrap/',
          'TYPE' : 'deb'
      }
 }

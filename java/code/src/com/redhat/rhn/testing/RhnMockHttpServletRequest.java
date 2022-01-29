@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.testing;
 
+import com.mockobjects.servlet.MockHttpServletRequest;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -24,8 +26,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 
 import junit.framework.AssertionFailedError;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
 
 /**
  * RhnMockHttpServletRequest is a mock implementation of the

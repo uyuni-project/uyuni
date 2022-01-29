@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,14 +14,15 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 import com.redhat.rhn.frontend.taglibs.RhnHiddenTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
+
+import com.mockobjects.helpers.TagTestHelper;
+import com.mockobjects.servlet.MockJspWriter;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.Tag;
 
 /**
  * RhnHiddenTagTest

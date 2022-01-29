@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,9 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
-
-import java.util.Date;
-import java.util.Iterator;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -32,6 +29,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * SystemListSetupActionTest

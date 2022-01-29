@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,13 +20,14 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.frontend.xmlrpc.serializer.VirtualHostManagerSerializer;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
+
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * VirtualHostManagerSerializer test

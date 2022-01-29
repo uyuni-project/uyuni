@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
-import javax.servlet.jsp.JspException;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
@@ -25,6 +21,10 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 import com.redhat.rhn.frontend.taglibs.list.SelectableColumnTag;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.jsp.JspException;
 
 /**
  * Handles selectable lists, such as lists backed by RhnSet

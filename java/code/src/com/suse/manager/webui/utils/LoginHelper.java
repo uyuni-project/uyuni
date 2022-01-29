@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019--2020 SUSE LLC
  * Copyright (c) 2014--2015 Red Hat, Inc.
  *
@@ -42,6 +42,9 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.utils.DiskCheckHelper;
+import com.suse.manager.utils.DiskCheckSeverity;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
@@ -65,13 +68,13 @@ public class LoginHelper {
 
     private static Logger log = Logger.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
-    private static final Long MIN_PG_DB_VERSION = 100001L;
-    private static final Long MAX_PG_DB_VERSION = 139999L;
-    private static final String MIN_PG_DB_VERSION_STRING = "10";
-    private static final String MAX_PG_DB_VERSION_STRING = "13";
-    private static final Double OS_VERSION_CHECK = 15.3;
-    private static final Long OS_VERSION_MIN_DB_VERSION = 130000L;
-    private static final String OS_VERSION_WANTED_DB_VERSION = "13";
+    private static final Long MIN_PG_DB_VERSION = 130001L;
+    private static final Long MAX_PG_DB_VERSION = 149999L;
+    private static final String MIN_PG_DB_VERSION_STRING = "13";
+    private static final String MAX_PG_DB_VERSION_STRING = "14";
+    private static final Double OS_VERSION_CHECK = 15.4;
+    private static final Long OS_VERSION_MIN_DB_VERSION = 140000L;
+    private static final String OS_VERSION_WANTED_DB_VERSION = "14";
     public static final String DEFAULT_URL_BOUNCE = "/rhn/YourRhn.do";
 
     /**
@@ -452,5 +455,16 @@ public class LoginHelper {
             errors.add(e.getMessage());
         }
         return user;
+    }
+
+    /**
+     * Validate the available disk space using an external script.
+     * @return a string representing the severity level.
+     */
+    public static String validateDiskSpaceAvailability() {
+        final DiskCheckHelper diskCheck = new DiskCheckHelper();
+
+        final DiskCheckSeverity diskCheckSeverity = diskCheck.executeDiskCheck();
+        return diskCheckSeverity.name().toLowerCase();
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -48,6 +48,8 @@ public class MockMail implements Mail {
 
     /** Set the recipient of the email message.
      *  This can be a comma or space separated list of recipients
+     *
+     * @param recipIn recipient email
     */
     public void setRecipient(String recipIn) {
         verifyAddress(recipIn);
@@ -55,6 +57,8 @@ public class MockMail implements Mail {
 
     /** Set the recipient of the email message.
      *  This can be a comma or space separated list of recipients
+     *
+     * @param recipIn recipients emails list
     */
     public void setRecipients(String[] recipIn) {
         if (recipIn != null) {
@@ -108,14 +112,20 @@ public class MockMail implements Mail {
     public void setHeader(String name, String value) {
     }
 
-    /** Set the subject of the email message
-    */
+    /**
+     * Set the subject of the email message
+     *
+     * @param subIn the email subject
+     */
     public void setSubject(String subIn) {
         subject = subIn;
     }
 
-    /** Set the text of the email message
-    */
+    /**
+     * Set the text of the email message
+     *
+     * @param bodyIn the email body
+     */
     public void setBody(String bodyIn) {
         body = bodyIn;
     }

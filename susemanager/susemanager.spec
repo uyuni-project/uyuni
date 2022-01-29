@@ -28,7 +28,8 @@
 %global tftp_group root
 %global salt_user root
 %global salt_group root
-%global wwwroot %{_var}/www
+%global serverdir %{_sharedstatedir}
+%global wwwroot %{_localstatedir}/www
 %global wwwdocroot %{wwwroot}/html
 %endif
 
@@ -38,14 +39,15 @@
 %global tftp_group tftp
 %global salt_user salt
 %global salt_group salt
-%global wwwroot /srv/www
+%global serverdir /srv
+%global wwwroot %{serverdir}/www
 %global wwwdocroot %{wwwroot}/htdocs
 %endif
 
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.3.2
+Version:        4.3.7
 Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -78,9 +80,9 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
 %if 0%{?suse_version}
-BuildRequires:  %fillup_prereq %insserv_prereq tftp(server) postgresql-init
-Requires(pre):  %fillup_prereq %insserv_prereq tftp(server) postgresql-init
-Requires(preun):%fillup_prereq %insserv_prereq tftp(server) postgresql-init
+BuildRequires:  %fillup_prereq %insserv_prereq tftp postgresql-init
+Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
+Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(post): user(%{apache_user})
 Requires:       yast2-users
 %endif
@@ -241,13 +243,13 @@ if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
     sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
-    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/srv/tftpboot"
+    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "%{serverdir}/tftpboot"
   fi
 fi
-if [ ! -d /srv/tftpboot ]; then
-  mkdir -p /srv/tftpboot
-  chmod 750 /srv/tftpboot
-  chown %{apache_user}:%{tftp_group} /srv/tftpboot
+if [ ! -d %{serverdir}/tftpboot ]; then
+  mkdir -p %{serverdir}/tftpboot
+  chmod 750 %{serverdir}/tftpboot
+  chown %{apache_user}:%{tftp_group} %{serverdir}/tftpboot
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig

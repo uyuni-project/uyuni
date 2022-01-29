@@ -207,6 +207,14 @@ Before('@debian10_ssh_minion') do
   skip_this_scenario unless $debian10_ssh_minion
 end
 
+Before('@debian11_minion') do
+  skip_this_scenario unless $debian11_minion
+end
+
+Before('@debian11_ssh_minion') do
+  skip_this_scenario unless $debian11_ssh_minion
+end
+
 Before('@sle11sp4_ssh_minion') do
   skip_this_scenario unless $sle11sp4_ssh_minion
 end
@@ -289,6 +297,34 @@ end
 
 Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
+end
+
+Before('@sle11sp4_buildhost') do
+  skip_this_scenario unless $sle11sp4_buildhost
+end
+
+Before('@sle11sp3_terminal') do
+  skip_this_scenario unless $sle11sp3_terminal_mac
+end
+
+Before('@sle12sp5_buildhost') do
+  skip_this_scenario unless $sle12sp5_buildhost
+end
+
+Before('@sle12sp5_terminal') do
+  skip_this_scenario unless $sle12sp5_terminal_mac
+end
+
+Before('@sle15sp3_buildhost') do
+  skip_this_scenario unless $sle15sp3_buildhost
+end
+
+Before('@sle15sp3_terminal') do
+  skip_this_scenario unless $sle15sp3_terminal_mac
+end
+
+Before('@opensuse153arm_minion') do
+  skip_this_scenario unless $opensuse153arm_minion
 end
 
 Before('@skip_for_debianlike') do |scenario|

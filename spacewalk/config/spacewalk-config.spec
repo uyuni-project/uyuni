@@ -31,7 +31,7 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.1
+Version:        4.3.3
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -189,5 +189,17 @@ if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
   mv /etc/sudoers.d/spacewalk.rpmsave /root/sudoers-spacewalk.save
 fi
 rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
+
+### TO-REMOVE AFTER: 2023-12-01
+if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+    sed -i "s/taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=\(.\+\)/taskomatic.sshminion_action_executor.parallel_threads =\1/" /etc/rhn/rhn.conf
+fi
+if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.MinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+    sed -i "s/taskomatic.com.redhat.rhn.taskomatic.task.MinionActionExecutor.parallel_threads[[:space:]]*=\(.\+\)/taskomatic.minion_action_executor.parallel_threads =\1/" /etc/rhn/rhn.conf
+fi
+if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task" /etc/rhn/rhn.conf >/dev/null; then
+    echo "WARNING: Found deprecated configuration items in /etc/rhn/rhn.conf"
+fi
+### END
 
 %changelog

@@ -1,11 +1,12 @@
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import _xor from "lodash/xor";
 import _difference from "lodash/difference";
 import _union from "lodash/union";
+import _xor from "lodash/xor";
+
+import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 import { ChannelType } from "core/channels/type/channels.type";
-import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 import { getChannelsToToggleWithDependencies } from "core/channels/utils/channels-dependencies.utils";
+import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 
 export type FilterType = {
   id: string;
@@ -43,8 +44,8 @@ export const getChannelsFiltersAvailableValues = (): Array<FilterType> =>
 
 export const getInitialFiltersState = (): Array<string> =>
   getChannelsFiltersAvailableValues()
-    .filter(filter => filter.selectedByDefault)
-    .map(filter => filter.id) || [];
+    .filter((filter) => filter.selectedByDefault)
+    .map((filter) => filter.id) || [];
 
 export type StateChannelsSelectionType = {
   activeFilters: Array<string>;
@@ -83,15 +84,15 @@ export const reducerChannelsSelection = (
         const search = action.search;
         // If the search term is present in the group it will open it
         const openGroupsIds = channelsTree.baseIds
-          .map(cId => channelsTree.channelsById[cId])
+          .map((cId) => channelsTree.channelsById[cId])
           .filter(
-            base =>
+            (base) =>
               base.children
-                .map(cId => channelsTree.channelsById[cId])
-                .some(c => c.name.toLowerCase().includes(search.toLowerCase())) ||
+                .map((cId) => channelsTree.channelsById[cId])
+                .some((c) => c.name.toLowerCase().includes(search.toLowerCase())) ||
               base.name.toLowerCase().includes(search.toLowerCase())
           )
-          .map(c => c.id);
+          .map((c) => c.id);
         draftState.openGroupsIds = openGroupsIds;
       } else {
         draftState.openGroupsIds = [];
@@ -126,7 +127,7 @@ export const reducerChannelsSelection = (
         draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
       } else {
         const channelsToToggleWithoutLeadChannel = channelsToToggle.filter(
-          id => draftState.selectedBaseChannelId !== id
+          (id) => draftState.selectedBaseChannelId !== id
         );
         draftState.selectedChannelsIds = _difference(
           draftState.selectedChannelsIds,
@@ -146,9 +147,9 @@ export const reducerChannelsSelection = (
 
       // Unselect all the incompatible selected channels for the new lead Channel
       const selectedChannelsWithIncompatible = draftState.selectedChannelsIds
-        .map(cId => channelsTree.channelsById[cId])
-        .filter(c => c.archLabel !== newBaseArchLabel)
-        .map(c => c.id);
+        .map((cId) => channelsTree.channelsById[cId])
+        .filter((c) => c.archLabel !== newBaseArchLabel)
+        .map((c) => c.id);
       draftState.selectedChannelsIds = _difference(draftState.selectedChannelsIds, selectedChannelsWithIncompatible);
 
       draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
@@ -172,7 +173,7 @@ export const reducerChannelsSelection = (
         draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
       } else {
         const channelsToToggleWithoutLeadChannel = channelsToToggle.filter(
-          id => draftState.selectedBaseChannelId !== id
+          (id) => draftState.selectedBaseChannelId !== id
         );
         draftState.selectedChannelsIds = _difference(
           draftState.selectedChannelsIds,
@@ -187,7 +188,7 @@ export const reducerChannelsSelection = (
       } else {
         const baseId = action.baseId;
         draftState.openGroupsIds = draftState.openGroupsIds.filter(
-          openId => !(openId === baseId || channelsTree.channelsById[baseId].children.includes(openId))
+          (openId) => !(openId === baseId || channelsTree.channelsById[baseId].children.includes(openId))
         );
       }
       return draftState;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,17 +14,17 @@
  */
 package com.redhat.rhn.common.db.test;
 
-import java.util.Calendar;
-import java.util.Iterator;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.db.ResetPasswordFactory;
+import com.redhat.rhn.domain.common.ResetPassword;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.db.ResetPasswordFactory;
-import com.redhat.rhn.domain.common.ResetPassword;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import java.util.Calendar;
+import java.util.Iterator;
 
 public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 

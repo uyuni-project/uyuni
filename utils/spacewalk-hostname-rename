@@ -23,9 +23,9 @@ LOG=/var/log/rhn/rhn_hostname_rename.log
 RHN_CONF_FILE=/etc/rhn/rhn.conf
 SSL_BUILD_DIR=/root/ssl-build
 ETC_JABBERD_DIR=/etc/jabberd
-HTTP_PUB_DIR=/srv/www/htdocs/pub/
-BOOTSTRAP_SH=/srv/www/htdocs/pub/bootstrap/bootstrap.sh
-BOOTSTRAP_CCO=/srv/www/htdocs/pub/bootstrap/client-config-overrides.txt
+HTTP_PUB_DIR=$(spacewalk-cfg-get documentroot)/pub/
+BOOTSTRAP_SH=$(spacewalk-cfg-get documentroot)/pub/bootstrap/bootstrap.sh
+BOOTSTRAP_CCO=$(spacewalk-cfg-get documentroot)/pub/bootstrap/client-config-overrides.txt
 SAT_LOCAL_RULES_CONF=/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf
 MGR_SYNC_CONF=/root/.mgr-sync
 BACKUP_EXT=.rnmbck
@@ -73,7 +73,7 @@ IPADDR_REGEX="($IPV4ADDR_REGEX)|($IPV6ADDR_REGEX)"
 
 function echo_usage {
     echo "Usage:"
-    echo "   $(basename $0) <IP_ADDRESS> [ --ssl-country=<SSL_COUNTRY> --ssl-state=<SSL_STATE> --ssl-city=<SSL_CITY> --ssl-org=<SSL_ORG> --ssl-orgunit=<SSL_ORGUNIT> --ssl-email=<SSL_EMAIL> --ssl-ca-password=<SSL_CA_PASSWORD>]"
+    echo "   $(basename $0) <IP_ADDRESS> [ --ssl-country=<SSL_COUNTRY> --ssl-state=<SSL_STATE> --ssl-city=<SSL_CITY> --ssl-org=<SSL_ORG> --ssl-orgunit=<SSL_ORGUNIT> --ssl-email=<SSL_EMAIL> --ssl-ca-password=<SSL_CA_PASSWORD> --ssl-ca-cert=<PATH> --ssl-server-key=<PATH> --ssl-server-cert=<PATH>]"
     echo "   $(basename $0) { -h | --help }"
     exit 1
 }
@@ -227,8 +227,8 @@ function re-generate_server_ssl_certificate {
 
         if [ ! -n "$CML_NEW_SSL_CERT_REQUEST" ]
         then
-            # Common Name is prefilled by actuall HOSTNAME
-            HOSTNAME_CERT=`awk "/Subject:/ && /, CN=$HOSTNAME\//" $CERT_FILE`
+            # Common Name is prefilled by actual HOSTNAME
+            HOSTNAME_CERT=`awk "/Subject:/ && /, CN=$HOSTNAME(\/|$)/" $CERT_FILE`
             if [ -n "$HOSTNAME_CERT" ]
             then
                 echo " No need to re-generate SSL certificate." | tee -a $LOG
@@ -237,123 +237,157 @@ function re-generate_server_ssl_certificate {
         fi
     fi
 
-    # is there a need to re-generate SSL certificate?
-    if [ -n "$CML_NEW_SSL_CERT_REQUEST" -o "$GEN_NEW_SSL" == "y" ]
+    if [ -n "$CML_NEW_SSL_CERT_REQUEST" -o "$GEN_NEW_SSL" == "y" -o -n "$CML_THIRD_PARTY_CERT" ]
     then
-        if [ -n "$SUBJECT" ]
-        then
-            SUBJECT_PATTERN='[[:space:]]*Subject: C=\(..*\), ST=\(..*\), O=\(..*\), OU=\(..*\), CN=\(..*\)\/emailAddress=\(..*\)'
-            SSL_COUNTRY_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\1/"`
-            SSL_STATE_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\2/"`
-            SSL_CITY_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\2/"`
-            SSL_ORG_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\3/"`
-            SSL_ORGUNIT_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\4/"`
-            SSL_EMAIL_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\6/"`
-        fi
 
-        echo "Starting generation of new SSL certificate:"
-        # COUNTRY
-        if [ -n "${CML_SSL_COUNTRY+x}" ]
+        # is there a need to re-generate SSL certificate?
+        if [ -n "$CML_THIRD_PARTY_CERT" ]
         then
-            SSL_COUNTRY=${CML_SSL_COUNTRY}
+            echo "Generating SSL packages:"
+            echo "rhn-ssl-tool --gen-ca --rpm-only \
+                --dir="$SSL_BUILD_DIR" \
+                --from-ca-cert="${CML_SSL_CA_CERT}" \
+            " >> $LOG
+            rhn-ssl-tool --gen-ca --rpm-only \
+                --dir="$SSL_BUILD_DIR" \
+                --from-ca-cert="${CML_SSL_CA_CERT}" \
+                2>>$LOG
+            echo "rhn-ssl-tool --gen-server --rpm-only \
+                --dir="$SSL_BUILD_DIR" \
+                --from-server-key="${CML_SSL_SERVER_KEY}" \
+                --from-server-cert="${CML_SSL_SERVER_CERT}" \
+            " >> $LOG
+            SSL_KEY_PAIR_RPM=`rhn-ssl-tool --gen-server --rpm-only \
+                --dir="$SSL_BUILD_DIR" \
+                --from-server-key="${CML_SSL_SERVER_KEY}" \
+                --from-server-cert="${CML_SSL_SERVER_CERT}" \
+                2>>$LOG | grep noarch.rpm`
+            GEN_NEW_CA="y"
         else
-            read -e -p " Enter Country [$SSL_COUNTRY_OLD] : "
-            SSL_COUNTRY=${REPLY:-$SSL_COUNTRY_OLD}
-        fi
-        # STATE
-        if [ -n "${CML_SSL_STATE+x}" ]
-        then
-            SSL_STATE=${CML_SSL_STATE}
-        else
-            read -e -p " Enter State [$SSL_STATE_OLD] : "
-            SSL_STATE=${REPLY:-$SSL_STATE_OLD}
-        fi
-        # CITY
-        if [ -n "${CML_SSL_CITY+x}" ]
-        then
-            SSL_CITY=${CML_SSL_CITY}
-        else
-            read -e -p " Enter City [$SSL_CITY_OLD] : "
-            SSL_CITY=${REPLY:-$SSL_CITY_OLD}
-        fi
-        # ORGANIZATION
-        if [ -n "${CML_SSL_ORG+x}" ]
-        then
-            SSL_ORG=${CML_SSL_ORG}
-        else
-            read -e -p " Enter Organization [$SSL_ORG_OLD] : "
-            SSL_ORG=${REPLY:-$SSL_ORG_OLD}
-        fi
-        # ORGANIZATION UNIT
-        if [ -n "${CML_SSL_ORGUNIT+x}" ]
-        then
-            SSL_ORGUNIT=${CML_SSL_ORGUNIT}
-        else
-            # offer hostname as ORG UNIT everytime
-            read -e -p " Enter Organization Unit [$HOSTNAME] : "
-            SSL_ORGUNIT=${REPLY:-$HOSTNAME}
-        fi
-        # EMAIL ADDRESS
-        if [ -n "${CML_SSL_EMAIL+x}" ]
-        then
-            SSL_EMAIL=${CML_SSL_EMAIL}
-        else
-            read -e -p " Enter Email Address [$SSL_EMAIL_OLD] : "
-            SSL_EMAIL=${REPLY:-$SSL_EMAIL_OLD}
-        fi
-        # CA PASSWORD
-        # ask explicitelly (different behaviour on sat and spw)
-        if [ -n "${CML_SSL_CA_PASSWORD+x}" ]
-        then
-            SSL_CA_PASSWORD=${CML_SSL_CA_PASSWORD}
-        else
-            read -e -p " Enter CA password : " -s
-            echo
-            SSL_CA_PASSWORD=${REPLY}
-        fi
+            if [ -n "$SUBJECT" ]
+            then
+                SUBJECT_PATTERN='[[:space:]]*Subject: C=\(..*\), ST=\(..*\), O=\(..*\), OU=\(..*\), CN=\(..*\)\/emailAddress=\(..*\)'
+                SSL_COUNTRY_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\1/"`
+                SSL_STATE_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\2/"`
+                SSL_CITY_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\2/"`
+                SSL_ORG_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\3/"`
+                SSL_ORGUNIT_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\4/"`
+                SSL_EMAIL_OLD=`echo $SUBJECT | sed "s/$SUBJECT_PATTERN/\6/"`
+            fi
 
-        echo " Generating SSL certificates:" | tee -a $LOG
-        # just log the SSL info ...
-        echo "rhn-ssl-tool --gen-ca --force \
-            --dir="$SSL_BUILD_DIR" \
-            --set-country="$SSL_COUNTRY" \
-            --set-state="$SSL_STATE" \
-            --set-city="$SSL_CITY" \
-            --set-org="$SSL_ORG" \
-            --set-org-unit="$SSL_ORGUNIT" \
-            --set-common-name="${HOSTNAME}" \
-        " >> $LOG
-        rhn-ssl-tool --gen-ca --force \
-            --dir="$SSL_BUILD_DIR" \
-            --set-country="$SSL_COUNTRY" \
-            --set-state="$SSL_STATE" \
-            --set-city="$SSL_CITY" \
-            --set-org="$SSL_ORG" \
-            --set-org-unit="$SSL_ORGUNIT" \
-            --set-common-name="${HOSTNAME}" \
-            --password="$SSL_CA_PASSWORD" \
-            2>>$LOG
-        echo "rhn-ssl-tool --gen-server \
-            --dir="$SSL_BUILD_DIR" \
-            --set-country="$SSL_COUNTRY" \
-            --set-state="$SSL_STATE" \
-            --set-city="$SSL_CITY" \
-            --set-org="$SSL_ORG" \
-            --set-org-unit="$SSL_ORGUNIT" \
-            --set-email="$SSL_EMAIL" \
-            --set-hostname="${HOSTNAME}" \
-        " >> $LOG
-        SSL_KEY_PAIR_RPM=`rhn-ssl-tool --gen-server \
-            --dir="$SSL_BUILD_DIR" \
-            --set-country="$SSL_COUNTRY" \
-            --set-state="$SSL_STATE" \
-            --set-city="$SSL_CITY" \
-            --set-org="$SSL_ORG" \
-            --set-org-unit="$SSL_ORGUNIT" \
-            --set-email="$SSL_EMAIL" \
-            --set-hostname="${HOSTNAME}" \
-            --password="$SSL_CA_PASSWORD" \
-            2>>$LOG | grep noarch.rpm`
+            echo "Starting generation of new SSL certificate:"
+            # COUNTRY
+            if [ -n "${CML_SSL_COUNTRY+x}" ]
+            then
+                SSL_COUNTRY=${CML_SSL_COUNTRY}
+            else
+                read -e -p " Enter Country [$SSL_COUNTRY_OLD] : "
+                SSL_COUNTRY=${REPLY:-$SSL_COUNTRY_OLD}
+            fi
+            # STATE
+            if [ -n "${CML_SSL_STATE+x}" ]
+            then
+                SSL_STATE=${CML_SSL_STATE}
+            else
+                read -e -p " Enter State [$SSL_STATE_OLD] : "
+                SSL_STATE=${REPLY:-$SSL_STATE_OLD}
+            fi
+            # CITY
+            if [ -n "${CML_SSL_CITY+x}" ]
+            then
+                SSL_CITY=${CML_SSL_CITY}
+            else
+                read -e -p " Enter City [$SSL_CITY_OLD] : "
+                SSL_CITY=${REPLY:-$SSL_CITY_OLD}
+            fi
+            # ORGANIZATION
+            if [ -n "${CML_SSL_ORG+x}" ]
+            then
+                SSL_ORG=${CML_SSL_ORG}
+            else
+                read -e -p " Enter Organization [$SSL_ORG_OLD] : "
+                SSL_ORG=${REPLY:-$SSL_ORG_OLD}
+            fi
+            # ORGANIZATION UNIT
+            if [ -n "${CML_SSL_ORGUNIT+x}" ]
+            then
+                SSL_ORGUNIT=${CML_SSL_ORGUNIT}
+            else
+                # offer hostname as ORG UNIT everytime
+                read -e -p " Enter Organization Unit [$HOSTNAME] : "
+                SSL_ORGUNIT=${REPLY:-$HOSTNAME}
+            fi
+            # EMAIL ADDRESS
+            if [ -n "${CML_SSL_EMAIL+x}" ]
+            then
+                SSL_EMAIL=${CML_SSL_EMAIL}
+            else
+                read -e -p " Enter Email Address [$SSL_EMAIL_OLD] : "
+                SSL_EMAIL=${REPLY:-$SSL_EMAIL_OLD}
+            fi
+            # CA PASSWORD
+            # ask explicitelly (different behaviour on sat and spw)
+            if [ -n "${CML_SSL_CA_PASSWORD+x}" ]
+            then
+                SSL_CA_PASSWORD=${CML_SSL_CA_PASSWORD}
+            else
+                read -e -p " Enter CA password : " -s
+                echo
+                SSL_CA_PASSWORD=${REPLY}
+            fi
+
+            echo " Generating SSL certificates:" | tee -a $LOG
+            CA_RPM=$(grep noarch.rpm $SSL_BUILD_DIR/latest.txt)
+            GEN_NEW_CA="n"
+            if [ -z "$CA_RPM" -o ! -f $SSL_BUILD_DIR/$CA_RPM ]; then
+                GEN_NEW_CA="y"
+                # We don't have the CA in SSL build dir: generate a new one
+                echo " Generating SSL CA Certificate:" | tee -a $LOG
+                # just log the SSL info ...
+                echo "rhn-ssl-tool --gen-ca --force \
+                    --dir="$SSL_BUILD_DIR" \
+                    --set-country="$SSL_COUNTRY" \
+                    --set-state="$SSL_STATE" \
+                    --set-city="$SSL_CITY" \
+                    --set-org="$SSL_ORG" \
+                    --set-org-unit="$SSL_ORGUNIT" \
+                    --set-common-name="${HOSTNAME}" \
+                " >> $LOG
+                rhn-ssl-tool --gen-ca --force \
+                    --dir="$SSL_BUILD_DIR" \
+                    --set-country="$SSL_COUNTRY" \
+                    --set-state="$SSL_STATE" \
+                    --set-city="$SSL_CITY" \
+                    --set-org="$SSL_ORG" \
+                    --set-org-unit="$SSL_ORGUNIT" \
+                    --set-common-name="${HOSTNAME}" \
+                    --password="$SSL_CA_PASSWORD" \
+                    2>>$LOG
+            else
+                echo " No need to generate a new SSL CA Certificate" | tee -a $LOG
+            fi
+            echo "rhn-ssl-tool --gen-server \
+                --dir="$SSL_BUILD_DIR" \
+                --set-country="$SSL_COUNTRY" \
+                --set-state="$SSL_STATE" \
+                --set-city="$SSL_CITY" \
+                --set-org="$SSL_ORG" \
+                --set-org-unit="$SSL_ORGUNIT" \
+                --set-email="$SSL_EMAIL" \
+                --set-hostname="${HOSTNAME}" \
+            " >> $LOG
+            SSL_KEY_PAIR_RPM=`rhn-ssl-tool --gen-server \
+                --dir="$SSL_BUILD_DIR" \
+                --set-country="$SSL_COUNTRY" \
+                --set-state="$SSL_STATE" \
+                --set-city="$SSL_CITY" \
+                --set-org="$SSL_ORG" \
+                --set-org-unit="$SSL_ORGUNIT" \
+                --set-email="$SSL_EMAIL" \
+                --set-hostname="${HOSTNAME}" \
+                --password="$SSL_CA_PASSWORD" \
+                2>>$LOG | grep noarch.rpm`
+        fi
 
         if [ ! -n "$SSL_KEY_PAIR_RPM" ]
         then
@@ -372,9 +406,11 @@ function re-generate_server_ssl_certificate {
         rpm -Uh $SSL_KEY_PAIR_RPM >>$LOG
         print_status $?
 
-        echo -n "Making new SSL certificate publicly available ... " | tee -a $LOG
-        /usr/bin/rhn-deploy-ca-cert.pl --source-dir=$SSL_BUILD_DIR --target-dir=$HTTP_PUB_DIR --trust-dir=$CA_CERT_TRUST_DIR
-        print_status $?
+        if [ $GEN_NEW_CA == "y" ]; then
+            echo -n "Making new SSL certificate publicly available ... " | tee -a $LOG
+            /usr/bin/rhn-deploy-ca-cert.pl --source-dir=$SSL_BUILD_DIR --target-dir=$HTTP_PUB_DIR --trust-dir=$CA_CERT_TRUST_DIR
+            print_status $?
+        fi
 
         # copy jabberd certificate, too
         echo -n "Deploying jabberd certificate ... " | tee -a $LOG
@@ -390,6 +426,25 @@ function re-generate_server_ssl_certificate {
     fi
 }
 
+function refresh_pillar {
+    echo -n "Refreshing Salt minion pillar data, may take a while ... " | tee -a $LOG
+    for ID in `spacecmd -q api system.listSystemsWithEntitlement -- -A "salt_entitled" -F "%(id)s"`
+    do
+        if [ -n "$SIDS" ]
+        then
+            SIDS="$SIDS,$ID"
+        else
+            SIDS="$SID"
+        fi
+    done
+    SKIPPED=`spacecmd -q api system.refreshPillar -- -A "[\\\\\"general\\\\\",[$SIDS]]"`
+    if [ "$SKIPPED" != "[]" ]
+    then
+        echo "Some minions pillar have not been refreshed: $SKIPPED" | tee -a $LOG
+        print_status 1
+    fi
+    print_status 0
+}
 ###############################################################################
 
 echo "[$(date)]: $0 $*" >> $LOG
@@ -412,6 +467,10 @@ while [ $# -ge 1 ]; do
             --ssl-email=*) CML_SSL_EMAIL=$(echo $1 | cut -d= -f2-);;
 
             --ssl-ca-password=*) CML_SSL_CA_PASSWORD=$(echo $1 | cut -d= -f2-);;
+
+            --ssl-ca-cert=*) CML_SSL_CA_CERT=$(echo $1 | cut -d= -f2-);;
+            --ssl-server-cert=*) CML_SSL_SERVER_CERT=$(echo $1 | cut -d= -f2-);;
+            --ssl-server-key=*) CML_SSL_SERVER_KEY=$(echo $1 | cut -d= -f2-);;
             *) echo_err "Error: Invalid option $1"
                echo_usage;;
     esac
@@ -434,6 +493,17 @@ for ssl_var in ${CML_SSL_COUNTRY} ${CML_SSL_STATE} ${CML_SSL_CITY} ${CML_SSL_ORG
 do
     [ -n "${ssl_var}" ] && CML_NEW_SSL_CERT_REQUEST=1
 done
+
+if [ -n "${CML_SSL_CA_CERT}" -a -n "${CML_SSL_SERVER_KEY}" -a -n "${CML_SSL_SERVER_CERT}" ]
+then
+    CML_THIRD_PARTY_CERT=1
+else
+    if [ -n "${CML_SSL_CA_CERT}" -o -n "${CML_SSL_SERVER_CERT}" -o -n "${CML_SSL_SERVER_KEY}" ]
+    then
+        echo_err "Either all or none of --ssl-ca-cert, --ssl-server-key and --ssl-server-cert must be provided"
+        echo_usage
+    fi
+fi
 
 OLD_HOSTNAME=$(grep ^redhat_management_server /etc/cobbler/settings | awk '{print $2}')
 
@@ -593,5 +663,8 @@ then
 fi
 /usr/sbin/spacewalk-service start >> $LOG 2>&1
 print_status 0  # just simulate end
+
+# Refresh the minion pillar data since they contain the repos URLs with the old hostname
+refresh_pillar
 
 echo "[$(date)]: $(basename $0) finished successfully." >> $LOG

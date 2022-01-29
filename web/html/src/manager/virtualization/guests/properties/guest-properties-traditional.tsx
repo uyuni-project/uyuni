@@ -1,11 +1,12 @@
-import { ActionChain } from "components/action-schedule";
-import { MessageType } from "components/messages";
-
 import * as React from "react";
-import { Panel } from "components/panels/Panel";
+
+import { ActionChain } from "components/action-schedule";
 import { Text } from "components/input/Text";
-import Validation from "components/validation";
+import { MessageType } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { Panel } from "components/panels/Panel";
+import Validation from "components/validation";
+
 import { GuestPropertiesForm } from "./guest-properties-form";
 
 type Props = {

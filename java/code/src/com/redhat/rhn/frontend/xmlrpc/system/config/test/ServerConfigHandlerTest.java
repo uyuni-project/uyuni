@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -46,13 +46,14 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -107,7 +108,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         ServerFactory.save(srv1);
 
-        Set <ConfigRevision> revisions = new HashSet<ConfigRevision>();
+        Set<ConfigRevision> revisions = new HashSet<ConfigRevision>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
@@ -182,11 +183,11 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         List<Number> serverIds = new LinkedList<Number>();
         serverIds.add(srv1.getId());
 
-        List <ConfigChannel> channels = new LinkedList<ConfigChannel>();
+        List<ConfigChannel> channels = new LinkedList<ConfigChannel>();
         channels.add(gcc1);
         channels.add(gcc2);
 
-        List <String> channelLabels = new LinkedList<String>();
+        List<String> channelLabels = new LinkedList<String>();
         for (ConfigChannel cc : channels) {
             channelLabels.add(cc.getLabel());
         }
@@ -229,7 +230,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 String perms, boolean isDir,
                 Server server, boolean commitToLocal, String selinuxCtx)
                         throws ValidatorException {
-            Map <String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<String, Object>();
             data.put(ConfigRevisionSerializer.GROUP, group);
             data.put(ConfigRevisionSerializer.OWNER, owner);
             data.put(ConfigRevisionSerializer.PERMISSIONS, perms);
@@ -262,7 +263,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private ConfigRevision createSymlinkRevision(String path, String targetPath,
             Server server, boolean commitToLocal, String selinuxCtx)
                         throws ValidatorException {
-        Map <String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put(ConfigRevisionSerializer.TARGET_PATH, targetPath);
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
@@ -469,14 +470,6 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     private ServerConfigHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
-        SaltApi saltApi = new TestSaltApi();
-        SystemQuery systemQuery = new TestSystemQuery();
-        RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
-        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
-        XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
-                regularMinionBootstrapper,
-                sshMinionBootstrapper
-        );
         ServerConfigHandler serverConfigHandler = new ServerConfigHandler(taskomaticMock, xmlRpcSystemHelper);
 
         MOCK_CONTEXT.checking(new Expectations() {{

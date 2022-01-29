@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,10 +15,11 @@
 
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.annotations.SerializedName;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class SystemInfo {
     private StateApplyResult<Ret<Map<String, Object>>> upTime;
     @SerializedName("mgrcompat_|-grains_update_|-grains.item_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
+    @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run")
+    private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersion;
 
     /**
      * Gets grains in key/value pair.
@@ -58,5 +61,26 @@ public class SystemInfo {
      */
     public Optional<String> getKerneRelese() {
        return getGrains().getOptionalAsString("kernelrelease");
+    }
+
+    /**
+     * Get the kernel live patch version, if exists
+     *
+     * @return the kernel live patch version
+     */
+    public Optional<String> getKernelLiveVersion() {
+        if (kernelLiveVersion == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(kernelLiveVersion.getChanges().getRet())
+                .map(KernelLiveVersionInfo::getKernelLiveVersion);
+    }
+
+    /**
+     * Get the master grain
+     * @return master grain
+     */
+    public Optional<String> getMaster() {
+       return getGrains().getOptionalAsString("master");
     }
 }

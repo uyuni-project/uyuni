@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,15 +14,15 @@
  */
 package com.redhat.rhn.manager.audit.scap.file;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.struts.actions.DownloadAction.StreamInfo;
-
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
+
+import org.apache.struts.actions.DownloadAction.StreamInfo;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * ScapResultFile

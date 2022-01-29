@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,19 +15,21 @@
 
 package com.suse.manager.webui.utils.salt.test;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.datatypes.Event;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 /**
  * Tests for the {@link ImageDeployedEvent}.

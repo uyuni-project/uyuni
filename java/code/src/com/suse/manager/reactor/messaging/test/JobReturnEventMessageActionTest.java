@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2016 SUSE LLC
+/*
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,19 +15,11 @@
 package com.suse.manager.reactor.messaging.test;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.cluster.BaseClusterModifyNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterActionCommand;
-import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
-import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
@@ -60,7 +52,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -73,8 +64,6 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.clusters.ClusterManager;
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
@@ -83,10 +72,11 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -140,7 +130,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
-            new JsonParser<>(new TypeToken<Event>(){});
+            new JsonParser<>(new TypeToken<Event>() { });
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
@@ -148,7 +138,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     protected Path metadataDirOfficial;
     private SaltUtils saltUtils;
     private SaltServerActionService saltServerActionService;
-    private ClusterManager clusterManager;
     protected Path formulaDataDir;
 
 
@@ -159,22 +148,16 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
+        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
         );
-        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
-        clusterManager = new ClusterManager(
-                saltServiceMock, saltServiceMock, serverGroupManager, formulaManager
-        );
-        saltUtils = new SaltUtils(
-                saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager
-        );
-        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager,
-                formulaManager, new SaltKeyUtils(saltServiceMock));
+        saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
+        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
+                new SaltKeyUtils(saltServiceMock));
         metadataDirOfficial = Files.createTempDirectory("meta");
         formulaDataDir = Files.createTempDirectory("data");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
@@ -183,6 +166,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);
         Files.createFile(systemLockFile);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
     }
 
     /**
@@ -259,7 +246,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
                 .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
-                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
         SaltUtils.applyChangesFromStateModule(install, minion);
         assertEquals(1, minion.getPackages().size());
         List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
@@ -272,7 +259,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> update = Json.GSON.fromJson(new InputStreamReader(getClass()
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_update.new_format.json")),
-                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
 
         SaltUtils.applyChangesFromStateModule(update, minion);
         assertEquals(1, minion.getPackages().size());
@@ -286,11 +273,29 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> remove = Json.GSON.fromJson(new InputStreamReader(getClass()
                 .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_remove.new_format.json")),
-                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
 
 
         SaltUtils.applyChangesFromStateModule(remove, minion);
         assertEquals(0, minion.getPackages().size());
+    }
+
+    public void testApplyPackageDeltaWithDuplicates() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
+                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.duplicates.json")),
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+
+        SaltUtils.applyChangesFromStateModule(install, minion);
+
+        // The duplicate should be ignored (bsc#1187572)
+        assertEquals(1, minion.getPackages().size());
+        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
+        assertEquals("vim", packages.get(0).getName().getName());
+        assertEquals("x86_64", packages.get(0).getArch().getLabel());
+        assertEquals("1.42.11", packages.get(0).getEvr().getVersion());
+        assertEquals("7.1", packages.get(0).getEvr().getRelease());
     }
 
     public void testsPackageDeltaFromStateApply() throws Exception {
@@ -299,7 +304,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         Map<String, JsonElement> apply = Json.GSON.fromJson(new InputStreamReader(getClass()
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg.new_format.json")),
-                new TypeToken<Map<String, JsonElement>>(){}.getType());
+                new TypeToken<Map<String, JsonElement>>() { }.getType());
         SaltUtils.applyChangesFromStateApply(apply, minion);
 
         assertEquals(1, minion.getPackages().size());
@@ -491,7 +496,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         // Verify live patching version
-        assertEquals("kgraft_patch_2_2_1", minion.getKernelLiveVersion());
+        assertEquals("livepatch_2_2_1", minion.getKernelLiveVersion());
 
         //Switch back from live patching
         message = new JobReturnEventMessage(JobReturnEvent
@@ -672,7 +677,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("amd64-deb", pkg.getArch().getLabel());
 
         // 'xserver-common' package
-        pkg = minion.getPackages().stream().filter(p -> "xserver-common".equals(p.getName().getName())).findFirst().get();
+        pkg = minion.getPackages().stream()
+                .filter(p -> "xserver-common".equals(p.getName().getName())).findFirst().get();
         assertEquals("1.20.4", pkg.getEvr().getVersion());
         assertEquals("1+deb10u2", pkg.getEvr().getRelease());
         assertEquals("2", pkg.getEvr().getEpoch());
@@ -685,120 +691,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-    }
-
-    /**
-     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
-     * and it should be locked via Salt formula
-     *
-     * @throws Exception in case of an error
-     */
-    public void testPackagesProfileUpdateWithCaaSPSystemLocked() throws Exception {
-        // Prepare test objects: minion server, products and action
-        Config.get().setBoolean(ConfigDefaults.AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED, "true");
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("caasp-worker-orion-cluster-1.openstack.local");
-        SUSEProductTestUtils.createVendorSUSEProducts();
-
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
-
-        Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
-        HibernateFactory.getSession().flush();
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        assertTrue(minion.getPackages().stream().anyMatch(p -> p.getName().getName().contains(SaltUtils.CAASP_PATTERN_IDENTIFIER)));
-        assertTrue(action.getServerActions().stream()
-                .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinionId(minion.getMinionId()));
-        assertTrue(ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock", "minion_blackout",
-                "true"));
-    }
-
-    /**
-     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
-     * and it should not be locked via Salt formula
-     *
-     * @throws Exception in case of an error
-     */
-    public void testPackagesProfileUpdateWithCaaSPSystemNotLocked() throws Exception {
-        // Prepare test objects: minion server, products and action
-        Config.get().setBoolean(ConfigDefaults.AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED, "false");
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("caasp-worker-orion-cluster-1.openstack.local");
-        SUSEProductTestUtils.createVendorSUSEProducts();
-
-        context().checking(new Expectations() {{  }});
-
-
-        Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
-        HibernateFactory.getSession().flush();
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        assertTrue(minion.getPackages().stream().anyMatch(
-                p -> p.getName().getName().contains(SaltUtils.CAASP_PATTERN_IDENTIFIER)));
-        assertTrue(action.getServerActions().stream()
-                .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertEquals(false, ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock",
-                "minion_blackout", "false"));
-    }
-
-    /**
-     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
-     * management and it should not be locked via Salt formula
-     *
-     * @throws Exception in case of an error
-     */
-    public void testPackagesProfileUpdateWithCaaSPManagement() throws Exception {
-        // Prepare test objects: minion server, products and action
-        Config.get().setBoolean(ConfigDefaults.AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED, "true");
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("orion-caasp-deployer.openstack.local");
-        SUSEProductTestUtils.createVendorSUSEProducts();
-
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
-
-        Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
-        HibernateFactory.getSession().flush();
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("packages.profileupdate.caasp-management.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        assertFalse(minion.getPackages().stream().anyMatch(
-                p -> p.getName().getName().contains(SaltUtils.CAASP_PATTERN_IDENTIFIER)));
-        assertTrue(minion.getPackages().stream().anyMatch(
-                p -> p.getName().getName().contains("patterns-caasp-Management")));
-        assertTrue(action.getServerActions().stream()
-                .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertTrue( FormulaFactory.getFormulasByMinionId(minion.getMinionId()).isEmpty());
     }
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
@@ -973,7 +865,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(2, ethNames.get("eth0").getIPv6Addresses().size());
             assertEquals(1, ethNames.get("eth0").getGlobalIpv6Addresses().size());
             assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
-            assertEquals("2620:113:80c0:8000:10:161:25:49", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+            assertEquals("2620:113:80c0:8000:10:161:25:49",
+                    ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
             assertEquals("fe80::5054:ff:fed7:4f20", ethNames.get("eth0").getIPv6Addresses().get(1).getAddress());
 
             assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
@@ -1006,8 +899,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server);
             assertNotNull(server.getCpu());
 
-            assertEquals(1, server.getDevices().stream().filter(d -> "HD".equals(d.getDeviceClass()) && "scsi".equals(d.getBus())).count());
-            assertEquals(1, server.getDevices().stream().filter(d -> "CDROM".equals(d.getDeviceClass()) && "ata".equals(d.getBus())).count());
+            assertEquals(1, server.getDevices().stream()
+                    .filter(d -> "HD".equals(d.getDeviceClass()) && "scsi".equals(d.getBus())).count());
+            assertEquals(1, server.getDevices().stream()
+                    .filter(d -> "CDROM".equals(d.getDeviceClass()) && "ata".equals(d.getBus())).count());
             assertEquals(1, server.getDevices().stream().filter(d -> "scsi".equals(d.getBus())).count());
         });
     }
@@ -1066,14 +961,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testHardwareProfileChangeNetworkIP()  throws Exception {
-        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
-            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
-                    Function.identity()
-            ));
-            assertEquals(null, ethNames.get("lo").getPrimary());
-            assertEquals(null, ethNames.get("eth0").getPrimary());
-            assertEquals("Y", ethNames.get("eth1").getPrimary());
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json",
+            (server) -> {
+                Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream()
+                    .collect(Collectors.toMap(
+                        eth -> eth.getName(),
+                        Function.identity()));
+                assertEquals(null, ethNames.get("lo").getPrimary());
+                assertEquals(null, ethNames.get("eth0").getPrimary());
+                assertEquals("Y", ethNames.get("eth1").getPrimary());
         });
 
         HibernateFactory.getSession().flush();
@@ -1097,8 +993,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.multi-ipv4.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
                     eth -> eth.getName(),
-                    Function.identity()
-            ));
+                    Function.identity()));
             assertEquals(null, ethNames.get("lo").getPrimary());
             assertEquals(null, ethNames.get("eth0").getPrimary());
             assertEquals("Y", ethNames.get("br0").getPrimary());
@@ -1112,15 +1007,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testHardwareProfileNoNetworkIPChange()  throws Exception {
-        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
-            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
-                    Function.identity()
-            ));
-            assertEquals(null, ethNames.get("lo").getPrimary());
-            assertEquals(null, ethNames.get("eth0").getPrimary());
-            assertEquals("Y", ethNames.get("eth1").getPrimary());
-        });
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json",
+            (server) -> {
+                Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream()
+                    .collect(Collectors.toMap(
+                        eth -> eth.getName(),
+                        Function.identity()));
+                assertEquals(null, ethNames.get("lo").getPrimary());
+                assertEquals(null, ethNames.get("eth0").getPrimary());
+                assertEquals("Y", ethNames.get("eth1").getPrimary());
+            }
+        );
 
         HibernateFactory.getSession().flush();
 
@@ -1240,7 +1137,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
-    private MinionServer testHardwareProfileUpdate(String jsonFile, Consumer<MinionServer> assertions) throws Exception{
+    private MinionServer testHardwareProfileUpdate(String jsonFile, Consumer<MinionServer> assertions)
+            throws Exception {
         // Prepare test objects: minion server and action
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -1400,7 +1298,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         File scapFile = new File(TestUtils.findTestDataInDir(
                 "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results.xml").getPath());
         String resumeXsl = new File(TestUtils.findTestData(
-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath())
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                    .getPath())
                 .getPath();
 
         JsonElement jsonElement = message.getJobReturnEvent().getData().getResult(JsonElement.class);
@@ -1410,7 +1309,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
         Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
                 jsonElement, typeToken.getType());
-        Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
+        Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream()
+                .findFirst().map(e -> e.getValue().getChanges().getRet())
                 .orElseThrow(() -> new RuntimeException("missiong scap result"));
 
         context().checking(new Expectations() {{
@@ -1453,7 +1353,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 (imgInfo) -> {
                     // assert initial revision number
                     assertEquals(1, imgInfo.getRevisionNumber());
-                } );
+                });
         doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
                 digest1,
                 (imgInfo) -> {
@@ -1466,7 +1366,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
             assertEquals(
                     "docker-registry:5000/" + imageName + "@sha256:" + digest1,
-                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).findFirst().get().getRepoDigest());
+                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream())
+                            .findFirst().get().getRepoDigest());
             assertEquals(1,
                     imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
         });
@@ -1480,7 +1381,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(2, imgInfo.getRevisionNumber());
                     // assert ImageInfo instance didn't change after second build
                     assertEquals(imgInfoBuild1.getId(), imgInfo.getId());
-                } );
+                });
         doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
                 digest2,
                 (imgInfo) -> {
@@ -1533,7 +1434,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 (imgInfo) -> {
                     // assert initial revision number
                     assertEquals(1, imgInfo.getRevisionNumber());
-                } );
+                });
         doTestContainerImageInspect(server, imageName, imageVersion1, profile, imgInfoBuild1,
                 digest,
                 (imgInfo) -> {
@@ -1546,9 +1447,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
             assertEquals(
                     "docker-registry:5000/" + imageName + "@sha256:" + digest,
-                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).findFirst().get().getRepoDigest());
-            assertEquals(1,
-                    imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream())
+                            .findFirst().get().getRepoDigest());
+            assertEquals(1, imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
         });
 
         HibernateFactory.getSession().flush();
@@ -1559,7 +1460,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     // assert revision number incremented
                     assertEquals(1, imgInfo.getRevisionNumber());
                     assertFalse(imgInfoBuild1.getId().equals(imgInfo.getId()));
-                } );
+                });
         doTestContainerImageInspect(server, imageName, imageVersion2, profile, imgInfoBuild2,
                 digest,
                 (imgInfo) -> {
@@ -1608,7 +1509,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 });
     }
 
-    private void doTestContainerImageInspect(MinionServer server, String imageName, String imageVersion, ImageProfile profile, ImageInfo imgInfo,
+    private void doTestContainerImageInspect(MinionServer server, String imageName, String imageVersion,
+                                             ImageProfile profile, ImageInfo imgInfo,
                                              String digest,
                                              Consumer<ImageInfo> assertions) throws Exception {
         // schedule an inspect action
@@ -1640,7 +1542,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertions.accept(imgInfo);
     }
 
-    private ImageInfo doTestContainerImageBuild(MinionServer server, String imageName, String imageVersion, ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
+    private ImageInfo doTestContainerImageBuild(MinionServer server, String imageName, String imageVersion,
+                                                ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
@@ -1669,8 +1572,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return imgInfoBuild.get();
     }
 
-    private ImageInfo doTestContainerImageImport(MinionServer server, String imageName, String imageVersion, ImageStore store, Consumer<ImageInfo> assertions) throws Exception {
-        Long actionId = ImageInfoFactory.scheduleImport(server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
+    private ImageInfo doTestContainerImageImport(MinionServer server, String imageName, String imageVersion,
+                                                 ImageStore store, Consumer<ImageInfo> assertions) throws Exception {
+        Long actionId = ImageInfoFactory.scheduleImport(
+                server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
         Action action = ActionFactory.lookupById(actionId);
         TestUtils.reload(action);
 
@@ -1751,10 +1656,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
-            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() + "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
+            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() +
+                    "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
 
             assertTrue(generatedPillar.exists());
             Map<String, Object> map;
@@ -1762,15 +1668,87 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             try (FileInputStream fi = new FileInputStream(generatedPillar)) {
                 map = new Yaml().loadAs(fi, Map.class);
                 assertTrue(map.containsKey("boot_images"));
-                Map<String, Map<String, Map<String, Object>>> bootImages = (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
-                assertEquals("ftp://ftp/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz", bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
-                Map<String, Map<String, Map<String, Object>>> images = (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0", images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
+                Map<String, Map<String, Map<String, Object>>> bootImages =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
+                assertEquals(
+                    "ftp://ftp/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+                Map<String, Map<String, Map<String, Object>>> images =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
                 assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
-                assertEquals("a64dbc025c748bde968b888db6b7b9e3", images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
-            } catch (FileNotFoundException e) {
+                assertEquals("a64dbc025c748bde968b888db6b7b9e3",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
+            }
+            catch (FileNotFoundException e) {
                 fail("Cannot find OS Image generated pillar");
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
+                fail("Cannot find OS Image generated pillar");
+            }
+            finally {
+                generatedPillar.delete();
+                new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId()).delete();
+            }
+        });
+    }
+
+    public void testKiwiImageInspectCompressedImage() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
+                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
+        }});
+
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        new File("/srv/susemanager/pillar_data/images").mkdirs();
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", (info) -> {
+            assertNotNull(info.getInspectAction().getId());
+            assertEquals(286, info.getPackages().size());
+            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() +
+                    "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
+
+            assertTrue(generatedPillar.exists());
+            Map<String, Object> map;
+
+            try (FileInputStream fi = new FileInputStream(generatedPillar)) {
+                map = new Yaml().loadAs(fi, Map.class);
+                assertTrue(map.containsKey("boot_images"));
+                Map<String, Map<String, Map<String, Object>>> bootImages =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
+                assertEquals(
+                    "ftp://ftp/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+                Map<String, Map<String, Map<String, Object>>> images =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
+                assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
+                assertEquals("a64dbc025c748bde968b888db6b7b9e3",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
+                assertEquals("gzip", images.get("POS_Image_JeOS6").get("6.0.0").get("compressed"));
+                assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
+                        images.get("POS_Image_JeOS6").get("6.0.0").get("compressed_hash"));
+            }
+            catch (FileNotFoundException e) {
+                fail("Cannot find OS Image generated pillar");
+            }
+            catch (IOException e) {
                 fail("Cannot find OS Image generated pillar");
             }
         });
@@ -1805,8 +1783,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return imgInfoBuild.get();
     }
 
-    private ImageInfo doTestKiwiImageInspect(MinionServer server, String imageName,
-                                             ImageProfile profile, Consumer<ImageInfo> assertions)
+    private ImageInfo doTestKiwiImageInspect(MinionServer server, ImageProfile profile,
+                                             String returnEventJson,
+                                             Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile,
@@ -1824,7 +1803,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.reload(inspectAction);
         // Process the image inspect return event
         Optional<JobReturnEvent> event = JobReturnEvent
-                .parse(getJobReturnEvent("image.inspect.kiwi.json", actionId));
+                .parse(getJobReturnEvent(returnEventJson, actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
@@ -1870,7 +1849,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleSubscribeChannels(
+                    with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -2147,8 +2127,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");
 
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.needed.json", applyHighstate.getId(),
-                        placeholders));
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("action.chain.refresh.needed.json", applyHighstate.getId(), placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         // Process the event message
@@ -2183,8 +2163,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");
 
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.not.needed.json", applyHighstate.getId(),
-                placeholders));
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("action.chain.refresh.not.needed.json", applyHighstate.getId(), placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         // Process the event message
@@ -2198,6 +2178,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testMinionStartupResponse() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String runningKernel = minion.getRunningKernel();
+        assertNull(minion.getKernelLiveVersion());
         Long lastBoot = minion.getLastBoot();
         String name = minion.getName();
         Map<String, String> placeholders = new HashMap<>();
@@ -2212,371 +2193,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
         assertEquals(name, minion.getName());
         assertNotSame(runningKernel, minion.getRunningKernel());
+        assertEquals("livepatch_2_2_3", minion.getKernelLiveVersion());
         assertNotSame(lastBoot, minion.getLastBoot());
     }
-
-    public void testClustersAddNodeError() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticMock);
-        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterJoinNodeAction.class)));
-        } });
-
-        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
-        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
-
-        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("skuba_cluster_path", "/opt/mycluster");
-        params.put("map", Collections.singletonMap("key", "value"));
-        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
-        assertTrue(action instanceof ClusterJoinNodeAction);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
-        action.addServerAction(serverAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", managementNode.getMinionId());
-        placeholders.put("${action1-id}", action.getId() + "");
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("clusters.addnode.error.json", 0,
-                        placeholders));
-
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
-        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
-        serverAction = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
-        assertEquals("\n" +
-                "---\n" +
-                "retcode: 255.0\n" +
-                "stderr: |\n" +
-                "    F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern: failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
-                "stdout: ''\n" +
-                "success: false\n" +
-                "\n" +
-                "---\n" +
-                "retcode: 255.0\n" +
-                "stderr: |\n" +
-                "    F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-3.lan: failed to apply state kubernetes.install-node-pattern: failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
-                "stdout: ''\n" +
-                "success: false\n", serverAction.getResultMsg());
-    }
-
-    public void testClustersAddNodeSuccess() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticMock);
-        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterJoinNodeAction.class)));
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterGroupRefreshNodesAction.class)));
-        } });
-
-        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
-        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
-
-        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
-
-        Map<String, Object> params = new HashMap<>();
-
-        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
-        assertTrue(action instanceof ClusterJoinNodeAction);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
-        action.addServerAction(serverAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", managementNode.getMinionId());
-        placeholders.put("${action1-id}", action.getId() + "");
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("clusters.addnode.success.json", 0,
-                        placeholders));
-
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
-        serverAction = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
-        assertEquals("\n" +
-                "---\n" +
-                "retcode: 0.0\n" +
-                "stderr: \"W0518 17:48:35.854168   13844 ssh.go:311] \\nThe authenticity of host '192.168.1.208:22' can't be established.\\nECDSA key fingerprint is 50:08:8f:ba:b1:75:68:4c:0a:3b:f0:6b:0b:4f:4f:0c.\\n\\\n" +
-                "    I0518 17:48:35.854333   13844 ssh.go:312] accepting SSH key for \\\"dev-min-caasp-worker-1.lan:22\\\"\\nI0518 17:48:35.854365   13844 ssh.go:313] adding\\\n" +
-                "    \\ fingerprint for \\\"dev-min-caasp-worker-1.lan:22\\\" to \\\"known_hosts\\\"\\nE0518 17:50:14.789115   13844 ssh.go:195] W0518 17:50:09.919982   22114 removeetcdmember.go:79]\\\n" +
-                "    \\ [reset] No kubeadm config, using etcd pod spec to get data directory\\nE0518 17:50:16.834438   13844 ssh.go:195] W0518 17:50:11.965032   22114 cleanupnode.go:81]\\\n" +
-                "    \\ [reset] Failed to remove containers: output: time=\\\"2020-05-18T17:50:11+02:00\\\" level=fatal msg=\\\"failed to connect: failed to connect, make sure\\\n" +
-                "    \\ you are running as root and the runtime has been started: context deadline exceeded\\\"\\nE0518 17:50:16.834464   13844 ssh.go:195] , error: exit status\\\n" +
-                "    \\ 1\\nE0518 17:50:17.265201   13844 ssh.go:195] No files found for firewalld.service.\\nE0518 17:50:20.986180   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/crio.service\\\n" +
-                "    \\ → /usr/lib/systemd/system/crio.service.\\nE0518 17:50:24.071198   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service\\\n" +
-                "    \\ → /usr/lib/systemd/system/kubelet.service.\\nE0518 17:50:46.509489   13844 ssh.go:195] Created symlink /etc/systemd/system/timers.target.wants/skuba-update.timer\\\n" +
-                "    \\ → /usr/lib/systemd/system/skuba-update.timer.\\n\"\n" +
-                "stdout: |\n" +
-                "    [join] applying states to new node\n" +
-                "    [join] node successfully joined the cluster\n" +
-                "success: true\n" +
-                "\n" +
-                "---\n" +
-                "retcode: 0.0\n" +
-                "stderr: \"W0518 17:48:35.854168   13844 ssh.go:311] \\nThe authenticity of host '192.168.1.208:22' can't be established.\\nECDSA key fingerprint is 50:08:8f:ba:b1:75:68:4c:0a:3b:f0:6b:0b:4f:4f:0c.\\n\\\n" +
-                "    I0518 17:48:35.854333   13844 ssh.go:312] accepting SSH key for \\\"dev-min-caasp-worker-2.lan:22\\\"\\nI0518 17:48:35.854365   13844 ssh.go:313] adding\\\n" +
-                "    \\ fingerprint for \\\"dev-min-caasp-worker-2.lan:22\\\" to \\\"known_hosts\\\"\\nE0518 17:50:14.789115   13844 ssh.go:195] W0518 17:50:09.919982   22114 removeetcdmember.go:79]\\\n" +
-                "    \\ [reset] No kubeadm config, using etcd pod spec to get data directory\\nE0518 17:50:16.834438   13844 ssh.go:195] W0518 17:50:11.965032   22114 cleanupnode.go:81]\\\n" +
-                "    \\ [reset] Failed to remove containers: output: time=\\\"2020-05-18T17:50:11+02:00\\\" level=fatal msg=\\\"failed to connect: failed to connect, make sure\\\n" +
-                "    \\ you are running as root and the runtime has been started: context deadline exceeded\\\"\\nE0518 17:50:16.834464   13844 ssh.go:195] , error: exit status\\\n" +
-                "    \\ 1\\nE0518 17:50:17.265201   13844 ssh.go:195] No files found for firewalld.service.\\nE0518 17:50:20.986180   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/crio.service\\\n" +
-                "    \\ → /usr/lib/systemd/system/crio.service.\\nE0518 17:50:24.071198   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service\\\n" +
-                "    \\ → /usr/lib/systemd/system/kubelet.service.\\nE0518 17:50:46.509489   13844 ssh.go:195] Created symlink /etc/systemd/system/timers.target.wants/skuba-update.timer\\\n" +
-                "    \\ → /usr/lib/systemd/system/skuba-update.timer.\\n\"\n" +
-                "stdout: |\n" +
-                "    [join] applying states to new node\n" +
-                "    [join] node successfully joined the cluster\n" +
-                "success: true\n", serverAction.getResultMsg());
-    }
-
-    public void testClustersRemoveNodeError() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticMock);
-        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterRemoveNodeAction.class)));
-        } });
-
-        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
-        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
-
-        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("skuba_cluster_path", "/opt/mycluster");
-        params.put("map", Collections.singletonMap("key", "value"));
-        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
-        assertTrue(action instanceof ClusterRemoveNodeAction);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
-        action.addServerAction(serverAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", managementNode.getMinionId());
-        placeholders.put("${action1-id}", action.getId() + "");
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("clusters.removenode.error.json", 0,
-                        placeholders));
-
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
-        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
-        serverAction = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
-        assertEquals("\n" +
-                "---\n" +
-                "retcode: 255.0\n" +
-                "stderr: |\n" +
-                "    F0528 17:04:20.778517   11913 join.go:63] error removing node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern: failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
-                "stdout: ''\n" +
-                "success: false\n", serverAction.getResultMsg());
-    }
-
-    public void testClustersRemoveNodeSuccess() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticMock);
-        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterRemoveNodeAction.class)));
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterGroupRefreshNodesAction.class)));
-        } });
-
-        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
-        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
-
-        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
-
-        Map<String, Object> params = new HashMap<>();
-
-        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
-        assertTrue(action instanceof ClusterRemoveNodeAction);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
-        action.addServerAction(serverAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", managementNode.getMinionId());
-        placeholders.put("${action1-id}", action.getId() + "");
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("clusters.removenode.success.json", 0,
-                        placeholders));
-
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
-        serverAction = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
-        assertEquals("\n" +
-                "---\n" +
-                "retcode: 0.0\n" +
-                "stderr: ''\n" +
-                "stdout: |\n" +
-                "    [remove-node] removing worker node dev-min-caasp-worker-1.lan (drain timeout: 0s)\n" +
-                "    [remove-node] failed disarming kubelet: failed waiting for job caasp-kubelet-disarm-e009966a26df3d53840afc6318dc0d3c12f46858; node could be down, continuing with node removal...\n" +
-                "    [remove-node] node dev-min-caasp-worker-1.lan successfully removed from the cluster\n" +
-                "success: true\n", serverAction.getResultMsg());
-    }
-
-    public void testClustersUpgradeSuccessAlreadyLatest() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticMock);
-        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterUpgradeAction.class)));
-        } });
-
-        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
-        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("skuba_cluster_path", "/opt/mycluster");
-        params.put("map", Collections.singletonMap("key", "value"));
-        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
-                cluster, Arrays.asList(), params, new Date(), user);
-        assertTrue(action instanceof ClusterUpgradeAction);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
-        action.addServerAction(serverAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", managementNode.getMinionId());
-        placeholders.put("${action1-id}", action.getId() + "");
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("clusters.upgrade.success.already_latest.json", 0,
-                        placeholders));
-
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
-        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
-        serverAction = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
-        assertEquals("\n" +
-                "---\n" +
-                "retcode: 0.0\n" +
-                "stderr: ''\n" +
-                "stdout: |\n" +
-                "    Current Kubernetes cluster version: 1.16.2\n" +
-                "    Latest Kubernetes version: 1.16.2\n" +
-                "\n" +
-                "    Congratulations! You are already at the latest version available\n" +
-                "success: true\n", serverAction.getResultMsg());
-    }
-
-    public void testClustersUpgradeSuccessFailure() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticMock);
-        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterUpgradeAction.class)));
-        } });
-
-        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
-        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("skuba_cluster_path", "/opt/mycluster");
-        params.put("map", Collections.singletonMap("key", "value"));
-        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
-                cluster, Arrays.asList(), params, new Date(), user);
-        assertTrue(action instanceof ClusterUpgradeAction);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
-        action.addServerAction(serverAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", managementNode.getMinionId());
-        placeholders.put("${action1-id}", action.getId() + "");
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("clusters.upgrade.failure.json", 0,
-                        placeholders));
-
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
-        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
-        serverAction = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
-        assertEquals("\n" +
-                "---\n" +
-                "retcode: 1.0\n" +
-                "stage0_upgrade_addons:\n" +
-                "    retcode: 0.0\n" +
-                "    stderr: ''\n" +
-                "    stdout: |\n" +
-                "        Current Kubernetes cluster version: 1.16.2\n" +
-                "        Latest Kubernetes version: 1.16.2\n" +
-                "\n" +
-                "        [apply] Congratulations! Addons for 1.16.2 are already at the latest version available\n" +
-                "    success: true\n" +
-                "stage1_upgrade_nodes:\n" +
-                "    dev-min-caasp-master.lan:\n" +
-                "        retcode: 1.0\n" +
-                "        stderr: ''\n" +
-                "        stdout: |\n" +
-                "            Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
-                "        success: false\n" +
-                "    dev-min-caasp-worker-1.lan:\n" +
-                "        retcode: 1.0\n" +
-                "        stderr: ''\n" +
-                "        stdout: |\n" +
-                "            Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
-                "        success: false\n" +
-                "    dev-min-caasp-worker-2.lan:\n" +
-                "        retcode: 1.0\n" +
-                "        stderr: ''\n" +
-                "        stdout: |\n" +
-                "            Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
-                "        success: false\n" +
-                "stage2_upgrade_addons:\n" +
-                "    retcode: 0.0\n" +
-                "    stderr: ''\n" +
-                "    stdout: |\n" +
-                "        Current Kubernetes cluster version: 1.16.2\n" +
-                "        Latest Kubernetes version: 1.16.2\n" +
-                "\n" +
-                "        [apply] Congratulations! Addons for 1.16.2 are already at the latest version available\n" +
-                "    success: true\n" +
-                "success: false\n", serverAction.getResultMsg());
-    }
-
-
 }

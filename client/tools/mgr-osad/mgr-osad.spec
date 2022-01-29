@@ -29,11 +29,9 @@
 %if 0%{?suse_version}
 %global apache_group www
 %global apache_user wwwrun
-%global include_selinux_package 0
 %else
 %global apache_group apache
 %global apache_user apache
-%global include_selinux_package 1
 %endif
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -41,7 +39,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400)
 %global build_py2   1
 %endif
 
@@ -51,12 +49,12 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.3.1
+Version:        4.3.3
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 URL:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -147,11 +145,13 @@ Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 4.2.2
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}
 %endif
 
+%if 0%{?build_py2}
 %package -n python2-mgr-osa-common
 Summary:        OSA common files
 Group:          System Environment/Daemons
@@ -165,6 +165,7 @@ Provides:       python2-osa-common = %{oldversion}
 
 %description -n python2-mgr-osa-common
 Python 2 common files needed by mgr-osad and mgr-osa-dispatcher
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-mgr-osa-common
@@ -213,6 +214,7 @@ OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
+%if 0%{?build_py2}
 %package -n python2-mgr-osa-dispatcher
 Summary:        OSA dispatcher
 Group:          System Environment/Daemons
@@ -230,6 +232,7 @@ Requires:       python2-mgr-osa-common = %{version}-%{release}
 
 %description -n python2-mgr-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-mgr-osa-dispatcher
@@ -246,39 +249,6 @@ Requires:       python3-mgr-osa-common = %{version}-%{release}
 Python 3 specific files for osa-dispatcher.
 %endif
 
-%if 0%{?include_selinux_package}
-%package -n mgr-osa-dispatcher-selinux
-%global selinux_variants mls strict targeted
-%global selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
-%global POLICYCOREUTILSVER 1.33.12-1
-
-%global moduletype apps
-%global modulename osa-dispatcher
-
-Summary:        SELinux policy module supporting osa-dispatcher
-Group:          System Environment/Base
-Obsoletes:      osa-dispatcher-selinux < %{oldversion}
-Provides:       osa-dispatcher-selinux = %{oldversion}
-BuildRequires:  checkpolicy
-BuildRequires:  hardlink
-BuildRequires:  policycoreutils >= %{POLICYCOREUTILSVER}
-BuildRequires:  selinux-policy-devel
-Requires:       spacewalk-selinux
-
-%if "%{selinux_policyver}" != ""
-Requires:       selinux-policy >= %{selinux_policyver}
-%endif
-%if 0%{?rhel} == 5
-Requires:       selinux-policy >= 2.4.6-114
-%endif
-Requires(post): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled, /usr/sbin/semanage
-Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage, spacewalk-selinux
-Requires:       mgr-osa-dispatcher
-
-%description -n mgr-osa-dispatcher-selinux
-SELinux policy module supporting osa-dispatcher.
-%endif
-
 %prep
 %setup -q
 %if 0%{?suse_version}
@@ -289,28 +259,20 @@ sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python3 -s@' invocation.py
 %endif
 
 %build
+%if 0%{?build_py2}
 make -f Makefile.osad all PYTHONPATH=%{python_sitelib}
-
-%if 0%{?include_selinux_package}
-%{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
-%if 0%{?fedora} || 0%{?rhel} >= 7
-cat osa-dispatcher-selinux/%{modulename}.te.fedora17 >> osa-dispatcher-selinux/%{modulename}.te
 %endif
-%if 0%{?fedora} >= 26
-cat osa-dispatcher-selinux/%{modulename}.te.fedora26 >> osa-dispatcher-selinux/%{modulename}.te
-%endif
-for selinuxvariant in %{selinux_variants}
-do
-    make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
-    mv osa-dispatcher-selinux/%{modulename}.pp osa-dispatcher-selinux/%{modulename}.pp.${selinuxvariant}
-    make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
-done
+%if 0%{?build_py3}
+make -f Makefile.osad all PYTHONPATH=%{python3_sitelib}
 %endif
 
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
+%if 0%{?build_py2}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version}
+%endif
+
 %if 0%{?build_py3}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version}
@@ -339,38 +301,14 @@ install -m 0644 osad.service $RPM_BUILD_ROOT/%{_unitdir}/
 install -m 0644 osa-dispatcher.service $RPM_BUILD_ROOT/%{_unitdir}/
 %endif
 
-%if 0%{?include_selinux_package}
-for selinuxvariant in %{selinux_variants}
-  do
-    install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
-    install -p -m 644 osa-dispatcher-selinux/%{modulename}.pp.${selinuxvariant} \
-           %{buildroot}%{_datadir}/selinux/${selinuxvariant}/%{modulename}.pp
-  done
-
-# Install SELinux interfaces
-install -d %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
-install -p -m 644 osa-dispatcher-selinux/%{modulename}.if \
-  %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
-
-# Hardlink identical policy module packages together
-/usr/sbin/hardlink -cv %{buildroot}%{_datadir}/selinux
-
-# Install osa-dispatcher-selinux-enable which will be called in %%post
-install -d %{buildroot}%{_sbindir}
-install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
-%endif
-
-%if ! 0%{?build_py2}
-rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/osad/osad*
-rm -f $RPM_BUILD_ROOT/usr/sbin/osad-%{python_version}
-%endif
-
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
@@ -518,33 +456,6 @@ if [ $1 = 0 ]; then
 fi
 %endif
 
-%if 0%{?include_selinux_package}
-%post -n mgr-osa-dispatcher-selinux
-if /usr/sbin/selinuxenabled ; then
-   %{_sbindir}/osa-dispatcher-selinux-enable
-fi
-
-%posttrans -n mgr-osa-dispatcher-selinux
-#this may be safely remove when BZ 505066 is fixed
-if /usr/sbin/selinuxenabled ; then
-  rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
-  /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
-fi
-
-%postun -n mgr-osa-dispatcher-selinux
-# Clean up after package removal
-if [ $1 -eq 0 ]; then
-  for selinuxvariant in %{selinux_variants}
-    do
-      /usr/sbin/semanage module -s ${selinuxvariant} -l > /dev/null 2>&1 \
-        && /usr/sbin/semodule -s ${selinuxvariant} -r %{modulename} || :
-    done
-fi
-
-rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
-/sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
-%endif
-
 %files
 %defattr(-,root,root)
 %{_sbindir}/osad
@@ -617,12 +528,14 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-mgr-osa-dispatcher
 %defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python_version}
 %dir %{python_sitelib}/osad
 %{python_sitelib}/osad/osa_dispatcher.py*
 %{python_sitelib}/osad/dispatcher_client.py*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-mgr-osa-dispatcher
@@ -635,11 +548,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python3_sitelib}/osad/__pycache__/dispatcher_client.*
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-mgr-osa-common
 %defattr(-,root,root)
 %{python_sitelib}/osad/__init__.py*
 %{python_sitelib}/osad/jabber_lib.py*
 %{python_sitelib}/osad/rhn_log.py*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-mgr-osa-common
@@ -650,19 +565,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python3_sitelib}/osad/__pycache__/__init__.*
 %{python3_sitelib}/osad/__pycache__/jabber_lib.*
 %{python3_sitelib}/osad/__pycache__/rhn_log.*
-%endif
-
-%if 0%{?include_selinux_package}
-%files -n mgr-osa-dispatcher-selinux
-%defattr(-,root,root)
-%doc osa-dispatcher-selinux/%{modulename}.fc
-%doc osa-dispatcher-selinux/%{modulename}.if
-%doc osa-dispatcher-selinux/%{modulename}.te
-%{_datadir}/selinux/*/%{modulename}.pp
-%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%attr(0755,root,root) %{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
 %changelog

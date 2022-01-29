@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,13 +15,23 @@
 
 package com.suse.manager.webui.services;
 
+import static com.redhat.rhn.domain.config.ConfigFileState.NORMAL;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static java.util.Collections.emptySortedSet;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
+
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.utils.Opt;
+
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -30,20 +40,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Collections;
-import java.util.HashMap;
-
-import static com.redhat.rhn.domain.config.ConfigFileState.NORMAL;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
-import static java.util.Collections.emptySortedSet;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
 
 /**
  * Singleton class, renders salt files corresponding to a configuration channel on the disk.
@@ -299,6 +301,7 @@ public class ConfigChannelSaltManager {
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("source", getSaltUriForConfigFile(file)));
         fileParams.add(singletonMap("makedirs", true));
+        fileParams.add(singletonMap("template", "jinja"));
         fileParams.addAll(getModeParams(file.getLatestConfigRevision().getConfigInfo()));
         return fileParams;
     }

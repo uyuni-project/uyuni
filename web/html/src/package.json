@@ -14,7 +14,8 @@
     "proxy": "webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
     "build": "node build",
     "build:novalidate": "BUILD_VALIDATION=false node build",
-    "lint": "eslint . -f codeframe",
+    "lint": "eslint . -f codeframe --fix",
+    "lint:production": "NODE_ENV=production eslint . -f codeframe",
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",
@@ -24,7 +25,6 @@
     "migrate": "node build/migrate-ts/index.js"
   },
   "engines": {
-    "node": ">=10.0.0",
     "yarn": ">=1.0.0"
   }
 }

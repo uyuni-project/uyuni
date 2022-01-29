@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Date;
@@ -170,7 +171,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
     }
 
-    public void testRefreshSame() throws Exception{
+    public void testRefreshSame() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
@@ -210,7 +211,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertTrue(oldTokens.stream().allMatch(t -> t.getMinion() == null));
     }
 
-    public void testRefreshNoInitialTokens() throws Exception{
+    public void testRefreshNoInitialTokens() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);

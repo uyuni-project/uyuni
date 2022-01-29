@@ -1,15 +1,17 @@
 import * as React from "react";
 
-import { TopPanel } from "components/panels/TopPanel";
-import { Text } from "components/input/Text";
-import { Select } from "components/input/Select";
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { Button, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
-import { SubmitButton, Button } from "components/buttons";
-import Network from "utils/network";
+import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { Utils } from "utils/functions";
-import SpaRenderer from "core/spa/spa-renderer";
+import Network from "utils/network";
 
 const msgMap = {
   not_found: t("Image store not found"),
@@ -69,17 +71,6 @@ class ImageImport extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getImageStores = this.getImageStores.bind(this);
-    this.getBounceUrl = this.getBounceUrl.bind(this);
-    this.onFormChange = this.onFormChange.bind(this);
-    this.onValidate = this.onValidate.bind(this);
-    this.getBuildHosts = this.getBuildHosts.bind(this);
-    this.getActivationKeys = this.getActivationKeys.bind(this);
-    this.onImport = this.onImport.bind(this);
-    this.handleActivationKeyChange = this.handleActivationKeyChange.bind(this);
-    this.clearFields = this.clearFields.bind(this);
-    this.handleResponseError = this.handleResponseError.bind(this);
-
     this.state = {
       imageStores: null,
       messages: [],
@@ -96,36 +87,36 @@ class ImageImport extends React.Component {
     this.getActivationKeys();
   }
 
-  getImageStores() {
+  getImageStores = () => {
     const type = "registry";
     Network.get("/rhn/manager/api/cm/imagestores/type/" + type)
-      .then(data => {
+      .then((data) => {
         this.setState({
           imageStores: data,
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  getBuildHosts() {
+  getBuildHosts = () => {
     Network.get("/rhn/manager/api/cm/build/hosts/container_build_host")
-      .then(data => {
+      .then((data) => {
         this.setState({
           hosts: data,
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  getActivationKeys() {
+  getActivationKeys = () => {
     Network.get("/rhn/manager/api/cm/activationkeys")
-      .then(data => {
+      .then((data) => {
         this.setState({
           activationkeys: data,
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   getChannels(token) {
     if (!token) {
@@ -135,7 +126,7 @@ class ImageImport extends React.Component {
       return;
     }
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then((res) => {
       // Prevent out-of-order async results
       if (res.activationKey !== this.state.model.activationKey) return false;
 
@@ -145,35 +136,35 @@ class ImageImport extends React.Component {
     });
   }
 
-  handleResponseError(jqXHR) {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
-  }
+  };
 
-  getBounceUrl() {
+  getBounceUrl = () => {
     return encodeURIComponent("/rhn/manager/cm/import");
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: emptyModel(),
     });
-  }
+  };
 
-  onImport() {
+  onImport = () => {
     const storeId: number = parseInt(this.state.model.storeId || "", 10);
     const buildHostId: number = parseInt(this.state.model.buildHostId || "", 10);
     if (
@@ -192,7 +183,7 @@ class ImageImport extends React.Component {
         version: this.state.model.version,
       };
       return Network.post("/rhn/manager/api/cm/images/import", importObj)
-        .then(data => {
+        .then((data) => {
           if (data.success) {
             Utils.urlBounce("/rhn/manager/cm/images");
           } else {
@@ -204,16 +195,15 @@ class ImageImport extends React.Component {
         .catch(this.handleResponseError);
     } else {
       // should not happen
-      console.log("Not all required values present in model");
       this.setState({
         messages: MessagesUtils.error("Not all required values present."),
       });
     }
-  }
+  };
 
-  handleActivationKeyChange(name, value) {
+  handleActivationKeyChange = (name, value) => {
     this.getChannels(value);
-  }
+  };
 
   renderActivationKeySelect() {
     const hint =
@@ -222,7 +212,7 @@ class ImageImport extends React.Component {
         <ul className="list-unstyled">
           <li>{this.state.channels.base.name}</li>
           <ul>
-            {this.state.channels.children.map(c => (
+            {this.state.channels.children.map((c) => (
               <li key={c.id}>{c.name}</li>
             ))}
           </ul>
@@ -268,14 +258,11 @@ class ImageImport extends React.Component {
             invalidHint={
               <span>
                 Target Image Store is required.&nbsp;
-                <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>
-                  Create a new one
-                </a>
-                .
+                <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.
               </span>
             }
             options={this.state.imageStores}
-            getOptionValue={option => option.id}
+            getOptionValue={(option) => option.id}
           />
 
           <Text
@@ -304,8 +291,8 @@ class ImageImport extends React.Component {
             divClass="col-md-6"
             isClearable
             options={this.state.hosts}
-            getOptionValue={option => option.id}
-            getOptionLabel={option => option.name}
+            getOptionValue={(option) => option.id}
+            getOptionLabel={(option) => option.name}
           />
 
           {this.renderActivationKeySelect()}

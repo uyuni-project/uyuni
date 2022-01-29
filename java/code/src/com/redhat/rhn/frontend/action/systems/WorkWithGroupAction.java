@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.systems;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;

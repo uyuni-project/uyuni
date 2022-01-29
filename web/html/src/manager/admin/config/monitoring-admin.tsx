@@ -1,16 +1,21 @@
+import "./monitoring-admin.css";
+
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useEffect } from "react";
+
+import { AsyncButton, Button } from "components/buttons";
+import withPageWrapper from "components/general/with-page-wrapper";
+import { IconTag as Icon } from "components/icontag";
+import { Messages, Utils as MessagesUtils } from "components/messages";
 import { Panel } from "components/panels/Panel";
 import { HelpLink } from "components/utils/HelpLink";
-import { Button, AsyncButton } from "components/buttons";
-import Network from "utils/network";
-import { Messages, Utils as MessagesUtils } from "components/messages";
+
 import { Utils } from "utils/functions";
-import { IconTag as Icon } from "components/icontag";
-import withPageWrapper from "components/general/with-page-wrapper";
+import Network from "utils/network";
+
 import useMonitoringApi from "./use-monitoring-api";
-import "./monitoring-admin.css";
 
 const { capitalize } = Utils;
 
@@ -72,18 +77,17 @@ const ExporterIcon = (props: {
         ? "item-enabled-pending"
         : "item-enabled";
     if (props.message) {
-      tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + (props.message ? props.message : "")]; // double check props.message to keep flow happy
+      tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Enabled");
     }
   } else if (props.status === false) {
-    console.log("disabled " + props.name + " " + (props.message ? props.message : "null"));
     type =
       props.message === "restart" || props.message === "enable" || props.message === "disable"
         ? "item-error-pending"
         : "item-error";
     if (props.message) {
-      tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + (props.message ? props.message : "")]; // double check props.message to keep flow happy
+      tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Disabled");
     }
@@ -115,14 +119,14 @@ const ExportersList = (props: {
 
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
-      {keys.map(key => (
+      {keys.map((key) => (
         <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} />
       ))}
     </ul>
   );
 };
 
-const ListPlaceholderItem = props => {
+const ListPlaceholderItem = (props) => {
   return (
     <li className="placeholder-item">
       <Icon type="item-disabled" className="fa-1-5x" />
@@ -131,17 +135,17 @@ const ListPlaceholderItem = props => {
   );
 };
 
-const ListPlaceholder = props => {
+const ListPlaceholder = (props) => {
   return (
     <ul className="placeholder">
-      {Object.keys(exporterMap).map(e => (
+      {Object.keys(exporterMap).map((e) => (
         <ListPlaceholderItem />
       ))}
     </ul>
   );
 };
 
-const HelpPanel = props => {
+const HelpPanel = (props) => {
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
       <h4>{t("Server Monitoring")}</h4>
@@ -178,8 +182,8 @@ const ExportersMessages = (props: {
     return (
       <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
         {keys
-          .filter(key => props.messages[key] !== "restart")
-          .map(key => (
+          .filter((key) => props.messages[key] !== "restart")
+          .map((key) => (
             <li key={key}>
               <Icon type="system-warn" className="fa-1-5x" />
               {msgMap[key + "_msg_" + props.messages[key]]}
@@ -192,7 +196,7 @@ const ExportersMessages = (props: {
   }
 };
 
-const MonitoringAdmin = props => {
+const MonitoringAdmin = (props) => {
   const {
     action,
     fetchStatus,

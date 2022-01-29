@@ -22,7 +22,7 @@
 %endif
 
 Name:           susemanager-tftpsync-recv
-Version:        4.3.2
+Version:        4.3.5
 Release:        1
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
@@ -33,11 +33,10 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
 Requires(pre):  apache2
-Requires(pre):  tftp(server)
 %else
 Requires(pre):  httpd
-Requires(pre):  tftp
 %endif
+Requires(pre):  tftp
 %if 0%{?build_py3}
 Requires:       python3
 Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)

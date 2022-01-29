@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Form, Text } from "components/input";
 
 import { ProjectPropertiesType } from "../../../type";
@@ -14,7 +15,7 @@ const PropertiesForm = (props: Props) => (
   <Form
     model={props.properties}
     errors={props.errors}
-    onChange={model => {
+    onChange={(model) => {
       props.onChange(model);
     }}
   >

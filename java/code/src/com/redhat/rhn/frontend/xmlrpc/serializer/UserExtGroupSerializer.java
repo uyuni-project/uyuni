@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
+import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -21,10 +25,6 @@ import java.util.List;
 
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
-
-import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
-import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  *

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,12 +18,13 @@ package com.suse.manager.webui.services.pillar;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 
+import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.MinionServer;
-
-import com.suse.manager.webui.utils.SaltPillar;
+import com.redhat.rhn.domain.server.Pillar;
 
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,25 +38,37 @@ public class MinionCustomInfoPillarGenerator implements MinionPillarGenerator {
 
     public static final MinionCustomInfoPillarGenerator INSTANCE = new MinionCustomInfoPillarGenerator();
 
+    public static final String CATEGORY = "custom_info";
+
     /**
      * Generates pillar data containing CustomInfo information of the passed minion
      * @param minion the minion server
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
+    public Optional<Pillar> generatePillarData(MinionServer minion) {
         if (minion.getCustomDataValues().isEmpty()) {
+            minion.getPillarByCategory(CATEGORY).ifPresent(pillar -> minion.getPillars().remove(pillar));
             return Optional.empty();
         }
-        SaltPillar pillar = new SaltPillar();
+        Pillar pillar = minion.getPillarByCategory(CATEGORY).orElseGet(() -> {
+            Pillar newPillar = new Pillar(CATEGORY, new HashMap<>(), minion);
+            minion.getPillars().add(newPillar);
+            return newPillar;
+        });
+        pillar.getPillar().clear();
         pillar.add("custom_info", minion.getCustomDataValues().stream()
-                .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue())));
+                .collect(Collectors.toMap(a -> a.getKey().getLabel(), CustomDataValue::getValue)));
         return Optional.of(pillar);
     }
 
     @Override
     public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_custom_info." + PILLAR_DATA_FILE_EXT;
+        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + CATEGORY + "." + PILLAR_DATA_FILE_EXT;
     }
 
+    @Override
+    public String getCategory() {
+        return CATEGORY;
+    }
 }

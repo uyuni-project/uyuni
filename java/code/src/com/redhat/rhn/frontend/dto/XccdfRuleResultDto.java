@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.manager.audit.ScapManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.

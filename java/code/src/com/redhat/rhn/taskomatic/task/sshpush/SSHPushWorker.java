@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,29 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush;
 
+import com.redhat.rhn.common.CommonConstants;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
+import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
+import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
+
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.HostKey;
+import com.jcraft.jsch.HostKeyRepository;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
@@ -23,28 +46,6 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
-import com.redhat.rhn.common.CommonConstants;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.HostKey;
-import com.jcraft.jsch.HostKeyRepository;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.frontend.dto.ServerPath;
-import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
-import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
-import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
 /**
  * Worker implementation for SSH Server Push.

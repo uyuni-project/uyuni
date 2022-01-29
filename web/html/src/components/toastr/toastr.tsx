@@ -1,7 +1,9 @@
-import * as React from "react";
-import { ToastContainer, toast, cssTransition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./toastr.css";
+
+import * as React from "react";
+
+import { cssTransition, toast, ToastContainer } from "react-toastify";
 
 type OptionalParams = {
   autoHide: boolean;
@@ -10,7 +12,7 @@ type OptionalParams = {
 
 type MessagesContainerProps = {
   containerId?: string;
-}
+};
 
 const FadeTransition = cssTransition({
   enter: "toast-enter",
@@ -36,7 +38,7 @@ function parseAutoHide(input: boolean) {
 }
 
 export function showSuccessToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
-  const notify = msg =>
+  const notify = (msg) =>
     toast.success(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
@@ -45,7 +47,7 @@ export function showSuccessToastr(message: React.ReactNode, optionalParams: Opti
 }
 
 export function showWarningToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
-  const notify = msg =>
+  const notify = (msg) =>
     toast.warning(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
@@ -54,7 +56,7 @@ export function showWarningToastr(message: React.ReactNode, optionalParams: Opti
 }
 
 export function showErrorToastr(message: React.ReactNode | Error, optionalParams: OptionalParams = { autoHide: true }) {
-  const notify = msg =>
+  const notify = (msg) =>
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
@@ -69,7 +71,7 @@ export function showErrorToastr(message: React.ReactNode | Error, optionalParams
 }
 
 export function showInfoToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
-  const notify = msg =>
+  const notify = (msg) =>
     toast.info(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,

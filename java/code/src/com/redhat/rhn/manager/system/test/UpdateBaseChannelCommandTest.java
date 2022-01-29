@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -67,7 +67,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
 
         s = (Server) TestUtils.reload(s);
 
-        Set <Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<Channel>();
         channels.add(parent);
         channels.add(child);
         assertEquals(channels, s.getChannels());

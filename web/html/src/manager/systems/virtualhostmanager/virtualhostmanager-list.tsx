@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
 
+import { Button } from "components/buttons";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
 
 type Props = {
   data?: any;
@@ -35,9 +36,8 @@ class VirtualHostManagerList extends React.Component<Props, State> {
       <div>
         <Table
           data={this.props.data}
-          identifier={vhm => vhm.id}
+          identifier={(vhm) => vhm.id}
           initialSortColumnKey="label"
-          initialItemsPerPage={window.userPrefPageSize}
           emptyText={t("No Virtual Host Managers.")}
         >
           <Column
@@ -93,7 +93,7 @@ class VirtualHostManagerList extends React.Component<Props, State> {
                     icon="fa-trash"
                     target="delete-modal"
                     item={row}
-                    onClick={i => this.selectToDelete(i)}
+                    onClick={(i) => this.selectToDelete(i)}
                   />
                 </div>
               );

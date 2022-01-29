@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -22,34 +22,106 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
   $server.run("umount #{iso_path}; mount #{iso_path}")
 end
 
-Then(/^I can see all system information for "([^"]*)"$/) do |host|
+Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   step %(I should see a "#{node.hostname}" text)
+end
+
+Then(/^the kernel for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
   kernel_version, _code = node.run('uname -r')
-  puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
+end
+
+Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
   os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
 
-Then(/^I should see the terminals imported from the configuration file$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
+Then(/^the IPv4 address for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  ipv4_address = node.public_ip
+  puts "IPv4 address: #{ipv4_address}"
+  step %(I should see a "#{ipv4_address}" text)
 end
 
-Then(/^I should not see any terminals imported from the configuration file$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-    step %(I should not see a "#{terminal}" text)
+Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  interface, code = node.run("ip -6 address show #{node.public_interface}")
+  raise unless code.zero?
+  lines = interface.lines
+  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global temporary dynamic/).first
+  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global dynamic mngtmpaddr/).first if ipv6_line.nil?
+  ipv6_line = lines.grep(/inet6 fe80:[:0-9a-f]*\/64 scope link/).first if ipv6_line.nil?
+  next if ipv6_line.nil?
+  ipv6_address = ipv6_line.scan(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/).first
+  puts "IPv6 address: #{ipv6_address}"
+  step %(I should see a "#{ipv6_address}" text)
+end
+
+Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  step %(I am logged in via XML\-RPC actionchain as user "admin" and password "admin")
+  client_id = @system_api.search_by_name(get_system_name(host)).first['id']
+  step %(I should see a "#{client_id.to_s}" text)
+end
+
+Then(/^the system name for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  system_name = get_system_name(host)
+  step %(I should see a "#{system_name}" text)
+end
+
+Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
+  node = get_target(host)
+  uptime_seconds, _return_code = node.run("awk '{print $1}' /proc/uptime") # run code on node only once, to get uptime in seconds
+  uptime_minutes = (uptime_seconds.to_f / 60.0) # 60 seconds; the .0 forces a float division
+  uptime_hours = (uptime_minutes / 60.0) # 60 minutes
+  uptime_days = (uptime_hours / 24.0) # 24 hours
+
+  # rounded values to nearest integer number
+  rounded_uptime_minutes = uptime_minutes.round
+  rounded_uptime_hours = uptime_hours.round
+
+  # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
+  eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
+  rounded_uptime_days = ((uptime_seconds.to_f + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
+
+  # the moment.js library being used has some weird rules, which these conditionals follow
+  if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
+    step %(I should see a "a day ago" text)
+  elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
+    step %(I should see a "#{rounded_uptime_hours} hours ago" text)
+  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
+    step %(I should see a "an hour ago" text)
+  elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
+    step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
+  elsif uptime_seconds >= 45 && rounded_uptime_minutes == 1
+    step %(I should see a "a minute ago" text)
+  elsif uptime_seconds < 45
+    step %(I should see a "a few seconds ago" text)
+  elsif rounded_uptime_days < 25
+    step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
+  else
+    step %(I should see a "a month ago" text)
   end
 end
 
-When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
-  domain = read_branch_prefix_from_yaml
-  puts "The hostname of #{host} terminal is #{host}.#{domain}"
-  step %(I enter "#{host}.#{domain}" as "#{hostname}")
+Then(/^I should see several text fields for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  steps %(Then I should see a "UUID" text
+    And I should see a "Virtualization" text
+    And I should see a "Installed Products" text
+    And I should see a "Checked In" text
+    And I should see a "Registered" text
+    And I should see a "Contact Method" text
+    And I should see a "Auto Patch Update" text
+    And I should see a "Maintenance Schedule" text
+    And I should see a "Description" text
+    And I should see a "Location" text
+  )
 end
 
 # events
@@ -64,7 +136,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait until I do not see "#{event}" text, refreshing the page
+    And I wait at most 90 seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
@@ -79,7 +151,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
     begin
-      break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
+      break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4]/time[contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../../td[3]/a[1]", wait: 1)
     rescue Capybara::ElementNotFound
       # ignored - pending actions cannot be found
     end
@@ -97,7 +169,7 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   now = Time.now
   current_minute = now.strftime('%H:%M')
   previous_minute = (now - 60).strftime('%H:%M')
-  xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]"
+  xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4]/time[contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../../td[3]/a[1]"
   element = find_and_wait_click(:xpath, xpath_query)
   element.click
 end
@@ -299,7 +371,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -308,7 +380,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -318,13 +390,14 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   arch, _code = node.run('uname -m')
   arch.chomp!
   dir_file = client_raw_repodata_dir("test-channel-#{arch}")
-  raise "File #{dir_file}/#{file} not exist" unless file_exists?(node, "#{dir_file}/#{file}")
+  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
+  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
   arch, _code = $client.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/updateinfo.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*updateinfo.xml.gz"
   $client.run(cmd, timeout: 500)
 end
 
@@ -334,7 +407,7 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
+  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
 And(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
@@ -601,33 +674,6 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", timeout: 600)
 end
 
-When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
-  $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
-  output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-end
-
-When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
-  $proxy.run('mgr-bootstrap')
-  $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
-  output, code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-end
-
-When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
-  file = 'bootstrap-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I accept key of pxeboot minion in the Salt master$/) do
-  $server.run("salt-key -y --accept=pxeboot.example.org")
-end
-
 # rubocop:disable Metrics/BlockLength
 When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
@@ -639,9 +685,11 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{client} &&
+  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
@@ -694,12 +742,6 @@ Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used
   else
     puts 'Record not added - avahi domain is not detected'
   end
-end
-
-Then(/^the image should exist on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  images, _code = node.run("ls /srv/saltboot/image/")
-  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
 end
 
 # Repository steps
@@ -803,34 +845,6 @@ When(/^I disable repositories after installing Docker$/) do
   end
 end
 
-When(/^I enable repositories before installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  puts $proxy.run("zypper mr --enable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
-    puts $proxy.run("zypper mr --enable #{repos}")
-  end
-end
-
-When(/^I disable repositories after installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  puts $proxy.run("zypper mr --disable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "module_server_applications_pool_repo module_server_applications_update_repo"
-    puts $proxy.run("zypper mr --disable #{repos}")
-  end
-end
-
 # Register client
 Given(/^I update the profile of this client$/) do
   step %(I update the profile of "sle_client")
@@ -856,7 +870,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   else # As Ubuntu has no support, must be CentOS/SLES_ES
     node.run('yum install wget', timeout: 600)
   end
-  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
   puts node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
@@ -1302,4 +1316,14 @@ When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host
   target = get_target(host)
   dest = "/srv/playbooks/"
   target.run("rm -rf #{dest}")
+end
+
+When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  node_id = retrieve_server_id(system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  react_key = @system_api.obtain_reactivation_key(node_id)
+  puts "Reactivation Key: #{react_key}"
+  step %(I enter "#{react_key}" as "reactivationKey")
 end

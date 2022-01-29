@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -41,7 +41,7 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
     public void testList() throws Exception {
         user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
         CobblerSnippet snip = CobblerSnippetTest.readOnly();
-        List <CobblerSnippet> snips =
+        List<CobblerSnippet> snips =
             CobblerSnippetLister.getInstance().list(user);
         assertTrue(snips.contains(snip));
         snips =

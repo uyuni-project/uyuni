@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,11 +26,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.utils.LoginHelper;
+import com.suse.utils.Json;
+
 import com.google.gson.Gson;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
-import com.suse.manager.webui.utils.LoginHelper;
-import com.suse.utils.Json;
 
 import org.apache.log4j.Logger;
 
@@ -122,6 +123,7 @@ public class LoginController {
         model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
+        model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
 
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }

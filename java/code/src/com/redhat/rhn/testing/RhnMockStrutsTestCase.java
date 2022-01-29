@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,24 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.servlet.http.Cookie;
-
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
-
-import org.apache.struts.action.DynaActionForm;
-import org.hibernate.HibernateException;
-
-import servletunit.HttpServletRequestSimulator;
-import servletunit.ServletContextSimulator;
-import servletunit.struts.MockStrutsTestCase;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -44,6 +26,24 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
+import org.apache.struts.action.DynaActionForm;
+import org.hibernate.HibernateException;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.servlet.http.Cookie;
+
+import servletunit.HttpServletRequestSimulator;
+import servletunit.ServletContextSimulator;
+import servletunit.struts.MockStrutsTestCase;
 
 /**
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our

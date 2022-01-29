@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,9 +15,10 @@
 
 package com.suse.manager.webui.services.impl.runner;
 
+import com.suse.salt.netapi.calls.RunnerCall;
+
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
-import com.suse.salt.netapi.calls.RunnerCall;
 
 import java.util.LinkedHashMap;
 import java.util.List;

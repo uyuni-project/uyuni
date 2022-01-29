@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,6 +29,7 @@ public class AnsiblePlaybookExecutionJson {
     private Optional<String> inventoryPath = Optional.empty();
     private long controlNodeId;
     private boolean testMode;
+    private boolean flushCache;
     private Optional<LocalDateTime> earliest = Optional.empty();
     private Optional<String> actionChainLabel = Optional.empty();
 
@@ -66,6 +67,15 @@ public class AnsiblePlaybookExecutionJson {
      */
     public boolean isTestMode() {
         return testMode;
+    }
+
+    /**
+     * True if Ansible's --flush-cache flag is to be set
+     *
+     * @return the --flush-cache flag
+     */
+    public boolean isFlushCache() {
+        return flushCache;
     }
 
     /**

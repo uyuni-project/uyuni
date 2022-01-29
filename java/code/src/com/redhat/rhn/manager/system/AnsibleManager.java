@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,6 @@ package com.redhat.rhn.manager.system;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -36,11 +35,12 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.utils.Xor;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,7 +53,16 @@ import java.util.Optional;
 
 public class AnsibleManager extends BaseManager {
 
-    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+    private final SaltApi saltApi;
+
+    /**
+     * Constructor
+     *
+     * @param saltApiIn the Salt API
+     */
+    public AnsibleManager(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
 
     /**
      * Lookup ansible path by id
@@ -238,7 +247,7 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException when playbook path not found or accessible
      * @throws IllegalArgumentException when the specified relative path is absolute
      */
-    public static Optional<String> fetchPlaybookContents(long pathId, String playbookRelPathStr, User user) {
+    public Optional<String> fetchPlaybookContents(long pathId, String playbookRelPathStr, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible playbook path id " + pathId + " not found."));
         if (!(path instanceof PlaybookPath)) {
@@ -269,6 +278,7 @@ public class AnsibleManager extends BaseManager {
      * @param inventoryPath inventory path
      * @param controlNodeId control node id
      * @param testMode true if the playbook should be executed as test mode
+     * @param flushCache true if --flush-cache flag is to be set
      * @param earliestOccurrence earliestOccurrence
      * @param actionChainLabel the action chain label
      * @param user the user
@@ -277,7 +287,8 @@ public class AnsibleManager extends BaseManager {
      * @throws IllegalArgumentException if playbook path is empty
      */
     public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId, boolean testMode,
-            Date earliestOccurrence, Optional<String> actionChainLabel, User user) throws TaskomaticApiException {
+            boolean flushCache, Date earliestOccurrence, Optional<String> actionChainLabel, User user)
+            throws TaskomaticApiException {
         if (StringUtils.isBlank(playbookPath)) {
             throw new IllegalArgumentException("Playbook path cannot be empty.");
         }
@@ -289,7 +300,7 @@ public class AnsibleManager extends BaseManager {
                 .orElse(null);
 
         return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
-                inventoryPath, actionChain, earliestOccurrence, testMode).getId();
+                inventoryPath, actionChain, earliestOccurrence, testMode, flushCache).getId();
     }
 
     /**
@@ -306,7 +317,7 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions to the minion associated with the path
      * @throws IllegalStateException if there is an error during the salt call
      */
-    public static Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverPlaybooks(long pathId,
+    public Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverPlaybooks(long pathId,
             User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException(String.format("Path id %d not found", pathId)));
@@ -341,7 +352,7 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions to the minion associated with the path
      * @throws IllegalStateException if there is an error during the salt call
      */
-    public static Optional<Map<String, Map<String, Object>>> introspectInventory(long pathId, User user) {
+    public Optional<Map<String, Map<String, Object>>> introspectInventory(long pathId, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException(String.format("Path id %d not found", pathId)));
 
@@ -373,23 +384,5 @@ public class AnsibleManager extends BaseManager {
         }
 
         return controlNode.asMinionServer().orElseThrow(() -> new LookupException(controlNode + " is not a minion"));
-    }
-
-    /**
-     * Sets the saltApi for testing
-     *
-     * @param saltApiIn the saltApi
-     */
-    public static void setSaltApi(SaltApi saltApiIn) {
-        AnsibleManager.saltApi = saltApiIn;
-    }
-
-    /**
-     * Gets the saltApi.
-     *
-     * @return saltApi
-     */
-    public static SaltApi getSaltApi() {
-        return saltApi;
     }
 }

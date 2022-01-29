@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.Token;
@@ -83,6 +84,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     private OrgAdminManagement orgAdminMgmt;
 
     private OrgConfig orgConfig;
+    private Set<Pillar> pillars = new HashSet<>();
+
 
     /**
      * Construct new Org
@@ -584,6 +587,21 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      */
     public void setOrgAdminMgmt(OrgAdminManagement orgAdminMgmtIn) {
         this.orgAdminMgmt = orgAdminMgmtIn;
+    }
+
+    /**
+     * @return value of pillars
+     */
+    public Set<Pillar> getPillars() {
+        return pillars;
+    }
+
+    /**
+     * @param pillarsIn value of pillars
+     */
+    public void setPillars(Set<Pillar> pillarsIn) {
+        pillars.clear();
+        pillars.addAll(pillarsIn);
     }
 
     /**

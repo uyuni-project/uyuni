@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,8 +17,8 @@ package com.suse.manager.virtualization.test;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.HostInfo;
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;

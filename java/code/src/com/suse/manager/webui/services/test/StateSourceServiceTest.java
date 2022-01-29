@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,6 +24,7 @@ import com.redhat.rhn.manager.configuration.SaltConfigurable;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+
 import com.suse.manager.webui.services.StateSourceService;
 import com.suse.manager.webui.utils.gson.StateSourceDto;
 

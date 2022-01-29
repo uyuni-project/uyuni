@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,17 +15,6 @@
 
 package com.redhat.rhn.common.db;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -35,6 +24,17 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
+
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * ResetPasswordFactory: API to create, find, delete, and manage ResetPassword

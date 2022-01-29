@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,6 +24,7 @@ public enum AdvisoryStatus {
     FINAL("final"),
     STABLE("stable"),
     TESTING("testing"),
+    PENDING("pending"),
     RETRACTED("retracted");
 
     private final String metadataValue;

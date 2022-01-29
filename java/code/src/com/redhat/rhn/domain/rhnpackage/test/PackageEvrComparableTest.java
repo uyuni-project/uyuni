@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,11 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageType;
-
 import com.redhat.rhn.common.db.WrappedSQLException;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**

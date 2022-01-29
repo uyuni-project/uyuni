@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -106,7 +106,8 @@ public class NetworkDefinitionTest extends TestCase {
                 "      <hostname>host</hostname>\n" +
                 "      <hostname>gateway</hostname>\n" +
                 "    </host>\n" +
-                "    <srv service='name' protocol='tcp' domain='test-domain-name.com' target='test.example.com' port='1111' priority='11' weight='111'/>\n" +
+                "    <srv service='name' protocol='tcp' domain='test-domain-name.com' " +
+                        "target='test.example.com' port='1111' priority='11' weight='111'/>\n" +
                 "    <srv service='name2' protocol='tcp'/>\n" +
                 "    <txt name='example' value='example value'/>\n" +
                 "    <forwarder addr='8.8.4.4'/>\n" +

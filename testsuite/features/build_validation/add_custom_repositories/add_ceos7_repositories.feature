@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @ceos7_minion
-Feature: Adding the CentOS 7 distribution custom repositories
+Feature: Add the CentOS 7 distribution custom repositories
 
   Scenario: Download the iso of CentOS 7 DVD and mount it on the server
     When I mount as "centos-7-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" in the server

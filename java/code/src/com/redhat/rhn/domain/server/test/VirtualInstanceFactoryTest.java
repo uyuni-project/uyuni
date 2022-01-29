@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,9 +29,13 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -48,7 +52,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private VirtualInstanceFactory virtualInstanceDAO;
     private User user;
     private GuestBuilder builder;
-    SystemEntitlementManager systemEntitlementManager;
+    private SystemEntitlementManager systemEntitlementManager;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -57,11 +61,13 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        VirtManager virtManager = new TestVirtManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), new TestVirtManager(), new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
     }
 

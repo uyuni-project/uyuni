@@ -1,12 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
+import { Button } from "components/buttons";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
-import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 type CalendarListProps = {
   data: {
@@ -23,7 +24,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
   const [calendarToDelete, setCalendarToDelete] = useState<any>({});
   const [strategy, setStrategy] = useState(false);
 
-  const setCheck = model => {
+  const setCheck = (model) => {
     /* strategy gets initialized as empty string, but we want the initial value to be false.
      * Is equivalent to: if strategy is "" then set it to false */
     model.strategy === "" && (model.strategy = false);
@@ -40,18 +41,17 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
     <div>
       <Table
         data={props.data}
-        identifier={row => row.name}
-        initialItemsPerPage={window.userPrefPageSize}
+        identifier={(row) => row.name}
         emptyText={t("No calendars created. Use Create to add a calendar.")}
       >
-        <Column columnKey="calendarName" header={t("Calendar Name")} cell={row => row.name} />
+        <Column columnKey="calendarName" header={t("Calendar Name")} cell={(row) => row.name} />
         <Column
           columnClass="text-center"
           headerClass="text-center"
           columnKey="usedBySchedule"
           header={t("Used by Schedule")}
-          cell={row =>
-            row.scheduleNames.map(name => (
+          cell={(row) =>
+            row.scheduleNames.map((name) => (
               <a className="link-tag" href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}>
                 {name.name}
               </a>
@@ -62,7 +62,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}
-          cell={row => (
+          cell={(row) => (
             <div className="btn-group">
               <Button
                 className="btn-default btn-sm"
@@ -88,7 +88,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
                 icon="fa-trash"
                 target="delete-modal"
                 item={row}
-                onClick={i => setCalendarToDelete(i)}
+                onClick={(i) => setCalendarToDelete(i)}
               />
             </div>
           )}

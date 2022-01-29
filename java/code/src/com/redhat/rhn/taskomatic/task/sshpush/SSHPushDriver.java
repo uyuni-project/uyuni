@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,26 +14,14 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.suse.manager.utils.SaltUtils;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
@@ -42,6 +30,19 @@ import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
+
+import com.suse.manager.utils.SaltUtils;
+
+import org.apache.log4j.Logger;
+
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.

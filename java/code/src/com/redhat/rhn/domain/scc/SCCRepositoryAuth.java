@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Optional;
 import java.util.function.Function;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -194,6 +195,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
         return new EqualsBuilder()
             .append(getCredentials(), otherSCCRepository.getCredentials())
             .append(getRepo(), otherSCCRepository.getRepo())
+            .append(getUrl(), otherSCCRepository.getUrl())
             .isEquals();
     }
 

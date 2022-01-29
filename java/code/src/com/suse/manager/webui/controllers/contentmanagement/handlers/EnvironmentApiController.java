@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,9 +24,10 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.google.gson.Gson;
 import com.suse.manager.webui.controllers.contentmanagement.request.EnvironmentRequest;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 

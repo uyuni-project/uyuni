@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,11 +15,12 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+
 import com.suse.manager.webui.utils.MinionActionUtils;
 
-import java.io.IOException;
-
 import org.quartz.JobExecutionContext;
+
+import java.io.IOException;
 
 
 /**
@@ -28,6 +29,11 @@ import org.quartz.JobExecutionContext;
 public class MinionActionCleanup extends RhnJavaJob {
 
     private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_action_cleanup";
+    }
 
     /**
      * @param context the job execution context

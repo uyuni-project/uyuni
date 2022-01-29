@@ -273,10 +273,7 @@ config_error() {
 
 # Return 0 if rhnParent is Hosted. Otherwise return 1.
 is_hosted() {
-    HOSTEDWHITELIST=$(awk -F '=[[:space:]]*' '/^[[:space:]]*hostedWhitelist[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
-    [ "$1" = "xmlrpc.rhn.redhat.com" -o \
-        "$HOSTEDWHITELIST" = "True" ]
-    return $?
+    return 1
 }
 
 check_ca_conf() {
@@ -328,7 +325,7 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-systemctl status salt-minion > /dev/null 2>&1
+systemctl status salt-minion > /dev/null 2>&1 || systemctl status venv-salt-minion > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     /usr/sbin/fetch-certificate $SYSTEMID_PATH
     PROPOSED_PARENT=$(grep ^[[:blank:]]*master /etc/salt/minion.d/susemanager.conf | sed -e "s/.*:[[:blank:]]*//")
@@ -347,14 +344,6 @@ DIR=/usr/share/rhn/proxy-template
 HOSTNAME=$(hostname -f)
 
 default_or_input "SUSE Manager Parent" RHN_PARENT $PROPOSED_PARENT
-
-if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then
-   RHN_PARENT="xmlrpc.rhn.redhat.com"
-   cat <<WARNING
-*** Warning: plain rhn.redhat.com should not be used as RHN Parent.
-*** Using xmlrpc.rhn.redhat.com instead.
-WARNING
-fi
 
 sed -i -e "s/^serverURL=.*/serverURL=https:\/\/$RHN_PARENT\/XMLRPC/" /etc/sysconfig/rhn/up2date
 
@@ -441,14 +430,9 @@ SQUID_VER_MAJOR=$(squid -v | awk -F'[ .]' '/Version/ {print $4}')
 if [ $SQUID_VER_MAJOR -ge 3 ] ; then
     # squid 3.X has acl 'all' built-in
     SQUID_REWRITE="$SQUID_REWRITE s/^acl all.*//;"
-    # squid 3.2 and later need none instead of -1 for range_offset_limit
-    SQUID_VER_MINOR=$(squid -v | awk -F'[ .]' '/Version/ {print $5}')
-    if [[ $SQUID_VER_MAJOR -ge 4 || ( $SQUID_VER_MAJOR -eq 3 && $SQUID_VER_MINOR -ge 2 ) ]] ; then
-        SQUID_REWRITE="$SQUID_REWRITE s/^range_offset_limit.*/range_offset_limit none/;"
-    fi
 fi
 sed "$SQUID_REWRITE" < $DIR/squid.conf  > $SQUID_DIR/squid.conf
-sed -e "s|\${session.ca_chain:/usr/share/rhn/RHNS-CA-CERT}|$CA_CHAIN|g" \
+sed -e "s|\${session.ca_chain:/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT}|$CA_CHAIN|g" \
     -e "s/\${session.http_proxy}/$HTTP_PROXY/g" \
     -e "s/\${session.http_proxy_username}/$HTTP_USERNAME/g" \
     -e "s/\${session.http_proxy_password}/$HTTP_PASSWORD/g" \
@@ -613,7 +597,7 @@ fi
 sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/server.crt|g" \
     -e "s|^[\t ]*SSLCertificateKeyFile.*$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/server.key|g" \
     -e "s|^[\t ]*SSLCipherSuite.*$|SSLCipherSuite ALL:!aNULL:!eNULL:!SSLv2:!LOW:!EXP:!MD5:@STRENGTH|g" \
-    -e "s|</VirtualHost>|SSLProtocol all -SSLv2 -SSLv3\nRewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
+    -e "s|</VirtualHost>|RewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
 

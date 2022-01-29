@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -34,9 +34,13 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.struts.util.LabelValueBean;
 
 import java.util.Iterator;
@@ -51,9 +55,9 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     protected Server s;
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)

@@ -1,15 +1,17 @@
 import * as React from "react";
+
 import _cloneDeep from "lodash/cloneDeep";
+
 import {
+  click,
+  fireEvent,
+  getFieldValuesByName,
   render,
-  waitForElementToBeRemoved,
   screen,
+  select,
   server,
   type,
-  click,
-  select,
-  getFieldValuesByName,
-  fireEvent,
+  waitForElementToBeRemoved,
 } from "utils/test-utils";
 
 import { NetworkProperties } from "./network-properties";
@@ -60,7 +62,7 @@ describe("Rendering", () => {
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeTruthy();
   });
 
-  test("Create bridge network", async done => {
+  test("Create bridge network", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         name: "bridge0",
@@ -73,14 +75,14 @@ describe("Rendering", () => {
 
     await renderWithNetwork();
     expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
-    await type(screen.getByLabelText(/^Name/), "bridge0");
-    await type(screen.getByLabelText(/^Bridge/), "br0");
+    await type(screen.getByLabelText("Name"), "bridge0");
+    await type(screen.getByLabelText("Bridge"), "br0");
     click(screen.getByLabelText("Start during virtual host boot"));
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
   });
 
-  test("Create NAT network", async done => {
+  test("Create NAT network", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         name: "nat0",
@@ -99,9 +101,9 @@ describe("Rendering", () => {
     };
 
     await renderWithNetwork();
-    await select(screen.getByLabelText(/^Network type/), "nat");
-    await type(screen.getByLabelText(/^Name/), "nat0");
-    await type(screen.getByLabelText(/^Maximum Transmission Unit/), "7000");
+    await select(screen.getByLabelText("Network type"), "nat");
+    await type(screen.getByLabelText("Name"), "nat0");
+    await type(screen.getByLabelText("Maximum Transmission Unit (MTU)"), "7000");
     const ipv4_address = await screen.findByTitle("IPv4 Network address");
     await type(ipv4_address, "192.168.10.0");
     await type(screen.getByTitle("IPv4 Network address prefix"), "24");
@@ -113,7 +115,7 @@ describe("Rendering", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Create network with all addressing fields", async done => {
+  test("Create network with all addressing fields", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         type: "open",
@@ -173,10 +175,10 @@ describe("Rendering", () => {
     };
 
     await renderWithNetwork();
-    await select(screen.getByLabelText(/^Network type/), "open");
-    await type(screen.getByLabelText(/^Name/), "open0");
-    await type(screen.getByLabelText(/^Bridge/), "virbr2");
-    await type(screen.getByLabelText(/^Domain name/), "tf.local");
+    await select(screen.getByLabelText("Network type"), "open");
+    await type(screen.getByLabelText("Name"), "open0");
+    await type(screen.getByLabelText("Bridge"), "virbr2");
+    await type(screen.getByLabelText("Domain name"), "tf.local");
 
     // IPv4 fields setting
     const ipv4_address = await screen.findByTitle("IPv4 Network address");
@@ -200,9 +202,9 @@ describe("Rendering", () => {
     const dhcp1_host = await screen.findByTitle("DHCP host 1 address");
     await type(dhcp1_host, "192.168.10.3");
     await type(screen.getByTitle("DHCP host 1 MAC address"), "2A:C3:A7:A6:01:01");
-    await type(screen.getByLabelText(/^BOOTP image file/), "pxelinux.0");
-    await type(screen.getByLabelText(/^BOOTP server/), "192.168.10.2");
-    await type(screen.getByLabelText(/^TFTP root path/), "/path/to/tftproot");
+    await type(screen.getByLabelText("BOOTP image file"), "pxelinux.0");
+    await type(screen.getByLabelText("BOOTP server"), "192.168.10.2");
+    await type(screen.getByLabelText("TFTP root path"), "/path/to/tftproot");
 
     // IPv6 fields checks
     click(screen.getByText("Enable IPv6"));
@@ -258,9 +260,9 @@ describe("Rendering", () => {
 
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
-  }, 10000);
+  });
 
-  test("Create openVSwitch bridge network", async done => {
+  test("Create openVSwitch bridge network", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         type: "bridge",
@@ -276,11 +278,11 @@ describe("Rendering", () => {
 
     await renderWithNetwork();
     expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
-    fireEvent.change(screen.getByLabelText(/^Name/), { target: { value: "ovs0" } });
-    fireEvent.change(screen.getByLabelText(/^Bridge/), { target: { value: "ovsbr0" } });
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "ovs0" } });
+    fireEvent.change(screen.getByLabelText("Bridge"), { target: { value: "ovsbr0" } });
     click(screen.getByLabelText("Start during virtual host boot"));
 
-    await select(screen.getByLabelText(/^Virtual Port Type/), "open vSwitch");
+    await select(screen.getByLabelText("Virtual Port Type"), "open vSwitch");
     const iface_id = await screen.findByLabelText(/^Interface id/);
     await type(iface_id, "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
     click(screen.getByTitle("Add VLANs"));
@@ -295,7 +297,7 @@ describe("Rendering", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Create macvtap passthrough network with interfaces", async done => {
+  test("Create macvtap passthrough network with interfaces", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         type: "macvtap",
@@ -308,24 +310,24 @@ describe("Rendering", () => {
     };
 
     await renderWithNetwork();
-    await select(screen.getByLabelText(/^Network type/), "macvtap");
+    await select(screen.getByLabelText("Network type"), "macvtap");
     const macvtap_mode = await screen.findByLabelText(/^Macvtap mode/);
     await select(macvtap_mode, "passthrough");
-    await type(screen.getByLabelText(/^Name/), "passthrough0");
+    await type(screen.getByLabelText("Name"), "passthrough0");
 
-    await select(screen.getByLabelText(/^Virtual Port Type/), "802.1Qbh");
+    await select(screen.getByLabelText("Virtual Port Type"), "802.1Qbh");
     const profile_id = await screen.findByLabelText(/^Profile id/);
     expect(screen.getByLabelText<HTMLInputElement>("By profile id").checked).toBeTruthy();
     await type(profile_id, "testprofile");
     expect(screen.getByLabelText<HTMLInputElement>("By interfaces").checked).toBeTruthy();
-    await select(screen.getByLabelText(/^Interfaces/), "eth7");
-    await select(screen.getByLabelText(/^Interfaces/), "eth8");
+    await select(screen.getByLabelText("Interfaces"), "eth7");
+    await select(screen.getByLabelText("Interfaces"), "eth8");
 
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
   });
 
-  test("Create macvtap private network with physical function", async done => {
+  test("Create macvtap private network with physical function", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         type: "macvtap",
@@ -344,28 +346,28 @@ describe("Rendering", () => {
     };
 
     await renderWithNetwork();
-    await type(screen.getByLabelText(/^Name/), "private0");
-    await select(screen.getByLabelText(/^Network type/), "macvtap");
+    await type(screen.getByLabelText("Name"), "private0");
+    await select(screen.getByLabelText("Network type"), "macvtap");
     const macvtap_mode = await screen.findByLabelText(/^Macvtap mode/);
     await select(macvtap_mode, "private");
 
-    await select(screen.getByLabelText(/^Virtual Port Type/), "802.1Qbh");
+    await select(screen.getByLabelText("Virtual Port Type"), "802.1Qbh");
     const by_vsi = await screen.findByLabelText("Virtual Station Interface (VSI) parameters");
     click(by_vsi);
     const mgr_id = await screen.findByLabelText(/^VSI manager id/);
     await type(mgr_id, "mgrid");
-    await type(screen.getByLabelText(/^VSI type id:/), "testtype");
-    await type(screen.getByLabelText(/^VSI type id version/), "testversion");
-    await type(screen.getByLabelText(/^VSI instance id/), "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
+    await type(screen.getByLabelText("VSI type id"), "testtype");
+    await type(screen.getByLabelText("VSI type id version"), "testversion");
+    await type(screen.getByLabelText("VSI instance id"), "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
     click(screen.getByLabelText("By physical function"));
-    const pf = await screen.getByLabelText(/^Physical Function/);
+    const pf = await screen.getByLabelText("Physical Function");
     await select(pf, "eth0");
 
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
   });
 
-  test("Create hostdev network with virtual functions", async done => {
+  test("Create hostdev network with virtual functions", async (done) => {
     onSubmit = ({ definition }) => {
       expect(definition).toStrictEqual({
         type: "hostdev",
@@ -377,14 +379,14 @@ describe("Rendering", () => {
     };
 
     await renderWithNetwork();
-    await select(screen.getByLabelText(/^Network type/), "SR-IOV pool");
-    await type(screen.getByLabelText(/^Name/), "host0");
+    await select(screen.getByLabelText("Network type"), "SR-IOV pool");
+    await type(screen.getByLabelText("Name"), "host0");
 
     const by_vf = await screen.findByLabelText<HTMLInputElement>("By virtual functions");
     expect(by_vf.checked).toBeTruthy();
-    await select(screen.getByLabelText(/^Virtual Functions/), "eth7");
-    await select(screen.getByLabelText(/^Virtual Functions/), "eth8");
-    await type(screen.getByLabelText(/^VLAN tag/), "24");
+    await select(screen.getByLabelText("Virtual Functions"), "eth7");
+    await select(screen.getByLabelText("Virtual Functions"), "eth8");
+    await type(screen.getByLabelText("VLAN tag"), "24");
 
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
@@ -415,7 +417,7 @@ describe("Network properties loading", () => {
     return Object.assign(empty, _cloneDeep(data));
   }
 
-  test("Render minimal NAT network", async done => {
+  test("Render minimal NAT network", async (done) => {
     const net = {
       type: "nat",
       autostart: true,
@@ -436,10 +438,14 @@ describe("Network properties loading", () => {
     await renderWithNetwork(makeNetworkData(net));
     expect(fieldValuesByName("type")).toStrictEqual(["nat"]);
     expect(screen.getByLabelText<HTMLInputElement>("Start during virtual host boot").checked).toBeTruthy();
-    expect(screen.getByLabelText<HTMLInputElement>(/^Bridge/).value).toStrictEqual("virbr2");
-    expect(screen.getByLabelText<HTMLInputElement>(/^Maximum Transmission Unit/).value).toStrictEqual("7000");
-    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address" }).value).toStrictEqual("192.168.10.0");
-    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address prefix" }).value).toStrictEqual("24");
+    expect(screen.getByLabelText<HTMLInputElement>("Bridge").value).toStrictEqual("virbr2");
+    expect(screen.getByLabelText<HTMLInputElement>("Maximum Transmission Unit (MTU)").value).toStrictEqual("7000");
+    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address" }).value).toStrictEqual(
+      "192.168.10.0"
+    );
+    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address prefix" }).value).toStrictEqual(
+      "24"
+    );
     expect(screen.getByLabelText<HTMLInputElement>("Enable IPv6").checked).toBeFalsy();
 
     // Check that the form is valid
@@ -447,7 +453,7 @@ describe("Network properties loading", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Render network with all addressing fields", async done => {
+  test("Render network with all addressing fields", async (done) => {
     const net = {
       type: "open",
       bridge: "virbr2",
@@ -507,13 +513,17 @@ describe("Network properties loading", () => {
     await renderWithNetwork(makeNetworkData(net));
     expect(fieldValuesByName("type")).toStrictEqual(["open"]);
     expect(screen.getByLabelText<HTMLInputElement>("Start during virtual host boot").checked).toBeFalsy();
-    expect(screen.getByLabelText<HTMLInputElement>(/^Bridge/).value).toStrictEqual("virbr2");
-    expect(screen.getByLabelText<HTMLInputElement>(/^Maximum Transmission Unit/).value).toStrictEqual("");
-    expect(screen.getByLabelText<HTMLInputElement>(/^Domain name/).value).toStrictEqual("tf.local");
+    expect(screen.getByLabelText<HTMLInputElement>("Bridge").value).toStrictEqual("virbr2");
+    expect(screen.getByLabelText<HTMLInputElement>("Maximum Transmission Unit (MTU)").value).toStrictEqual("");
+    expect(screen.getByLabelText<HTMLInputElement>("Domain name").value).toStrictEqual("tf.local");
 
     // IPv4 fields checks
-    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address" }).value).toStrictEqual("192.168.10.0");
-    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address prefix" }).value).toStrictEqual("24");
+    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address" }).value).toStrictEqual(
+      "192.168.10.0"
+    );
+    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv4 Network address prefix" }).value).toStrictEqual(
+      "24"
+    );
     expect(screen.getByTitle<HTMLInputElement>("DHCP address range 0 start").value).toStrictEqual("192.168.10.10");
     expect(screen.getByTitle<HTMLInputElement>("DHCP address range 0 end").value).toStrictEqual("192.168.10.20");
     expect(screen.getByTitle<HTMLInputElement>("DHCP address range 1 start").value).toStrictEqual("192.168.10.110");
@@ -523,16 +533,24 @@ describe("Network properties loading", () => {
     expect(screen.getByTitle<HTMLInputElement>("DHCP host 0 name").value).toStrictEqual("dev-srv");
     expect(screen.getByTitle<HTMLInputElement>("DHCP host 1 address").value).toStrictEqual("192.168.10.3");
     expect(screen.getByTitle<HTMLInputElement>("DHCP host 1 MAC address").value).toStrictEqual("2A:C3:A7:A6:01:01");
-    expect(screen.getByLabelText<HTMLInputElement>(/^BOOTP image file/).value).toStrictEqual("pxelinux.0");
-    expect(screen.getByLabelText<HTMLInputElement>(/^BOOTP server/).value).toStrictEqual("192.168.10.2");
-    expect(screen.getByLabelText<HTMLInputElement>(/^TFTP root path/).value).toStrictEqual("/path/to/tftproot");
+    expect(screen.getByLabelText<HTMLInputElement>("BOOTP image file").value).toStrictEqual("pxelinux.0");
+    expect(screen.getByLabelText<HTMLInputElement>("BOOTP server").value).toStrictEqual("192.168.10.2");
+    expect(screen.getByLabelText<HTMLInputElement>("TFTP root path").value).toStrictEqual("/path/to/tftproot");
 
     // IPv6 fields checks
     expect(screen.getByLabelText<HTMLInputElement>("Enable IPv6").checked).toBeTruthy();
-    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv6 Network address" }).value).toStrictEqual("2001:db8:ac10:fd01::");
-    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv6 Network address prefix" }).value).toStrictEqual("64");
-    expect(screen.getByTitle<HTMLInputElement>("DHCPv6 address range 0 start").value).toStrictEqual("2001:db8:ac10:fd01::10");
-    expect(screen.getByTitle<HTMLInputElement>("DHCPv6 address range 0 end").value).toStrictEqual("2001:db8:ac10:fd01::20");
+    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv6 Network address" }).value).toStrictEqual(
+      "2001:db8:ac10:fd01::"
+    );
+    expect(screen.getByRole<HTMLInputElement>("textbox", { name: "IPv6 Network address prefix" }).value).toStrictEqual(
+      "64"
+    );
+    expect(screen.getByTitle<HTMLInputElement>("DHCPv6 address range 0 start").value).toStrictEqual(
+      "2001:db8:ac10:fd01::10"
+    );
+    expect(screen.getByTitle<HTMLInputElement>("DHCPv6 address range 0 end").value).toStrictEqual(
+      "2001:db8:ac10:fd01::20"
+    );
     expect(screen.getByTitle<HTMLInputElement>("DHCPv6 host 0 address").value).toStrictEqual("2001:db8:ac10:fd01::2");
     expect(screen.getByTitle<HTMLInputElement>("DHCPv6 host 0 DUID").value).toStrictEqual("0:3:0:1:0:16:3e:11:22:33");
     expect(screen.getByTitle<HTMLInputElement>("DHCPv6 host 0 name").value).toStrictEqual("peter.xyz");
@@ -548,8 +566,12 @@ describe("Network properties loading", () => {
     expect(screen.getByTitle<HTMLInputElement>("DNS host 0 address").value).toStrictEqual("192.168.10.1");
     expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 service").value).toStrictEqual("srv1");
     expect(fieldValuesByName("dns_srvs0_protocol")).toStrictEqual(["tcp"]);
-    expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 domain name").value).toStrictEqual("test-domain-name.com");
-    expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 target hostname").value).toStrictEqual("test.example.com");
+    expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 domain name").value).toStrictEqual(
+      "test-domain-name.com"
+    );
+    expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 target hostname").value).toStrictEqual(
+      "test.example.com"
+    );
     expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 port").value).toStrictEqual("1111");
     expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 0 priority").value).toStrictEqual("11");
     expect(screen.getByTitle<HTMLInputElement>("DNS SRV record 1 service").value).toStrictEqual("srv2");
@@ -564,7 +586,7 @@ describe("Network properties loading", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Render openVSwitch network", async done => {
+  test("Render openVSwitch network", async (done) => {
     const net = {
       type: "bridge",
       autostart: true,
@@ -582,9 +604,11 @@ describe("Network properties loading", () => {
     };
     await renderWithNetwork(makeNetworkData(net));
     expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
-    expect(screen.getByLabelText<HTMLInputElement>(/^Bridge/).value).toStrictEqual("ovsbr0");
+    expect(screen.getByLabelText<HTMLInputElement>("Bridge").value).toStrictEqual("ovsbr0");
     expect(fieldValuesByName("virtualport_type")).toStrictEqual(["openvswitch"]);
-    expect(screen.getByLabelText<HTMLInputElement>(/^Interface id/).value).toStrictEqual("09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
+    expect(screen.getByLabelText<HTMLInputElement>("Interface id").value).toStrictEqual(
+      "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f"
+    );
     expect(screen.getByLabelText<HTMLInputElement>("VLAN tags trunking").checked).toBeTruthy();
     expect(screen.getByTitle<HTMLInputElement>("VLAN 0 tag").value).toStrictEqual("42");
     expect(fieldValuesByName("vlans0_native")).toStrictEqual(["untagged"]);
@@ -596,7 +620,7 @@ describe("Network properties loading", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Render macvtap passthrough network with interfaces", async done => {
+  test("Render macvtap passthrough network with interfaces", async (done) => {
     const net = {
       type: "macvtap",
       macvtapmode: "passthrough",
@@ -615,7 +639,7 @@ describe("Network properties loading", () => {
     expect(fieldValuesByName("macvtapmode")).toStrictEqual(["passthrough"]);
     expect(fieldValuesByName("virtualport_type")).toStrictEqual(["802.1qbh"]);
     expect(screen.getByLabelText<HTMLInputElement>("By profile id").checked).toBeTruthy();
-    expect(screen.getByLabelText<HTMLInputElement>(/^Profile id/).value).toStrictEqual("testprofile");
+    expect(screen.getByLabelText<HTMLInputElement>("Profile id").value).toStrictEqual("testprofile");
     expect(screen.getByLabelText<HTMLInputElement>("By interfaces").checked).toBeTruthy();
     expect(fieldValuesByName("interfaces")).toStrictEqual(["eth7", "eth8"]);
 
@@ -624,7 +648,7 @@ describe("Network properties loading", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Render macvtap private network with physical function", async done => {
+  test("Render macvtap private network with physical function", async (done) => {
     const net = {
       type: "macvtap",
       macvtapmode: "private",
@@ -648,10 +672,12 @@ describe("Network properties loading", () => {
     expect(fieldValuesByName("macvtapmode")).toStrictEqual(["private"]);
     expect(fieldValuesByName("virtualport_type")).toStrictEqual(["802.1qbh"]);
     expect(screen.getByLabelText<HTMLInputElement>("Virtual Station Interface (VSI) parameters").checked).toBeTruthy();
-    expect(screen.getByLabelText<HTMLInputElement>(/^VSI manager id/).value).toStrictEqual("mgrid");
-    expect(screen.getByLabelText<HTMLInputElement>(/^VSI type id:/).value).toStrictEqual("testtype");
-    expect(screen.getByLabelText<HTMLInputElement>(/^VSI type id version:/).value).toStrictEqual("testversion");
-    expect(screen.getByLabelText<HTMLInputElement>(/^VSI instance id/).value).toStrictEqual("09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
+    expect(screen.getByLabelText<HTMLInputElement>("VSI manager id").value).toStrictEqual("mgrid");
+    expect(screen.getByLabelText<HTMLInputElement>("VSI type id").value).toStrictEqual("testtype");
+    expect(screen.getByLabelText<HTMLInputElement>("VSI type id version").value).toStrictEqual("testversion");
+    expect(screen.getByLabelText<HTMLInputElement>("VSI instance id").value).toStrictEqual(
+      "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f"
+    );
     expect(screen.getByLabelText<HTMLInputElement>("By physical function").checked).toBeTruthy();
     expect(fieldValuesByName("pf")).toStrictEqual(["eth0"]);
 
@@ -660,7 +686,7 @@ describe("Network properties loading", () => {
     click(screen.getByText("Submit"));
   });
 
-  test("Render hostdev network with virtual functions", async done => {
+  test("Render hostdev network with virtual functions", async (done) => {
     const net = {
       type: "hostdev",
       name: "host0",
@@ -677,7 +703,7 @@ describe("Network properties loading", () => {
     expect(fieldValuesByName("type")).toStrictEqual(["hostdev"]);
     expect(screen.getByLabelText<HTMLInputElement>("By virtual functions").checked).toBeTruthy();
     expect(fieldValuesByName("vf")).toStrictEqual(["0000:3d:02.3", "0000:3d:02.2"]);
-    expect(screen.getByLabelText<HTMLInputElement>(/^VLAN tag/).value).toStrictEqual("24");
+    expect(screen.getByLabelText<HTMLInputElement>("VLAN tag").value).toStrictEqual("24");
 
     // Check that the form is valid
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();

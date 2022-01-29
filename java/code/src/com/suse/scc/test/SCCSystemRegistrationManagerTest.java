@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.ServerTestUtils;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
@@ -29,13 +30,14 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
-import junit.framework.TestCase;
 
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import junit.framework.TestCase;
 
 /**
  * Tests for {@link SCCClient} methods.

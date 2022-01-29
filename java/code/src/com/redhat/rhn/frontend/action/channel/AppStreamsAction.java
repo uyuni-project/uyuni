@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleStreams;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -29,10 +30,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,12 +56,15 @@ public class AppStreamsAction extends RhnAction {
 
         if (chan.isModular()) {
             ModulemdApi api = new ModulemdApi();
-            Map<String, ModuleStreams> result = api.getAllModulesInChannel(chan);
 
-            List<Entry<String, ModuleStreams>> resultList =
-                    result.entrySet().stream().collect(Collectors.toList());
-
-            request.setAttribute(RequestContext.PAGE_LIST, resultList);
+            try {
+                Map<String, ModuleStreams> result = api.getAllModulesInChannel(chan);
+                List<Entry<String, ModuleStreams>> resultList = new ArrayList<>(result.entrySet());
+                request.setAttribute(RequestContext.PAGE_LIST, resultList);
+            }
+            catch (ModulemdApiException e) {
+                throw new RuntimeException("Cannot get channel modules.", e);
+            }
         }
 
         request.setAttribute("cid", chan.getId());

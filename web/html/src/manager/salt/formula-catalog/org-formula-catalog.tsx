@@ -1,12 +1,15 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import { Table } from "components/table/Table";
+
+import withPageWrapper from "components/general/with-page-wrapper";
+import { Messages, MessageType, ServerMessageType } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages, MessageType, ServerMessageType } from "components/messages";
+import { Table } from "components/table/Table";
+
 import Network from "utils/network";
-import withPageWrapper from "components/general/with-page-wrapper";
 
 type Props = {
   flashMessage?: ServerMessageType;
@@ -28,7 +31,7 @@ class FormulaCatalog extends React.Component<Props, State> {
   }
 
   refreshServerData = () => {
-    Network.get("/rhn/manager/api/formula-catalog/data").then(data => {
+    Network.get("/rhn/manager/api/formula-catalog/data").then((data) => {
       this.setState({ serverData: data });
     });
   };
@@ -41,7 +44,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
   };
 
-  rowKey = rowData => {
+  rowKey = (rowData) => {
     return rowData;
   };
 
@@ -56,7 +59,11 @@ class FormulaCatalog extends React.Component<Props, State> {
         text: (
           <p>
             The formula catalog page enables viewing of currently installed{" "}
-            <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Salt Formulas
             </a>
             . Apply these formulas to individual systems or server groups. Formulas allow automatic installation and
@@ -68,7 +75,7 @@ class FormulaCatalog extends React.Component<Props, State> {
 
     if (this.state.messages.length > 0) {
       items = items.concat(
-        this.state.messages.map(function(msg) {
+        this.state.messages.map(function (msg) {
           return { severity: "info", text: msg };
         })
       );
@@ -91,14 +98,13 @@ class FormulaCatalog extends React.Component<Props, State> {
             data={this.state.serverData}
             identifier={this.rowKey}
             initialSortColumnKey="name"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by formula name")} />}
           >
             <Column
               columnKey="name"
               comparator={this.sortByText}
               header={t("Formula")}
-              cell={s => <a href={"/rhn/manager/formula-catalog/formula/" + s}>{s}</a>}
+              cell={(s) => <a href={"/rhn/manager/formula-catalog/formula/" + s}>{s}</a>}
             />
           </Table>
         </div>

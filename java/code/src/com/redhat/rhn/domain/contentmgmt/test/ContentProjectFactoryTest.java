@@ -1,6 +1,5 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
- *
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,6 +14,14 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.test;
+
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -46,14 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}
@@ -363,7 +362,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         ContentProjectFactory.save(target);
 
-        assertEquals(target, ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user).get());
+        assertEquals(target,
+                ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user).get());
     }
 
     /**
@@ -603,7 +603,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     public void testListFilterProjects() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter(
+                "my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
 
@@ -675,11 +676,14 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         // check dev environment
         assertEquals(srcChannel, devTgt.getChannel().asCloned().map(c1 -> c1.getOriginal()).get());
-        assertEquals(1, ContentProjectFactory.lookupClonesInProject(devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).size());
-        assertEquals(testChannel, ContentProjectFactory.lookupClonesInProject(devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).iterator().next());
+        assertEquals(1, ContentProjectFactory.lookupClonesInProject(
+                devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).size());
+        assertEquals(testChannel, ContentProjectFactory.lookupClonesInProject(
+                devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).iterator().next());
 
         // check test environment
         assertEquals(devChannel, testTgt.getChannel().asCloned().map(c -> c.getOriginal()).get());
-        assertTrue(ContentProjectFactory.lookupClonesInProject(testTgt.getChannel(), testTgt.getContentEnvironment().getContentProject()).isEmpty());
+        assertTrue(ContentProjectFactory.lookupClonesInProject(
+                testTgt.getChannel(), testTgt.getContentEnvironment().getContentProject()).isEmpty());
     }
 }

@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Jan 18 13:34:03 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * require python macros for building
+  * Do not build python 2 package for SLE15SP4 and higher
+
+-------------------------------------------------------------------
+Fri Nov 05 13:34:38 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Removed spacewalk-selinux dependencies.
+  * Updated source url.
+
+-------------------------------------------------------------------
 Mon Aug 09 10:50:39 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,9 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
+
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -23,6 +24,7 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.net.URLEncoder;
 import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**

@@ -1,10 +1,12 @@
 import * as React from "react";
+
 import { AsyncButton, Button } from "components/buttons";
-import Network from "utils/network";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+
+import Network from "utils/network";
 
 const msgMap = {
   minion_unreachable: t("Cleanup timed out. Please check if the machine is reachable."),
@@ -16,7 +18,7 @@ type Props = {
   buttonClass?: string;
   buttonText?: React.ReactNode;
   onDeleteSuccess?: (...args: any[]) => any;
-}
+};
 
 type State = {
   messages: any[];
@@ -34,17 +36,17 @@ class DeleteSystem extends React.Component<Props, State> {
 
   handleDelete = (cleanupErr: Boolean) => {
     return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, { nocleanup: cleanupErr })
-      .then(data => {
+      .then((data) => {
         if (data.success && this.props.onDeleteSuccess) {
           this.props.onDeleteSuccess();
         } else {
           this.setState({
-            messages: MessagesUtils.error(data.messages.map(m => msgMap[m])),
+            messages: MessagesUtils.error(data.messages.map((m) => msgMap[m])),
           });
           this.showErrorDialog();
         }
       })
-      .catch(jqXHR => {
+      .catch((jqXHR) => {
         this.handleResponseError(jqXHR);
       });
   };

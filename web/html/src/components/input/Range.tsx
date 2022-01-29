@@ -1,6 +1,7 @@
 import * as React from "react";
-import { InputBase, InputBaseProps } from "./InputBase";
+
 import { FormContext } from "./Form";
+import { InputBase, InputBaseProps } from "./InputBase";
 
 type Props = InputBaseProps & {
   /** Value placeholder to display when no value is entered */
@@ -24,7 +25,7 @@ export const Range = (props: Props) => {
   const { placeholder, inputClass, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
   return (
-    <InputBase {...propsToPass} name={[`${props.prefix}_start`, `${props.prefix}_end`]} >
+    <InputBase {...propsToPass} name={[`${props.prefix}_start`, `${props.prefix}_end`]}>
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);

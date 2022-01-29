@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type PaginationBlockProps = {
@@ -16,7 +17,11 @@ const PaginationBlock = (props: PaginationBlockProps) => {
     lastPage > 1 ? (
       <div className="spacewalk-list-pagination">
         <div className="spacewalk-list-pagination-btns btn-group">
-          <PaginationButton onClick={() => onPageChange(1)} disabled={DEPRECATED_unsafeEquals(currentPage, 1)} text={t("First")} />
+          <PaginationButton
+            onClick={() => onPageChange(1)}
+            disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
+            text={t("First")}
+          />
           <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
@@ -38,7 +43,7 @@ const PaginationBlock = (props: PaginationBlockProps) => {
 
   return (
     <div>
-      <PageSelector onChange={p => onPageChange(p)} currentValue={currentPage} lastPage={lastPage} />
+      <PageSelector onChange={(p) => onPageChange(p)} currentValue={currentPage} lastPage={lastPage} />
       {pagination}
     </div>
   );
@@ -65,9 +70,9 @@ const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
   <select
     className="display-number"
     defaultValue={props.currentValue}
-    onChange={e => props.onChange(parseInt(e.target.value, 10))}
+    onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
   >
-    {[5, 10, 15, 25, 50, 100, 250, 500].map(o => (
+    {[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
       <option value={o} key={o}>
         {o}
       </option>
@@ -91,7 +96,7 @@ const PageSelector = (props: PageSelectorProps) => {
           className="display-number small-select"
           defaultValue={props.currentValue}
           value={props.currentValue}
-          onChange={e => props.onChange(parseInt(e.target.value, 10))}
+          onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
         >
           {Array.from(Array(props.lastPage)).map((o, i) => (
             <option value={i + 1} key={i + 1}>

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -128,13 +128,13 @@ public class MinionPillarManager {
 
     /**
      * Removes the corresponding pillar files for the passed minion
-     * @param minionId the salt minion Id
+     * @param minion the salt minion server
      */
-    public void removePillar(String minionId) {
-        generalPillarFileManager.removePillarFile(minionId);
-        groupMembershipPillarFileManager.removePillarFile(minionId);
-        virtualizationPillarFileManager.removePillarFile(minionId);
-        customInfoPillarFileManager.removePillarFile(minionId);
+    public void removePillar(MinionServer minion) {
+        generalPillarFileManager.removePillar(minion);
+        groupMembershipPillarFileManager.removePillar(minion);
+        virtualizationPillarFileManager.removePillar(minion);
+        customInfoPillarFileManager.removePillar(minion);
     }
 
     /**

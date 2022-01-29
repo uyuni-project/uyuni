@@ -33,6 +33,45 @@ describe("Testing filters enum and descriptions", () => {
     filter.criteriaValue = "asd-123-123";
     filter.rule = "deny";
     expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package equal asd-123-123 (nevr)");
+
+    filter.matcher = "lower";
+    expect(getClmFilterDescription(filter)).toEqual("filter by nevra name: deny package lower than asd-123-123 (nevr)");
+
+    filter.matcher = "lowereq";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by nevra name: deny package lower or equal than asd-123-123 (nevr)"
+    );
+
+    filter.matcher = "greater";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by nevra name: deny package greater than asd-123-123 (nevr)"
+    );
+
+    filter.matcher = "greatereq";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by nevra name: deny package greater or equal than asd-123-123 (nevr)"
+    );
+  });
+
+  test("test filter package provides description", () => {
+    const filter = {
+      name: "filter by provides name",
+      criteriaKey: "provides_name",
+      criteriaValue: "installhint(reboot-needed)",
+      entityType: "package",
+      rule: "deny",
+      matcher: "provides_name",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by provides name: deny package provides name equal installhint(reboot-needed) (provides_name)"
+    );
+    filter.criteriaKey = "provides_name";
+    filter.criteriaValue = "installhint(reboot-needed)";
+    filter.rule = "allow";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by provides name: allow package provides name equal installhint(reboot-needed) (provides_name)"
+    );
   });
 
   test("test filter advisory name description", () => {
@@ -102,7 +141,7 @@ describe("Testing filters enum and descriptions", () => {
     };
 
     expect(getClmFilterDescription(filter)).toEqual(
-      "filter by date: deny patch later or equal than 2018-09-10T00:00+01:00 (issue_date)"
+      "filter by date: deny patch greater or equal than 2018-09-10T00:00+01:00 (issue_date)"
     );
   });
 
@@ -150,6 +189,21 @@ describe("Testing filters enum and descriptions", () => {
 
     expect(getClmFilterDescription(filter)).toEqual(
       "filter patch contains package name: allow patch containing package name (package_name)"
+    );
+  });
+
+  test("test Patch (contains Package) - package_provides_name - description", () => {
+    const filter = {
+      name: "filter contains package provides name",
+      criteriaKey: "package_provides_name",
+      criteriaValue: "installhint(reboot-needed)",
+      entityType: "patch",
+      rule: "deny",
+      matcher: "contains_provides_name",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter contains package provides name: deny patch contains package which provides name equal installhint(reboot-needed) (package_provides_name)"
     );
   });
 });

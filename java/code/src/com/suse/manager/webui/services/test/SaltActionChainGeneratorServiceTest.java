@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -105,7 +105,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   require:\n" +
-                        "        -   mgrcompat: mgr_actionchain_131_action_1_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
+                        "        -   mgrcompat: mgr_actionchain_131_action_1_chunk_1\n")
+                        .replaceAll("131", actionChain.getId() + ""),
                 fileContent);
 
         assertFalse(stateFilesRoot
@@ -186,7 +187,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   chunk: 2\n" +
                         "    -   next_action_id: 3\n" +
                         "    -   require:\n" +
-                        "        -   mgrcompat: mgr_actionchain_131_action_2_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
+                        "        -   mgrcompat: mgr_actionchain_131_action_2_chunk_1\n")
+                        .replaceAll("131", actionChain.getId() + ""),
                 fileContent);
         fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -323,7 +325,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                                 put("actionchain_id:", "35");
                                 put("chunk", "2");
                                 put("next_action_id", "397");
-                                put("ssh_extra_filerefs", "salt://scripts/script_1.sh,salt://scripts/script_3.sh,salt://channels," +
+                                put("ssh_extra_filerefs",
+                                        "salt://scripts/script_1.sh,salt://scripts/script_3.sh,salt://channels," +
                                         service.getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2));
                         }}
                 )
@@ -434,10 +437,12 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         assertEquals(result.get().getActionId(), 854);
         assertEquals(result.get().getChunk(), 1);
 
-        result = service.parseActionChainStateId("mgrcompat_|-mgr_actioncin_144_action_854_chunk_1_|-state.apply_|-module_run");
+        result = service.parseActionChainStateId(
+                "mgrcompat_|-mgr_actioncin_144_action_854_chunk_1_|-state.apply_|-module_run");
         assertFalse(result.isPresent());
 
-        result = service.parseActionChainStateId("mgrcompat_|-mgr_actionchain_144_action_chunk_1_|-state.apply_|-module_run");
+        result = service.parseActionChainStateId(
+                "mgrcompat_|-mgr_actionchain_144_action_chunk_1_|-state.apply_|-module_run");
         assertFalse(result.isPresent());
     }
 
@@ -475,9 +480,10 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 "state.top",
                 2,
                 singletonMap("topfn",
-                        service.getActionChainTopPath(actionChain.getId(),2)),
+                        service.getActionChainTopPath(actionChain.getId(), 2)),
                 emptyMap()));
-        String sls2Name = "salt://" + ACTIONCHAIN_SLS_FOLDER + "/" + service.getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2);
+        String sls2Name = "salt://" + ACTIONCHAIN_SLS_FOLDER + "/" +
+                service.getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2);
         states.add(new SaltModuleRun(
                 "schedule_next_chunk",
                 "mgractionchains.next",

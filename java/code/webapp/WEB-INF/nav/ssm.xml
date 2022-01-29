@@ -124,6 +124,7 @@
                 acl="all_systems_in_set_have_feature(ftr_system_lock)"/>
         <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do"
                 acl="all_systems_in_set_have_feature(ftr_reboot)"/>
+        <rhn-tab name="ssm.misc.index.tabs.proxy" url="/rhn/manager/systems/ssm/proxy"/>
         <rhn-tab name="ssm.misc.index.tabs.migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
         <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
         <rhn-tab-url>/rhn/systems/ssm/misc/ConfirmSystemPreferences.do</rhn-tab-url>

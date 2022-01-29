@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,15 +14,15 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.frontend.struts.Selectable;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Static helper class for the "new-style" list tag

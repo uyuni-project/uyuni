@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
-import org.apache.struts.action.DynaActionForm;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -25,6 +23,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.apache.struts.action.DynaActionForm;
 
 /**
  * SystemSearchActionTest

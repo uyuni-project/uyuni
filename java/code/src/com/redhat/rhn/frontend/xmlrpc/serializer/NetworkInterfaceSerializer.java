@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,21 +14,21 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetAddress6;
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
-
-import com.redhat.rhn.domain.server.NetworkInterface;
-import com.redhat.rhn.domain.server.ServerNetAddress4;
-import com.redhat.rhn.domain.server.ServerNetAddress6;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 
 /**

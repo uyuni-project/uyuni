@@ -1,17 +1,19 @@
 import * as React from "react";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import CreatorPanel from "components/panels/CreatorPanel";
-import PropertiesForm from "./properties-form";
-import { Loading } from "components/utils/Loading";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
-import PropertiesView from "./properties-view";
+import { Loading } from "components/utils/Loading";
+
 import produce from "utils/produce";
 
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import { ProjectHistoryEntry, ProjectMessageType, ProjectPropertiesType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
-
-import { ProjectMessageType, ProjectHistoryEntry, ProjectPropertiesType } from "../../../type";
+import PropertiesForm from "./properties-form";
+import PropertiesView from "./properties-view";
 
 type Props = {
   projectId: string;
@@ -37,7 +39,7 @@ const PropertiesEdit = (props: Props) => {
 
   const messages = getRenderedMessages(props.messages || []);
 
-  let propertiesToShow = produce(props.properties, draftProperties => {
+  let propertiesToShow = produce(props.properties, (draftProperties) => {
     if (props.showDraftVersion) {
       draftProperties.historyEntries.unshift(defaultDraftHistory);
     }
@@ -61,12 +63,12 @@ const PropertiesEdit = (props: Props) => {
       disableOperations={isLoading}
       onSave={({ item, closeDialog, setErrors }) => {
         return onAction(item, "update", props.projectId)
-          .then(editedProject => {
+          .then((editedProject) => {
             closeDialog();
             showSuccessToastr(t("Project properties updated successfully"));
             props.onChange(editedProject);
           })
-          .catch(error => {
+          .catch((error) => {
             setErrors(error.errors);
             showErrorToastr(error.messages, { autoHide: false });
           });
@@ -87,7 +89,7 @@ const PropertiesEdit = (props: Props) => {
           <PropertiesForm
             properties={{ ...item }}
             errors={errors}
-            onChange={editedProperties => setItem(editedProperties)}
+            onChange={(editedProperties) => setItem(editedProperties)}
             editing
           />
         );

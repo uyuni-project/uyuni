@@ -1,11 +1,14 @@
 import * as React from "react";
-import { CsvLink, SystemLabel } from "./subscription-matching-util";
-import { PopUp } from "components/popup";
+
 import { ModalButton } from "components/dialog/ModalButton";
-import { Table } from "components/table/Table";
+import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
+
+import { CsvLink, SystemLabel } from "./subscription-matching-util";
 
 type UnmatchedProductsProps = {
   unmatchedProductIds: any[];
@@ -18,9 +21,9 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
     selectedProductId: null,
   };
 
-  buildData = props => {
+  buildData = (props) => {
     const products = props.products;
-    return props.unmatchedProductIds.map(pid => {
+    return props.unmatchedProductIds.map((pid) => {
       const productName = products[pid].productName;
       const systemCount = products[pid].unmatchedSystemCount;
       return {
@@ -36,7 +39,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
     return (result || Utils.sortById(a, b)) * sortDirection;
   };
 
-  showPopUp = id => {
+  showPopUp = (id) => {
     this.setState({ selectedProductId: id });
   };
 
@@ -49,26 +52,21 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
         <div>
-          <Table
-            data={this.buildData(this.props)}
-            identifier={row => row.id}
-            initialSortColumnKey="productName"
-            initialItemsPerPage={window.userPrefPageSize}
-          >
+          <Table data={this.buildData(this.props)} identifier={(row) => row.id} initialSortColumnKey="productName">
             <Column
               columnKey="productName"
               comparator={Utils.sortByText}
               header={t("Product name")}
-              cell={row => row.productName}
+              cell={(row) => row.productName}
             />
             <Column
               columnKey="systemCount"
               comparator={this.sortBySystemCount}
               header={t("Unmatched system count")}
-              cell={row => row.systemCount}
+              cell={(row) => row.systemCount}
             />
             <Column
-              cell={row => (
+              cell={(row) => (
                 <ModalButton
                   className="btn-default btn-cell"
                   title={t("Show system list")}
@@ -111,13 +109,13 @@ type UnmatchedSystemPopUpProps = {
 };
 
 class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
-  buildTableData = props => {
+  buildTableData = (props) => {
     if (!props.selectedProductId) {
       return [];
     }
     const product = props.products[props.selectedProductId];
     const systems = props.systems;
-    return product.unmatchedSystemIds.map(sid => {
+    return product.unmatchedSystemIds.map((sid) => {
       return {
         id: sid,
         systemName: systems[sid].name,
@@ -137,16 +135,15 @@ class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
     const popUpContent = (
       <Table
         data={this.buildTableData(this.props)}
-        identifier={row => row.id}
+        identifier={(row) => row.id}
         initialSortColumnKey="systemName"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
       >
         <Column
           columnKey="systemName"
           comparator={Utils.sortByText}
           header={t("System name")}
-          cell={row => <SystemLabel type={row.type} name={row.systemName} />}
+          cell={(row) => <SystemLabel type={row.type} name={row.systemName} />}
         />
       </Table>
     );

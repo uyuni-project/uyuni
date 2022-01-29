@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jan 18 13:37:41 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * require postgresql14 on SLE15 SP4
+
+-------------------------------------------------------------------
+Fri Nov 05 13:35:34 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Added source with license.
+  * Removed spacewalk-selinux dependency.
+
+-------------------------------------------------------------------
 Mon Aug 09 10:10:53 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

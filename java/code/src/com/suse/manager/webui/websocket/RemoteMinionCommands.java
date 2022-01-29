@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,6 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.google.gson.JsonObject;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -25,32 +24,29 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.websocket.json.AbstractSaltEventDto;
+import com.suse.manager.webui.websocket.json.ActionErrorEventDto;
+import com.suse.manager.webui.websocket.json.ActionTimedOutEventDto;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
 import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
-import com.suse.manager.webui.websocket.json.MinionMatchResultEventDto;
-import com.suse.manager.webui.websocket.json.ActionTimedOutEventDto;
 import com.suse.manager.webui.websocket.json.MinionCommandResultEventDto;
-import com.suse.manager.webui.websocket.json.ActionErrorEventDto;
-import com.suse.manager.webui.websocket.json.AbstractSaltEventDto;
+import com.suse.manager.webui.websocket.json.MinionMatchResultEventDto;
 import com.suse.manager.webui.websocket.json.SSHMinionMatchResultDto;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
+
+import com.google.gson.JsonObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.websocket.OnOpen;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnError;
-import javax.websocket.Session;
-import javax.websocket.EndpointConfig;
-import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +61,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
+
+import javax.websocket.EndpointConfig;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * Websocket endpoint for executing remote commands on Salt minions.

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 18 13:36:55 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * do not build python 2 package for SLE15
+
+-------------------------------------------------------------------
 Mon Aug 09 10:56:00 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

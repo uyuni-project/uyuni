@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,7 @@
 package com.redhat.rhn.testing;
 
 import com.mockobjects.servlet.MockHttpSession;
+
 import org.apache.commons.collections.iterators.IteratorEnumeration;
 
 import java.util.Enumeration;

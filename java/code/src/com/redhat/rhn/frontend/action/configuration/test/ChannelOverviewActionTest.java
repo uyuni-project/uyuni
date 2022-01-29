@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,6 +24,7 @@ import com.redhat.rhn.manager.configuration.ChannelSummary;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import servletunit.HttpServletRequestSimulator;
 
 public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {

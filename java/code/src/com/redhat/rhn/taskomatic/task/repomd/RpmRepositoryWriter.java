@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,6 +29,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.task.TaskManager;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,12 +41,16 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -62,12 +68,85 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private static final String SUSEDATA_FILE = "susedata.xml.gz.new";
     private static final String NOREPO_FILE = "noyumrepo.txt";
     private static final String SOLV_FILE = "solv.new";
-    private static final String REPO2SOLV = "/usr/bin/repo2solv.sh";
+    private static final String REPO2SOLV = "/usr/bin/repo2solv";
 
     private static final String GROUP = "groups";
     private static final String MODULES = "modules";
 
-    private String checksumtype;
+    /**
+     * Utility class to move/copy files around in the 'repodata' directory
+     */
+    private static class RepomdFileOrganizer {
+        private String directory;
+        private long lastModificationTime;
+
+        /**
+         * Initialize an instance with a base directory and a predefined last modification time
+         *
+         * @param directoryIn the base directory for the repo metadata
+         * @param lastModificationTimeIn the last modification time to be set on the processed files
+         */
+        private RepomdFileOrganizer(String directoryIn, long lastModificationTimeIn) {
+            this.directory = directoryIn;
+            this.lastModificationTime = lastModificationTimeIn;
+        }
+
+        /**
+         * Move a temp file to its final destination, both inside the base directory
+         *
+         * @param tempFilename the temp filename in the directory
+         * @param finalFilename the final filename in the directory
+         * @return the final file object
+         */
+        public File move(String tempFilename, String finalFilename) {
+            return move(tempFilename, finalFilename, null);
+        }
+
+        public File move(String tempFilename, String finalFilename, String checksum) {
+            File tempFile = new File(directory, tempFilename);
+            File finalFile;
+            if (checksum != null) {
+                finalFile = new File(directory, checksum + "-" + finalFilename);
+            }
+            else {
+                finalFile = new File(directory, finalFilename);
+            }
+
+            tempFile.renameTo(finalFile);
+            finalFile.setLastModified(lastModificationTime);
+            return finalFile;
+        }
+
+        /**
+         * Copy a source file from anywhere in the filesystem into the base directory
+         *
+         * @param sourceFilepath the absolute source path
+         * @param finalFilename the final filename
+         * @param checksum the checksum to be prepended to the filename
+         * @return the final file object
+         */
+        public File copy(String sourceFilepath, String finalFilename, String checksum) {
+            File sourceFile = new File(sourceFilepath);
+            File finalFile;
+            if (checksum != null) {
+                finalFile = new File(directory, checksum + "-" + finalFilename);
+            }
+            else {
+                finalFile = new File(directory, finalFilename);
+            }
+
+            try {
+                FileUtils.copyFile(sourceFile, finalFile);
+            }
+            catch (IOException e) {
+                throw new RuntimeException(MessageFormat.format("Cannot copy '{0}' file, cancelling",
+                        finalFilename), e);
+            }
+
+            finalFile.setLastModified(lastModificationTime);
+            return finalFile;
+        }
+    }
 
     /**
      * Constructor takes in pathprefix and mountpoint
@@ -104,6 +183,25 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     }
 
     /**
+     * Initialize the base directory by creating the directories as needed
+     *
+     * @param dirPath the path to the base directory
+     * @return the list of files existing in the directory, if any
+     */
+    private List<File> initBaseDir(String dirPath) {
+        File baseDir = new File(dirPath);
+        if (baseDir.mkdirs()) {
+            return Collections.emptyList();
+        }
+        else if (baseDir.exists() && baseDir.isDirectory()) {
+            return Arrays.asList(baseDir.listFiles());
+        }
+        else {
+            throw new RepomdRuntimeException("Unable to create directory: " + dirPath);
+        }
+    }
+
+    /**
      *
      * @param channel channelinfo for repomd file creation
      */
@@ -111,49 +209,43 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     public void writeRepomdFiles(Channel channel) {
         PackageManager.createRepoEntrys(channel.getId());
 
-        String prefix = mountPoint + File.separator + pathPrefix +
-                File.separator + channel.getLabel() + File.separator;
-
         // we closed the session, so we need to reload the object
-        channel = (Channel) HibernateFactory.getSession().get(channel.getClass(),
-                channel.getId());
-        if (!new File(prefix).mkdirs() && !new File(prefix).exists()) {
-            throw new RepomdRuntimeException("Unable to create directory: " +
-                    prefix);
-        }
+        channel = HibernateFactory.getSession().get(channel.getClass(), channel.getId());
+
+        // Initialize the directory, and keep a list of already existing files in the directory, if any
+        String prefix = mountPoint + File.separator + pathPrefix + File.separator + channel.getLabel() + File.separator;
+        List<File> existingFiles = initBaseDir(prefix);
+
         // Get compatible checksumType
-        this.checksumtype = channel.getChecksumTypeLabel();
-        if (checksumtype == null) {
+        String checksumType = channel.getChecksumTypeLabel();
+        if (checksumType == null) {
             generateBadRepo(channel, prefix);
             return;
         }
         new File(prefix + NOREPO_FILE).delete();
         if (log.isDebugEnabled()) {
-            log.debug("Checksum Type Value: " + this.checksumtype);
+            log.debug("Checksum Type Value: " + checksumType);
         }
 
         // java.security.MessageDigest recognizes:
         // MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512
-        String checksumAlgo = this.checksumtype;
+        String checksumAlgo = checksumType;
         if (checksumAlgo.toUpperCase().startsWith("SHA")) {
-            checksumAlgo = this.checksumtype.substring(0, 3) + "-" +
-                    this.checksumtype.substring(3);
+            checksumAlgo = checksumType.substring(0, 3) + "-" +
+                    checksumType.substring(3);
         }
         // translate sha1 to sha for xml repo files
-        String checksumLabel = this.checksumtype;
+        String checksumLabel = checksumType;
         if (checksumLabel.equals("sha1")) {
             checksumLabel = "sha";
         }
 
         log.info("Generating new repository metadata for channel '" +
-                channel.getLabel() + "'(" + this.checksumtype + ") " +
+                channel.getLabel() + "'(" + checksumType + ") " +
                 channel.getPackageCount() + " packages, " +
                 channel.getErrataCount() + " errata");
 
-        CompressingDigestOutputWriter primaryFile;
-        CompressingDigestOutputWriter filelistsFile;
-        CompressingDigestOutputWriter otherFile;
-        CompressingDigestOutputWriter susedataFile;
+        CompressingDigestOutputWriter primaryFile, filelistsFile, otherFile, susedataFile;
 
         try {
             primaryFile = new CompressingDigestOutputWriter(
@@ -196,10 +288,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         other.begin(channel);
         susedata.begin(channel);
 
-        // batch the elaboration so we don't have to hold many thousands of
-        // packages in memory at once
+        // batch the elaboration so we don't have to hold many thousands of packages in memory at once
         final int batchSize = 1000;
-
         for (long i = 0; i < channel.getPackageCount(); i += batchSize) {
             DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, i, batchSize);
             packageBatch.elaborate();
@@ -242,26 +332,20 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             throw new RepomdRuntimeException(e);
         }
 
-        RepomdIndexData primaryData = new RepomdIndexData(primaryFile
-                .getCompressedChecksum(), primaryFile
-                .getUncompressedChecksum(), channel.getLastModified());
-        RepomdIndexData filelistsData = new RepomdIndexData(filelistsFile
-                .getCompressedChecksum(), filelistsFile
-                .getUncompressedChecksum(), channel.getLastModified());
-        RepomdIndexData otherData = new RepomdIndexData(otherFile
-                .getCompressedChecksum(), otherFile
-                .getUncompressedChecksum(), channel.getLastModified());
-        RepomdIndexData susedataData = new RepomdIndexData(susedataFile
-                .getCompressedChecksum(), susedataFile
-                .getUncompressedChecksum(), channel.getLastModified());
+        RepomdIndexData primaryData = new RepomdIndexData(primaryFile.getCompressedChecksum(),
+                primaryFile.getUncompressedChecksum(), channel.getLastModified());
+        RepomdIndexData filelistsData = new RepomdIndexData(filelistsFile.getCompressedChecksum(),
+                filelistsFile.getUncompressedChecksum(), channel.getLastModified());
+        RepomdIndexData otherData = new RepomdIndexData(otherFile.getCompressedChecksum(),
+                otherFile.getUncompressedChecksum(), channel.getLastModified());
+        RepomdIndexData susedataData = new RepomdIndexData(susedataFile.getCompressedChecksum(),
+                susedataFile.getUncompressedChecksum(), channel.getLastModified());
 
         if (log.isDebugEnabled()) {
             log.debug("Starting updateinfo generation for '" + channel.getLabel() + '"');
         }
-        RepomdIndexData updateinfoData = generateUpdateinfo(channel,
-                prefix, checksumAlgo);
+        RepomdIndexData updateinfoData = generateUpdateinfo(channel, prefix, checksumAlgo);
         RepomdIndexData productsData = generateProducts(channel, prefix, checksumAlgo);
-
         RepomdIndexData groupsData = loadRepoMetadataFile(channel, checksumAlgo, GROUP);
         RepomdIndexData modulesData = loadRepoMetadataFile(channel, checksumAlgo, MODULES);
 
@@ -269,13 +353,10 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         primaryData.setType(checksumLabel);
         filelistsData.setType(checksumLabel);
         otherData.setType(checksumLabel);
-        if (susedataData != null) {
-            susedataData.setType(checksumLabel);
-        }
+        susedataData.setType(checksumLabel);
         if (updateinfoData != null) {
             updateinfoData.setType(checksumLabel);
         }
-
         if (groupsData != null) {
             groupsData.setType(checksumLabel);
         }
@@ -287,29 +368,48 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
 
         FileWriter indexFile;
-
         try {
             indexFile = new FileWriter(prefix + REPOMD_FILE);
-        }
-        catch (IOException e) {
-            throw new RepomdRuntimeException(e);
-        }
-
-        RepomdIndexWriter index = new RepomdIndexWriter(indexFile, primaryData,
-                filelistsData, otherData, susedataData, updateinfoData,
-                groupsData, modulesData, productsData);
-
-        index.writeRepomdIndex();
-
-        try {
+            RepomdIndexWriter index = new RepomdIndexWriter(indexFile, primaryData,
+                    filelistsData, otherData, susedataData, updateinfoData,
+                    groupsData, modulesData, productsData);
+            index.writeRepomdIndex();
             indexFile.close();
         }
         catch (IOException e) {
             throw new RepomdRuntimeException(e);
         }
 
-        renameFiles(prefix, channel.getLastModified().getTime(),
-                updateinfoData != null, productsData != null);
+        List<File> createdFiles = new ArrayList<>();
+        RepomdFileOrganizer organizer = new RepomdFileOrganizer(prefix, channel.getLastModified().getTime());
+        createdFiles.add(organizer.move(PRIMARY_FILE, "primary.xml.gz", primaryData.getChecksum()));
+        createdFiles.add(organizer.move(FILELISTS_FILE, "filelists.xml.gz", filelistsData.getChecksum()));
+        createdFiles.add(organizer.move(OTHER_FILE, "other.xml.gz", otherData.getChecksum()));
+        createdFiles.add(organizer.move(SUSEDATA_FILE, "susedata.xml.gz", susedataData.getChecksum()));
+
+        // Optional files
+        if (updateinfoData != null) {
+            createdFiles.add(organizer.move(UPDATEINFO_FILE, "updateinfo.xml.gz", updateinfoData.getChecksum()));
+        }
+        if (productsData != null) {
+            createdFiles.add(organizer.move(PRODUCTS_FILE, "products.xml", productsData.getChecksum()));
+        }
+
+        String spacewalkMountPt = Config.get().getString(ConfigDefaults.MOUNT_POINT); // To copy over comps files from
+        if (groupsData != null) {
+            createdFiles.add(organizer.copy(
+                    spacewalkMountPt + File.separator + getRepoMetadataRelativeFilename(channel, GROUP),
+                    "comps.xml", groupsData.getChecksum()));
+        }
+        if (modulesData != null) {
+            createdFiles.add(organizer.copy(
+                    spacewalkMountPt + File.separator + getRepoMetadataRelativeFilename(channel, MODULES),
+                    "modules.yaml", modulesData.getChecksum()));
+        }
+
+        // Index file should be the last one to be moved; after all the files are ready to be served
+        createdFiles.add(organizer.move(REPOMD_FILE, "repomd.xml"));
+
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
             SystemCommandExecutor sce = new SystemCommandExecutor();
             String[] signCommand = new String[2];
@@ -322,7 +422,13 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
 
         generateSolv(channel);
-        renameSolv(prefix, channel.getLastModified().getTime());
+        createdFiles.add(organizer.move(SOLV_FILE, "solv"));
+
+        // Clean the directory of obsolete files
+        existingFiles.stream()
+                .filter(f -> !createdFiles.contains(f))
+                .filter(File::exists)
+                .forEach(File::delete);
     }
 
     private void generateSolv(Channel channel) {
@@ -545,73 +651,5 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 StringUtil.getHexString(productsFile.getMessageDigest().digest()),
                 channel.getLastModified());
         return productsData;
-    }
-
-    /**
-     * Renames the repo cache files
-     * @param prefix path prefix
-     * @param lastModified file last_modified
-     * @param doUpdateinfo
-     */
-    private void renameFiles(String prefix, Long lastModified,
-            Boolean doUpdateinfo, Boolean hasProducts) {
-        File primary = new File(prefix + PRIMARY_FILE);
-        File filelists = new File(prefix + FILELISTS_FILE);
-        File other = new File(prefix + OTHER_FILE);
-        File susedata = new File(prefix + SUSEDATA_FILE);
-        File repomd = new File(prefix + REPOMD_FILE);
-
-        File updateinfo = null;
-        if (doUpdateinfo) {
-            updateinfo = new File(prefix + UPDATEINFO_FILE);
-            updateinfo.setLastModified(lastModified);
-        }
-        File products = null;
-        if (hasProducts) {
-            products = new File(prefix + PRODUCTS_FILE);
-            products.setLastModified(lastModified);
-        }
-
-        primary.setLastModified(lastModified);
-        filelists.setLastModified(lastModified);
-        other.setLastModified(lastModified);
-        susedata.setLastModified(lastModified);
-        repomd.setLastModified(lastModified);
-
-        File renamedupdateinfo = new File(prefix + "updateinfo.xml.gz");
-        if (doUpdateinfo) {
-            updateinfo.renameTo(renamedupdateinfo);
-        }
-        else {
-            try {
-                Files.deleteIfExists(renamedupdateinfo.toPath());
-            }
-            catch (IOException e) {
-                throw new RepomdRuntimeException(e);
-            }
-        }
-        if (hasProducts) {
-            products.renameTo(new File(prefix + "products.xml"));
-        }
-        else {
-            File p = new File(prefix + "products.xml");
-            if (p.exists()) {
-                p.delete();
-            }
-        }
-
-        primary.renameTo(new File(prefix + "primary.xml.gz"));
-        filelists.renameTo(new File(prefix + "filelists.xml.gz"));
-        other.renameTo(new File(prefix + "other.xml.gz"));
-        susedata.renameTo(new File(prefix + "susedata.xml.gz"));
-        repomd.renameTo(new File(prefix + "repomd.xml"));
-    }
-
-    private void renameSolv(String prefix, Long lastModified) {
-        File solv = new File(prefix + SOLV_FILE);
-
-        solv.setLastModified(lastModified);
-
-        solv.renameTo(new File(prefix + "solv"));
     }
 }

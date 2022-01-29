@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.redhat.rhn.manager.system.test;
 
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -16,9 +30,9 @@ import com.suse.manager.webui.utils.salt.custom.GuestProperties;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * VirtualInstanceManagerTest
@@ -118,7 +132,8 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         plan.add(new VmInfo(1479479699, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
                 new GuestProperties(2048, "vm1", STATE_PAUSED, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479699, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(1024, "vmRename", STATE_STOPPED, "a4f100d349954f50a24f80fec75e3f5d", 1, VIRTTYPE_PARA)));
+                new GuestProperties(1024, "vmRename", STATE_STOPPED, "a4f100d349954f50a24f80fec75e3f5d",
+                        1, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 

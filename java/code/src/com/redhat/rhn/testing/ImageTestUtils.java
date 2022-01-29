@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -47,8 +46,6 @@ import java.util.Set;
  * Utility methods for testing of the image features.
  */
 public class ImageTestUtils {
-
-    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private ImageTestUtils() { }
 
@@ -388,26 +385,15 @@ public class ImageTestUtils {
     /**
      * Create a {@link MinionServer} with Container Build Host entitlement.
      *
+     * @param entitlementManager system entitlement manager
      * @param user the user
      * @return the minion server
      * @throws Exception the exception
      */
-    public static MinionServer createBuildHost(User user) throws Exception {
+    public static MinionServer createBuildHost(SystemEntitlementManager entitlementManager, User user)
+            throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
-        return server;
-    }
-
-    /**
-     * Create a {@link MinionServer} with OSImage Build Host entitlement.
-     *
-     * @param user the user
-     * @return the minion server
-     * @throws Exception the exception
-     */
-    public static MinionServer createOSImageBuildHost(User user) throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        entitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         return server;
     }
 }

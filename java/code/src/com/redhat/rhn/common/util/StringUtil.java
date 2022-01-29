@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.apache.xml.utils.XMLChar;
 import org.stringtree.json.JSONReader;
 import org.stringtree.json.JSONWriter;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

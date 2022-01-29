@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,20 +56,20 @@ import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
-import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
+import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryBasicAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -142,13 +142,13 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(MinionRecurringAction.class);
         ANNOTATION_CLASSES.add(GroupRecurringAction.class);
         ANNOTATION_CLASSES.add(OrgRecurringAction.class);
-        ANNOTATION_CLASSES.add(Cluster.class);
         ANNOTATION_CLASSES.add(MaintenanceSchedule.class);
         ANNOTATION_CLASSES.add(MaintenanceCalendar.class);
         ANNOTATION_CLASSES.add(SCCRegCacheItem.class);
         ANNOTATION_CLASSES.add(AnsiblePath.class);
         ANNOTATION_CLASSES.add(InventoryPath.class);
         ANNOTATION_CLASSES.add(PlaybookPath.class);
+        ANNOTATION_CLASSES.add(Pillar.class);
     }
 
     /**

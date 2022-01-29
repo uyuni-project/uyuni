@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.domain.action.dup;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * DistUpgradeActionDetails - Class representation of the table rhnActionDup.

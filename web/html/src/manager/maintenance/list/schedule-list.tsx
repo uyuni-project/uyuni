@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
 import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 type ScheduleListProps = {
   data: {
@@ -22,20 +23,19 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
   const [scheduleToDelete, setScheduleToDelete] = useState({});
 
   return (
-    <div>
+    <>
       <Table
         data={props.data}
-        identifier={row => row.id}
-        initialItemsPerPage={window.userPrefPageSize}
+        identifier={(row) => row.id}
         emptyText={t("No schedules created. Use Create to add a schedule.")}
       >
-        <Column columnKey="scheduleName" header={t("Schedule Name")} cell={row => row.name} />
+        <Column columnKey="scheduleName" header={t("Schedule Name")} cell={(row) => row.name} />
         <Column
           columnClass="text-center"
           headerClass="text-center"
           columnKey="calendarName"
           header={t("Calendar")}
-          cell={row =>
+          cell={(row) =>
             row.calendarId && (
               <a className="link-tag" href={"/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId}>
                 {row.calendarName}
@@ -47,7 +47,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}
-          cell={row => (
+          cell={(row) => (
             <div className="btn-group">
               <Button
                 className="btn-default btn-sm"
@@ -73,7 +73,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
                 icon="fa-trash"
                 target="delete-modal"
                 item={row}
-                onClick={i => setScheduleToDelete(i)}
+                onClick={(i) => setScheduleToDelete(i)}
               />
             </div>
           )}
@@ -91,7 +91,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
         onConfirm={() => props.onDelete(scheduleToDelete)}
         onClosePopUp={() => setScheduleToDelete({})}
       />
-    </div>
+    </>
   );
 };
 

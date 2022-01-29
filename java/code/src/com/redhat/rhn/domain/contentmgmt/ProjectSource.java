@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;

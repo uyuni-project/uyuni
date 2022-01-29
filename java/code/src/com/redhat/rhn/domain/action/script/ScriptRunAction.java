@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,6 +20,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
+
 import com.suse.manager.utils.SaltUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;

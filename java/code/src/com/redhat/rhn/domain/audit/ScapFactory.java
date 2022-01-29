@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,17 +14,17 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
+
+import org.apache.log4j.Logger;
+import org.hibernate.criterion.Restrictions;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * ScapFactory - the singleton class used to fetch and store

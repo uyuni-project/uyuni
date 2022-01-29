@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,9 +21,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
-import java.sql.Types;
 
 /**
  * TokenFactory

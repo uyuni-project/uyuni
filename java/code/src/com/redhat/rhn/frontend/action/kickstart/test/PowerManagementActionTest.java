@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -28,10 +28,10 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.test.MockConnection;
 
-import servletunit.HttpServletRequestSimulator;
-
 import java.util.ArrayList;
 import java.util.Map;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests the Power Management action.

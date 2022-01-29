@@ -1,7 +1,9 @@
 import * as React from "react";
+
 import _isEmpty from "lodash/isEmpty";
 
 import { Messages } from "components/messages";
+
 import { ProjectMessageType } from "../../type";
 
 type ValidationMessagesType = {
@@ -40,7 +42,7 @@ const getRenderedMessages = (messages: Array<ProjectMessageType>): ValidationMes
   const sortedMsgs = sortMessages(messages);
   return {
     panelClass: msgClassMap[sortedMsgs[0].type].panel,
-    messages: <Messages items={sortedMsgs.map(m => ({ severity: m.type, text: m.text }))} />,
+    messages: <Messages items={sortedMsgs.map((m) => ({ severity: m.type, text: m.text }))} />,
   };
 };
 

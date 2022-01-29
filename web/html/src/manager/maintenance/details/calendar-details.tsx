@@ -1,13 +1,15 @@
 import * as React from "react";
 import { useState } from "react";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
+
+import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 import { MessageType } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 type CalendarDetailsProps = {
   id: number;
@@ -24,7 +26,7 @@ type CalendarDetailsProps = {
 const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
   const [strategy, setStrategy] = useState(false);
 
-  const setCheck = model => {
+  const setCheck = (model) => {
     // Strategy gets initialized as empty string, but we want the initial value to be false.
     if (model.strategy === "") {
       model.strategy = false;
@@ -79,33 +81,33 @@ type OverviewProps = {
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
   const tableData = [
     { left: t("Calendar Name") + ":", right: props.name },
-    { left: t("Used by Schedule") + ":", right: props.scheduleNames.map(name => name.name).join(", ") },
+    { left: t("Used by Schedule") + ":", right: props.scheduleNames.map((name) => name.name).join(", ") },
   ];
   props.url && tableData.push({ left: t("Url") + ":", right: props.url });
 
   return (
     <div>
       <BootstrapPanel title={t("Calendar Details")}>
-        <Table data={tableData} identifier={row => tableData.indexOf(row)} initialItemsPerPage={0}>
-          <Column columnKey="left" cell={row => row.left} />
-          <Column columnKey="right" cell={row => row.right} />
+        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} initialItemsPerPage={0}>
+          <Column columnKey="left" cell={(row) => row.left} />
+          <Column columnKey="right" cell={(row) => row.right} />
         </Table>
       </BootstrapPanel>
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h4>{props.name}</h4>
-          </div>
-          <div className="panel-body">
-              <WebCalendar
-                id={props.id}
-                type={"calendar"}
-                eventNames={props.eventNames}
-                messages={props.onMessage}
-                clearMessages={props.clearMessages}
-                responseError={props.responseError}
-              />
-          </div>
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h4>{props.name}</h4>
         </div>
+        <div className="panel-body">
+          <WebCalendar
+            id={props.id}
+            type={"calendar"}
+            eventNames={props.eventNames}
+            messages={props.onMessage}
+            clearMessages={props.clearMessages}
+            responseError={props.responseError}
+          />
+        </div>
+      </div>
     </div>
   );
 };

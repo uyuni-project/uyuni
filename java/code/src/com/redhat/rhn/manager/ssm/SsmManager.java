@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -36,10 +36,11 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

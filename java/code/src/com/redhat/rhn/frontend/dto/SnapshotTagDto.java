@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  */

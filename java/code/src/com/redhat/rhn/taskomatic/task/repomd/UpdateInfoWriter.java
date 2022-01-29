@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2021 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
@@ -52,8 +52,7 @@ public class UpdateInfoWriter extends RepomdWriter {
     public String getUpdateInfo(Channel channel) {
         begin(channel);
 
-        DataResult<ErrataOverview> errata = ChannelManager
-                .listErrataSimple(channel.getId());
+        final DataResult<ErrataOverview> errata = ChannelManager.listErrataSimple(channel.getId());
         final int batchSize = 500;
         for (int i = 0; i < errata.size(); i += batchSize) {
             DataResult<ErrataOverview> errataBatch = errata.subList(i, i + batchSize);
@@ -106,8 +105,7 @@ public class UpdateInfoWriter extends RepomdWriter {
      * @param channel channel info
      * @throws SAXException
      */
-    private void addErratum(ErrataOverview erratum, Channel channel)
-            throws SAXException {
+    private void addErratum(ErrataOverview erratum, Channel channel) throws SAXException {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("from", erratum.getErrataFrom());
         attr.addAttribute("status", erratum.getAdvisoryStatus().getMetadataValue());
@@ -127,12 +125,9 @@ public class UpdateInfoWriter extends RepomdWriter {
             }
         }
 
-        handler.addElementWithCharacters("id",
-                sanitize(0L, id));
-        handler.addElementWithCharacters("title", sanitize(0L, erratum
-                .getAdvisorySynopsis()));
-        handler.addElementWithCharacters("severity", sanitize(0L, erratum
-                .getSeverity()));
+        handler.addElementWithCharacters("id", sanitize(0L, id));
+        handler.addElementWithCharacters("title", sanitize(0L, erratum.getAdvisorySynopsis()));
+        handler.addElementWithCharacters("severity", sanitize(0L, erratum.getSeverity()));
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -146,9 +141,8 @@ public class UpdateInfoWriter extends RepomdWriter {
         handler.startElement("updated", attr);
         handler.endElement("updated");
 
-        handler.addElementWithCharacters("description",
-                sanitize(0L, erratum
-                .getDescription()));
+        handler.addElementWithCharacters("rights", sanitize(0L, erratum.getRights()));
+        handler.addElementWithCharacters("description", sanitize(0L, erratum.getDescription()));
 
         addErratumReferences(erratum);
         addErratumPkgList(erratum, channel);

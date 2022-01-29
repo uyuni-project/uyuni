@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.suse.manager.webui.utils;
 
+import static java.util.Collections.singletonMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.singletonMap;
 
 /**
  * Base class that provides helpers for working with Salt state requisites.

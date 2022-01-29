@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers.utils;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 

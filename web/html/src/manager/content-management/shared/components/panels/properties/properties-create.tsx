@@ -1,8 +1,9 @@
 import * as React from "react";
+
 import { Panel } from "components/panels/Panel";
-import PropertiesForm from "./properties-form";
 
 import { ProjectPropertiesType } from "../../../type/project.type";
+import PropertiesForm from "./properties-form";
 
 type Props = {
   properties: ProjectPropertiesType;

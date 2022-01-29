@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,25 +15,29 @@
 
 package com.suse.manager.webui.controllers.admin.handlers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.services.impl.MonitoringService;
-import com.suse.manager.webui.utils.gson.ResultJson;
-import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
-import spark.Request;
-import spark.Response;
-
-import java.util.Map;
-import java.util.Optional;
-
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static spark.Spark.get;
 import static spark.Spark.post;
+
+import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.services.impl.MonitoringService;
+import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
+
+import java.util.Map;
+import java.util.Optional;
+
+import spark.Request;
+import spark.Response;
 
 /**
  * Controller class providing backend code for the Admin -> Config pages.

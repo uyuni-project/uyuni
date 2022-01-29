@@ -1,4 +1,21 @@
+/*
+ * Copyright (c) 2019--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.messaging.test;
+
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -9,12 +26,13 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BatchStartedEvent;
 import com.suse.salt.netapi.parser.JsonParser;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,9 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.joining;
 
 /**
  * Test for {@link BatchStartedEventMessageAction}
@@ -41,7 +56,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         this.messageAction = new BatchStartedEventMessageAction();
-        this.eventParser = new JsonParser<>(new TypeToken<Event>(){});
+        this.eventParser = new JsonParser<>(new TypeToken<Event>() { });
     }
 
     public void testExecute() throws Exception {

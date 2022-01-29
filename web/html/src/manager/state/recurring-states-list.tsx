@@ -1,11 +1,15 @@
 import * as React from "react";
-import { InnerPanel } from "components/panels/InnerPanel";
+
+import { pageSize } from "core/user-preferences";
+
 import { Button } from "components/buttons";
-import { Toggler } from "components/toggler";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { Toggler } from "components/toggler";
+
 import { targetTypeToString } from "./recurring-states-utils";
 
 type Props = {
@@ -52,101 +56,99 @@ class RecurringStatesList extends React.Component<Props, State> {
     ];
 
     return (
-      <div>
-        <InnerPanel
-          title={t("Recurring States")}
-          icon="spacewalk-icon-salt"
-          buttons={this.props.disableCreate ? [] : buttons}
-        >
-          <div className="panel panel-default">
-            <div className="panel-heading">
-              <div>
-                <h3>Schedules</h3>
-              </div>
-            </div>
+      <InnerPanel
+        title={t("Recurring States")}
+        icon="spacewalk-icon-salt"
+        buttons={this.props.disableCreate ? [] : buttons}
+      >
+        <div className="panel panel-default">
+          <div className="panel-heading">
             <div>
-              <Table
-                data={this.props.data}
-                identifier={action => action.recurringActionId}
-                /* Using 0 to hide table header/footer */
-                initialItemsPerPage={this.props.disableCreate ? window.userPrefPageSize : 0}
-                emptyText={t(
-                  "No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule.")
-                )}
-              >
-                <Column
-                  columnKey="active"
-                  header={t("Active")}
-                  cell={row => (
-                    <Toggler value={row.active} className="btn" handler={() => this.props.onToggleActive(row)} />
-                  )}
-                />
-                <Column
-                  columnClass="text-center"
-                  headerClass="text-center"
-                  columnKey="scheduleName"
-                  header={t("Schedule Name")}
-                  cell={row => row.scheduleName}
-                />
-                <Column
-                  columnClass="text-center"
-                  headerClass="text-center"
-                  columnKey="frequency"
-                  header={t("Frequency")}
-                  cell={row => row.cron}
-                />
-                <Column
-                  columnClass="text-center"
-                  headerClass="text-center"
-                  columnKey="targetType"
-                  header={t("Target Type")}
-                  cell={row => targetTypeToString(row.targetType)}
-                />
-                <Column
-                  columnClass="text-right"
-                  headerClass="text-right"
-                  header={t("Actions")}
-                  cell={row => (
-                    <div className="btn-group">
-                      <Button
-                        className="btn-default btn-sm"
-                        title={t("Details")}
-                        icon="fa-list"
-                        handler={() => {
-                          this.props.onSelect(row);
-                        }}
-                      />
-                      <Button
-                        className="btn-default btn-sm"
-                        title={t("Edit")}
-                        icon="fa-edit"
-                        handler={() => {
-                          this.props.onEdit(row);
-                        }}
-                      />
-                      <ModalButton
-                        className="btn-default btn-sm"
-                        title={t("Delete")}
-                        icon="fa-trash"
-                        target="delete-modal"
-                        item={row}
-                        onClick={i => this.selectToDelete(i)}
-                      />
-                    </div>
-                  )}
-                />
-              </Table>
-              <DeleteDialog
-                id="delete-modal"
-                title={t("Delete Recurring State Schedule")}
-                content={t("Are you sure you want to delete the selected item?")}
-                onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
-                onClosePopUp={() => this.selectToDelete(null)}
-              />
+              <h3>Schedules</h3>
             </div>
           </div>
-        </InnerPanel>
-      </div>
+          <div>
+            <Table
+              data={this.props.data}
+              identifier={(action) => action.recurringActionId}
+              /* Using 0 to hide table header/footer */
+              initialItemsPerPage={this.props.disableCreate ? pageSize : 0}
+              emptyText={t(
+                "No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule.")
+              )}
+            >
+              <Column
+                columnKey="active"
+                header={t("Active")}
+                cell={(row) => (
+                  <Toggler value={row.active} className="btn" handler={() => this.props.onToggleActive(row)} />
+                )}
+              />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey="scheduleName"
+                header={t("Schedule Name")}
+                cell={(row) => row.scheduleName}
+              />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey="frequency"
+                header={t("Frequency")}
+                cell={(row) => row.cron}
+              />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey="targetType"
+                header={t("Target Type")}
+                cell={(row) => targetTypeToString(row.targetType)}
+              />
+              <Column
+                columnClass="text-right"
+                headerClass="text-right"
+                header={t("Actions")}
+                cell={(row) => (
+                  <div className="btn-group">
+                    <Button
+                      className="btn-default btn-sm"
+                      title={t("Details")}
+                      icon="fa-list"
+                      handler={() => {
+                        this.props.onSelect(row);
+                      }}
+                    />
+                    <Button
+                      className="btn-default btn-sm"
+                      title={t("Edit")}
+                      icon="fa-edit"
+                      handler={() => {
+                        this.props.onEdit(row);
+                      }}
+                    />
+                    <ModalButton
+                      className="btn-default btn-sm"
+                      title={t("Delete")}
+                      icon="fa-trash"
+                      target="delete-modal"
+                      item={row}
+                      onClick={(i) => this.selectToDelete(i)}
+                    />
+                  </div>
+                )}
+              />
+            </Table>
+            <DeleteDialog
+              id="delete-modal"
+              title={t("Delete Recurring State Schedule")}
+              content={t("Are you sure you want to delete the selected item?")}
+              onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
+              onClosePopUp={() => this.selectToDelete(null)}
+            />
+          </div>
+        </div>
+      </InnerPanel>
     );
   }
 }

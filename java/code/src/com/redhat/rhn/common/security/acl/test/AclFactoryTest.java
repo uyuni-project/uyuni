@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,14 +17,7 @@ package com.redhat.rhn.common.security.acl.test;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
-import com.redhat.rhn.manager.formula.FormulaManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.suse.manager.clusters.ClusterManager;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
 /**
  * AccessTest
@@ -32,12 +25,7 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 public class AclFactoryTest extends RhnBaseTestCase {
 
     public void testGetAcl() {
-        SystemQuery systemQuery = new TestSystemQuery();
-        SaltApi saltApi = new TestSaltApi();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        AclFactory aclFactory = new AclFactory(new Access(clusterManager));
+        AclFactory aclFactory = new AclFactory(new Access());
         Acl test = aclFactory.getAcl("  com.redhat.rhn.common.security.acl.test.MixinTestHandler  ");
         assertNotNull(test);
     }

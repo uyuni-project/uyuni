@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -52,6 +52,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.utils.MachinePasswordUtils;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -70,7 +71,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
-    private ActivationKeyHandler keyHandler = new ActivationKeyHandler(new ServerGroupManager());
+    private ActivationKeyHandler keyHandler = new ActivationKeyHandler(new ServerGroupManager(new TestSaltApi()));
     private static final String KEY = "myexplicitkey";
     private static final String KEY_DESCRIPTION = "Test Key";
     private static final Integer KEY_USAGE_LIMIT = 0;
@@ -109,7 +110,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testCreateWithBlankChannelAndUnlimitedUsageLimit() throws Exception {
-        List <String> ents = new ArrayList<String>(1);
+        List<String> ents = new ArrayList<String>(1);
         String key = keyHandler.create(admin, "", KEY_DESCRIPTION, null,
                                 ents, Boolean.TRUE);
         assertTrue(key.length() > 0);
@@ -770,8 +771,10 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         try {
             keyHandler.listChannels("", "", "");
             fail("Expected NoSuchSystemException");
-        } catch (NoSuchSystemException e) {
-        } catch (Throwable t) {
+        }
+        catch (NoSuchSystemException e) {
+        }
+        catch (Throwable t) {
             fail("Expected NoSuchSystemException but got " + t);
         }
     }
@@ -781,8 +784,10 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         try {
             keyHandler.listChannels(testMinionServer.getMinionId(), "", "");
             fail("Expected NoSuchActivationKeyException");
-        } catch (NoSuchActivationKeyException e) {
-        } catch (Throwable t) {
+        }
+        catch (NoSuchActivationKeyException e) {
+        }
+        catch (Throwable t) {
             fail("Expected NoSuchActivationKeyException but got " + t);
         }
     }
@@ -793,9 +798,11 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         try {
             keyHandler.listChannels(testMinionServer.getMinionId(), "", key.getKey());
             fail("Expected AuthenticationException");
-        } catch (AuthenticationException e) {
+        }
+        catch (AuthenticationException e) {
             assertEquals("wrong machine password.", e.getMessage());
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             fail("Expected AuthenticationException but got " + t);
         }
     }
@@ -812,7 +819,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         channels.add(channel2);
         key.setChannels(channels);
         String machinePassword = MachinePasswordUtils.machinePassword(testMinionServer);
-        List<ChannelInfo> channelInfo = keyHandler.listChannels(testMinionServer.getMinionId(), machinePassword, key.getKey());
+        List<ChannelInfo> channelInfo = keyHandler.listChannels(
+                testMinionServer.getMinionId(), machinePassword, key.getKey());
         assertEquals(2, channelInfo.size());
         List<String> labels = channelInfo.stream().map(ChannelInfo::getLabel).collect(Collectors.toList());
         List<String> names = channelInfo.stream().map(ChannelInfo::getName).collect(Collectors.toList());
@@ -849,7 +857,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         for (ConfigChannel cc : configs) {
             configLabels.add(cc.getLabel());
         }
-        List <String> keys = new LinkedList<String>();
+        List<String> keys = new LinkedList<String>();
         keys.add(newKey);
 
         assertEquals(1, keyHandler.setConfigChannels(admin, keys, configLabels));

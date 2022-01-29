@@ -31,7 +31,7 @@ except ImportError:
 import pycurl
 from urlgrabber.grabber import URLGrabberOptions, PyCurlFileObject, URLGrabError
 from uyuni.common.checksum import getFileChecksum
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.context_managers import cfg_component
 from spacewalk.satellite_tools.syncLib import log, log2
 
 
@@ -115,7 +115,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
-        super().__init__(str(url), filename, opts)
+        super().__init__(url, filename, opts)
 
     def _do_open(self):
         self.curl_obj = self.curl_cache
@@ -281,9 +281,7 @@ class DownloadThread(Thread):
 class ThreadedDownloader:
     def __init__(self, retries=3, log_obj=None, force=False):
         self.queues = {}
-        comp = CFG.getComponent()
-        initCFG("server.satellite")
-        try:
+        with cfg_component("server.satellite") as CFG:
             try:
                 self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
             except ValueError:
@@ -303,10 +301,6 @@ class ThreadedDownloader:
                     "Minimal transfer rate in bytes pre second expected, found: '%s'"
                     % CFG.REPOSYNC_MINRATE
                 )
-        except Exception as e:
-            raise e from None
-        finally:
-            initCFG(comp)
 
         if self.threads < 1:
             raise ValueError("Invalid number of threads: %d" % self.threads)

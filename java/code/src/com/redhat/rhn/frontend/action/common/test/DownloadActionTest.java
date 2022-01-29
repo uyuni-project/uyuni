@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,10 +25,10 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * TinyUrlActionTest

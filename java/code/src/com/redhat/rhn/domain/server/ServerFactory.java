@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -318,10 +318,10 @@ public class ServerFactory extends HibernateFactory {
             ServerPath path = findServerPath(server, parentPath.getId().getProxyServer()).orElseGet(() -> {
                 ServerPath newPath = new ServerPath();
                 newPath.setId(new ServerPathId(server, parentPath.getId().getProxyServer()));
-                newPath.setPosition(parentPath.getPosition() + 1);
                 newPath.setHostname(parentPath.getHostname());
                 return newPath;
             });
+            path.setPosition(parentPath.getPosition() + 1);
             paths.add(path);
 
         }
@@ -330,15 +330,21 @@ public class ServerFactory extends HibernateFactory {
             newPath.setId(new ServerPathId(server, proxyServer));
             // the first proxy is the one to which
             // the server connects directly
-            newPath.setPosition(0L);
             newPath.setHostname(proxyHostname);
             return newPath;
         });
+        path.setPosition(0L);
         paths.add(path);
         return paths;
     }
 
-    private static Optional<ServerPath> findServerPath(Server server, Server proxyServer) {
+    /**
+     * Finds a Server Path identified by proxyServer
+     * @param server the server
+     * @param proxyServer the proxy server to which <code>server</code> connects directly
+     * @return the ServerPath if found
+     */
+    public static Optional<ServerPath> findServerPath(Server server, Server proxyServer) {
         if (server.getId() == null) {
             // not yet persisted, return empty to avoid Hibernate error
             // on query with a transient object

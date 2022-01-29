@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC.
+# Copyright (c) 2017-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -22,21 +22,18 @@ def retrieve_build_host_id
   build_host_id
 end
 
-# OS image build
-Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
+When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
+  git_profiles = ENV['GITPROFILES']
+  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
+end
+
+When(/^I enter URI, username and password for registry$/) do
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
-    When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest scheduled by kiwikiwi" is completed
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
   )
-end
-
-Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
-  # It doesn't exist any navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
-  visit("https://#{$server.full_hostname}/os-images/#{org}/")
-end
-
-Then(/^I should see the name of the image$/) do
-  step %(I should see a "#{compute_image_name}" text)
 end
 
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
@@ -63,7 +60,9 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
 end
 
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
-  def ck_container_imgs(timeout, count)
+  os_version, os_family = get_os_version($build_host)
+  # don't run this for sles11 (docker feature is not there)
+  unless os_family =~ /^sles/ && os_version =~ /^11/
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
       step %(I follow the left menu "Images > Image List")
       step %(I wait until I do not see "There are no entries to show." text)
@@ -72,8 +71,6 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
       sleep 5
     end
   end
-  # don't run this for sles11 (docker feature is not there)
-  ck_container_imgs(timeout, count) unless sle11family?($build_host)
 end
 
 When(/^I check the first image$/) do
@@ -141,6 +138,7 @@ When(/^I list image store types and image stores via XML-RPC$/) do
   raise "imagestore label type should be 'os_image' but is #{store_typ[1]['label']}" unless store_typ[1]['label'] == 'os_image'
 
   registry_list = cont_op.list_image_stores
+  puts "Image Stores: #{registry_list}"
   raise "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
   raise "URI #{registry_list[0]['uri']} is different than '#{$no_auth_registry}'" unless registry_list[0]['uri'] == $no_auth_registry.to_s
 end

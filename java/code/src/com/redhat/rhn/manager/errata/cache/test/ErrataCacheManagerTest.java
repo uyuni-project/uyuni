@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -195,10 +195,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             rows = ErrataCacheManager.deleteNeededCache(sid, eid, pid);
             assertEquals(1, rows);
 
-            rs = stmt.executeQuery(
-                "SELECT * FROM rhnServerNeededCache WHERE server_id = "
-                + sid.toString()
-            );
+            rs = stmt.executeQuery("SELECT * FROM rhnServerNeededCache WHERE server_id = " + sid.toString());
             assertFalse(rs.next());
         });
     }

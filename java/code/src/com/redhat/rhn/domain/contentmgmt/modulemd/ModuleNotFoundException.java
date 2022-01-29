@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Exception thrown when a selected module is not found
  */
-public class ModuleNotFoundException extends Exception {
+public class ModuleNotFoundException extends ModulemdApiException {
 
     private List<Module> modules;
 

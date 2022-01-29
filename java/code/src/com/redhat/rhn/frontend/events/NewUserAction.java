@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MailHelper;
+
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

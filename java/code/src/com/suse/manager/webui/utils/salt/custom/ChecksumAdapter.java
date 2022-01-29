@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,13 +14,14 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
+
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
-import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 
 import java.io.IOException;
 

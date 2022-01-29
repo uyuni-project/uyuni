@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -63,7 +63,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         setTestTreeParams(cmd);
         cmd.setKernelOptions("");
         cmd.store();
-        assert(cmd.getKernelOptions().isEmpty());
+        assert cmd.getKernelOptions().isEmpty();
     }
 
     public void testPopulateKernelOptsForRhel8() throws Exception {

@@ -10,10 +10,7 @@ export type ChannelsDependencies = {
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
 // return null if the channel is not involved in any dependencies
-function dependenciesTooltip(
-  requiredChannels: Array<string>,
-  requiredByChannels: Array<string>
-): string | null {
+function dependenciesTooltip(requiredChannels: Array<string>, requiredByChannels: Array<string>): string | null {
   if (requiredChannels.length === 0 && requiredByChannels.length === 0) {
     return null;
   }
@@ -50,17 +47,17 @@ function computeReverseDependencies(dependencyMap: Map<number, Set<number>>): Ma
   };
 
   return Array.from(dependencyMap.keys())
-    .flatMap(key => Array.from(dependencyMap.get(key)!).map(val => [val, key]))
+    .flatMap((key) => Array.from(dependencyMap.get(key)!).map((val) => [val, key]))
     .reduce(mergeEntries, new Map());
 }
 
 function processChannelDependencies(requiredChannelsRaw): ChannelsDependencies {
   const requiredChannels: Map<number, Set<number>> = new Map(
-    Object.entries(requiredChannelsRaw).map(entry => {
+    Object.entries(requiredChannelsRaw).map((entry) => {
       const channelId = parseInt(entry[0], 10);
       // TODO: Specify types
       const requiredChannelList: any = entry[1];
-      return [channelId, new Set(requiredChannelList.filter(requiredId => requiredId !== channelId))];
+      return [channelId, new Set(requiredChannelList.filter((requiredId) => requiredId !== channelId))];
     })
   );
 
@@ -78,7 +75,7 @@ function getChannelsToToggleWithDependencies(
   isSelection: boolean
 ): Array<number> {
   let channelsToToggle: Array<number> = [...channelsId];
-  channelsId.forEach(channelId => {
+  channelsId.forEach((channelId) => {
     if (isSelection) {
       channelsToToggle = _union(
         channelsToToggle,

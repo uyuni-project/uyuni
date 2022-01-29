@@ -1,19 +1,19 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
 # Texts and links
 #
 
-Then(/^I should see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should see a "(.*)" text in the content area$/) do |text|
   within('#spacewalk-content') do
-    raise "Text #{txt} not found" unless has_content?(txt)
+    raise "Text '#{text}' not found" unless has_content?(text)
   end
 end
 
-Then(/^I should not see a "(.*)" text in the content area$/) do |txt|
+Then(/^I should not see a "(.*)" text in the content area$/) do |text|
   within('#spacewalk-content') do
-    raise "Text #{txt} found" unless has_no_content?(txt)
+    raise "Text '#{text}' found" unless has_no_content?(text)
   end
 end
 
@@ -34,24 +34,22 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  raise "Text #{text} not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text}' not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
-  raise "Text #{text} found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text}' found" unless has_no_text?(text, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text #{text} not found" unless has_content?(text, wait: seconds.to_i)
+  raise "Text '#{text}' not found" unless has_content?(text, wait: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text #{text1} or #{text2} not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text1}' or '#{text2}' not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', $product
-  # TODO: get rid of this substitution, using another step
   next if has_content?(text, wait: 3)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
@@ -67,7 +65,7 @@ end
 
 When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |seconds, text|
   next if has_no_text?(text, wait: 3)
-  repeat_until_timeout(message: "Couldn't find text '#{text}'", timeout: seconds.to_i) do
+  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
     begin
       accept_prompt do
@@ -76,6 +74,13 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
     rescue Capybara::ModalNotFound
       # ignored
     end
+  end
+end
+
+When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do |seconds, text|
+  next if has_no_text?(text, wait: 3)
+  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
+    break if has_no_text?(text, wait: 3)
   end
 end
 
@@ -194,7 +199,7 @@ When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |clien
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
-  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td,'#{line}')]//select")
+  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
   select(value, from: select[:id])
 end
 
@@ -280,18 +285,6 @@ end
 #
 When(/^I follow first "([^"]*)"$/) do |text|
   click_link_and_wait(text, match: :first)
-end
-
-#
-# Click on the terminal
-#
-When(/^I follow "([^"]*)" terminal$/) do |host|
-  domain = read_branch_prefix_from_yaml
-  if !host.include? 'pxeboot'
-    step %(I follow "#{domain}.#{host}")
-  else
-    step %(I follow "#{host}.#{domain}")
-  end
 end
 
 #
@@ -532,8 +525,7 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = 'You have just created your first $PRODUCT user. To finalize your installation please use the Setup Wizard'
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
+  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   raise 'The welcome message is not shown' unless has_content?(text)
 end
 
@@ -567,20 +559,19 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
-  raise "Text #{text} not found" unless has_content?(text)
+  raise "Text '#{text}' not found" unless has_content?(text)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text #{text1} and #{text2} are not found" unless has_content?(text1) || has_content?(text2)
+  raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
 end
 
 #
 # Test for text in a snippet textarea
 #
-Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
+Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   within('textarea') do
-    raise "Text #{arg1} not found" unless has_content?(arg1)
+    raise "Text '#{text}' not found" unless has_content?(text)
   end
 end
 
@@ -588,14 +579,14 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  raise "Text #{title} not found" unless has_content?(Regexp.new(title))
+  raise "Regular expression '#{title}' not found" unless has_content?(Regexp.new(title))
 end
 
 #
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |text|
-  raise "#{text} found on the page! FAIL" unless has_no_content?(text)
+  raise "Text '#{text}' found on the page" unless has_no_content?(text)
 end
 
 #
@@ -624,13 +615,13 @@ end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text #{text} not found in #{element}" unless has_content?(text)
+    raise "Text '#{text}' not found in #{element}" unless has_content?(text)
   end
 end
 
 Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text #{text} found in #{element}" if has_content?(text)
+    raise "Text '#{text}' found in #{element}" if has_content?(text)
   end
 end
 
@@ -958,32 +949,11 @@ end
 
 # Wait until a modal window with a specific content is shown
 When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
-  path = "//*[contains(@class, \"modal-body\") and contains(., \"#{title}\")]" \
+  path = "//*[contains(@class, \"modal-content\") and contains(., \"#{title}\")]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise "#{title} modal did not appear" unless dialog
-end
-
-# Image-specific steps
-When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
-  git_profiles = ENV['GITPROFILES']
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
-  git_profiles = ENV['GITPROFILES']
-  path = compute_image_filename
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter URI, username and password for portus$/) do
-  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
-  steps %(
-    When I enter "#{$auth_registry}" as "uri"
-    And I enter "#{auth_registry_username}" as "username"
-    And I enter "#{auth_registry_password}" as "password"
-  )
 end
 
 When(/^I scroll to the top of the page$/) do

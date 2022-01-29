@@ -1,11 +1,12 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
+
 import { AsyncButton } from "components/buttons";
 import { Button } from "components/buttons";
 import { InnerPanel } from "components/panels/InnerPanel";
 
-import MaintenanceScheduleEdit from "./schedule-edit";
 import MaintenanceCalendarEdit from "./calendar-edit";
+import MaintenanceScheduleEdit from "./schedule-edit";
 
 type MaintenanceEditProps = {
   type: "schedule" | "calendar";
@@ -78,7 +79,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
             calendar={props.selected}
             onRefresh={props.onRefresh}
             onEdit={props.onEdit}
-            isLoading={i => setIcalLoading(i)}
+            isLoading={(i) => setIcalLoading(i)}
           />
         ))}
     </InnerPanel>

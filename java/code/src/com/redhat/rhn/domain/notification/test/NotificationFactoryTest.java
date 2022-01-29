@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,8 +24,10 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +49,8 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testVisibilityForWrongRoles() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+        UserNotificationFactory.storeNotificationMessageFor(
+                msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
@@ -87,15 +90,20 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // Create a notification
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+        UserNotificationFactory.storeNotificationMessageFor(
+                msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
 
-        // Should not be deleted
-        int result = UserNotificationFactory.deleteNotificationMessagesBefore(msg.getCreated());
+        msg = TestUtils.reload(msg);
+
+        // Should not be deleted at creation date
+        Date deleteBeforeDate = msg.getCreated();
+        int result = UserNotificationFactory.deleteNotificationMessagesBefore(deleteBeforeDate);
         assertEquals(0, result);
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
 
-        // Should be deleted
-        result = UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
+        // Should be deleted 1 second after creation date
+        deleteBeforeDate = Date.from(msg.getCreated().toInstant().plus(1, ChronoUnit.SECONDS));
+        result = UserNotificationFactory.deleteNotificationMessagesBefore(deleteBeforeDate);
         assertEquals(1, result);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
     }

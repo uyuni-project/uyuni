@@ -1,11 +1,15 @@
 import * as React from "react";
-import { ToolTip, CsvLink, humanReadablePolicy } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
-import { Table } from "components/table/Table";
+
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import { CsvLink, humanReadablePolicy, ToolTip } from "./subscription-matching-util";
+import { WarningIcon } from "./subscription-matching-util";
 
 type SubscriptionsProps = {
   subscriptions: any[];
@@ -39,8 +43,8 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
     return true;
   };
 
-  buildRows = subscriptions => {
-    return Object.keys(subscriptions).map(id => subscriptions[id]);
+  buildRows = (subscriptions) => {
+    return Object.keys(subscriptions).map((id) => subscriptions[id]);
   };
 
   render() {
@@ -50,60 +54,64 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
         <div>
           <Table
             data={this.buildRows(this.props.subscriptions)}
-            identifier={row => row.id}
-            cssClassFunction={row =>
-              moment(row.endDate).isBefore(moment()) || moment(row.startDate).isAfter(moment()) ? "text-muted" : null
-            }
+            identifier={(row) => row.id}
+            cssClassFunction={(row) => {
+              const now = localizedMoment();
+              return localizedMoment(row.endDate).isBefore(now) || localizedMoment(row.startDate).isAfter(now)
+                ? "text-muted"
+                : null;
+            }}
             initialSortColumnKey="partNumber"
-            initialItemsPerPage={window.userPrefPageSize}
-            searchField={
-              <SearchField filter={this.searchData} placeholder={t("Filter by description")} />
-            }
+            searchField={<SearchField filter={this.searchData} placeholder={t("Filter by description")} />}
           >
             <Column
               columnKey="partNumber"
               comparator={Utils.sortByText}
               header={t("Part number")}
-              cell={row => row.partNumber}
+              cell={(row) => row.partNumber}
             />
             <Column
               columnKey="description"
               comparator={Utils.sortByText}
               header={t("Description")}
-              cell={row => row.description}
+              cell={(row) => row.description}
             />
             <Column
               columnKey="policy"
               comparator={this.sortByPolicy}
               header={t("Policy")}
-              cell={row => humanReadablePolicy(row.policy)}
+              cell={(row) => humanReadablePolicy(row.policy)}
             />
             <Column
               columnKey="quantity"
               comparator={this.sortByQuantity}
               header={t("Matched/Total")}
-              cell={row => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} />}
+              cell={(row) => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} />}
             />
             <Column
               columnKey="startDate"
               comparator={Utils.sortByText}
               header={t("Start date")}
-              cell={row => (
-                <ToolTip content={moment(row.startDate).fromNow()} title={moment(row.startDate).format("LL")} />
-              )}
+              cell={(row) => {
+                const startDate = localizedMoment(row.startDate);
+                return <ToolTip content={startDate.fromNow()} title={startDate.toUserDateString()} />;
+              }}
             />
             <Column
               columnKey="endDate"
               comparator={Utils.sortByText}
               header={t("End date")}
-              cell={row => (
-                <span>
-                  <ToolTip content={moment(row.endDate).fromNow()} title={moment(row.endDate).format("LL")} />
-                  {moment(row.endDate).isBefore(moment().add(6, "months")) && moment(row.endDate).isAfter(moment()) ? (
-                    <WarningIcon iconOnRight={true} />
-                  ) : null}
-                </span>
-              )}
+              cell={(row) => {
+                const endDate = localizedMoment(row.endDate);
+                const isWarning =
+                  endDate.isBefore(localizedMoment().add(6, "months")) && endDate.isAfter(localizedMoment());
+                return (
+                  <span>
+                    <ToolTip content={endDate.fromNow()} title={endDate.toUserDateString()} />
+                    {isWarning ? <WarningIcon iconOnRight={true} /> : null}
+                  </span>
+                );
+              }}
             />
           </Table>
           <CsvLink name="subscription_report.csv" />
@@ -122,7 +130,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   }
 }
 
-const QuantityCell = props => {
+const QuantityCell = (props) => {
   const matched = props.matched;
   const total = props.total;
   const content = matched + "/" + total;

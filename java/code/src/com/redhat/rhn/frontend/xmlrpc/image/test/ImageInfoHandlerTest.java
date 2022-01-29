@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -63,13 +63,13 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
-import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -86,31 +86,36 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private ImageInfoHandler handler = new ImageInfoHandler();
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    private Mockery context = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
     private static TaskomaticApi taskomaticApi;
-    private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
-    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
-    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
-    );
+    private SaltService saltServiceMock;
+    private SystemEntitlementManager systemEntitlementManager;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+        saltServiceMock = context.mock(SaltService.class);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
+        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
+        );
+        context.checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
     }
 
     public final void testImportImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
-        MinionServer server = ImageTestUtils.createBuildHost(admin);
+        MinionServer server = ImageTestUtils.createBuildHost(systemEntitlementManager, admin);
         ImageStore store = createImageStore("registry.reg", admin);
         ActivationKey ak = createActivationKey(admin);
 
@@ -167,25 +172,16 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        SaltService saltServiceMock = CONTEXT.mock(SaltService.class);
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        SystemEntitlementManager sem = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
-        );
-
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
-        sem.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
 
@@ -280,8 +276,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {
-            taskomaticApi = CONTEXT.mock(TaskomaticApi.class);
-            CONTEXT.checking(new Expectations() {
+            taskomaticApi = context.mock(TaskomaticApi.class);
+            context.checking(new Expectations() {
                 {
                     allowing(taskomaticApi)
                             .scheduleActionExecution(with(any(Action.class)));

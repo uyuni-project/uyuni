@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,19 +14,19 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.redhat.rhn.common.localization.LocalizationService;
-
 /**
- * DTO for a com.redhat.rhn.frontend.action..systems.sdc.SystemHistoryAction
+ * DTO for a {@link com.redhat.rhn.frontend.action.systems.sdc.SystemHistoryAction}
  */
 public class SystemEventDto extends BaseDto implements Serializable {
 
@@ -44,7 +44,7 @@ public class SystemEventDto extends BaseDto implements Serializable {
     private boolean historyVisible;
 
     static {
-        ACTIONTYPES = new HashMap<String, String>();
+        ACTIONTYPES = new HashMap<>();
         ACTIONTYPES.put("packages.refresh_list", "event-type-package");
         ACTIONTYPES.put("packages.delta", "event-type-package");
         ACTIONTYPES.put("packages.update", "event-type-package");
@@ -89,21 +89,8 @@ public class SystemEventDto extends BaseDto implements Serializable {
     /**
      * @param createdIn Date of creation to set
      */
-    public void setCreated(String createdIn) {
-        if (createdIn == null) {
-            this.created = null;
-        }
-        else {
-            try {
-                this.created = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(createdIn);
-            }
-            catch (ParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
-                        createdIn);
-            }
-        }
+    public void setCreated(Date createdIn) {
+        this.created = createdIn;
     }
 
     /**
@@ -116,21 +103,8 @@ public class SystemEventDto extends BaseDto implements Serializable {
     /**
      * @param pickedUpIn Date of pick up of event to set
      */
-    public void setPickedUp(String pickedUpIn) {
-        if (pickedUpIn == null) {
-            this.pickedUp = null;
-        }
-        else {
-            try {
-                this.pickedUp = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(pickedUpIn);
-            }
-            catch (ParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
-                        pickedUpIn);
-            }
-        }
+    public void setPickedUp(Date pickedUpIn) {
+        this.pickedUp = pickedUpIn;
     }
 
     /**
@@ -156,21 +130,8 @@ public class SystemEventDto extends BaseDto implements Serializable {
     /**
      * @param completedIn Date of completion to set
      */
-    public void setCompleted(String completedIn) {
-        if (completedIn == null) {
-            this.completed = null;
-        }
-        else {
-            try {
-                this.completed = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(completedIn);
-            }
-            catch (ParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
-                        completedIn);
-            }
-        }
+    public void setCompleted(Date completedIn) {
+        this.completed = completedIn;
     }
 
     /**
@@ -246,4 +207,31 @@ public class SystemEventDto extends BaseDto implements Serializable {
         this.historyVisible = historyVisibleIn;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SystemEventDto that = (SystemEventDto) o;
+
+        return new EqualsBuilder().append(id, that.id)
+                                  .append(summary, that.summary)
+                                  .append(historyTypeName, that.historyTypeName)
+                                  .append(historyStatus, that.historyStatus)
+                                  .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id)
+                                          .append(summary)
+                                          .append(historyTypeName)
+                                          .append(historyStatus)
+                                          .toHashCode();
+    }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.domain.iss;
 
+import com.redhat.rhn.frontend.dto.BaseDto;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
  * IssMaster - Class representation of the table rhnissmaster.

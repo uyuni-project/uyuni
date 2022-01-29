@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,8 +17,9 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
-import org.cobbler.CobblerConnection;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
+
+import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
 /**

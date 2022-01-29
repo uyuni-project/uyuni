@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -86,8 +86,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
         assertEquals(expected, reader.readLine());
 
         // expect log file also to contain the same fake data
-        File logFile = new File(System.getProperty("java.io.tmpdir") + File.separator
-                        + TEST_FILE_NAME);
+        File logFile = new File(System.getProperty("java.io.tmpdir") + File.separator + TEST_FILE_NAME);
         String actual = FileUtils.readFileToString(logFile);
         assertEquals(expected, actual);
     }

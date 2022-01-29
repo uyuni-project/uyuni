@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.utils.gson;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
@@ -25,7 +24,10 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.webui.utils.ViewHelper;
+
+import com.google.gson.JsonObject;
 
 import java.util.List;
 import java.util.Map;

@@ -1,13 +1,16 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 import { Highlight } from "components/table/Highlight";
-import SpaRenderer from "core/spa/spa-renderer";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 function listKeys() {
   return Network.get("/rhn/manager/api/systems/keys");
@@ -59,7 +62,7 @@ function actionsFor(id, state, update, enabled) {
     rejected: [del],
     denied: [del],
   };
-  return <div className="pull-right btn-group">{mapping[state].map(fn => fn())}</div>;
+  return <div className="pull-right btn-group">{mapping[state].map((fn) => fn())}</div>;
 }
 
 const stateMapping = {
@@ -97,7 +100,6 @@ type State = {
 class KeyManagement extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["searchData", "rowKey", "reloadKeys"].forEach(method => (this[method] = this[method].bind(this)));
     this.state = {
       keys: [],
       isOrgAdmin: false,
@@ -106,22 +108,22 @@ class KeyManagement extends React.Component<Props, State> {
     this.reloadKeys();
   }
 
-  reloadKeys() {
+  reloadKeys = () => {
     this.setState({ loading: true });
-    return listKeys().then(data => {
+    return listKeys().then((data) => {
       this.setState({
         keys: data["minions"],
         isOrgAdmin: data["isOrgAdmin"],
         loading: false,
       });
     });
-  }
+  };
 
-  rowKey(rowData) {
+  rowKey = (rowData) => {
     return rowData.id;
-  }
+  };
 
-  searchData(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return (
         datum.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
@@ -129,7 +131,7 @@ class KeyManagement extends React.Component<Props, State> {
       );
     }
     return true;
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
@@ -148,7 +150,6 @@ class KeyManagement extends React.Component<Props, State> {
             data={this.state.keys}
             identifier={this.rowKey}
             initialSortColumnKey="id"
-            initialItemsPerPage={window.userPrefPageSize}
             loading={this.state.loading}
             searchField={<SearchField filter={this.searchData} />}
           >
@@ -185,14 +186,14 @@ class KeyManagement extends React.Component<Props, State> {
               headerClass="text-center"
               comparator={Utils.sortByText}
               header={t("State")}
-              cell={row => labelFor(row.state)}
+              cell={(row) => labelFor(row.state)}
             />
             <Column
               width="15%"
               columnClass="text-right"
               headerClass="text-right"
               header={t("Actions")}
-              cell={row => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
+              cell={(row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
             />
           </Table>
         </TopPanel>
@@ -201,4 +202,4 @@ class KeyManagement extends React.Component<Props, State> {
   }
 }
 
-export const renderer = id => SpaRenderer.renderNavigationReact(<KeyManagement />, document.getElementById(id));
+export const renderer = (id) => SpaRenderer.renderNavigationReact(<KeyManagement />, document.getElementById(id));

@@ -1,9 +1,6 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# Please, do not run this feature after the retail one:
-# proxy_retail_pxeboot_and_mass_import.feature
-#
 
 @proxy
 @private_net
@@ -26,29 +23,25 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-  Scenario: Configure PXE part of DNS on the proxy
+  # Note: Avahi does not cross networks, so we need to cheat by serving tf.local
+  Scenario: Configure avahi info for PXE part of DNS on the proxy
     When I follow first "Bind" in the content area
-    # general information:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
-    # direct zone tf.local:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
     And I scroll to the top of the page
     And I press "Add Item" in available zones section
     And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in third file name field
-    And I enter the hostname of "proxy" in third name server field
-    And I enter "admin@tf.local." in third contact field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "proxy" in fifth A name field
-    And I enter the IP address of "proxy" in fifth A address field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "server" in sixth A name field
-    And I enter the IP address of "server" in sixth A address field
-    And I press "Add Item" in third NS section
-    And I enter the hostname of "proxy" in third NS field
-    # end
+    And I enter "master/db.tf.local" in file name field of tf.local zone
+    And I enter the hostname of "proxy" in SOA name server field of tf.local zone
+    And I enter "admin@tf.local." in SOA contact field of tf.local zone
+    And I press "Add Item" in A section of tf.local zone
+    And I enter the hostname of "proxy" in first A name field of tf.local zone
+    And I enter the IP address of "proxy" in first A address field of tf.local zone
+    And I press "Add Item" in A section of tf.local zone
+    And I enter the hostname of "server" in second A name field of tf.local zone
+    And I enter the IP address of "server" in second A address field of tf.local zone
+    And I press "Add Item" in NS section of tf.local zone
+    And I enter the hostname of "proxy" in first NS field of tf.local zone
     And I scroll to the top of the page
     And I should see a "Bind" text
     And I click on "Save Formula"
@@ -85,10 +78,12 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Create"
     Then I should see a "Autoinstallation: 15-sp2-cobbler" text
     And I should see a "Autoinstallation Details" text
+
+  Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP2-TFTP" text
@@ -104,7 +99,7 @@ Feature: PXE boot a terminal with Cobbler
     When I reboot the PXE boot minion
     And I wait for "60" seconds
     And I set the default PXE menu entry to the "local boot" on the "proxy"
-    And I wait at most 900 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
     And I am on the Systems page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
@@ -150,14 +145,14 @@ Feature: PXE boot a terminal with Cobbler
     Then "pxeboot_minion" should not be registered
     And I stop salt-minion on the PXE boot minion
 
-  Scenario: Cleanup: remove DNS records added by mass import
+  Scenario: Cleanup: remove avahi info from DNS records
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
     # direct zone tf.local:
     And I scroll to the top of the page
-    And I press minus sign in third configured zone section
-    And I press minus sign in third available zone section
+    And I press minus sign in tf.local configured zone section
+    And I press minus sign in tf.local available zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 

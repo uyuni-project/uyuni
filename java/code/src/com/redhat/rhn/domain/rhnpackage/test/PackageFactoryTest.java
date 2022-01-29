@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
+import com.redhat.rhn.domain.rhnpackage.PackageProperty;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
@@ -162,7 +163,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
                findMissingProductPackagesOnServer(testServer.getId());
 
        assertEquals(1, missing.size());
-       assertEquals(testPackage.getNameEvra() ,missing.get(0).getNameEvra());
+       assertEquals(testPackage.getNameEvra(), missing.get(0).getNameEvra());
    }
 
     public void testFindMissingProductPackageNoPackageProfile() throws Exception {
@@ -320,92 +321,13 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
                findMissingProductPackagesOnServer(testServer.getId());
 
        assertEquals(1, missing.size());
-       assertEquals(testPackage2.getNameEvra() ,missing.get(0).getNameEvra());
+       assertEquals(testPackage2.getNameEvra(), missing.get(0).getNameEvra());
    }
 
    public void testCapabilities() throws Exception {
        Package pkg = PackageTest.createTestPackage(user.getOrg());
 
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depProvides");
-           PackageProvides dependency = new PackageProvides();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depRequires");
-           PackageRequires dependency = new PackageRequires();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depObsoletes");
-           PackageObsoletes dependency = new PackageObsoletes();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depConflicts");
-           PackageConflicts dependency = new PackageConflicts();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depRecommends");
-           PackageRecommends dependency = new PackageRecommends();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depSuggests");
-           PackageSuggests dependency = new PackageSuggests();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depSupplements");
-           PackageSupplements dependency = new PackageSupplements();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depEnhances");
-           PackageEnhances dependency = new PackageEnhances();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depPreDepends");
-           PackagePreDepends dependency = new PackagePreDepends();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
-       {
-           PackageCapability cap = PackageCapabilityTest.createTestCapability("depBreaks");
-           PackageBreaks dependency = new PackageBreaks();
-           dependency.setCapability(cap);
-           dependency.setPack(pkg);
-           dependency.setSense(0L);
-           TestUtils.saveAndFlush(dependency);
-       }
+       createPackageProperties(pkg);
        HibernateFactory.getSession().flush();
        HibernateFactory.getSession().clear();
        pkg = PackageFactory.lookupByIdAndUser(pkg.getId(), user);
@@ -421,6 +343,27 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(1, pkg.getPreDepends().size());
        assertEquals(1, pkg.getBreaks().size());
 
+   }
+
+   public static void createPackageProperties(Package pkg) throws Exception {
+       createPackageProperty(pkg, "depProvides", new PackageProvides());
+       createPackageProperty(pkg, "depRequires", new PackageRequires());
+       createPackageProperty(pkg, "depObsoletes", new PackageObsoletes());
+       createPackageProperty(pkg, "depConflicts", new PackageConflicts());
+       createPackageProperty(pkg, "depRecommends", new PackageRecommends());
+       createPackageProperty(pkg, "depSuggests", new PackageSuggests());
+       createPackageProperty(pkg, "depSupplements", new PackageSupplements());
+       createPackageProperty(pkg, "depEnhances", new PackageEnhances());
+       createPackageProperty(pkg, "depPreDepends", new PackagePreDepends());
+       createPackageProperty(pkg, "depBreaks", new PackageBreaks());
+   }
+
+   private static void createPackageProperty(Package pkg, String name, PackageProperty prop) throws Exception {
+       PackageCapability cap = PackageCapabilityTest.createTestCapability(name);
+       prop.setCapability(cap);
+       prop.setPack(pkg);
+       prop.setSense(0L);
+       TestUtils.saveAndFlush(prop);
    }
 }
 

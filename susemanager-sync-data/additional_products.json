@@ -1,5 +1,564 @@
 [
     {
+        "id" : -31,
+        "name" : "CentOS 7",
+        "identifier" : "centos",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "CentOS 7 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -334,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=os",
+                "name" : "centos7",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -336,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=centosplus",
+                "name" : "centos7-centosplus",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -337,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=cr",
+                "name" : "centos7-cr",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 CR",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -338,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=extras",
+                "name" : "centos7-extras",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -339,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=fasttrack",
+                "name" : "centos7-fasttrack",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -341,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=updates",
+                "name" : "centos7-updates",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -342,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-7&arch=aarch64",
+                "name" : "epel7",
+                "distro_target" : "aarch64",
+                "description" : "EPEL 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -30,
+        "name" : "CentOS 8",
+        "identifier" : "centos",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "CentOS 8 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -344,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=BaseOS&infra=stock",
+                "name" : "centos8",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -345,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=AppStream&infra=stock",
+                "name" : "centos8-appstream",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -346,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=centosplus&infra=stock",
+                "name" : "centos8-centosplus",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -347,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=cr&infra=stock",
+                "name" : "centos8-cr",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 CR",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -348,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=extras&infra=stock",
+                "name" : "centos8-extras",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -349,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=fasttrack&infra=stock",
+                "name" : "centos8-fasttrack",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -350,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=PowerTools&infra=stock",
+                "name" : "centos8-powertools",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -351,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-8&arch=aarch64",
+                "name" : "epel8",
+                "distro_target" : "aarch64",
+                "description" : "EPEL 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -29,
+        "name" : "Oracle Linux 8",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Oracle Linux 8 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -316,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/aarch64/",
+                "name" : "oraclelinux8",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 8",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -317,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/appstream/aarch64/",
+                "name" : "oraclelinux8-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -318,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/addons/aarch64/",
+                "name" : "oraclelinux8-addons",
+                "distro_target" : "aarch64",
+                "description" : "Addons for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -319,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/codeready/builder/aarch64/",
+                "name" : "oraclelinux8-codereadybuilder",
+                "distro_target" : "aarch64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -320,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/UEKR6/aarch64/",
+                "name" : "oraclelinux8-developer-uek-r6",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -321,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/aarch64/",
+                "name" : "oraclelinux8-developer",
+                "distro_target" : "aarch64",
+                "description" : "Packages for test and development - Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -28,
+        "name" : "Oracle Linux 7",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Oracle Linux 7 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -297,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/latest/aarch64/",
+                "name" : "oraclelinux7",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 7",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -298,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/addons/aarch64/",
+                "name" : "oraclelinux7-addons",
+                "distro_target" : "aarch64",
+                "description" : "Addons for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -301,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/aarch64/",
+                "name" : "oraclelinux7-uek-r6",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -312,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/SoftwareCollections/aarch64/",
+                "name" : "oraclelinux7-scl",
+                "distro_target" : "aarch64",
+                "description" : "Software Collection Library packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -27,
+        "name" : "Rocky Linux 8",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Rocky Linux 8 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -329,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-8&arch=aarch64",
+                "name" : "rockylinux-8",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -330,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-8&arch=aarch64",
+                "name" : "rockylinux-8-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -331,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-8&arch=aarch64",
+                "name" : "rockylinux-8-extras",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -332,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=PowerTools-8&arch=aarch64",
+                "name" : "rockylinux-8-powertools",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -333,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-8&arch=aarch64",
+                "name" : "rockylinux-8-ha",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -26,
+        "name" : "AlmaLinux 8",
+        "identifier" : "almalinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "AlmaLinux 8 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -360,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/baseos",
+                "name" : "almalinux8",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -361,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/appstream",
+                "name" : "almalinux8-appstream",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -362,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/extras",
+                "name" : "almalinux8-extras",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -363,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/powertools",
+                "name" : "almalinux8-powertools",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -364,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/ha",
+                "name" : "almalinux8-ha",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -25,
+        "name" : "Amazon Linux 2",
+        "identifier" : "amazonlinux",
+        "former_identifier" : "",
+        "version" : "2",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Amazon Linux 2 aarch64",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -322,
+                "url" : "https://amazonlinux.default.amazonlinux.com/2/core/latest/aarch64/mirror.list",
+                "name" : "amazonlinux2-core",
+                "distro_target" : "aarch64",
+                "description" : "Amazon Linux 2 Core",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -323,
+                "url" : "https://amazonlinux.default.amazonlinux.com/2/extras/docker/latest/aarch64/mirror.list",
+                "name" : "amazonlinux2-extras-docker",
+                "distro_target" : "aarch64",
+                "description" : "Amazon Extras 2 repo for Docker",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -24,
         "name" : "Rocky Linux 8",
         "identifier" : "rockylinux",
@@ -8,11 +567,11 @@
         "release_type" : null,
         "arch" : "x86_64",
         "friendly_name" : "Rocky Linux 8 x86_64",
-        "product_class" : "SLE-M-T",
+        "product_class" : "SLE-M-T-BETA",
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "beta",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -89,7 +648,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -102,50 +661,50 @@
         ],
         "repositories" : [
             {
-                "id" : -287,
-                "url" : "https://repo.almalinux.org/almalinux/8/BaseOS/x86_64/os/",
+                "id" : -360,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/baseos",
                 "name" : "almalinux8",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -288,
-                "url" : "https://repo.almalinux.org/almalinux/8/AppStream/x86_64/os/",
+                "id" : -361,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/appstream",
                 "name" : "almalinux8-appstream",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 AppStream",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -289,
-                "url" : "https://repo.almalinux.org/almalinux/8/extras/x86_64/os/",
+                "id" : -362,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/extras",
                 "name" : "almalinux8-extras",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 Extras",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -290,
-                "url" : "https://repo.almalinux.org/almalinux/8/PowerTools/x86_64/os/",
+                "id" : -363,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/powertools",
                 "name" : "almalinux8-powertools",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 PowerTools",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -291,
-                "url" : "https://repo.almalinux.org/almalinux/8/HighAvailability/x86_64/os/",
+                "id" : -364,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/ha",
                 "name" : "almalinux8-ha",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 HighAvailability",
                 "enabled" : false,
                 "autorefresh" : true,
@@ -166,7 +725,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -541,7 +1100,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -579,7 +1138,7 @@
                 "name" : "debian-10-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Security",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             }
@@ -598,7 +1157,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -636,7 +1195,7 @@
                 "name" : "debian-9-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 9 (stretch) AMD64 Main Security",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             }
@@ -949,7 +1508,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1026,7 +1585,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1074,16 +1633,6 @@
                 "name" : "oraclelinux6-uek-r3",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 6",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -175,
-                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/latest/x86_64/",
-                "name" : "oraclelinux6-uek-r4",
-                "distro_target" : "x86_64",
-                "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 6",
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -1350,7 +1899,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1457,7 +2006,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1574,7 +2123,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1671,7 +2220,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -2762,7 +3311,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [

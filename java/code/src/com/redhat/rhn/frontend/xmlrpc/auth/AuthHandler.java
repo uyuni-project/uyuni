@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,8 +25,9 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.log4j.Logger;
 
-import javax.security.auth.login.LoginException;
 import java.util.Objects;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * AuthHandler

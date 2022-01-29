@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,14 +19,15 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+
 import com.suse.manager.webui.services.SaltServerActionService;
+
+import org.apache.log4j.Logger;
+import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import org.apache.log4j.Logger;
-import org.quartz.JobExecutionContext;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -39,6 +40,11 @@ public class MinionActionChainExecutor extends RhnJavaJob {
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
     private final SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_actionchain_executor";
+    }
 
     /**
      * @param context the job execution context

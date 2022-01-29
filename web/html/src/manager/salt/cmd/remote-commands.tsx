@@ -1,7 +1,9 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { Button } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
-import SpaRenderer from "core/spa/spa-renderer";
 
 type MinionResultViewProps = {
   id?: any;
@@ -19,10 +21,9 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
     this.state = {
       open: false,
     };
-    ["onClick"].forEach(method => (this[method] = this[method].bind(this)));
   }
 
-  onClick() {
+  onClick = () => {
     if (
       this.props.result !== "pending" &&
       this.props.result !== "timedOut" &&
@@ -31,7 +32,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
     ) {
       this.setState({ open: !this.state.open });
     }
-  }
+  };
 
   render() {
     const id = this.props.id;
@@ -80,9 +81,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
           <div className="panel-body">
             <pre id={id + "-results"}>{value}</pre>
           </div>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
       </div>
     );
   }
@@ -90,22 +89,25 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
 
 function isPreviewDone(minionsMap: Map<any, any>, waitForSSH) {
   return (
-    Array.from(minionsMap, e => e[1]).every(v => v.type === "matched" || v.type === "timedOut" || v.type === "error") &&
-    !waitForSSH
+    Array.from(minionsMap, (e) => e[1]).every(
+      (v) => v.type === "matched" || v.type === "timedOut" || v.type === "error"
+    ) && !waitForSSH
   );
 }
 
 function isRunDone(minionsMap: Map<any, any>) {
-  return Array.from(minionsMap, e => e[1]).every(v => v.type === "result" || v === "timedOut" || v.type === "error");
+  return Array.from(minionsMap, (e) => e[1]).every(
+    (v) => v.type === "result" || v === "timedOut" || v.type === "error"
+  );
 }
 
 function isTimedOutDone(minionsMap: Map<any, any>, waitForSSH, timedOutSSH) {
   if (!minionsMap || minionsMap.size === 0) {
     return timedOutSSH;
   }
-  const results = Array.from(minionsMap, e => e[1]);
-  const noMinionsPending = results.every(v => v.type !== "pending");
-  const anyTimedOutMinion = results.some(v => v.type === "timedOut");
+  const results = Array.from(minionsMap, (e) => e[1]);
+  const noMinionsPending = results.every((v) => v.type !== "pending");
+  const anyTimedOutMinion = results.some((v) => v.type === "timedOut");
   if (waitForSSH) {
     return timedOutSSH && noMinionsPending;
   }
@@ -135,10 +137,6 @@ type RemoteCommandState = {
 class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandState> {
   constructor(props) {
     super(props);
-    ["onPreview", "onRun", "onStop", "commandChanged", "targetChanged", "commandResult", "onBeforeUnload"].forEach(
-      method => (this[method] = this[method].bind(this))
-    );
-
     this.state = {
       command: "ls -lha",
       target: "*",
@@ -159,12 +157,12 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       paddingBottom: "0px",
     };
     if (this.state.errors) {
-      this.state.errors.forEach(msg => {
+      this.state.errors.forEach((msg) => {
         msgs.push(<div className="alert alert-danger">{msg}</div>);
       });
     }
     if (this.state.warnings) {
-      this.state.warnings.forEach(msg => {
+      this.state.warnings.forEach((msg) => {
         msgs.push(<div className="alert alert-warning">{msg}</div>);
       });
     }
@@ -273,7 +271,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     );
   }
 
-  onPreview() {
+  onPreview = () => {
     const deferred = jQuery.Deferred();
     this.state.websocket.send(
       JSON.stringify({
@@ -290,9 +288,9 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       },
     });
     return deferred;
-  }
+  };
 
-  onRun() {
+  onRun = () => {
     const deferred = jQuery.Deferred();
     this.state.websocket.send(
       JSON.stringify({
@@ -307,21 +305,21 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       ran: deferred,
     });
     return deferred;
-  }
+  };
 
-  onStop() {
+  onStop = () => {
     this.state.websocket.send(
       JSON.stringify({
         cancel: true,
       })
     );
-  }
+  };
 
-  onBeforeUnload(event) {
+  onBeforeUnload = (event) => {
     this.setState({
       pageUnloading: true,
     });
-  }
+  };
 
   componentDidMount() {
     var port = window.location.port;
@@ -334,7 +332,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         executing: jQuery.Deferred().resolve(),
       });
     };
-    ws.onclose = e => {
+    ws.onclose = (e) => {
       var errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
@@ -354,14 +352,14 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         ran: jQuery.Deferred(),
       });
     };
-    ws.onerror = e => {
-      console.log("Websocket error: " + e);
+    ws.onerror = (e) => {
+      console.error("Websocket error: " + e);
       this.setState({
         errors: [t("Error connecting to server. Refresh the page to try again.")],
         websocketErr: true,
       });
     };
-    ws.onmessage = e => {
+    ws.onmessage = (e) => {
       var event = JSON.parse(e.data);
       var minionsMap: Map<any, any> | undefined;
       var previewed;
@@ -493,7 +491,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           }
 
           const noPending =
-            Array.from(minionsMap || [], e => e[1]).every(v => v.type !== "pending") && !this.state.result.waitForSSH;
+            Array.from(minionsMap || [], (e) => e[1]).every((v) => v.type !== "pending") &&
+            !this.state.result.waitForSSH;
 
           if (noPending) {
             previewed = this.state.previewed;
@@ -530,21 +529,21 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     window.removeEventListener("beforeunload", this.onBeforeUnload);
   }
 
-  targetChanged(event) {
+  targetChanged = (event) => {
     this.setState({
       target: event.target.value,
       previewed: jQuery.Deferred(),
       ran: jQuery.Deferred().resolve(),
     });
-  }
+  };
 
-  commandChanged(event) {
+  commandChanged = (event) => {
     this.setState({
       command: event.target.value,
     });
-  }
+  };
 
-  commandResult(result) {
+  commandResult = (result) => {
     const elements: React.ReactNode[] = [];
     for (var kv of result.minions) {
       const id = kv[0];
@@ -571,7 +570,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       );
     }
     return <div>{elements}</div>;
-  }
+  };
 }
 
-export const renderer = id => SpaRenderer.renderNavigationReact(<RemoteCommand />, document.getElementById(id));
+export const renderer = (id) => SpaRenderer.renderNavigationReact(<RemoteCommand />, document.getElementById(id));

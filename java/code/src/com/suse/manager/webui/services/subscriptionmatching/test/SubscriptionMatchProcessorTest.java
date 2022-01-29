@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,14 +14,19 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching.test;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
 import com.suse.manager.webui.services.subscriptionmatching.PinnedMatch;
+import com.suse.manager.webui.services.subscriptionmatching.Product;
 import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
-import com.suse.manager.webui.services.subscriptionmatching.Product;
 import com.suse.matcher.json.InputJson;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.MessageJson;
@@ -41,10 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Test for SubscriptionMatchProcessor.
@@ -186,7 +187,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     private void setSubscriptionPolicy(Long subId, String policy) {
-        Map<Long,String> mapping = new HashMap<>();
+        Map<Long, String> mapping = new HashMap<>();
         mapping.put(subId, policy);
         output.setSubscriptionPolicies(mapping);
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,12 +18,13 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link ContentFilter}

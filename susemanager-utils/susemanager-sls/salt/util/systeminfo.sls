@@ -11,3 +11,8 @@ grains_update:
     - name: grains.item
     - args:
       - kernelrelease
+      - master
+
+kernel_live_version:
+  mgrcompat.module_run:
+    - name: sumautil.get_kernel_live_version

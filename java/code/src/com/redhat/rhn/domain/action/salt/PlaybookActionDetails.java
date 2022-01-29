@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,7 @@ public class PlaybookActionDetails extends ActionChild {
     private String playbookPath;
     private String inventoryPath;
     private boolean testMode;
+    private boolean flushCache;
 
     /**
      * @return the id
@@ -77,5 +78,13 @@ public class PlaybookActionDetails extends ActionChild {
 
     public void setTestMode(boolean testModeIn) {
         this.testMode = testModeIn;
+    }
+
+    public boolean isFlushCache() {
+        return flushCache;
+    }
+
+    public void setFlushCache(boolean flushCacheIn) {
+        this.flushCache = flushCacheIn;
     }
 }

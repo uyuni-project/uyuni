@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2019 SUSE LLC
+/*
+ * Copyright (c) 2019--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,13 +16,14 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
-import org.apache.commons.lang3.StringUtils;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * Package Filter
@@ -42,15 +43,29 @@ public class PackageFilter extends ContentFilter<Package> {
         switch (matcher) {
             case CONTAINS:
                 return getField(pack, field, String.class).contains(value);
+            case LOWER:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) < 0;
+            case LOWEREQ:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) <= 0;
             case EQUALS:
                 return getField(pack, field, String.class).equals(value);
+            case GREATEREQ:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) >= 0;
+            case GREATER:
+                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
+                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) > 0;
             case MATCHES:
                 if (pattern == null) {
                     pattern = Pattern.compile(value);
                 }
                 return pattern.matcher(getField(pack, field, String.class)).matches();
-            case EXISTS:
-                return StringUtils.isNotEmpty(getField(pack, field, String.class));
+            case PROVIDES_NAME:
+                return pack.getProvides().stream()
+                        .map(p -> p.getCapability().getName())
+                        .anyMatch(n -> n.equals(value));
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
@@ -66,10 +81,33 @@ public class PackageFilter extends ContentFilter<Package> {
                 //Case for null epoch: Module metadata reports epoch as '0' even if there's none. We need to match it.
                 // pack.getNameEvra() omits the epoch if null so instead, pack.getNevraWithEpoch() is used here.
                 return type.cast(pack.getNevraWithEpoch());
-            case "module_stream":
-                return type.cast(pack.getExtraTag("modularitylabel"));
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
+        }
+    }
+
+    private static boolean checkNameAndArch(String field, String value, Package pack) {
+        if (field.equals("nevr")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$1").equals(pack.getPackageName().getName());
+        }
+        else if (field.equals("nevra")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$1$5")
+                    .equals(pack.getPackageName().getName() + pack.getPackageArch().getLabel());
+        }
+        else {
+            throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");
+        }
+    }
+
+    private static String getEvr(String field, String value) {
+        if (field.equals("nevr")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$2$3-$4");
+        }
+        else if (field.equals("nevra")) {
+            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$2$3-$4");
+        }
+        else {
+            throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");
         }
     }
 

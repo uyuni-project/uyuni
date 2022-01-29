@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,12 +15,16 @@
 
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.user.User;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.domain.user.User;
+
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+
 import spark.Request;
 import spark.Response;
 

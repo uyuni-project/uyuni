@@ -96,7 +96,7 @@
                                     <bean:message key="schedule.edit.jsp.activetill"/>:
                                 </label>
                                 <div class="col-lg-6">
-                                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss z" value="${activetill}"/>
+                                    <rhn:formatDate value="${activetill}" />
                                 </div>
                             </div>
                         </c:if>

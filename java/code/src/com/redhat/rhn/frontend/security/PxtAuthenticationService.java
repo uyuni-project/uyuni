@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,8 +16,9 @@ package com.redhat.rhn.frontend.security;
 
 
 import com.redhat.rhn.common.util.ServletUtils;
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
+
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.commons.collections.set.UnmodifiableSet;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

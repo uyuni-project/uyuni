@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -54,6 +54,7 @@ public class ErrataOverview extends BaseDto {
     private boolean restartSuggested;
     private Integer severityid;
     private String severityLabel;
+    private String rights;
 
     /**
      * This method is only used for csv export..
@@ -280,12 +281,18 @@ public class ErrataOverview extends BaseDto {
         issueDate = issueDateIn;
     }
     /**
-     * @param issueDateIn The issueDate to set.String 'yyyy-mm-dd"
+     * @param issueDateIn The issueDate to set. Supported formats: "yyyy-MM-dd HH:mm:ss" or "yyyy-MM-dd"
      * @throws ParseException when issueDateIn can't be parsed
      */
     public void setIssueDate(String issueDateIn) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        issueDate = sdf.parse(issueDateIn);
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            issueDate = sdf.parse(issueDateIn);
+        }
+        catch (ParseException ex) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            issueDate = sdf.parse(issueDateIn);
+        }
     }
     /**
      * @return Returns the advisoryName.
@@ -587,5 +594,19 @@ public class ErrataOverview extends BaseDto {
                     .toLowerCase();
         }
         return retval;
+    }
+
+    /**
+     * @return the copyright information for this errata
+     */
+    public String getRights() {
+        return rights;
+    }
+
+    /**
+     * @param rightsIn the copyright information for this errata
+     */
+    public void setRights(String rightsIn) {
+        this.rights = rightsIn;
     }
 }

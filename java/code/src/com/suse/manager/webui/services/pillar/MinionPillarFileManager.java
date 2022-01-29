@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,28 +15,19 @@
 package com.suse.manager.webui.services.pillar;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
-import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
-import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.MinionServer;
-
-import com.suse.manager.webui.utils.SaltPillar;
-import com.suse.manager.webui.utils.SaltStateGenerator;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Set;
 
 /**
- * Abstract manager class for generating or removing minion pillar files
+ * Manager class for generating DB pillar data and removing minion pillar files
+ * The file aspect of it is legacy: there used to be pillar files, but those should be removed now!
  */
 public class MinionPillarFileManager {
 
@@ -44,7 +35,7 @@ public class MinionPillarFileManager {
 
     private Path pillarDataPath = Paths.get(SUMA_PILLAR_DATA_PATH);
 
-    private MinionPillarGenerator minionPillarGenerator;
+    private final MinionPillarGenerator minionPillarGenerator;
 
     /**
      * Constructor for MinionPillarFileManager
@@ -60,28 +51,26 @@ public class MinionPillarFileManager {
      * @param minion the minion server
      */
     public void updatePillarFile(MinionServer minion) {
-        this.minionPillarGenerator.generatePillarData(minion).ifPresentOrElse(
-                (pillar) -> this.saveFileToDisk(pillar, this.minionPillarGenerator.getFilename(minion.getMinionId())),
-                () -> removePillarFile(minion.getMinionId())
-        );
+        if (this.minionPillarGenerator.generatePillarData(minion).isEmpty()) {
+            removePillar(minion);
+        }
+        // Progressively move away from pillar files
+        removePillarFile(minion.getMinionId());
     }
 
-    private void saveFileToDisk(SaltPillar pillar, String filename) {
-        try {
-            Files.createDirectories(this.pillarDataPath);
-            File file = this.pillarDataPath.resolve(filename).toFile();
-            new SaltStateGenerator(file).generate(pillar);
-            FileUtils.setAttributes(file.toPath(), "tomcat", "susemanager",
-                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+    /**
+     * Remove the pillar data from the given minion
+     * @param minion the minion server
+     */
+    public void removePillar(MinionServer minion) {
+        removePillarFile(minion.getMinionId());
+        minion.getPillarByCategory(this.minionPillarGenerator.getCategory())
+                .ifPresent(pillar -> minion.getPillars().remove(pillar));
     }
 
     /**
      * Remove the corresponding pillar file for the passed minion.
-     * @param minionId the minion Id
+     * @param minionId the minion server ID
      */
     public void removePillarFile(String minionId) {
         Path filePath = this.pillarDataPath.resolve(this.minionPillarGenerator.getFilename(minionId));

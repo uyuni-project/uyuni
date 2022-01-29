@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,9 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.annotations.SerializedName;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class OSImageInspectSlsResult {
 
         private String hash;
         private String compression;
+        private String compressed_hash;
         private String name;
         private String filepath;
         private String type;
@@ -54,6 +56,13 @@ public class OSImageInspectSlsResult {
          */
         public String getCompression() {
             return compression;
+        }
+
+        /**
+         * @return the compression checksum
+         */
+        public String getCompressedHash() {
+            return compressed_hash;
         }
 
         /**

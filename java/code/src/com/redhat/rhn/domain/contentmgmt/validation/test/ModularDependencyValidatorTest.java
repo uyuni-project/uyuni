@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,11 +15,11 @@
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
 
-import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
-import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
-
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
+
+import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
+import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 
 public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 
@@ -35,37 +35,37 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 
     public void testNonModularSources() throws Exception {
         attachSource();
-        assertTrue(validator.validate(project).isEmpty());
+        assertTrue(validator.validate(getProject()).isEmpty());
         attachModularFilter();
-        assertTrue(validator.validate(project).isEmpty());
+        assertTrue(validator.validate(getProject()).isEmpty());
     }
 
     public void testNoModuleFilters() throws Exception {
         attachModularSource();
-        assertTrue(validator.validate(project).isEmpty());
+        assertTrue(validator.validate(getProject()).isEmpty());
         attachFilter();
-        assertTrue(validator.validate(project).isEmpty());
+        assertTrue(validator.validate(getProject()).isEmpty());
     }
 
     public void testMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter();
         // There should be no ERR/WARN messages
-        assertTrue(validator.validate(project).stream().allMatch(m -> TYPE_INFO.equals(m.getType())));
+        assertTrue(validator.validate(getProject()).stream().allMatch(m -> TYPE_INFO.equals(m.getType())));
     }
 
     public void testNonMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter("nonexistent:stream");
-        assertSingleMessage(loc.getMessage("contentmanagement.validation.modulenotfound", "nonexistent:stream"),
-                TYPE_ERROR, ENTITY_FILTERS, validator.validate(project));
+        assertSingleMessage(getLoc().getMessage("contentmanagement.validation.modulenotfound", "nonexistent:stream"),
+                TYPE_ERROR, ENTITY_FILTERS, validator.validate(getProject()));
     }
 
     public void testConflictingFilters() throws Exception {
         attachModularSource();
         attachModularFilter("postgresql:10");
         attachModularFilter("postgresql:12");
-        assertSingleMessage(loc.getMessage("contentmanagement.validation.moduleconflict", "postgresql:10",
-                "postgresql:12"), TYPE_ERROR, ENTITY_FILTERS, validator.validate(project));
+        assertSingleMessage(getLoc().getMessage("contentmanagement.validation.moduleconflict", "postgresql:10",
+                "postgresql:12"), TYPE_ERROR, ENTITY_FILTERS, validator.validate(getProject()));
     }
 }

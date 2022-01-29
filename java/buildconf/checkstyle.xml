@@ -52,7 +52,22 @@
       <property name="max" value="120"/>
     </module>
 
+    <module name="SuppressionFilter">
+        <property name="file" value="${checkstyle.suppressions.file}"/>
+        <property name="optional" value="false"/>
+    </module>
+
+    <module name="SuppressWithPlainTextCommentFilter"/>
+
     <module name="TreeWalker">
+
+        <module name="ImportOrder">
+            <property name="groups" value="/^com.redhat.rhn\./,/^com.suse\./,com,org,/^java\./,javax,*" />
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="top"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
 
         <module name="SuppressionCommentFilter"/>
 
@@ -227,7 +242,7 @@ MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, S
         <!-- the ${basedir} property to allow Checkstyle to be run  -->
         <!-- from any directory within a project.                   -->
         <property name="headerFile" value="${checkstyle.header.file}"/>
-        <property name="multiLines" value="2"/>
+        <property name="multiLines" value="2, 10, 11, 12, 13"/>
     </module>
 
     <module name="FileTabCharacter"/>

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ImageStoreCreateRequest;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -39,6 +40,7 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -49,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -28,6 +28,7 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

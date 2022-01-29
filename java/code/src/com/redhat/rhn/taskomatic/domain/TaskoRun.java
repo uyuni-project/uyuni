@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.taskomatic.TaskoFactory;
+
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;

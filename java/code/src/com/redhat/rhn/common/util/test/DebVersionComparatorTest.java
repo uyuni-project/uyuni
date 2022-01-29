@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -43,17 +43,18 @@ public class DebVersionComparatorTest extends TestCase {
 
     public void testDpkgTestCases() {
         // source: https://git.dpkg.org/cgit/dpkg/dpkg.git/tree/scripts/t/Dpkg_Version.t
-        final String DEBIAN_TESTCASES = "1.0-1 2.0-2 -1\n" + "2.2~rc-4 2.2-1 -1\n" + "2.2-1 2.2~rc-4 1\n" + "1" +
-                ".0000-1 1.0-1 0\n" + "0foo 0foo 0\n" + "0foo-0 0foo 0\n" + "0foo 0foo-0 0\n" + "0foo 0fo 1\n" + "0foo-0 " +
-                "0foo+ -1\n" + "0foo~1 0foo -1\n" + "0foo~foo+Bar 0foo~foo+bar -1\n" + "0foo~~ 0foo~ -1\n" + "1~ 1 -1\n" +
-                "12345+that-really-is-some-ver-0 12345+that-really-is-some-ver-10 -1\n" + "0foo-0 0foo-01 -1\n" +
-                "0foo.bar 0foobar 1\n" + "0foo.bar 0foo1bar 1\n" + "0foo.bar 0foo0bar 1\n" + "0foo1bar-1 0foobar-1 -1\n" +
-                "0foo2.0 0foo2 1\n" + "0foo2.0.0 0foo2.10.0 -1\n" + "0foo2.0 0foo2.0.0 -1\n" + "0foo2.0 0foo2.10 -1\n" +
-                "0foo2.1 0foo2.10 -1\n" + "1.09 1.9 0\n" + "1.0.8+nmu1 1.0.8 1\n" + "3.11 3.10+nmu1 1\n" +
-                "0.9j-20080306-4 0.9i-20070324-2 1\n" + "1.2.0~b7-1 1.2.0~b6-1 1\n" + "1.011-1 1.06-2 1\n" +
-                "0.0.9+dfsg1-1 0.0.8+dfsg1-3 1\n" + "4.6.99+svn6582-1 4.6.99+svn6496-1 1\n" + "53 52 1\n" +
-                "0.9.9~pre122-1 0.9.9~pre111-1 1\n" + "1.0.1+gpl-1 1.0.1-2 1\n" + "1a 1000a -1";
-        for (String testCase: DEBIAN_TESTCASES.split("\n")) {
+        final String debianTestcases = "1.0-1 2.0-2 -1\n" + "2.2~rc-4 2.2-1 -1\n" + "2.2-1 2.2~rc-4 1\n" + "1" +
+                ".0000-1 1.0-1 0\n" + "0foo 0foo 0\n" + "0foo-0 0foo 0\n" + "0foo 0foo-0 0\n" + "0foo 0fo 1\n" +
+                "0foo-0 " + "0foo+ -1\n" + "0foo~1 0foo -1\n" + "0foo~foo+Bar 0foo~foo+bar -1\n" + "0foo~~ 0foo~ -1\n" +
+                "1~ 1 -1\n" + "12345+that-really-is-some-ver-0 12345+that-really-is-some-ver-10 -1\n" +
+                "0foo-0 0foo-01 -1\n" + "0foo.bar 0foobar 1\n" + "0foo.bar 0foo1bar 1\n" + "0foo.bar 0foo0bar 1\n" +
+                "0foo1bar-1 0foobar-1 -1\n" + "0foo2.0 0foo2 1\n" + "0foo2.0.0 0foo2.10.0 -1\n" +
+                "0foo2.0 0foo2.0.0 -1\n" + "0foo2.0 0foo2.10 -1\n" + "0foo2.1 0foo2.10 -1\n" + "1.09 1.9 0\n" +
+                "1.0.8+nmu1 1.0.8 1\n" + "3.11 3.10+nmu1 1\n" + "0.9j-20080306-4 0.9i-20070324-2 1\n" +
+                "1.2.0~b7-1 1.2.0~b6-1 1\n" + "1.011-1 1.06-2 1\n" + "0.0.9+dfsg1-1 0.0.8+dfsg1-3 1\n" +
+                "4.6.99+svn6582-1 4.6.99+svn6496-1 1\n" + "53 52 1\n" + "0.9.9~pre122-1 0.9.9~pre111-1 1\n" +
+                "1.0.1+gpl-1 1.0.1-2 1\n" + "1a 1000a -1";
+        for (String testCase: debianTestcases.split("\n")) {
             String operand1 = testCase.split(" ")[0];
             String operand2 = testCase.split(" ")[1];
             Integer expectedResult = Integer.parseInt(testCase.split(" ")[2]);

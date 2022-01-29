@@ -1,44 +1,59 @@
 import * as React from "react";
-import { LinkButton, AsyncButton } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Highlight } from "components/table/Highlight";
-import { Messages } from "components/messages";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { AsyncButton, LinkButton } from "components/buttons";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { Highlight } from "components/table/Highlight";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { localizedMoment } from "utils";
+import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
+const AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
 const NOT_AFFECTED = "NOT_AFFECTED";
 const PATCHED = "PATCHED";
-const ALL = [AFFECTED_PATCH_INAPPLICABLE, AFFECTED_PATCH_APPLICABLE, NOT_AFFECTED, PATCHED];
+const ALL = [
+  AFFECTED_PATCH_INAPPLICABLE,
+  AFFECTED_PATCH_APPLICABLE,
+  AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
+  NOT_AFFECTED,
+  PATCHED,
+];
 const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
     className: "fa-exclamation-circle text-danger",
-    label: "Affected, patches available in channels which are not assigned",
+    label: t("Affected, patches available in channels which are not assigned"),
+  },
+  AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
+    className: "fa-exclamation-circle text-danger",
+    label: t("Affected, patches available in a Product Migration target"),
   },
   AFFECTED_PATCH_APPLICABLE: {
     className: "fa-exclamation-triangle text-warning",
-    label: "Affected, at least one patch available in an assigned channel",
+    label: t("Affected, at least one patch available in an assigned channel"),
   },
   NOT_AFFECTED: {
     className: "fa-circle text-success",
-    label: "Not affected",
+    label: t("Not affected"),
   },
   PATCHED: {
     className: "fa-check-circle text-success",
-    label: "Patched",
+    label: t("Patched"),
   },
 };
 const TARGET_IMAGE = "IMAGE";
 const TARGET_SERVER = "SERVER";
 const CVE_REGEX = /(\d{4})-(\d{4,7})/i;
-const CURRENT_YEAR = new Date().getFullYear();
-const YEARS = (function() {
+const CURRENT_YEAR = localizedMoment().year();
+const YEARS = (function () {
   const arr: number[] = [];
   for (let i = 1999; i <= CURRENT_YEAR; i++) {
     arr.push(i);
@@ -71,9 +86,6 @@ class CVEAudit extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    ["onCVEChange", "searchData", "handleSelectItems", "audit", "onCVEYearChange", "onTargetChange"].forEach(
-      method => (this[method] = this[method].bind(this))
-    );
     this.state = {
       cveNumber: "",
       cveYear: CURRENT_YEAR,
@@ -85,41 +97,42 @@ class CVEAudit extends React.Component<Props, State> {
     };
   }
 
-  searchData(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return datum.name.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
     }
     return true;
-  }
+  };
 
-  handleSelectItems(items) {
-    const removed = this.state.selectedItems.filter(i => !items.includes(i));
+  handleSelectItems = (items) => {
+    const removed = this.state.selectedItems.filter((i) => !items.includes(i));
     const isAdd = removed.length === 0;
     const list = isAdd ? items : removed;
 
     this.setState({ selectedItems: items }, () => {
-      DWRItemSelector.select("system_list", list, isAdd, res => {
+      DWRItemSelector.select("system_list", list, isAdd, (res) => {
         // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
+        // eslint-disable-next-line no-eval
         dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
       });
     });
-  }
+  };
 
-  onTargetChange(e) {
+  onTargetChange = (e) => {
     const value = e.target.value;
     this.setState({
       target: value,
     });
-  }
+  };
 
-  onCVEYearChange(e) {
+  onCVEYearChange = (e) => {
     const value = e.target.value;
     this.setState({
       cveYear: value,
     });
-  }
+  };
 
-  onCVEChange(e) {
+  onCVEChange = (e) => {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
     if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
@@ -136,18 +149,18 @@ class CVEAudit extends React.Component<Props, State> {
         cveNumber: value,
       });
     }
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
   }
 
-  audit(target) {
-    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then(data => {
+  audit = (target) => {
+    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
       if (data.success) {
         this.setState({
           results: data.data,
-          selectedItems: data.data.filter(i => i.selected).map(i => i.id),
+          selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
           resultType: target,
           messages: [],
         });
@@ -159,14 +172,14 @@ class CVEAudit extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   render() {
     return (
       <span>
         <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="reference/audit/audit-cve-audit.html">
           <Messages
-            items={this.state.messages.map(msg => {
+            items={this.state.messages.map((msg) => {
               return { severity: "warning", text: msg };
             })}
           />
@@ -178,7 +191,7 @@ class CVEAudit extends React.Component<Props, State> {
               onChange={this.onCVEYearChange}
               className="form-control"
             >
-              {YEARS.map(year => (
+              {YEARS.map((year) => (
                 <option value={year}>{year}</option>
               ))}
             </select>
@@ -191,17 +204,17 @@ class CVEAudit extends React.Component<Props, State> {
             />
           </div>
           <div>
-            {ALL.map(status => {
+            {ALL.map((status) => {
               return (
                 <div className="checkbox">
                   <label>
                     <input
                       type="checkbox"
                       checked={this.state.statuses.includes(status)}
-                      onChange={e => {
+                      onChange={(e) => {
                         if (this.state.statuses.includes(status)) {
                           this.setState({
-                            statuses: this.state.statuses.filter(x => x !== status),
+                            statuses: this.state.statuses.filter((x) => x !== status),
                           });
                         } else {
                           this.setState({
@@ -240,9 +253,8 @@ class CVEAudit extends React.Component<Props, State> {
           </p>
           <Table
             data={this.state.results}
-            identifier={row => row.id}
+            identifier={(row) => row.id}
             initialSortColumnKey="id"
-            initialItemsPerPage={window.userPrefPageSize}
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
             selectedItems={this.state.selectedItems}
@@ -287,16 +299,16 @@ class CVEAudit extends React.Component<Props, State> {
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
                   if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
-                    return "No action required";
+                    return t("No action required");
                   } else if (row.patchStatus === AFFECTED_PATCH_APPLICABLE) {
                     return (
                       <div>
                         <div>
                           <a href={"/rhn/systems/details/ErrataList.do?sid=" + row.id}>
-                            Install a new patch on this system.
+                            {t("Install a new patch on this system.")}
                           </a>
                         </div>
-                        {row.erratas.map(errata => {
+                        {row.erratas.map((errata) => {
                           return (
                             <div>
                               <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
@@ -305,12 +317,24 @@ class CVEAudit extends React.Component<Props, State> {
                         })}
                       </div>
                     );
+                  } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT) {
+                    return (
+                      <div>
+                        <div>
+                          <a href={"/rhn/systems/details/SPMigration.do?sid=" + row.id}>
+                            {t("Patch available, but system needs to be migrated to a newer Product.")}
+                          </a>
+                        </div>
+                        <div>{"Channel: " + row.channels[0].name}</div>
+                        <div>{"Patch: " + row.erratas[0].advisory}</div>
+                      </div>
+                    );
                   } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE) {
                     return (
                       <div>
                         <div>
                           <a href="/rhn/channels/manage/Manage.do">
-                            Patch available but needs to be cloned into Channel.
+                            {t("Patch available, but needs to be cloned into Channel.")}
                           </a>
                         </div>
                         <div>{"Channel: " + row.channels[0].name}</div>
@@ -318,18 +342,18 @@ class CVEAudit extends React.Component<Props, State> {
                       </div>
                     );
                   } else {
-                    return "If you see this report a bug.";
+                    return t("If you see this report a bug.");
                   }
                 } else if (this.state.resultType === TARGET_IMAGE) {
                   if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
-                    return "No action required";
+                    return t("No action required");
                   } else if (row.patchStatus === AFFECTED_PATCH_APPLICABLE) {
                     return (
                       <LinkButton
                         icon="fa-cogs"
                         href={"/rhn/manager/cm/rebuild/" + row.id}
                         className="btn-xs btn-default pull-right"
-                        text="Rebuild"
+                        text={t("Rebuild")}
                       />
                     );
                   } else if (row.patchStatus === AFFECTED_PATCH_INAPPLICABLE) {
@@ -337,18 +361,18 @@ class CVEAudit extends React.Component<Props, State> {
                       <div>
                         <div>
                           <a href="/rhn/channels/manage/Manage.do">
-                            Patch available but needs to be cloned into Channel.
+                            {t("Patch available but needs to be cloned into Channel.")}
                           </a>
                         </div>
-                        <div>{"Channel: " + row.channels[0].name}</div>
-                        <div>{"Errata: " + row.erratas[0].advisory}</div>
+                        <div>{t("Channel") + ": " + row.channels[0].name}</div>
+                        <div>{t("Errata") + ": " + row.erratas[0].advisory}</div>
                       </div>
                     );
                   } else {
-                    return "If you see this report a bug.";
+                    return t("If you see this report a bug.");
                   }
                 } else {
-                  return "If you see this report a bug.";
+                  return t("If you see this report a bug.");
                 }
               }}
             />
@@ -364,8 +388,9 @@ class CVEAudit extends React.Component<Props, State> {
               "&statuses=" +
               this.state.statuses
             }
+            data-senna-off="true"
           >
-            Download CSV
+            {t("Download CSV")}
           </a>
         </TopPanel>
         Please note that underlying data needed for this audit is updated nightly. If systems were registered very

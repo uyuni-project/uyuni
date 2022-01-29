@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -30,8 +30,8 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoTypeException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlInputException;
 
-import java.net.URL;
 import java.net.URI;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;

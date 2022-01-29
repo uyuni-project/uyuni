@@ -1,5 +1,7 @@
-import { Button } from "components/buttons";
 import * as React from "react";
+
+import { Button } from "components/buttons";
+
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
 import { TableDataHandler } from "./TableDataHandler";
@@ -39,8 +41,8 @@ type TableProps = {
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
 
-  /** enables item selection */
-  selectable: boolean;
+  /** enables item selection. */
+  selectable: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;
@@ -78,7 +80,7 @@ export function Table(props: TableProps) {
   const { ...allProps } = props;
   const columns = React.Children.toArray(props.children)
     .filter(isColumn)
-    .map(child => React.cloneElement(child));
+    .map((child) => React.cloneElement(child));
 
   return (
     <TableDataHandler columns={columns} {...allProps}>
@@ -86,9 +88,10 @@ export function Table(props: TableProps) {
         const rows = currItems.map((datum, index) => {
           const cells: React.ReactNode[] = React.Children.toArray(props.children)
             .filter(isColumn)
-            .map(column => React.cloneElement(column, { data: datum, criteria: criteria }));
+            .map((column) => React.cloneElement(column, { data: datum, criteria: criteria }));
 
-          if (selectable) {
+          const isSelectable = typeof selectable === "boolean" ? () => selectable : selectable;
+          if (selectable && isSelectable(datum)) {
             const checkbox = (
               <Column
                 key="check"
@@ -96,11 +99,14 @@ export function Table(props: TableProps) {
                   <input
                     type="checkbox"
                     checked={selectedItems.includes(props.identifier(datum))}
-                    onChange={e => handleSelect(props.identifier(datum), e.target.checked)}
+                    onChange={(e) => handleSelect(props.identifier(datum), e.target.checked)}
                   />
                 }
               />
             );
+            cells.unshift(checkbox);
+          } else if (selectable && !isSelectable(datum)) {
+            const checkbox = <Column key="check" cell={<input type="checkbox" disabled checked={false} />} />;
             cells.unshift(checkbox);
           }
 
@@ -118,7 +124,7 @@ export function Table(props: TableProps) {
             const column = (
               <Column
                 key="delete"
-                cell={row => {
+                cell={(row) => {
                   if (typeof deletable === "function") {
                     return deletable(row) ? deleteButton : null;
                   }
@@ -133,8 +139,13 @@ export function Table(props: TableProps) {
 
           const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
           const evenOddClass = index % 2 === 0 ? "list-row-odd" : "list-row-even";
+          let key = props.identifier(datum);
+          if (typeof key === "undefined") {
+            Loggerhead.error(`Could not identify table row with identifier: ${props.identifier}`);
+            key = index;
+          }
           return (
-            <tr className={rowClass + " " + evenOddClass} key={props.identifier(datum)}>
+            <tr className={rowClass + " " + evenOddClass} key={key}>
               {cells}
             </tr>
           );
@@ -153,5 +164,5 @@ export function Table(props: TableProps) {
   );
 }
 Table.defaultProps = {
-  selectable: false,
+  selectable: () => false,
 };

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -244,7 +244,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
                                                     pkg.getPackageName().getName());
     }
 
-    public void testFindAll() throws Exception{
+    public void testFindAll() throws Exception {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
@@ -253,7 +253,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, activationKeys.size());
     }
 
-    public void testFindAllBootstrap() throws Exception{
+    public void testFindAllBootstrap() throws Exception {
         ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, null, "ak- " +
             TestUtils.randomString(), "", 1L, null, true);
         activationKey.setBootstrap("Y");
@@ -263,7 +263,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, activationKeys.size());
     }
 
-    public void testFindBootstrap() throws Exception{
+    public void testFindBootstrap() throws Exception {
         ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, null, "ak- " +
             TestUtils.randomString(), "", 1L, null, true);
         activationKey.setBootstrap("Y");

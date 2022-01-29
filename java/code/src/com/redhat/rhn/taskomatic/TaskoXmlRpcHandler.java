@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static org.quartz.TriggerKey.triggerKey;
+
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import static org.quartz.TriggerKey.triggerKey;
 
 
 /**
@@ -640,10 +640,15 @@ public class TaskoXmlRpcHandler {
 
     /**
      * Check if JMX is enabled.
-     * @return true if JMX system props props
+     * @return true if JavaAgent class can be found
      */
-    public boolean isJmxEnabled() {
-        return StringUtils.isNotEmpty(System.getProperty("com.sun.management.jmxremote.port")) &&
-                StringUtils.isNotEmpty(System.getProperty("java.rmi.server.hostname"));
+    public static boolean isJmxEnabled() {
+        try {
+            Class.forName("io.prometheus.jmx.shaded.io.prometheus.jmx.JavaAgent");
+        }
+        catch (ClassNotFoundException ex) {
+            return false;
+        }
+        return true;
     }
 }

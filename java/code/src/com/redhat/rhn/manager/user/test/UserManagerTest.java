@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -55,6 +55,9 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,6 +72,7 @@ import java.util.Set;
  */
 public class UserManagerTest extends RhnBaseTestCase {
 
+    private SystemManager systemManager;
     private Set<User> users;
     private boolean committed = false;
 
@@ -79,6 +83,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     public void setUp() throws Exception {
         super.setUp();
         this.users = new HashSet<User>();
+        SaltApi saltApi = new TestSaltApi();
+        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     }
 
     /**
@@ -113,7 +119,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
@@ -176,7 +182,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group2 = ServerGroupTest
                 .createTestServerGroup(foundUser2.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server2, group2);
+        systemManager.addServerToServerGroup(server2, group2);
         ServerFactory.save(server2);
 
         ManagedServerGroup foundGroup2 = ServerGroupFactory.lookupByIdAndOrg(group2.getId(),
@@ -217,7 +223,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
@@ -499,31 +505,31 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         User peon = UserTestUtils.createUser("testBob", user.getOrg().getId());
 
-        DataResult users = UserManager.usersInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numTotal + 1, users.getTotalSize());
+        DataResult orgUsers = UserManager.usersInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numTotal + 1, orgUsers.getTotalSize());
 
-        users = UserManager.activeInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numActive + 1, users.getTotalSize());
+        orgUsers = UserManager.activeInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numActive + 1, orgUsers.getTotalSize());
 
-        users = UserManager.disabledInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numDisabled, users.getTotalSize());
+        orgUsers = UserManager.disabledInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numDisabled, orgUsers.getTotalSize());
 
         UserFactory.getInstance().disable(peon, user);
 
-        users = UserManager.usersInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numTotal + 1, users.getTotalSize());
+        orgUsers = UserManager.usersInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numTotal + 1, orgUsers.getTotalSize());
 
-        users = UserManager.activeInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numActive, users.getTotalSize());
+        orgUsers = UserManager.activeInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numActive, orgUsers.getTotalSize());
 
-        users = UserManager.disabledInOrg(user, pc);
-        assertNotNull(users);
-        assertEquals(numDisabled + 1, users.getTotalSize());
+        orgUsers = UserManager.disabledInOrg(user, pc);
+        assertNotNull(orgUsers);
+        assertEquals(numDisabled + 1, orgUsers.getTotalSize());
     }
 
 

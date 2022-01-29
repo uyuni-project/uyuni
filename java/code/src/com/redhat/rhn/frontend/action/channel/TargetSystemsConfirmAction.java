@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.channel;
+
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_SUBSCRIBE_CHANNELS;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
@@ -32,8 +36,8 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -54,10 +58,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_SUBSCRIBE_CHANNELS;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
 
 /**
  *

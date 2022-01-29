@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,11 +18,11 @@ package com.suse.manager.webui.controllers.contentmanagement.mappers;
 import static com.suse.utils.Opt.stream;
 
 import com.redhat.rhn.domain.channel.Channel;
-
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
+
 import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectFilterResponse;
@@ -46,6 +47,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,15 @@ public class ResponseMappers {
         properties.setLabel(projectDB.getLabel());
         properties.setName(projectDB.getName());
         properties.setDescription(projectDB.getDescription());
+        Optional<Date> lastBuildDate = projectDB.getHistoryEntries().stream()
+                .map(ContentProjectHistoryEntry::getCreated)
+                .max(Comparator.naturalOrder());
+        if (lastBuildDate.isPresent()) {
+            properties.setLastBuildDate(ViewHelper.formatDateTimeToISO(lastBuildDate.get()));
+        }
+        else {
+            properties.setLastBuildDate(null);
+        }
 
         List<ProjectHistoryEntryResponse> historyEntries = projectDB.getHistoryEntries().stream()
                 .map(entry -> {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,16 +15,17 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
-import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
-import junit.framework.TestCase;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
+
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+
+import junit.framework.TestCase;
 
 /**
  * Tests for {@link FilterCriteria}

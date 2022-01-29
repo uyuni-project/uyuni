@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,15 +15,15 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Modules;
-import com.redhat.rhn.manager.contentmgmt.DependencyResolutionException;
+
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -51,7 +51,7 @@ public class ModulemdApi {
      * @param channel the modular channel
      * @return a map of module name to stream lists
      */
-    public Map<String, ModuleStreams> getAllModulesInChannel(Channel channel) {
+    public Map<String, ModuleStreams> getAllModulesInChannel(Channel channel) throws ModulemdApiException {
         ModulemdApiResponse res = callSync(ModulemdApiRequest.listModulesRequest(getMetadataPath(channel)));
         return res.getListModules().getModules();
     }
@@ -62,9 +62,8 @@ public class ModulemdApi {
      * @param sources the modular source channels
      * @return a list of modular packages in NEVRA format
      */
-    public List<String> getAllPackages(List<Channel> sources) {
+    public List<String> getAllPackages(List<Channel> sources) throws ModulemdApiException {
         List<String> metadataPaths = getMetadataPaths(sources);
-
         ModulemdApiResponse res = callSync(ModulemdApiRequest.listPackagesRequest(metadataPaths));
         return res.getListPackages().getPackages();
     }
@@ -79,7 +78,7 @@ public class ModulemdApi {
      * @throws ModuleNotFoundException if a selected module is not found
      */
     public ModulePackagesResponse getPackagesForModules(List<Channel> sources, List<Module> selectedModules)
-            throws ConflictingStreamsException, ModuleNotFoundException, DependencyResolutionException {
+            throws ModulemdApiException {
         List<String> mdPaths = getMetadataPaths(sources);
 
         Map<String, List<Module>> moduleMap = selectedModules.stream().collect(Collectors.groupingBy(Module::getName));
@@ -89,26 +88,7 @@ public class ModulemdApi {
             }
         }
 
-        ModulemdApiResponse res =
-                callSync(ModulemdApiRequest.modulePackagesRequest(mdPaths, selectedModules));
-
-        // Handle possible errors
-        if (res.isError()) {
-            switch (res.getErrorCode()) {
-                case ModulemdApiResponse.CONFLICTING_STREAMS:
-                    List<Module> conflictingModules = res.getData().getStreams();
-                    throw new ConflictingStreamsException(conflictingModules.get(0), conflictingModules.get(1));
-                case ModulemdApiResponse.MODULE_NOT_FOUND:
-                    throw new ModuleNotFoundException(res.getData().getStreams());
-                case ModulemdApiResponse.DEPENDENCY_RESOLUTION_ERROR:
-                    throw new DependencyResolutionException(res.getData().getStreams() != null ?
-                            res.getData().getStreams().get(0) : null);
-                    default:
-                        throw new RuntimeException(String.format("Cannot resolve modular dependencies. %s (%s)",
-                                res.getException(), res.getErrorCode()));
-            }
-        }
-
+        ModulemdApiResponse res = callSync(ModulemdApiRequest.modulePackagesRequest(mdPaths, selectedModules));
         return res.getModulePackages();
     }
 
@@ -144,7 +124,7 @@ public class ModulemdApi {
      * @param request the request data
      * @return the response object
      */
-    private ModulemdApiResponse callSync(ModulemdApiRequest request) {
+    private ModulemdApiResponse callSync(ModulemdApiRequest request) throws ModulemdApiException {
         ProcessBuilder pb = new ProcessBuilder(API_EXE).redirectErrorStream(true);
 
         try {
@@ -160,11 +140,27 @@ public class ModulemdApi {
             ModulemdApiResponse res = GSON.fromJson(procReader, new TypeToken<ModulemdApiResponse>() { }.getType());
 
             proc.waitFor();
+
+            // Handle possible errors
+            if (res.isError()) {
+                switch (res.getErrorCode()) {
+                    case ModulemdApiResponse.CONFLICTING_STREAMS:
+                        List<Module> conflictingModules = res.getData().getStreams();
+                        throw new ConflictingStreamsException(conflictingModules.get(0), conflictingModules.get(1));
+                    case ModulemdApiResponse.MODULE_NOT_FOUND:
+                        throw new ModuleNotFoundException(res.getData().getStreams());
+                    case ModulemdApiResponse.DEPENDENCY_RESOLUTION_ERROR:
+                        throw new ModuleDependencyException(res.getData().getStreams());
+                    default:
+                        throw new ModulemdApiException(String.format("%s (%s)", res.getException(),
+                                res.getErrorCode()));
+                }
+            }
             return res;
 
         }
         catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new ModulemdApiException(e);
         }
     }
 }

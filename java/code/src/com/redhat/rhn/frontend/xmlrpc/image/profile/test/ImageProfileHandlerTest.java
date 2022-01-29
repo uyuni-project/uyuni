@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
+
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -40,10 +44,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
@@ -181,7 +181,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             fail("Activation Key with no base channel provided for Kiwi profile");
         }
         catch (InvalidParameterException e) {
-            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).", e.getMessage());
+            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).",
+                    e.getMessage());
         }
 
         try {
@@ -189,7 +190,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     "/path/to/dockerfile/", key.getKey());
             fail("Invalid store provided.");
         }
-        catch (NoSuchImageStoreException ignore) { }
+        catch (NoSuchImageStoreException ignore) {
+        }
 
         try {
             handler.create(admin, "newprofile", "dockerfile", "myregistry",
@@ -217,7 +219,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             fail("Activation Key with no base channel provided for Kiwi profile");
         }
         catch (InvalidParameterException e) {
-            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).", e.getMessage());
+            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).",
+                    e.getMessage());
         }
 
         try {
@@ -317,7 +320,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.delete(admin, "invalidlabel");
             fail("Invalid Label provided.");
         }
-        catch (NoSuchImageProfileException ignore) { }
+        catch (NoSuchImageProfileException ignore) {
+        }
 
         result = handler.delete(admin, "myprofile");
 
@@ -326,7 +330,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.getDetails(admin, "myprofile");
             fail("Profile should have been deleted.");
         }
-        catch (NoSuchImageProfileException ignore) { }
+        catch (NoSuchImageProfileException ignore) {
+        }
     }
 
     public final void testSetDetails() throws Exception {
@@ -360,7 +365,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setDetails(admin, "invalidlabel", details);
             fail("Invalid label provided.");
         }
-        catch (NoSuchImageProfileException ignore) { }
+        catch (NoSuchImageProfileException ignore) {
+        }
 
         try {
             details.clear();
@@ -368,7 +374,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setDetails(admin, "mydockerfileprofile", details);
             fail("Invalid store label provided.");
         }
-        catch (NoSuchImageStoreException ignore) { }
+        catch (NoSuchImageStoreException ignore) {
+        }
 
         try {
             details.clear();
@@ -454,7 +461,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addCustomDataKey(orgKey1);
         admin.getOrg().addCustomDataKey(orgKey2);
 
-        Map <String, String> values = new HashMap<>();
+        Map<String, String> values = new HashMap<>();
         values.put(orgKey1.getLabel(), "newvalue1");
         values.put(orgKey2.getLabel(), "newvalue2");
         result = handler.setCustomValues(admin, "myprofile", values);
@@ -472,7 +479,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.getCustomValues(admin, "invalidlabel");
             fail("Invalid Label provided.");
         }
-        catch (NoSuchImageProfileException ignore) { }
+        catch (NoSuchImageProfileException ignore) {
+        }
 
         Map<String, String> results = handler.getCustomValues(admin, "myprofile");
         assertEquals(values, results);
@@ -496,7 +504,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addCustomDataKey(orgKey1);
         admin.getOrg().addCustomDataKey(orgKey2);
 
-        Map <String, String> values = new HashMap<>();
+        Map<String, String> values = new HashMap<>();
 
         values.put(orgKey1.getLabel(), "newvalue");
         try {
@@ -511,7 +519,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setCustomValues(admin, "invalidlabel", values);
             fail("Invalid Label provided.");
         }
-        catch (NoSuchImageProfileException ignore) { }
+        catch (NoSuchImageProfileException ignore) {
+        }
 
         values.put("invalidkey", "newvalue");
         try {
@@ -585,7 +594,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addCustomDataKey(orgKey2);
 
         // Create values for the profile
-        Map <String, String> values = new HashMap<>();
+        Map<String, String> values = new HashMap<>();
         values.put(orgKey1.getLabel(), "myvalue1");
         values.put(orgKey2.getLabel(), "myvalue2");
         result = handler.setCustomValues(admin, "myprofile", values);
@@ -608,7 +617,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.deleteCustomValues(admin, "invalidlabel", keysToDelete);
             fail("Invalid Label provided.");
         }
-        catch (NoSuchImageProfileException ignore) { }
+        catch (NoSuchImageProfileException ignore) {
+        }
 
         keysToDelete.add("invalidkey");
         try {

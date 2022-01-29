@@ -1,0 +1,61 @@
+# CODEOWNERS info & syntax
+# Lines starting with "#" are comments.
+#
+# Each line is a file pattern followed by one or more owners.
+#
+# Order is important; the last matching pattern takes the most
+# precedence.
+#
+# Owners can be specified by email address or GitHub username
+#
+# Teams can be specified as code owners as well. Teams should
+# be identified in the format @org/team-name. Teams must have
+# explicit write access to the repository.
+#
+# Patterns
+#
+# Whole repository
+# * @global-owner
+#
+# Directory (without subdirectories)
+# docs/* @tech_writer
+#
+# Directory (including subdirectories)
+# apps/ @app_developer
+#
+# Adding a leading "/" to a pattern means the directory must
+# be in the root of the repository.
+#
+# Empty Pattern -> no owner (@app_developer owns all of apps/ except apps/github)
+# apps/ @app_developer
+# apps/github
+
+# Uyuni Code Owners
+
+# Release Engineering
+rel-eng/ @release-engineering
+tito.props @release-engineering
+
+# Cobbler
+java/conf/cobbler/snippets/ @SchoolGuy
+
+# Python
+*.py @uyuni-project/python
+# This file only holds data, no Python code
+mgr_bootstrap_data.py
+
+
+# Frontend
+web/ @uyuni-project/frontend
+branding/ @uyuni-project/frontend
+susemanager-frontend/ @uyuni-project/frontend
+*.jsp @uyuni-project/frontend
+*.jspf @uyuni-project/frontend
+.github/workflows/javascript-build.yml @uyuni-project/frontend
+.github/workflows/javascript-lint.yml @uyuni-project/frontend
+.github/workflows/javascript-unit-tests.yml @uyuni-project/frontend
+.github/workflows/typescript-compilation.yml @uyuni-project/frontend
+.yarnrc @uyuni-project/frontend
+
+# Testsuite
+testsuite/ @uyuni-project/qe

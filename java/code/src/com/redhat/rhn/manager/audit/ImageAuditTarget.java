@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -22,8 +24,6 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 
 import java.util.List;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * ImageAuditTarget

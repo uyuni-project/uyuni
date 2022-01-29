@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -26,23 +27,27 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
-
 /**
  * SystemNoteEditAction
  * @version $Rev: 1 $
  */
 public class SystemDeleteConfirmAction extends RhnAction {
+
+    private final SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
+
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -86,7 +91,7 @@ public class SystemDeleteConfirmAction extends RhnAction {
 
             try {
                 // Now we can remove the system
-                SystemManager.deleteServer(loggedInUser, sid);
+                systemManager.deleteServer(loggedInUser, sid);
                 createSuccessMessage(request, "message.serverdeleted.param",
                         sid.toString());
             }

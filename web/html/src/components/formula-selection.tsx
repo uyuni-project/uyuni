@@ -1,10 +1,13 @@
 import * as React from "react";
+
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import { AsyncButton, Button } from "../components/buttons";
 import { Messages, MessageType } from "../components/messages";
 import Network from "../utils/network";
-import { Button, AsyncButton } from "../components/buttons";
-import { Utils } from "utils/functions";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
@@ -30,19 +33,6 @@ class FormulaSelection extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    [
-      "init",
-      "saveRequest",
-      "resetChanges",
-      "removeAllFormulas",
-      "getGroupItemState",
-      "getListIcon",
-      "getListStyle",
-      "generateList",
-      "onGroupItemClick",
-      "onListItemClick",
-    ].forEach(method => (this[method] = this[method].bind(this)));
-
     this.state = {
       formulas: {},
       groups: { groupless: [] },
@@ -54,11 +44,11 @@ class FormulaSelection extends React.Component<Props, State> {
     this.init();
   }
 
-  init() {
-    Network.get(this.props.dataUrl).then(data => {
+  init = () => {
+    Network.get(this.props.dataUrl).then((data) => {
       const groupDict = { groupless: [] };
       const formulaDict: any = {};
-      data.formulas.forEach(function(e) {
+      data.formulas.forEach(function (e) {
         e.selected = data.selected.indexOf(e.name) >= 0;
         const group = e.group || "groupless";
         if (DEPRECATED_unsafeEquals(groupDict[group], undefined)) groupDict[group] = [];
@@ -72,11 +62,11 @@ class FormulaSelection extends React.Component<Props, State> {
         groups: groupDict,
       });
     });
-  }
+  };
 
-  saveRequest() {
+  saveRequest = () => {
     const selectedFormulas: unknown[] = [];
-    jQuery.each(this.state.formulas, function(name, formula) {
+    jQuery.each(this.state.formulas, function (name, formula) {
       if (formula.selected) selectedFormulas.push(name);
     });
 
@@ -85,47 +75,47 @@ class FormulaSelection extends React.Component<Props, State> {
      * Do not assign to state fields directly, use `setState()` instead
      */
     (this.state as any).activeFormulas = selectedFormulas;
-    return this.props.saveRequest(this, selectedFormulas).then(data => {
+    return this.props.saveRequest(this, selectedFormulas).then((data) => {
       this.init();
       window.scrollTo(0, 0);
     });
-  }
+  };
 
-  resetChanges() {
+  resetChanges = () => {
     const selectedFormulas = this.state.activeSelectedFormulas;
-    jQuery.each(this.state.formulas, function(name, formula) {
+    jQuery.each(this.state.formulas, function (name, formula) {
       formula.selected = selectedFormulas.indexOf(name) >= 0;
     });
     this.forceUpdate();
-  }
+  };
 
-  removeAllFormulas() {
-    jQuery.each(this.state.formulas, function(name, formula) {
+  removeAllFormulas = () => {
+    jQuery.each(this.state.formulas, function (name, formula) {
       formula.selected = false;
     });
     this.forceUpdate();
-  }
+  };
 
-  getGroupItemState(group) {
+  getGroupItemState = (group) => {
     let selectedCount = 0;
-    group.forEach(function(formula) {
+    group.forEach(function (formula) {
       if (formula.selected) selectedCount++;
     });
     if (selectedCount === 0) return 0;
     else if (selectedCount === group.length) return 1;
     else return 2;
-  }
+  };
 
-  getListIcon(state) {
+  getListIcon = (state) => {
     if (!state) return "fa fa-lg fa-square-o";
     else if (DEPRECATED_unsafeEquals(state, 1)) return "fa fa-lg fa-check-square-o";
     else return "fa fa-lg fa-minus-square-o";
-  }
+  };
 
-  getListStyle(state) {
+  getListStyle = (state) => {
     if (state) return "list-group-item list-group-item-info";
     else return "list-group-item";
-  }
+  };
 
   getDescription(formula) {
     if (this.state.showDescription === formula.name)
@@ -133,7 +123,7 @@ class FormulaSelection extends React.Component<Props, State> {
     else return null;
   }
 
-  generateList() {
+  generateList = () => {
     var list: React.ReactNode[] = [];
     const groups = this.state.groups;
 
@@ -146,7 +136,7 @@ class FormulaSelection extends React.Component<Props, State> {
           </strong>
         </span>
       );
-      groups.groupless.forEach(function(this: FormulaSelection, formula) {
+      groups.groupless.forEach(function (this: FormulaSelection, formula) {
         list.push(
           // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
@@ -187,7 +177,7 @@ class FormulaSelection extends React.Component<Props, State> {
           </strong>
         </a>
       );
-      group.forEach(function(this: FormulaSelection, formula) {
+      group.forEach(function (this: FormulaSelection, formula) {
         list.push(
           // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
@@ -210,13 +200,12 @@ class FormulaSelection extends React.Component<Props, State> {
       }, this);
     }
     return list;
-  }
+  };
 
-  onListItemClick(e) {
+  onListItemClick = (e) => {
     e.preventDefault();
-    const formula = this.state.formulas[
-      DEPRECATED_unsafeEquals(e.target.href, undefined) ? e.target.parentElement.id : e.target.id
-    ];
+    const formula =
+      this.state.formulas[DEPRECATED_unsafeEquals(e.target.href, undefined) ? e.target.parentElement.id : e.target.id];
 
     if (e.target.id.startsWith("info_button_")) {
       /**
@@ -228,9 +217,9 @@ class FormulaSelection extends React.Component<Props, State> {
       formula.selected = !formula.selected;
     }
     this.forceUpdate();
-  }
+  };
 
-  onGroupItemClick(e) {
+  onGroupItemClick = (e) => {
     e.preventDefault();
 
     var group = e.target;
@@ -240,18 +229,18 @@ class FormulaSelection extends React.Component<Props, State> {
     switch (state) {
       case 0:
       case 2:
-        group.forEach(function(formula) {
+        group.forEach(function (formula) {
           formula.selected = true;
         });
         break;
       case 1:
-        group.forEach(function(formula) {
+        group.forEach(function (formula) {
           formula.selected = false;
         });
         break;
     }
     this.forceUpdate();
-  }
+  };
 
   render() {
     var items: MessageType[] = [];
@@ -260,7 +249,7 @@ class FormulaSelection extends React.Component<Props, State> {
     }
     if (this.state.messages.length > 0) {
       items = items.concat(
-        this.state.messages.map(function(msg) {
+        this.state.messages.map(function (msg) {
           return { severity: "info", text: msg };
         })
       );
@@ -268,7 +257,7 @@ class FormulaSelection extends React.Component<Props, State> {
 
     if (this.state.errors && this.state.errors.length > 0) {
       items = items.concat(
-        this.state.errors.map(function(e) {
+        this.state.errors.map(function (e) {
           return { severity: "error", text: e };
         })
       );
@@ -313,7 +302,7 @@ class FormulaSelection extends React.Component<Props, State> {
             <form
               id="chooseFormulaForm"
               className="form-horizontal"
-              onSubmit={function(e) {
+              onSubmit={function (e) {
                 e.preventDefault();
               }}
             >

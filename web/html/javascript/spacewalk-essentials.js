@@ -253,16 +253,20 @@ function onDocumentReadyAutoBootstrapGrid() {
   });
 }
 
-// Put the focus on a given form element
-function formFocus(form, name) {
-  var focusControl = document.forms[form].elements[name];
-  if (focusControl.type != "hidden" && !focusControl.disabled) {
-     focusControl.focus();
-  }
-}
-
 // Humanizes all the time elements with the human class
 function humanizeDates() {
+  // should be consistent with UserPreferencesUtils.java
+  moment.lang(window.preferredLocale, {
+    longDateFormat : {
+      LT: "HH:mm",
+      LTS: "HH:mm:ss",
+      L: "YYYY-MM-DD",
+      LL: "YYYY-MM-DD",
+      LLL: "YYYY-MM-DD",
+      LLLL: "YYYY-MM-DD"
+    },
+  });
+
   jQuery("time.human-from, time.human-calendar").each(function (index) {
     var datetime = jQuery(this).attr('datetime');
     if (datetime == undefined) {

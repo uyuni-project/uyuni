@@ -1,5 +1,7 @@
 import * as d3 from "d3";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import * as UI from "./ui/components";
 
 function computeSvgDimensions() {
@@ -17,18 +19,12 @@ function computeSvgDimensions() {
 function adjustSvgDimensions() {
   const dimensions = computeSvgDimensions();
   // try to find the object via d3
-  d3.select("#svg-wrapper svg")
-    .attr("width", dimensions[0])
-    .attr("height", dimensions[1]);
+  d3.select("#svg-wrapper svg").attr("width", dimensions[0]).attr("height", dimensions[1]);
 }
 
 function prepareDom() {
   const dimensions = computeSvgDimensions();
-  const svg = d3
-    .select("#svg-wrapper")
-    .append("svg")
-    .attr("width", dimensions[0])
-    .attr("height", dimensions[1]);
+  const svg = d3.select("#svg-wrapper").append("svg").attr("width", dimensions[0]).attr("height", dimensions[1]);
 
   UI.svgTextStyle(svg);
 

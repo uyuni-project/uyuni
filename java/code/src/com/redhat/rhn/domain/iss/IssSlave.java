@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.domain.iss;
 
-import java.util.Date;
-import java.util.Set;
-
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;
+
+import java.util.Date;
+import java.util.Set;
 
 /**
  * IssSlave - Class representation of the table rhnissslave.

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.frontend.action.renderers;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.frontend.action.renderers.io.CachingResponseWrapper;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.SystemOverviewComparator;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -22,12 +28,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.action.renderers.io.CachingResponseWrapper;
-import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.dto.SystemOverviewComparator;
 
 /**
  * General helper for fragment rendering

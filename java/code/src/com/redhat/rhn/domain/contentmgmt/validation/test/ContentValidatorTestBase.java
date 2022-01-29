@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,15 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
+
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static java.util.Optional.empty;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
@@ -31,20 +40,11 @@ import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
 
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static java.util.Optional.empty;
-
 public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
 
-    final LocalizationService loc;
+    private final LocalizationService loc;
 
-    ContentProject project;
+    private ContentProject project;
 
     private ContentManager manager;
 
@@ -120,5 +120,19 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(EQUALS, "module_stream", value);
         ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
         manager.attachFilter("cplabel", filter.getId(), user);
+    }
+
+    /**
+     * @return localization service
+     */
+    public LocalizationService getLoc() {
+        return loc;
+    }
+
+    /**
+     * @return content project
+     */
+    public ContentProject getProject() {
+        return project;
     }
 }

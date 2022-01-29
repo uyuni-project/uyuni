@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -183,7 +184,6 @@ public class OrgFactory extends HibernateFactory {
         retval.addRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         retval.addRole(RoleFactory.SAT_ADMIN);
         retval.addRole(RoleFactory.IMAGE_ADMIN);
-        retval.addRole(RoleFactory.CLUSTER_ADMIN);
 
         // Save the object since we may have in memory items to write\
         singleton.saveInternal(retval);

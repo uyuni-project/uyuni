@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,6 +33,9 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -103,6 +106,7 @@ import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
+import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
@@ -117,6 +121,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
+import com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.ModulesNotAllowedException;
 import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
@@ -178,6 +183,8 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetter
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -195,13 +202,16 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -1528,12 +1538,15 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      #array_begin()
      *          #struct_begin("package")
+     *                 #prop_desc("int", "package_id", "PackageID, -1 if package is installed but not available in
+     *                 subscribed channels")
      *                 #prop("string", "name")
+     *                 #prop("string", "epoch")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
-     *                 #prop("string", "epoch")
      *                 #prop_desc("string", "arch", "architecture label")
      *                 #prop_desc("date", "installtime", "returned only if known")
+     *                 #prop("boolean", "retracted")
      *          #struct_end()
      *      #array_end()
      */
@@ -1544,7 +1557,8 @@ public class SystemHandler extends BaseHandler {
         DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
         packageListItems.elaborate();
         List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
-            Map<String, Object> item = new HashMap<>();
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("package_id", Objects.isNull(pi.getPackageId()) ? -1 : pi.getPackageId().intValue());
             item.put("name", pi.getName());
             item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
             item.put("version", pi.getVersion());
@@ -1558,6 +1572,51 @@ public class SystemHandler extends BaseHandler {
             return item;
         }).collect(toList());
         return maps;
+    }
+
+    /**
+     * List current package locks status.
+     * @param loggedInUser The current user
+     * @param sid System ID
+     * @return Returns an array of maps representing the packages locked on a system
+
+
+     * @xmlrpc.doc List current package locks status.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "system_id")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          #struct_begin("package")
+     *                 #prop_desc("int", "package_id", "PackageID, -1 if package is locked but not available in
+     *                 subscribed channels")
+     *                 #prop("string", "name")
+     *                 #prop("string", "epoch")
+     *                 #prop("string", "version")
+     *                 #prop("string", "release")
+     *                 #prop_desc("string", "arch", "architecture label")
+     *                 #prop_desc("string", "pending status", "return only if there is a pending locking")
+     *          #struct_end()
+     *      #array_end()
+     */
+    public List<Map<String, Object>> listPackagesLockStatus(User loggedInUser, Integer sid) {
+        Server server = lookupServer(loggedInUser, sid);
+
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(server.getId().longValue(), null);
+
+        return lockedPackagesResult.stream().map(pi -> {
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("package_id", pi.getPackageId().intValue());
+            item.put("name", pi.getName());
+            item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
+            item.put("version", pi.getVersion());
+            item.put("release", pi.getRelease());
+            item.put("arch", Optional.ofNullable(pi.getArch()).orElse(" "));
+            if (pi.getPending() != null) {
+                item.put("pending status", pi.getPending().equals("L") ? "Locking" : "Unlocking");
+            }
+            return item;
+        }).collect(toList());
     }
 
     /**
@@ -1704,7 +1763,7 @@ public class SystemHandler extends BaseHandler {
 
     public int deleteSystem(String clientCert) throws FaultException {
         Server server = validateClientCertificate(clientCert);
-        SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
+        systemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
                 server.getId(),
                 SystemManager.ServerCleanupType.NO_CLEANUP
                 );
@@ -1749,7 +1808,7 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
-        SystemManager.deleteServerAndCleanup(loggedInUser,
+        systemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
                 SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
                                     new IllegalArgumentException(
@@ -1879,7 +1938,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setGroupMembership(User loggedInUser, Integer sid, Integer sgid,
-            boolean member) throws FaultException {
+            Boolean member) throws FaultException {
         // Get the logged in user and server
         ensureSystemGroupAdmin(loggedInUser);
         Server server = lookupServer(loggedInUser, sid);
@@ -2286,7 +2345,365 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * List Events for a given server.
+     * List all the events of a given type for a given server created after the specified date.
+     * @param loggedInUser The current user
+     * @param sid The id of the server you are wanting to lookup
+     * @param actionType type of the action
+     * @param earliestDate the minimum creation date for the events retrieved
+     * @return Returns an array of maps representing a system
+     * @since 10.8
+     *
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server after the
+     * specified date. "actionType" should be exactly the string returned in the action_type field
+     * from the listSystemEvents(sessionKey, serverId) method. For example,
+     * 'Package Install' or 'Initiate a kickstart for a virtual guest.'
+     * Note: see also system.getEventHistory method which returns a history of all events.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      #struct_begin("action")
+     *          #prop_desc("int", "failed_count", "Number of times action failed.")
+     *          #prop_desc("string", "modified", "Date modified. (Deprecated by
+     *                     modified_date)")
+     *          #prop_desc($date, "modified_date", "Date modified.")
+     *          #prop_desc("string", "created", "Date created. (Deprecated by
+     *                     created_date)")
+     *          #prop_desc($date, "created_date", "Date created.")
+     *          #prop("string", "action_type")
+     *          #prop_desc("int", "successful_count",
+     *                     "Number of times action was successful.")
+     *          #prop_desc("string", "earliest_action", "Earliest date this action
+     *                     will occur.")
+     *          #prop_desc("int", "archived", "If this action is archived. (1 or 0)")
+     *          #prop_desc("string", "scheduler_user", "available only if concrete user
+     *                     has scheduled the action")
+     *          #prop_desc("string", "prerequisite", "Pre-requisite action. (optional)")
+     *          #prop_desc("string", "name", "Name of this action.")
+     *          #prop_desc("int", "id", "Id of this action.")
+     *          #prop_desc("string", "version", "Version of action.")
+     *          #prop_desc("string", "completion_time", "The date/time the event was
+     *                     completed. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by completed_date)")
+     *          #prop_desc($date, "completed_date", "The date/time the event was completed.
+     *                     (optional)")
+     *          #prop_desc("string", "pickup_time", "The date/time the action was picked
+     *                     up. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by pickup_date)")
+     *          #prop_desc($date, "pickup_date", "The date/time the action was picked up.
+     *                     (optional)")
+     *          #prop_desc("string", "result_msg", "The result string after the action
+     *                     executes at the client machine. (optional)")
+     *          #prop_array_begin_desc("additional_info", "This array contains additional
+     *              information for the event, if available.")
+     *              #struct_begin("info")
+     *                  #prop_desc("string", "detail", "The detail provided depends on the
+     *                  specific event.  For example, for a package event, this will be the
+     *                  package name, for an errata event, this will be the advisory name
+     *                  and synopsis, for a config file event, this will be path and
+     *                  optional revision information...etc.")
+     *                  #prop_desc("string", "result", "The result (if included) depends
+     *                  on the specific event.  For example, for a package or errata event,
+     *                  no result is included, for a config file event, the result might
+     *                  include an error (if one occurred, such as the file was missing)
+     *                  or in the case of a config file comparison it might include the
+     *                  differences found.")
+     *              #struct_end()
+     *          #prop_array_end()
+     *      #struct_end()
+     *  #array_end()
+     */
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType,
+                                                      Date earliestDate) {
+
+        // Get the logged in user and server
+        Server server = lookupServer(loggedInUser, sid);
+
+        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server, actionType, earliestDate);
+
+        // In order to support bug 501224, this method is being updated to populate
+        // the result vs having the serializer do so.  The reason is that in order to
+        // support this bug, we want to be able to return some additional detail for the
+        // various events in the system history; however, those details are stored in
+        // different database tables depending upon the event type.  This includes
+        // information like, the specific errata applied, pkgs installed/removed/
+        // upgraded/verified, config files uploaded, deployed or compared...etc.
+
+        List<Map<String, Object>> results = new ArrayList<>();
+
+        for (ServerAction sAction : sActions) {
+
+            Map<String, Object> result = new HashMap<>();
+
+            Action action = sAction.getParentAction();
+
+            if (action.getFailedCount() != null) {
+                result.put("failed_count", action.getFailedCount());
+            }
+            if (action.getActionType().getName() != null) {
+                result.put("action_type", action.getActionType().getName());
+            }
+            if (action.getSuccessfulCount() != null) {
+                result.put("successful_count", action.getSuccessfulCount());
+            }
+            if (action.getEarliestAction() != null) {
+                result.put("earliest_action", action.getEarliestAction().toString());
+            }
+            if (action.getArchived() != null) {
+                result.put("archived", action.getArchived());
+            }
+            if ((action.getSchedulerUser() != null) &&
+                    (action.getSchedulerUser().getLogin() != null)) {
+                result.put("scheduler_user", action.getSchedulerUser().getLogin());
+            }
+            if (action.getPrerequisite() != null) {
+                result.put("prerequisite", action.getPrerequisite());
+            }
+            if (action.getName() != null) {
+                result.put("name", action.getName());
+            }
+            if (action.getId() != null) {
+                result.put("id", action.getId());
+            }
+            if (action.getVersion() != null) {
+                result.put("version", action.getVersion().toString());
+            }
+
+            if (sAction.getCompletionTime() != null) {
+                result.put("completion_time", sAction.getCompletionTime().toString());
+            }
+            if (sAction.getPickupTime() != null) {
+                result.put("pickup_time", sAction.getPickupTime().toString());
+            }
+            if (sAction.getModified() != null) {
+                result.put("modified", sAction.getModified().toString());
+                result.put("modified_date", sAction.getModified());
+            }
+            if (sAction.getCreated() != null) {
+                result.put("created", sAction.getCreated().toString());
+                result.put("created_date", sAction.getCreated());
+            }
+            if (sAction.getCompletionTime() != null) {
+                result.put("completed_date", sAction.getCompletionTime());
+            }
+            if (sAction.getPickupTime() != null) {
+                result.put("pickup_date", sAction.getPickupTime());
+            }
+            if (sAction.getResultMsg() != null) {
+                result.put("result_msg", sAction.getResultMsg());
+            }
+
+            final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
+            if (additionalInfo.size() > 0) {
+                result.put("additional_info", additionalInfo);
+            }
+
+            results.add(result);
+        }
+        return results;
+    }
+
+    private List<Map<String, String>> createActionSpecificDetails(Action action, ServerAction serverAction) {
+        // depending on the event type, we need to retrieve additional information
+        // and store that information in the result
+        final ActionType type = action.getActionType();
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
+                type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
+                type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
+
+            // retrieve the list of package names associated with the action...
+            DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
+            for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
+                Map pkg = (Map) itr.next();
+                String detail = (String) pkg.get("nvre");
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", detail);
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_ERRATA)) {
+
+            // retrieve the errata that were associated with the action...
+            DataResult errata = ActionManager.getErrataList(action.getId());
+            for (Iterator itr = errata.iterator(); itr.hasNext();) {
+                Map erratum = (Map) itr.next();
+                String detail = (String) erratum.get("advisory");
+                detail += " (" + erratum.get("synopsis") + ")";
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", detail);
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
+                type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileUploadList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                info.put("detail", (String) file.get("path"));
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileDeployList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                String path = (String) file.get("path");
+                path += " (rev. " + file.get("revision") + ")";
+                info.put("detail", path);
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+
+            // retrieve the details associated with the action...
+            DataResult files = ActionManager.getConfigFileDiffList(action.getId());
+            for (Iterator itr = files.iterator(); itr.hasNext();) {
+                Map file = (Map) itr.next();
+
+                Map<String, String> info = new HashMap<>();
+                String path = (String) file.get("path");
+                path += " (rev. " + file.get("revision") + ")";
+                info.put("detail", path);
+
+                String error = (String) file.get("failure_reason");
+                if (error != null) {
+                    info.put("result", error);
+                }
+                else {
+                    // if there wasn't an error, check to see if there was a difference
+                    // detected...
+                    String diffString = HibernateFactory.getBlobContents(
+                            file.get("diff"));
+                    if (diffString != null) {
+                        info.put("result", diffString);
+                    }
+                }
+                additionalInfo.add(info);
+            }
+        }
+        else if (type.equals(ActionFactory.TYPE_APPLY_STATES)) {
+            final ApplyStatesActionDetails detail = ActionFactory.lookupApplyStatesActionDetails(action.getId());
+            if (detail != null) {
+                final Optional<ApplyStatesActionResult> serverResult = detail.getResult(serverAction.getServerId());
+
+                final String output = serverResult.flatMap(ApplyStatesActionResult::getResult)
+                                                  .orElse(Collections.emptyList())
+                                                  .stream()
+                                                  .sorted(Comparator.comparing(StateResult::getRunNum))
+                                                  .map(StateResult::toString)
+                                                  .collect(Collectors.joining());
+
+                final String returnCode = serverResult.map(ApplyStatesActionResult::getReturnCode)
+                                                      .map(Object::toString)
+                                                      .orElse("");
+
+                additionalInfo.add(Map.of("detail", output, "result", returnCode));
+            }
+        }
+
+        return additionalInfo;
+    }
+
+    /**
+     * List all the events for a given server.
+     * @param loggedInUser The current user
+     * @param sid The id of the server you are wanting to lookup
+     * @return Returns an array of maps representing a system
+     * @since 10.8
+     *
+     * @xmlrpc.doc List all system actions that were *scheduled* against the given server.
+     * This may require the caller to filter the result to fetch actions with a specific action type or
+     * to use the overloaded system.listSystemEvents method with actionType as a parameter.
+     * Note: see also system.getEventHistory method which returns a history of all events.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      #struct_begin("action")
+     *          #prop_desc("int", "failed_count", "Number of times action failed.")
+     *          #prop_desc("string", "modified", "Date modified. (Deprecated by
+     *                     modified_date)")
+     *          #prop_desc($date, "modified_date", "Date modified.")
+     *          #prop_desc("string", "created", "Date created. (Deprecated by
+     *                     created_date)")
+     *          #prop_desc($date, "created_date", "Date created.")
+     *          #prop("string", "action_type")
+     *          #prop_desc("int", "successful_count",
+     *                     "Number of times action was successful.")
+     *          #prop_desc("string", "earliest_action", "Earliest date this action
+     *                     will occur.")
+     *          #prop_desc("int", "archived", "If this action is archived. (1 or 0)")
+     *          #prop_desc("string", "scheduler_user", "available only if concrete user
+     *                     has scheduled the action")
+     *          #prop_desc("string", "prerequisite", "Pre-requisite action. (optional)")
+     *          #prop_desc("string", "name", "Name of this action.")
+     *          #prop_desc("int", "id", "Id of this action.")
+     *          #prop_desc("string", "version", "Version of action.")
+     *          #prop_desc("string", "completion_time", "The date/time the event was
+     *                     completed. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by completed_date)")
+     *          #prop_desc($date, "completed_date", "The date/time the event was completed.
+     *                     (optional)")
+     *          #prop_desc("string", "pickup_time", "The date/time the action was picked
+     *                     up. Format -&gt;YYYY-MM-dd hh:mm:ss.ms
+     *                     Eg -&gt;2007-06-04 13:58:13.0. (optional)
+     *                     (Deprecated by pickup_date)")
+     *          #prop_desc($date, "pickup_date", "The date/time the action was picked up.
+     *                     (optional)")
+     *          #prop_desc("string", "result_msg", "The result string after the action
+     *                     executes at the client machine. (optional)")
+     *          #prop_array_begin_desc("additional_info", "This array contains additional
+     *              information for the event, if available.")
+     *              #struct_begin("info")
+     *                  #prop_desc("string", "detail", "The detail provided depends on the
+     *                  specific event.  For example, for a package event, this will be the
+     *                  package name, for an errata event, this will be the advisory name
+     *                  and synopsis, for a config file event, this will be path and
+     *                  optional revision information...etc.")
+     *                  #prop_desc("string", "result", "The result (if included) depends
+     *                  on the specific event.  For example, for a package or errata event,
+     *                  no result is included, for a config file event, the result might
+     *                  include an error (if one occurred, such as the file was missing)
+     *                  or in the case of a config file comparison it might include the
+     *                  differences found.")
+     *              #struct_end()
+     *          #prop_array_end()
+     *      #struct_end()
+     *  #array_end()
+     */
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
+        return listSystemEvents(loggedInUser, sid, null, null);
+    }
+
+    /**
+     * List all the events of a given type for a given server.
      * @param loggedInUser The current user
      * @param sid The id of the server you are wanting to lookup
      * @param actionType type of the action
@@ -2351,224 +2768,33 @@ public class SystemHandler extends BaseHandler {
      *                  no result is included, for a config file event, the result might
      *                  include an error (if one occurred, such as the file was missing)
      *                  or in the case of a config file comparison it might include the
-     *                  differenes found.")
+     *                  differences found.")
      *              #struct_end()
      *          #prop_array_end()
      *      #struct_end()
      *  #array_end()
      */
-    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid,
-            String actionType) {
-
-        // Get the logged in user and server
-        Server server = lookupServer(loggedInUser, sid);
-
-        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server);
-
-        // In order to support bug 501224, this method is being updated to populate
-        // the result vs having the serializer do so.  The reason is that in order to
-        // support this bug, we want to be able to return some additional detail for the
-        // various events in the system history; however, those details are stored in
-        // different database tables depending upon the event type.  This includes
-        // information like, the specific errata applied, pkgs installed/removed/
-        // upgraded/verified, config files uploaded, deployed or compared...etc.
-
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-
-        ActionType at = null;
-        if (actionType != null) {
-            at = ActionFactory.lookupActionTypeByName(actionType);
-            if (at == null) {
-                throw new IllegalArgumentException("Action type not found: " + actionType);
-            }
-        }
-
-        for (ServerAction sAction : sActions) {
-
-            Map<String, Object> result = new HashMap<String, Object>();
-
-            Action action = sAction.getParentAction();
-
-            if (at != null && !action.getActionType().equals(at)) {
-                continue;
-            }
-
-            if (action.getFailedCount() != null) {
-                result.put("failed_count", action.getFailedCount());
-            }
-            if (action.getActionType().getName() != null) {
-                result.put("action_type", action.getActionType().getName());
-            }
-            if (action.getSuccessfulCount() != null) {
-                result.put("successful_count", action.getSuccessfulCount());
-            }
-            if (action.getEarliestAction() != null) {
-                result.put("earliest_action", action.getEarliestAction().toString());
-            }
-            if (action.getArchived() != null) {
-                result.put("archived", action.getArchived());
-            }
-            if ((action.getSchedulerUser() != null) &&
-                    (action.getSchedulerUser().getLogin() != null)) {
-                result.put("scheduler_user", action.getSchedulerUser().getLogin());
-            }
-            if (action.getPrerequisite() != null) {
-                result.put("prerequisite", action.getPrerequisite());
-            }
-            if (action.getName() != null) {
-                result.put("name", action.getName());
-            }
-            if (action.getId() != null) {
-                result.put("id", action.getId());
-            }
-            if (action.getVersion() != null) {
-                result.put("version", action.getVersion().toString());
-            }
-
-            if (sAction.getCompletionTime() != null) {
-                result.put("completion_time", sAction.getCompletionTime().toString());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_time", sAction.getPickupTime().toString());
-            }
-            if (sAction.getModified() != null) {
-                result.put("modified", sAction.getModified().toString());
-                result.put("modified_date", sAction.getModified());
-            }
-            if (sAction.getCreated() != null) {
-                result.put("created", sAction.getCreated().toString());
-                result.put("created_date", sAction.getCreated());
-            }
-            if (sAction.getCompletionTime() != null) {
-                result.put("completed_date", sAction.getCompletionTime());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_date", sAction.getPickupTime());
-            }
-            if (sAction.getResultMsg() != null) {
-                result.put("result_msg", sAction.getResultMsg());
-            }
-
-            // depending on the event type, we need to retrieve additional information
-            // and store that information in the result
-            ActionType type = action.getActionType();
-            List<Map<String, String>> additionalInfo = new ArrayList<Map<String, String>>();
-
-            if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
-                    type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                    type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-
-                // retrieve the list of package names associated with the action...
-
-                DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-                for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-                    Map pkg = (Map) itr.next();
-                    String detail = (String) pkg.get("nvre");
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", detail);
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_ERRATA)) {
-
-                // retrieve the errata that were associated with the action...
-                DataResult errata = ActionManager.getErrataList(action.getId());
-                for (Iterator itr = errata.iterator(); itr.hasNext();) {
-                    Map erratum = (Map) itr.next();
-                    String detail = (String) erratum.get("advisory");
-                    detail += " (" + (String) erratum.get("synopsis") + ")";
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", detail);
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
-                    type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileUploadList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    info.put("detail", (String) file.get("path"));
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileDeployList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    String path = (String) file.get("path");
-                    path += " (rev. " + file.get("revision") + ")";
-                    info.put("detail", path);
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    additionalInfo.add(info);
-                }
-            }
-            else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-
-                // retrieve the details associated with the action...
-                DataResult files = ActionManager.getConfigFileDiffList(action.getId());
-                for (Iterator itr = files.iterator(); itr.hasNext();) {
-                    Map file = (Map) itr.next();
-
-                    Map<String, String> info = new HashMap<String, String>();
-                    String path = (String) file.get("path");
-                    path += " (rev. " + file.get("revision") + ")";
-                    info.put("detail", path);
-
-                    String error = (String) file.get("failure_reason");
-                    if (error != null) {
-                        info.put("result", error);
-                    }
-                    else {
-                        // if there wasn't an error, check to see if there was a difference
-                        // detected...
-                        String diffString = HibernateFactory.getBlobContents(
-                                file.get("diff"));
-                        if (diffString != null) {
-                            info.put("result", diffString);
-                        }
-                    }
-                    additionalInfo.add(info);
-                }
-            }
-            if (additionalInfo.size() > 0) {
-                result.put("additional_info", additionalInfo);
-            }
-            results.add(result);
-        }
-        return results;
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType) {
+        return listSystemEvents(loggedInUser, sid, actionType, null);
     }
 
     /**
-     * List Events for a given server.
+     * List all the events for a given server created after the specified date.
      * @param loggedInUser The current user
      * @param sid The id of the server you are wanting to lookup
+     * @param earliestDate the minimum creation date for the events retrieved
      * @return Returns an array of maps representing a system
      * @since 10.8
      *
-     * @xmlrpc.doc List all system actions that were *scheduled* against the given server.
-     * This may require the caller to filter the result to fetch actions with a specific action type or
+     * @xmlrpc.doc List system actions of the specified type that were *scheduled* against the given server after the
+     * specified date. This may require the caller to filter the result to fetch actions with a specific action type or
      * to use the overloaded system.listSystemEvents method with actionType as a parameter.
      * Note: see also system.getEventHistory method which returns a history of all events.
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
+     * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
      * @xmlrpc.returntype
      *  #array_begin()
      *      #struct_begin("action")
@@ -2618,14 +2844,14 @@ public class SystemHandler extends BaseHandler {
      *                  no result is included, for a config file event, the result might
      *                  include an error (if one occurred, such as the file was missing)
      *                  or in the case of a config file comparison it might include the
-     *                  differenes found.")
+     *                  differences found.")
      *              #struct_end()
      *          #prop_array_end()
      *      #struct_end()
      *  #array_end()
      */
-    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
-        return listSystemEvents(loggedInUser, sid, null);
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, Date earliestDate) {
+        return listSystemEvents(loggedInUser, sid, null, earliestDate);
     }
 
     /**
@@ -3056,12 +3282,16 @@ public class SystemHandler extends BaseHandler {
      * @return Returns an array of maps representing the server history items
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
+     * @deprecated This version of the method is deprecated and the return value will be changed
+     * in a future API version. Please one of the other overloaded versions of getEventHistory.
      *
      * @xmlrpc.doc Returns a list history items associated with the system, ordered
      *             from newest to oldest. Note that the details may be empty for
      *             events that were scheduled against the system (as compared to instant).
      *             For more information on such events, see the system.listSystemEvents
      *             operation.
+     *             Note: This version of the method is deprecated and the return value will be changed in a
+     *             future API version. Please one of the other overloaded versions of getEventHistory.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
@@ -3069,10 +3299,136 @@ public class SystemHandler extends BaseHandler {
      *           $HistoryEventSerializer
      *      #array_end()
      */
+    @Deprecated
     public Object[] getEventHistory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         List<HistoryEvent> history = ServerFactory.getServerHistory(server);
         return history.toArray();
+    }
+
+    /**
+     * Lists the server history of a system after the date specified. The result list is paged and ordered from oldest
+     * to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param earliestDate the minimum completion date for the events retrieved
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results to return
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
+     *             The list is paged and ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
+     * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate, Integer offset,
+                                                Integer limit) {
+
+        final Server server = lookupServer(loggedInUser, sid);
+        return SystemManager.systemEventHistory(server, loggedInUser.getOrg(), earliestDate, offset, limit);
+    }
+
+    /**
+     * Lists the server history of a system. The result list is paged and ordered from oldest to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param offset the number of results to skip
+     * @param limit the maximum number of results to return
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system.
+     *             The list is paged and ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
+     * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Integer offset, Integer limit) {
+        return getEventHistory(loggedInUser, sid, null, offset, limit);
+    }
+
+    /**
+     * Lists the server history of a system after the date specified. The result list is ordered from oldest
+     * to newest.
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param earliestDate the minimum completion date for the events retrieved
+     * @return Returns an array of maps representing the server history items
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
+     *             The list is ordered from newest to oldest.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDtoSerializer
+     *      #array_end()
+     */
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate) {
+        return getEventHistory(loggedInUser, sid, earliestDate, null, null);
+    }
+
+    /**
+     * Returns the details of a history event.
+     *
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @param eid The id of the event in question
+     * @return Returns the details of the requested event
+     * @throws FaultException A FaultException is thrown if the server corresponding to sid or the event corresponding
+     * to the eid cannot be found.
+
+     * @xmlrpc.doc Returns the details of the event associated with the specified server and event.
+     *             The event id must be a value returned by the system.getEventHistory API.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "eventId")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $SystemEventDetailsDtoSerializer
+     *      #array_end()
+    */
+    public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
+
+        final Server server = lookupServer(loggedInUser, sid);
+        final SystemEventDetailsDto eventDetail = SystemManager.systemEventDetails(server.getId(),
+                loggedInUser.getOrg().getId(), eid.longValue());
+
+        if (eventDetail == null) {
+            throw new NoSuchHistoryEventException("No such history event for server - sid = " + sid + ", eid = " + eid);
+        }
+
+        if (eventDetail.getHistoryType() != null) {
+            // This is an action related entry this we can extract additional information
+            final Action action = ActionManager.lookupAction(loggedInUser, eventDetail.getId());
+            final ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+
+            eventDetail.setEarliestAction(action.getEarliestAction());
+            eventDetail.setResultMsg(serverAction.getResultMsg());
+            eventDetail.setResultCode(serverAction.getResultCode());
+
+            eventDetail.setAdditionalInfo(createActionSpecificDetails(action, serverAction));
+        }
+
+        return eventDetail;
     }
 
     /**
@@ -3279,7 +3635,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
                                           Date earliestOccurrence, Boolean allowModules,
-                                          Boolean onlyRelevant, boolean allowVendorChange) {
+                                          Boolean onlyRelevant, Boolean allowVendorChange) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = serverIdsIn.stream()
@@ -3432,7 +3788,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sid, List<Integer> errataIds,
-                                         Date earliestOccurrence, Boolean allowModules, boolean onlyRelevant) {
+                                         Date earliestOccurrence, Boolean allowModules, Boolean onlyRelevant) {
         return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules,
                 onlyRelevant, false);
 
@@ -3586,7 +3942,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      */
     private Long[] schedulePackagesAction(User loggedInUser, List<Integer> sids,
-            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, boolean allowModules) {
+            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, Boolean allowModules) {
 
         List<Long> actionIds = new ArrayList<Long>();
 
@@ -4265,6 +4621,70 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Schedule package lock for a system.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param pkgIdsToLock List of package IDs to lock (as Integers)
+     * @param pkgIdsToUnlock List of package IDs to lock (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package removal
+     * @return package action id
+     *
+     * @xmlrpc.doc Schedule package lock for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("int", "pkgIdsToLock")
+     * @xmlrpc.param #array_single("int", "pkgIdsToUnlock")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.returntype #param_desc("return_int_success")
+     */
+    public Long schedulePackageLockChange(User loggedInUser, Integer sid,
+                                          List<Integer> pkgIdsToLock,
+                                          List<Integer> pkgIdsToUnlock, Date earliestOccurrence) {
+
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(server.getId(), null);
+
+        Set<Package> pkgsAlreadyLocked = new HashSet<>();
+        List<Package> pkgsFindAlreadyLocked = PackageManager.lookupByIdAndUser(
+                lockedPackagesResult.stream().map(PackageListItem::getPackageId)
+                        .collect(Collectors.toList()), loggedInUser);
+        pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
+
+        Set<Package> pkgsToLock = new HashSet<>();
+        List<Package> pkgsFindToLock = PackageManager.lookupByIdAndUser(pkgIdsToLock
+
+                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+        pkgsFindToLock.stream().filter(Objects::nonNull).forEach(pkgsToLock::add);
+
+        pkgsToLock.removeAll(pkgsAlreadyLocked);
+        pkgsToLock.forEach(x -> x.setLockPending(Boolean.TRUE));
+        PackageManager.lockPackages(server.getId(), pkgsToLock);
+        PackageManager.setPendingStatusOnLockedPackages(pkgsToLock, PackageManager.PKG_PENDING_LOCK);
+
+        Set<Package> pkgsToUnlock = new HashSet<>();
+        List<Package> pkgsFindToUnlock = PackageManager.lookupByIdAndUser(pkgIdsToUnlock
+                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+        pkgsFindToUnlock.stream().filter(Objects::nonNull).forEach(pkgsToUnlock::add);
+
+        pkgsToUnlock.forEach(x -> x.setLockPending(Boolean.TRUE));
+        PackageManager.setPendingStatusOnLockedPackages(pkgsToUnlock, PackageManager.PKG_PENDING_UNLOCK);
+
+        Set<Package> allPkgsWithAction = new HashSet<>();
+        allPkgsWithAction.addAll(pkgsToLock);
+        allPkgsWithAction.addAll(pkgsAlreadyLocked);
+
+        try {
+            // we should schedule an action for all the packages
+            Action a = ActionManager.schedulePackageLock(loggedInUser, allPkgsWithAction, earliestOccurrence, server);
+            return a.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+    /**
      * Lists all of the notes that are associated with a system.
      *   If no notes are found it should return an empty set.
      * @param loggedInUser The current user
@@ -4833,16 +5253,6 @@ public class SystemHandler extends BaseHandler {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
             if (autoUpdate.booleanValue()) {
-                if (server.getAutoUpdate().equals("N")) {
-                    // schedule errata update only it if the value has changed
-                    try {
-                        ActionManager.scheduleAllErrataUpdate(loggedInUser, server,
-                                new Date());
-                    }
-                    catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-                        throw new TaskomaticApiException(e.getMessage());
-                    }
-                }
                 server.setAutoUpdate("Y");
             }
             else {
@@ -4923,7 +5333,7 @@ public class SystemHandler extends BaseHandler {
      *
      *  @xmlrpc.returntype #return_int_success()
      */
-    public Integer setLockStatus(User loggedInUser, Integer serverId, boolean lockStatus) {
+    public Integer setLockStatus(User loggedInUser, Integer serverId, Boolean lockStatus) {
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(serverId.longValue(),
@@ -5622,6 +6032,29 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Method to list systems having a given entitlement
+     *
+     * @param loggedInUser the current user
+     * @param entitlementName the entitlement name to look for
+     * @return an array of systemOverview objects
+     *
+     * @xmlrpc.doc Lists the systems that have the given entitlement
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("string", "entitlementName", "the entitlement name")
+     * @xmlrpc.returntype
+     *              #array_begin()
+     *                  $SystemOverviewSerializer
+     *              #array_end()
+     */
+    public List<SystemOverview> listSystemsWithEntitlement(User loggedInUser, String entitlementName) {
+        Entitlement entitlement = EntitlementManager.getByName(entitlementName);
+        if (entitlement == null) {
+            throw new InvalidEntitlementException(entitlementName);
+        }
+        return SystemManager.listSystemsWithEntitlement(loggedInUser, entitlement);
+    }
+
+    /**
      * Gets a list of all Physical systems visible to user
      * @param loggedInUser The current user
      * @return Returns an array of maps representing all systems visible to user
@@ -6152,7 +6585,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
-            return SystemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
+            return systemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
         }
         catch (SystemsExistException e) {
             throw new SystemsExistFaultException(e.getSystemIds());
@@ -6835,7 +7268,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                    List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+                                    List<String> optionalChildChannels, Boolean dryRun, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliest);
     }
@@ -6881,7 +7314,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
+            List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliest);
     }
@@ -6925,7 +7358,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                    String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                     Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliest);
@@ -6972,8 +7405,8 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-            String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-            boolean allowVendorChange, Date earliest) {
+            String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
+            Boolean allowVendorChange, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, allowVendorChange, earliest);
     }
@@ -7010,7 +7443,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                         List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+                                         List<String> optionalChildChannels, Boolean dryRun, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliest);
     }
@@ -7049,7 +7482,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                         List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange,
+                                         List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange,
                                          Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliest);
@@ -7087,7 +7520,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
-                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                         String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                          Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliest);
@@ -7127,8 +7560,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
-                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-                                         boolean allowVendorChange, Date earliest) {
+                                         String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
+                                         Boolean allowVendorChange, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -7424,11 +7857,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
-            String sshPassword, String activationKey, boolean saltSSH) {
+            String sshPassword, String activationKey, Boolean saltSSH) {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
-                true, empty());
+                empty(), true, empty());
+        log.debug("bootstrap called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7462,10 +7896,11 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
-            String sshPrivKey, String sshPrivKeyPass, String activationKey, boolean saltSSH) {
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, Boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
-                maybeString(sshPrivKeyPass), activationKeys, true, empty());
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
+        log.debug("bootstrapWithPrivateSshKey called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7496,11 +7931,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
-            String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
+            String sshPassword, String activationKey, Integer proxyId, Boolean saltSSH) {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
-                true, of(proxyId.longValue()));
+                empty(), true, of(proxyId.longValue()));
+        log.debug("bootstrap called with proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7536,10 +7972,171 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
-            String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, boolean saltSSH) {
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, Boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
-                maybeString(sshPrivKeyPass), activationKeys, true, of(proxyId.longValue()));
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, Boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, empty());
+        log.debug("bootstrap called with re-activation key: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * Use SSH private key for authentication.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @xmlrpc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            Boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, Integer proxyId,
+            Boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, of(proxyId.longValue()));
+        log.debug("bootstrap called with re-activation key and proxyId: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * Use SSH private key for authentication.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @xmlrpc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            Integer proxyId, Boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
+                of(proxyId.longValue()));
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7559,7 +8156,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, Boolean test) {
         return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid), earliestOccurrence, test);
     }
 
@@ -7579,7 +8176,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
@@ -7622,7 +8219,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
-            Date earliestOccurrence, boolean test) {
+            Date earliestOccurrence, Boolean test) {
         return scheduleApplyStates(loggedInUser, Arrays.asList(sid), stateNames,
                 earliestOccurrence, test);
     }
@@ -7646,7 +8243,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
-            Date earliestOccurrence, boolean test) {
+            Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
@@ -7769,6 +8366,99 @@ public class SystemHandler extends BaseHandler {
      */
     public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
         return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
+    }
+
+    /**
+     * Refresh all the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh all the pillar data of a list of systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, List<Integer> systemIds) {
+        return refreshPillar(loggedInUser, null, systemIds);
+    }
+
+    /**
+     * Refresh the pillar data of a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param subset the string representation of the pillar subset
+     * @param systemIds A list of systems ids to refresh
+     * @return Returns the list of skipped systems IDs
+     *
+     * @xmlrpc.doc refresh the pillar data of a list of systems. The subset value represents the pillar to be refreshed
+     * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "subset", "subset of the pillar to refresh.")
+     * @xmlrpc.param #array_single("int", "serverIds")
+     * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     */
+    public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> systemIds) {
+        List<Integer> skipped = new ArrayList<>();
+        MinionPillarManager.PillarSubset subsetValue = subset != null ?
+                MinionPillarManager.PillarSubset.valueOf(subset.toUpperCase()) :
+                null;
+        for (Integer sysId : systemIds) {
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
+                Server system = SystemManager.lookupByIdAndUser(Long.valueOf(sysId), loggedInUser);
+                system.asMinionServer().ifPresentOrElse(
+                    minionServer -> {
+                        if (subsetValue != null) {
+                            MinionPillarManager.INSTANCE.generatePillar(minionServer, true, subsetValue);
+                        }
+                        else {
+                            MinionPillarManager.INSTANCE.generatePillar(minionServer);
+                        }
+                    },
+                    () -> {
+                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        skipped.add(sysId);
+                    }
+                );
+            }
+            else {
+                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                skipped.add(sysId);
+            }
+        }
+        return skipped;
+    }
+
+    /**
+     * Connect given systems to another proxy.
+     *
+     * @param loggedInUser The current user
+     * @param sids A list of systems ids
+     * @param proxyId Id of the proxy or 0 for direct connection to SUMA server
+     * @return Returns a list of scheduled action ids
+     *
+     * @xmlrpc.doc Connect given systems to another proxy.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "systemIds")
+     * @xmlrpc.param #param("int", "proxyId")
+     * @xmlrpc.returntype #array_single("int", "actionIds", "list of scheduled action ids")
+     */
+
+    public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+        try {
+            return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (java.lang.UnsupportedOperationException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
     }
 
     /**

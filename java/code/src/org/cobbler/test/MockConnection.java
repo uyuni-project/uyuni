@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -52,12 +52,12 @@ public class MockConnection extends CobblerConnection {
 
     private static List<String> powerCommands = new ArrayList<String>();
 
-    private static final Map<String, String> remapKeys = new HashMap<>();
+    private static final Map<String, String> REMAP_KEYS = new HashMap<>();
 
     static {
-        remapKeys.put("kopts", "kernel_options");
-        remapKeys.put("kopts_post", "kernel_options_post");
-        remapKeys.put("autoinstall_meta", "autoinstall_meta");
+        REMAP_KEYS.put("kopts", "kernel_options");
+        REMAP_KEYS.put("kopts_post", "kernel_options_post");
+        REMAP_KEYS.put("autoinstall_meta", "autoinstall_meta");
     }
 
     /**
@@ -269,8 +269,8 @@ public class MockConnection extends CobblerConnection {
         // Some cobbler options have 2 names (the first name is used for writing to cobbler,
         // and the second one for reading from cobbler. Here we make sure the second one
         // is updated too.
-        if (remapKeys.containsKey(arg1)) {
-            distro.put(remapKeys.get(arg1), arg2);
+        if (REMAP_KEYS.containsKey(arg1)) {
+            distro.put(REMAP_KEYS.get(arg1), arg2);
         }
     }
 
@@ -350,7 +350,7 @@ public class MockConnection extends CobblerConnection {
    }
 
 
-   private List<Map<String, Object>> find(Map <String, Object> criteria, List<Map> maps) {
+   private List<Map<String, Object>> find(Map<String, Object> criteria, List<Map> maps) {
        List<Map<String, Object>> ret = new LinkedList<Map<String, Object>>();
        for (Map map : maps) {
            int matched = 0;

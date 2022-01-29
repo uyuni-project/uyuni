@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.audit;
 
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -28,6 +24,10 @@ import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
+
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
 
 /**
  * CVESearchHandler

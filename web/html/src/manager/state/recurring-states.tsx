@@ -1,11 +1,16 @@
 import * as React from "react";
-import { Messages } from "components/messages";
-import Network from "utils/network";
-import { RecurringStatesDetails } from "./recurring-states-details";
-import { RecurringStatesList } from "./recurring-states-list";
-import { RecurringStatesEdit } from "./recurring-states-edit";
-import { Utils as MessagesUtils } from "components/messages";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+
+import { localizedMoment } from "utils";
+import Network from "utils/network";
+
+import { RecurringStatesDetails } from "./recurring-states-details";
+import { RecurringStatesEdit } from "./recurring-states-edit";
+import { RecurringStatesList } from "./recurring-states-list";
 
 /**
  * See:
@@ -52,9 +57,7 @@ function inferEntityParams() {
   return "";
 }
 
-type Props = {
-
-};
+type Props = {};
 
 type State = {
   messages: any[];
@@ -67,20 +70,13 @@ type State = {
 class RecurringStates extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-
-    [
-      "deleteSchedule",
-      "handleForwardAction",
-      "handleDetailsAction",
-      "handleEditAction",
-      "handleResponseError",
-      "updateSchedule",
-      "toggleActive",
-    ].forEach(method => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
       schedules: [],
-      minionIds: (window.minions?.length ?? 0) > 0 && window.minions?.[0].id ? window.minions?.map(minion => minion.id) : undefined,
+      minionIds:
+        (window.minions?.length ?? 0) > 0 && window.minions?.[0].id
+          ? window.minions?.map((minion) => minion.id)
+          : undefined,
     };
   }
 
@@ -108,7 +104,7 @@ class RecurringStates extends React.Component<Props, State> {
     const entityParams = inferEntityParams();
     const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
     return Network.get(endpoint)
-      .then(schedules => {
+      .then((schedules) => {
         this.setState({
           action: undefined,
           selected: undefined,
@@ -122,26 +118,26 @@ class RecurringStates extends React.Component<Props, State> {
     this.setState({ selected: row, action: action });
   }
 
-  handleDetailsAction(row) {
+  handleDetailsAction = (row) => {
     this.getScheduleDetails(row, "details");
     window.history.pushState(null, "", "#/details/" + row.recurringActionId);
-  }
+  };
 
-  handleEditAction(row) {
+  handleEditAction = (row) => {
     this.getScheduleDetails(row, "edit");
     window.history.pushState(null, "", "#/edit/" + row.recurringActionId);
-  }
+  };
 
-  toggleActive(schedule) {
+  toggleActive = (schedule) => {
     Object.assign(schedule, {
       active: !schedule.active,
     });
     this.updateSchedule(schedule);
-  }
+  };
 
-  updateSchedule(schedule) {
+  updateSchedule = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
-      .then(_ => {
+      .then((_) => {
         const successMsg = (
           <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
         );
@@ -158,29 +154,29 @@ class RecurringStates extends React.Component<Props, State> {
         this.handleForwardAction();
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  deleteSchedule(item) {
+  deleteSchedule = (item) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then(_ => {
+      .then((_) => {
         this.setState({
           messages: MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."),
         });
         this.handleForwardAction();
       })
-      .catch(data => {
+      .catch((data) => {
         const taskoErrorMsg = MessagesUtils.error(t("Error when deleting the action. Check if Taskomatic is running"));
         let messages = data && data.status === 503 ? taskoErrorMsg : Network.responseErrorMessage(data);
         this.setState({
           messages: messages,
         });
       });
-  }
+  };
 
   handleForwardAction = (action?: string) => {
     const loc = window.location;
     if (typeof action === "undefined" || action === "back") {
-      this.getRecurringScheduleList().then(data => {
+      this.getRecurringScheduleList().then((data) => {
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
     } else {
@@ -197,24 +193,29 @@ class RecurringStates extends React.Component<Props, State> {
     });
   }
 
-  handleResponseError = jqXHR => {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
   };
 
   render() {
-    const messages = this.state.messages ? <Messages items={this.state.messages} /> : null;
-    const notification = (
-      <Messages
-        items={[
-          {
-            severity: "warning",
-            text: "The timezone displayed is the server timezone. The scheduled time will be the server time.",
-          },
-        ]}
-      />
-    );
+    const messages = this.state.messages ? <Messages key="state-messages" items={this.state.messages} /> : null;
+    const notification =
+      localizedMoment.userTimeZone !== localizedMoment.serverTimeZone ? (
+        <Messages
+          key="notification-messages"
+          items={[
+            {
+              severity: "warning",
+              text: t(
+                "The below times are displayed in the server time zone {0}. The scheduled time will be the server time.",
+                localizedMoment.serverTimeZone
+              ),
+            },
+          ]}
+        />
+      ) : null;
     return (
       <div>
         {messages}
@@ -227,14 +228,15 @@ class RecurringStates extends React.Component<Props, State> {
           />
         ) : (this.state.action === "edit" && this.state.selected) ||
           (this.state.action === "create" && this.isFilteredList()) ? (
-          [
-            notification,
+          <>
+            {notification}
             <RecurringStatesEdit
+              key="edit"
               schedule={this.state.selected}
               onEdit={this.updateSchedule}
               onActionChanged={this.handleForwardAction}
-            />,
-          ]
+            />
+          </>
         ) : (
           <RecurringStatesList
             data={this.state.schedules}

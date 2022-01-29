@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2021 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
@@ -219,7 +219,7 @@ public class ErrataManager extends BaseManager {
         log.debug("addChannelsToErrata - storing errata");
         ErrataFactory.save(errata);
 
-        errata = (Errata) HibernateFactory.reload(errata);
+        errata = HibernateFactory.reload(errata);
         log.debug("addChannelsToErrata - errata reloaded from DB");
         return errata;
     }
@@ -1838,7 +1838,9 @@ public class ErrataManager extends BaseManager {
             nonUpdateStackActions))
             .collect(toList());
         traditionalErrataActions.stream().forEach(ea-> {
-            ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
+            ActionPackageDetails details = ea.getDetails();
+            details.setAllowVendorChange(allowVendorChange);
+            ea.setDetails(details);
             Action action = ActionManager.storeAction(ea);
             actionIds.add(action.getId());
         });
@@ -1846,7 +1848,9 @@ public class ErrataManager extends BaseManager {
         List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
         minionErrataActions.stream().forEach(ea-> {
-           ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
+           ActionPackageDetails details = ea.getDetails();
+           details.setAllowVendorChange(allowVendorChange);
+           ea.setDetails(details);
            Action action = ActionManager.storeAction(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());
