@@ -7222,7 +7222,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configdiff.schedule.success" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
-        <target/>
+        <target>&lt;a href="{0}"&gt;Akcie porovnania konfiguračných súborov&lt;/a&gt; sa plánujú pre {1} systémy, dokončenie môže trvať niekoľko minút.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 8 systems.</context>
@@ -7230,7 +7230,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configdiff.schedule.success.singular" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Configuration file compare action&lt;/a&gt; is being scheduled successfully for 1 system.</source>
-        <target/>
+        <target>&lt;a href="{0}"&gt;Akcia porovnania konfiguračných súborov&lt;/a&gt; sa úspešne plánuje pre 1 systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 1 system.</context>
@@ -7238,14 +7238,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="configdiff.schedule.error" xml:space="preserve">
         <source>Failed to schedule configuration file compare action</source>
-        <target/>
+        <target>Zlyhalo naplánovanie akcie porovnania konfiguračných súborov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configdiff.schedule.selection_error" xml:space="preserve">
         <source>No system was selected.</source>
-        <target/>
+        <target>Nebol vybraný žiadny systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
         </context-group>
@@ -7259,7 +7259,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="cloneerrata.anychannel" xml:space="preserve">
         <source>Any managed channel</source>
-        <target/>
+        <target>Akýkoľvek spravovaný kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -7273,7 +7273,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="server|jabber_server" xml:space="preserve">
         <source>Hostname</source>
-        <target/>
+        <target>Názov hostiteľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -7281,7 +7281,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
-        <target/>
+        <target>Globálne zakázané e-mailové upozornenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
@@ -7289,14 +7289,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="sdc.details.overview.lock.reason" xml:space="preserve">
         <source>Manually locked</source>
-        <target/>
+        <target>Ručne uzamknuté</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.locked.alert" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; has been locked</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; bol zamknutý</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
@@ -7304,7 +7304,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="sdc.details.overview.unlocked.alert" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; has been unlocked</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; bol odomknutý</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
