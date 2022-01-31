@@ -68,6 +68,17 @@ check_db_version() {
 check_database() {
     if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
         REPORTDB_EXISTS='y'
+    else
+        # check if we should setup a reporting DB
+	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
+            # if the main database is local, we setup the report DB automatically
+            /usr/bin/uyuni-setup-reportdb --db reportdb --user pythia_susemanager --autogenpw \
+                                          --address '*' --remote '0.0.0.0/0,::/0' && {
+                REPORTDB_EXISTS='y'
+            }
+        else
+            logger -p user.notice "Database not local - skipping setup of report database"
+        fi
     fi
 
     source /etc/os-release
