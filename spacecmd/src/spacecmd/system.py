@@ -36,6 +36,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from getpass import getpass
 from operator import itemgetter
 from xml.parsers.expat import ExpatError
 from spacecmd.i18n import _N
@@ -4399,3 +4400,102 @@ def do_system_scheduleproductmigration(self, args):
             logging.error(_N('Failed to schedule %s') % detail)
 
 ####################
+
+
+def help_system_bootstrap(self):
+    print(_("system_bootstrap: Bootstrap a system for management via either Salt or Salt SSH."))
+    print(_('''usage: bootstrap [options]
+
+    options:
+        -H HOSTNAME
+        -p SSH_PORT
+        -u SSH_USERNAME
+        -P SSH_PASSWORD
+        -k SSH_PRIVATEKEY_PATH
+        -S SSH_PRIVATEKEY_PASSWORD
+        -a ACTIVATION_KEY
+        -r REACTIVATION_KEY
+        --proxyid PROXY_SYSID
+        --saltssh
+        '''))
+    print('')
+
+
+def do_system_bootstrap(self, args):
+
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-H', '--hostname')
+    arg_parser.add_argument('-p', '--port', default=22)
+    arg_parser.add_argument('-u', '--ssh-user', default="root")
+    arg_parser.add_argument('-P', '--ssh-password')
+    arg_parser.add_argument('-k', '--ssh-privatekey-file')
+    arg_parser.add_argument('-S', '--ssh-privatekey-password', default="")
+    arg_parser.add_argument('-a', '--activation-key', default="")
+    arg_parser.add_argument('-r', '--reactivation-key')
+    arg_parser.add_argument('--proxyid')
+    arg_parser.add_argument('--saltssh', action='store_true', default=False)
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if not (options.hostname or options.ssh_password or options.ssh_privatekey_file):
+        options.hostname = prompt_user(_('Hostname:'))
+        options.port = prompt_user(_('Port [22]:'))
+        if not options.port:
+            options.port = 22
+        options.ssh_user = prompt_user(_('SSH User [root]:'))
+        if not options.ssh_user:
+            options.ssh_user = "root"
+        options.ssh_password = getpass(_('SSH Password:'))
+        if not options.ssh_password:
+            options.ssh_privatekey_file = prompt_user(_('SSH Private Key File:'))
+            options.ssh_privatekey_password = getpass(_('SSH Private Key Password:'))
+            if not options.ssh_privatekey_password:
+                options.ssh_privatekey_password = ""
+        options.activation_key = prompt_user(_('Activation Key:'))
+        if not options.activation_key:
+            options.activation_key = ""
+        options.reactivation_key = prompt_user(_('Reactivation Key:'))
+        options.proxyid = prompt_user(_('Proxy System ID:'))
+        options.saltssh = False
+        answer = prompt_user(_('Manage with Salt SSH') + ' [y/N]:')
+        if answer in ['y', 'Y']:
+            options.saltssh = True
+
+    if not options.hostname:
+        logging.error(_N("Hostname must be provided"))
+        return 1
+    if not (options.ssh_password or options.ssh_privatekey_file):
+        logging.error(_N("Either a SSH Password or a private key must be provided"))
+        return 1
+
+    args = []
+    if self.check_api_version('25.0'):
+        if options.reactivation_key:
+            args.append(options.reactivation_key)
+    elif options.reactivation_key:
+        logging.error(_N("Server is not supporting reactivation keys at bootstrap time"))
+        return 1
+
+    if options.proxyid:
+        args.append(int(options.proxyid))
+    args.append(options.saltssh)
+
+    print(_("Bootstrapping '{}'. This may take a while.".format(options.hostname)))
+    if options.ssh_password:
+        self.client.system.bootstrap(self.session, options.hostname, options.port,
+                options.ssh_user, options.ssh_password, options.activation_key,
+                *args)
+    else:
+        with open(options.ssh_privatekey_file, "r") as key:
+            pkey = key.read()
+
+            # use ssh key
+            self.client.system.bootstrapWithPrivateSshKey(self.session,
+                    options.hostname, options.port, options.ssh_user,
+                    pkey, options.ssh_privatekey_password, options.activation_key,
+                    *args)
+    print(_("Initial phase successfully finished. Check event history for actions still running"))
+    return 0
+
+####################
+
