@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 #
+# Copyright (c) 2010--2022 SUSE LLC
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -49,6 +50,7 @@ use constant COBBLER_COMMAND => 'spacewalk-setup-cobbler';
 my %opts = Spacewalk::Setup::parse_options();
 
 my %answers = ();
+$answers{'db-backend'} = 'postgresql'; # the only supported currently
 my @skip = ();
 push @skip, Spacewalk::Setup::EMBEDDED_DB_ANSWERS
     if not Spacewalk::Setup::is_embedded_db(\%opts);
@@ -103,20 +105,7 @@ setup_cc(\%opts, \%answers);
 
 setup_default_proxy(\%answers);
 
-choose_database_schema(\%answers);
-
-# If Oracle was selected, call the Oracle specific setup script. If it turns
-# out we need a PostgreSQL specific setup script as well, refactor this to
-# something generic.
-if ($answers{'db-backend'} eq 'oracle') {
-    Spacewalk::Setup::oracle_setup_db(\%opts, \%answers);
-}
-elsif ($answers{'db-backend'} eq 'postgresql') {
-    Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
-}
-else {
-    die "No idea how to install to database: " . $answers{'db-backend'};
-}
+Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
 
 if ($opts{'db-only'}) {
     exit;
@@ -190,30 +179,6 @@ if ($opts{'upgrade'}) {
 
 exit 0;
 
-
-
-sub choose_database_schema {
-    my $answers = shift;
-
-    my %is_valid_schema = (
-        'oracle' => 1,
-        'postgresql' => 1,
-        );
-
-    my $question = "Choose your database backend ("
-        . join(", ", sort(keys(%is_valid_schema)))
-        . ")";
-
-    Spacewalk::Setup::ask(
-            -noninteractive => $opts{"non-interactive"},
-            -question => $question,
-            -test => sub {
-                my $text = shift;
-                $is_valid_schema{$text}
-            },
-            -answer => \$answers->{'db-backend'});
-
-}
 
 sub remove_old_jvm {
         my $opts = shift;
@@ -860,10 +825,6 @@ sub populate_initial_configs {
     # TODO: This may need to be addressed. Can query this for postgresql with
     # "show client_encoding;":
     my $charset = 'UTF8';
-    if ($answers{'db-backend'} eq 'oracle') {
-        my %nls_database_paramaters = Spacewalk::Setup::get_nls_database_parameters($answers);
-        $charset = $nls_database_paramaters{NLS_CHARACTERSET};
-    }
 
     # Define some db specific settings:
     Spacewalk::Setup::set_hibernate_conf($answers);
