@@ -44,3 +44,5 @@ Feature: Install a patch on the client via Salt through the UI
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I run "zypper -n ref" on "sle_minion"
+    And I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
