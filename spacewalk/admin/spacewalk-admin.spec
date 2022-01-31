@@ -51,6 +51,8 @@ BuildRequires:  spacewalk-config
 %endif
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
+Requires:       susemanager-schema-utility
+Requires:       uyuni-setup-reportdb
 
 %description
 Various utility scripts and data files for Spacewalk installations.
