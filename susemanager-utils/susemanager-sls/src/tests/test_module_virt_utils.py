@@ -85,8 +85,7 @@ def test_get_cluster_filesystem(path, expected):
     """
     test the get_cluster_filesystem() function in normal cases
     """
-    with patch.object(virt_utils, "Path", MagicMock(wraps=virt_utils.Path)) as path_mock:
-        path_mock.return_value.resolve.return_value = virt_utils.Path(path)
+    with patch.object(virt_utils.os, "readlink", MagicMock(return_value=path)):
         with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
             popen_mock.return_value.communicate.return_value = (CRM_CONFIG_XML, None)
             assert virt_utils.get_cluster_filesystem(path) == expected
@@ -96,8 +95,7 @@ def test_get_cluster_filesystem_nocrm():
     """
     test the get_cluster_filesystem() function when crm is not installed
     """
-    with patch.object(virt_utils, "Path", MagicMock(wraps=virt_utils.Path)) as path_mock:
-        path_mock.return_value.resolve.return_value = virt_utils.Path("/srv/clusterfs/xml")
+    with patch.object(virt_utils.os, "readlink", MagicMock(return_value="/srv/clusterfs/xml")):
         with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
             popen_mock.return_value.communicate.side_effect = OSError("No such file or directory: 'crm'")
             assert virt_utils.get_cluster_filesystem("/srv/clusterfs/xml") == None
