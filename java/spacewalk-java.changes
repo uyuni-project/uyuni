@@ -1,3 +1,6 @@
+- generate the system ssh key when bootstrapping a salt-ssh client
+  (bsc#1194909)
+
 -------------------------------------------------------------------
 Thu Mar 03 17:32:21 CET 2022 - jmassaguerpla@suse.de
 
