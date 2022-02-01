@@ -168,8 +168,7 @@ class Responder:
     @salt.ext.tornado.gen.coroutine
     def add_event_to_queue(self, raw):
         # FIXME: Drop once we only use Salt >= 3004
-        major, _ = salt.version.__version_info__
-        if major < 3004:
+        if salt.version.SaltStackVersion(*salt.version.__version_info__).major < 3004:
             tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
         else:
             tag, data = self.event_bus.unpack(raw)
