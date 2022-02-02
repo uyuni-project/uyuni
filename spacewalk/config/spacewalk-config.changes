@@ -1,4 +1,8 @@
-- add migration for changed rhn.conf values
+-------------------------------------------------------------------
+Wed Feb 02 13:50:12 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.5-1
+  * add migration for changed rhn.conf values
 
 -------------------------------------------------------------------
 Fri Feb 12 14:28:11 CET 2021 - jgonzalez@suse.com
