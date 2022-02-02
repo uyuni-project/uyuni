@@ -1,10 +1,14 @@
-- Handle multiple Kiwi bundles (bsc#1194905)
-- enforce correct minion configuration similar to bootstrapping
-  (bsc#1192510)
-- Add state for changing proxy
-- Update proxy path on minion connection
-- Fix problem installing/removing packages using action chains
-  in transactional systems
+-------------------------------------------------------------------
+Wed Feb 02 13:54:41 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.20-1
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * enforce correct minion configuration similar to bootstrapping
+    (bsc#1192510)
+  * Add state for changing proxy
+  * Update proxy path on minion connection
+  * Fix problem installing/removing packages using action chains
+    in transactional systems
 
 -------------------------------------------------------------------
 Wed Nov 17 12:42:18 CET 2021 - jmassaguerpla@suse.de
