@@ -1,5 +1,9 @@
-- Update the token in case a channel can't be found in the cache.
-  (bsc#1193585)
+-------------------------------------------------------------------
+Wed Feb 02 13:51:15 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.9-1
+  * Update the token in case a channel can't be found in the cache.
+    (bsc#1193585)
 
 -------------------------------------------------------------------
 Wed Nov 17 12:38:21 CET 2021 - jmassaguerpla@suse.de
