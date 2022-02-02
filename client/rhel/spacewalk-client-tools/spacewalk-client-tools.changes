@@ -1,5 +1,9 @@
-- do not build python 2 package for SLE15
-- require python macros for building
+-------------------------------------------------------------------
+Wed Feb 02 13:49:33 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.16-1
+  * do not build python 2 package for SLE15
+  * require python macros for building
 
 -------------------------------------------------------------------
 Wed Nov 17 12:37:10 CET 2021 - jmassaguerpla@suse.de
