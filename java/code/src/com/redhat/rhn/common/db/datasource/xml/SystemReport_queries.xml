@@ -15,7 +15,7 @@
 <datasource_modes>
 
 <mode name="system" class="">
-  <query>
+  <query params="offset, limit">
       SELECT rhnserver.id AS system_id
                  , rhnserver.name AS profile_name
                  , rhnserver.hostname
@@ -36,22 +36,24 @@
                  LEFT JOIN rhnserverinfo ON  rhnserver.id = rhnserverinfo.server_id
                  INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
                  INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
+        order by system_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemConfigChannel" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnserverconfigchannel.server_id AS system_id
                     , rhnserverconfigchannel.config_channel_id
                     , rhnconfigchannel.name
                     , rhnserverconfigchannel.position
             FROM rhnserverconfigchannel
                     INNER JOIN rhnconfigchannel ON rhnserverconfigchannel.config_channel_id = rhnconfigchannel.id
+          order by system_id, config_channel_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemEntitlement" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
                     , rhnservergroup.name
@@ -65,11 +67,12 @@
                     INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
                     INNER JOIN rhnservergrouptype ON rhnservergroup.group_type = rhnservergrouptype.id
            WHERE rhnservergroup.group_type IS NOT NULL
+          order by system_id, server_group_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="ServerGroup" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
                     , rhnservergroup.name
@@ -80,11 +83,12 @@
                     INNER JOIN rhnservergroup ON rhnservergroupmembers.server_group_id = rhnservergroup.id
                     INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
            WHERE rhnservergroup.group_type IS NULL
+          order by server_id, server_group_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="ServerPrimaryAddress" class="">
-    <query>
+    <query params="offset, limit">
           SELECT server_id AS system_id
                     , rsna4.address AS ip4_addr
                     , rsna4.netmask AS ip4_netmask
@@ -100,11 +104,12 @@
                           WHERE is_primary = 'Y'
                        GROUP BY server_id
                  )
+          order by server_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemVirtualData" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnvirtualinstance.host_system_id
                     , rhnvirtualinstance.virtual_system_id
                     , rhnvirtualinstanceinfo.name
@@ -118,11 +123,12 @@
                     INNER JOIN rhnvirtualinstanceinfo ON rhnvirtualinstance.id = rhnvirtualinstanceinfo.instance_id
                     INNER JOIN rhnvirtualinstancetype ON rhnvirtualinstanceinfo.instance_type = rhnvirtualinstancetype.id
                     INNER JOIN rhnvirtualinstancestate ON rhnvirtualinstanceinfo.state = rhnvirtualinstancestate.id
+          order by host_system_id, virtual_system_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemChannel" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnserverchannel.server_id AS system_id
                     , rhnserverchannel.channel_id
                     , rhnchannel.name
@@ -136,22 +142,24 @@
                     INNER JOIN rhnchannelarch ON rhnchannel.channel_arch_id=rhnchannelarch.id
                     LEFT JOIN rhnproductname ON rhnchannel.product_name_id=rhnproductname.id
                     LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel=rhnparentchannel.id
+          order by system_id, channel_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemOutdated" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnserverneededcache.server_id AS system_id
                     , count(distinct rhnpackage.name_id) AS packages_out_of_date
                     , count(rhnserverneededcache.errata_id) AS errata_out_of_date
             FROM rhnpackage, rhnserverneededcache
            WHERE rhnserverneededcache.package_id = rhnpackage.id
         GROUP BY rhnserverneededcache.server_id
+          order by system_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemAction" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnserveraction.server_id AS system_id
                       , rhnserveraction.action_id
                       , rhnserver.hostname
@@ -193,13 +201,15 @@
                       LEFT JOIN rhnksdata ON rhnkickstartsession.kickstart_id = rhnksdata.id
                       LEFT JOIN rhnactionscap ON rhnserveraction.action_id = rhnactionscap.action_id
                       LEFT JOIN rhnxccdftestresult ON rhnxccdftestresult.action_scap_id = rhnactionscap.id
+          order by system_id, action_id offset :offset limit :limit
   </query>
 </mode>
 
 <mode name="SystemHistory" class="">
-    <query>
+    <query params="offset, limit">
           SELECT rhnserverhistory.server_id AS system_id
                       , rhnserverhistory.id as history_id
+                      , rhnserver.hostname
                       , case
                           when rhnserverhistory.summary like 'subscribed to channel %' then 'Subscribed to channel'
                           when rhnserverhistory.summary like 'unsubscribed from channel %' then 'Unsubscribed from channel'
@@ -216,7 +226,8 @@
 
             FROM rhnserverhistory
                       LEFT JOIN rhnserver ON rhnserverhistory.server_id = rhnserver.id
-  </query>
+          order by rhnserverhistory.id offset :offset limit :limit
+</query>
 </mode>
 
 </datasource_modes>
