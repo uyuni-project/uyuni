@@ -1,5 +1,9 @@
-- During upgrade, set tomcat connector connectionTimeout
-  to 900000 if the previous values is the old default (20000)
+-------------------------------------------------------------------
+Wed Feb 02 13:52:39 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.10-1
+  * During upgrade, set tomcat connector connectionTimeout
+    to 900000 if the previous values is the old default (20000)
 
 -------------------------------------------------------------------
 Wed Nov 17 12:39:12 CET 2021 - jmassaguerpla@suse.de
