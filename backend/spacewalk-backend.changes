@@ -1,8 +1,12 @@
-- Retrieve and store copyright information about patches
-- SLES PAYG client support on cloud
-- Add headers to update proxy auth token in listChannels (bsc#1193585)
-- require python macros for building
-- exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
+-------------------------------------------------------------------
+Wed Feb 02 13:48:17 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.19-1
+  * Retrieve and store copyright information about patches
+  * SLES PAYG client support on cloud
+  * Add headers to update proxy auth token in listChannels (bsc#1193585)
+  * require python macros for building
+  * exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
 
 -------------------------------------------------------------------
 Wed Nov 17 12:35:42 CET 2021 - jmassaguerpla@suse.de
