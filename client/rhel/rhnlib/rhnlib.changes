@@ -1,4 +1,8 @@
-- do not build python 2 package for SLE15
+-------------------------------------------------------------------
+Wed Feb 02 13:47:08 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.5-1
+  * do not build python 2 package for SLE15
 
 -------------------------------------------------------------------
 Fri Jul 16 14:08:44 CEST 2021 - jgonzalez@suse.com
