@@ -44,6 +44,8 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
 - [ ] Check if schema migration directories exist between older and newer SUSE Manager version (more at https://github.com/SUSE/spacewalk/wiki/Maintenance-Update-procedure)
 - [ ] Push changes to Manager-X.Y branch
 - [ ] Tag everything with `tito`
+- [ ] Create Manager-X.Y-MU.X.Y.Z branch
+- [ ] Check manager-x.y-releng-2obs job has packaged latest changes from Manager-X.Y branch into ibs://Devel:Galaxy:Manager:X.Y
 - [ ] Prepare the submissions with `patch-creator`
 - [ ] Ping the Ion squad so they submit salt to `SLE15SP1`, `SLE15SP2` and `SLE15SP3` (not needed for MUs without salt/client tools)
 - [ ] Check if `golang-github-prometheus-node_exporter` is included in the SLE12 client tools submission, and if so, ping @witekest so he can prepare a submission for `SUSE:SLE-15-SP1:Update` (other codestreams will inherit, `SUSE:SLE-15:Update` is not needed because it's LTSS and soon EoL, and this package comes from Basesystem)
