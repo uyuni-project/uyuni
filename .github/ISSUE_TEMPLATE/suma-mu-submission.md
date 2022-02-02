@@ -39,6 +39,9 @@ Add more tasks if needed.
 Add more tasks if needed (for example, asking Maintenace to change the channel definitions).
 
 - [ ] Check all the tests: everything should be green, or otherwise submission must be approved by QA
+- [ ] Increase version number in web/conf/rhn_web.conf (x.y.z+1) in Manager-X.Y. branch
+- [ ] Check if the schema directory exists with the correct versions (more at https://github.com/SUSE/spacewalk/wiki/Maintenance-Update-procedure)
+- [ ] Check if schema migration directories exist between older and newer SUSE Manager version (more at https://github.com/SUSE/spacewalk/wiki/Maintenance-Update-procedure)
 - [ ] Tag everything with `tito`
 - [ ] Prepare the submissions with `patch-creator`
 - [ ] Ping the Ion squad so they submit salt to `SLE15SP1`, `SLE15SP2` and `SLE15SP3` (not needed for MUs without salt/client tools)
