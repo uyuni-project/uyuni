@@ -1,4 +1,8 @@
-- require python macros for building
+-------------------------------------------------------------------
+Wed Feb 02 13:51:28 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.2-1
+  * require python macros for building
 
 -------------------------------------------------------------------
 Fri Sep 18 11:38:39 CEST 2020 - jgonzalez@suse.com
