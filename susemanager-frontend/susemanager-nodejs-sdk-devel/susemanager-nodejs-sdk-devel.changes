@@ -1,4 +1,8 @@
-- Add eslint-plugin-simple-import-sort and sort the plugin list
+-------------------------------------------------------------------
+Wed Feb 02 13:53:44 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.17-1
+  * Add eslint-plugin-simple-import-sort and sort the plugin list
 
 -------------------------------------------------------------------
 Wed Nov 17 12:41:16 CET 2021 - jmassaguerpla@suse.de
