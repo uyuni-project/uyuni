@@ -1,4 +1,4 @@
-- Fix Debian 11 repo name in spacewalk-common-channels
+- Fix Debian 11 client tools repository name in spacewalk-common-channels
 
 -------------------------------------------------------------------
 Tue Jan 18 14:01:26 CET 2022 - jgonzalez@suse.com
