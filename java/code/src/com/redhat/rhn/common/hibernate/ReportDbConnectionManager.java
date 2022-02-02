@@ -64,7 +64,7 @@ public class ReportDbConnectionManager extends AbstractConnectionManager {
         hibProperties.put("hibernate.connection.username", dbUser);
         hibProperties.put("hibernate.connection.password", dbPass);
         hibProperties.put("hibernate.connection.url", dbConnectionUrl);
-        return null;
+        return hibProperties;
     }
 
     @Override

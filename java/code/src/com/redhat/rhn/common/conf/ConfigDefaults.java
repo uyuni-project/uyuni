@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ConfigDefaults is the place to store application specific Config settings
@@ -166,6 +167,7 @@ public class ConfigDefaults {
     public static final String REPORT_DB_HOST = "report_db_host";
     public static final String REPORT_DB_PORT = "report_db_port";
     private static final String REPORT_DB_SSL_ENABLED = "report_db_ssl_enabled";
+    private static final String REPORT_DB_SSLROOTCERT = "report_db_sslrootcert";
     private static final String REPORT_DB_PROTO = "reporting.hibernate.connection.driver_proto";
 
     private static final String SSL_TRUSTSTORE = "java.ssl_truststore";
@@ -762,7 +764,7 @@ public class ConfigDefaults {
         String dbProto = Config.get().getString(DB_PROTO);
         boolean dbSslEnabled = Config.get().getBoolean(DB_SSL_ENABLED);
 
-        return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled);
+        return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled, "");
     }
 
     /**
@@ -776,14 +778,16 @@ public class ConfigDefaults {
         String dbBackend = Config.get().getString(REPORT_DB_BACKEND);
         String dbHost = Config.get().getString(REPORT_DB_HOST);
         String dbPort = Config.get().getString(REPORT_DB_PORT);
-        String dbProto = Config.get().getString(REPORT_DB_PROTO);
+        String dbProto = Optional.ofNullable(Config.get().getString(REPORT_DB_PROTO))
+                .orElse("jdbc:postgresql");
         boolean dbSslEnabled = Config.get().getBoolean(REPORT_DB_SSL_ENABLED);
+        String sslrootcert = Config.get().getString(REPORT_DB_SSLROOTCERT);
 
-        return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled);
+        return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled, sslrootcert);
     }
 
     private String buildConnectionString(String name, String backend, String host, String port, String proto,
-                                         boolean useSsl) {
+                                         boolean useSsl, String sslrootcert) {
         if (!isPostgresql(backend)) {
             throw new ConfigException("Unknown db backend set, expecting postgresql");
         }
@@ -799,7 +803,7 @@ public class ConfigDefaults {
         connectionUrl.append(name);
 
         if (useSsl) {
-            connectionUrl.append("?ssl=true");
+            connectionUrl.append("?ssl=true&sslrootcert="+sslrootcert);
             setSslTrustStore();
         }
 
