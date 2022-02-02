@@ -1,3 +1,5 @@
+- Fix Debian 11 repo name in spacewalk-common-channels
+
 -------------------------------------------------------------------
 Tue Jan 18 14:01:26 CET 2022 - jgonzalez@suse.com
 
