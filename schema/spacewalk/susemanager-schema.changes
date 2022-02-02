@@ -1,13 +1,17 @@
-- Added rights column to rhnerrata to handle copyright information
-- Add support for custom SSH port for SSH minions
-- add ubuntu errata data and install handling
-- SLES PAYG client support on cloud
-- Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
-- Continue with index migration when the expected indexes do not exist
-  (bsc#1192566)
-- Fix changing of existing proxy path
-- Add pillars to Apply States action
-- Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
+-------------------------------------------------------------------
+Wed Feb 02 13:54:00 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.20-1
+  * Added rights column to rhnerrata to handle copyright information
+  * Add support for custom SSH port for SSH minions
+  * add ubuntu errata data and install handling
+  * SLES PAYG client support on cloud
+  * Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
+  * Continue with index migration when the expected indexes do not exist
+    (bsc#1192566)
+  * Fix changing of existing proxy path
+  * Add pillars to Apply States action
+  * Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
 
 -------------------------------------------------------------------
 Wed Nov 17 12:41:45 CET 2021 - jmassaguerpla@suse.de
