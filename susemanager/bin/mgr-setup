@@ -238,6 +238,9 @@ setup_db_postgres() {
         fi
     fi
     systemctl start postgresql
+    # required for postgresql <= 13 before creating the user
+    echo "password_encryption = 'scram-sha-256'" >> /var/lib/pgsql/data/postgresql.conf
+    systemctl restart postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
     # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
