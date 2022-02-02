@@ -1,5 +1,9 @@
-- Read modularity data from DISTTAG tag as fallback (bsc#1192487)
-- require python macros for building
+-------------------------------------------------------------------
+Wed Feb 02 13:54:52 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.6-1
+  * Read modularity data from DISTTAG tag as fallback (bsc#1192487)
+  * require python macros for building
 
 -------------------------------------------------------------------
 Fri Jul 16 14:37:02 CEST 2021 - jgonzalez@suse.com
