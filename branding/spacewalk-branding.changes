@@ -1,4 +1,8 @@
-- Fix header search autofocus
+-------------------------------------------------------------------
+Wed Feb 02 13:48:51 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.2.12-1
+  * Fix header search autofocus
 
 -------------------------------------------------------------------
 Fri Jul 16 14:12:46 CEST 2021 - jgonzalez@suse.com
