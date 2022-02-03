@@ -16,26 +16,26 @@ def delete_rejected_key(minion):
     '''
     Delete a previously rejected minion key from minions_rejected
     :param minion: the minion id to look for
-    :return: map containing returncode and stdout/stderr
+    :return: map containing retcode and stdout/stderr
     '''
     path_rejected = "/etc/salt/pki/master/minions_rejected/"
     path = os.path.normpath(path_rejected + minion)
     if not path.startswith(path_rejected):
-        return {"returncode": -1, "stderr": "Unexpected path: " + path}
+        return {"retcode": -1, "stderr": "Unexpected path: " + path}
     if os.path.isfile(path):
         cmd = ['rm', path]
         return _cmd(cmd)
-    return {"returncode": 0}
+    return {"retcode": 0}
 
 
 def ssh_keygen(path):
     '''
     Generate SSH keys using the given path.
     :param path: the path
-    :return: map containing returncode and stdout/stderr
+    :return: map containing retcode and stdout/stderr
     '''
     if os.path.isfile(path):
-        return {"returncode": -1, "stderr": "Key file already exists"}
+        return {"retcode": -1, "stderr": "Key file already exists"}
     cmd = ['ssh-keygen', '-N', '', '-f', path, '-t', 'rsa', '-q']
     # if not os.path.isdir(os.path.dirname(path)):
     #     os.makedirs(os.path.dirname(path))
@@ -75,7 +75,7 @@ def remove_ssh_known_host(user, hostname):
 def _cmd(cmd):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
-    return {"returncode": p.returncode, "stdout": salt.utils.stringutils.to_unicode(stdout), "stderr": salt.utils.stringutils.to_unicode(stderr)}
+    return {"retcode": p.returncode, "stdout": salt.utils.stringutils.to_unicode(stdout), "stderr": salt.utils.stringutils.to_unicode(stderr)}
 
 
 def move_minion_uploaded_files(minion=None, dirtomove=None, basepath=None, actionpath=None):
