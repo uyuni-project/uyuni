@@ -1,3 +1,5 @@
+- fixing how the return code is returned in mgrutil runner (bsc#1194909)
+
 -------------------------------------------------------------------
 Thu Mar 03 17:34:12 CET 2022 - jmassaguerpla@suse.de
 
