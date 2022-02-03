@@ -599,8 +599,10 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
 end
 
 When(/^I clean the search index on the server$/) do
-  output, _code = $server.run('/usr/sbin/rcrhn-search cleanindex', check_errors: false)
+  output, _code = $server.run('/usr/sbin/rhn-search cleanindex', check_errors: false)
+  log 'Search reindex finished.' if output.include?('Index files have been deleted and database has been cleaned up, ready to reindex')
   raise 'The output includes an error log' if output.include?('ERROR')
+  step %(I wait until "rhn-search" service is active on "server")
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
