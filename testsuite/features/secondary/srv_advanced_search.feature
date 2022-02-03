@@ -1,0 +1,63 @@
+# Copyright (c) 2022 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
+@scope_monitoring
+@sle_minion
+@sle_client
+Feature: Advanced Search
+  In order to check and maintain the clients and minions
+  As an authorized user
+  I want to be able to search for specific systems according to location or other characteristics
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  Scenario: No search results - inverse results
+    When I follow the left menu "Systems > Advanced Search"
+    And I enter minion hostname on the search field
+    And I select "Hostname" from "Field to Search"
+    And I check "invertlabel"
+    And I click on "Search"
+    Then I should see a "No results found." text
+
+  Scenario: One search result for City
+    Given I have a system with "Little Whinging" as "City" property
+    When I follow the left menu "Systems > Advanced Search"
+    And I enter "Little Whinging" on the search field
+    And I select "City" from "Field to Search"
+    And I check "fineGrainedlabel"
+    And I click on "Search"
+    Then I should land on system's overview page
+
+  Scenario: One search result for State/Province
+    Given I have a system with "Surrey" as "State/Province" property
+    When I follow the left menu "Systems > Advanced Search"
+    And I enter "Surrey" on the search field
+    And I select "State/Province" from "Field to Search"
+    And I check "fineGrainedlabel"
+    And I click on "Search"
+    Then I should land on system's overview page
+
+  Scenario: One search result for Country
+    Given I have a system with "Portugal (PT)" as "Country" listed property
+    When I follow the left menu "Systems > Advanced Search"
+    And I enter "PT" on the search field
+    And I select "Country Code" from "Field to Search"
+    And I check "fineGrainedlabel"
+    And I click on "Search"
+    Then I should land on system's overview page
+
+  Scenario: One search result for hostname using "Fine grained search results"
+    When I follow the left menu "Systems > Advanced Search"
+    And I enter minion hostname on the search field
+    And I select "Hostname" from "Field to Search"
+    And I check "fineGrainedlabel"
+    And I click on "Search"
+    Then I should land on system's overview page
+
+  Scenario: List results for hostname
+    When I follow the left menu "Systems > Advanced Search"
+    And I enter minion hostname on the search field
+    And I select "Hostname" from "Field to Search"
+    And I click on "Search"
+    Then I should see minion hostname as first search result
