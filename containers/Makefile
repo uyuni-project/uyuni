@@ -7,6 +7,7 @@ REGISTRY_TLS_VERIFY := false
 
 OSC_API_URL := https://api.opensuse.org
 OSC_PROJECT := home:moio:Uyuni:Master:Containers
+PRODUCT_REPO := https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/images/repo/Uyuni-Proxy-POOL-x86_64-Media1/
 
 
 # build
@@ -15,7 +16,7 @@ build_targets := $(patsubst %-image,%,$(IMAGES))
 build: $(build_targets)
 
 $(build_targets):
-	cd $@-image ; ${BUILDER} build -t $@ .
+	cd $@-image ; ${BUILDER} build -t $@ --build-arg PRODUCT_REPO=${PRODUCT_REPO} .
 
 # push (to registry)
 push_targets := $(patsubst %-image,push-%,$(IMAGES))
