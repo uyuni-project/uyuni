@@ -34,7 +34,7 @@ MANAGER_PILLAR_DATA_PATHS = ['/srv/susemanager/pillar_data', '/var/lib/susemanag
 # SUSE Manager formulas paths:
 MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metadata'
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
-CUSTOM_FORMULAS_METADATA_PATHS = ['/srv/formula_metadata', '/var/formula_metadata']
+CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATHS = ['/srv/susemanager/formula_data', '/var/lib/susemanager/formula_data']
 FORMULA_PREFIX = 'formula-'
 
@@ -49,7 +49,6 @@ def find_path(path_list):
 
 # Reassign alternative paths for different OS.
 MANAGER_PILLAR_DATA_PATH = find_path(MANAGER_PILLAR_DATA_PATHS)
-CUSTOM_FORMULAS_METADATA_PATH = find_path(CUSTOM_FORMULAS_METADATA_PATHS)
 FORMULAS_DATA_PATH = find_path(FORMULAS_DATA_PATHS)
 
 # OS images path:
