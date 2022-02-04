@@ -1018,7 +1018,7 @@ When(/^I configure the proxy$/) do
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
              "SSL_EMAIL=galaxy-noise@suse.de\n" \
-             "SSL_CNAME_ASK=''\n" \
+             "SSL_CNAME_ASK=proxy.example.org\n" \
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
