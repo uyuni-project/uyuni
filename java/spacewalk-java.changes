@@ -1,3 +1,4 @@
+- Add certificate-fetch snippet for autoyast migrations (bsc#1194792)
 - fix ClassCastException during action processing (bsc#1195043)
 - Install product by default after a channel is subscribed
 - Improve token validation logs

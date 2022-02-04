@@ -1,0 +1,10 @@
+<!-- Fetch certificate from server to be able to validate https repositories -->
+<script>
+    <filename>certificate-fetch.sh</filename>
+    <source>
+        <![CDATA[
+        curl --insecure -o /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT  http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT
+        /usr/sbin/update-ca-certificates
+        ]]>
+    </source>
+</script>
