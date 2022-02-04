@@ -18,8 +18,6 @@ require 'multi_test'
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
-$long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
-puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -378,11 +376,6 @@ end
 # do test only if the registry with authentication is available
 Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
-end
-
-# do test only if we want to run long tests
-Before('@long_test') do
-  skip_this_scenario unless $long_tests_enabled
 end
 
 # have more infos about the errors

@@ -1,4 +1,12 @@
 - Install product by default after a channel is subscribed
+- Improve token validation logs
+- Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
+-------------------------------------------------------------------
+Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Update translation strings
 
 -------------------------------------------------------------------
 Tue Jan 18 13:52:58 CET 2022 - jgonzalez@suse.com

@@ -42,22 +42,23 @@ end
 
 Then(/^the IPv4 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  step %(I should see a "#{node.public_ip}" text)
+  ipv4_address = node.public_ip
+  puts "IPv4 address: #{ipv4_address}"
+  step %(I should see a "#{ipv4_address}" text)
 end
 
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  # query and modify OS ID string.
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
-  os_family = os_family_raw.strip.split('=')[1]
-  os_family.delete! '"'
-  # ubuntu has a different default interface name
-  if os_family == 'ubuntu'
-    ipv6, _code = node.run('ip -6 addr show ens3 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
-  else
-    ipv6, _code = node.run('ip -6 addr show eth0 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
-  end
-  step %(I should see a "#{ipv6}" text)
+  interface, code = node.run("ip -6 address show #{node.public_interface}")
+  raise unless code.zero?
+  lines = interface.lines
+  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global temporary dynamic/).first
+  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global dynamic mngtmpaddr/).first if ipv6_line.nil?
+  ipv6_line = lines.grep(/inet6 fe80:[:0-9a-f]*\/64 scope link/).first if ipv6_line.nil?
+  next if ipv6_line.nil?
+  ipv6_address = ipv6_line.scan(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/).first
+  puts "IPv6 address: #{ipv6_address}"
+  step %(I should see a "#{ipv6_address}" text)
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -75,31 +76,36 @@ end
 
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  uptime_days, _code = node.run("awk '{print $1/86400}' /proc/uptime")
-  uptime_hours, _code = node.run("awk '{print $1/3600}' /proc/uptime")
-  uptime_minutes, _code = node.run("awk '{print $1/60}' /proc/uptime")
-  uptime_seconds, _code = node.run("awk '{print $1}' /proc/uptime")
-  uptime_days = uptime_days.to_f.round
-  uptime_hours = uptime_hours.to_f.round
-  uptime_minutes = uptime_minutes.to_f.round
-  uptime_seconds = uptime_seconds.to_f.round
+  uptime_seconds, _return_code = node.run("awk '{print $1}' /proc/uptime") # run code on node only once, to get uptime in seconds
+  uptime_minutes = (uptime_seconds.to_f / 60.0) # 60 seconds; the .0 forces a float division
+  uptime_hours = (uptime_minutes / 60.0) # 60 minutes
+  uptime_days = (uptime_hours / 24.0) # 24 hours
 
-  if uptime_days < 2 and uptime_days >= 1
-    step %(I should see a "#{uptime_days.round} day ago" text)
-  elsif uptime_days < 1 and uptime_hours >= 2
-    step %(I should see a "#{uptime_hours.round} hours ago" text)
-  elsif uptime_days < 1 and uptime_hours < 2
-    step %(I should see a "#{uptime_hours.round} hour ago" text)
-  elsif uptime_hours < 1 and uptime_minutes >= 2
-    step %(I should see a "#{uptime_minutes.round} minutes ago" text)
-  elsif uptime_hours < 1 and uptime_minutes < 2
-    step %(I should see a "#{uptime_minutes.round} minute ago" text)
-  elsif uptime_minutes < 1 and uptime_seconds >= 2
-    step %(I should see a "#{uptime_seconds.round} seconds ago" text)
-  elsif uptime_minutes < 1 and uptime_seconds < 2
-    step %(I should see a "#{uptime_seconds.round} second ago" text)
+  # rounded values to nearest integer number
+  rounded_uptime_minutes = uptime_minutes.round
+  rounded_uptime_hours = uptime_hours.round
+
+  # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
+  eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
+  rounded_uptime_days = ((uptime_seconds.to_f + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
+
+  # the moment.js library being used has some weird rules, which these conditionals follow
+  if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
+    step %(I should see a "a day ago" text)
+  elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
+    step %(I should see a "#{rounded_uptime_hours} hours ago" text)
+  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
+    step %(I should see a "an hour ago" text)
+  elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
+    step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
+  elsif uptime_seconds >= 45 && rounded_uptime_minutes == 1
+    step %(I should see a "a minute ago" text)
+  elsif uptime_seconds < 45
+    step %(I should see a "a few seconds ago" text)
+  elsif rounded_uptime_days < 25
+    step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
   else
-    step %(I should see a "#{uptime_days.round} days ago" text)
+    step %(I should see a "a month ago" text)
   end
 end
 
