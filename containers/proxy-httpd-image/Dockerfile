@@ -2,14 +2,12 @@
 
 FROM registry.suse.com/suse/sle15:15.3
 
-# Distro repos
-RUN zypper addrepo http://download.opensuse.org/distribution/leap/15.3/repo/oss/ main
-RUN zypper addrepo http://download.opensuse.org/update/leap/15.3/sle/ updates
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
+ARG PRODUCT_REPO
 
-# Product repos
-RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/images/repo/Uyuni-Proxy-POOL-x86_64-Media1/ product
+# Add distro and product repos
+COPY add_repos.sh /usr/bin
+RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-httpd
@@ -34,6 +32,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
  python3-rhnlib spacewalk-proxy-broker \
  spacewalk-proxy-common spacewalk-proxy-package-manager \
  spacewalk-proxy-redirect spacewalk-ssl-cert-check
+
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
