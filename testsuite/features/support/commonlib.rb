@@ -28,7 +28,7 @@ end
 # This is a safety net only, the best thing to do is to not start the reposync at all.
 def compute_list_to_leave_running
   # keep the repos needed for the auto-installation tests
-  do_not_kill = $long_tests_enabled ? CHANNEL_TO_SYNCH_BY_OS_VERSION['default'] : []
+  do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
   [$minion, $build_host, $sshminion].each do |node|
     next unless node
     os_version, os_family = get_os_version(node)
@@ -181,6 +181,7 @@ end
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
   repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
   repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
   repo_name.gsub!('/', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label

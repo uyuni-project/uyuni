@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Jan 25 17:32:06 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Rerun the migration from CentOS8 client tools to EL8 client
+    tools, for users that workarounded the problem
+
+-------------------------------------------------------------------
+Mon Jan 24 17:02:22 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Fix the migration for users that had CentOS 8 and/or Oracle
+    Linux 8, and AlmaLinux 8 and/or Rocky Linux 8 as well
+
+-------------------------------------------------------------------
 Tue Jan 18 14:07:37 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.5-1

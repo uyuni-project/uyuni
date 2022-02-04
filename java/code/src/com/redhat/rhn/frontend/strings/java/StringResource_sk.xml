@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="sk">
     <body>
@@ -6531,210 +6531,210 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
-        <target/>
+        <target>Systém {0} nemôže byť automaticky nainštalovaný, pretože nemá základný kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nosuchdevice" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
-        <target/>
+        <target>Systém {0} nemôže byť automaticky nainštalovaný, pretože nemá sieťové zariadenie &lt;strong&gt; {1} &lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <target/>
+        <target>Nepodarilo sa nájsť potrebné balíky poskytujúce @@PRODUCT_NAME@@ dané aktuálnym základným kanálom tohto systému a požadovaným cieľovým kanálom: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
         <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <target/>
+        <target>Nemáte žiadne zostávajúce predplatné ku kanálu poskytujúcemu @@PRODUCT_NAME@@ pre aktuálny základný kanál &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
         <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <target/>
+        <target>Nemáte žiadne zostávajúce predplatné ku kanálu {0} pre aktuálny základný kanál &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target/>
+        <target>Automatická inštalácia nebola naplánovaná na &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
-        <target/>
+        <target>Pre tento systém bolo začaté nové sedenie automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.newtokennote" xml:space="preserve">
         <source>Autoinstallation re-activation key for {0}.</source>
-        <target/>
+        <target>Reaktivačný kľúč automatickej inštalácie pre {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.ppc64lewarning" xml:space="preserve">
         <source>Warning: Kickstart Profile list includes PPC64LE profiles but they will not function properly unless your CPU is POWER8 or better.</source>
-        <target/>
+        <target>Varovanie: Zoznam profilov Kickstart obsahuje profily PPC64LE, ktoré však nebudú fungovať správne, ak váš CPU nie je POWER8 alebo lepší.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.profile.default_session" xml:space="preserve">
         <source>Default session activation key for profile {0}.</source>
-        <target/>
+        <target>Aktivačný kľúč predvoleného sedenia pre profil {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session.newprofile" xml:space="preserve">
         <source>Profile for autoinstall session {0}.</source>
-        <target/>
+        <target>Profil pre sedenie automatickej inštalácie {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2dateinchannel" xml:space="preserve">
         <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
-        <target/>
+        <target>Na kickstart systému potrebujeme verziu {0} alebo vyššiu pre up2date. &lt;strong&gt;{2}&lt;/strong&gt; má nainštalované {1}, ale v kanáloch tohto systému sme nenašli verziu up2date, aby sme ju mohli aktualizovať na požadovanú alebo vyššiu verziu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.guesttimedout" xml:space="preserve">
         <source>&lt;p&gt;The guest system has not communicated with @@PRODUCT_NAME@@ in the past {0} minutes. The install process might be progressing slowly due to hardware constraints, or it might be frozen.&lt;/p&gt; &lt;p&gt;You may wish to troubleshoot this issue by running &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; on the host system. This command will allow you to connect to the text console of the guest as it is installing, which may provide additional information about this guest system's installation status.&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Hosťovský systém za posledných {0} minút nekomunikoval s @@PRODUCT_NAME@@. Inštalačný proces môže postupovať pomaly kvôli hardvérovým obmedzeniam alebo môže byť zamrznutý.&lt;/p&gt; &lt;p&gt;Tento problém môžete riešiť spustením &lt;em&gt;virsh console &lt;strong&gt;názov_hosťa&lt;/strong&gt;&lt;/em&gt; na hostiteľskom systéme. Tento príkaz vám umožní pripojiť sa k textovej konzole hosťa počas jeho inštalácie, čo vám môže poskytnúť ďalšie informácie o stave inštalácie tohto hosťovského systému.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.edit.success" xml:space="preserve">
         <source>Autoinstallable Distribution Updated</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia aktualizovaná</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.create.success" xml:space="preserve">
         <source>Autoinstallable Distribution Created</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia vytvorená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="tree.edit.missingcobblerentry" xml:space="preserve">
         <source>The Cobbler entry for this distribution is missing. It will be automatically recreated shortly.</source>
-        <target/>
+        <target>Záznam Cobbler pre túto distribúciu chýba. Automaticky sa čoskoro obnoví.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
         <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
-        <target/>
+        <target>Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
-        <target/>
+        <target>Jadro sa nepodarilo nájsť na zadanom mieste: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidinitrd" xml:space="preserve">
         <source>The initrd could not be found at the specified location: {0}</source>
-        <target/>
+        <target>initrd sa nepodarilo nájsť na zadanom mieste: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.inuse" xml:space="preserve">
         <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
-        <target/>
+        <target>Automaticky inštalovateľná distribúcia, ktorú ste sa vybrali na vymazanie, sa používa.  Prosím, vymažte alebo zmeňte distribúciu pre profily automatickej inštalácie, ktoré používajú túto distribúciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="basepath" xml:space="preserve">
         <source>External Location</source>
-        <target/>
+        <target>Externé umiestnenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.edit.software.notrees.jsp" xml:space="preserve">
         <source>No trees were found for the selected channel</source>
-        <target/>
+        <target>Pre vybraný kanál sa nenašli žiadne stromy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.edit.software.nofiles.jsp" xml:space="preserve">
         <source>No files found for selected kickstart tree</source>
-        <target/>
+        <target>Pre vybraný strom kickstart sa nenašli žiadne súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.already.scheduled.jsp" xml:space="preserve">
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; has a pending autoinstallation scheduled.</source>
-        <target/>
+        <target>Systém &lt;strong&gt;{0}&lt;/strong&gt; čakajúcu naplánovanú automatickú inštaláciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.schedule.on.bootstrap.jsp" xml:space="preserve">
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; is bare-metal, no scheduling is possible.</source>
-        <target/>
+        <target>Systém &lt;strong&gt;{0}&lt;/strong&gt; je bare-metal, nie je možné žiadne plánovanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profile.jsp" xml:space="preserve">
         <source>Could not find a matching profile for system &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Nepodarilo sa nájsť zodpovedajúci profil pre systém &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.not.defined.jsp" xml:space="preserve">
         <source>If you want to create a bonded network after installation you must specefy a bond name and at least one slave interface.</source>
-        <target/>
+        <target>Ak chcete po inštalácii vytvoriť prepojenú sieť, musíte zadať názov prepojenia a aspoň jedno podriadené rozhranie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.bad.ip.address.jsp" xml:space="preserve">
         <source>The IP address specified for the bonded network interface is not valid.</source>
-        <target/>
+        <target>Adresa IP zadaná pre rozhranie prepojenej siete nie je platná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.bad.netmask.jsp" xml:space="preserve">
         <source>The netmask specified for the bonded network interface is not valid.</source>
-        <target/>
+        <target>Maska siete zadaná pre rozhranie prepojenej siete nie je platná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.bond.bad.gateway.jsp" xml:space="preserve">
         <source>The gateway specified for the bonded network interface is not valid.</source>
-        <target/>
+        <target>Brána zadaná pre rozhranie prepojenej siete nie je platná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -6742,105 +6742,105 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <!-- Activation Keys -->
       <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
           <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-        <target/>
+        <target>Označenie aktivačného kľúča &lt;strong&gt;{0}&lt;/strong&gt; obsahuje jeden alebo viacero z nasledujúcich neplatných znakov &lt;strong&gt;{1}&lt;/strong&gt;. Prosím, odstráňte tieto znaky z označenia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.exists" xml:space="preserve">
           <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
-        <target/>
+        <target>Aktivačný kľúč s označením '{0}' je už obsadený. Prosím, zvoľte si iné označenie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.created" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol vytvorený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.deleted" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.cloned" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol klonovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.modified" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-        <target/>
+        <target>Aktivačný kľúč &lt;strong&gt;{0}&lt;/strong&gt; bol zmenený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
           <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Názov kľúča &lt;strong&gt;{0}&lt;/strong&gt; bol zmenený na &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.allowed-values" xml:space="preserve">
           <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
-        <target/>
+        <target>Aktivačný kľúč nie je možné uložiť: kľúč môže obsahovať iba čísla [0-9], písmená [a-z A-Z], '-', '_' a '.'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
-        <target/>
+        <target>Tento systém zatiaľ nemá možnosť nasadenia konfigurácie. Nasadenie konfigurácie vyžaduje, že na vašom systéme je nainštalovaný a povolený určitý softvér.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-        <target/>
+        <target>Môžete zaistiť, že možnosť nasadenia konfigurácie bude v tomto systéme povolená, výberom tohto systému na obrazovke  &lt;a href={0}&gt;{1}&lt;/a&gt; a potom kliknutím na "{2}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.sdc.addtossm" xml:space="preserve">
           <source>System added to the System Set Manager.</source>
-        <target/>
+        <target>Systém pridaný do Správcu sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.sdc.removefromssm" xml:space="preserve">
           <source>System removed from the System Set Manager.</source>
-        <target/>
+        <target>Systém odstránený zo Správcu sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usageLimit" xml:space="preserve">
           <source>Usage Limit</source>
-        <target/>
+        <target>Obmedzenie používania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="key" xml:space="preserve">
           <source>Key</source>
-        <target/>
+        <target>Kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_size.b" xml:space="preserve">
         <source>{0} B</source>
-        <target/>
+        <target>{0} B</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">40 B</context>
@@ -6848,7 +6848,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="file_size.kb" xml:space="preserve">
         <source>{0} KB</source>
-        <target/>
+        <target>{0} KB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">40 KB</context>
@@ -6856,7 +6856,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="file_size.mb" xml:space="preserve">
         <source>{0} MB</source>
-        <target/>
+        <target>{0} MB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">40 MB</context>
@@ -6864,21 +6864,21 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="error.config-cannot-change-type" xml:space="preserve">
         <source>Error creating configuration file revision: ({0}) is a '{1}', but you are attempting to change it to a '{2}'. If you want to change its file type, you'll need to delete ({0}) and re-add it as a '{2}' rather than a '{1}'.</source>
-        <target/>
+        <target>Chyba pri vytváraní revízie konfiguračného súboru: ({0}) je '{1}', ale snažíte sa ho zmeniť na '{2}'. Ak chcete zmeniť jeho typ súboru, budete musieť vymazať ({0}) a znovu ho pridať ako '{2}' namiesto '{1}'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.config-not-specified" xml:space="preserve">
         <source>Error creating Configuration File Revision:  Upload file not found.</source>
-        <target/>
+        <target>Chyba pri vytváraní revízie konfiguračného súboru:  Súbor na nahranie sa nenašiel.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.config-empty" xml:space="preserve">
         <source>Error creating Configuration File Revision:  File {0} is empty.</source>
-        <target/>
+        <target>Chyba pri vytváraní revízie konfiguračného súboru:  Súbor {0} je prázdny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File /etc/testfile.txt not found.</context>
@@ -6886,7 +6886,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="error.configtoolarge" xml:space="preserve">
         <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
-        <target/>
+        <target>Chyba pri vytváraní revízie konfiguračného súboru:  Súbor je príliš veľký.  Maximálna veľkosť súboru je {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
@@ -6894,7 +6894,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_revisions.failure" xml:space="preserve">
         <source>{0} revision deletions failed.</source>
-        <target/>
+        <target>{0} vymazania revízie zlyhali.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6902,7 +6902,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_revisions.failure.singular" xml:space="preserve">
         <source>{0} revision deletion failed.</source>
-        <target/>
+        <target>{0} vymazanie revízie zlyhalo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">1 revision deletion failed.</context>
@@ -6910,7 +6910,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_revisions.success" xml:space="preserve">
         <source>{0} revisions were deleted successfully.</source>
-        <target/>
+        <target>{0} revízie boli úspešne vymazané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">7 revisions were deleted successfully.</context>
@@ -6918,7 +6918,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_revisions.success.singular" xml:space="preserve">
         <source>{0} revision was deleted successfully.</source>
-        <target/>
+        <target>{0} revízia bola úspešne vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">1 revision was deleted successfully.</context>
@@ -6926,7 +6926,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.success" xml:space="preserve">
         <source>{0} configuration file(s) successfully deleted.</source>
-        <target/>
+        <target>{0} konfiguračný súbor(y) bol úspešne vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully deleted.</context>
@@ -6934,7 +6934,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.failure" xml:space="preserve">
         <source>{0} file deletion(s) failed.</source>
-        <target/>
+        <target>{0} vymazanie(a) súborov zlyhalo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 file deletions failed.</context>
@@ -6942,7 +6942,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.success" xml:space="preserve">
         <source>{0} configuration file(s) successfully imported.</source>
-        <target/>
+        <target>{0} konfiguračný súbor(y) bol úspešne importovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully imported.</context>
@@ -6950,7 +6950,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.failure" xml:space="preserve">
         <source>{0} file import(s) failed.</source>
-        <target/>
+        <target>{0} import(y) súborov zlyhal.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 file imports failed.</context>
@@ -6958,7 +6958,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.failure" xml:space="preserve">
         <source>Failed to unsubscribe {0} system(s).</source>
-        <target/>
+        <target>Nepodarilo sa odhlásiť {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6966,7 +6966,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.success" xml:space="preserve">
         <source>Successfully unsubscribed {0} system(s).</source>
-        <target/>
+        <target>Úspešne odhlásený {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
@@ -6974,7 +6974,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.failure" xml:space="preserve">
         <source>Failed to subscribe {0} system(s).</source>
-        <target/>
+        <target>Nepodarilo sa prihlásiť {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6982,7 +6982,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.success" xml:space="preserve">
         <source>Successfully subscribed {0} system(s).</source>
-        <target/>
+        <target>Úspešne prihlásený {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
@@ -6990,7 +6990,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_channel_name.local" xml:space="preserve">
         <source>local override for {0}</source>
-        <target/>
+        <target>lokálne prepísanie pre {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">local override for devserv.tootles.com</context>
@@ -6998,7 +6998,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config_channel_name.sandbox" xml:space="preserve">
         <source>sandbox for {0}</source>
-        <target/>
+        <target>sandbox pre {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">sandbox for devserv.tootles.com</context>
@@ -10240,13 +10240,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve">
-        <source>Cluster Administrator</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
         <target state="needs-adaptation"/>
@@ -10377,18 +10370,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve">
-        <source>Clusters</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve">
-        <source>Overview</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve">
-        <source>Add</source>
         <target/>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
@@ -10760,10 +10741,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
-        <source>Package {0} not found in subscribed channels</source>
         <target/>
       </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
