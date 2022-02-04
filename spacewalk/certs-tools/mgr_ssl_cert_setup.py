@@ -48,7 +48,7 @@ if not os.path.exists(ROOT_CA_HTTP_DIR):
 CA_TRUST_DIR = os.path.join(PKI_DIR, "trust", "anchors")
 if not os.path.exists(CA_TRUST_DIR):
     # Red Hat
-    CA_TRUST_DIR = os.path.join(PKI_DIR, "ca-trust", "anchors")
+    CA_TRUST_DIR = os.path.join(PKI_DIR, "ca-trust", "source", "anchors")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
