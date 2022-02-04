@@ -23,30 +23,6 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-  # Note: Avahi does not cross networks, so we need to cheat by serving tf.local
-  Scenario: Configure avahi info for PXE part of DNS on the proxy
-    When I follow first "Bind" in the content area
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    And I scroll to the top of the page
-    And I press "Add Item" in available zones section
-    And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in file name field of tf.local zone
-    And I enter the hostname of "proxy" in SOA name server field of tf.local zone
-    And I enter "admin@tf.local." in SOA contact field of tf.local zone
-    And I press "Add Item" in A section of tf.local zone
-    And I enter the hostname of "proxy" in first A name field of tf.local zone
-    And I enter the IP address of "proxy" in first A address field of tf.local zone
-    And I press "Add Item" in A section of tf.local zone
-    And I enter the hostname of "server" in second A name field of tf.local zone
-    And I enter the IP address of "server" in second A address field of tf.local zone
-    And I press "Add Item" in NS section of tf.local zone
-    And I enter the hostname of "proxy" in first NS field of tf.local zone
-    And I scroll to the top of the page
-    And I should see a "Bind" text
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
   Scenario: Apply the highstate after the formula setup
     When I follow "States" in the content area
     And I click on "Apply Highstate"
@@ -146,17 +122,6 @@ Feature: PXE boot a terminal with Cobbler
     And I wait until I see "has been deleted" text
     Then "pxeboot_minion" should not be registered
     And I stop salt-minion on the PXE boot minion
-
-  Scenario: Cleanup: remove avahi info from DNS records
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
-    # direct zone tf.local:
-    And I scroll to the top of the page
-    And I press minus sign in tf.local configured zone section
-    And I press minus sign in tf.local available zone section
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
 
   Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
     When I follow "Formulas" in the content area
