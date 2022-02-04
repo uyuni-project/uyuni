@@ -23,7 +23,7 @@ namespace :cucumber do
       # We generate the tags list as an union of tags, not as an intersection of them (that would be using multiple times `--tags`)
       # WARNING: When we upgrade Cucumber 2.0.0 to a higher version, we need to use the new Tags expression implementation
       include_tags =  tags.nil? ? [] : ['--tags', tags]
-      cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun #{include_profiles} --out failed.txt -f pretty -r features] + include_tags
+      cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results} -f pretty --out failed.txt -r features] + include_tags
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
@@ -41,7 +41,7 @@ namespace :parallel do
       include_profiles = profiles.nil? ? '--profile default' : '--profile ' + profiles.gsub(',', ' --profile ')
       tags = ENV['TAGS']
       include_tags =  tags.nil? ? '' : "--tags #{tags}"
-      cucumber_opts = "#{include_profiles} #{include_tags} -f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
+      cucumber_opts = "#{include_profiles} #{include_tags} -f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
       sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
     end
   end

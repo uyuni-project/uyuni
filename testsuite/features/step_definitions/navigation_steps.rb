@@ -49,7 +49,8 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise "Text '#{text1}' or '#{text2}' not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
+When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
+  text = Regexp.new(text) if type == 'regex'
   next if has_content?(text, wait: 3)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
@@ -92,7 +93,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
     raise 'Event failed' if has_content?("This action's status is: Failed.", wait: 3)
     current = Time.now
     if current - last > 150
-      STDOUT.puts "#{current} Still waiting for action to complete..."
+      log "#{current} Still waiting for action to complete..."
       last = current
     end
     begin
@@ -411,7 +412,7 @@ end
 
 When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
   system_name = get_system_name(host)
-  puts "The hostname of #{host} is #{system_name}"
+  log "The hostname of #{host} is #{system_name}"
   step %(I enter "#{system_name}" as "#{hostname}")
 end
 
@@ -495,9 +496,9 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   page.reset!
   visit Capybara.app_host
-  next if all(:xpath, "//header//span[text()='#{user}']").any?
+  next if has_xpath?("//header//span[text()='#{user}']", wait: 0)
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if has_xpath?("//header//i[@class='fa fa-sign-out']", wait: 0)
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
@@ -515,7 +516,7 @@ When(/^I sign out$/) do
 end
 
 Then(/^I should not be authorized$/) do
-  raise 'User is authorized' if all(:xpath, "//a[@href='/rhn/Logout.do']").any?
+  raise 'User is authorized' if has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I should be logged in$/) do
@@ -531,7 +532,7 @@ end
 
 Then(/^I should see an update in the list$/) do
   xpath_query = '//div[@class="table-responsive"]/table/tbody/tr/td/a'
-  raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
+  raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query)
 end
 
 When(/^I check test channel$/) do
@@ -609,7 +610,7 @@ end
 
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
-    assert all(:xpath, "//a[text() = '#{linktext}']").any?
+    assert has_xpath?("//a[text() = '#{linktext}']")
   end
 end
 
@@ -642,7 +643,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   end
   raise("Unknown column '#{column}'") unless idx
   # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
-  raise unless all(:xpath, "//table//tr/td[#{idx + 1}]//a[text()='#{link}']").any?
+  raise unless has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
@@ -922,7 +923,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
 end
 
 Then(/^I should see a Sign Out link$/) do
-  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
+  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
