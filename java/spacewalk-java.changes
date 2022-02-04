@@ -1,5 +1,9 @@
+- fix ClassCastException during action processing (bsc#1195043)
 - Fix disappearing metadata key files after channel change (bsc#1192822)
 - Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
+-------------------------------------------------------------------
+Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de
 
 -------------------------------------------------------------------
 Wed Jan 26 13:25:45 CET 2022 - jmassaguerpla@suse.de
