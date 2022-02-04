@@ -55,7 +55,7 @@ def count_table_items
   # count table items using the table counter component
   items_label_xpath = "//span[contains(text(), 'Items ')]"
   raise unless (items_label = find(:xpath, items_label_xpath).text)
-  items_label.split('of ')[1]
+  items_label.split('of ')[1].strip
 end
 
 def product
