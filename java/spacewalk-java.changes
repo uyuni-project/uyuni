@@ -1,3 +1,5 @@
+- Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
 -------------------------------------------------------------------
 Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
 
