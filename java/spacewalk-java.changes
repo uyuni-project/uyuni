@@ -1,3 +1,5 @@
+  * Check session is valid during websocket handshake (bsc#1195428)
+
 -------------------------------------------------------------------
 Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
 
