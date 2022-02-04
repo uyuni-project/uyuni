@@ -1343,9 +1343,8 @@ public class SaltServerActionService {
                     .collect(Collectors.toList());
 
             newTokens.forEach(newToken -> {
-                // persist the access tokens to be activated by the Salt job return event
-                // if the state.apply channels returns successfully
-                newToken.setValid(false);
+                // set the token as valid, then if something is wrong, the state chanel will disable it
+                newToken.setValid(true);
                 actionDetails.getAccessTokens().add(newToken);
             });
 
