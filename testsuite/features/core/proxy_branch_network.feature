@@ -135,11 +135,6 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Restart squid so proxy.example.org CNAME is recognized
-    When I restart squid service on the proxy
-
-@proxy
-@private_net
   Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
 
