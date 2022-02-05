@@ -1450,3 +1450,8 @@ When(/^I allow all SSL protocols on the proxy's apache$/) do
   $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
   $proxy.run("systemctl reload apache2.service")
 end
+
+When(/^I restart squid service on the proxy$/) do
+  # We need to restart squid when we add a CNAME to the certificate
+  $proxy.run("systemctl restart squid.service")
+end

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -28,6 +28,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Copy the keys and configure the proxy
     When I copy server's keys to the proxy
     And I configure the proxy
+    And I restart squid service on the proxy
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
