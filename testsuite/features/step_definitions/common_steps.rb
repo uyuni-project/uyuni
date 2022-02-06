@@ -729,11 +729,6 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-Then(/^I ensure the "([^"]*)" resolves its own public address$/) do |host|
-  node = get_target(host)
-  node.run("sed -i 's/^127\.0\.1\.1/#{node.public_ip}/' /etc/hosts")
-end
-
 Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used$/) do |select_system, host|
   node = get_target(host)
   record = get_target(select_system)
