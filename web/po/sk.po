@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-06 10:54+0000\n"
-"PO-Revision-Date: 2022-01-09 17:13+0000\n"
+"PO-Revision-Date: 2022-02-06 14:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1037,9 +1037,8 @@ msgid "Last Status Update"
 msgstr "Dátum začiatku"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
-#, fuzzy
 msgid "Edit "
-msgstr "Upraviť"
+msgstr "Upraviť "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
