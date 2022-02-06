@@ -55,7 +55,7 @@ def count_table_items
   # count table items using the table counter component
   items_label_xpath = "//span[contains(text(), 'Items ')]"
   raise unless (items_label = find(:xpath, items_label_xpath).text)
-  items_label.split('of ')[1]
+  items_label.split('of ')[1].strip
 end
 
 def product
@@ -124,7 +124,7 @@ def click_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -133,7 +133,7 @@ def click_link_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -142,7 +142,7 @@ def click_link_or_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -153,7 +153,7 @@ module CapybaraNodeElementExtension
     begin
       raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
     rescue StandardError, Capybara::ExpectationNotMet => e
-      puts e.message # Skip errors related to .senna-loading element
+      STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
   end
 end

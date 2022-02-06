@@ -1,0 +1,15 @@
+include /templates/common.jade
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+#create-payg
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/create-payg')
+        .then(function(module) {
+            module.renderer(
+                'create-payg',
+                { }
+            );
+        });

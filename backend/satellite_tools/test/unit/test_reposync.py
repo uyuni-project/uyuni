@@ -600,9 +600,9 @@ class RepoSyncTest(unittest.TestCase):
                 "http://example.com/?credentials=testcreds_42"
             ]
         }
-        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' }])
+        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' , 'extra_auth': memoryview(b'{\"my_header\":  \"my_value\"}')}])
         self.assertEqual(
-            rs.set_repo_credentials(url), ["http://foo:secret@example.com/"])
+            rs.set_repo_credentials(url), [{"url":"http://foo:secret@example.com/", "http_headers": {"my_header": "my_value"}}])
 
     def test_is_old_style(self):
         """
@@ -744,10 +744,10 @@ class SyncTest(unittest.TestCase):
         with patcher as mock_prepare:
             self.assertEqual(
                 repo_sync._url_with_repo_credentials(urls[0]),
-                'http://{0}:{1}@some.url'.format(username, password)
+                {"url": 'http://{0}:{1}@some.url'.format(username, password), "http_headers": {}}
             )
             mock_prepare.assert_called_once_with(
-                'SELECT username, password FROM suseCredentials WHERE id = :id'
+                'SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id'
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 

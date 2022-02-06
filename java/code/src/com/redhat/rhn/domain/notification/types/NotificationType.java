@@ -22,5 +22,6 @@ public enum NotificationType {
     ChannelSyncFailed,
     ChannelSyncFinished,
     CreateBootstrapRepoFailed,
-    StateApplyFailed
+    StateApplyFailed,
+    PaygAuthenticationUpdateFailed
 }

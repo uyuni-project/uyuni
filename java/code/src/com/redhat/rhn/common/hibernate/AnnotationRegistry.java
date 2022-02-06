@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -61,6 +63,7 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryBasicAuth;
+import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
@@ -115,6 +118,7 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(SCCRepositoryNoAuth.class);
         ANNOTATION_CLASSES.add(SCCRepositoryBasicAuth.class);
         ANNOTATION_CLASSES.add(SCCRepositoryTokenAuth.class);
+        ANNOTATION_CLASSES.add(SCCRepositoryCloudRmtAuth.class);
         ANNOTATION_CLASSES.add(ContentProject.class);
         ANNOTATION_CLASSES.add(ContentEnvironment.class);
         ANNOTATION_CLASSES.add(ProjectSource.class);
@@ -149,6 +153,8 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(InventoryPath.class);
         ANNOTATION_CLASSES.add(PlaybookPath.class);
         ANNOTATION_CLASSES.add(Pillar.class);
+        ANNOTATION_CLASSES.add(CloudRmtHost.class);
+        ANNOTATION_CLASSES.add(PaygSshData.class);
     }
 
     /**

@@ -67,6 +67,12 @@ const _SETUP_WIZARD_STEPS = [
     url: window.location.href.split(/\?|#/)[0],
     active: true,
   },
+  {
+    id: "wizard-step-suse-payg",
+    label: "Pay-as-you-go",
+    url: "/rhn/manager/admin/setup/payg",
+    active: false,
+  },
 ];
 
 const _PRODUCT_STATUS = {

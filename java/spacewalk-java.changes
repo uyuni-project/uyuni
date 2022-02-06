@@ -1,7 +1,12 @@
 - Remove verbose token log
+- SLES PAYG client support on cloud
+- fix ClassCastException during action processing (bsc#1195043)
 - Install product by default after a channel is subscribed
 - Improve token validation logs
 - Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
+-------------------------------------------------------------------
+Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de
 
 -------------------------------------------------------------------
 Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
