@@ -1,3 +1,4 @@
+- Remove verbose token log
 - Install product by default after a channel is subscribed
 - Improve token validation logs
 - Pass only selected servers to taskomatic for cancelation (bsc#1194044)
