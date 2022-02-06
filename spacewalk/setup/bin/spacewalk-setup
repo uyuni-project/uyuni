@@ -33,7 +33,6 @@ use Spacewalk::Setup ();
 use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
 use IO::Socket ();
 use RHN::DB ();
-use File::Copy;
 use MIME::Base64;
 
 my $DEBUG;
@@ -146,6 +145,10 @@ setup_jabberd(\%opts, \%answers);
 
 print Spacewalk::Setup::loc("* Creating SSL certificates.\n");
 setup_ssl_certs(\%opts, \%answers);
+
+if(not $opts{"skip-reportdb-setup"}) {
+    Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
+}
 
 print Spacewalk::Setup::loc("* Deploying configuration files.\n");
 populate_final_configs(\%opts, \%answers);
@@ -833,7 +836,7 @@ sub populate_initial_configs {
     my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
     $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
 
-  my %config_opts =
+    my %config_opts =
     (
      mount_point => $answers->{'mount-point'} || '/var/spacewalk',
      kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
@@ -857,7 +860,15 @@ sub populate_initial_configs {
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},
-     );
+     report_db_backend => $answers->{'db-backend'},
+     report_db_user => $answers->{'report-db-user'},
+     report_db_password => $answers->{'report-db-password'},
+     report_db_name => $answers->{'report-db-name'},
+     report_db_host => $answers->{'report-db-host'},
+     report_db_port => $answers->{'report-db-port'},
+     report_db_ssl_enabled => $answers->{'report-db-ssl-enabled'},
+     report_db_sslrootcert => $answers->{'report-db-ca-cert'}
+    );
 
     for ($config_opts{'db_password'}) {
         s/\\/\\\\/g if defined $_;
