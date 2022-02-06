@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 17:14+0000\n"
+"POT-Creation-Date: 2022-02-06 10:54+0000\n"
 "PO-Revision-Date: 2022-01-24 10:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -226,6 +226,7 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:96
 #: ../html/src/components/table/Table.tsx:117
+#: ../html/src/manager/admin/payg/payg.tsx:68
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:99
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -381,6 +382,8 @@ msgid "required"
 msgstr "必填"
 
 #: ../html/src/components/input/Password.stories.tsx:29
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/login.tsx:173
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
@@ -454,7 +457,8 @@ msgid "First"
 msgstr "第一页"
 
 #: ../html/src/components/pagination.tsx:28
-#: ../html/src/manager/admin/setup/products/products.tsx:394
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:155
+#: ../html/src/manager/admin/setup/products/products.tsx:400
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -462,7 +466,8 @@ msgid "Prev"
 msgstr "上一页"
 
 #: ../html/src/components/pagination.tsx:33
-#: ../html/src/manager/admin/setup/products/products.tsx:400
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:161
+#: ../html/src/manager/admin/setup/products/products.tsx:406
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -478,7 +483,8 @@ msgid "Page"
 msgstr "页码"
 
 #: ../html/src/components/pagination.tsx:108
-#: ../html/src/manager/admin/setup/products/products.tsx:405
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:166
+#: ../html/src/manager/admin/setup/products/products.tsx:411
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "/"
@@ -607,7 +613,7 @@ msgid "({0} selected)"
 msgstr "（已选择 {0} 个）"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:322
+#: ../html/src/manager/admin/setup/products/products.tsx:328
 msgid "Clear"
 msgstr "清除"
 
@@ -871,6 +877,191 @@ msgid ""
 "effect."
 msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:39
+msgid "Add new pay-as-you-go ssh connection data"
+msgstr ""
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:46
+msgid "Add pay-as-you-go ssh data"
+msgstr ""
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:47
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
+#: ../html/src/manager/images/image-profile-edit.tsx:503
+#: ../html/src/manager/images/image-profiles.tsx:147
+#: ../html/src/manager/images/image-profiles.tsx:148
+#: ../html/src/manager/images/image-store-edit.tsx:225
+#: ../html/src/manager/images/image-stores.tsx:147
+#: ../html/src/manager/images/image-stores.tsx:148
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
+#: ../html/src/manager/state/recurring-states-list.tsx:51
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
+#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
+#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
+msgid "Create"
+msgstr "创建"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:68
+#, fuzzy
+msgid "Pay-as-you-go connection Description"
+msgstr "产品说明"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:71
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:126
+#: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
+msgid "Description"
+msgstr "说明"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:75
+#, fuzzy
+msgid "Instance SSH connection data"
+msgstr "实例已过时"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:80
+msgid "Bastion SSH connection data"
+msgstr ""
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:84
+#: ../html/src/manager/admin/setup/products/products.tsx:259
+msgid "Setup Wizard"
+msgstr "安装向导"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:111
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
+msgid "Filter by any value"
+msgstr "按任意值过滤"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:116
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+msgid "Host"
+msgstr "主机"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:267
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:57
+#: ../html/src/manager/images/image-view-runtime.tsx:130
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
+#: ../html/src/manager/systems/virtual-list.tsx:84
+msgid "Status"
+msgstr "状态"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:140
+#, fuzzy
+msgid "Last Update Status"
+msgstr "匹配数据状态"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:141
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
+msgid "never"
+msgstr "从不"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:186
+msgid "Add Pay-as-you-go"
+msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
+#: ../html/src/manager/login/use-login-api.ts:60
+#: ../html/src/manager/virtualization/ActionApi.tsx:53
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
+#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
+#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
+msgid ""
+"Request interrupted or invalid response received from the server. Please try "
+"again."
+msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
+#, fuzzy
+msgid "Pay-as-you-go properties updated successfully"
+msgstr "已成功更新项目属性"
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
+#, fuzzy
+msgid "Edit Information"
+msgstr "其他信息"
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
+msgid "Editing properties.."
+msgstr "正在编辑属性..."
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
+#, fuzzy
+msgid "Last Status Update"
+msgstr "开始日期"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
+#, fuzzy
+msgid "Edit "
+msgstr "编辑"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+msgid "Editing ssh connection data.."
+msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+msgid "SSH Port"
+msgstr "SSH 端口"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
+msgid "User"
+msgstr "用户"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
+msgid "SSH Private Key"
+msgstr "SSH 私用密钥"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+msgid "SSH Private Key Passphrase"
+msgstr "SSH 私用密钥通行口令"
+
+#: ../html/src/manager/admin/payg/payg.tsx:58
+#, fuzzy
+msgid "The instance you are looking for does not exist or has been deleted"
+msgstr "您要查找的项目不存在或已删除"
+
+#: ../html/src/manager/admin/payg/payg.tsx:65
+#, fuzzy
+msgid "Instance Hostname: {0}"
+msgstr "'{0}' 的实例细节"
+
+#: ../html/src/manager/admin/payg/payg.tsx:74
+msgid "Delete Pay-as-you-go"
+msgstr ""
+
+#: ../html/src/manager/admin/payg/payg.tsx:77
+#: ../html/src/manager/content-management/project/project.tsx:109
+msgid "Are you sure you want to delete project"
+msgstr "您确定要删除项目吗"
+
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:146
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "从 SUSE Customer Center 刷新产品目录"
@@ -879,7 +1070,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:371
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "刷新"
@@ -907,63 +1098,59 @@ msgstr "操作不成功：服务器返回了空答复"
 msgid "Details"
 msgstr "细节"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:139
+#: ../html/src/manager/admin/setup/products/products.tsx:145
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
 "没有可用的 SUSE Manager Server 订阅。需要客户端工具频道的产品将不显示。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:182
+#: ../html/src/manager/admin/setup/products/products.tsx:188
 msgid "The product catalog refresh is running..."
 msgstr "产品目录刷新正在运行..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:253
-msgid "Setup Wizard"
-msgstr "安装向导"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:278
+#: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:283
+#: ../html/src/manager/admin/setup/products/products.tsx:289
 msgid "The product catalog is still refreshing, please wait."
 msgstr "产品目录仍在刷新，请稍候。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:285
+#: ../html/src/manager/admin/setup/products/products.tsx:291
 msgid "Select some product first."
 msgstr "请先选择某个产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:294
-#: ../html/src/manager/admin/setup/products/products.tsx:302
+#: ../html/src/manager/admin/setup/products/products.tsx:300
+#: ../html/src/manager/admin/setup/products/products.tsx:308
 msgid "Add products"
 msgstr "添加产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:321
+#: ../html/src/manager/admin/setup/products/products.tsx:327
 msgid "Clear products selection"
 msgstr "清除产品选择"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:361
+#: ../html/src/manager/admin/setup/products/products.tsx:367
 msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:364
+#: ../html/src/manager/admin/setup/products/products.tsx:370
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:369
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:379
+#: ../html/src/manager/admin/setup/products/products.tsx:385
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -971,59 +1158,59 @@ msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:455
+#: ../html/src/manager/admin/setup/products/products.tsx:461
 msgid "Filter by architecture"
 msgstr "按体系结构过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:550
+#: ../html/src/manager/admin/setup/products/products.tsx:556
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:620
+#: ../html/src/manager/admin/setup/products/products.tsx:626
 msgid "Product Description"
 msgstr "产品说明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:626
-#: ../html/src/manager/admin/setup/products/products.tsx:1004
+#: ../html/src/manager/admin/setup/products/products.tsx:632
+#: ../html/src/manager/admin/setup/products/products.tsx:1010
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:628
+#: ../html/src/manager/admin/setup/products/products.tsx:634
 msgid "Arch"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:641
 msgid "Channels"
 msgstr "频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:806
+#: ../html/src/manager/admin/setup/products/products.tsx:812
 msgid " channels sync failed"
 msgstr " 频道同步失败"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:814
+#: ../html/src/manager/admin/setup/products/products.tsx:820
 msgid " channels sync in progress"
 msgstr " 频道同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:822
+#: ../html/src/manager/admin/setup/products/products.tsx:828
 msgid " channels synced"
 msgstr " 频道已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:853
 msgid "To enable this product, the parent product should be selected first"
 msgstr "要启用此产品，应先选择父产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:848
+#: ../html/src/manager/admin/setup/products/products.tsx:854
 msgid "Select this product"
 msgstr "选择此产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:866
 msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:889
+#: ../html/src/manager/admin/setup/products/products.tsx:895
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:58
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1031,7 +1218,7 @@ msgstr "已镜像此产品。"
 msgid "recommended"
 msgstr "建议"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:907
+#: ../html/src/manager/admin/setup/products/products.tsx:913
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:77
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1039,51 +1226,51 @@ msgstr "建议"
 msgid "include recommended"
 msgstr "包括建议项"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:949
+#: ../html/src/manager/admin/setup/products/products.tsx:955
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 产品目录刷新正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:952
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "Scheduling channels product resync"
 msgstr "正在安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:955
+#: ../html/src/manager/admin/setup/products/products.tsx:961
 msgid "Channels product resync scheduled"
 msgstr "已安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:964
 msgid "Schedule channels product resync"
 msgstr "安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:1025
 msgid "Show product's channels"
 msgstr "显示产品的频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1051
+#: ../html/src/manager/admin/setup/products/products.tsx:1057
 msgid "Product Channels - "
 msgstr "产品频道 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1056
+#: ../html/src/manager/admin/setup/products/products.tsx:1062
 msgid "Mandatory Channels"
 msgstr "必需频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1063
+#: ../html/src/manager/admin/setup/products/products.tsx:1069
 msgid "Optional Channels"
 msgstr "可选频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1078
+#: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "not synced"
 msgstr "未同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "sync in progress"
 msgstr "同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1084
+#: ../html/src/manager/admin/setup/products/products.tsx:1090
 msgid "synced"
 msgstr "已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "sync failed"
 msgstr "同步失败"
 
@@ -1166,16 +1353,6 @@ msgstr "结束时间"
 msgid "Elapsed Time"
 msgstr "已用时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:267
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:57
-#: ../html/src/manager/images/image-view-runtime.tsx:130
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
-msgid "Status"
-msgstr "状态"
-
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:232
 msgid "Data"
@@ -1187,13 +1364,13 @@ msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:564
+#: ../html/src/manager/notifications/notification-messages.tsx:568
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:566
+#: ../html/src/manager/notifications/notification-messages.tsx:570
 #: ../html/src/utils/network.ts:101
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
@@ -1532,16 +1709,6 @@ msgstr "步骤 2/2：选取系统的订阅 "
 msgid "Back to sytem selection"
 msgstr "返回系统选择页"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-msgid "Description"
-msgstr "说明"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:388
 msgid "Save Pin"
 msgstr "保存关联"
@@ -1649,24 +1816,6 @@ msgstr "创建新的内容生命周期项目"
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
 msgid "Create project"
 msgstr "创建项目"
-
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
-#: ../html/src/manager/images/image-profile-edit.tsx:503
-#: ../html/src/manager/images/image-profiles.tsx:147
-#: ../html/src/manager/images/image-profiles.tsx:148
-#: ../html/src/manager/images/image-store-edit.tsx:225
-#: ../html/src/manager/images/image-stores.tsx:147
-#: ../html/src/manager/images/image-stores.tsx:148
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/state/recurring-states-list.tsx:51
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
-msgid "Create"
-msgstr "创建"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
@@ -1924,17 +2073,9 @@ msgstr "创建项目"
 msgid "Content Lifecycle Projects"
 msgstr "内容生命周期项目"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
-msgid "Filter by any value"
-msgstr "按任意值过滤"
-
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:116
 msgid "Last Build"
 msgstr "上次构建"
-
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
-msgid "never"
-msgstr "从不"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:121
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:42
@@ -1952,22 +2093,6 @@ msgstr "内容生命周期项目 - {0}"
 #: ../html/src/manager/content-management/project/project.tsx:106
 msgid "Delete Project"
 msgstr "删除项目"
-
-#: ../html/src/manager/content-management/project/project.tsx:109
-msgid "Are you sure you want to delete project"
-msgstr "您确定要删除项目吗"
-
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
-#: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
-msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 msgid "Package"
@@ -2334,10 +2459,6 @@ msgstr "编辑属性"
 msgid "Project properties updated successfully"
 msgstr "已成功更新项目属性"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
-msgid "Editing properties.."
-msgstr "正在编辑属性..."
-
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
 msgid "Label:"
 msgstr "标签："
@@ -2396,7 +2517,7 @@ msgstr "必需"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:617
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/notifications/notification-messages.tsx:506
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -3742,97 +3863,101 @@ msgstr "创建引导储存库失败"
 msgid "State apply failed"
 msgstr "状态应用失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:137
+#: ../html/src/manager/notifications/notification-messages.tsx:50
+msgid "Pay-as-you-go refresh authentication data failed"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
 msgstr "按类型过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:245
-#: ../html/src/manager/notifications/notification-messages.tsx:246
+#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Info"
 msgstr "信息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
+#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:266
 msgid "Error"
 msgstr "错误"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:324
+#: ../html/src/manager/notifications/notification-messages.tsx:328
 msgid "show details"
 msgstr "显示细节"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:373
+#: ../html/src/manager/notifications/notification-messages.tsx:377
 msgid "Retry onboarding"
 msgstr "重试载入"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:383
+#: ../html/src/manager/notifications/notification-messages.tsx:387
 msgid "Retry repo sync"
 msgstr "重试储存库同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:412
+#: ../html/src/manager/notifications/notification-messages.tsx:416
 msgid "All Messages"
 msgstr "所有消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:444
-#: ../html/src/manager/notifications/notification-messages.tsx:445
+#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:452
-#: ../html/src/manager/notifications/notification-messages.tsx:453
+#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:457
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
-#: ../html/src/manager/notifications/notification-messages.tsx:552
+#: ../html/src/manager/notifications/notification-messages.tsx:474
+#: ../html/src/manager/notifications/notification-messages.tsx:556
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:475
+#: ../html/src/manager/notifications/notification-messages.tsx:479
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Summary"
 msgstr "摘要"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:514
+#: ../html/src/manager/notifications/notification-messages.tsx:518
 msgid "Created"
 msgstr "创建日期"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Action"
 msgstr "操作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:534
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:534
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:540
+#: ../html/src/manager/notifications/notification-messages.tsx:544
 msgid "Delete Notification"
 msgstr "删除通知"
 
@@ -4262,20 +4387,11 @@ msgstr "引导"
 msgid "e.g., ••••••••••••"
 msgstr "例如 ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
-msgid "SSH Private Key"
-msgstr "SSH 私用密钥"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "该文件将储存在服务器上的临时文件中，在完成引导过程后将被删除"
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
-msgid "SSH Private Key Passphrase"
-msgstr "SSH 私用密钥通行口令"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:332
 msgid "Leave empty for no passphrase"
@@ -4292,25 +4408,13 @@ msgid ""
 msgstr ""
 "只能通过提供 SSH 身份凭证来添加要管理的系统。{0} 将远程准备系统并执行注册。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
-msgid "Host"
-msgstr "主机"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
 msgid "e.g., host.domain.com"
 msgstr "例如 host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
-msgid "SSH Port"
-msgstr "SSH 端口"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
-msgid "User"
-msgstr "用户"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
 msgid ""
