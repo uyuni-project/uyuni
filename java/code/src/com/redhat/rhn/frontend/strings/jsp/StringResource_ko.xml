@@ -28918,10 +28918,6 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
         <target>salt 관리형 시스템에서의 채널 할당 변경 사항은 다음 highstate 응용 프로그램에 적용됨</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.info.change" xml:space="preserve">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
-        <target>제품이 포함된 채널에 가입할 때 제품 패키지가 기존에 등록한 시스템에 자동 설치됩니다. 최대한 빨리 highstate를 salt 관리형 시스템에 적용하십시오.</target>
-      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
         <target>구성 파일 생성</target>
@@ -29760,6 +29756,17 @@ given channel.</source>
         </context-group>
         <target state="final">벤더 자문</target>
       </trans-unit>
-    </body>
+    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

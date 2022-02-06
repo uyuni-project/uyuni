@@ -28930,10 +28930,6 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
         <target>Salt で管理されたシステムに対してチャンネルの割り当てを変更した場合、次回の highstate 適用で変更が反映されます</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.info.change" xml:space="preserve">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
-        <target>製品を含むチャンネルのサブスクリプションを設定した場合、既に登録されているシステムに対して製品パッケージが自動インストールされます。 Salt で管理されているシステムの場合は、 highstate をできる限り速やかに適用してください。</target>
-      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
         <target>設定ファイルの作成</target>
@@ -29774,6 +29770,17 @@ given channel.</source>
         </context-group>
         <target state="final">ベンダアドバイザリー</target>
       </trans-unit>
-    </body>
+    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

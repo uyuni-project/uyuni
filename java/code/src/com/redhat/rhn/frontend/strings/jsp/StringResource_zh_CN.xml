@@ -28924,10 +28924,6 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
         <target>下一次对应用程序运行 highstate 时，salt 管理的系统上的频道指派更改将会生效</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.info.change" xml:space="preserve">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
-        <target>订阅包含产品的频道时，产品软件包将自动安装在以传统方式注册的系统上。在 salt 管理的系统上，请尽快应用 highstate。</target>
-      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
         <target>创建配置文件</target>
@@ -29770,6 +29766,17 @@ given channel.</source>
         </context-group>
         <target state="final">供应商建议</target>
       </trans-unit>
-    </body>
+    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
