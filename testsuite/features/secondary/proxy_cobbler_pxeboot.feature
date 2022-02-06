@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 
@@ -93,6 +93,9 @@ Feature: PXE boot a terminal with Cobbler
     And I start tftp on the proxy
     And I configure tftp on the "proxy"
     And I synchronize the tftp configuration on the proxy with the server
+
+  Scenario: Restart squid so proxy.example.org is recognized
+    When I restart squid service on the proxy
 
   Scenario: PXE boot the PXE boot minion
     Given I set the default PXE menu entry to the "target profile" on the "proxy"

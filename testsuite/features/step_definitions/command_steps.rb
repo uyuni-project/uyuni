@@ -1039,6 +1039,19 @@ When(/^I configure the proxy$/) do
   $proxy.run(cmd, timeout: proxy_timeout)
 end
 
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
+end
+
+When(/^I restart squid service on the proxy$/) do
+  # We need to restart squid when we add a CNAME to the certificate
+  $proxy.run("systemctl restart squid.service")
+end
+
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
   node = get_target(host)
@@ -1540,12 +1553,4 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('mkinitrd')
   end
-end
-
-When(/^I allow all SSL protocols on the proxy's apache$/) do
-  file = '/etc/apache2/ssl-global.conf'
-  key = 'SSLProtocol'
-  val = 'all -SSLv2 -SSLv3'
-  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  $proxy.run("systemctl reload apache2.service")
 end
