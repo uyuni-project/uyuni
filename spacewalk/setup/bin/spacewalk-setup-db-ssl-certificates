@@ -12,6 +12,7 @@
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
+export LC_ALL=C
 
 if [ $# -ne 1 -o ! -f "$1" ]; then
     echo "usage: $0 <certificate>"
