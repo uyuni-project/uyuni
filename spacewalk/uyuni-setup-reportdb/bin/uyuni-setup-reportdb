@@ -92,7 +92,6 @@ PG_DATA=/var/lib/pgsql/data
 PG_HBA="$PG_DATA/pg_hba.conf"
 PG_IDENT="$PG_DATA/pg_ident.conf"
 POSTGRESQL="$PG_DATA/postgresql.conf"
-#POSTGRESQL_SW_APPEND=/usr/share/spacewalk/setup/postgresql.conf
 PORT=5432
 PG_PIDFILE="/run/postmaster.$PORT.pid"
 if isSUSE ; then
@@ -111,10 +110,15 @@ RUNUSER=runuser
 FQDN=$(hostname -f)
 SSL_CERT=/etc/pki/tls/certs/spacewalk.crt
 SSL_KEY=/etc/pki/tls/private/pg-spacewalk.key
+CA_CERT=/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
 
 create() {
     [ ! -s "$SSL_CERT" ] && {
         echo "SSL Certificate ($SSL_CERT) required to setup the reporting database" >&2
+        exit 1
+    }
+    [ ! -s "$CA_CERT" ] && {
+        echo "The SSL CA Certificate ($CA_CERT) is required to setup the reporting database" >&2
         exit 1
     }
     [ ! -s "$SSL_KEY" ] && {
@@ -128,6 +132,7 @@ create() {
             exit 1
         fi
     }
+    /usr/bin/spacewalk-setup-db-ssl-certificates $CA_CERT
 
     [ -z "$PGNAME" ] && ask true "Database name: " PGNAME
     [ -z "$PGUSER" ] && ask true "Database user: " PGUSER
@@ -219,7 +224,7 @@ report_db_name = $PGNAME
 report_db_host = $FQDN
 report_db_port = $PORT
 report_db_ssl_enabled = 1
-report_db_sslrootcert = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+report_db_sslrootcert = $CA_CERT
 EOF
     else
         cat >> $RHN_CONF <<EOF
@@ -230,7 +235,7 @@ report_db_name = $PGNAME
 report_db_host = $FQDN
 report_db_port = $PORT
 report_db_ssl_enabled = 1
-report_db_sslrootcert = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+report_db_sslrootcert = $CA_CERT
 EOF
     fi
 
