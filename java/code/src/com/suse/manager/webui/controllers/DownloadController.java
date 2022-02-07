@@ -520,11 +520,12 @@ public class DownloadController {
             Opt.consume(channelClaim, () -> {
                 log.info(String.format("Token %s does provide access to any channel", token));
             }, channels -> {
-                log.info(String.format(
-                        "Token %s provides access to channels %s", token, String.join(",", channels)));
                 if (!channels.contains(channel)) {
-                    log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
+                    log.info(String.format("Forbidden: Token %s does not provide access to channel %s",
+                                           token, channel));
+                    log.info(String.format("Token allow access only to the following channels: %s",
+                                           String.join(",", channels)));
+                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
                 }
             });
 
