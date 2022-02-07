@@ -8790,6 +8790,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.status.token-cleanup" xml:space="preserve">
         <source>Cleanup channel tokens</source>
       </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <source>Pay-as-you-go authentication update</source>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <source>Pay-as-you-go update RMT hosts</source>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch" xml:space="preserve">
         <source>Registers @@PRODUCT_NAME@@ clients</source>
       </trans-unit>
