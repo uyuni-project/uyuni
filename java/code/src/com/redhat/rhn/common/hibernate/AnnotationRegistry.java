@@ -149,10 +149,10 @@ public class AnnotationRegistry {
         AnsiblePath.class,
         InventoryPath.class,
         PlaybookPath.class,
-        Pillar.class
+        Pillar.class,
+        CloudRmtHost.class,
+        PaygSshData.class
     );
-        ANNOTATION_CLASSES.add(CloudRmtHost.class);
-        ANNOTATION_CLASSES.add(PaygSshData.class);
 
     /**
      * Returns the list of all available hibernate annotation classes.
