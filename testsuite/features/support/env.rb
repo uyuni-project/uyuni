@@ -74,6 +74,7 @@ end
 Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
+Capybara.default_selector = :xpath
 Capybara.default_normalize_ws = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i

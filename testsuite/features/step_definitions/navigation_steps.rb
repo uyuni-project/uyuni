@@ -496,9 +496,9 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   page.reset!
   visit Capybara.app_host
-  next if has_xpath?("//header//span[text()='#{user}']", wait: 0)
+  next if all(:xpath, "//header//span[text()='#{user}']").any?
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if has_xpath?("//header//i[@class='fa fa-sign-out']", wait: 0)
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
