@@ -1,3 +1,4 @@
+- Remove verbose token log
 - fix ClassCastException during action processing (bsc#1195043)
 
 -------------------------------------------------------------------
