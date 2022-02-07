@@ -888,13 +888,13 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   log node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
   steps %(
     When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
   )
-  if get_client_type(host) == 'traditional'
+  if get_client_type(host) == 'traditional' and is_salt.empty?
     get_target(host).run('rhn_check -vvv')
   else
     steps %(
