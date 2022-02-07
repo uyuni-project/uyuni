@@ -283,7 +283,7 @@ public class SCCRepository extends BaseDomainHelper {
             }
             // Credentials present
             else if (a.getOptionalCredentials().isPresent()) {
-                Credentials ct = a.getOptionalCredentials().get();
+                Credentials ct = a.getOptionalCredentials().get(); //NOSONAR empty option is check in previous line
                 if (ct.getType().getLabel().equals(Credentials.TYPE_CLOUD_RMT)) {
                     // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
                     if (result.flatMap(r -> r.getOptionalCredentials())
