@@ -523,6 +523,7 @@ public class DownloadController {
                 if (!channels.contains(channel)) {
                     log.info(String.format("Forbidden: Token %s does not provide access to channel %s",
                                            token, channel));
+                    log.info(String.format("Token allow access only to the following channels: %s", String.join(",", channels)));
                     halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
                 }
             });
