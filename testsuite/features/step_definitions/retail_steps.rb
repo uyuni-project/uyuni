@@ -546,7 +546,8 @@ end
 Then(/^the image should exist on "([^"]*)"$/) do |host|
   node = get_target(host)
   images, _code = node.run('ls /srv/saltboot/image/')
-  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
+  image = compute_image_name
+  raise "Image #{image} does not exist on #{host}" unless images.include? image
 end
 
 ### TBD below: get rid of semi-xmlrpc-tester
