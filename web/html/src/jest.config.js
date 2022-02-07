@@ -20,7 +20,6 @@ module.exports = {
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules"],
   setupFiles: ["./utils/test-utils/setup/index.ts"],
-  maxWorkers: 1,
   globals: {
     // These are simply sufficiently different so it's easy to check outputs
     serverTimeZone: "Asia/Tokyo", // GMT+9
