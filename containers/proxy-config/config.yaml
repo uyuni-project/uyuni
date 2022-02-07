@@ -1,8 +1,18 @@
+## salt-broker
 server: server.tf.local
+
+## squid
 max_cache_size_mb: 20000
+
+## httpd and WSGI
 binary_system_id: ""
 email: test@test.test
 binary_ca_certs: ""
 binary_server_crt: ""
 binary_server_csr: ""
 binary_server_key: ""
+
+# ssh push keys
+binary_id_server_ssh_push:
+binary_id_server_ssh_push_pub:
+binary_id_server_ssh_key_pub:

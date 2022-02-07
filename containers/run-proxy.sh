@@ -14,7 +14,7 @@ export REGISTRY=registry.tf.local
 export ADD_HOST=server.tf.local:192.168.100.189
 
 
-IMAGES=(proxy-httpd proxy-salt-broker proxy-squid proxy-tftpd)
+IMAGES=(proxy-ssh proxy-httpd proxy-salt-broker proxy-squid proxy-tftpd)
 
 for image in "${IMAGES[@]}"
 do
@@ -22,11 +22,17 @@ do
 done
 
 podman pod create --name proxy-pod \
+        --publish 22:22 \
         --publish 8080:8080 \
         --publish 443:443 \
         --publish 4505:4505 \
         --publish 4506:4506 \
 				--add-host $ADD_HOST
+
+podman run --rm=true -dt --pod proxy-pod \
+  -v $CONFIG_DIR:/etc/uyuni \
+	--name proxy-ssh \
+	$REGISTRY/proxy-ssh
 
 podman run --rm=true -dt --pod proxy-pod \
 	-v $CONFIG_DIR:/etc/uyuni \
