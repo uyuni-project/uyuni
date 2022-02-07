@@ -28,7 +28,7 @@ end
 # This is a safety net only, the best thing to do is to not start the reposync at all.
 def compute_list_to_leave_running
   # keep the repos needed for the auto-installation tests
-  do_not_kill = $long_tests_enabled ? CHANNEL_TO_SYNCH_BY_OS_VERSION['default'] : []
+  do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
   [$minion, $build_host, $sshminion].each do |node|
     next unless node
     os_version, os_family = get_os_version(node)
