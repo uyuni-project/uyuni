@@ -124,6 +124,7 @@ Feature: PXE boot a terminal with Cobbler
     And I stop salt-minion on the PXE boot minion
 
   Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
+    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I enter "boot/pxelinux.0" in pxeboot filename field
