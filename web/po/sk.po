@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-06 10:54+0000\n"
-"PO-Revision-Date: 2022-02-06 14:12+0000\n"
+"PO-Revision-Date: 2022-02-07 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -904,11 +904,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:39
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "Pridať nové priebežne platené dáta pripojení ssh"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "Pridať nové priebežne platené dáta ssh"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:47
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -930,9 +930,8 @@ msgid "Create"
 msgstr "Vytvoriť"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:68
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "Popis produktu"
+msgstr "Popis priebežne plateného pripojenia"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:71
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -949,13 +948,12 @@ msgid "Description"
 msgstr "Popis"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:75
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "Inštancia je zastaraná"
+msgstr "Dáta pripojenia inštancie SSH"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:80
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "Dáta pripojenia bašty SSH"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:259
