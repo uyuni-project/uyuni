@@ -521,8 +521,8 @@ public class DownloadController {
                 log.info(String.format("Token %s does provide access to any channel", token));
             }, channels -> {
                 if (!channels.contains(channel)) {
-                    log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
+                    log.info(String.format("Forbidden: Token %s does not provide access to channel %s", token, channel));
+                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
                 }
             });
 
