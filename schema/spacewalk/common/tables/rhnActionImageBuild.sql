@@ -21,10 +21,10 @@ CREATE TABLE rhnActionImageBuild
                          CONSTRAINT rhn_act_image_build_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_profile_id NUMERIC NOT NULL
+    image_profile_id NUMERIC
                          CONSTRAINT rhn_act_image_build_ip_fk
                              REFERENCES suseImageProfile (profile_id)
-                             ON DELETE CASCADE,
+                             ON DELETE SET NULL,
     version          VARCHAR(128),
     created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,

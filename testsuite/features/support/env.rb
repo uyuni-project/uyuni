@@ -74,6 +74,7 @@ end
 Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
+Capybara.default_selector = :xpath
 Capybara.default_normalize_ws = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
@@ -105,10 +106,13 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
-AfterStep do
+AfterStep do |scenario|
   if has_css?('.senna-loading', wait: 0)
     STDOUT.puts "WARN: Step ends with an ajax transition not finished, let's wait a bit!"
-    raise 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading')
+    unless has_no_css?('.senna-loading', wait: 15)
+      # Note: See the special behavior of this step here: https://github.com/cucumber/cucumber-ruby/issues/1101
+      scenario.fail!(StandardError.new('Timeout: Waiting AJAX transition'))
+    end
   end
 end
 

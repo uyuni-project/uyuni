@@ -1,4 +1,6 @@
 - Remove verbose token log
+- FIX errors when an image profile / store is deleted
+  during build / inspect action (bsc#1191597, bsc#1192150)
 - SLES PAYG client support on cloud
 - fix ClassCastException during action processing (bsc#1195043)
 - Install product by default after a channel is subscribed
@@ -7,7 +9,6 @@
 
 -------------------------------------------------------------------
 Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de
-
 -------------------------------------------------------------------
 Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
 
