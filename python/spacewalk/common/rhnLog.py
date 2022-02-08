@@ -100,7 +100,8 @@ def initLOG(log_file="stderr", level=0):
                    log_path, sys.exc_info()[:2])
 
         # fetch uid, gid so we can do a "chown ..."
-        apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
+        with cfg_component() as CFG:
+            apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
 
         try:
             os.makedirs(log_path)
