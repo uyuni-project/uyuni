@@ -246,9 +246,9 @@ end
 
 Then(/^I have to see them by calling activationkey\.get_details\(\) having as description "([^"]*)"$/) do |description|
   details = @activation_key_api.get_details(key)
-  puts "Key info for the key details['key']:"
+  log "Key info for the key details['key']:"
   details.each_pair do |k, v|
-    puts "  #{k}:#{v}"
+    log "  #{k}:#{v}"
   end
   raise unless details['description'] == description
 end
@@ -289,7 +289,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via XM
   begin
     @activation_key_api.add_child_channels(key, selected_child_channels)
   rescue XMLRPC::FaultException => err
-    puts "The selected child channels can not be included: #{selected_child_channels}. Error: #{err}"
+    log "The selected child channels can not be included: #{selected_child_channels}. Error: #{err}"
   end
 end
 # rubocop:enable Metrics/BlockLength
@@ -344,7 +344,7 @@ end
 Then(/^I delete all action chains$/) do
   begin
     @action_chain_api.list_chains.each do |label|
-      puts "Delete chain: #{label}"
+      log "Delete chain: #{label}"
       @action_chain_api.delete_chain(label)
     end
   rescue XMLRPC::FaultException => e
@@ -382,9 +382,9 @@ Then(/^I should be able to see all these actions in the action chain$/) do
   begin
     actions = @action_chain_api.list_chain_actions($chain_label)
     refute_nil(actions)
-    puts 'Running actions:'
+    log 'Running actions:'
     actions.each do |action|
-      puts "\t- " + action['label']
+      log "\t- " + action['label']
     end
   rescue XMLRPC::FaultException => e
     raise format('Error listChainActions: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
@@ -430,7 +430,7 @@ When(/^I call actionchain\.remove_action on each action within the chain$/) do
     refute_nil(actions)
     actions.each do |action|
       refute(@action_chain_api.remove_action($chain_label, action['id']) < 0)
-      puts "\t- Removed \"" + action['label'] + '" action'
+      log "\t- Removed \"" + action['label'] + '" action'
     end
   rescue XMLRPC::FaultException => e
     raise format('Error remove_action: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
@@ -450,9 +450,9 @@ When(/^I wait until there are no more action chains$/) do
   repeat_until_timeout(message: 'Action Chains still present') do
     break if @action_chain_api.list_chains.empty?
     @action_chain_api.list_chains.each do |label|
-      puts "Chain still present: #{label}"
+      log "Chain still present: #{label}"
     end
-    puts
+    log
     sleep 2
   end
 end
@@ -469,7 +469,7 @@ Then(/^I cancel all scheduled actions$/) do
   end
 
   actions.each do |action|
-    puts "\t- Try to cancel \"#{action['name']}\" action"
+    log "\t- Try to cancel \"#{action['name']}\" action"
     begin
       @schedule_api.cancel_actions([action['id']])
     rescue XMLRPC::FaultException
@@ -477,7 +477,7 @@ Then(/^I cancel all scheduled actions$/) do
         @schedule_api.fail_system_action(system['server_id'], action['id'])
       end
     end
-    puts "\t- Removed \"#{action['name']}\" action"
+    log "\t- Removed \"#{action['name']}\" action"
   end
 end
 
@@ -489,9 +489,9 @@ Then(/^I wait until there are no more scheduled actions$/) do
   repeat_until_timeout(message: 'Scheduled actions still present') do
     break if @schedule_api.list_in_progress_actions.empty?
     @schedule_api.list_in_progress_actions.each do |action|
-      puts "Action still in progress: #{action}"
+      log "Action still in progress: #{action}"
     end
-    puts
+    log
     sleep 2
   end
 end
@@ -574,12 +574,12 @@ Then(/^I should get the test channel$/) do
             else
               'test-channel-x86_64'
             end
-  STDERR.puts "result: #{@result}"
+  STDOUT.puts "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
-  STDERR.puts "result: #{@result}"
+  STDOUT.puts "result: #{@result}"
   assert(@result['errata_advisories'].include?(patch))
 end
 
