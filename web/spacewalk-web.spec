@@ -260,6 +260,7 @@ cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 %{www_path}/robots.txt
 %{www_path}/pub
 %{www_path}/javascript/manager/*.js
+%{www_path}/javascript/manager/*.js.LICENSE.txt
 %{www_path}/javascript/*.js
 %license LICENSE
 
