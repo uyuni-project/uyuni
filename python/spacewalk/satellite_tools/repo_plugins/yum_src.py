@@ -54,7 +54,6 @@ from uyuni.common.context_managers import cfg_component
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
-from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
 from rhn.stringutils import sstr
 
@@ -164,9 +163,11 @@ class ZypperRepo:
            self.urls[0] += '/'
        # Make sure root paths are created
        if not os.path.isdir(self.root):
-           fileutils.makedirs(self.root, user=CFG.httpd_user, group=CFG.httpd_group)
+           with cfg_component() as CFG:
+               fileutils.makedirs(self.root, user=CFG.httpd_user, group=CFG.httpd_group)
        if not os.path.isdir(self.pkgdir):
-           fileutils.makedirs(self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
+           with cfg_component() as CFG:
+               fileutils.makedirs(self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
        self.is_configured = False
        self.includepkgs = []
        self.exclude = []
