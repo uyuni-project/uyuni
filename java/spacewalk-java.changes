@@ -1,3 +1,4 @@
+- Use uyuni roster salt module instead of flat roster files
 - add ubuntu errata data and install handling
 - fix possible race condition in job handling (bsc#1192510)
 - Remove verbose token log

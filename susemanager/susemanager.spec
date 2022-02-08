@@ -145,6 +145,7 @@ BuildRequires:  python-enum34
 %endif
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
+Requires:       spacewalk-common
 Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
@@ -327,6 +328,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{wwwdocroot}/pub/repositories/empty-deb
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
+%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
