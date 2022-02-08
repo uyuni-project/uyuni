@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -1250,10 +1251,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e4);
         TestUtils.saveAndFlush(e5);
 
-        Map<Long, Map<String, String>> out = ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
-        Map<String, String> packages = out.get(srv.getId());
+        Map<Long, Map<String, Tuple2<String, String>>> out =
+                ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
+        Map<String, Tuple2<String, String>> packages = out.get(srv.getId());
         assertEquals(1, packages.size());
-        assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()));
+        assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()).getB());
     }
 
     public void testListErrataNamesForServer() throws Exception {
