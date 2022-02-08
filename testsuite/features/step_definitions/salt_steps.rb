@@ -14,7 +14,7 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     out, _code = $server.run("salt #{system_name} test.ping")
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
-      puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      log "Took #{finished.to_i - start.to_i} seconds to contact the minion"
       break
     end
     sleep 1
@@ -225,12 +225,12 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  if all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+  if has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
     raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -240,10 +240,10 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  raise "Checkbox is not #{state}" if all(:xpath, xpath_query).any?
+  raise "Checkbox is not #{state}" if has_xpath?(xpath_query)
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
-  assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
+  assert has_xpath?(xpath_query), 'Checkbox could not be found'
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
@@ -522,6 +522,6 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   system_name = get_system_name(minion)
   output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
   if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    puts output
+    log output
   end
 end
