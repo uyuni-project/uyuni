@@ -1,3 +1,6 @@
+- Include group formulas configuration in spacecmd group_backup and
+  spacecmd group_restore. This changes backup format to json,
+  previously used plain text is still supported for reading (bsc#1190462)
 - Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
 
 -------------------------------------------------------------------

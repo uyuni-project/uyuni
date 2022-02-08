@@ -5,7 +5,7 @@ Test suite for group module of spacecmd
 
 import datetime
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, mock_open, call, ANY
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.group
 from xmlrpc import client as xmlrpclib
@@ -414,14 +414,23 @@ class TestSCGroup:
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
         shell.client.systemgroup.getDetails = MagicMock(
             side_effect=[
-                {"description": "Group A description"},
-                {"description": "Group B description"},
+                {"description": "Group A description", "id": 1},
+                {"description": "Group B description", "id": 1},
             ]
         )
+        shell.client.formula.getFormulasByGroupId = MagicMock(
+            side_effect = [[], ['pxe']]
+            )
+        shell.client.formula.getGroupFormulaData = MagicMock(
+            return_value = {"pxe": {
+                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                "initrd_name": "initrd",
+                "kernel_name": "linux",
+                "pxe_root_directory": "/srv/saltboot"
+            }})
         mprint = MagicMock()
         logger = MagicMock()
-        opener = MagicMock()
-        _open = MagicMock(return_value=opener)
+        dumper = MagicMock()
 
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
@@ -429,7 +438,7 @@ class TestSCGroup:
         with patch("spacecmd.group.print", mprint) as prn, \
             patch("spacecmd.group.logging", logger) as lgr, \
             patch("spacecmd.group.os.path.expanduser", exp_user) as exu, \
-            patch("spacecmd.group.open", _open) as opr, \
+            patch("spacecmd.group.json_dump_to_file", dumper) as opr, \
             patch("spacecmd.group.datetime", _datetime) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL")
 
@@ -438,8 +447,7 @@ class TestSCGroup:
         assert shell.do_group_list.called
         assert shell.client.systemgroup.getDetails.called
         assert mprint.called
-        assert opener.write.called
-        assert opener.close.called
+        assert dumper.called
 
         assert_list_args_expect(mprint.call_args_list,
                                 ['Backup Group: group-a',
@@ -447,12 +455,27 @@ class TestSCGroup:
                                  'Backup Group: group-b',
                                  'Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b'
                                  ])
-
-        assert_list_args_expect(opener.write.call_args_list,
-                                ["Group A description", "Group B description"])
-        assert_args_expect(_open.call_args_list,
-                           [(('/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a', 'w'), {}),
-                            (('/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b', 'w'), {}),])
+        calls = [call({
+                        "description": "Group A description",
+                        "formulas": {}
+                    },
+                    '/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a'),
+                call({
+                        "description": "Group B description",
+                        "formulas": {
+                            "pxe": {
+                                "pxe": {
+                                    "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                                    "initrd_name": "initrd",
+                                    "kernel_name": "linux",
+                                    "pxe_root_directory": "/srv/saltboot"
+                                }
+                            }
+                        }
+                    },
+                    '/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b')
+                ]
+        dumper.assert_has_calls(calls)
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
@@ -529,8 +552,8 @@ class TestSCGroup:
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
         shell.client.systemgroup.getDetails = MagicMock(
             side_effect=[
-                {"description": "Group A description"},
-                {"description": "Group B description"},
+                {"description": "Group A description", "id": 1},
+                {"description": "Group B description", "id": 1},
             ]
         )
         mprint = MagicMock()
@@ -759,20 +782,40 @@ class TestSCGroup:
         shell.help_group_restore = MagicMock()
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
         shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"description": "Description of Group A"},
-            {"description": "Description of Group B"},
+            {"description": "Description of Group A", "id": 1},
+            {"description": "Description of Group B", "id": 1},
         ])
+        shell.client.formula.getFormulasByGroupId = MagicMock(
+            side_effect = [['pxe'], []]
+            )
+        shell.client.formula.getGroupFormulaData = MagicMock(
+            side_effect = [{"pxe": {
+                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                "initrd_name": "initrd",
+                "kernel_name": "linux",
+                "pxe_root_directory": "/srv/saltboot"
+            }}])
         shell.client.systemgroup.update = MagicMock()
         shell.client.systemgroup.create = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
-        opener = MagicMock()
-        opener.read = MagicMock(return_value="Description of Group A")
-        _open = MagicMock(return_value=opener)
+        json = MagicMock(return_value={
+                    "description": "Description of Group A",
+                    "formulas": {
+                        "pxe": {
+                            "pxe": {
+                                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                                "initrd_name": "initrd",
+                                "kernel_name": "linux",
+                                "pxe_root_directory": "/srv/saltboot"
+                            }
+                        }
+                    }
+                })
 
         with patch("spacecmd.group.print", mprint) as prn, \
             patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.open", _open) as opn, \
+            patch("spacecmd.group.json_read_from_file", json) as opr, \
             patch("spacecmd.group.os.path.abspath", _abspath) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
@@ -785,6 +828,8 @@ class TestSCGroup:
         assert shell.do_group_list.called
         assert shell.client.systemgroup.getDetails.called
         assert logger.debug.called
+
+        json.assert_called_once()
 
         assert_expect(logger.error.call_args_list,
                       "Group group-a already restored")
@@ -812,20 +857,24 @@ class TestSCGroup:
         shell.help_group_restore = MagicMock()
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
         shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"description": "Description of Group A newer"},
-            {"description": "Description of Group B"},
+            {"description": "Description of Group A", "id": 1},
+            {"description": "Description of Group B", "id": 1},
         ])
+        shell.client.formula.getFormulasByGroupId = MagicMock(
+            side_effect = [[], []]
+            )
         shell.client.systemgroup.update = MagicMock()
         shell.client.systemgroup.create = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
-        opener = MagicMock()
-        opener.read = MagicMock(return_value="Description of Group A")
-        _open = MagicMock(return_value=opener)
+        json = MagicMock(return_value={
+                    "description": "Group A description",
+                    "formulas": {}
+                })
 
         with patch("spacecmd.group.print", mprint) as prn, \
             patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.open", _open) as opn, \
+            patch("spacecmd.group.json_read_from_file", json) as opr, \
             patch("spacecmd.group.os.path.abspath", _abspath) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
@@ -839,8 +888,153 @@ class TestSCGroup:
         assert shell.client.systemgroup.getDetails.called
         assert logger.debug.called
 
+        json.assert_called_once()
+
         assert_expect(logger.info.call_args_list,
-                      'Updating description for group: group-a')
+                      'Updating data for group: group-a')
+
+    @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    def test_group_restore_catch_existing_formulas_changed(self, shell):
+        """
+        Test do_group_restore indempotent recovery
+
+        :param shell:
+        :return:
+        """
+        def _abspath(path):
+            """
+            Fake os.path.abspath that expands to /tmp/test
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/tmp/test", path.strip("/"))
+
+        shell.help_group_restore = MagicMock()
+        shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
+        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
+            {"description": "Description of Group A", "id": 1},
+            {"description": "Description of Group B", "id": 1},
+        ])
+        shell.client.formula.getFormulasByGroupId = MagicMock(
+            side_effect = [['pxe'], []]
+            )
+        shell.client.formula.getGroupFormulaData = MagicMock(
+            side_effect = [{"pxe": {
+                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                "initrd_name": "initrd",
+                "kernel_name": "linux",
+                "pxe_root_directory": "/srv/saltboot"
+            }}])
+        shell.client.systemgroup.update = MagicMock()
+        shell.client.systemgroup.create = MagicMock()
+        shell.client.formula.setGroupFormulaData = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+        json = MagicMock(return_value={
+                    "description": "Group A description",
+                    "formulas": {
+                    "pxe": {
+                        "pxe": {
+                            "initrd_name": "initrd",
+                            "kernel_name": "linux",
+                            "pxe_root_directory": "/srv/tftpboot"
+                        }
+                    }
+                }
+            })
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.json_read_from_file", json) as opr, \
+            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+            spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
+
+        assert not shell.client.systemgroup.create.called
+        assert not shell.help_group_restore.called
+        assert not mprint.called
+        assert not logger.error.called
+        assert shell.client.systemgroup.update.called
+        assert logger.info.called
+        assert shell.do_group_list.called
+        assert shell.client.systemgroup.getDetails.called
+        assert logger.debug.called
+
+        json.assert_called_once()
+
+        shell.client.formula.setGroupFormulaData.assert_called_with(
+                    ANY,
+                    1, 'pxe',
+                    { "pxe": {
+                        "initrd_name": "initrd",
+                        "kernel_name": "linux",
+                        "pxe_root_directory": "/srv/tftpboot"
+                    }})
+
+        assert_expect(logger.info.call_args_list,
+                      'Updating data for group: group-a')
+
+    @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
+    @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
+    @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    def test_group_restore_accept_old_format_description_changed(self, shell):
+        """
+        Test do_group_restore indempotent recovery
+
+        :param shell:
+        :return:
+        """
+        def _abspath(path):
+            """
+            Fake os.path.abspath that expands to /tmp/test
+
+            :param path:
+            :return:
+            """
+            return os.path.join("/tmp/test", path.strip("/"))
+
+        shell.help_group_restore = MagicMock()
+        shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
+        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
+            {"description": "Description of Group A", "id": 1},
+            {"description": "Description of Group B", "id": 1},
+        ])
+        shell.client.formula.getFormulasByGroupId = MagicMock(
+            side_effect = [[], []]
+            )
+        shell.client.systemgroup.update = MagicMock()
+        shell.client.systemgroup.create = MagicMock()
+        logger = MagicMock()
+        mprint = MagicMock()
+        json = MagicMock(return_value=None)
+        opener = mock_open(read_data = 'Group A description newer')
+
+        with patch("spacecmd.group.print", mprint) as prn, \
+            patch("spacecmd.group.logging", logger) as lgr, \
+            patch("spacecmd.group.json_read_from_file", json) as opr, \
+            patch("spacecmd.group.open", opener) as opn, \
+            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+            spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
+
+        assert not shell.client.systemgroup.create.called
+        assert not shell.help_group_restore.called
+        assert not mprint.called
+        assert not logger.error.called
+        assert shell.client.systemgroup.update.called
+        assert logger.info.called
+        assert shell.do_group_list.called
+        assert shell.client.systemgroup.getDetails.called
+        assert logger.debug.called
+
+        assert_list_args_expect(logger.info.call_args_list,
+                      ['Assuming group to be in old plain text format',
+                       'Updating data for group: group-a'])
+
 
     def test_group_list_data(self, shell):
         """
