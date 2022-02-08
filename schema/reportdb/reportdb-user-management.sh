@@ -82,7 +82,7 @@ set_value() {
     eval "$(printf "%q=%q" "$VAR" "$ARG")"
 }
 
-OPTS=$(getopt --longoptions=help,non-interactive,add,delete,modify,action:,dbuser:,dbpassword: -n "${0##*/}" -- h "$@")
+OPTS=$(getopt --longoptions=help,non-interactive,add,delete,modify,action:,dbuser:,dbpassword: -n '${0##*/}' -- h "$@")
 
 if [ $? != 0 ] ; then
     print_help
@@ -159,18 +159,20 @@ fi
 QUERY=""
 case "$ACTION" in
   a)
-    QUERY="CREATE ROLE $DBUSER WITH LOGIN PASSWORD '$DBPASSWORD' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
-      GRANT CONNECT ON DATABASE $DBNAME TO $DBUSER;
-      GRANT USAGE ON SCHEMA public TO $DBUSER;
-      GRANT SELECT ON ALL TABLES IN SCHEMA public TO $DBUSER;
-      GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO $DBUSER;"
+    QUERY="CREATE ROLE ${DBUSER} WITH LOGIN PASSWORD '${DBPASSWORD}' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+      GRANT CONNECT ON DATABASE ${DBNAME} TO ${DBUSER};
+      GRANT USAGE ON SCHEMA public TO ${DBUSER};
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO ${DBUSER};
+      GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO ${DBUSER};"
   ;;
   m)
-    QUERY="ALTER USER $DBUSER PASSWORD '$DBPASSWORD';"
+    QUERY="ALTER USER ${DBUSER} PASSWORD '${DBPASSWORD}';"
   ;;
   d)
-    QUERY="DROP OWNED BY $DBUSER; DROP ROLE $DBUSER;"
+    QUERY="DROP OWNED BY ${DBUSER}; DROP ROLE ${DBUSER};"
   ;;
 esac
+
+echo $QUERY | spacewalk-sql --select-mode -
 
 echo $QUERY | spacewalk-sql --reportdb --select-mode -
