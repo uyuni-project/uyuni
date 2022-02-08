@@ -610,7 +610,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 .allMatch(token ->
                         token.getStart().toInstant().isAfter(now.toInstant()) &&
                         token.getStart().toInstant().isBefore(now.toInstant().plus(10, ChronoUnit.SECONDS))));
-        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(token -> !token.getValid()));
+        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(token -> token.getValid()));
         assertTokenExists(base, action);
         assertTokenExists(ch1, action);
         assertTokenExists(ch2, action);

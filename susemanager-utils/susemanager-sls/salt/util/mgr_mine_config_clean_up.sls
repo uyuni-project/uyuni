@@ -10,6 +10,7 @@ mgr_disable_mine:
   file.managed:
     - name: {{ susemanager_minion_config }}
     - contents: "mine_enabled: False"
+    - unless: grep 'mine_enabled:' {{ susemanager_minion_config }}
 
 mgr_salt_minion:
   service.running:

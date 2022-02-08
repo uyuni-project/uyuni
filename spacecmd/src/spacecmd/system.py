@@ -3223,7 +3223,7 @@ def do_system_applyerrata(self, args):
     if options.start_time:
         opts.append('-s ' + options.start_time)
 
-    return self.do_errata_apply(' '.join(opts + errata_list), systems)
+    return self.do_errata_apply(' '.join(opts), errata_list, systems)
 
 ####################
 

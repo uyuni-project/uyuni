@@ -15,7 +15,11 @@
 
 package com.suse.manager.webui.controllers.admin;
 
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.webui.controllers.admin.handlers.MonitoringApiController;
+import com.suse.manager.webui.controllers.admin.handlers.PaygApiContoller;
 
 /**
  * Spark controller Admin Api.
@@ -24,10 +28,14 @@ public class AdminApiController {
 
     private AdminApiController() { }
 
-    /** Invoked from Router. Init routes for ContentManagement Api.*/
-    public static void initRoutes() {
+    /** Invoked from Router. Init routes for ContentManagement Api.
+     * @param taskomaticApi*/
+    public static void initRoutes(TaskomaticApi taskomaticApi) {
         // monitoring
         MonitoringApiController.initRoutes();
+
+        PaygApiContoller paygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticApi));
+        paygApiContoller.initRoutes();
 
     }
 }

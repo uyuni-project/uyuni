@@ -39,7 +39,7 @@ end
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
-  puts "List of images: #{images_list}"
+  log "List of images: #{images_list}"
   image_id = 0
   images_list.each do |element|
     if element['name'] == name
@@ -51,7 +51,7 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
     idetails = cont_op.get_image_details(image_id)
-    puts "Image Details: #{idetails}"
+    log "Image Details: #{idetails}"
     break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
     raise 'image build failed.' if idetails['buildStatus'] == 'failed'
     raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'
@@ -66,7 +66,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
       step %(I follow the left menu "Images > Image List")
       step %(I wait until I do not see "There are no entries to show." text)
-      raise 'error detected while building images' if all(:xpath, "//*[contains(@title, 'Failed')]").any?
+      raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
       sleep 5
     end
@@ -108,7 +108,7 @@ When(/^I delete the image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) 
     end
   end
   if image_id.zero?
-    puts "Image #{image_name_todel} with version #{version} does not exist, skipping"
+    log "Image #{image_name_todel} with version #{version} does not exist, skipping"
   else
     cont_op.delete_image(image_id)
   end
@@ -138,7 +138,7 @@ When(/^I list image store types and image stores via XML-RPC$/) do
   raise "imagestore label type should be 'os_image' but is #{store_typ[1]['label']}" unless store_typ[1]['label'] == 'os_image'
 
   registry_list = cont_op.list_image_stores
-  puts "Image Stores: #{registry_list}"
+  log "Image Stores: #{registry_list}"
   raise "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
   raise "URI #{registry_list[0]['uri']} is different than '#{$no_auth_registry}'" unless registry_list[0]['uri'] == $no_auth_registry.to_s
 end
@@ -188,7 +188,7 @@ end
 
 When(/^I list image profiles via XML-RPC$/) do
   cont_op.login('admin', 'admin')
-  puts cont_op.list_image_profiles
+  log cont_op.list_image_profiles
   ima_profiles = cont_op.list_image_profiles
   imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
   raise "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'

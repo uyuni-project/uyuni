@@ -220,23 +220,7 @@ install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_RO
 %{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
 cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
-%{__mkdir_p} %{buildroot}/%{www_path}/vendors
-cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/vendors/vendors.bundle.js
-cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/vendors/vendors.bundle.js.map
-cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vendors/vendors.bundle.js.LICENSE
-
 %find_lang spacewalk-web
-
-%files -n susemanager-web-libs
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.js
-%{www_path}/vendors/*.js.LICENSE
-
-%files -n susemanager-web-libs-debug
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.map
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)
@@ -276,6 +260,7 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vend
 %{www_path}/robots.txt
 %{www_path}/pub
 %{www_path}/javascript/manager/*.js
+%{www_path}/javascript/manager/*.js.LICENSE.txt
 %{www_path}/javascript/*.js
 %license LICENSE
 

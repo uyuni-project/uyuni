@@ -55,6 +55,24 @@ public class CveFactory extends HibernateFactory {
     }
 
     /**
+     *  Looks up a CVE or inserts it if it does not exist.
+     * @param name CVE
+     * @return the CVE
+     */
+    public static Cve lookupOrInsertByName(String name) {
+        Cve cve = lookupByName(name);
+        if (cve != null) {
+            return cve;
+        }
+        else {
+            Cve newCve = new Cve();
+            newCve.setName(name);
+            save(newCve);
+            return newCve;
+        }
+    }
+
+    /**
      * Insert or Update a CVE.
      * @param cve CVE to be stored in database.
      */
