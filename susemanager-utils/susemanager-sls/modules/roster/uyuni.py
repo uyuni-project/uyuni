@@ -54,7 +54,9 @@ def __virtual__():
 
 class UyuniRoster:
     """
-    The class to instantiate Uyuni connection and data gathering
+    The class to instantiate Uyuni connection and data gathering.
+    It's used to keep the DB connection, cache object and others in one instance
+    to prevent race conditions on loading the module with LazyLoader.
     """
 
     def __init__(self, db_config, uyuni_roster_config):
