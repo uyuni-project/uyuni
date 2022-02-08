@@ -9,15 +9,13 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE VersionInfo
-(
-    name      VARCHAR(256) NOT NULL,
-    label     VARCHAR(64)  NOT NULL,
-    version   VARCHAR(512) NOT NULL,
-    release   VARCHAR(512) NOT NULL,
-    created   TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    modified  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
-);
-
-CREATE UNIQUE INDEX versioninfo_name_label_uq
-    ON VersionInfo (name, label);
+CREATE InactiveSystem AS
+  SELECT mgm_id
+            , system_id
+            , profile_name AS system_name
+            , organization
+            , last_checkin_time
+            , (current_timestamp - last_checkin_time) AS inactivity
+    FROM system
+ORDER BY mgm_id, system_id, organization
+;

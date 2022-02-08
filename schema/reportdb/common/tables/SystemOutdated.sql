@@ -9,15 +9,14 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE VersionInfo
+CREATE TABLE SystemOutdated
 (
-    name      VARCHAR(256) NOT NULL,
-    label     VARCHAR(64)  NOT NULL,
-    version   VARCHAR(512) NOT NULL,
-    release   VARCHAR(512) NOT NULL,
-    created   TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    modified  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
+    mgm_id                      NUMERIC NOT NULL,
+    system_id                   NUMERIC NOT NULL,
+    packages_out_of_date        BIGINT,
+    errata_out_of_date          BIGINT,
+    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
-CREATE UNIQUE INDEX versioninfo_name_label_uq
-    ON VersionInfo (name, label);
+ALTER TABLE SystemOutdated
+  ADD CONSTRAINT SystemOutdated_pk PRIMARY KEY (mgm_id, system_id);
