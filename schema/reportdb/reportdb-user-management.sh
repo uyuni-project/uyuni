@@ -1,6 +1,7 @@
 #! /bin/bash
 
-DBNAME="reportdb"
+DBNAME_ATTRIBUTE="report_db_name"
+RHN_CONF="/etc/rhn/rhn.conf"
 INTERACTIVE=1
 INTERACTIVE_RETRIES=3
 
@@ -8,7 +9,6 @@ if [ 0$UID -gt 0 ]; then
     echo Run as root.
     exit 1
 fi
-
 
 print_help() {
     cat <<HELP
@@ -82,6 +82,20 @@ set_value() {
     eval "$(printf "%q=%q" "$VAR" "$ARG")"
 }
 
+parse_properties() {
+    ATTRIBUTE="$1"
+    VAR="$2"
+    VALUE=$(grep "^$ATTRIBUTE" $RHN_CONF |cut -d'=' -f2 | tail -n1 | tr -d '\n ')
+    eval "$(printf "%q=%q" "$VAR" "$VALUE")"
+}
+
+parse_properties $DBNAME_ATTRIBUTE DBNAME
+
+if [ -z $DBNAME ]; then
+  echo "$DBNAME_ATTRIBUTE is missing. Exit"
+  exit 1
+fi
+
 OPTS=$(getopt --longoptions=help,non-interactive,add,delete,modify,action:,dbuser:,dbpassword: -n '${0##*/}' -- h "$@")
 
 if [ $? != 0 ] ; then
@@ -113,9 +127,8 @@ while : ; do
     shift
 done
 
-
-
 if [ "$INTERACTIVE" = "1" ] ; then
+  echo "Report DB Name is: $DBNAME"
   for i in $(seq $INTERACTIVE_RETRIES) ; do
     default_or_input "[a]dd/[m]odify/[d]elete user. Default is " ACTION 'm'
       case "$ACTION" in
@@ -128,26 +141,26 @@ if [ "$INTERACTIVE" = "1" ] ; then
         ;;
       esac
   done
-    
+
   if [ -z $ACTION ]; then
     echo "Invalid input. Exit"
     exit 1
   fi
-  
+
   default_or_input "User:" DBUSER ''
-  
+
   if [ "$ACTION" != "d" ]; then
     default_or_input "Password:" DBPASSWORD '' '1'
     echo
   fi
-  
+
   default_or_input "Confirm? [y/n]" CONFIRM 'y'
-  
+
   if [ "$CONFIRM" != "y" ]; then
-    echo "Answer is not y. Exiting"
+    echo "Answer is not y. Exit"
     exit 0
   fi
-  
+
 else ### INTERACTIVE=0
   if [ "$ACTION_COUNT" != "1" ] ; then
     echo "Please provide only one action"
@@ -172,7 +185,5 @@ case "$ACTION" in
     QUERY="DROP OWNED BY ${DBUSER}; DROP ROLE ${DBUSER};"
   ;;
 esac
-
-echo $QUERY | spacewalk-sql --select-mode -
 
 echo $QUERY | spacewalk-sql --reportdb --select-mode -
