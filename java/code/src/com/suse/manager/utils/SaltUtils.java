@@ -1138,17 +1138,25 @@ public class SaltUtils {
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
         ImageBuildAction ba = (ImageBuildAction) action;
-        Optional<ImageBuildActionDetails> details = Optional.ofNullable(ba.getDetails());
+        ImageBuildActionDetails details = ba.getDetails();
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
         serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            details.ifPresentOrElse(det -> {
-                Optional<ImageProfile> profileOpt =
-                        ImageProfileFactory.lookupById(det.getImageProfileId());
-
-                profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
+            if (details == null) {
+                LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageBuildData");
+                return;
+            }
+            Long imageProfileId = details.getImageProfileId();
+            if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
+                LOG.warn("Image Profile ID not found while performing: "  +
+                        action.getName() + " in handleImageBuildData");
+                return;
+            }
+            Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
+            profileOpt.ifPresentOrElse(p -> {
+                p.asKiwiProfile().ifPresent(kiwiProfile -> {
                     serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                         // Download the built Kiwi image to SUSE Manager server
                         List<OSImageInspectSlsResult.Bundle> bundles =
@@ -1158,19 +1166,20 @@ public class SaltUtils {
                                 ImageInfoFactory.convertChecksum(bundles.get(0).getChecksum())));
                         bundles.stream().forEach(bundleInfo -> {
                             MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                        OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
-                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
+                                    .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                            OSImageStoreUtils.getOsImageStorePath() +
+                                                    kiwiProfile.getTargetStore().getUri())
+                                    .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
                             if (collectResult.getReturnCode() != 0) {
                                 serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                 serverAction.setResultMsg(StringUtils
-                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                            1024));
+                                        .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                                1024));
                             }
                         });
                     });
-                }));
+                });
                 ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                         action.getSchedulerUser(),
                         action.getServerActions()
@@ -1178,31 +1187,23 @@ public class SaltUtils {
                                 .map(ServerAction::getServerId)
                                 .collect(Collectors.toList()),
                         Optional.of(action.getId()),
-                        det.getVersion(),
-                        profileOpt.map(ImageProfile::getLabel).orElse(null),
-                        profileOpt.map(ImageProfile::getTargetStore).orElse(null),
+                        details.getVersion(),
+                        p.getLabel(),
+                        p.getTargetStore(),
                         Date.from(Instant.now())
                 );
                 try {
                     TASKOMATIC_API.scheduleActionExecution(iAction);
                 }
                 catch (TaskomaticApiException e) {
-                    LOG.error("Could not schedule image inspection");
-                    LOG.error(e);
+                    LOG.error("Could not schedule image inspection ", e);
                 }
-
                 infoOpt.ifPresent(info -> {
                     info.setRevisionNumber(info.getRevisionNumber() + 1);
                     info.setInspectAction(iAction);
                     ImageInfoFactory.save(info);
                 });
-            }, () -> {
-                LOG.error("Details not found in ImageBuildAction");
-                LOG.error("Name is: " + action.getName());
-                LOG.error("Action ID is: " + action.getId());
-                LOG.error("Earliest action was: " + action.getEarliestAction());
-                LOG.error("Scheduler User is: " + action.getSchedulerUser());
-            });
+        }, () -> LOG.warn("Could not find any profile for profile ID " + imageProfileId));
         }
     }
 
@@ -1211,14 +1212,23 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();
+        if (details == null) {
+            LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageInspectData");
+            return;
+        }
+        Long imageStoreId = details.getImageStoreId();
+        if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
+            LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
+            return;
+        }
         ImageInfoFactory
                 .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
-                        .ifPresent(minionServer -> handleImagePackageProfileUpdate(
-                                imageInfo, Json.GSON.fromJson(jsonResult,
-                                        ImagesProfileUpdateSlsResult.class),
-                                serverAction)));
+                        .ifPresent(minionServer ->
+                                handleImagePackageProfileUpdate(imageInfo, Json.GSON.fromJson(jsonResult,
+                                                ImagesProfileUpdateSlsResult.class),
+                                        serverAction)));
     }
 
     /**

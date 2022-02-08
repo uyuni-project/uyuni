@@ -296,15 +296,13 @@ public class SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionSummary>> callsForAction(Action actionIn, List<MinionSummary> minions) {
         if (minions.isEmpty()) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
-
         ActionType actionType = actionIn.getActionType();
         actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
-            Set<Long> errataIds = errataAction.getErrata().stream()
-                    .map(Errata::getId).collect(Collectors.toSet());
+            Set<Long> errataIds = errataAction.getErrata().stream().map(Errata::getId).collect(Collectors.toSet());
             return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
         }
         else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
@@ -342,19 +340,21 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
             ImageInspectActionDetails details = iia.getDetails();
-            ImageStore store = ImageStoreFactory.lookupById(
-                    details.getImageStoreId()).get();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            ImageStore store = ImageStoreFactory.lookupById(details.getImageStoreId()).get();
             return imageInspectAction(minions, details, store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
             ImageBuildActionDetails details = imageBuildAction.getDetails();
-            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(ip -> imageBuildAction(
-                            minions,
-                            Optional.ofNullable(details.getVersion()),
-                            ip,
-                            imageBuildAction.getSchedulerUser(),
-                            imageBuildAction.getId())
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
+                    ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
+                            imageBuildAction.getSchedulerUser(), imageBuildAction.getId())
             ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
@@ -479,8 +479,7 @@ public class SaltServerActionService {
             return clusterRemoveNodeAction(clusterAction);
         }
         else if (ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER.equals(actionType)) {
-            ClusterUpgradeAction clusterAction =
-                    (ClusterUpgradeAction)actionIn;
+            ClusterUpgradeAction clusterAction = (ClusterUpgradeAction)actionIn;
             return clusterUpgradeClusterAction(clusterAction);
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {

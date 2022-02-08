@@ -22,6 +22,8 @@ rhnActionApplyStates           :: rhnAction
 rhnActionApplyStatesResult     :: rhnActionApplyStates rhnServer
 rhnActionImageBuild            :: rhnAction suseImageProfile
 rhnActionImageBuildResult      :: rhnActionImageBuild rhnServer
+rhnActionInspect               :: rhnAction suseImageStore
+rhnActionImageInspectResult    :: rhnActionInspect rhnServer
 rhnActionScript                :: rhnAction suseClusters
 rhnActionClusterServers        :: rhnAction rhnServer
 rhnActionClusterGroupRefreshNodes :: rhnAction suseClusters
