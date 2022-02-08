@@ -173,4 +173,4 @@ case "$ACTION" in
   ;;
 esac
 
-echo $QUERY | spacewalk-sql --select-mode -
+echo $QUERY | spacewalk-sql --reportdb --select-mode -
