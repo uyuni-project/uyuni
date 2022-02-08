@@ -169,7 +169,8 @@ class DebRepo:
 
         self.basecachedir = cache_dir
         if not os.path.isdir(self.basecachedir):
-            fileutils.makedirs(self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group)
+            with cfg_component() as CFG:
+                fileutils.makedirs(self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group)
         self.includepkgs = []
         self.exclude = []
         self.pkgdir = pkg_dir
