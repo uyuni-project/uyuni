@@ -1,10 +1,12 @@
 import * as React from "react";
-import { RecurringEventPicker } from "components/picker/recurring-event-picker";
-import { DisplayHighstate } from "./display-highstate";
+
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
-import { Toggler } from "components/toggler";
 import { InnerPanel } from "components/panels/InnerPanel";
+import { RecurringEventPicker } from "components/picker/recurring-event-picker";
+import { Toggler } from "components/toggler";
+
+import { DisplayHighstate } from "./display-highstate";
 
 type Props = {
   schedule?: any;

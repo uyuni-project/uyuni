@@ -1,4 +1,4 @@
-import { Package, OptionalValue } from "./package.type";
+import { OptionalValue, Package } from "./package.type";
 
 export const UNMANAGED: any = {};
 export const INSTALLED: OptionalValue = { value: 0 };

@@ -22,12 +22,9 @@ rhnActionApplyStates           :: rhnAction
 rhnActionApplyStatesResult     :: rhnActionApplyStates rhnServer
 rhnActionImageBuild            :: rhnAction suseImageProfile
 rhnActionImageBuildResult      :: rhnActionImageBuild rhnServer
-rhnActionScript                :: rhnAction suseClusters
-rhnActionClusterServers        :: rhnAction rhnServer
-rhnActionClusterGroupRefreshNodes :: rhnAction suseClusters
-rhnActionClusterJoinNode :: rhnAction suseClusters
-rhnActionClusterRemoveNode :: rhnAction suseClusters
-rhnActionClusterUpgradeCluster :: rhnAction suseClusters
+rhnActionInspect               :: rhnAction suseImageStore
+rhnActionImageInspectResult    :: rhnActionInspect rhnServer
+rhnActionScript                :: rhnAction
 rhnActionConfigChannel         :: rhnServerAction rhnConfigChannel
 rhnActionConfigDate            :: rhnAction
 rhnActionConfigDateFile        :: rhnAction
@@ -221,7 +218,6 @@ rhnActionSubChannelsList       :: rhnActionSubChannels rhnChannel
 rhnActionSubChannelsTokens     :: suseChannelAccessToken rhnActionSubChannels
 suseChannelAccessToken         :: suseMinionInfo
 suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
-suseClusters                   :: web_customer rhnServer rhnServerGroup
 suseContentProject             :: web_customer
 suseContentProject_alters      :: suseContentEnvironment
 suseContentProjectSource       :: suseContentProject rhnChannel
@@ -230,7 +226,8 @@ suseContentFilter              :: web_customer
 suseContentFilterProject       :: suseContentProject suseContentFilter
 suseContentEnvironment         :: suseContentProject
 suseContentEnvironmentTarget   :: suseContentEnvironment rhnChannel
-suseCredentials                :: suseCredentialsType web_contact
+suseCredentials                :: suseCredentialsType web_contact susePaygSshData
+suseCloudRmtHost               :: susePaygSshData
 suseCVEImageChannel            :: suseImageInfo rhnChannel
 suseCVEServerChannel           :: rhnServer rhnChannel
 suseDockerfileProfile          :: suseImageProfile

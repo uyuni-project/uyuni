@@ -1,7 +1,8 @@
 import * as React from "react";
 
-import Network from "utils/network";
 import { Utils as MessagesUtils } from "components/messages";
+
+import Network from "utils/network";
 
 type Props = {
   hostid: string;

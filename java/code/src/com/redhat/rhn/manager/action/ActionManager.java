@@ -389,6 +389,7 @@ public class ActionManager extends BaseManager {
                         a.getServerActions().stream()
                             .filter(sa -> isMinionServer(sa.getServer()))
                             .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                            .filter(sa -> servers.contains(sa.getServer()))
                             .map(sa -> sa.getServer())
                             .collect(toSet())
                         )
@@ -1430,15 +1431,15 @@ public class ActionManager extends BaseManager {
     /**
      * Schedules one or more package lock actions for the given server.
      * @param scheduler the scheduler
-     * @param server the server
+     * @param servers the servers
      * @param packages set of packages
      * @param earliest earliest occurrence of this action
      * @return Currently scheduled PackageAction
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageLock(User scheduler, Server server,
-            Set<Package> packages, Date earliest)
+    public static Action schedulePackageLock(User scheduler,
+            Set<Package> packages, Date earliest, Server...servers)
         throws TaskomaticApiException {
         List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
         for (Package pkg : packages) {
@@ -1454,7 +1455,7 @@ public class ActionManager extends BaseManager {
             packagesList,
             ActionFactory.TYPE_PACKAGES_LOCK,
             earliest,
-            server
+            servers
         );
     }
 

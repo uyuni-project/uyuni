@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
@@ -42,11 +43,6 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
-import com.redhat.rhn.domain.action.cluster.BaseClusterModifyNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -120,14 +116,11 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.clusters.ClusterManager;
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -146,7 +139,6 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -252,25 +244,17 @@ public class SaltServerActionService {
     private SaltSSHService saltSSHService = GlobalInstanceHolder.SALT_API.getSaltSSHService();
     private SaltUtils saltUtils;
     private SaltKeyUtils saltKeyUtils;
-    private final FormulaManager formulaManager;
-    private final ClusterManager clusterManager;
     private boolean skipCommandScriptPerms;
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * @param saltApiIn instance for getting information from a system.
      * @param saltUtilsIn
-     * @param clusterManagerIn
-     * @param formulaManagerIn
      * @param saltKeyUtilsIn
      */
-    public SaltServerActionService(SaltApi saltApiIn, SaltUtils saltUtilsIn,
-                                   ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
-                                   SaltKeyUtils saltKeyUtilsIn) {
+    public SaltServerActionService(SaltApi saltApiIn, SaltUtils saltUtilsIn, SaltKeyUtils saltKeyUtilsIn) {
         this.saltApi = saltApiIn;
         this.saltUtils = saltUtilsIn;
-        this.clusterManager = clusterManagerIn;
-        this.formulaManager = formulaManagerIn;
         this.saltKeyUtils = saltKeyUtilsIn;
     }
 
@@ -294,10 +278,11 @@ public class SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionSummary>> callsForAction(Action actionIn, List<MinionSummary> minions) {
         if (minions.isEmpty()) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
 
         ActionType actionType = actionIn.getActionType();
+        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
@@ -339,20 +324,21 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
             ImageInspectActionDetails details = iia.getDetails();
-            ImageStore store = ImageStoreFactory.lookupById(
-                    details.getImageStoreId()).get();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            ImageStore store = ImageStoreFactory.lookupById(details.getImageStoreId()).get();
             return imageInspectAction(minions, details, store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
-            ImageBuildActionDetails details = imageBuildAction.getDetails();
+           ImageBuildActionDetails details = imageBuildAction.getDetails();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
             return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
-                    ip -> imageBuildAction(
-                            minions,
-                            Optional.ofNullable(details.getVersion()),
-                            ip,
-                            imageBuildAction.getSchedulerUser(),
-                            imageBuildAction.getId())
+                    ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
+                            imageBuildAction.getSchedulerUser(), imageBuildAction.getId())
             ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
@@ -460,26 +446,6 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE.equals(actionType)) {
             VirtualizationNetworkCreateAction networkAction = (VirtualizationNetworkCreateAction)actionIn;
             return virtNetworkCreateAction(minions, networkAction.getNetworkName(), networkAction.getDefinition());
-        }
-        else if (ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES.equals(actionType)) {
-            ClusterGroupRefreshNodesAction clusterAction =
-                    (ClusterGroupRefreshNodesAction)actionIn;
-            return clusterRefreshNodesAction(clusterAction);
-        }
-        else if (ActionFactory.TYPE_CLUSTER_JOIN_NODE.equals(actionType)) {
-            ClusterJoinNodeAction clusterAction =
-                    (ClusterJoinNodeAction)actionIn;
-            return clusterJoinNodeAction(clusterAction);
-        }
-        else if (ActionFactory.TYPE_CLUSTER_REMOVE_NODE.equals(actionType)) {
-            ClusterRemoveNodeAction clusterAction =
-                    (ClusterRemoveNodeAction)actionIn;
-            return clusterRemoveNodeAction(clusterAction);
-        }
-        else if (ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER.equals(actionType)) {
-            ClusterUpgradeAction clusterAction =
-                    (ClusterUpgradeAction)actionIn;
-            return clusterUpgradeClusterAction(clusterAction);
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
             return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
@@ -779,15 +745,18 @@ public class SaltServerActionService {
                                                         sa.getServer().asMinionServer().get()
                                                                 .getMinionId().equals(minionId))
                                                 .findFirst();
-                                if (rebootServerAction.isPresent()) {
-                                    rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
-                                    rebootServerAction.get().setPickupTime(new Date());
-                                }
-                                else {
-                                    LOG.error("Action of type " + SYSTEM_REBOOT +
-                                            " found in action chain result but not in actions for minion " +
-                                            minionId);
-                                }
+                                rebootServerAction.ifPresentOrElse(
+                                        ract -> {
+                                            if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                                                rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
+                                                rebootServerAction.get().setPickupTime(new Date());
+                                            }
+                                        },
+                                        () -> {
+                                            LOG.error("Action of type " + SYSTEM_REBOOT +
+                                                    " found in action chain result but not in actions for minion " +
+                                                    minionId);
+                                        });
                             }
                         }
 
@@ -1380,9 +1349,8 @@ public class SaltServerActionService {
                     .collect(Collectors.toList());
 
             newTokens.forEach(newToken -> {
-                // persist the access tokens to be activated by the Salt job return event
-                // if the state.apply channels returns successfully
-                newToken.setValid(false);
+                // set the token as valid, then if something is wrong, the state chanel will disable it
+                newToken.setValid(true);
                 actionDetails.getAccessTokens().add(newToken);
             });
 
@@ -2290,70 +2258,6 @@ public class SaltServerActionService {
     }
 
 
-    private Map<LocalCall<?>, List<MinionSummary>> clusterRefreshNodesAction(
-            ClusterGroupRefreshNodesAction clusterAction) {
-        Cluster cluster = clusterAction.getCluster();
-
-        Optional<Map<String, Object>> settingsFormulaData = formulaManager
-                .getClusterFormulaData(cluster, "settings");
-        if (settingsFormulaData.isEmpty()) {
-            throw new RuntimeException("No settings formula data for cluster " + cluster.getLabel());
-        }
-
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("cluster_type", cluster.getProvider());
-        pillar.put("params", settingsFormulaData.get());
-        clusterManager.getStateHooks(cluster.getProvider())
-                .ifPresent(hooks ->
-                        pillar.put("state_hooks", hooks));
-
-        LocalCall<?> call = State.apply(Arrays.asList("clusters.listnodes"), Optional.of(pillar));
-
-        return Collections.singletonMap(call, Arrays.asList(new MinionSummary(cluster.getManagementNode())));
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> clusterJoinNodeAction(ClusterJoinNodeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "clusters.addnode");
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> clusterRemoveNodeAction(ClusterRemoveNodeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "clusters.removenode");
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> clusterUpgradeClusterAction(ClusterUpgradeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "clusters.upgradecluster");
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> clusterModifyAction(
-            BaseClusterModifyNodesAction clusterAction, String state) {
-        Cluster cluster = clusterAction.getCluster();
-
-        Optional<Map<String, Object>> settingsFormulaData = formulaManager
-                .getClusterFormulaData(cluster, "settings");
-        if (settingsFormulaData.isEmpty()) {
-            throw new RuntimeException("No settings formula data for cluster " + cluster.getLabel());
-        }
-
-        Optional<Map<String, Object>> actionPillar = Optional.ofNullable(
-                clusterManager.deserializeJsonParams(clusterAction.getJsonParams()));
-
-        Map<String, Object> params = new HashMap<>();
-        params.putAll(settingsFormulaData.get());
-        actionPillar.ifPresent(ap -> params.putAll(ap));
-
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("cluster_type", cluster.getProvider());
-        pillar.put("params", params);
-        clusterManager.getStateHooks(cluster.getProvider())
-                .ifPresent(hooks ->
-                        pillar.put("state_hooks", hooks));
-
-        LocalCall<?> call = State.apply(Arrays.asList(state), Optional.of(pillar),
-                Optional.of(true), Optional.empty(), ClusterOperationsSlsResult.class);
-
-        return Collections.singletonMap(call, Arrays.asList(new MinionSummary(cluster.getManagementNode())));
-    }
-
     private LocalCall<?> executePlaybookActionCall(PlaybookAction action) {
         PlaybookActionDetails details = action.getDetails();
 
@@ -2583,7 +2487,10 @@ public class SaltServerActionService {
                         String function = (String) call.getPayload().get("fun");
 
                         // reboot needs special handling in case of ssh push
-                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT) &&
+                            sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                        // if the status is already PICKED_UP, don't change it
+                        // if the status is FAILED or COMPLETED, don't change it
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
                         }
@@ -2725,7 +2632,7 @@ public class SaltServerActionService {
                             // In action chains at this point the action is still queued so we have
                             // to set it to picked up.
                             // This could still lead to the race condition on when event processing is slow.
-                            if (sa.getPickupTime() == null) {
+                            if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                                 sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                                 sa.setPickupTime(new Date());
                             }

@@ -60,6 +60,7 @@ Feature: bootstrapping with reactivation key
     When I follow "Events" in the content area
     And I follow "History" in the content area
     And I wait until I see "Server reactivated as Salt minion" text, refreshing the page
+    And I wait until event "Apply states [certs, channels, channels.disablelocalrepos, packages, services.salt-minion] scheduled by admin" is completed
 
   Scenario: Cleanup: delete SLES minion after reactivation tests
     Given I am on the Systems overview page of this "sle_minion"

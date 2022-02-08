@@ -7,9 +7,6 @@
 <html:html >
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
-  <div class="alert alert-info">
-      <bean:message key="sdc.channels.info.change" />
-  </div>
 
     <div id="subscribe-channels-div"></div>
     <script type="text/javascript">

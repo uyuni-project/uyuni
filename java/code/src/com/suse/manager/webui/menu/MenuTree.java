@@ -66,14 +66,12 @@ public class MenuTree {
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
         adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
         adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
-        adminRoles.put("clusters", checkAcl(user, "user_role(cluster_admin)"));
 
         MenuItemList nodes = new MenuItemList();
 
         if (checkAcl(user, "user_authenticated()")) {
             nodes.add(getHomeNode(adminRoles));
             nodes.add(getSystemsNode(user, adminRoles));
-            nodes.add(getClustersNode(adminRoles));
             nodes.add(getSaltNode(adminRoles));
             nodes.add(getImagesNode(adminRoles));
             nodes.add(getPatchesNode(user));
@@ -228,14 +226,6 @@ public class MenuTree {
             .addChild(new MenuItem("Virtual Host Managers").withPrimaryUrl("/rhn/manager/vhms")
                     .withDir("/rhn/manager/vhms")
                     .withVisibility(adminRoles.get("org")));
-    }
-
-    private MenuItem getClustersNode(Map<String, Boolean> adminRoles) {
-        return new MenuItem("clusters.nav.title").withIcon("spacewalk-icon-clusters")
-                .addChild(new MenuItem("clusters.nav.overview").withPrimaryUrl("/rhn/manager/clusters")
-                        .withDir("/rhn/manager/cluster"))
-                .addChild(new MenuItem("clusters.nav.add").withPrimaryUrl("/rhn/manager/clusters/add")
-                        .withVisibility(adminRoles.get("clusters")));
     }
 
     private MenuItem getSaltNode(Map<String, Boolean> adminRoles) {
@@ -420,7 +410,11 @@ public class MenuTree {
                     .addChild(new MenuItem("Mirror Credentials")
                             .withPrimaryUrl("/rhn/admin/setup/MirrorCredentials.do"))
                     .addChild(new MenuItem("Products")
-                            .withPrimaryUrl("/rhn/manager/admin/setup/products")))
+                            .withPrimaryUrl("/rhn/manager/admin/setup/products"))
+                    .addChild(new MenuItem("Pay-as-you-go")
+                        .withPrimaryUrl("/rhn/manager/admin/setup/payg")
+                        .withDir("/rhn/manager/admin/setup/payg")
+                        .withDir("/rhn/manager/admin/setup/payg/create")))
             .addChild(new MenuItem("Organizations")
                     .withPrimaryUrl("/rhn/admin/multiorg/Organizations.do")
                     .withAltUrl("/rhn/admin/multiorg/OrgDetails.do")

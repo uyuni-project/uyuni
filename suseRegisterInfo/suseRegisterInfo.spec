@@ -21,7 +21,7 @@
 %global default_py3 1
 %endif
 
-%if !( 0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
+%if !( 0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
 %global build_py2   1
 %global __python /usr/bin/python2
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
@@ -30,7 +30,7 @@
 %define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0-only

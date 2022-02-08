@@ -1,10 +1,12 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import Network, { JsonResult } from "utils/network";
-import { usePrevious } from "utils/hooks";
-import { Select, FormContext } from "components/input";
-import { Props as FilterFormProps } from "../filter-form";
+import { useEffect, useState } from "react";
 
+import { FormContext, Select } from "components/input";
+
+import { usePrevious } from "utils/hooks";
+import Network, { JsonResult } from "utils/network";
+
+import { Props as FilterFormProps } from "../filter-form";
 import { Template } from "./index";
 
 type Product = {

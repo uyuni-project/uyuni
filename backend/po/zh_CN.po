@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-30 11:55+0200\n"
+"POT-Creation-Date: 2022-02-06 10:53+0000\n"
 "PO-Revision-Date: 2020-12-29 08:37+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -172,7 +172,7 @@ msgstr "值 '%s'（为 %s (%s) 提供）无效"
 msgid "Invalid system_id/action_id pair."
 msgstr "无效的 system_id/action_id 对。"
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/xmlrpc/up2date.py:249
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "无效的值 %s (%s)"
@@ -1244,16 +1244,16 @@ msgstr "正在导入 kickstart 树 (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:121
+#: ../satellite_tools/reposync.py:117
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 

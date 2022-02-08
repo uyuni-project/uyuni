@@ -6,17 +6,17 @@ Check the file content-management/index.js for an example
 
 import "./polyfills";
 import "react-hot-loader";
-
-import SpaRenderer from "core/spa/spa-renderer";
 import "core/spa/spa-engine";
 import "./legacy";
+
+import SpaRenderer from "core/spa/spa-renderer";
 
 import Admin from "./admin";
 import Audit from "./audit";
 import ContentManagement from "./content-management";
 import Errors from "./errors";
 import Groups from "./groups";
-import Highstate from "./state";
+import Header from "./header";
 import Images from "./images";
 import Login from "./login";
 import MaintenanceWindows from "./maintenance";
@@ -25,10 +25,10 @@ import Notifications from "./notifications";
 import Organizations from "./organizations";
 import Salt from "./salt";
 import Shared from "./shared";
+import Highstate from "./state";
 import Systems from "./systems";
 import Virtualization from "./virtualization";
 import Visualization from "./visualization";
-import Clusters from "./clusters";
 
 const pages = {
   ...Admin,
@@ -36,6 +36,7 @@ const pages = {
   ...ContentManagement,
   ...Errors,
   ...Groups,
+  ...Header,
   ...Highstate,
   ...Images,
   ...Login,
@@ -48,7 +49,6 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Visualization,
-  ...Clusters,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

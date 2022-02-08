@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -49,9 +49,8 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise "Text '#{text1}' or '#{text2}' not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', $product
-  # TODO: get rid of this substitution, using another step
+When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
+  text = Regexp.new(text) if type == 'regex'
   next if has_content?(text, wait: 3)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
@@ -79,6 +78,13 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
   end
 end
 
+When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do |seconds, text|
+  next if has_no_text?(text, wait: 3)
+  repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
+    break if has_no_text?(text, wait: 3)
+  end
+end
+
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
   next if has_content?("This action's status is: Completed.", wait: 3)
@@ -87,7 +93,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
     raise 'Event failed' if has_content?("This action's status is: Failed.", wait: 3)
     current = Time.now
     if current - last > 150
-      STDOUT.puts "#{current} Still waiting for action to complete..."
+      log "#{current} Still waiting for action to complete..."
       last = current
     end
     begin
@@ -163,14 +169,6 @@ end
 
 When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
-end
-
-When(/^I check (.*) box$/) do |checkbox_name|
-  check BOX_IDS[checkbox_name]
-end
-
-When(/^I uncheck (.*) box$/) do |checkbox_name|
-  uncheck BOX_IDS[checkbox_name]
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
@@ -288,18 +286,6 @@ end
 #
 When(/^I follow first "([^"]*)"$/) do |text|
   click_link_and_wait(text, match: :first)
-end
-
-#
-# Click on the terminal
-#
-When(/^I follow "([^"]*)" terminal$/) do |host|
-  domain = read_branch_prefix_from_yaml
-  if !host.include? 'pxeboot'
-    step %(I follow "#{domain}.#{host}")
-  else
-    step %(I follow "#{host}.#{domain}")
-  end
 end
 
 #
@@ -426,7 +412,7 @@ end
 
 When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
   system_name = get_system_name(host)
-  puts "The hostname of #{host} is #{system_name}"
+  log "The hostname of #{host} is #{system_name}"
   step %(I enter "#{system_name}" as "#{hostname}")
 end
 
@@ -530,7 +516,7 @@ When(/^I sign out$/) do
 end
 
 Then(/^I should not be authorized$/) do
-  raise 'User is authorized' if all(:xpath, "//a[@href='/rhn/Logout.do']").any?
+  raise 'User is authorized' if has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I should be logged in$/) do
@@ -540,14 +526,13 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = 'You have just created your first $PRODUCT user. To finalize your installation please use the Setup Wizard'
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
+  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   raise 'The welcome message is not shown' unless has_content?(text)
 end
 
 Then(/^I should see an update in the list$/) do
   xpath_query = '//div[@class="table-responsive"]/table/tbody/tr/td/a'
-  raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
+  raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query)
 end
 
 When(/^I check test channel$/) do
@@ -575,7 +560,6 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
   raise "Text '#{text}' not found" unless has_content?(text)
 end
 
@@ -626,7 +610,7 @@ end
 
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
-    assert all(:xpath, "//a[text() = '#{linktext}']").any?
+    assert has_xpath?("//a[text() = '#{linktext}']")
   end
 end
 
@@ -659,7 +643,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   end
   raise("Unknown column '#{column}'") unless idx
   # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
-  raise unless all(:xpath, "//table//tr/td[#{idx + 1}]//a[text()='#{link}']").any?
+  raise unless has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
@@ -939,7 +923,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
 end
 
 Then(/^I should see a Sign Out link$/) do
-  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
+  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
@@ -971,27 +955,6 @@ When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise "#{title} modal did not appear" unless dialog
-end
-
-# Image-specific steps
-When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
-  git_profiles = ENV['GITPROFILES']
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
-  git_profiles = ENV['GITPROFILES']
-  path = compute_image_filename
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
-end
-
-When(/^I enter URI, username and password for registry$/) do
-  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
-  steps %(
-    When I enter "#{$auth_registry}" as "uri"
-    And I enter "#{auth_registry_username}" as "username"
-    And I enter "#{auth_registry_password}" as "password"
-  )
 end
 
 When(/^I scroll to the top of the page$/) do

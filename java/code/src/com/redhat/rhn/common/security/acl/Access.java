@@ -34,7 +34,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 
@@ -53,15 +52,6 @@ import java.util.Map;
 public class Access extends BaseHandler {
 
     protected static final Logger LOG = Logger.getLogger(Access.class);
-    private final ClusterManager clusterManager;
-
-    /**
-     * Constructor for Access object
-     * @param clusterManagerIn
-     */
-    public Access(ClusterManager clusterManagerIn) {
-        this.clusterManager = clusterManagerIn;
-    }
 
     /**
      * Returns true if the User whose uid matches the given uid, is
@@ -574,19 +564,6 @@ public class Access extends BaseHandler {
         User user = (User) map.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
         return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
-    }
-
-    /**
-     * Checks if a server group is owned by a cluster.
-     * @param ctx acl context
-     * @param params parameters for acl
-     * @return true if the server group is owned by a cluster
-     */
-    public boolean aclIsClusterGroup(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sgid = getAsLong(map.get("sgid"));
-        User user = (User) map.get("user");
-        return clusterManager.isClusterGroup(sgid);
     }
 
 }

@@ -5,9 +5,11 @@
 {%- set is_dnf = salt['pkg.version']("dnf") %}
 
 {%- if is_dnf %}
+{%- set dnf_plugins = salt['cmd.run']("find /usr/lib -type d -name dnf-plugins -printf '%T@ %p\n' | sort -nr | cut -d ' ' -s -f 2- | head -n 1", python_shell=True) %}
+{%- if dnf_plugins %}
 mgrchannels_susemanagerplugin_dnf:
   file.managed:
-    - name: /usr/lib/python{{ grains['pythonversion'][0] }}.{{ grains['pythonversion'][1] }}/site-packages/dnf-plugins/susemanagerplugin.py
+    - name: {{ dnf_plugins }}/susemanagerplugin.py
     - source:
       - salt://channels/dnf-susemanager-plugin/susemanagerplugin.py
     - user: root
@@ -30,6 +32,7 @@ mgrchannels_enable_dnf_plugins:
     - repl: plugins=1
 {#- default is '1' when option is not specififed #}
     - onlyif: grep -e 'plugins=0' -e 'plugins=False' -e 'plugins=no' /etc/dnf/dnf.conf
+{%- endif %}
 {%- endif %}
 
 {%- if is_yum %}
@@ -121,6 +124,18 @@ mgrchannels_yum_clean_all:
     - onchanges: 
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
     -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
+{%- endif %}
+{%- endif %}
+
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3'%}
+mgrchannels_install_products:
+  product.all_installed:
+    - require:
+      - file: mgrchannels_*
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+    - saltutil: sync_states
+{%- else %}
+    - mgrcompat: sync_states
 {%- endif %}
 {%- endif %}
 

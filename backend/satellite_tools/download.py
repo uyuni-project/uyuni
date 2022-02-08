@@ -115,7 +115,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
-        super().__init__(str(url), filename, opts)
+        super().__init__(url, filename, opts)
 
     def _do_open(self):
         self.curl_obj = self.curl_cache

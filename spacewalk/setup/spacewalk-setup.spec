@@ -36,7 +36,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.4
+Version:        4.3.5
 Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -113,7 +113,11 @@ Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-setup-jabberd
+%if 0%{?rhel}
+Requires(post): libxslt-devel
+%else
 Requires(post): libxslt-tools
+%endif
 
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)

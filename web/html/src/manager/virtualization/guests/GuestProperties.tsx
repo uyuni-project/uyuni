@@ -1,23 +1,24 @@
-import { ActionChain } from "components/action-schedule";
-import { MessageType } from "components/messages";
-
 import * as React from "react";
-import { Panel } from "components/panels/Panel";
-import { Text } from "components/input/Text";
-import { Select } from "components/input/Select";
+
+import { ActionChain } from "components/action-schedule";
 import { Check } from "components/input/Check";
-import Validation from "components/validation";
+import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
+import { MessageType } from "components/messages";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { Panel } from "components/panels/Panel";
 import { Loading } from "components/utils/Loading";
+import Validation from "components/validation";
+
+import { VirtualizationPoolCapsApi } from "../pools/virtualization-pools-capabilities-api";
+import { VirtualizationListRefreshApi } from "../virtualization-list-refresh-api";
 import { guestNicsPanel } from "./properties/guest-nics-panel";
-import { GuestDisksPanel } from "./properties/GuestDisksPanel";
 import { GuestPropertiesForm } from "./properties/guest-properties-form";
 import { GuestPropertiesTraditional } from "./properties/guest-properties-traditional";
-import { VirtualizationDomainsCapsApi } from "./virtualization-domains-caps-api";
-import { VirtualizationListRefreshApi } from "../virtualization-list-refresh-api";
-import { VirtualizationPoolCapsApi } from "../pools/virtualization-pools-capabilities-api";
+import { GuestDisksPanel } from "./properties/GuestDisksPanel";
 import { TemplatesMessages } from "./properties/templates";
+import { VirtualizationDomainsCapsApi } from "./virtualization-domains-caps-api";
 
 type Props = {
   host: any;

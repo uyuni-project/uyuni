@@ -1,11 +1,12 @@
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import _xor from "lodash/xor";
 import _difference from "lodash/difference";
 import _union from "lodash/union";
+import _xor from "lodash/xor";
+
+import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 import { ChannelType } from "core/channels/type/channels.type";
-import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 import { getChannelsToToggleWithDependencies } from "core/channels/utils/channels-dependencies.utils";
+import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
 
 export type FilterType = {
   id: string;

@@ -1,18 +1,22 @@
 import { hot } from "react-hot-loader/root";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+
 import * as React from "react";
-import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { AsyncButton } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
+
 import escapeHtml from "html-react-parser";
+
+import { AsyncButton } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
+import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 declare global {
   interface JQuery {
@@ -40,6 +44,10 @@ const _MESSAGE_TYPE = {
   StateApplyFailed: {
     id: "StateApplyFailed",
     text: t("State apply failed"),
+  },
+  PaygAuthenticationUpdateFailed: {
+    id: "PaygAuthenticationUpdateFailed",
+    text: t("Pay-as-you-go refresh authentication data failed"),
   },
 };
 
@@ -479,7 +487,6 @@ class NotificationMessages extends React.Component<Props, State> {
             cssClassFunction={(row) => (DEPRECATED_unsafeEquals(row["isRead"], true) ? "text-muted" : "")}
             initialSortColumnKey="created"
             initialSortDirection={-1}
-            initialItemsPerPage={window.userPrefPageSize}
             loading={this.state.loading}
             selectable
             selectedItems={this.state.selectedItems}

@@ -37,7 +37,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.6
+Version:        4.3.8
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -51,7 +51,7 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
-BuildRequires:  nodejs10
+BuildRequires:  nodejs-default
 %else
 BuildRequires:  nodejs
 %endif
@@ -220,23 +220,7 @@ install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_RO
 %{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
 cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
-%{__mkdir_p} %{buildroot}/%{www_path}/vendors
-cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/vendors/vendors.bundle.js
-cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/vendors/vendors.bundle.js.map
-cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vendors/vendors.bundle.js.LICENSE
-
 %find_lang spacewalk-web
-
-%files -n susemanager-web-libs
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.js
-%{www_path}/vendors/*.js.LICENSE
-
-%files -n susemanager-web-libs-debug
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.map
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)

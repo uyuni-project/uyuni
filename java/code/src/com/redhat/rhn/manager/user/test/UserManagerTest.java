@@ -55,6 +55,9 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,6 +72,7 @@ import java.util.Set;
  */
 public class UserManagerTest extends RhnBaseTestCase {
 
+    private SystemManager systemManager;
     private Set<User> users;
     private boolean committed = false;
 
@@ -79,6 +83,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     public void setUp() throws Exception {
         super.setUp();
         this.users = new HashSet<User>();
+        SaltApi saltApi = new TestSaltApi();
+        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     }
 
     /**
@@ -113,7 +119,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
@@ -176,7 +182,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group2 = ServerGroupTest
                 .createTestServerGroup(foundUser2.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server2, group2);
+        systemManager.addServerToServerGroup(server2, group2);
         ServerFactory.save(server2);
 
         ManagedServerGroup foundGroup2 = ServerGroupFactory.lookupByIdAndOrg(group2.getId(),
@@ -217,7 +223,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),

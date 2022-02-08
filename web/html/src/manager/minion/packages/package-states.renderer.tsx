@@ -1,7 +1,10 @@
 import * as React from "react";
-import PackageStates from "./package-states";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { MessagesContainer } from "components/toastr/toastr";
+
+import PackageStates from "./package-states";
 
 type RendererProps = {
   serverId?: any;

@@ -1,11 +1,15 @@
 import * as React from "react";
-import { InnerPanel } from "components/panels/InnerPanel";
+
+import { pageSize } from "core/user-preferences";
+
 import { Button } from "components/buttons";
-import { Toggler } from "components/toggler";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { Toggler } from "components/toggler";
+
 import { targetTypeToString } from "./recurring-states-utils";
 
 type Props = {
@@ -68,7 +72,7 @@ class RecurringStatesList extends React.Component<Props, State> {
               data={this.props.data}
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
-              initialItemsPerPage={this.props.disableCreate ? window.userPrefPageSize : 0}
+              initialItemsPerPage={this.props.disableCreate ? pageSize : 0}
               emptyText={t(
                 "No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule.")
               )}
