@@ -251,6 +251,24 @@ class CVEAudit extends React.Component<Props, State> {
               />
             </div>
           </p>
+          <p>
+            <div className="btn-group">
+              <AsyncButton
+                id="bootstrap-btn"
+                defaultType="btn-default"
+                icon="fa-external-link"
+                text={t("SUSE Security CVE Info")}
+                onClick={() => window.open("someLink", "_blank")}
+              />
+              <AsyncButton
+                id="bootstrap-btn"
+                defaultType="btn-default"
+                icon="fa-external-link"
+                text={t("MITRE CVE Info")}
+                onClick={() => window.open("https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-", this.state.cveYear, "-", this.state.cveNumber )}
+              />
+            </div>
+          </p>
           <Table
             data={this.state.results}
             identifier={(row) => row.id}
