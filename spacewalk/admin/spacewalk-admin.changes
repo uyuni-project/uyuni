@@ -1,3 +1,4 @@
+- Generate uyuni_roster.conf with salt-secrets-config
 - check DB version on SUSE 15.4
 
 -------------------------------------------------------------------
