@@ -38,7 +38,7 @@ import fcntl
 import atexit
 from uyuni.common.fileutils import getUidGid
 from uyuni.common.rhnLib import isSUSE
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.context_managers import cfg_component
 
 LOG = None
 
