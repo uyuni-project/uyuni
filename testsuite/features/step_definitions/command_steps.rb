@@ -285,11 +285,11 @@ end
 # This function waits for all the reposyncs to complete.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row.
+# 60 seconds in a row.
 When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -311,12 +311,12 @@ end
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
