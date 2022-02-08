@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-06 10:54+0000\n"
-"PO-Revision-Date: 2022-02-07 18:12+0000\n"
+"PO-Revision-Date: 2022-02-08 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -985,9 +985,8 @@ msgid "Status"
 msgstr "Stav"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "Stav údajov priradenia"
+msgstr "Stav poslednej aktualizácie"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -996,7 +995,7 @@ msgstr "nikdy"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "Pridať priebežnú platbu"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1015,14 +1014,12 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "Vlastnosti projektu sa úspešne aktualizovali"
+msgstr "Úspešne aktualizované vlastnosti priebežnej platby"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "Ďalšie informácie"
+msgstr "Upraviť informácie"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -1030,9 +1027,8 @@ msgid "Editing properties.."
 msgstr "Upravovanie vlastností.."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "Dátum začiatku"
+msgstr "Posledná aktualizácia stavu"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
 msgid "Edit "
@@ -1040,7 +1036,7 @@ msgstr "Upraviť "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "Úprava údajov pripojenia ssh.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
@@ -1068,18 +1064,16 @@ msgid "SSH Private Key Passphrase"
 msgstr "Heslo súkromného kľúča SSH"
 
 #: ../html/src/manager/admin/payg/payg.tsx:58
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "Hľadaný projekt neexistuje alebo bol vymazaný"
+msgstr "Hľadaný inštancia neexistuje alebo bola vymazaná"
 
 #: ../html/src/manager/admin/payg/payg.tsx:65
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "Podrobnosti inštancie pre '{0}'"
+msgstr "Názov hostiteľa inštancie: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:74
 msgid "Delete Pay-as-you-go"
-msgstr ""
+msgstr "Vymazať priebežnú platbu"
 
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -3971,7 +3965,7 @@ msgstr "Aplikácia stavu zlyhala"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
