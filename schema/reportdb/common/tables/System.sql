@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2021 SUSE LLC
+-- Copyright (c) 2022 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -11,23 +11,26 @@
 
 CREATE TABLE System
 (
-    mgm_id		NUMERIC NOT NULL,
-    server_id           NUMERIC NOT NULL,
-    profile_name        VARCHAR,
-    hostname            VARCHAR,
-    registered_by       VARCHAR,
-    registration_time   TIMESTAMPTZ,
-    last_checkin_time   TIMESTAMPTZ,
-    kernel_version      VARCHAR,
-    organization        VARCHAR,
-    machine_id          VARCHAR,
-    modified            TIMESTAMPTZ DEFAULT (current_timestamp)
-) ;
+    mgm_id                        NUMERIC NOT NULL,
+    system_id                     NUMERIC NOT NULL,
+    profile_name                  VARCHAR(128),
+    hostname                      VARCHAR(128),
+    minion_id                     VARCHAR(256),
+    minion_os_family              VARCHAR(32),
+    minion_kernel_live_version    VARCHAR(255),
+    machine_id                    VARCHAR(256),
+    registered_by                 VARCHAR(64),
+    registration_time             TIMESTAMPTZ,
+    last_checkin_time             TIMESTAMPTZ,
+    kernel_version                VARCHAR(64),
+    architecture                  VARCHAR(64),
+    organization                  VARCHAR(128),
+    hardware                      TEXT,
+    synced_date                   TIMESTAMPTZ DEFAULT (current_timestamp)
+);
 
 ALTER TABLE System
-  ADD CONSTRAINT sys_mgm_srv_id_pk PRIMARY KEY (mgm_id, server_id);
+  ADD CONSTRAINT System_pk PRIMARY KEY (mgm_id, system_id);
 
-
-CREATE INDEX sys_profile_name_idx
+CREATE INDEX System_profile_name_idx
   ON System (profile_name);
-
