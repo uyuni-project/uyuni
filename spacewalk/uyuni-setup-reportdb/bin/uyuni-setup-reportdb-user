@@ -72,6 +72,21 @@ default_or_input() {
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
 }
 
+
+parse_password() {
+  for i in $(seq $INTERACTIVE_RETRIES) ; do
+    echo -n "Password: "
+    read -sr DBPASSWORD
+    echo
+    echo -n "Password (again): "
+    read -sr DBPASSWORD2
+    echo
+    [ "$DBPASSWORD" = "$DBPASSWORD2" ] && break
+    echo "The password and confirmation password do not match. Retry ($i/$INTERACTIVE_RETRIES)"
+    unset DBPASSWORD
+  done
+}
+
 set_value() {
     local OPTION="$1"
     local VAR="$2"
@@ -150,8 +165,11 @@ if [ "$INTERACTIVE" = "1" ] ; then
   default_or_input "User:" DBUSER ''
 
   if [ "$ACTION" != "d" ]; then
-    default_or_input "Password:" DBPASSWORD '' '1'
-    echo
+    parse_password
+    if [ -z $DBPASSWORD ]; then
+      echo "Invalid password. Exit"
+      exit 1
+    fi
   fi
 
   default_or_input "Confirm? [y/n]" CONFIRM 'y'
@@ -164,6 +182,11 @@ if [ "$INTERACTIVE" = "1" ] ; then
 else ### INTERACTIVE=0
   if [ "$ACTION_COUNT" != "1" ] ; then
     echo "Please provide only one action"
+    exit 1
+  fi
+  
+  if [ -z $DBPASSWORD ]; then
+    echo "Password is missing. Exit"
     exit 1
   fi
 
