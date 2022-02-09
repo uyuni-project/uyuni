@@ -21,10 +21,10 @@ import com.suse.manager.webui.services.SaltConstants;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -49,12 +49,16 @@ public class SaltRoster {
      * @param sshOption Additional SSH option to pass to salt-ssh
      * @param timeout SSH connect timeout
      * @param minionOpts Minion configuration parameters
+     * @param sshPreflightScriptPath The path to salt-ssh pre flight script
+     * @param sshPreflightScriptArgs The list of arguments for salt-ssh pre flight script
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<String> privKeyPath, Optional<String> privKeyPasswd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<String> sshOption, Optional<Integer> timeout,
-            Optional<Map<String, Object>> minionOpts) {
+            Optional<List<String>> sshOption, Optional<Integer> timeout,
+            Optional<Map<String, Object>> minionOpts,
+            Optional<String> sshPreflightScriptPath,
+            Optional<List<Object>> sshPreflightScriptArgs) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
@@ -65,9 +69,13 @@ public class SaltRoster {
         remotePortForwarding.ifPresent(forwarding -> hostData.put("remote_port_forwards",
                 forwarding));
         sshOption.ifPresent(option -> hostData.put("ssh_options",
-                Arrays.asList(option)));
+                option));
         timeout.ifPresent(value -> hostData.put("timeout", value));
         minionOpts.ifPresent(options -> hostData.put("minion_opts", options));
+        sshPreflightScriptPath.ifPresent(value -> hostData.put("ssh_pre_flight", value));
+        if (sshPreflightScriptPath.isPresent()) {
+            sshPreflightScriptArgs.ifPresent(value -> hostData.put("ssh_pre_flight_args", value));
+        }
         data.put(host, hostData);
     }
 
@@ -82,13 +90,17 @@ public class SaltRoster {
      * @param sshOption Additional SSH option to pass to salt-ssh
      * @param timeout SSH connect timeout
      * @param minionOpts Minion configuration parameters
+     * @param sshPreflightScriptPath The path to salt-ssh pre flight script
+     * @param sshPreflightScriptArgs The list of arguments for salt-ssh pre flight script
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<String> sshOption, Optional<Integer> timeout,
-            Optional<Map<String, Object>> minionOpts) {
+            Optional<List<String>> sshOption, Optional<Integer> timeout,
+            Optional<Map<String, Object>> minionOpts,
+            Optional<String> sshPreflightScriptPath,
+            Optional<List<Object>> sshPreflightScriptArgs) {
         addHost(host, user, passwd, Optional.empty(), Optional.empty(), port, remotePortForwarding, sshOption, timeout,
-                minionOpts);
+                minionOpts, sshPreflightScriptPath, sshPreflightScriptArgs);
     }
 
     /**
