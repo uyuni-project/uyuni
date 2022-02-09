@@ -236,16 +236,14 @@ report_db_ssl_enabled = 1
 report_db_sslrootcert = $CA_CERT
 EOF
     else
-        cat >> $RHN_CONF <<EOF
-report_db_backend = postgresql
-report_db_user = $PGUSER
-report_db_password = $PGPASSWORD
-report_db_name = $PGNAME
-report_db_host = $FQDN
-report_db_port = $PORT
-report_db_ssl_enabled = 1
-report_db_sslrootcert = $CA_CERT
-EOF
+        rhn_reconfig "report_db_backend" "postgresql"
+        rhn_reconfig "report_db_user" "$PGUSER"
+        rhn_reconfig "report_db_password" "$PGPASSWORD"
+        rhn_reconfig "report_db_name" "$PGNAME"
+        rhn_reconfig "report_db_host" "$FQDN"
+        rhn_reconfig "report_db_port" "$PORT"
+        rhn_reconfig "report_db_ssl_enabled" "1"
+        rhn_reconfig "report_db_sslrootcert" "$CA_CERT"
     fi
 
     chmod 640 $RHN_CONF
@@ -364,6 +362,14 @@ exists_schema() {
     return $?
 }
 
+rhn_reconfig() {
+    if egrep "^$1[[:space:]]*=" $RHN_CONF >/dev/null; then
+	sed -i "s|^$1[[:space:]]*=.*|$1 = $2|" $RHN_CONF
+    else
+        echo "$1 = $2" >> $RHN_CONF
+    fi
+}
+
 postgres_reconfig() {
     if egrep "^$1[[:space:]]*=" $POSTGRESQL >/dev/null; then
 	sed -i "s|^$1[[:space:]]*=.*|$1 = $2|" $POSTGRESQL
@@ -379,7 +385,7 @@ pg_hba_set() {
 }
 
 pg_hba_remove() {
-    sed -i 's|^$1[[:space:]]\+$2[[:space:]]\+$3[[:space:]]\+$4[[:space:]]*$5||' $PG_HBA
+    sed -i "s|^$1[[:space:]]\+$2[[:space:]]\+$3[[:space:]].*||g" $PG_HBA
 }
 
 postgresql_service() {
