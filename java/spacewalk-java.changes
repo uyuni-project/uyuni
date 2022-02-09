@@ -1,3 +1,4 @@
+- Fix virtualization list rendering for foreign systems (bsc#1195712)
 - Change order of 'Relevant' and 'All' in patches menu
 - When adding a product, check if the new vendor channels conflicts
   with any of the existing custom channel (bsc#1193448)
