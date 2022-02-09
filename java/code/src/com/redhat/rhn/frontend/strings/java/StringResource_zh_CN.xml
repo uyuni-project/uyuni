@@ -10968,14 +10968,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em>不会</em>导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em>不会</em>导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
@@ -11045,11 +11045,107 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
         <target state="final">无法获取频道模块。有关详细信息，请查看服务器日志。</target>
       </trans-unit>
-    <trans-unit id="ovalfiles" xml:space="preserve">
+      <trans-unit id="ovalfiles" xml:space="preserve" approved="yes">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
+        <target state="final">可选 OVAL 文件（逗号分隔）</target>
+      </trans-unit>
+    <trans-unit id="taskomatic.payg.success" xml:space="preserve">
+        <source>Credentials successfully updated</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
+        <source>Waiting to be processed.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
+        <source>Error getting instance data: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
+        <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.description_required" xml:space="preserve">
+        <source>Description is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.description_to_long" xml:space="preserve">
+        <source>Description must not exceed 255 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.host_required" xml:space="preserve">
+        <source>Host is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.host_to_long" xml:space="preserve">
+        <source>Host must not exceed 255 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.port_invalid" xml:space="preserve">
+        <source>Invalid value for the port</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.username_required" xml:space="preserve">
+        <source>Username is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.username_to_long" xml:space="preserve">
+        <source>Username must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.password_to_long" xml:space="preserve">
+        <source>Password must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.key_password_to_long" xml:space="preserve">
+        <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
+        <source>Bastion host must not exceed 255 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_host_required" xml:space="preserve">
+        <source>Bastion host is required if any other bastion property is set.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
+        <source>Invalid value for the bastion port</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_username_required" xml:space="preserve">
+        <source>Username is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
+        <source>Username must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
+        <source>Password must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
+        <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.ssh_data_created" xml:space="preserve">
+        <source>Pay-as-you-go {0} created successfully</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.host_exists" xml:space="preserve">
+        <source>Pay-as-you-go host already exists</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
+        <source>Pay-as-you-go {0} deleted successfully</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
+        <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
       <target state="new"/>
   </trans-unit>
       </body>

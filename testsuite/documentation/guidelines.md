@@ -122,6 +122,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
 
  * Don't use ```fail```, prefer minitest assertions like ```assert_equal```
  * Don't use global variables, prefer member variables
+ * Inside a step definition use `log` instead of `puts`, as the `puts` method will not be capture by Cucumber.
 
 ### Other
 

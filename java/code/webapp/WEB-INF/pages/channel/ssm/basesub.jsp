@@ -8,9 +8,6 @@
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
-<div class="alert alert-info">
-    <bean:message key="sdc.channels.info.change" />
-</div>
 <h2>
     <bean:message key="basesub.jsp.header" />
   </h2>

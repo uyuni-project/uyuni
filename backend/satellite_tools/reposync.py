@@ -24,6 +24,7 @@ import subprocess
 import sys
 import tempfile
 import traceback
+import json
 from datetime import datetime
 from dateutil.parser import parse as parse_date
 from xml.dom import minidom
@@ -499,7 +500,8 @@ class RepoSync(object):
         with cfg_component('server.susemanager') as CFG:
             mount_point = CFG.MOUNT_POINT
         for data in self.urls:
-            data['source_url'] = self.set_repo_credentials(data)
+            data['source_url_auth'] = self.set_repo_credentials(data)
+            data['source_url'] = [u["url"] for u in data['source_url_auth']]
             insecure = False
             if data['metadata_signed'] == 'N':
                 insecure = True
@@ -507,7 +509,8 @@ class RepoSync(object):
             plugin = None
             repo_type = data['repo_type']
 
-            for url in data['source_url']:
+            for source_url in data['source_url_auth']:
+                url = source_url["url"]
                 try:
                     if '://' not in url:
                         raise Exception("Unknown protocol in repo URL: %s" % url)
@@ -566,7 +569,8 @@ class RepoSync(object):
                                                   ca_cert_file=ca_cert_file,
                                                   client_cert_file=client_cert_file,
                                                   client_key_file=client_key_file,
-                                                  channel_arch=self.channel_arch)
+                                                  channel_arch=self.channel_arch,
+                                                  http_headers=source_url["http_headers"])
                     except repo.GeneralRepoException as exc:
                         log(0, "Plugin error: {}".format(exc))
                         sync_error = -1
@@ -1806,6 +1810,7 @@ class RepoSync(object):
 
         """
         url = suseLib.URL(url_in)
+        headers = {}
         creds = url.get_query_param('credentials')
         if creds:
             creds_no = 0
@@ -1818,7 +1823,7 @@ class RepoSync(object):
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare("SELECT username, password FROM suseCredentials WHERE id = :id")
+            h = rhnSQL.prepare("SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id")
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
@@ -1829,7 +1834,9 @@ class RepoSync(object):
             url.password = base64.decodestring(credentials['password'].encode()).decode()
             # remove query parameter from url
             url.query = ""
-        return url.getURL()
+            if 'extra_auth' in credentials and credentials['extra_auth']:
+                headers = json.loads(credentials['extra_auth'].tobytes())
+        return {"url": url.getURL(), "http_headers": headers}
 
     def upload_patches(self, notices):
         """Insert the information from patches into the database.

@@ -10,13 +10,13 @@ require 'yaml'
 
 def check_same_list(list1, list2)
   if list1.uniq.sort == list2.uniq.sort
-    puts 'OK. good work'
+    STDOUT.puts 'OK. good work'
   else
-    puts 'ERROR:'
-    puts 'The testsuite.yml has a feature that is non features dir!'
-    puts '===================================='
-    puts list1 - list2
-    puts '===================================='
+    STDOUT.puts 'ERROR:'
+    STDOUT.puts 'The testsuite.yml has a feature that is non features dir!'
+    STDOUT.puts '===================================='
+    STDOUT.puts list1 - list2
+    STDOUT.puts '===================================='
     raise "the testsuite.yml doesn't match the features"
   end
 end

@@ -1,3 +1,6 @@
+- Add mgr-salt-ssh wrapper to use with uyuni roster Salt module
+- mgr-setup: do not concanate www and apache groups (bsc#1195171)
+
 -------------------------------------------------------------------
 Tue Jan 18 15:06:14 CET 2022 - jgonzalez@suse.com
 

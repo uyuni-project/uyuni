@@ -35,7 +35,7 @@ PARALLEL_BUILD="FALSE"
 while getopts ":d:c:p:n:vthex" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
-    p) PACKAGES=${OPTARG};;
+    p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
     c) CREDENTIALS=${OPTARG};;
     v) VERBOSE="-v";;
     t) TEST="-t";;
