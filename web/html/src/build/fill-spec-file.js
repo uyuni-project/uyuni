@@ -1,8 +1,15 @@
 const fs = require("fs");
+const path = require("path");
 
 function fillSpecFile() {
   delete require.cache[require.resolve("../vendors/npm.licenses.structured")];
   const { npmLicensesArray } = require("../vendors/npm.licenses.structured");
+
+  // Keep the original base license
+  npmLicensesArray.push("GPL-2.0-only");
+  // Files under `web/html/javascript` are MIT licensed but won't be inferred from the automatic list
+  npmLicensesArray.push("MIT");
+
   //https://github.com/metal/metal.js/issues/411
   const processedLicenses = npmLicensesArray.map((item) => {
     if (item === "BSD") {
@@ -21,7 +28,7 @@ function fillSpecFile() {
         throw err;
       }
       var specFileEdited = specFile.replace(
-        /(?<=%package -n susemanager-web-libs[\s\S]*?)License:.*/m,
+        /(?<=%package -n spacewalk-html[\s\S]*?)License:.*/m,
         `License:        ${mappedProcessedLicenses}`
       );
 
@@ -33,7 +40,9 @@ function fillSpecFile() {
 
         resolve({ mappedProcessedLicenses });
         console.log(
-          `susemanager-web-libs.spec was generated successfully with the following licenses: ${mappedProcessedLicenses}`
+          `${path.basename(
+            specFileLocation
+          )} was updated successfully with the following licenses for spacewalk-html: ${mappedProcessedLicenses}`
         );
       });
     });
