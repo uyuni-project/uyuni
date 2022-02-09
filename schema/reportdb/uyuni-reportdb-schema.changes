@@ -1,2 +1,3 @@
-- report-db-user-management.sh first draft
+- implement user management tool uyuni-setup-reportdb-user
+- ```
 - initial version
