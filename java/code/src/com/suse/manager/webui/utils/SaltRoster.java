@@ -86,29 +86,6 @@ public class SaltRoster {
      * @param host The IP address or DNS name of the remote host
      * @param user The user to login as
      * @param passwd The password to login with
-     * @param privKeyPath SSH private key absolute file path
-     * @param privKeyPasswd SSH private key passphrase
-     * @param port The target system's ssh port number
-     * @param remotePortForwarding SSH tunneling options
-     * @param sshOption Additional SSH option to pass to salt-ssh
-     * @param timeout SSH connect timeout
-     * @param minionOpts Minion configuration parameters
-     */
-    public void addHost(String host, String user, Optional<String> passwd,
-            Optional<String> privKeyPath, Optional<String> privKeyPasswd,
-            Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<String> sshOption, Optional<Integer> timeout,
-            Optional<Map<String, Object>> minionOpts) {
-        addHost(host, user, passwd, privKeyPath, privKeyPasswd, port, remotePortForwarding, sshOption, timeout,
-                minionOpts, Optional.empty(), Optional.empty());
-    }
-
-    /**
-     * Add host data to this roster.
-     *
-     * @param host The IP address or DNS name of the remote host
-     * @param user The user to login as
-     * @param passwd The password to login with
      * @param port The target system's ssh port number
      * @param remotePortForwarding SSH tunneling options
      * @param sshOption Additional SSH option to pass to salt-ssh
@@ -120,7 +97,7 @@ public class SaltRoster {
             Optional<String> sshOption, Optional<Integer> timeout,
             Optional<Map<String, Object>> minionOpts) {
         addHost(host, user, passwd, Optional.empty(), Optional.empty(), port, remotePortForwarding, sshOption, timeout,
-                minionOpts);
+                minionOpts, Optional.empty(), Optional.empty());
     }
 
     /**
