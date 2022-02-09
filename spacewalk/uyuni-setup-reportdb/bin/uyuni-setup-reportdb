@@ -199,12 +199,12 @@ EOF
 	pg_hba_set "host" "all" "all" "127.0.0.1/32" "ident"
 	pg_hba_set "host" "all" "all" "::1/128" "ident"
     fi
-    pg_hba_set "local" "$PGNAME" "$PGUSER" "scram-sha-256"
-    pg_hba_set "host"  "$PGNAME" "$PGUSER" "127.0.0.1/32" "scram-sha-256"
-    pg_hba_set "host"  "$PGNAME" "$PGUSER" "::1/128" "scram-sha-256"
+    pg_hba_set "local" "$PGNAME" "all" "scram-sha-256"
+    pg_hba_set "host"  "$PGNAME" "all" "127.0.0.1/32" "scram-sha-256"
+    pg_hba_set "host"  "$PGNAME" "all" "::1/128" "scram-sha-256"
 
     for ADDR in $(echo $REMOTE|sed 's/,/ /g'); do
-        pg_hba_set "host" "$PGNAME" "$PGUSER" "$ADDR" "scram-sha-256"
+        pg_hba_set "host" "$PGNAME" "all" "$ADDR" "scram-sha-256"
     done
 
     # Create & configure /etc/rhn/rhn.conf
