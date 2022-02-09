@@ -1,3 +1,4 @@
+- fix deprecation warnings
 - Implement uyuni roster module for Salt
 - enforce correct minion configuration similar to bootstrapping
   (bsc#1192510)
