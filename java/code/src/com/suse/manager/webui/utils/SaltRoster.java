@@ -75,8 +75,7 @@ public class SaltRoster {
         minionOpts.ifPresent(options -> hostData.put("minion_opts", options));
         sshPreflightScriptPath.ifPresent(value -> hostData.put("ssh_pre_flight", value));
         if (sshPreflightScriptPath.isPresent()) {
-            sshPreflightScriptArgs.ifPresent(value -> hostData.put("ssh_pre_flight_args",
-                Arrays.asList(value)));
+            sshPreflightScriptArgs.ifPresent(value -> hostData.put("ssh_pre_flight_args", value));
         }
         data.put(host, hostData);
     }
