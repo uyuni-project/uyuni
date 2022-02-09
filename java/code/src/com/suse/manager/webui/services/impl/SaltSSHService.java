@@ -178,6 +178,23 @@ public class SaltSSHService {
     }
 
     /**
+     * Returns the path to pre fligt script used by salt-ssh.
+     * @return the pre flight script path
+     */
+    public static String getSaltSSHPreflightScriptPath() {
+        String preflightScriptPath = Config.get().getString("ssh_salt_pre_flight_script");
+        return StringUtils.isBlank(preflightScriptPath) ? null : preflightScriptPath;
+    }
+
+    /**
+     * Returns true if salt-thin should be used to handle salt-ssh session
+     * @return the result of the call
+     */
+    public static boolean getSSHUseSaltThin() {
+        return Config.get().getBoolean("ssh_use_salt_thin");
+    }
+
+    /**
      * Synchronously executes a salt function on given minion list using salt-ssh.
      *
      * Before the execution, this method creates an one-time roster corresponding to targets
@@ -229,16 +246,28 @@ public class SaltSSHService {
                 MinionPendingRegistrationService.get(mid).ifPresent(minion -> {
                     String contactMethodLabel = minion.getContactMethod();
 
+                    List<String> proxyPath = minion.getProxyPath();
+
                     roster.addHost(mid, getSSHUser(), Optional.empty(),
+                            Optional.empty(), Optional.empty(),
                             minion.getSSHPushPort(),
-                            remotePortForwarding(minion.getProxyPath(), contactMethodLabel),
-                            sshProxyCommandOption(minion.getProxyPath(),
+                            remotePortForwarding(proxyPath, contactMethodLabel),
+                            sshProxyCommandOption(proxyPath,
                                 contactMethodLabel,
                                 mid,
                                 minion.getSSHPushPort().orElse(SSH_PUSH_PORT)
                             ),
                             sshTimeout,
-                            minionOpts(mid, contactMethodLabel)
+                            minionOpts(mid, contactMethodLabel),
+                            Optional.of(getSaltSSHPreflightScriptPath()),
+                            Optional.of(Arrays.asList(
+                                    proxyPath.isEmpty() ?
+                                            ConfigDefaults.get().getCobblerHost() :
+                                            proxyPath.get(proxyPath.size() - 1),
+                                    ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethodLabel) ?
+                                            getSshPushRemotePort() : SSL_PORT,
+                                    getSSHUseSaltThin() ? 1 : 0
+                            ))
                     );
                 });
             }
@@ -512,7 +541,16 @@ public class SaltSSHService {
                             parameters.getHost(),
                             parameters.getPort().orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
-                    minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
+                    minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH),
+                    Optional.of(getSaltSSHPreflightScriptPath()),
+                    Optional.of(Arrays.asList(
+                            bootstrapProxyPath.isEmpty() ?
+                                    ConfigDefaults.get().getCobblerHost() :
+                                    bootstrapProxyPath.get(bootstrapProxyPath.size() - 1),
+                            SSL_PORT,
+                            getSSHUseSaltThin() ? 1 : 0
+                            ))
+                    );
 
             Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
                     callSyncSSHInternal(call,

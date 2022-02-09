@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -49,12 +50,16 @@ public class SaltRoster {
      * @param sshOption Additional SSH option to pass to salt-ssh
      * @param timeout SSH connect timeout
      * @param minionOpts Minion configuration parameters
+     * @param sshPreflightScriptPath The path to salt-ssh pre flight script
+     * @param sshPreflightScriptArgs The list of arguments for salt-ssh pre flight script
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<String> privKeyPath, Optional<String> privKeyPasswd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
             Optional<String> sshOption, Optional<Integer> timeout,
-            Optional<Map<String, Object>> minionOpts) {
+            Optional<Map<String, Object>> minionOpts,
+            Optional<String> sshPreflightScriptPath,
+            Optional<List<Object>> sshPreflightScriptArgs) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
@@ -68,7 +73,35 @@ public class SaltRoster {
                 Arrays.asList(option)));
         timeout.ifPresent(value -> hostData.put("timeout", value));
         minionOpts.ifPresent(options -> hostData.put("minion_opts", options));
+        sshPreflightScriptPath.ifPresent(value -> hostData.put("ssh_pre_flight", value));
+        if (sshPreflightScriptPath.isPresent()) {
+            sshPreflightScriptArgs.ifPresent(value -> hostData.put("ssh_pre_flight_args",
+                Arrays.asList(value)));
+        }
         data.put(host, hostData);
+    }
+
+    /**
+     * Add host data to this roster.
+     *
+     * @param host The IP address or DNS name of the remote host
+     * @param user The user to login as
+     * @param passwd The password to login with
+     * @param privKeyPath SSH private key absolute file path
+     * @param privKeyPasswd SSH private key passphrase
+     * @param port The target system's ssh port number
+     * @param remotePortForwarding SSH tunneling options
+     * @param sshOption Additional SSH option to pass to salt-ssh
+     * @param timeout SSH connect timeout
+     * @param minionOpts Minion configuration parameters
+     */
+    public void addHost(String host, String user, Optional<String> passwd,
+            Optional<String> privKeyPath, Optional<String> privKeyPasswd,
+            Optional<Integer> port, Optional<String> remotePortForwarding,
+            Optional<String> sshOption, Optional<Integer> timeout,
+            Optional<Map<String, Object>> minionOpts) {
+        addHost(host, user, passwd, privKeyPath, privKeyPasswd, port, remotePortForwarding, sshOption, timeout,
+                minionOpts, Optional.empty(), Optional.empty());
     }
 
     /**
