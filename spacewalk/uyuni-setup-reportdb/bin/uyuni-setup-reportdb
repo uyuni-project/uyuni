@@ -291,6 +291,14 @@ remove() {
     if exists_user ; then
             $RUNUSER - postgres -c "dropuser '$PGUSER'"
     fi
+    rhn_reconfig "report_db_backend" ""
+    rhn_reconfig "report_db_user" ""
+    rhn_reconfig "report_db_password" ""
+    rhn_reconfig "report_db_name" ""
+
+    pg_hba_remove "host" "$PGNAME" "all"
+    pg_hba_remove "local" "$PGNAME" "all"
+
 }
 
 check() {
