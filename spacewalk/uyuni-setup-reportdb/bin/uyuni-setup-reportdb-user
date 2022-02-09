@@ -12,7 +12,7 @@ fi
 
 print_help() {
     cat <<HELP
-usage: reportdb-user-management.sh [options]
+usage: uyuni-setup-reportdb-user [options]
 
 options:
   --help 
