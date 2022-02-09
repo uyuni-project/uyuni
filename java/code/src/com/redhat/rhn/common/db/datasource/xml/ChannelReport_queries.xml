@@ -24,13 +24,11 @@
                           WHEN rhnchannel.org_id IS NULL THEN 'Vendor'
                           ELSE 'Custom'
                         END AS type
-                      , rhnproductname.name AS product_name
                       , rhnchannelarch.name AS arch
                       , rhnchannel.description
                       , rhnparentchannel.label AS parent_channel_label
                       , web_customer.name AS organization 
             FROM rhnchannel
-                      LEFT JOIN rhnproductname ON rhnchannel.product_name_id = rhnproductname.id
                       LEFT JOIN rhnchannelarch ON rhnchannel.channel_arch_id = rhnchannelarch.id
                       LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel = rhnparentchannel.id
                       LEFT JOIN web_customer ON rhnchannel.org_id = web_customer.id
@@ -44,14 +42,38 @@
                       , rhnerrata.advisory_type
                       , rhnerrata.issue_date
                       , rhnerrata.update_date
-                      , rhnerrata.product
-                      , rhncve.name AS cve
+                      , CASE
+                          WHEN rhnerrataseverity.rank = 0 then 'Critical'
+                          WHEN rhnerrataseverity.rank = 1 then 'Important'
+                          WHEN rhnerrataseverity.rank = 2 then 'Moderate'
+                          WHEN rhnerrataseverity.rank = 3 then 'Low'
+                          ELSE NULL
+                        END AS severity
+                      , CASE
+                          WHEN rb.keyword IS NOT NULL THEN 'Y'
+                          ELSE 'N'
+                        END AS reboot_required
+                      , CASE
+                          WHEN rs.keyword IS NOT NULL THEN 'Y'
+                          ELSE 'N'
+                        END AS affects_package_manager
+                      , CASE
+                          WHEN er.keyword IS NOT NULL THEN 'Y'
+                          ELSE 'N'
+                        END AS retracted
+                      , ( SELECT string_agg(rhncve.name, ', ')
+                           FROM rhnerratacve
+                                    INNER JOIN rhncve ON rhnerratacve.cve_id = rhncve.id
+                          WHERE rhnerratacve.errata_id = rhnerrata.id
+                        ) AS cve
                       , rhnerrata.synopsis
                       , rhnchannel.label AS channel_label
-                      , web_customer.name AS organization 
+                      , web_customer.name AS organization
             FROM rhnerrata
-                      LEFT JOIN rhnerratacve ON rhnerrata.id = rhnerratacve.errata_id
-                      LEFT JOIN rhncve ON rhnerratacve.cve_id = rhncve.id
+                      LEFT JOIN rhnerrataseverity ON rhnerrata.severity_id = rhnerrataseverity.id
+                      LEFT JOIN rhnerratakeyword rb ON rhnerrata.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
+                      LEFT JOIN rhnerratakeyword rs ON rhnerrata.id = rs.errata_id AND rs.keyword = 'restart_suggested'
+                      LEFT JOIN rhnerratakeyword er ON rhnerrata.id = er.errata_id AND er.keyword = 'advisory_status'
                       LEFT JOIN rhnchannelerrata ON rhnerrata.id = rhnchannelerrata.errata_id
                       LEFT JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
                       LEFT JOIN web_customer ON rhnerrata.org_id = web_customer.id
@@ -65,6 +87,7 @@
                       , rhnpackageevr.epoch
                       , rhnpackageevr.version
                       , rhnpackageevr.release
+                      , rhnpackageevr.type
                       , rhnpackagearch.name AS arch
                       , rhnpackage.package_size
                       , rhnpackage.payload_size
