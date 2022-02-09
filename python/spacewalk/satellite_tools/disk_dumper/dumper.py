@@ -24,15 +24,15 @@ except ImportError:
     #  python3
     from io import StringIO
 
-from uyuni.common.usix import raise_with_tb, ListType
-from uyuni.common import rhnLib
 from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
 from spacewalk.satellite_tools.exporter import exportLib, xmlWriter
+from uyuni.common import rhnLib
+from uyuni.common.context_managers import cfg_component
+from uyuni.common.usix import raise_with_tb, ListType
 from .string_buffer import StringBuffer
 
 
@@ -606,7 +606,8 @@ class SatelliteDumper(exportLib.SatelliteDumper):
         """ Overriding with our own version """
         attributes = exportLib.SatelliteDumper.set_attributes(self)
         attributes['version'] = constants.PROTOCOL_VERSION
-        attributes['generation'] = CFG.SAT_CERT_GENERATION
+        with cfg_component() as CFG:
+            attributes['generation'] = CFG.SAT_CERT_GENERATION
         return attributes
 
 
@@ -748,8 +749,9 @@ class CachedDumper(exportLib.BaseDumper):
         log_debug(4, params)
         last_modified = self._get_last_modified(params)
         key = self._get_key(params)
-        user = CFG.httpd_user
-        group = CFG.httpd_group
+        with cfg_component() as CFG:
+            user = CFG.httpd_user
+            group = CFG.httpd_group
         return rhnCache.set(key, value, modified=last_modified,
                             raw=1, user=user, group=group, mode=int('0755', 8))
 

@@ -186,8 +186,8 @@ class rhnLog:
             self.fd = open(self.file, "a", 1)
             set_close_on_exec(self.fd)
             if newfileYN:
-        with cfg_component() as CFG:
-            apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
+                with cfg_component() as CFG:
+                    apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
                 os.chown(self.file, apache_uid, apache_gid)
                 os.chmod(self.file, int('0660', 8))
         except:
