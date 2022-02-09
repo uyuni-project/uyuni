@@ -103,39 +103,39 @@ def processCommandline():
     return options
 
 
-def checkOptions(options):
-    if not options.root_ca_file:
+def checkOptions(root_ca_file, server_cert_file, server_key_file, intermediate_ca_files):
+    if not root_ca_file:
         log_error("Root CA is required")
         sys.exit(1)
-    if not os.path.exists(options.root_ca_file):
-        log_error("Root CA: file not found {}".format(options.root_ca_file))
+    if not os.path.exists(root_ca_file):
+        log_error("Root CA: file not found {}".format(root_ca_file))
         sys.exit(1)
 
-    if not options.server_cert_file:
+    if not server_cert_file:
         log_error("Server Certificate is required")
         sys.exit(1)
-    if not os.path.exists(options.server_cert_file):
+    if not os.path.exists(server_cert_file):
         log_error(
-            "Server Certificate: file not found {}".format(options.server_cert_file)
+            "Server Certificate: file not found {}".format(server_cert_file)
         )
         sys.exit(1)
 
-    if not options.server_key_file:
+    if not server_key_file:
         log_error("Server Private Key is required")
         sys.exit(1)
-    if not os.path.exists(options.server_key_file):
+    if not os.path.exists(server_key_file):
         log_error(
-            "Server Private Key: file not found {}".format(options.server_key_file)
+            "Server Private Key: file not found {}".format(server_key_file)
         )
         sys.exit(1)
 
-    for ica in options.intermediate_ca_file:
+    for ica in intermediate_ca_files:
         if not os.path.exists(ica):
             log_error("Intermediate CA: file not found {}".format(ica))
             sys.exit(1)
 
 
-def prepareWorkdir(options, workdir):
+def prepareWorkdir(root_ca_file, server_cert_file, server_key_file, intermediate_ca_file, workdir):
     """
     Create a tempdir and put all CAs as single files into it.
     Also add the server certficate to it.
@@ -144,8 +144,8 @@ def prepareWorkdir(options, workdir):
     """
     ret = dict()
 
-    allCAs = [options.root_ca_file]
-    allCAs.extend(options.intermediate_ca_file)
+    allCAs = [root_ca_file]
+    allCAs.extend(intermediate_ca_file)
 
     isContent = False
     content = []
@@ -174,8 +174,8 @@ def prepareWorkdir(options, workdir):
         if shash:
             ret[shash] = data
     # copy server cert and key as well
-    shutil.copy(options.server_key_file, os.path.join(workdir, SRV_KEY_NAME))
-    shutil.copy(options.server_cert_file, os.path.join(workdir, SRV_CERT_NAME))
+    shutil.copy(server_key_file, os.path.join(workdir, SRV_KEY_NAME))
+    shutil.copy(server_cert_file, os.path.join(workdir, SRV_CERT_NAME))
     data = getCertData(os.path.join(workdir, SRV_CERT_NAME))
     shash = data["subject_hash"]
     if shash:
@@ -504,10 +504,15 @@ def _main():
     """main routine"""
 
     options = processCommandline()
-    checkOptions(options)
+    checkOptions(options.root_ca_file, options.server_cert_file, options.server_key_file, options.intermediate_ca_file)
 
     with tempfile.TemporaryDirectory() as workdir:
-        certData = prepareWorkdir(options, workdir)
+        certData = prepareWorkdir(
+                options.root_ca_file,
+                options.server_cert_file,
+                options.server_key_file,
+                options.intermediate_ca_file,
+                workdir)
         checks(workdir, certData)
         ret = generateApacheCert(workdir, certData)
         if not ret:
