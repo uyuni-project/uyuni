@@ -18,6 +18,7 @@ CREATE TABLE Package
     version             VARCHAR(512),
     release             VARCHAR(512),
     arch                VARCHAR(64),
+    type                VARCHAR(10),
     package_size        NUMERIC,
     payload_size        NUMERIC,
     installed_size      NUMERIC,

@@ -16,7 +16,6 @@ CREATE TABLE Channel
     name                      VARCHAR(256),
     label                     VARCHAR(128),
     type                      VARCHAR(50),
-    product_name              VARCHAR(128),
     arch                      VARCHAR(64),
     summary                   VARCHAR(500),
     description               VARCHAR(4000),
