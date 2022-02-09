@@ -58,6 +58,7 @@ install -m 0755 bin/* %{buildroot}/%{_bindir}
 %defattr(-,root,root,-)
 %license LICENSE
 %attr(755,root,root) %{_bindir}/uyuni-setup-reportdb
+%attr(755,root,root) %{_bindir}/uyuni-setup-reportdb-user
 #%{_mandir}/man1/*
 
 %changelog
