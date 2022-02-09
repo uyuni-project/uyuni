@@ -258,7 +258,7 @@ class CVEAudit extends React.Component<Props, State> {
                 defaultType="btn-default"
                 icon="fa-external-link"
                 text={t("SUSE Security CVE Info")}
-                onClick={() => window.open("someLink", "_blank")}
+                onClick={() => window.open("https://www.suse.com/security/cve/CVE-", this.state.cveYear, "-", this.state.cveNumber,".html")}
               />
               <AsyncButton
                 id="bootstrap-btn"
