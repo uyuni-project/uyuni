@@ -210,11 +210,6 @@ public class SaltSSHService {
      */
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, Optional<String> extraFileRefs)
             throws SaltException {
-        // Using custom LocalCall timeout if included in the payload
-        // Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
-        //            Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
-        //            getSshPushTimeout();
-        // SaltRoster roster = prepareSaltRoster(target, sshTimeout);
         return unwrapSSHReturn(
                 callSyncSSHInternal(call, target, Optional.empty(), false, isSudoUser(getSSHUser()), extraFileRefs));
     }
