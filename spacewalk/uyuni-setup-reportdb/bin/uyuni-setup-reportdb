@@ -132,7 +132,6 @@ create() {
             exit 1
         fi
     }
-    /usr/bin/spacewalk-setup-db-ssl-certificates $CA_CERT
 
     [ -z "$PGNAME" ] && ask true "Database name: " PGNAME
     [ -z "$PGUSER" ] && ask true "Database user: " PGUSER
@@ -187,6 +186,7 @@ EOF
     postgres_reconfig "ssl" "on"
     postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
+    /usr/bin/spacewalk-setup-db-ssl-certificates $CA_CERT
 
     echo "$ADDRESS"|grep -q '127.0.0.1\|*' || ADDRESS="$ADDRESS, 127.0.0.1"
     postgres_reconfig "listen_addresses" "'$ADDRESS'"
