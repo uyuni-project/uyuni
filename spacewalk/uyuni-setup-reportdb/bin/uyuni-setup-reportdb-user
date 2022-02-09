@@ -185,6 +185,11 @@ else ### INTERACTIVE=0
     exit 1
   fi
   
+  if [ -z $USER ]; then
+    echo "User is missing. Exit"
+    exit 1
+  fi
+  
   if [ -z $DBPASSWORD ]; then
     echo "Password is missing. Exit"
     exit 1
