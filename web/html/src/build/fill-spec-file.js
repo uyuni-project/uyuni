@@ -28,7 +28,7 @@ function fillSpecFile() {
         throw err;
       }
       var specFileEdited = specFile.replace(
-        /(?<=%package -n susemanager-html[\s\S]*?)License:.*/m,
+        /(?<=%package -n spacewalk-html[\s\S]*?)License:.*/m,
         `License:        ${mappedProcessedLicenses}`
       );
 
@@ -42,7 +42,7 @@ function fillSpecFile() {
         console.log(
           `${path.basename(
             specFileLocation
-          )} was updated successfully with the following licenses for susemanager-html: ${mappedProcessedLicenses}`
+          )} was updated successfully with the following licenses for spacewalk-html: ${mappedProcessedLicenses}`
         );
       });
     });
