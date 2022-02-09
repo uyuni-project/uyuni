@@ -141,6 +141,15 @@ create() {
     [ -z "$ADDRESS" ] && ADDRESS="*"
     [ -z "$REMOTE" ] && ask_check true "Remote addresses to allow connection from (address/netmask format, comma-separated): " REMOTE "^$Remote_RE\$"
 
+    if exists_db ; then
+        echo "Database '$PGNAME' already exists"
+	exit 1
+    fi
+    if exists_user ; then
+        echo "User '$PGUSER' already exists. Re-using configured password"
+        exit 1
+    fi
+
     postgresql_service enable
 
     if [ ! -d "$PG_DATA/base" ]; then
