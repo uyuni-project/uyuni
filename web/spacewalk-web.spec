@@ -71,6 +71,8 @@ Obsoletes:      rhn-help < 5.3.0
 Provides:       rhn-help = 5.3.0
 Obsoletes:      rhn-html < 5.3.0
 Provides:       rhn-html = 5.3.0
+Obsoletes:      susemanager-web-libs < %{version}
+Provides:       susemanager-web-libs = %{version}
 # files html/javascript/{builder.js,controls.js,dragdrop.js,effects.js,
 # prototype-1.6.0.js,scriptaculous.js,slider.js,sound.js,unittest.js}
 # are licensed under MIT license
