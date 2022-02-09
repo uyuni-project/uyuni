@@ -371,7 +371,7 @@ exists_schema() {
 }
 
 rhn_reconfig() {
-    if egrep "^$1[[:space:]]*=" $RHN_CONF >/dev/null; then
+    if grep -E "^$1[[:space:]]*=" $RHN_CONF >/dev/null; then
 	sed -i "s|^$1[[:space:]]*=.*|$1 = $2|" $RHN_CONF
     else
         echo "$1 = $2" >> $RHN_CONF
@@ -379,7 +379,7 @@ rhn_reconfig() {
 }
 
 postgres_reconfig() {
-    if egrep "^$1[[:space:]]*=" $POSTGRESQL >/dev/null; then
+    if grep -E "^$1[[:space:]]*=" $POSTGRESQL >/dev/null; then
 	sed -i "s|^$1[[:space:]]*=.*|$1 = $2|" $POSTGRESQL
     else
         echo "$1 = $2" >> $POSTGRESQL
@@ -387,7 +387,7 @@ postgres_reconfig() {
 }
 
 pg_hba_set() {
-    if ! egrep "^$1[[:space:]]+$2[[:space:]]+$3[[:space:]]+$4[[:space:]]*$5" $PG_HBA >/dev/null; then
+    if ! grep -E "^$1[[:space:]]+$2[[:space:]]+$3[[:space:]]+$4[[:space:]]*$5" $PG_HBA >/dev/null; then
         echo -e "$1\t$2\t$3\t$4\t$5" >> $PG_HBA
     fi
 }
