@@ -5,7 +5,7 @@
 - Improvements on list packages query processing by using query elaborator (bsc#1187333)
 - add ubuntu errata data and install handling
 - fix possible race condition in job handling (bsc#1192510)
-- Remove verbose token log
+- Remove verbose token log (bsc#1195666)
 - FIX errors when an image profile / store is deleted
   during build / inspect action (bsc#1191597, bsc#1192150)
 - SLES PAYG client support on cloud
