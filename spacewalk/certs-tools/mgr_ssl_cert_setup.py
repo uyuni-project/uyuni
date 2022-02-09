@@ -369,9 +369,9 @@ def checkCompleteCAChain(workdir, certData):
         )
 
 
-def generateJabberCert(options, workdir, certData):
+def generateJabberCert(workdir, certData):
     certWithChain = generateCertWithChainFile(
-        os.path.join(workdir, SRV_CERT_NAME), workdir, certData
+        os.path.join(workdir, SRV_CERT_NAME), certData
     )
     with open(os.path.join(workdir, JABBER_CRT_NAME), "w") as out:
         key = getRsaKey(os.path.join(workdir, SRV_KEY_NAME))
@@ -383,16 +383,16 @@ def generateJabberCert(options, workdir, certData):
     return True
 
 
-def generateApacheCert(options, workdir, certData):
+def generateApacheCert(workdir, certData):
     certWithChain = generateCertWithChainFile(
-        os.path.join(workdir, SRV_CERT_NAME), workdir, certData
+        os.path.join(workdir, SRV_CERT_NAME), certData
     )
     with open(os.path.join(workdir, APACHE_CRT_NAME), "w") as out:
         out.write(certWithChain)
     return True
 
 
-def generateCertWithChainFile(serverCert, workdir, certData):
+def generateCertWithChainFile(serverCert, certData):
     retContent = ""
 
     if len(certData.keys()) == 0:
@@ -486,7 +486,7 @@ def deployCAUyuni(certData):
         os.system("update-ca-trust extract")
 
 
-def checks(options, workdir, certData):
+def checks(workdir, certData):
     """
     Perform different checks on the input data
     """
@@ -508,11 +508,11 @@ def _main():
 
     with tempfile.TemporaryDirectory() as workdir:
         certData = prepareWorkdir(options, workdir)
-        checks(options, workdir, certData)
-        ret = generateApacheCert(options, workdir, certData)
+        checks(workdir, certData)
+        ret = generateApacheCert(workdir, certData)
         if not ret:
             sys.exit(1)
-        ret = generateJabberCert(options, workdir, certData)
+        ret = generateJabberCert(workdir, certData)
         if not ret:
             sys.exit(1)
 
