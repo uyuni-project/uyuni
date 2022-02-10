@@ -1,3 +1,5 @@
+- make tools aware of the reporting database
+- create taskomatic schedule to update report database
 - create susemanager-schema-utility RPM package
 - Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
 - Add created and modified fields to suseMinionInfo to make
