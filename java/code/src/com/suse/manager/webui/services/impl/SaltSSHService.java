@@ -178,7 +178,7 @@ public class SaltSSHService {
     }
 
     /**
-     * Returns the path to pre fligt script used by salt-ssh.
+     * Returns the path to pre flight script used by salt-ssh.
      * @return the pre flight script path
      */
     public static String getSaltSSHPreflightScriptPath() {
@@ -511,11 +511,11 @@ public class SaltSSHService {
             bootstrapProxyPath = Collections.emptyList();
         }
 
-        Optional<String> portForwarding = parameters.getFirstActivationKey()
+        String contactMethod = parameters.getFirstActivationKey()
                 .map(ActivationKeyFactory::lookupByKey)
-                .map(key -> key.getContactMethod().getLabel())
-                .flatMap(contactMethod ->
-                        remotePortForwarding(bootstrapProxyPath, contactMethod));
+                .map(key -> key.getContactMethod().getLabel());
+
+        Optional<String> portForwarding = remotePortForwarding(bootstrapProxyPath, contactMethod);
 
         // private key handling just for bootstrap
         Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> createTempKeyFilePath());
@@ -542,8 +542,10 @@ public class SaltSSHService {
                             bootstrapProxyPath.isEmpty() ?
                                     ConfigDefaults.get().getCobblerHost() :
                                     bootstrapProxyPath.get(bootstrapProxyPath.size() - 1),
-                            SSL_PORT,
-                            getSSHUseSaltThin() ? 1 : 0
+                            ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod) ?
+                                    getSshPushRemotePort() : SSL_PORT,
+                            getSSHUseSaltThin() ? 1 : 0,
+                            1
                             ))
                     );
 
