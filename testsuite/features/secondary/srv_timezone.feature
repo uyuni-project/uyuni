@@ -3,7 +3,7 @@
 
 #@sle_minion
 Feature: Correct timezone display 
-#  1) create a user and assing him a timezone different than the server's timezone
+#  1) create a user and assign him a timezone different than the server's timezone
 #  2) test that the popups in some scheduling actions appear in users prefered timezone 
 #  3) some scheduler tests based on previous bugs are unavoidable
 
@@ -52,9 +52,9 @@ Feature: Correct timezone display
     Then I should see a "12:00:00 AM MYT" text
     #WORKAROUND If the above line gets red, they probably fixed the bug, then remove AM from the text
     
-#  Scenario: Login as the new user if the previous scenario failed
-#    Given I am authorized as "user1" with password "user1"
-#    Then I should see a "user1" link
+  Scenario: Login as the new user if the previous scenario failed
+    Given I am authorized as "user1" with password "user1"
+    Then I should see a "user1" link
 
 #WORKAROUND
 # bsc 1195190, a P3 bug not fixed yet, this scenario is disabled as it is a minor bug, if they fix it we will re-enable
@@ -87,9 +87,9 @@ Feature: Correct timezone display
     #And I should not see a "PM" text
     #WORKAROUND remove the comment from the above line if its fixed
     
-#  Scenario: Login as the new user if the previous scenario failed
-#    Given I am authorized as "user1" with password "user1"
-#    Then I should see a "user1" link
+  Scenario: Login as the new user if the previous scenario failed
+    Given I am authorized as "user1" with password "user1"
+    Then I should see a "user1" link
 
 #WORKAROUND
 # bsc 1195189, a P3 bug not fixed yet
