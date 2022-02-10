@@ -19,7 +19,6 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -41,6 +40,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -55,15 +55,17 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -364,17 +366,15 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
 
-            minion.setServerArch(
-                    ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
-            //ToDo Just a hacked version for ubuntu
-            if (osfamily.equals("Debian")) {
-                minion.setServerArch(
-                        ServerFactory.lookupServerArchByLabel(osarch + "-debian-linux"));
+            String serverArch = String.format("%s-%s", osarch,
+                    osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");
+            ServerArch arch = ServerFactory.lookupServerArchByLabel(serverArch);
+            if (arch == null) {
+                LOG.error(String.format("Unable to find the server architecture for " +
+                        "osfamily: '%s' and osarch: '%s'", osfamily, osarch));
+                throw new IllegalArgumentException("Unable to get the server architecture");
             }
-            else {
-                minion.setServerArch(
-                        ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
-            }
+            minion.setServerArch(arch);
 
             RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
                     activationKeyLabel);
