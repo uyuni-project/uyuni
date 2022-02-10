@@ -397,6 +397,7 @@ public class ImageInfo extends BaseDomainHelper {
                 .append(name, castOther.name)
                 .append(version, castOther.version)
                 .append(checksum, castOther.checksum)
+                .append(store, castOther.store)
                 .isEquals();
     }
 
@@ -409,6 +410,7 @@ public class ImageInfo extends BaseDomainHelper {
                 .append(name)
                 .append(version)
                 .append(checksum)
+                .append(store)
                 .toHashCode();
     }
 
