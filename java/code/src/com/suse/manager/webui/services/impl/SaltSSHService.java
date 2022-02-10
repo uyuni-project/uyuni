@@ -532,7 +532,7 @@ public class SaltSSHService {
                     parameters.getPort(),
                     portForwarding,
                     sshProxyCommandOption(bootstrapProxyPath,
-                            ContactMethodUtil.SSH_PUSH,
+                            contactMethod,
                             parameters.getHost(),
                             parameters.getPort().orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
