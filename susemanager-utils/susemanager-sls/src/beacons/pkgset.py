@@ -74,6 +74,8 @@ def beacon(config):
                     __context__[__virtualname__] = ck_data
                     CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
             if __context__[__virtualname__] != ck_data:
+                # Now it's time to fire beacon event only if the new data is not yet
+                # inside the context (meaning not proceesed), and then stop iterating
                 ret.append({"tag": "changed"})
                 CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
                 __context__[__virtualname__] = ck_data
