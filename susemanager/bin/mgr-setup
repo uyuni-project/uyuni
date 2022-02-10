@@ -754,7 +754,7 @@ do_migration() {
     cp /etc/rhn/rhn.conf-$FROMVERSION /etc/rhn/rhn.conf
     chmod 640 /etc/rhn/rhn.conf
     # Detect the Apache group name (SUSE/RHEL differences)
-    APACHE_GROUP=`cut -d: -f3 < <((getent group www)||(getent group apache))`
+    APACHE_GROUP=`cut -d: -f3 < <((getent group www)||(getent group root))`
     chown root:${APACHE_GROUP} /etc/rhn/rhn.conf
 }
 
