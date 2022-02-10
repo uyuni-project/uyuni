@@ -13,16 +13,15 @@ from optparse import OptionParser
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean
-from spacewalk.common.rhnConfig import CFG, initCFG
 from string import Template
 from uyuni.common import usix, rhnLib, notificationUtils
+from uyuni.common.context_managers import cfg_component
 
 sys.path.append("/usr/share/susemanager")
 
-initCFG('server.susemanager')
 rhnSQL.initDB()
-
-basepath = CFG.MOUNT_POINT or '/var/spacewalk'
+with cfg_component('server.susemanager') as CFG:
+    basepath = CFG.MOUNT_POINT or '/var/spacewalk'
 LOCK  = None
 BETA  = None
 logfile = '/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log'
@@ -241,20 +240,18 @@ def isBeta():
     global BETA
     global UYUNI
     if BETA is None:
-        initCFG('java')
-        BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
-        UYUNI = CFG.PRODUCT_TREE_TAG == 'Uyuni'
-        initCFG('server.susemanager')
+        with cfg_component('java') as CFG:
+            BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
+            UYUNI = CFG.PRODUCT_TREE_TAG == 'Uyuni'
     return BETA
 
 def isUyuni():
     global BETA
     global UYUNI
     if UYUNI is None:
-        initCFG('java')
-        BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
-        UYUNI = CFG.PRODUCT_TREE_TAG == 'Uyuni'
-        initCFG('server.susemanager')
+        with cfg_component('java') as CFG:
+            BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
+            UYUNI = CFG.PRODUCT_TREE_TAG == 'Uyuni'
     return UYUNI
 
 def cli():
@@ -297,8 +294,10 @@ def cli():
     if options.debug:
         initLOG(logfile, level=5)
     else:
-        initLOG(logfile, CFG.DEBUG or 1)
-    flush = CFG.BOOTSTRAP_REPO_FLUSH
+        with cfg_component('server.susemanager') as CFG:
+            initLOG(logfile, CFG.DEBUG or 1)
+    with cfg_component('server.susemanager') as CFG:
+        flush = CFG.BOOTSTRAP_REPO_FLUSH
     if options.flush:
         flush = options.flush
     if options.noflush:
@@ -313,8 +312,8 @@ def cli():
     if isUyuni():
         log("Is a Uyuni installation", 1)
         blacklistedPids = list_products_needs_tools_subscription()
-
-    modulename = options.datamodule or CFG.BOOTSTRAP_REPO_DATAMODULE
+    with cfg_component('server.susemanager') as CFG:
+        modulename = options.datamodule or CFG.BOOTSTRAP_REPO_DATAMODULE
     try:
         bootstrap_data = __import__(modulename)
         for label in bootstrap_data.DATA:
