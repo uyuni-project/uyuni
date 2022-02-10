@@ -1,4 +1,5 @@
-  * Corrected source URLs in spec file.
+- fix advisory status migration (bsc#1195765)
+- Corrected source URLs in spec file.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:07:07 CET 2022 - jgonzalez@suse.com
