@@ -7491,70 +7491,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru a {2} z {3} adresárov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z {3} adresárov a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z {3} adresárov a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {2} z 1 adresára v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov, {2} z 1 adresára a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov, {2} z 1 adresára a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {2} z {3} adresárov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
