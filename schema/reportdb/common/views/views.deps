@@ -19,12 +19,12 @@ ErrataListReport                 :: SystemErrata \
                                     Errata
 HistoryReport                    :: SystemAction \
                                     SystemHistory
-InactiveSystem                   :: System
+InactiveSystemsReport            :: System
 InventoryReport                  :: System \
-                                    SystemPrimaryaddress \
+                                    SystemPrimaryAddress \
                                     SystemEntitlement \
                                     SystemGroup \
-                                    SystemVirtualdata \
+                                    SystemVirtualData \
                                     SystemConfigChannel \
                                     SystemChannel \
                                     SystemOutdated
