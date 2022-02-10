@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from spacewalk.common.rhnConfig import CFG, initCFG
 
 @contextmanager
-def cfg_component(component, root=None, filename=None):
+def cfg_component(component=None, root=None, filename=None):
     """Context manager for rhnConfig.
 
     :param comp: The configuration component to use in this context
