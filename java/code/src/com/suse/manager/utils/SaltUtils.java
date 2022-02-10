@@ -1001,22 +1001,24 @@ public class SaltUtils {
                 p.asKiwiProfile().ifPresent(kiwiProfile -> {
                     serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     // Download the built Kiwi image to SUSE Manager server
-                    OSImageInspectSlsResult.Bundle bundleInfo =
+                    List<OSImageInspectSlsResult.Bundle> bundles =
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet().getBundle();
+                                    .getKiwiBuildInfo().getChanges().getRet().getBundles();
                     infoOpt.ifPresent(info -> info.setChecksum(
-                            ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = systemQuery
+                            ImageInfoFactory.convertChecksum(bundles.get(0).getChecksum())));
+                    bundles.stream().forEach(bundleInfo -> {
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    OSImageStoreUtils.getOsImageStorePath() +
-                                            kiwiProfile.getTargetStore().getUri())
+                                    OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
                             .orElseThrow(() -> new RuntimeException("Failed to download image."));
-                    if (collectResult.getReturnCode() != 0) {
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        serverAction.setResultMsg(StringUtils
+
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
                                 .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
                                         1024));
-                    }
+                        }
+                    });
                     });
                 });
                 ImageInspectAction iAction = ActionManager.scheduleImageInspect(
@@ -1229,7 +1231,7 @@ public class SaltUtils {
                 if ("pxe".equals(ret.getImage().getType())) {
                     Org org = serverAction.getParentAction().getOrg();
                     String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(org);
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundle(),
+                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundles().get(0),
                             ret.getBootImage(), storeDirectory, org);
                 }
             }

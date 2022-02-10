@@ -1,8 +1,14 @@
+- Handle multiple Kiwi bundles (bsc#1194905)
+- Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
+- Fix virtualization list rendering for foreign systems (bsc#1195712)
+- Change order of 'Relevant' and 'All' in patches menu
+- When adding a product, check if the new vendor channels conflicts
+  with any of the existing custom channel (bsc#1193448)
 - Use uyuni roster salt module instead of flat roster files
 - Improvements on list packages query processing by using query elaborator (bsc#1187333)
 - add ubuntu errata data and install handling
 - fix possible race condition in job handling (bsc#1192510)
-- Remove verbose token log
+- Remove verbose token log (bsc#1195666)
 - FIX errors when an image profile / store is deleted
   during build / inspect action (bsc#1191597, bsc#1192150)
 - SLES PAYG client support on cloud

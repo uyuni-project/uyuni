@@ -1,0 +1,53 @@
+<datasource_modes>
+
+<mode name="extract_product_tree">
+    <query>
+        WITH RECURSIVE products AS (
+          -- Extract the root products among the given product ids
+          SELECT id AS product_id
+                    , CAST(NULL AS numeric) AS parent_id
+                    , id AS root_id
+            FROM suseproducts
+           WHERE base = 'Y'
+                    AND product_id IN ( %s )
+
+          UNION ALL
+
+          -- Extract recursively all the children of the product starting from the roots
+          SELECT spe.ext_pdid AS product_id
+                    , spe.base_pdid AS parent_id
+                    , pr.root_id AS root_id
+            FROM suseproductextension spe
+                    INNER JOIN products pr ON spe.base_pdid = pr.product_id AND spe.root_pdid = pr.root_id
+                    INNER JOIN suseproducts ep ON spe.ext_pdid = ep.id
+        ) SELECT product_id, parent_id
+            FROM products
+        ORDER BY root_id, parent_id NULLS FIRST, product_id
+    </query>
+</mode>
+
+<mode name="verify_channel_conflicts">
+    <query>
+        WITH product_channels AS (
+          -- Extract all the mandatory channels for the given product ids
+          SELECT sp.id
+                    , spr.channel_label AS label
+            FROM suseproducts sp
+                    INNER JOIN suseproductsccrepository spr ON sp.id = spr.product_id
+           WHERE sp.product_id IN ( %s )
+                    AND spr.mandatory = 'Y'
+        ), custom_channels AS (
+          -- Extract all the custom channels
+          SELECT id, label
+            FROM rhnchannel
+           WHERE org_id IS NOT NULL
+                    AND channel_product_id IS NULL
+        ) -- Evaluate if the labels are conflicting
+          SELECT pc.id, cc.label
+            FROM product_channels pc
+                    INNER JOIN custom_channels cc ON pc.label = cc.label
+    </query>
+</mode>
+
+
+</datasource_modes>
