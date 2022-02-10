@@ -22,7 +22,7 @@
 
 <write-mode name="insert_system">
   <query params="mgm_id, system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware">
-    INSERT INTO System ( mgm_id system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware, synced_date )
+    INSERT INTO System ( mgm_id, system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware, synced_date )
       VALUES (:mgm_id, :system_id, :profile_name, :hostname, :minion_id, :minion_os_family, :minion_kernel_live_version, :machine_id, :registered_by, :registration_time, :last_checkin_time, :kernel_version, :architecture, :organization, :hardware, current_timestamp)
   </query>
 </write-mode>
