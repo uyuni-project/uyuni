@@ -88,11 +88,6 @@ RPM = "{http://linux.duke.edu/metadata/rpm}"
 SUSE = "{http://novell.com/package/metadata/suse/common}"
 PATCH = "{http://novell.com/package/metadata/suse/patch}"
 
-if isSUSE():
-    APACHE_GROUP = "www"
-else:
-    APACHE_GROUP = "apache"
-
 class ChannelException(Exception):
     """Channel Error"""
     def __init__(self, value=None):
@@ -433,7 +428,8 @@ class RepoSync(object):
             CFG.set('DEBUG', log_level)
         rhnLog.initLOG(log_path, log_level)
         # os.fchown isn't in 2.4 :/
-        os.system("chgrp " + APACHE_GROUP + " " + log_path)
+        with cfg_component() as CFG:
+            os.system("chgrp " + CFG.httpd_group + " " + log_path)
 
         log2disk(0, "Command: %s" % str(sys.argv))
         log2disk(0, "Sync of channel started.")
@@ -704,10 +700,11 @@ class RepoSync(object):
         # update permissions
         fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
         for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
-            for d in dirs:
-                fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP, chmod=int('0755', 8))
-            for f in files:
-                fileutils.setPermsPath(os.path.join(root, f), group=APACHE_GROUP, chmod=int('0644', 8))
+            with cfg_component() as CFG:
+                for d in dirs:
+                    fileutils.setPermsPath(os.path.join(root, d), group=CFG.httpd_group, chmod=int('0755', 8))
+                for f in files:
+                    fileutils.setPermsPath(os.path.join(root, f), group=CFG.httpd_group, chmod=int('0644', 8))
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
