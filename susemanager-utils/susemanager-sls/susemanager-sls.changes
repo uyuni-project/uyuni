@@ -1,3 +1,4 @@
+- Handle multiple Kiwi bundles (bsc#1194905)
 - fix deprecation warnings
 - Implement uyuni roster module for Salt
 - enforce correct minion configuration similar to bootstrapping
