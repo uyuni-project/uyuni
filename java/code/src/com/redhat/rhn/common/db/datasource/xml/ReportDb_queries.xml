@@ -14,6 +14,7 @@
   -->
 <datasource_modes>
 
+<!-- System -->
 <write-mode name="delete_system">
   <query params="mgm_id">
     DELETE FROM System WHERE mgm_id = :mgm_id
@@ -23,7 +24,189 @@
 <write-mode name="insert_system">
   <query params="mgm_id, system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware">
     INSERT INTO System ( mgm_id, system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware, synced_date )
-      VALUES (:mgm_id, :system_id, :profile_name, :hostname, :minion_id, :minion_os_family, :minion_kernel_live_version, :machine_id, :registered_by, :registration_time, :last_checkin_time, :kernel_version, :architecture, :organization, :hardware, current_timestamp)
+         VALUES ( :mgm_id, :system_id, :profile_name, :hostname, :minion_id, :minion_os_family, :minion_kernel_live_version, :machine_id, :registered_by, :registration_time, :last_checkin_time, :kernel_version, :architecture, :organization, :hardware, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- Channel -->
+<write-mode name="delete_channel">
+  <query params="mgm_id">
+    DELETE FROM Channel WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_channel">
+  <query params="mgm_id, channel_id, arch, description, label, name, organization, parent_channel_label, summary, type">
+    INSERT INTO Channel ( mgm_id, channel_id, arch, description, label, name, organization, parent_channel_label, summary, type, synced_date )
+         VALUES ( :mgm_id, :channel_id, :arch, :description, :label, :name, :organization, :parent_channel_label, :summary, :type, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- Errata -->
+<write-mode name="delete_errata">
+  <query params="mgm_id">
+    DELETE FROM Errata WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_errata">
+  <query params="mgm_id, errata_id, advisory_name, advisory_status, advisory_type, affects_package_manager, channel_label, cve, issue_date, organization, reboot_required, severity, synopsis, update_date">
+    INSERT INTO Errata ( mgm_id, errata_id, advisory_name, advisory_status, advisory_type, affects_package_manager, channel_label, cve, issue_date, organization, reboot_required, severity, synopsis, update_date, synced_date )
+         VALUES ( :mgm_id, :errata_id, :advisory_name, :advisory_status, :advisory_type, :affects_package_manager, :channel_label, :cve, :issue_date, :organization, :reboot_required, :severity, :synopsis, :update_date, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- Package -->
+<write-mode name="delete_package">
+  <query params="mgm_id">
+    DELETE FROM Package WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_package">
+  <query params="mgm_id, package_id, arch, channel_label, epoch, installed_size, name, organization, package_size, payload_size, release, type, vendor, version">
+    INSERT INTO Package ( mgm_id, package_id, arch, channel_label, epoch, installed_size, name, organization, package_size, payload_size, release, type, vendor, version, synced_date )
+         VALUES ( :mgm_id, :package_id, :arch, :channel_label, :epoch, :installed_size, :name, :organization, :package_size, :payload_size, :release, :type, :vendor, :version, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemAction -->
+<write-mode name="delete_systemaction">
+  <query params="mgm_id">
+    DELETE FROM SystemAction WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemaction">
+  <query params="mgm_id, action_id, system_id, completion_time, event, event_data, hostname, pickup_time, status">
+    INSERT INTO SystemAction ( mgm_id, action_id, system_id, completion_time, event, event_data, hostname, pickup_time, status, synced_date )
+         VALUES ( :mgm_id, :action_id, :system_id, :completion_time, :event, :event_data, :hostname, :pickup_time, :status, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemChannel -->
+<write-mode name="delete_systemchannel">
+  <query params="mgm_id">
+    DELETE FROM SystemChannel WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemchannel">
+  <query params="mgm_id, channel_id, system_id, architecture_name, description, name, parent_channel_id, parent_channel_name, product_name">
+    INSERT INTO SystemChannel ( mgm_id, channel_id, system_id, architecture_name, description, name, parent_channel_id, parent_channel_name, product_name, synced_date )
+         VALUES ( :mgm_id, :channel_id, :system_id, :architecture_name, :description, :name, :parent_channel_id, :parent_channel_name, :product_name, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemConfigChannel -->
+<write-mode name="delete_systemconfigchannel">
+  <query params="mgm_id">
+    DELETE FROM SystemConfigChannel WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemconfigchannel">
+  <query params="mgm_id, config_channel_id, system_id, name, position">
+    INSERT INTO SystemConfigChannel ( mgm_id, config_channel_id, system_id, name, position, synced_date )
+         VALUES ( :mgm_id, :config_channel_id, :system_id, :name, :position, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemEntitlement -->
+<write-mode name="delete_systementitlement">
+  <query params="mgm_id">
+    DELETE FROM SystemEntitlement WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systementitlement">
+  <query params="mgm_id, system_group_id, system_id, current_members, description, group_type, group_type_name, name, organization">
+    INSERT INTO SystemEntitlement ( mgm_id, system_group_id, system_id, current_members, description, group_type, group_type_name, name, organization, synced_date )
+         VALUES ( :mgm_id, :system_group_id, :system_id, :current_members, :description, :group_type, :group_type_name, :name, :organization, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemErrata -->
+<write-mode name="delete_systemerrata">
+  <query params="mgm_id">
+    DELETE FROM SystemErrata WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemerrata">
+  <query params="mgm_id, errata_id, system_id, advisory_name, advisory_type, hostname">
+    INSERT INTO SystemErrata ( mgm_id, errata_id, system_id, advisory_name, advisory_type, hostname, synced_date )
+         VALUES ( :mgm_id, :errata_id, :system_id, :advisory_name, :advisory_type, :hostname, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemGroup -->
+<write-mode name="delete_systemgroup">
+  <query params="mgm_id">
+    DELETE FROM SystemGroup WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemgroup">
+  <query params="mgm_id, system_id, system_group_id, current_members, description, name, organization">
+    INSERT INTO SystemGroup ( mgm_id, system_id, system_group_id, current_members, description, name, organization, synced_date )
+         VALUES ( :mgm_id, :system_id, :system_group_id, :current_members, :description, :name, :organization, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemHistory -->
+<write-mode name="delete_systemhistory">
+  <query params="mgm_id">
+    DELETE FROM SystemHistory WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemhistory">
+  <query params="mgm_id, history_id, system_id, event, event_data, event_time, hostname">
+    INSERT INTO SystemHistory ( mgm_id, history_id, system_id, event, event_data, event_time, hostname, synced_date )
+         VALUES ( :mgm_id, :history_id, :system_id, :event, :event_data, :event_time, :hostname, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemOutdated -->
+<write-mode name="delete_systemoutdated">
+  <query params="mgm_id">
+    DELETE FROM SystemOutdated WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemoutdated">
+  <query params="mgm_id, system_id, errata_out_of_date, packages_out_of_date">
+    INSERT INTO SystemOutdated ( mgm_id, system_id, errata_out_of_date, packages_out_of_date, synced_date )
+         VALUES ( :mgm_id, :system_id, :errata_out_of_date, :packages_out_of_date, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemPrimaryAddress -->
+<write-mode name="delete_systemprimaryaddress">
+  <query params="mgm_id">
+    DELETE FROM SystemPrimaryAddress WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemprimaryaddress">
+  <query params="mgm_id, system_id, ip4_addr, ip4_broadcast, ip4_netmask, ip6_addr, ip6_netmask, ip6_scope">
+    INSERT INTO SystemPrimaryAddress ( mgm_id, system_id, ip4_addr, ip4_broadcast, ip4_netmask, ip6_addr, ip6_netmask, ip6_scope, synced_date )
+         VALUES ( :mgm_id, :system_id, :ip4_addr, :ip4_broadcast, :ip4_netmask, :ip6_addr, :ip6_netmask, :ip6_scope, current_timestamp )
+  </query>
+</write-mode>
+
+<!-- SystemVirtualData -->
+<write-mode name="delete_systemvirtualdata">
+  <query params="mgm_id">
+    DELETE FROM SystemVirtualData WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_systemvirtualdata">
+  <query params="mgm_id, host_system_id, virtual_system_id, confirmed, instance_type_name, memory_size, name, state_name, uuid, vcpus">
+    INSERT INTO SystemVirtualData ( mgm_id, host_system_id, virtual_system_id, confirmed, instance_type_name, memory_size, name, state_name, uuid, vcpus, synced_date )
+         VALUES ( :mgm_id, :host_system_id, :virtual_system_id, :confirmed, :instance_type_name, :memory_size, :name, :state_name, :uuid, :vcpus, current_timestamp )
   </query>
 </write-mode>
 
