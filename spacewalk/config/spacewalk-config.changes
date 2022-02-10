@@ -1,3 +1,4 @@
+- adapt rhn.conf template for reporting database
 - remove TLS Certificates from package
 
 -------------------------------------------------------------------

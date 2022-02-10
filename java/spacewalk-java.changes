@@ -1,3 +1,4 @@
+- Write data into reporting database using a taskomatic job
 - Handle multiple Kiwi bundles (bsc#1194905)
 - Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
 - Fix virtualization list rendering for foreign systems (bsc#1195712)
