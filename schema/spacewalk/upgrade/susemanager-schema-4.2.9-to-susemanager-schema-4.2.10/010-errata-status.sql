@@ -3,4 +3,4 @@ ALTER TABLE rhnErrata ADD COLUMN IF NOT EXISTS
     advisory_status   VARCHAR(32) NOT NULL DEFAULT('final');
 ALTER TABLE rhnErrata ADD
     CONSTRAINT rhn_errata_adv_status_ck
-    CHECK (advisory_status in ('final', 'stable', 'testing', 'retracted'));
+    CHECK (advisory_status in ('final', 'stable', 'testing', 'pending', 'retracted'));
