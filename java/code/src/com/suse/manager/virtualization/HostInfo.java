@@ -26,7 +26,7 @@ public class HostInfo {
     private String hypervisor;
 
     @SerializedName("cluster_other_nodes")
-    private List<String> clusterOtherNodes;
+    private List<String> clusterOtherNodes = List.of();
 
     /**
      * @return value of hypervisor

@@ -118,7 +118,7 @@ def get_net_modules():
         try:
             drivers[devdir] = get_net_module(devdir)
         except OSError as devdir:
-            log.warn("An error occurred getting net driver for {0}".format(devdir), exc_info=True)
+            log.warning("An error occurred getting net driver for {0}".format(devdir), exc_info=True)
 
     return drivers or None
 

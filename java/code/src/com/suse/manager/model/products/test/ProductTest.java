@@ -36,6 +36,8 @@ public class ProductTest extends TestCase {
      */
     public void testIsProvided() {
         SetupWizardProductDto nonSynchronizingProduct = new SetupWizardProductDto(
+                1L,
+                1L,
                 "x86_46",
                 "test",
                 "test product",
@@ -55,6 +57,8 @@ public class ProductTest extends TestCase {
        assertEquals(false, nonSynchronizingProduct.isProvided());
 
        SetupWizardProductDto synchronizingProduct = new SetupWizardProductDto(
+               2L,
+               2L,
                "x86_46",
                "test",
                "test product",
@@ -81,6 +85,8 @@ public class ProductTest extends TestCase {
         List<SetupWizardProductDto> products = new LinkedList<SetupWizardProductDto>();
 
         SetupWizardProductDto prodAs390 = new SetupWizardProductDto(
+            1L,
+            1L,
             "s390",
             "product_a_s390",
             "Product A",
@@ -89,6 +95,8 @@ public class ProductTest extends TestCase {
             new OptionalChannels(new LinkedList<Channel>())
         );
         SetupWizardProductDto prodAx64 = new SetupWizardProductDto(
+            2L,
+            2L,
             "x86_46",
             "product_a_x86_64",
             "Product A",
@@ -97,6 +105,8 @@ public class ProductTest extends TestCase {
             new OptionalChannels(new LinkedList<Channel>())
         );
         SetupWizardProductDto prodA1s390 = new SetupWizardProductDto(
+            3L,
+            3L,
             "s390",
             "product_a1",
             "Product A1",
@@ -105,6 +115,8 @@ public class ProductTest extends TestCase {
             new OptionalChannels(new LinkedList<Channel>())
         );
         SetupWizardProductDto prodA2s390 = new SetupWizardProductDto(
+            4L,
+            4L,
             "s390",
             "product_a2",
             "Product A2",
