@@ -803,7 +803,7 @@ public class ConfigDefaults {
         connectionUrl.append(name);
 
         if (useSsl) {
-            connectionUrl.append("?ssl=true&sslrootcert="+sslrootcert);
+            connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert);
             setSslTrustStore();
         }
 

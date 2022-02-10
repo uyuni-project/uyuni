@@ -14,7 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.db.datasource.*;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.ParsedMode;
+import com.redhat.rhn.common.db.datasource.ParsedQuery;
+import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
@@ -23,9 +28,10 @@ import org.hibernate.Session;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.*;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,7 +55,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         return new WriteMode(session, new ParsedMode() {
             @Override
             public String getName() {
-                return "generated.delete."+table;
+                return "generated.delete." + table;
             }
 
             @Override
@@ -108,7 +114,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         return new WriteMode(session, new ParsedMode() {
             @Override
             public String getName() {
-                return "generated.insert."+table;
+                return "generated.insert." + table;
             }
 
             @Override
@@ -131,8 +137,12 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
                     @Override
                     public String getSqlStatement() {
-                        return "INSERT INTO " + table + " ( mgm_id, synced_date," + params.stream().collect(Collectors.joining(",")) + ")\n" +
-                                "      VALUES (" + mgmId + ", current_timestamp, " + params.stream().map(p -> ":" + p).collect(Collectors.joining(",")) + ")";
+                        return String.format(
+                                "INSERT INTO %s (mgm_id, synced_date, %s) VALUES (%s, current_timestamp, %s)",
+                                table,
+                                params.stream().collect(Collectors.joining(",")),
+                                mgmId,
+                                params.stream().map(p -> ":" + p).collect(Collectors.joining(",")));
                     }
 
                     @Override
@@ -184,7 +194,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Set.of("system_id", "profile_name", "hostname", "minion_id",
                         "minion_os_family", "minion_kernel_live_version", "machine_id",
                         "registered_by", "registration_time", "last_checkin_time", "kernel_version",
-                        "architecture", "organization", "hardware" ), 1L);
+                        "architecture", "organization", "hardware"), 1L);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", "SystemHistory",
                 Set.of("history_id", "system_id", "event", "event_data", "event_time", "hostname"), 1L);
         rh.commitTransaction();
