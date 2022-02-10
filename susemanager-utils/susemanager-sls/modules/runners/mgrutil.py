@@ -6,6 +6,7 @@ import shlex
 import os
 import shutil
 import salt.utils
+import tempfile
 
 log = logging.getLogger(__name__)
 
@@ -28,18 +29,29 @@ def delete_rejected_key(minion):
     return {"retcode": 0}
 
 
-def ssh_keygen(path):
+def ssh_keygen(path=None):
     '''
     Generate SSH keys using the given path.
-    :param path: the path
-    :return: map containing retcode and stdout/stderr
+    :param path: the path. If the None, the keys are generated in a temporary folder, returned, and removed.
+    :return: map containing retcode and stdout/stderr. Also contains key and public_key if no path was provided
     '''
-    if os.path.isfile(path):
-        return {"retcode": -1, "stderr": "Key file already exists"}
-    cmd = ['ssh-keygen', '-N', '', '-f', path, '-t', 'rsa', '-q']
-    # if not os.path.isdir(os.path.dirname(path)):
-    #     os.makedirs(os.path.dirname(path))
-    return _cmd(cmd)
+    temp_dir = None
+    with tempfile.TemporaryDirectory() as temp_dir:
+        out_path = os.path.join(temp_dir, "key") if path is None else path
+        result = {"retcode": 0}
+        if not path or not os.path.isfile(path):
+            cmd = ['ssh-keygen', '-N', '', '-f', out_path, '-t', 'rsa', '-q']
+            result = _cmd(cmd)
+        elif path:
+            out_path = path
+
+        if os.path.isfile(out_path) and result["retcode"] == 0:
+            with open(out_path, "r") as fd:
+                result["key"] = fd.read()
+            with open(out_path + ".pub", "r") as fd:
+                result["public_key"] = fd.read()
+
+    return result
 
 
 def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", options=None, command=None, outputfile=None):
