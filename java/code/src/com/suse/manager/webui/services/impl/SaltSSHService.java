@@ -513,7 +513,7 @@ public class SaltSSHService {
 
         String contactMethod = parameters.getFirstActivationKey()
                 .map(ActivationKeyFactory::lookupByKey)
-                .map(key -> key.getContactMethod().getLabel());
+                .map(key -> key.getContactMethod().getLabel()).orElse("");
 
         Optional<String> portForwarding = remotePortForwarding(bootstrapProxyPath, contactMethod);
 
