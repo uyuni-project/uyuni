@@ -64,6 +64,9 @@ def beacon(config):
         with open(cookie_path) as ck_file:
             ck_data = ck_file.read().strip()
             if __virtualname__ not in __context__:
+                # After a minion restart, when this is running for first time, there is nothing in context yet
+                # So, if there is any data in the cache, we put it in the context, if not we put the new data.
+                # and update the data in the cache.
                 cache_data = CACHE.fetch("beacon/pkgset", "cookie").get("data", None)
                 if cache_data:
                     __context__[__virtualname__] = cache_data
