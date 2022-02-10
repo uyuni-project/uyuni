@@ -40,6 +40,7 @@
           SELECT rhnerrata.id AS errata_id
                       , rhnerrata.advisory_name
                       , rhnerrata.advisory_type
+                      , rhnerrata.advisory_status
                       , rhnerrata.issue_date
                       , rhnerrata.update_date
                       , CASE
@@ -49,18 +50,8 @@
                           WHEN rhnerrataseverity.rank = 3 then 'Low'
                           ELSE NULL
                         END AS severity
-                      , CASE
-                          WHEN rb.keyword IS NOT NULL THEN 'Y'
-                          ELSE 'N'
-                        END AS reboot_required
-                      , CASE
-                          WHEN rs.keyword IS NOT NULL THEN 'Y'
-                          ELSE 'N'
-                        END AS affects_package_manager
-                      , CASE
-                          WHEN er.keyword IS NOT NULL THEN 'Y'
-                          ELSE 'N'
-                        END AS retracted
+                      , rb.keyword IS NOT NULL AS reboot_required
+                      , rs.keyword IS NOT NULL AS affects_package_manager
                       , ( SELECT string_agg(rhncve.name, ', ')
                            FROM rhnerratacve
                                     INNER JOIN rhncve ON rhnerratacve.cve_id = rhncve.id
@@ -73,7 +64,6 @@
                       LEFT JOIN rhnerrataseverity ON rhnerrata.severity_id = rhnerrataseverity.id
                       LEFT JOIN rhnerratakeyword rb ON rhnerrata.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
                       LEFT JOIN rhnerratakeyword rs ON rhnerrata.id = rs.errata_id AND rs.keyword = 'restart_suggested'
-                      LEFT JOIN rhnerratakeyword er ON rhnerrata.id = er.errata_id AND er.keyword = 'advisory_status'
                       LEFT JOIN rhnchannelerrata ON rhnerrata.id = rhnchannelerrata.errata_id
                       LEFT JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
                       LEFT JOIN web_customer ON rhnerrata.org_id = web_customer.id

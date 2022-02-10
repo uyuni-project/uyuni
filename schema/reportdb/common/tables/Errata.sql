@@ -15,12 +15,12 @@ CREATE TABLE Errata
     errata_id                     NUMERIC NOT NULL,
     advisory_name                 VARCHAR(100),
     advisory_type                 VARCHAR(32),
+    advisory_status               VARCHAR(32),
     issue_date                    TIMESTAMPTZ,
     update_date                   TIMESTAMPTZ,
     severity                      VARCHAR(64),
-    reboot_required               CHAR(1) NOT NULL DEFAULT ('N'),
-    affects_package_manager       CHAR(1) NOT NULL DEFAULT ('N'),
-    retracted                     CHAR(1) NOT NULL DEFAULT ('N'),
+    reboot_required               BOOLEAN NOT NULL DEFAULT FALSE,
+    affects_package_manager       BOOLEAN NOT NULL DEFAULT FALSE,
     cve                           VARCHAR(4000),
     synopsis                      VARCHAR(4000),
     channel_label                 VARCHAR(128),
@@ -29,7 +29,4 @@ CREATE TABLE Errata
 );
 
 ALTER TABLE Errata
-  ADD CONSTRAINT Errata_pk PRIMARY KEY (mgm_id, errata_id),
-  ADD CONSTRAINT Errata_rr_ck CHECK (reboot_required in ('Y', 'N')),
-  ADD CONSTRAINT Errata_apm_ck CHECK (affects_package_manager in ('Y', 'N')),
-  ADD CONSTRAINT Errata_rd_ck CHECK (retracted in ('Y', 'N'));
+  ADD CONSTRAINT Errata_pk PRIMARY KEY (mgm_id, errata_id);
