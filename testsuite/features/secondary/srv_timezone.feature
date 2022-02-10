@@ -1,7 +1,7 @@
 # Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-
-#@sle_minion
+@scope_visualization
+@sle_minion
 Feature: Correct timezone display 
 #  1) create a user and assign him a timezone different than the server's timezone
 #  2) test that the popups in some scheduling actions appear in users prefered timezone 
@@ -38,9 +38,9 @@ Feature: Correct timezone display
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-# bsc 1195455, a P3 bug not fixed yet, 
+#bsc#1195455, a P3 bug not fixed yet, 
   Scenario: Schedule a remote script in the future and see the correct timezone as a pop up
-    Given I am on the Systems overview page of this "onalmpantis-min-sles15sp3-1.tf.local"
+		Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -49,30 +49,16 @@ Feature: Correct timezone display
       """
     And I enter "00:00" as "date_timepicker_widget_input"
     And I click on "Schedule"
+    #WORKAROUND If the below line gets red, they probably fixed the bug, then remove AM from the text
     Then I should see a "12:00:00 AM MYT" text
-    #WORKAROUND If the above line gets red, they probably fixed the bug, then remove AM from the text
     
   Scenario: Login as the new Malaysian user if the previous scenario failed
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-#WORKAROUND
-# bsc 1195190, a P3 bug not fixed yet, this scenario is disabled as it is a minor bug, if they fix it we will re-enable
-#  Scenario: Cancel the event and see the correct timezone 
-#    Given I am on the Systems overview page of this "onalmpantis-min-sles15sp3-1.tf.local"
-#    When I follow "Events" in the content area
-#    Then I should see a "00:00:00 MYT" text
-#    And I check "list_1697531469_sel"
-#    And I click on "Cancel Selected Events"
-#    Then I should see a "MYT" text  
-
-#  Scenario: Login as the new Malaysian user if the previous scenario failed
-#    Given I am authorized as "MalaysianUser" with password "MalaysianUser"
-#    Then I should see a "MalaysianUser" link
-
-# bsc 1195191, a P3 bug not fixed yet 
+#bsc#1195191, a P3 bug not fixed yet 
   Scenario: Schuedule a remote script to run now  and see the correct timezone details in history
-    Given I am on the Systems overview page of this "onalmpantis-min-sles15sp3-1.tf.local"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -82,7 +68,7 @@ Feature: Correct timezone display
     And I click on "Schedule"
     When I follow "Events" in the content area
     And I follow "History" in the content area
-    When I follow first "Remote Command on onalmpantis-min-sles15sp3-1.tf.local. scheduled by MalaysianUser"
+    When I follow first "scheduled by MalaysianUser"
     Then I should see a "MYT" text
     #WORKAROUND remove the comment from the below line if its fixed
     #And I should not see a "PM" text
@@ -90,28 +76,6 @@ Feature: Correct timezone display
   Scenario: Login as the new Malaysian user if the previous scenario failed
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
-
-#WORKAROUND
-# bsc 1195189, a P3 bug not fixed yet
-#  Scenario: Schedule a minion reboot and check the pop up timezone 
-#    Given I am on the Systems overview page of this "onalmpantis-min-sles15sp3-1.tf.local"
-#    When I follow first "Schedule System Reboot"
-#    And I enter "00:00" as "date_timepicker_widget_input"
-#    When I click on "Reboot system"
-#    Then I should see a "MYT" text
-#    And I should not see a "CET" text
-
-#  Scenario: Login as the new Malaysian user if the previous scenario failed
-#    Given I am authorized as "MalaysianUser" with password "MalaysianUser"
-#    Then I should see a "MalaysianUser" link
-
-#bsc 1195452, a scheduler P3 bug not fixed yet
-  Scenario: Cleanup: Cancel minion reboot 
-    Given I am on the Systems overview page of this "onalmpantis-min-sles15sp3-1.tf.local"
-    When I follow "Events" in the content area
-    And I check "list_1697531469_sel"
-    And I click on "Cancel Selected Events"
-    And I click on "Cancel Selected Events"
 
   Scenario: Cleanup: Log in as admin user again
     Given I am authorized for the "Admin" section
