@@ -24,7 +24,7 @@ CREATE TABLE suseImageProfile
                        ON DELETE CASCADE,
     token_id       NUMERIC
                      CONSTRAINT suse_imgprof_tk_fk
-                       REFERENCES rhnRegToken (id)
+                       REFERENCES rhnActivationKey (reg_token_id)
                        ON DELETE SET NULL,
     image_type     VARCHAR(32) NOT NULL,
     target_store_id NUMERIC NOT NULL

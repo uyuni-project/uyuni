@@ -22,6 +22,7 @@ CREATE TABLE rhnActivationKey
                        CONSTRAINT rhn_act_key_reg_tid_fk
                            REFERENCES rhnRegToken (id)
                            ON DELETE CASCADE,
+                       CONSTRAINT rhn_act_key_reg_tid_uq UNIQUE,
     ks_session_id  NUMERIC
                        CONSTRAINT rhn_act_key_ks_sid_fk
                            REFERENCES rhnKickstartSession (id)
