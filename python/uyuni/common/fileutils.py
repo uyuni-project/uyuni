@@ -27,6 +27,7 @@ import stat
 import tempfile
 import io
 from uyuni.common.checksum import getFileChecksum
+from uyuni.common.context_managers import cfg_component
 from uyuni.common.rhnLib import isSUSE
 from uyuni.common.usix import ListType, TupleType, MaxInt
 
@@ -282,16 +283,11 @@ def createPath(path, user=None, group=None, chmod=int('0755', 8)):
 
     Uses the above makedirs() function.
     """
-    if isSUSE():
+    with cfg_component() as CFG:
         if user is None:
-            user = 'wwwrun'
+            user = CFG.httpd_user
         if group is None:
-            group = 'www'
-    else:
-        if user is None:
-            user = 'apache'
-        if group is None:
-            group = 'apache'
+            group = CFG.httpd_group
 
     path = cleanupAbsPath(path)
     if not os.path.exists(path):
@@ -310,10 +306,9 @@ def createPath(path, user=None, group=None, chmod=int('0755', 8)):
 
 def setPermsPath(path, user=None, group='root', chmod=int('0750', 8)):
     """chown user.group and set permissions to chmod"""
-    if isSUSE() and user is None:
-        user = 'wwwrun'
-    elif user is None:
-        user = 'apache'
+    if user is None:
+        with cfg_component() as CFG:
+            user = CFG.httpd_user
 
     if not os.path.exists(path):
         raise OSError("*** ERROR: Path doesn't exist (can't set permissions): %s" % path)
