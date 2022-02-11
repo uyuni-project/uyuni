@@ -133,7 +133,7 @@ public interface SaltApi {
      * @param path of the key files
      * @return the result of the runner call as a map
      */
-    Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path);
+    Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path);
 
     /**
      * Chain ssh calls over one or more hops to run a command on the last host in the chain.
