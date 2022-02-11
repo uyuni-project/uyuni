@@ -291,11 +291,11 @@ end
 # This function waits for all the reposyncs to complete.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row.
+# 60 seconds in a row.
 When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -317,12 +317,12 @@ end
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -1043,6 +1043,19 @@ When(/^I configure the proxy$/) do
   $proxy.run(cmd, timeout: proxy_timeout)
 end
 
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
+end
+
+When(/^I restart squid service on the proxy$/) do
+  # We need to restart squid when we add a CNAME to the certificate
+  $proxy.run("systemctl restart squid.service")
+end
+
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
   node = get_target(host)
@@ -1548,12 +1561,4 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('mkinitrd')
   end
-end
-
-When(/^I allow all SSL protocols on the proxy's apache$/) do
-  file = '/etc/apache2/ssl-global.conf'
-  key = 'SSLProtocol'
-  val = 'all -SSLv2 -SSLv3'
-  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  $proxy.run("systemctl reload apache2.service")
 end

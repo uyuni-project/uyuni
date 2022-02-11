@@ -194,7 +194,8 @@ Then(/^the salt event log on server should contain no failures$/) do
   # print failures from salt event log
   output, _code = $server.run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s}\n" if count_failures.nonzero?
+  output = output.join.to_s if output.respond_to?(:join)
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero?
 end
 
 # action chains
@@ -727,11 +728,6 @@ end
 Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
-end
-
-Then(/^I ensure the "([^"]*)" resolves its own public address$/) do |host|
-  node = get_target(host)
-  node.run("sed -i 's/^127\.0\.1\.1/#{node.public_ip}/' /etc/hosts")
 end
 
 Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used$/) do |select_system, host|

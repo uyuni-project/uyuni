@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 
-import sys
 import os
-import re
-import traceback
-import configparser
+import json
 
 try:
     from urllib import unquote
@@ -12,9 +9,6 @@ except:
     from urllib.parse import unquote
 
 from zypp_plugin import Plugin
-
-REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.conf'
-
 
 class SpacewalkExtraHTTPHeaders(Plugin):
     """
@@ -28,22 +22,10 @@ class SpacewalkExtraHTTPHeaders(Plugin):
         """
         try:
             self.http_headers = {}
-            # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
-            if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
-                http_headers_cfg = configparser.ConfigParser()
-                http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
-                section_name = None
-
-                if http_headers_cfg.has_section(headers['repo_name']):
-                    section_name = headers['repo_name']
-                elif http_headers_cfg.has_section(headers['channel_label']):
-                    section_name = headers['channel_label']
-                elif http_headers_cfg.has_section('main'):
-                    section_name = 'main'
-
-                if section_name:
-                    for hdr in http_headers_cfg[section_name]:
-                        self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
+            if 'headers_file' in headers:
+                if os.path.isfile(headers['headers_file']):
+                    with open(headers['headers_file']) as headers_file:
+                        self.http_headers = json.load(headers_file)
 
         except Exception as exc:
             self.answer("ERROR", {}, str(exc))

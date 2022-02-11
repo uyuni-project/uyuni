@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -67,6 +68,11 @@ public class RebootActionCleanup extends RhnJavaJob {
         if (failedRebootActions.size() > 0) {
             log.info("Set " + failedRebootActions.size() +
                     " reboot action(s) to failed. Running longer than 6 hours.");
+            if (log.isDebugEnabled()) {
+                log.debug("failed (server,action) ids" + failedRebootActions.stream()
+                    .map(a -> "(" + a.get("server_id") + ", " + a.get("action_id") + ")")
+                    .collect(Collectors.joining(", ")));
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+- SLES PAYG client support on cloud
 - Ignore local modules when querying repositories.
 - Fixed mirror link usage for dnf.
 
