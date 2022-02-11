@@ -1,3 +1,4 @@
+- Accept Oracle Linux
 - mgr-setup: do not concanate www and apache groups (bsc#1195171)
 
 -------------------------------------------------------------------
