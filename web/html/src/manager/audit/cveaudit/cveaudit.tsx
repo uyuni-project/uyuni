@@ -383,7 +383,7 @@ class CVEAudit extends React.Component<Props, State> {
             defaultType="btn-link"
             icon="fa-external-link"
             text={t("SUSE Security CVE link")}
-            action={() => window.open("https://www.suse.com/security/cve/" +
+            action={() => window.open("https://www.suse.com/security/cve/CVE-" +
                           this.state.cveYear  +
                           "-" + 
                           this.state.cveNumber +
