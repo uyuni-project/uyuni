@@ -42,6 +42,7 @@ import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
+import com.suse.salt.netapi.calls.AbstractCall;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
@@ -132,24 +133,24 @@ public class SaltService implements SystemQuery, SaltApi {
     private static final Logger LOG = Logger.getLogger(SaltService.class);
 
     // Salt properties
-    private final URI SALT_MASTER_URI = URI.create("https://" +
+    private static final URI SALT_MASTER_URI = URI.create("https://" +
             com.redhat.rhn.common.conf.Config.get()
                     .getString(ConfigDefaults.SALT_API_HOST, "localhost") +
             ":" + com.redhat.rhn.common.conf.Config.get()
                     .getString(ConfigDefaults.SALT_API_PORT, "9080"));
-    private final String SALT_USER = "admin";
-    private final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");
-    private final AuthModule AUTH_MODULE = AuthModule.FILE;
+    private static final String SALT_USER = "admin";
+    private static final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");
+    private static final AuthModule AUTH_MODULE = AuthModule.FILE;
 
     // Shared salt client instance
-    private final SaltClient SALT_CLIENT;
+    private final SaltClient saltClient;
     private final CloseableHttpAsyncClient asyncHttpClient;
 
     // executing salt-ssh calls
     private final SaltSSHService saltSSHService;
-    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
+    private static final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
 
-    private static final Predicate<? super String> SALT_MINION_PREDICATE = (mid) ->
+    private static final Predicate<? super String> SALT_MINION_PREDICATE = mid ->
             MinionPendingRegistrationService.containsSSHMinion(mid) ||
                         MinionServerFactory
                                 .findByMinionId(mid)
@@ -158,6 +159,10 @@ public class SaltService implements SystemQuery, SaltApi {
 
     private static final String CLEANUP_MINION_SALT_STATE = "cleanup_minion";
     protected static final String MINION_UNREACHABLE_ERROR = "minion_unreachable";
+
+    private static final String GENERIC_RUNNER_ERROR = "Generic Salt error for runner call %s: %s";
+    private static final String SSH_RUNNER_ERROR = "SaltSSH error for runner call %s: %s";
+    private static final String PAYLOAD_CALL_TEMPLATE = "%s with payload [%s]";
 
     /**
      * Enum of all the available status for Salt keys.
@@ -185,8 +190,8 @@ public class SaltService implements SystemQuery, SaltApi {
                 .build();
         asyncHttpClient.start();
 
-        SALT_CLIENT = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
-        saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
+        saltClient = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
+        saltSSHService = new SaltSSHService(saltClient, SaltActionChainGeneratorService.INSTANCE);
         defaultBatch = Batch.custom().withBatchAsAmount(ConfigDefaults.get().getSaltBatchSize())
                         .withDelay(ConfigDefaults.get().getSaltBatchDelay())
                         .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
@@ -258,7 +263,7 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSyncResult(call, minionId).flatMap(r ->
             r.fold(error -> {
                 LOG.warn(error.toString());
-                return Optional.<R>empty();
+                return Optional.empty();
             }, Optional::of)
         );
     }
@@ -283,17 +288,13 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSync(call, p ->
                 p.fold(
                         e -> {
-                            LOG.error("Function [" + e.getFunctionName() +
-                                    "] not available for runner call " +
-                                    runnerCallToString(call)
-                            );
+                            LOG.error(String.format("Function [%s] not available for runner call %s",
+                                    e.getFunctionName(), runnerCallToString(call)));
                             return Optional.empty();
                         },
                         e -> {
-                            LOG.error("Module [" + e.getModuleName() +
-                                    "] not supported for runner call " +
-                                    runnerCallToString(call)
-                            );
+                            LOG.error(String.format("Module [%s] not supported for runner call %s",
+                                    e.getModuleName(), runnerCallToString(call)));
                             return Optional.empty();
                         },
                         e -> {
@@ -303,24 +304,22 @@ public class SaltService implements SystemQuery, SaltApi {
                             return Optional.empty();
                         },
                         e -> {
-                            LOG.error("Generic Salt error for runner call " +
-                                    runnerCallToString(call) +
-                                    ": " + e.getMessage());
+                            LOG.error(String.format(GENERIC_RUNNER_ERROR, runnerCallToString(call), e.getMessage()));
                             return Optional.empty();
                         },
                         e -> {
-                            LOG.error("SaltSSH error for runner call " +
-                                    runnerCallToString(call) +
-                                    ": " + e.getMessage());
+                            LOG.error(String.format(SSH_RUNNER_ERROR, runnerCallToString(call), e.getMessage()));
                             return Optional.empty();
                         }
                 ));
     }
 
+    private String callToString(AbstractCall<?> call) {
+        return String.format("[%s.%s]", call.getModuleName(), call.getFunctionName());
+    }
+
     private String runnerCallToString(RunnerCall<?> call) {
-        return "[" + call.getModuleName() + "." +
-                call.getFunctionName() + "] with payload [" +
-                call.getPayload() + "]";
+        return String.format(PAYLOAD_CALL_TEMPLATE, call, call.getPayload());
     }
 
     /**
@@ -336,22 +335,23 @@ public class SaltService implements SystemQuery, SaltApi {
                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
             LOG.debug("Runner callSync: " + runnerCallToString(call));
-            Result<R> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
-            return result.fold(errorHandler::apply,
-                    Optional::of
-            );
+            Result<R> result = adaptException(call.callSync(saltClient, PW_AUTH));
+            return result.fold(errorHandler, Optional::of);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private RuntimeException noWheelResult() {
+        return new RuntimeException("no wheel results");
+    }
+
     /**
      * {@inheritDoc}
      */
     public Key.Names getKeys() {
-        return callSync(Key.listAll())
-                .orElseThrow(() -> new RuntimeException("no wheel results"));
+        return callSync(Key.listAll()).orElseThrow(this::noWheelResult);
     }
 
     /**
@@ -365,17 +365,13 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSync(call,  p ->
                 p.fold(
                     e -> {
-                        LOG.error("Function [" + e.getFunctionName() +
-                                "] not available for wheel call " +
-                                wheelCallToString(call)
-                        );
+                        LOG.error(String.format("Function [%s] not available for wheel call %s",
+                                e.getFunctionName(), wheelCallToString(call)));
                         return Optional.empty();
                     },
                     e -> {
-                        LOG.error("Module [" + e.getModuleName() +
-                                "] not supported for wheel call " +
-                                wheelCallToString(call)
-                        );
+                        LOG.error(String.format("Module [%s] not supported for wheel call %s",
+                                e.getModuleName(), wheelCallToString(call)));
                         return Optional.empty();
                     },
                     e -> {
@@ -412,10 +408,8 @@ public class SaltService implements SystemQuery, SaltApi {
                                      Function<SaltError, Optional<R>> errorHandler) {
         try {
             LOG.debug("Wheel callSync: " + wheelCallToString(call));
-            WheelResult<Result<R>> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
-            return result.getData().getResult().fold(
-                    errorHandler::apply,
-                    Optional::of);
+            WheelResult<Result<R>> result = adaptException(call.callSync(saltClient, PW_AUTH));
+            return result.getData().getResult().fold(errorHandler, Optional::of);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -423,9 +417,7 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     private String wheelCallToString(WheelCall<?> call) {
-        return "[" + call.getModuleName() + "." +
-                call.getFunctionName() + "] with payload [" +
-                call.getPayload() + "]";
+        return String.format(PAYLOAD_CALL_TEMPLATE, call, call.getPayload());
     }
 
     /**
@@ -448,8 +440,7 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     public Key.Fingerprints getFingerprints() {
-        return callSync(Key.finger("*"))
-                .orElseThrow(() -> new RuntimeException("no wheel results"));
+        return callSync(Key.finger("*")).orElseThrow(this::noWheelResult);
     }
 
     /**
@@ -457,8 +448,7 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
-        return callSync(Key.genAccept(id, Optional.of(force)))
-                .orElseThrow(() -> new RuntimeException("no wheel results"));
+        return callSync(Key.genAccept(id, Optional.of(force))).orElseThrow(this::noWheelResult);
     }
 
     /**
@@ -495,24 +485,27 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     public void acceptKey(String match) {
-        callSync(Key.accept(match))
-                .orElseThrow(() -> new RuntimeException("no wheel results"));
+        if (callSync(Key.accept(match)).isEmpty()) {
+            throw noWheelResult();
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public void deleteKey(String minionId) {
-        callSync(Key.delete(minionId))
-                .orElseThrow(() -> new RuntimeException("no wheel results"));
+        if (callSync(Key.delete(minionId)).isEmpty()) {
+            throw noWheelResult();
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public void rejectKey(String minionId) {
-        callSync(Key.reject(minionId))
-                .orElseThrow(() -> new RuntimeException("no wheel results"));
+        if (callSync(Key.reject(minionId)).isEmpty()) {
+            throw noWheelResult();
+        }
     }
 
     // Reconnecting time (in seconds) to Salt event bus
@@ -535,6 +528,7 @@ public class SaltService implements SystemQuery, SaltApi {
                 eventStream.addEventListener(new EventListener() {
                     @Override
                     public void notify(com.suse.salt.netapi.datatypes.Event event) {
+                        // Only listening for close
                     }
 
                     @Override
@@ -581,8 +575,8 @@ public class SaltService implements SystemQuery, SaltApi {
         if (ConfigDefaults.get().isPostgresql()) {
             return new PGEventStream();
         }
-        Token token = adaptException(SALT_CLIENT.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
-        return SALT_CLIENT.events(token, 0, 0, 0);
+        Token token = adaptException(saltClient.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
+        return saltClient.events(token, 0, 0, 0);
     }
 
     /**
@@ -621,7 +615,7 @@ public class SaltService implements SystemQuery, SaltApi {
             LocalCall<R> callIn, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
         LocalCall<R> call = callIn.withMetadata(ScheduleMetadata.getDefaultMetadata().withBatchMode());
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, defaultBatch));
+        return adaptException(call.callAsync(saltClient, target, PW_AUTH, events, cancel, defaultBatch));
     }
 
     /**
@@ -861,7 +855,7 @@ public class SaltService implements SystemQuery, SaltApi {
             ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
             LOG.debug("Local callSync: " + SaltService.localCallToString(callIn));
             List<Map<String, Result<T>>> callResult =
-                    adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
+                    adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                             new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
             results.putAll(
                     callResult.stream().flatMap(map -> map.entrySet().stream())
@@ -879,14 +873,10 @@ public class SaltService implements SystemQuery, SaltApi {
         ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
         LOG.debug("Local callSync: " + SaltService.localCallToString(callIn));
         List<Map<String, Result<T>>> callResult =
-                adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
+                adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                         target, PW_AUTH, defaultBatch));
-        Map<String, Result<T>> results =
-                callResult.stream().flatMap(map -> map.entrySet().stream())
-                        .collect(Collectors.toMap(Entry::getKey,
-                                Entry::getValue));
-
-        return results;
+        return callResult.stream().flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     /**
@@ -914,9 +904,7 @@ public class SaltService implements SystemQuery, SaltApi {
      * @return string representation
      */
     public static String localCallToString(LocalCall<?> call) {
-        return "[" + call.getModuleName() + "." +
-                call.getFunctionName() + "] with payload [" +
-                call.getPayload() + "]";
+        return String.format(PAYLOAD_CALL_TEMPLATE, call, call.getPayload());
     }
 
     /**
@@ -955,7 +943,7 @@ public class SaltService implements SystemQuery, SaltApi {
         ScheduleMetadata metadata =
                 Opt.fold(metadataIn, ScheduleMetadata::getDefaultMetadata, Function.identity()).withBatchMode();
         LOG.debug("Local callAsync: " + SaltService.localCallToString(callIn));
-        return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
+        return adaptException(callIn.withMetadata(metadata).callAsync(saltClient, target, PW_AUTH, defaultBatch));
     }
 
     /**
@@ -1019,7 +1007,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     minion.getMinionId())
                     .map(r -> ((Number) r.get("seconds")).longValue());
 
-            if (!uptime.isPresent()) {
+            if (uptime.isEmpty()) {
                 LOG.error("Can't get uptime for " + minion.getMinionId());
             }
         }
@@ -1034,7 +1022,8 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     public void updateSystemInfo(MinionList minionTarget) {
         try {
-            callAsync(State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty()), minionTarget,
+            callAsync(State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO),
+                    Optional.empty()), minionTarget,
                     Optional.of(ScheduleMetadata.getDefaultMetadata().withMinionStartup()));
         }
         catch (SaltException ex) {
@@ -1052,16 +1041,16 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
-    private Optional<Map<String, ApplyResult>> applyState(
-            String minionId, String state) {
-        return callSync(State.apply(Arrays.asList(state), Optional.empty()), minionId);
+    private Optional<Map<String, ApplyResult>> applyState(String minionId, String state) {
+        return callSync(State.apply(Collections.singletonList(state), Optional.empty()), minionId);
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
-        return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId)
+        return callSync(State.apply(Collections.singletonList("packages.redhatproductinfo"),
+                Optional.empty()), minionId)
                 .map(result -> {
                     if (result.isEmpty()) {
                         return new RedhatProductInfo();
@@ -1149,37 +1138,30 @@ public class SaltService implements SystemQuery, SaltApi {
         Optional<Map<Boolean, String>> result = callSync(call,
                 err -> err.fold(
                         e -> {
-                            LOG.error("Function [" + e.getFunctionName() +
-                                    " not available for runner call " +
-                                    "[mgrutil.move_minion_uploaded_files].");
+                            LOG.error(String.format("Function [%s] not available for runner call %s.",
+                                    e.getFunctionName(), callToString(call)));
                             return Optional.of(Collections.singletonMap(false,
-                                    "Function [" + e.getFunctionName()));
+                                    String.format("Function [%s] not available", e.getFunctionName())));
                         },
                         e -> {
-                            LOG.error("Module [" + e.getModuleName() +
-                                    "] not supported for runner call " +
-                                    "[mgrutil.move_minion_uploaded_files].");
+                            LOG.error(String.format("Module [%s] not supported for runner call %s.",
+                                    e.getModuleName(), callToString(call)));
                             return Optional.of(Collections.singletonMap(false,
-                                    "Module [" + e.getModuleName() + "] not supported"));
+                                    String.format("Module [%s] not supported", e.getModuleName())));
                         },
                         e -> {
-                            LOG.error("Error parsing json response from " +
-                                    "runner call [mgrutil.move_minion_uploaded_files]: " +
-                                    e.getJson());
+                            LOG.error(String.format("Error parsing json response from runner call %s: %s",
+                                    callToString(call), e.getJson()));
                             return Optional.of(Collections.singletonMap(false,
                                     "Error parsing json response: " + e.getJson()));
                         },
                         e -> {
-                            LOG.error("Generic Salt error for runner call " +
-                                    "[mgrutil.move_minion_uploaded_files]: " +
-                                    e.getMessage());
+                            LOG.error(String.format(GENERIC_RUNNER_ERROR, callToString(call), e.getMessage()));
                             return Optional.of(Collections.singletonMap(false,
                                     "Generic Salt error: " + e.getMessage()));
                         },
                         e -> {
-                            LOG.error("SaltSSH error for runner call " +
-                                    "[mgrutil.move_minion_uploaded_files]: " +
-                                    e.getMessage());
+                            LOG.error(String.format(SSH_RUNNER_ERROR, callToString(call), e.getMessage()));
                             return Optional.of(Collections.singletonMap(false,
                                     "SaltSSH error: " + e.getMessage()));
                         }
@@ -1262,33 +1244,26 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSync(call,
                 err -> err.fold(
                     e -> {
-                        LOG.error("Function [" + e.getFunctionName() +
-                                " not available for runner call " +
-                                "[mgrk8s.get_all_containers].");
+                        LOG.error(String.format("Function [%s] not available for runner call %s.",
+                                e.getFunctionName(), callToString(call)));
                         throw new NoSuchElementException();
                     },
                     e -> {
-                        LOG.error("Module [" + e.getModuleName() +
-                                "] not supported for runner call " +
-                                "[mgrk8s.get_all_containers].");
+                        LOG.error(String.format("Module [%s] not supported for runner call %s",
+                                e.getModuleName(), callToString(call)));
                         throw new NoSuchElementException();
                     },
                     e -> {
-                        LOG.error("Error parsing json response from " +
-                                "runner call [mgrk8s.get_all_containers]: " +
-                                e.getJson());
+                        LOG.error(String.format("Error parsing json response from runner call %s: %s",
+                                callToString(call), e.getJson()));
                         throw new NoSuchElementException();
                     },
                     e -> {
-                        LOG.error("Generic Salt error for runner call " +
-                                "[mgrk8s.get_all_containers]: " +
-                                e.getMessage());
+                        LOG.error(String.format(GENERIC_RUNNER_ERROR, callToString(call), e.getMessage()));
                         throw new NoSuchElementException();
                     },
                     e -> {
-                        LOG.error("SaltSSH error for runner call " +
-                                "[mgrk8s.get_all_containers]: " +
-                                e.getMessage());
+                        LOG.error(String.format(SSH_RUNNER_ERROR, callToString(call), e.getMessage()));
                         throw new NoSuchElementException();
                     }
                 )
@@ -1334,11 +1309,15 @@ public class SaltService implements SystemQuery, SaltApi {
 
         String absolutePath = path.toAbsolutePath().toString();
         RunnerCall<String> createFile = MgrRunner.writeTextFile(absolutePath, contents);
-        callSync(createFile).orElseThrow(() -> new IllegalStateException("Can't create SSH priv key file " + path));
+        if (callSync(createFile).isEmpty()) {
+            throw new IllegalStateException("Can't create SSH priv key file " + path);
+        }
 
         // this might not be needed, the file is created with sane perms already
         RunnerCall<String> setMode = MgrRunner.setFileMode(absolutePath, "0600");
-        callSync(setMode).orElseThrow(() -> new IllegalStateException("Can't set mode for SSH priv key file " + path));
+        if (callSync(setMode).isEmpty()) {
+            throw new IllegalStateException("Can't set mode for SSH priv key file " + path);
+        }
     }
 
     /**
@@ -1372,8 +1351,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return response.get().values().stream().filter(value -> !value.isResult())
                     .map(StateApplyResult::getComment)
                     .collect(Collectors.collectingAndThen(Collectors.toList(),
-                            (list) -> list.isEmpty() ? Optional.<List<String>>empty() :
-                                    Optional.of(list)));
+                            list -> list.isEmpty() ? Optional.empty() : Optional.of(list)));
         }
         return Optional.of(Collections.singletonList(SaltService.MINION_UNREACHABLE_ERROR));
     }
