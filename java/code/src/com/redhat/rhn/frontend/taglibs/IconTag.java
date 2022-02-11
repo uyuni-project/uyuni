@@ -55,6 +55,7 @@ public class IconTag extends TagSupport {
         icons.put("errata-security-important", "fa fa-shield fa-1-1-5x errata-important");
         icons.put("errata-security-critical", "fa fa-shield fa-1-1-5x errata-critical");
         icons.put("errata-retracted", "fa fa-1-5x fa-times-circle errata-retracted");
+        icons.put("external-link", "fa fa-external-link");
         icons.put("event-type-errata", "fa spacewalk-icon-patches");
         icons.put("event-type-package", "fa spacewalk-icon-packages");
         icons.put("event-type-preferences", "fa fa-cog");

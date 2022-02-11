@@ -17,6 +17,7 @@ function IconTag(props: Props) {
     "errata-security": "fa fa-shield fa-1-5x",
     "errata-reboot": "fa fa-1-5x fa-refresh",
     "errata-restart": "fa fa-1-5x fa-archive",
+    "external-link": "fa fa-external-link",
     "event-type-errata": "fa spacewalk-icon-patches",
     "event-type-package": "fa spacewalk-icon-packages",
     "event-type-preferences": "fa fa-cog",
