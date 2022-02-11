@@ -14,7 +14,7 @@
   -->
 <datasource_modes>
 
-<mode name="system" class="">
+<mode name="System" class="">
   <query params="offset, limit">
       SELECT rhnserver.id AS system_id
                  , rhnserver.name AS profile_name
@@ -71,7 +71,7 @@
   </query>
 </mode>
 
-<mode name="ServerGroup" class="">
+<mode name="SystemGroup" class="">
     <query params="offset, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
@@ -87,7 +87,7 @@
   </query>
 </mode>
 
-<mode name="ServerPrimaryAddress" class="">
+<mode name="SystemPrimaryAddress" class="">
     <query params="offset, limit">
           SELECT server_id AS system_id
                     , rsna4.address AS ip4_addr

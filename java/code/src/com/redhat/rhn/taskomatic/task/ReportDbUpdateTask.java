@@ -190,7 +190,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
         ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
         //fillSystems(rh.getSession());
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "system", "system",
+        fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", "System",
                 Set.of("system_id", "profile_name", "hostname", "minion_id",
                         "minion_os_family", "minion_kernel_live_version", "machine_id",
                         "registered_by", "registration_time", "last_checkin_time", "kernel_version",
@@ -221,7 +221,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Set.of("host_system_id", "virtual_system_id", "confirmed", "instance_type_name", "memory_size",
                         "name", "state_name", "uuid", "vcpus"), 1L);
         /* TODO: find a solution for duplicate data
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "ServerPrimaryAddress", "SystemPrimaryAddress",
+        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPrimaryAddress", "SystemPrimaryAddress",
                 Set.of("system_id", "ip4_addr", "ip4_broadcast", "ip4_netmask", "ip6_addr", "ip6_netmask",
                         "ip6_scope"), 1L);
         */
@@ -229,7 +229,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Set.of("system_id", "errata_out_of_date", "packages_out_of_date"), 1L);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "SystemErrata", "SystemErrata",
                 Set.of("system_id", "errata_id", "advisory_name", "advisory_type", "hostname"), 1L);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "ServerGroup", "SystemGroup",
+        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroup", "SystemGroup",
                 Set.of("system_id", "system_group_id", "current_members", "description", "name", "organization"), 1L);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", "SystemEntitlement",
                 Set.of("system_id", "system_group_id", "current_members", "description", "group_type",
