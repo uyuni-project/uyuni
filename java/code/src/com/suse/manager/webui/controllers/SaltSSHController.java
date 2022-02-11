@@ -61,14 +61,15 @@ public class SaltSSHController {
         Optional<MgrUtilRunner.SshKeygenResult> res = saltApi
                 .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
-        if (!res.isPresent()) {
+        res.ifPresentOrElse(result -> {
+            if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
+                LOG.error("Generating salt-ssh public key failed: " + result.getStderr());
+                halt(500, result.getStderr());
+            }
+        }, () -> {
             LOG.error("Could not generate salt-ssh public key.");
             halt(500, "Could not generate salt-ssh public key.");
-        }
-        if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
-            LOG.error("Generating salt-ssh public key failed: " + res.get().getStderr());
-            halt(500, res.get().getStderr());
-        }
+        });
 
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + pubKey.getName());
