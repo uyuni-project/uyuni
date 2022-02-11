@@ -229,7 +229,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Set.of("system_id", "errata_out_of_date", "packages_out_of_date"), 1L);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "SystemErrata", "SystemErrata",
                 Set.of("system_id", "errata_id", "advisory_name", "advisory_type", "hostname"), 1L);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "ServerGroup", "ServerGroup",
+        fillReportDbTable(rh.getSession(), "SystemReport_queries", "ServerGroup", "SystemGroup",
                 Set.of("system_id", "system_group_id", "current_members", "description", "name", "organization"), 1L);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", "SystemEntitlement",
                 Set.of("system_id", "system_group_id", "current_members", "description", "group_type",
