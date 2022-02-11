@@ -197,6 +197,15 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                         "architecture", "organization", "hardware"), 1L);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", "SystemHistory",
                 Set.of("history_id", "system_id", "event", "event_data", "event_time", "hostname"), 1L);
+
+        fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", "Channel",
+                Set.of("channel_id", "name", "label", "type", "arch", "summary", "description",
+                        "parent_channel_label", "organization"), 1L);
+        fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", "Errata",
+                Set.of("errata_id", "advisory_name", "advisory_type", "advisory_status", "issue_date",
+                        "update_date", "severity", "reboot_required", "affects_package_manager", "cve",
+                        "synopsis", "organization"), 1L);
+
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", "SystemVirtualData",
                 Set.of("host_system_id", "virtual_system_id", "confirmed", "instance_type_name", "memory_size",
                         "name", "state_name", "uuid", "vcpus"), 1L);
