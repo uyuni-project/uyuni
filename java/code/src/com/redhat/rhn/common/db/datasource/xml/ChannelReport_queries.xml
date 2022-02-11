@@ -72,7 +72,7 @@
 
 <mode name="Package" class="">
     <query params="offset, limit">
-          SELECT rhnpackage.id AS package_id
+          SELECT distinct rhnpackage.id AS package_id
                       , rhnpackagename.name
                       , rhnpackageevr.epoch
                       , rhnpackageevr.version
@@ -83,7 +83,6 @@
                       , rhnpackage.payload_size
                       , rhnpackage.installed_size
                       , rhnpackage.vendor
-                      , rhnchannel.label AS channel_label
                       , web_customer.name AS organization 
             FROM rhnpackage
                       LEFT JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
