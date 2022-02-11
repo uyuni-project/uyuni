@@ -37,7 +37,7 @@ public class MgrUtilRunner {
     public static class ExecResult {
 
         @SerializedName("retcode")
-        private int returnCode;
+        protected int returnCode;
         @SerializedName("stdout")
         private String stdout;
         @SerializedName("stderr")
@@ -72,6 +72,50 @@ public class MgrUtilRunner {
             ExecResult res = new ExecResult();
             res.returnCode = 0;
             return res;
+        }
+    }
+
+    /**
+     * ssh-keygen result
+     */
+    public static class SshKeygenResult extends ExecResult {
+        private String key;
+
+        @SerializedName("public_key")
+        private String publicKey;
+
+        /**
+         * Create a result with key pair, mostly for testing purpose
+         *
+         * @param keyIn the ssh key
+         * @param pubKeyIn the ssh public key
+         */
+        public SshKeygenResult(String keyIn, String pubKeyIn) {
+            key = keyIn;
+            publicKey = pubKeyIn;
+            returnCode = 0;
+        }
+
+        /**
+         * Create an empty result with return code 0
+         * @return a result with return code 0.
+         */
+        public static SshKeygenResult success() {
+            SshKeygenResult res = new SshKeygenResult(null, null);
+            return res;
+        }
+        /**
+         * @return value of key
+         */
+        public String getKey() {
+            return key;
+        }
+
+        /**
+         * @return value of publicKey
+         */
+        public String getPublicKey() {
+            return publicKey;
         }
     }
 
@@ -134,16 +178,15 @@ public class MgrUtilRunner {
 
     /**
      * Generate a ssh key pair.
-     * @param path path where to generate the keys
+     * @param path path where to generate the keys or null to return them
      * @return the execution result
      */
-    public static RunnerCall<ExecResult> generateSSHKey(String path) {
+    public static RunnerCall<SshKeygenResult> generateSSHKey(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
-        RunnerCall<ExecResult> call =
+        RunnerCall<SshKeygenResult> call =
                 new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
-                        new TypeToken<>() {
-                        });
+                        new TypeToken<>() { });
         return call;
     }
 

@@ -96,7 +96,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path) {
+        public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path) {
         throw new UnsupportedOperationException();
     }
 
