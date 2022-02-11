@@ -1508,6 +1508,8 @@ class RepoSync(object):
             try:
                 ret = datetime.fromtimestamp(float(date))
             except ValueError:
+                # For the case when date is specified in milliseconds
+                # fromtimestamp raises the ValueError as the year is out of range
                 ret = datetime.fromtimestamp(float(date)/1000)
         else:
             ret = parse_date(date)
