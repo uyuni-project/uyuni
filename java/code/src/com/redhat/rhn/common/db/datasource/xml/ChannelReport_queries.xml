@@ -60,14 +60,11 @@
                           WHERE rhnerratacve.errata_id = rhnerrata.id
                         ) AS cve
                       , rhnerrata.synopsis
-                      , rhnchannel.label AS channel_label
                       , web_customer.name AS organization
             FROM rhnerrata
                       LEFT JOIN rhnerrataseverity ON rhnerrata.severity_id = rhnerrataseverity.id
                       LEFT JOIN rhnerratakeyword rb ON rhnerrata.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
                       LEFT JOIN rhnerratakeyword rs ON rhnerrata.id = rs.errata_id AND rs.keyword = 'restart_suggested'
-                      LEFT JOIN rhnchannelerrata ON rhnerrata.id = rhnchannelerrata.errata_id
-                      LEFT JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
                       LEFT JOIN web_customer ON rhnerrata.org_id = web_customer.id
           order by errata_id offset :offset limit :limit
   </query>
