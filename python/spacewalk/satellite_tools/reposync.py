@@ -699,8 +699,8 @@ class RepoSync(object):
 
         # update permissions
         fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
-        for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
-            with cfg_component() as CFG:
+        with cfg_component() as CFG:
+            for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
                 for d in dirs:
                     fileutils.setPermsPath(os.path.join(root, d), group=CFG.httpd_group, chmod=int('0755', 8))
                 for f in files:

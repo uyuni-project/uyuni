@@ -162,11 +162,10 @@ class ZypperRepo:
        if self.urls[0][-1] != '/':
            self.urls[0] += '/'
        # Make sure root paths are created
-       if not os.path.isdir(self.root):
-           with cfg_component() as CFG:
+       with cfg_component() as CFG:
+           if not os.path.isdir(self.root):
                fileutils.makedirs(self.root, user=CFG.httpd_user, group=CFG.httpd_group)
-       if not os.path.isdir(self.pkgdir):
-           with cfg_component() as CFG:
+           if not os.path.isdir(self.pkgdir):
                fileutils.makedirs(self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
        self.is_configured = False
        self.includepkgs = []
