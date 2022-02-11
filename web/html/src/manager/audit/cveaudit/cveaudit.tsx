@@ -395,8 +395,7 @@ class CVEAudit extends React.Component<Props, State> {
               className="btn btn-link"
               target="_blank"
               rel="noopener noreferrer"
-              href={ "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber
-              }
+              href={"https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber}
               data-senna-off="true"
             >
               <IconTag type="external-link" />
