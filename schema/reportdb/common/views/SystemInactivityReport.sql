@@ -9,7 +9,7 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE VIEW InactiveSystem AS
+CREATE VIEW SystemInactivity AS
   SELECT mgm_id
             , system_id
             , profile_name AS system_name

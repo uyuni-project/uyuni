@@ -19,7 +19,7 @@ ErrataListReport                 :: SystemErrata \
                                     Errata
 HistoryReport                    :: SystemAction \
                                     SystemHistory
-InactiveSystemsReport            :: System
+SystemInactivityReport           :: System
 InventoryReport                  :: System \
                                     SystemPrimaryAddress \
                                     SystemEntitlement \
