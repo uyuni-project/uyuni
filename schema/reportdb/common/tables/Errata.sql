@@ -23,7 +23,6 @@ CREATE TABLE Errata
     affects_package_manager       BOOLEAN NOT NULL DEFAULT FALSE,
     cve                           VARCHAR(4000),
     synopsis                      VARCHAR(4000),
-    channel_label                 VARCHAR(128),
     organization                  VARCHAR(128),
     synced_date                   TIMESTAMPTZ DEFAULT (current_timestamp)
 );
