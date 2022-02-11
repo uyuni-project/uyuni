@@ -19,7 +19,7 @@ def check_shutdown(host, time_out)
   repeat_until_timeout(timeout: time_out, message: "machine didn't reboot") do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.nonzero?
-      puts "machine: #{host} went down"
+      STDOUT.puts "machine: #{host} went down"
       break
     end
     sleep 1
@@ -31,7 +31,7 @@ def check_restart(host, node, time_out)
   repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.zero?
-      puts "machine: #{host} network is up"
+      STDOUT.puts "machine: #{host} network is up"
       break
     end
     sleep 1
@@ -39,7 +39,7 @@ def check_restart(host, node, time_out)
   repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
     _out, code = node.run('ls', check_errors: false, timeout: 10)
     if code.zero?
-      puts "machine: #{host} ssh is up"
+      STDOUT.puts "machine: #{host} ssh is up"
       break
     end
     sleep 1
@@ -62,7 +62,7 @@ def get_os_version(node)
   os_version.delete! '"'
   # on SLES, we need to replace the dot with '-SP'
   os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
-  puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
+  STDOUT.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
 

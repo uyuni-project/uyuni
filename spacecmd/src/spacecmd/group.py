@@ -277,11 +277,21 @@ def do_group_backup(self, args):
     for group in groups:
         print(_("Backup Group: %s") % group)
         details = self.client.systemgroup.getDetails(self.session, group)
+        formulas = self.client.formula.getFormulasByGroupId(self.session, details['id'])
+        formula_data = {
+            f: self.client.formula.getGroupFormulaData(self.session, details['id'], f)
+            for f in formulas
+        }
+
         outputpath = outputpath_base + "/" + group
         print(_("Output File: %s") % outputpath)
-        fh = open(outputpath, 'w')
-        fh.write(details['description'])
-        fh.close()
+
+        backup = {
+            'description': details['description'],
+            'formulas': formula_data
+        }
+
+        json_dump_to_file(backup, outputpath)
 
     return 0
 
@@ -355,36 +365,68 @@ def do_group_restore(self, args):
 
     for groupname in self.do_group_list('', True):
         details = self.client.systemgroup.getDetails(self.session, groupname)
-        current[groupname] = details['description']
-        current[groupname] = current[groupname].rstrip('\n')
+        formulas = self.client.formula.getFormulasByGroupId(self.session, details['id'])
+        formula_data = {}
+        for f in formulas:
+            formula_data[f] = self.client.formula.getGroupFormulaData(self.session, details['id'], f)
+
+        current[groupname] = {
+            'description': details['description'],
+            'id': details['id'],
+            'formulas': formula_data
+        }
 
     for groupname in files:
-        fh = open(files[groupname], 'r')
-        details = fh.read()
-        fh.close()
-        details = details.rstrip('\n')
-
-        if groupname in current and current[groupname] == details:
-            logging.error(_N("Group %s already restored") % groupname)
-            continue
+        backup = json_read_from_file(files[groupname])
+        if backup is None:
+            # assume old backup, not in json format. Read complete file as string
+            logging.info(_("Assuming group to be in old plain text format"))
+            with open(files[groupname], 'r') as fh:
+                details = fh.read()
+            backup = {
+                'description': details.rstrip('\n'),
+                'formulas': {}
+            }
 
         if groupname in current:
-            logging.debug("Already have %s but the description has changed" % groupname)
-
-            if is_interactive(options):
-                print(_("Changing description from:"))
-                print("\n\"%s\"\nto\n\"%s\"\n" % (current[groupname], details))
-                userinput = prompt_user(_('Continue [y/N]:'))
-
-                if re.match('y', userinput, re.I):
-                    logging.info(_N("Updating description for group: %s") % groupname)
-                    self.client.systemgroup.update(self.session, groupname, details)
+            # pass id to the backup structure, so that comparison works
+            backup['id'] = current[groupname]['id']
+            if current[groupname] == backup:
+                logging.error(_N("Group %s already restored") % groupname)
             else:
-                logging.info(_N("Updating description for group: %s") % groupname)
-                self.client.systemgroup.update(self.session, groupname, details)
+                logging.debug("Already have %s but the data have changed" % groupname)
+
+                if is_interactive(options):
+                    if current[groupname]['description'] != backup['description']:
+                        print(_("Changing description from:"))
+                        print('\n"%s"\nto\n"%s"\n' % (current[groupname]['description'], backup['description']))
+                        userinput = prompt_user(_('Continue [y/N]:'))
+
+                        if userinput.lower() == 'y':
+                            logging.info(_N("Updating description for group: %s") % groupname)
+                            self.client.systemgroup.update(self.session, groupname, backup['description'])
+                    if current[groupname]['formulas'] != backup['formulas']:
+                        userinput = prompt_user(_('Update formula data from backup? [y/N]:'))
+                        if userinput.lower() == 'y':
+                            formulas = list(backup['formulas'].keys())
+                            self.client.formula.setFormulasOfGroup(self.session, current[groupname]['id'], formulas)
+                            for f, v in backup['formulas'].items():
+                                self.client.formula.setGroupFormulaData(self.session, current[groupname]['id'], f, v)
+                else:
+                    logging.info(_N("Updating data for group: %s") % groupname)
+                    self.client.systemgroup.update(self.session, groupname, backup['description'])
+                    formulas = list(backup['formulas'].keys())
+                    self.client.formula.setFormulasOfGroup(self.session, current[groupname]['id'], formulas)
+                    for f, v in backup['formulas'].items():
+                        self.client.formula.setGroupFormulaData(self.session, current[groupname]['id'], f, v)
+
         else:
             logging.info(_N("Creating new group %s") % groupname)
-            self.client.systemgroup.create(self.session, groupname, details)
+            details = self.client.systemgroup.create(self.session, groupname, backup['description'])
+            formulas = list(backup['formulas'].keys())
+            self.client.formula.setFormulasOfGroup(self.session, details['id'], formulas)
+            for f, v in backup['formulas'].items():
+                self.client.formula.setGroupFormulaData(self.session, details['id'], f, v)
 
     return 0
 

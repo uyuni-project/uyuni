@@ -421,7 +421,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(info.getInspectAction());
         ImageInspectActionDetails details = info.getInspectAction().getDetails();
 
-        assertEquals((long) profile.getTargetStore().getId(), details.getImageStoreId());
+        assertEquals(profile.getTargetStore().getId().longValue(), details.getImageStoreId().longValue());
         assertEquals(info.getVersion(), details.getVersion());
     }
 

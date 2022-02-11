@@ -115,3 +115,6 @@ class ContentPackage:
             if not((checksum_type_in in self.checksums) and (self.checksums[checksum_type_in] == checksum_in)):
                 self.checksums[checksum_type_in] = checksum_in
 
+    def __str__(self):
+        return f'ContentPackage: name = {self.name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, checksums = {self.checksums}, path = {self.path}, a_pkg = {self.a_pkg}, unique_id = <{self.unique_id}>'
+

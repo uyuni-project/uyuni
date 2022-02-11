@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+"""
+Execute the salt ssh system
+"""
+
+import os
+import sys
+
+from salt.exceptions import CommandExecutionError
+from salt.scripts import salt_ssh
+from salt.utils.user import chugid
+
+
+SSH_KEY = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id"
+
+
+if __name__ == "__main__":
+    if os.geteuid() == 0:
+        try:
+            chugid("salt", "salt")
+        except (KeyError, CommandExecutionError):
+            print("Error: Unable to setuid to `salt` user!", file=sys.stderr)
+            exit(1)
+    if "--roster=uyuni" not in sys.argv:
+        new_argv = []
+        priv_key_spec = False
+        for arg in sys.argv:
+            if arg not in ("--ignore-host-keys", "-i"):
+                if arg.startswith("--priv="):
+                    priv_key_spec = True
+                new_argv.append(arg)
+        if not priv_key_spec:
+            new_argv.insert(1, "--priv={}".format(SSH_KEY))
+        new_argv.insert(1, "--roster=uyuni")
+        new_argv.insert(1, "--ignore-host-keys")
+        ex = new_argv.pop(0)
+        os.execv(ex, new_argv)
+    salt_ssh()

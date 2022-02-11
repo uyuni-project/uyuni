@@ -36,11 +36,20 @@ Feature: Setup Uyuni proxy
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+@susemanager
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
     # TODO: uncomment when SCC product becomes available
-    # When I wait until I see "$PRODUCT Proxy" text, refreshing the page
+    # When I wait until I see "SUSE Manager Proxy" text, refreshing the page
+    Then I should see a "Proxy" link in the content area
+
+@uyuni
+  Scenario: Check proxy system details
+    When I am on the Systems overview page of this "proxy"
+    Then I should see "proxy" hostname
+    # TODO: uncomment when SCC product becomes available
+    # When I wait until I see "Uyuni Proxy" text, refreshing the page
     Then I should see a "Proxy" link in the content area
 
   Scenario: Install expect package on proxy for bootstrapping client via script

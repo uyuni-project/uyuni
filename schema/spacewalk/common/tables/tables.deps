@@ -22,6 +22,8 @@ rhnActionApplyStates           :: rhnAction
 rhnActionApplyStatesResult     :: rhnActionApplyStates rhnServer
 rhnActionImageBuild            :: rhnAction suseImageProfile
 rhnActionImageBuildResult      :: rhnActionImageBuild rhnServer
+rhnActionInspect               :: rhnAction suseImageStore
+rhnActionImageInspectResult    :: rhnActionInspect rhnServer
 rhnActionScript                :: rhnAction
 rhnActionConfigChannel         :: rhnServerAction rhnConfigChannel
 rhnActionConfigDate            :: rhnAction
@@ -224,7 +226,8 @@ suseContentFilter              :: web_customer
 suseContentFilterProject       :: suseContentProject suseContentFilter
 suseContentEnvironment         :: suseContentProject
 suseContentEnvironmentTarget   :: suseContentEnvironment rhnChannel
-suseCredentials                :: suseCredentialsType web_contact
+suseCredentials                :: suseCredentialsType web_contact susePaygSshData
+suseCloudRmtHost               :: susePaygSshData
 suseCVEImageChannel            :: suseImageInfo rhnChannel
 suseCVEServerChannel           :: rhnServer rhnChannel
 suseDockerfileProfile          :: suseImageProfile

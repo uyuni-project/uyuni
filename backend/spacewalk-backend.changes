@@ -1,4 +1,7 @@
 - Fix reposync update notice formatting and date parsing (bsc#1194447)
+- SLES PAYG client support on cloud
+- Ignore local modules when querying repositories.
+- Fixed mirror link usage for dnf.
 
 -------------------------------------------------------------------
 Tue Jan 18 13:49:59 CET 2022 - jgonzalez@suse.com

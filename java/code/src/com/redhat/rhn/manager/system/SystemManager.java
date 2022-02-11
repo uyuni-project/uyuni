@@ -3609,15 +3609,12 @@ public class SystemManager extends BaseManager {
      * @param server the server for which to change channels
      * @param baseChannel the base channel to set
      * @param childChannels the full list of child channels to set. Any channel no provided will be unsubscribed.
-     * @param accessTokenIds id of the access token that will be passed to
-     * {@link com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction}
      * and will be used when regenerating the Pillar data for Salt minions.
      */
     public static void updateServerChannels(User user,
                                             Server server,
                                             Optional<Channel> baseChannel,
-                                            Collection<Channel> childChannels,
-                                            List<Long> accessTokenIds) {
+                                            Collection<Channel> childChannels) {
         long baseChannelId =
                 baseChannel.map(base -> base.getId()).orElse(-1L);
 
@@ -3643,8 +3640,7 @@ public class SystemManager extends BaseManager {
         childChannelsCommand.skipChannelChangedEvent(true);
         childChannelsCommand.store();
 
-        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId(),
-                accessTokenIds));
+        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
 
     }
 

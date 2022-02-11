@@ -22,4 +22,7 @@ insert into suseCredentialsType (id, label, name) values
 insert into suseCredentialsType (id, label, name) values
         (sequence_nextval('suse_credtype_id_seq'), 'registrycreds', 'Registry');
 
+insert into suseCredentialsType (id, label, name) values
+    (sequence_nextval('suse_credtype_id_seq'), 'cloudrmt', 'Cloud RMT network');
+
 commit;
