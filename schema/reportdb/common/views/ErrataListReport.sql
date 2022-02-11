@@ -19,7 +19,7 @@ CREATE OR REPLACE VIEW ErrataListReport AS
             , count(*) AS affected_systems
 
     FROM SystemErrata
-            INNER JOIN Errata ON SystemErrata.mgm_id = Errata.mgm_id AND SystemErrata.errata_id = Errata.mgm_id
+            INNER JOIN Errata ON SystemErrata.mgm_id = Errata.mgm_id AND SystemErrata.errata_id = Errata.errata_id
 
 GROUP BY Errata.mgm_id
             , Errata.errata_id
