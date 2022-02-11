@@ -3626,13 +3626,13 @@
         </context-group>
         <target state="translated">(GMT+0800) Malajsie</target>
       </trans-unit>
-      <trans-unit id="Asia/Beijing" xml:space="preserve">
+      <trans-unit id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">(GMT+0800) Čína</target>
-      </trans-unit>
-    </body>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
