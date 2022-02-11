@@ -19,6 +19,13 @@ FAIL_ON_ERROR=1
 if [ "$3" = "1" ]; then
     FAIL_ON_ERROR=0
 fi
+BOOTSTRAP=0
+if [ "$4" = "1" ]; then
+    BOOTSTRAP=1
+fi
+if [ ${BOOTSTRAP} -eq 1 ] && [ ${REPO_PORT} -ne 443 ]; then
+    REPO_HOST="localhost"
+fi
 CLIENT_REPOS_ROOT="https://${REPO_HOST}:${REPO_PORT}/pub/repositories"
 
 VENV_TMP_DIR="/var/tmp/venv-salt-minion"
