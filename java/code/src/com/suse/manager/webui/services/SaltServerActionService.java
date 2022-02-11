@@ -26,6 +26,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -278,7 +279,7 @@ public class SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionSummary>> callsForAction(Action actionIn, List<MinionSummary> minions) {
         if (minions.isEmpty()) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
 
         ActionType actionType = actionIn.getActionType();
@@ -324,19 +325,21 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
             ImageInspectActionDetails details = iia.getDetails();
-            ImageStore store = ImageStoreFactory.lookupById(
-                    details.getImageStoreId()).get();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            ImageStore store = ImageStoreFactory.lookupById(details.getImageStoreId()).get();
             return imageInspectAction(minions, details, store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
-            ImageBuildActionDetails details = imageBuildAction.getDetails();
-            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(ip -> imageBuildAction(
-                            minions,
-                            Optional.ofNullable(details.getVersion()),
-                            ip,
-                            imageBuildAction.getSchedulerUser(),
-                            imageBuildAction.getId())
+           ImageBuildActionDetails details = imageBuildAction.getDetails();
+            if (details == null) {
+                return Collections.emptyMap();
+            }
+            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
+                    ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
+                            imageBuildAction.getSchedulerUser(), imageBuildAction.getId())
             ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
@@ -743,15 +746,18 @@ public class SaltServerActionService {
                                                         sa.getServer().asMinionServer().get()
                                                                 .getMinionId().equals(minionId))
                                                 .findFirst();
-                                if (rebootServerAction.isPresent()) {
-                                    rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
-                                    rebootServerAction.get().setPickupTime(new Date());
-                                }
-                                else {
-                                    LOG.error("Action of type " + SYSTEM_REBOOT +
-                                            " found in action chain result but not in actions for minion " +
-                                            minionId);
-                                }
+                                rebootServerAction.ifPresentOrElse(
+                                        ract -> {
+                                            if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                                                rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
+                                                rebootServerAction.get().setPickupTime(new Date());
+                                            }
+                                        },
+                                        () -> {
+                                            LOG.error("Action of type " + SYSTEM_REBOOT +
+                                                    " found in action chain result but not in actions for minion " +
+                                                    minionId);
+                                        });
                             }
                         }
 
@@ -1026,14 +1032,21 @@ public class SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
             Set<Long> errataIds, boolean allowVendorChange) {
-        Set<Long> minionServerIds = minionSummaries.stream().map(MinionSummary::getServerId)
+        Map<Boolean, List<MinionSummary>> byUbuntu = minionSummaries.stream()
+                .collect(partitioningBy(m -> m.getOs().equals("Ubuntu")));
+
+        Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> ubuntuErrataInstallCalls =
+                errataToPackageInstallCalls(byUbuntu.get(true), errataIds);
+
+        Set<Long> minionServerIds = byUbuntu.get(false).stream()
+                .map(MinionSummary::getServerId)
                 .collect(Collectors.toSet());
 
         Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos = ServerFactory
                 .listErrataNamesForServers(minionServerIds, errataIds);
 
         // Group targeted minions by errata names
-        Map<Set<ErrataInfo>, List<MinionSummary>> collect = minionSummaries.stream()
+        Map<Set<ErrataInfo>, List<MinionSummary>> collect = byUbuntu.get(false).stream()
                 .collect(Collectors.groupingBy(minionId -> errataInfos.get(minionId.getServerId())
                         .entrySet().stream()
                         .map(Map.Entry::getValue)
@@ -1042,7 +1055,7 @@ public class SaltServerActionService {
         ));
 
         // Convert errata names to LocalCall objects of type State.apply
-        return collect.entrySet().stream()
+        Map<LocalCall<?>, List<MinionSummary>> patchableCalls = collect.entrySet().stream()
             .collect(Collectors.toMap(entry -> {
                 Map<String, Object> params = new HashMap<>();
                 params.put(PARAM_REGULAR_PATCHES,
@@ -1050,7 +1063,7 @@ public class SaltServerActionService {
                         .filter(e -> !e.isUpdateStack())
                         .map(e -> e.getName())
                         .sorted()
-                        .collect(Collectors.toList())
+                        .collect(toList())
                 );
                 params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
@@ -1058,11 +1071,11 @@ public class SaltServerActionService {
                         .filter(e -> e.isUpdateStack())
                         .map(e -> e.getName())
                         .sorted()
-                        .collect(Collectors.toList())
+                        .collect(toList())
                 );
                 if (!entry.getKey().stream()
                         .filter(e -> e.includeSalt())
-                        .collect(Collectors.toList()).isEmpty()) {
+                        .collect(toList()).isEmpty()) {
                     params.put("include_salt_upgrade", true);
                 }
                 return State.apply(
@@ -1071,6 +1084,8 @@ public class SaltServerActionService {
                 );
             },
             Map.Entry::getValue));
+        patchableCalls.putAll(ubuntuErrataInstallCalls);
+        return patchableCalls;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
@@ -1090,6 +1105,38 @@ public class SaltServerActionService {
             ret.put(localCall, mSums);
         }
         return ret;
+    }
+
+    private Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
+            List<MinionSummary> minions,
+            Set<Long> errataIds) {
+        Set<Long> minionIds = minions.stream()
+                .map(MinionSummary::getServerId).collect(Collectors.toSet());
+        Map<Long, Map<String, Tuple2<String, String>>> longMapMap =
+                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
+
+        // group minions by packages that need to be updated
+        Map<Map<String, Tuple2<String, String>>, List<MinionSummary>> nameArchVersionToMinions =
+                minions.stream().collect(
+                        Collectors.groupingBy(minion -> longMapMap.get(minion.getServerId()))
+                );
+
+        return nameArchVersionToMinions.entrySet().stream().collect(toMap(
+                entry -> State.apply(
+                        singletonList(PACKAGES_PKGINSTALL),
+                        Optional.of(singletonMap(PARAM_PKGS,
+                                entry.getKey().entrySet()
+                                        .stream()
+                                        .map(e -> List.of(
+                                                e.getKey(),
+                                                e.getValue().getA().replaceAll("-deb$", ""),
+                                                e.getValue().getB().endsWith("-X") ?
+                                                    e.getValue().getB().substring(0, e.getValue().getB().length() - 2) :
+                                                    e.getValue().getB()))
+                                        .collect(Collectors.toList())))
+                ),
+                Map.Entry::getValue
+        ));
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
@@ -2482,7 +2529,10 @@ public class SaltServerActionService {
                         String function = (String) call.getPayload().get("fun");
 
                         // reboot needs special handling in case of ssh push
-                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT) &&
+                            sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                        // if the status is already PICKED_UP, don't change it
+                        // if the status is FAILED or COMPLETED, don't change it
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
                         }
@@ -2624,7 +2674,7 @@ public class SaltServerActionService {
                             // In action chains at this point the action is still queued so we have
                             // to set it to picked up.
                             // This could still lead to the race condition on when event processing is slow.
-                            if (sa.getPickupTime() == null) {
+                            if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                                 sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                                 sa.setPickupTime(new Date());
                             }

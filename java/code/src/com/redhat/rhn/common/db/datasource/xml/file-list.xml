@@ -24,6 +24,11 @@
     <template name="distupgrade_queries" filename="xml/distupgrade_queries.xml" />
     <template name="cve_audit_queries" filename="xml/cve_audit_queries.xml" />
     <template name="ResetPassword_queries" filename="xml/ResetPassword_queries.xml" />
+    <template name="Product_queries" filename="xml/Product_queries.xml" />
+    <template name="SystemReport_queries" filename="xml/SystemReport_queries.xml" />
+    <template name="ChannelReport_queries" filename="xml/ChannelReport_queries.xml" />
+    <template name="ReportDb_queries" filename="xml/ReportDb_queries.xml" />
+
 
     <!-- queries used to test the datasource system -->
     <template name="test_queries" filename="xml/test_queries.xml" />

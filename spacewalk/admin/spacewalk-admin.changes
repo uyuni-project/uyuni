@@ -1,3 +1,7 @@
+- integrate check for the reporting database into the startup
+  procedure
+- Generate uyuni_roster.conf with salt-secrets-config
+
 -------------------------------------------------------------------
 Tue Jan 18 13:38:15 CET 2022 - jgonzalez@suse.com
 

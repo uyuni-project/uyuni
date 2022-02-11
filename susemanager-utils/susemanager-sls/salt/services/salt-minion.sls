@@ -9,44 +9,27 @@
 
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 
-{# management keys should be used only once #}
-{# removed to prevent trouble on the next regular minion restart #}
-mgr_remove_management_key_grains:
-  file.replace:
-    - name: {{ susemanager_minion_config }}
-    - pattern: '^\s*management_key:.*$'
-    - repl: ''
-    - onlyif: grep 'management_key:' {{ susemanager_minion_config }}
-
-{# activation keys are only usefull on first registration #}
-{# removed to prevent trouble on the next regular minion restart #}
-mgr_remove_activation_key_grains:
-  file.replace:
-    - name: {{ susemanager_minion_config }}
-    - pattern: '^\s*activation_key:.*$'
-    - repl: ''
-    - onlyif: grep 'activation_key:' {{ susemanager_minion_config }}
-
-{# add SALT_RUNNING env variable in case it's not present on the configuration #}
-mgr_append_salt_running_env_configuration:
-  file.append:
-    - name: {{ susemanager_minion_config }}
-    - text: |
-        system-environment:
-          modules:
-            pkg:
-              _:
-                SALT_RUNNING: 1
-    - unless: grep 'system-environment' {{ susemanager_minion_config }}
-
-mgr_salt_minion:
+mgr_salt_minion_inst:
   pkg.installed:
     - name: {{ salt_minion_name }}
     - order: last
+
+{{ susemanager_minion_config }}:
+  file.managed:
+    - source:
+      - salt://bootstrap/susemanager.conf
+    - template: jinja
+    - mode: 644
+    - order: last
+    - require:
+      - pkg: mgr_salt_minion_inst
+
+mgr_salt_minion_run:
   service.running:
     - name: {{ salt_minion_name }}
     - enable: True
     - order: last
+
 {% endif %}
 
 {%- if salt['pillar.get']('contact_method') in ['ssh-push', 'ssh-push-tunnel'] %}

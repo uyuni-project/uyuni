@@ -496,9 +496,9 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   page.reset!
   visit Capybara.app_host
-  next if has_xpath?("//header//span[text()='#{user}']", wait: 0)
+  next if all(:xpath, "//header//span[text()='#{user}']").any?
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if has_xpath?("//header//i[@class='fa fa-sign-out']", wait: 0)
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
@@ -938,13 +938,19 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   # We wait until the element becomes visible, because
-  # the fade out animation might still be in progress
-  repeat_until_timeout(message: "Couldn't find the #{title} modal") do
-    break if find(:xpath, path)
+  # the fade in animation might still be in progress
+  repeat_until_timeout(message: "It couldn't find the #{title} modal dialog") do
+    break if has_xpath?(path, wait: 1)
   end
 
   within(:xpath, path) do
     click_button(btn, wait: 5)
+  end
+
+  # We wait until the element is not shown, because
+  # the fade out animation might still be in progress
+  repeat_until_timeout(message: "The #{title} modal dialog is still present") do
+    break if has_no_xpath?(path, wait: 1)
   end
 end
 

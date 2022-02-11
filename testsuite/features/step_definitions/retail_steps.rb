@@ -233,21 +233,6 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run('salt-key -y --accept=pxeboot.example.org')
 end
 
-When(/^I stop and disable avahi on the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
-  log "Stoppping and disabling avahi on #{ipv6}..."
-  file = 'stop-avahi-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
 When(/^I stop salt-minion on the PXE boot minion$/) do
   file = 'cleanup-pxeboot.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -533,13 +518,6 @@ When(/^I press "Remove" in the routers section$/) do
   find(:xpath, cname_xpath).click
 end
 
-When(/^I press minus sign in (.*) section$/) do |section|
-  section_xpath = '//input[@name="Name" and @value="%s"]/ancestor::div[starts-with(@id, "bind#%s_zones#")]'
-  sectionids = { 'tf.local configured zone' => format(section_xpath, 'tf.local', 'configured'),
-                 'tf.local available zone'  => format(section_xpath, 'tf.local', 'available') }
-  find(:xpath, "#{sectionids[section]}/div[1]/i[@class='fa fa-minus']").click
-end
-
 When(/^I check (.*) box$/) do |checkbox_name|
   check BOX_IDS[checkbox_name]
 end
@@ -574,7 +552,8 @@ end
 Then(/^the image should exist on "([^"]*)"$/) do |host|
   node = get_target(host)
   images, _code = node.run('ls /srv/saltboot/image/')
-  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
+  image = compute_image_name
+  raise "Image #{image} does not exist on #{host}" unless images.include? image
 end
 
 ### TBD below: get rid of semi-xmlrpc-tester

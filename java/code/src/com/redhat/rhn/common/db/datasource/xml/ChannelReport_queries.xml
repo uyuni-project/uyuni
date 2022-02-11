@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright (c) 2022 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<datasource_modes>
+
+
+<mode name="Channel" class="">
+    <query params="offset, limit">
+          SELECT rhnchannel.id AS channel_id
+                      , rhnchannel.name
+                      , rhnchannel.label
+                      , CASE 
+                          WHEN rhnchannel.org_id IS NULL THEN 'Vendor'
+                          ELSE 'Custom'
+                        END AS type
+                      , rhnchannelarch.name AS arch
+                      , rhnchannel.summary
+                      , rhnchannel.description
+                      , rhnparentchannel.label AS parent_channel_label
+                      , web_customer.name AS organization 
+            FROM rhnchannel
+                      LEFT JOIN rhnchannelarch ON rhnchannel.channel_arch_id = rhnchannelarch.id
+                      LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel = rhnparentchannel.id
+                      LEFT JOIN web_customer ON rhnchannel.org_id = web_customer.id
+          order by channel_id offset :offset limit :limit
+  </query>
+</mode>
+
+<mode name="Errata" class="">
+    <query params="offset, limit">
+          SELECT rhnerrata.id AS errata_id
+                      , rhnerrata.advisory_name
+                      , rhnerrata.advisory_type
+                      , rhnerrata.advisory_status
+                      , rhnerrata.issue_date
+                      , rhnerrata.update_date
+                      , CASE
+                          WHEN rhnerrataseverity.rank = 0 then 'Critical'
+                          WHEN rhnerrataseverity.rank = 1 then 'Important'
+                          WHEN rhnerrataseverity.rank = 2 then 'Moderate'
+                          WHEN rhnerrataseverity.rank = 3 then 'Low'
+                          ELSE NULL
+                        END AS severity
+                      , rb.keyword IS NOT NULL AS reboot_required
+                      , rs.keyword IS NOT NULL AS affects_package_manager
+                      , ( SELECT string_agg(rhncve.name, '; ')
+                           FROM rhnerratacve
+                                    INNER JOIN rhncve ON rhnerratacve.cve_id = rhncve.id
+                          WHERE rhnerratacve.errata_id = rhnerrata.id
+                        ) AS cve
+                      , rhnerrata.synopsis
+                      , web_customer.name AS organization
+            FROM rhnerrata
+                      LEFT JOIN rhnerrataseverity ON rhnerrata.severity_id = rhnerrataseverity.id
+                      LEFT JOIN rhnerratakeyword rb ON rhnerrata.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
+                      LEFT JOIN rhnerratakeyword rs ON rhnerrata.id = rs.errata_id AND rs.keyword = 'restart_suggested'
+                      LEFT JOIN web_customer ON rhnerrata.org_id = web_customer.id
+          order by errata_id offset :offset limit :limit
+  </query>
+</mode>
+
+<mode name="Package" class="">
+    <query params="offset, limit">
+          SELECT distinct rhnpackage.id AS package_id
+                      , rhnpackagename.name
+                      , rhnpackageevr.epoch
+                      , rhnpackageevr.version
+                      , rhnpackageevr.release
+                      , rhnpackageevr.type
+                      , rhnpackagearch.name AS arch
+                      , rhnpackage.package_size
+                      , rhnpackage.payload_size
+                      , rhnpackage.installed_size
+                      , rhnpackage.vendor
+                      , web_customer.name AS organization 
+            FROM rhnpackage
+                      LEFT JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
+                      LEFT JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
+                      LEFT JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
+                      LEFT JOIN rhnchannelpackage ON rhnpackage.id = rhnchannelpackage.package_id
+                      LEFT JOIN rhnchannel ON rhnchannelpackage.channel_id = rhnchannel.id
+                      LEFT JOIN web_customer ON rhnpackage.org_id = web_customer.id
+          order by package_id offset :offset limit :limit
+  </query>
+</mode>
+
+<mode name="SystemErrata" class="">
+    <query params="offset, limit">
+          SELECT rhnserverneedederratacache.server_id AS system_id
+                      , rhnserverneedederratacache.errata_id
+                      , rhnserver.hostname
+                      , rhnerrata.advisory_name
+                      , rhnerrata.advisory_type
+           FROM rhnserverneedederratacache
+                      LEFT JOIN rhnserver ON rhnserverneedederratacache.server_id = rhnserver.id
+                      LEFT JOIN rhnerrata ON rhnserverneedederratacache.errata_id = rhnerrata.id
+          order by system_id, errata_id offset :offset limit :limit
+  </query>
+</mode>
+
+</datasource_modes>

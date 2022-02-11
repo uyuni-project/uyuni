@@ -189,6 +189,7 @@ public class PaygAuthDataExtractor {
             }
             catch (InterruptedException e) {
                 // Should not happen
+                LOG.error("error when waiting for channel to be closed", e);
             }
         }
     }

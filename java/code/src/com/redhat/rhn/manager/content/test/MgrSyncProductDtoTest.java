@@ -51,7 +51,8 @@ public class MgrSyncProductDtoTest extends TestCase {
                 "This is the child Channel", true, false,
                 Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
                 "", "SLES", "SLES", "15", MgrSyncStatus.AVAILABLE, true, "http://path/to/childchannel", "");
-        product = new MgrSyncProductDto("friendlyName", 0L, "version", false, null, new HashSet<>(), new HashSet<>());
+        product = new MgrSyncProductDto("friendlyName", 0L, 0L, "version", false, null, new HashSet<>(),
+            new HashSet<>());
     }
 
 
@@ -63,7 +64,7 @@ public class MgrSyncProductDtoTest extends TestCase {
     public void testGetStatus() throws Exception {
         assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
 
-        product = new MgrSyncProductDto("friendlyName", 0L, "version", false,
+        product = new MgrSyncProductDto("friendlyName", 0L, 0L, "version", false,
                 baseChannel, new HashSet<>(), new HashSet<>());
         product.addChannel(baseChannel);
         assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
@@ -79,7 +80,7 @@ public class MgrSyncProductDtoTest extends TestCase {
         childs.add(baseChannel);
         childs.add(childChannel);
 
-        product = new MgrSyncProductDto("friendlyName", 0L, "version", false, baseChannel, childs, new HashSet<>());
+        product = new MgrSyncProductDto("friendlyName", 0L, 0L, "version", false, baseChannel, childs, new HashSet<>());
         assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
     }
 }

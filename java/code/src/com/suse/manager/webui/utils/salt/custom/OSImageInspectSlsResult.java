@@ -18,7 +18,9 @@ import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Object representation of the results of a call to state.apply
@@ -311,6 +313,7 @@ public class OSImageInspectSlsResult {
     @SerializedName("boot_image")
     private BootImage bootImage;
     private Bundle bundle;
+    private List<Bundle> bundles;
     private List<Package> packages;
 
     /**
@@ -391,7 +394,7 @@ public class OSImageInspectSlsResult {
     /**
      * @return the bundle
      */
-    public Bundle getBundle() {
-        return bundle;
+    public List<Bundle> getBundles() {
+        return Optional.ofNullable(bundles).orElseGet(() -> Collections.singletonList(bundle));
     }
 }
