@@ -206,7 +206,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                         "update_date", "severity", "reboot_required", "affects_package_manager", "cve",
                         "synopsis", "organization"), 1L);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", "Package",
-            Set.of("package_id", "arch", "channel_label", "epoch", "installed_size", "name", "organization",
+            Set.of("package_id", "arch", "epoch", "installed_size", "name", "organization",
                 "package_size", "payload_size", "release", "type", "vendor", "version"), 1L);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", "SystemAction",
             Set.of("action_id", "system_id", "completion_time", "event", "event_data", "hostname", "pickup_time",
