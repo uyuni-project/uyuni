@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-06 10:54+0000\n"
+"POT-Creation-Date: 2022-02-11 15:39+0000\n"
 "PO-Revision-Date: 2022-01-24 10:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -458,7 +458,7 @@ msgstr "第一页"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:400
+#: ../html/src/manager/admin/setup/products/products.tsx:407
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -467,7 +467,7 @@ msgstr "上一页"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:406
+#: ../html/src/manager/admin/setup/products/products.tsx:413
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -484,7 +484,7 @@ msgstr "页码"
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:411
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "/"
@@ -613,7 +613,7 @@ msgid "({0} selected)"
 msgstr "（已选择 {0} 个）"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:328
+#: ../html/src/manager/admin/setup/products/products.tsx:335
 msgid "Clear"
 msgstr "清除"
 
@@ -933,7 +933,7 @@ msgid "Bastion SSH connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:259
+#: ../html/src/manager/admin/setup/products/products.tsx:266
 msgid "Setup Wizard"
 msgstr "安装向导"
 
@@ -1109,48 +1109,48 @@ msgstr ""
 msgid "The product catalog refresh is running..."
 msgstr "产品目录刷新正在运行..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:284
+#: ../html/src/manager/admin/setup/products/products.tsx:291
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:289
+#: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "The product catalog is still refreshing, please wait."
 msgstr "产品目录仍在刷新，请稍候。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:291
+#: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "Select some product first."
 msgstr "请先选择某个产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:300
-#: ../html/src/manager/admin/setup/products/products.tsx:308
+#: ../html/src/manager/admin/setup/products/products.tsx:307
+#: ../html/src/manager/admin/setup/products/products.tsx:315
 msgid "Add products"
 msgstr "添加产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:327
+#: ../html/src/manager/admin/setup/products/products.tsx:334
 msgid "Clear products selection"
 msgstr "清除产品选择"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:367
+#: ../html/src/manager/admin/setup/products/products.tsx:374
 msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:370
+#: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:375
+#: ../html/src/manager/admin/setup/products/products.tsx:382
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:385
+#: ../html/src/manager/admin/setup/products/products.tsx:392
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1158,59 +1158,59 @@ msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:461
+#: ../html/src/manager/admin/setup/products/products.tsx:468
 msgid "Filter by architecture"
 msgstr "按体系结构过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:556
+#: ../html/src/manager/admin/setup/products/products.tsx:563
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:626
+#: ../html/src/manager/admin/setup/products/products.tsx:633
 msgid "Product Description"
 msgstr "产品说明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:632
-#: ../html/src/manager/admin/setup/products/products.tsx:1010
+#: ../html/src/manager/admin/setup/products/products.tsx:639
+#: ../html/src/manager/admin/setup/products/products.tsx:1017
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:634
+#: ../html/src/manager/admin/setup/products/products.tsx:641
 msgid "Arch"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:648
 msgid "Channels"
 msgstr "频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:812
+#: ../html/src/manager/admin/setup/products/products.tsx:819
 msgid " channels sync failed"
 msgstr " 频道同步失败"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:820
+#: ../html/src/manager/admin/setup/products/products.tsx:827
 msgid " channels sync in progress"
 msgstr " 频道同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:828
+#: ../html/src/manager/admin/setup/products/products.tsx:835
 msgid " channels synced"
 msgstr " 频道已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:853
+#: ../html/src/manager/admin/setup/products/products.tsx:860
 msgid "To enable this product, the parent product should be selected first"
 msgstr "要启用此产品，应先选择父产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:854
+#: ../html/src/manager/admin/setup/products/products.tsx:861
 msgid "Select this product"
 msgstr "选择此产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:866
+#: ../html/src/manager/admin/setup/products/products.tsx:873
 msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:895
+#: ../html/src/manager/admin/setup/products/products.tsx:902
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:58
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1218,7 +1218,7 @@ msgstr "已镜像此产品。"
 msgid "recommended"
 msgstr "建议"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:913
+#: ../html/src/manager/admin/setup/products/products.tsx:920
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:77
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1226,51 +1226,51 @@ msgstr "建议"
 msgid "include recommended"
 msgstr "包括建议项"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:955
+#: ../html/src/manager/admin/setup/products/products.tsx:962
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 产品目录刷新正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:965
 msgid "Scheduling channels product resync"
 msgstr "正在安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:961
+#: ../html/src/manager/admin/setup/products/products.tsx:968
 msgid "Channels product resync scheduled"
 msgstr "已安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:964
+#: ../html/src/manager/admin/setup/products/products.tsx:971
 msgid "Schedule channels product resync"
 msgstr "安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1025
+#: ../html/src/manager/admin/setup/products/products.tsx:1032
 msgid "Show product's channels"
 msgstr "显示产品的频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1057
+#: ../html/src/manager/admin/setup/products/products.tsx:1064
 msgid "Product Channels - "
 msgstr "产品频道 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1062
+#: ../html/src/manager/admin/setup/products/products.tsx:1069
 msgid "Mandatory Channels"
 msgstr "必需频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1069
+#: ../html/src/manager/admin/setup/products/products.tsx:1076
 msgid "Optional Channels"
 msgstr "可选频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1084
+#: ../html/src/manager/admin/setup/products/products.tsx:1091
 msgid "not synced"
 msgstr "未同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1094
 msgid "sync in progress"
 msgstr "同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1090
+#: ../html/src/manager/admin/setup/products/products.tsx:1097
 msgid "synced"
 msgstr "已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1093
+#: ../html/src/manager/admin/setup/products/products.tsx:1100
 msgid "sync failed"
 msgstr "同步失败"
 
