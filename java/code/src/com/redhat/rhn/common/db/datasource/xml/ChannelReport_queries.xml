@@ -25,6 +25,7 @@
                           ELSE 'Custom'
                         END AS type
                       , rhnchannelarch.name AS arch
+                      , rhnchannel.summary
                       , rhnchannel.description
                       , rhnparentchannel.label AS parent_channel_label
                       , web_customer.name AS organization 
@@ -53,7 +54,7 @@
                         END AS severity
                       , rb.keyword IS NOT NULL AS reboot_required
                       , rs.keyword IS NOT NULL AS affects_package_manager
-                      , ( SELECT string_agg(rhncve.name, ', ')
+                      , ( SELECT string_agg(rhncve.name, '; ')
                            FROM rhnerratacve
                                     INNER JOIN rhncve ON rhnerratacve.cve_id = rhncve.id
                           WHERE rhnerratacve.errata_id = rhnerrata.id
