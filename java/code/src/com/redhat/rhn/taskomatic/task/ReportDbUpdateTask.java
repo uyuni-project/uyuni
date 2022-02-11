@@ -220,9 +220,11 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", "SystemVirtualData",
                 Set.of("host_system_id", "virtual_system_id", "confirmed", "instance_type_name", "memory_size",
                         "name", "state_name", "uuid", "vcpus"), 1L);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "ServerPrimaryAddress", "ServerPrimaryAddress",
+        /* TODO: find a solution for duplicate data
+        fillReportDbTable(rh.getSession(), "SystemReport_queries", "ServerPrimaryAddress", "SystemPrimaryAddress",
                 Set.of("system_id", "ip4_addr", "ip4_broadcast", "ip4_netmask", "ip6_addr", "ip6_netmask",
                         "ip6_scope"), 1L);
+        */
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", "SystemOutdated",
                 Set.of("system_id", "errata_out_of_date", "packages_out_of_date"), 1L);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "SystemErrata", "SystemErrata",
