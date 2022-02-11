@@ -17,6 +17,7 @@ CREATE OR REPLACE VIEW ErrataListReport AS
             , Errata.cve
             , Errata.synopsis
             , count(*) AS affected_systems
+            , Errata.synced_date
 
     FROM SystemErrata
             INNER JOIN Errata ON SystemErrata.mgm_id = Errata.mgm_id AND SystemErrata.errata_id = Errata.errata_id
@@ -27,4 +28,5 @@ GROUP BY Errata.mgm_id
             , Errata.advisory_type
             , Errata.cve
             , Errata.synopsis
+            , Errata.synced_date
 ;
