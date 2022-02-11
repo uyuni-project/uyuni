@@ -20,7 +20,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -59,7 +58,7 @@ public class SaltSSHController {
     public synchronized byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
 
-        Optional<MgrUtilRunner.ExecResult> res = saltApi
+        Optional<MgrUtilRunner.SshKeygenResult> res = saltApi
                 .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
         if (!res.isPresent()) {
@@ -74,14 +73,13 @@ public class SaltSSHController {
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + pubKey.getName());
 
-        try (InputStream fin = new FileInputStream(pubKey)) {
-            return IOUtils.toByteArray(fin);
+        String key = res.get().getPublicKey();
+        if (key != null) {
+            return key.getBytes();
         }
-        catch (IOException e) {
-            LOG.error("Could not read salt-ssh public key " + pubKey, e);
-            halt(500, e.getMessage());
-        }
-        return null;
+        LOG.error("Could not read salt-ssh public key " + pubKey);
+        halt(500, "Could not read salt-ssh public key");
+        return new byte[0];
     }
 
 }

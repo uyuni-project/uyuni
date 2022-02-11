@@ -90,7 +90,6 @@ import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystems;
@@ -1215,13 +1214,9 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
-    public Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path) {
-        File pubKey = new File(path + ".pub");
-        if (!pubKey.isFile()) {
-            RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.generateSSHKey(path);
-            return callSync(call);
-        }
-        return Optional.of(MgrUtilRunner.ExecResult.success());
+    public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path) {
+        RunnerCall<MgrUtilRunner.SshKeygenResult> call = MgrUtilRunner.generateSSHKey(path);
+        return callSync(call);
     }
 
     /**

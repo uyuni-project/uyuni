@@ -19,11 +19,19 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
+import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.salt.netapi.calls.Client;
+import com.suse.salt.netapi.client.SaltClient;
+import com.suse.salt.netapi.datatypes.AuthMethod;
 
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.io.FileUtils;
+import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.IOException;
@@ -32,6 +40,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -100,8 +109,18 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     public void testGenerateSSHKeyExists() throws IOException {
         Path keyFile = Files.createFile(tempDir.resolve("mgr_ssh_id.pub"));
         String keyPath = keyFile.toFile().getCanonicalPath();
-        SaltService systemQuery = new SaltService();
-        Optional<MgrUtilRunner.ExecResult> res = systemQuery
+        SaltClient saltClient = mock(SaltClient.class);
+        context().checking(new Expectations() {{
+            oneOf(saltClient).call(with(SaltTestUtils.functionEquals("mgrutil", "ssh_keygen")),
+                    with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+                    with(any(TypeToken.class)), with(any(AuthMethod.class)));
+            will(returnValue(SaltTestUtils.getCompletionStage(
+                    "/com/suse/manager/webui/services/impl/test/service/ssh_keygen.json",
+                    new TypeToken<MgrUtilRunner.SshKeygenResult>() { }.getType())));
+        }});
+
+        SaltService systemQuery = new SaltService(saltClient);
+        Optional<MgrUtilRunner.SshKeygenResult> res = systemQuery
                 .generateSSHKey(keyPath.substring(0, keyPath.length() - 4));
         assertTrue(res.isPresent());
         assertEquals(0, res.get().getReturnCode());
@@ -111,7 +130,9 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     @Override
     public void tearDown() {
         try {
-            Files.deleteIfExists(tempDir);
+            if (tempDir.toFile().exists()) {
+                FileUtils.deleteDirectory(tempDir.toFile());
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
