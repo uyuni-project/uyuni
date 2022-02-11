@@ -26,6 +26,7 @@
     <template name="ResetPassword_queries" filename="xml/ResetPassword_queries.xml" />
     <template name="Product_queries" filename="xml/Product_queries.xml" />
     <template name="SystemReport_queries" filename="xml/SystemReport_queries.xml" />
+    <template name="ChannelReport_queries" filename="xml/ChannelReport_queries.xml" />
     <template name="ReportDb_queries" filename="xml/ReportDb_queries.xml" />
 
 
