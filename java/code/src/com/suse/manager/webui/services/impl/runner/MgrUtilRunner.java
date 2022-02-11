@@ -131,12 +131,6 @@ public class MgrUtilRunner {
         private String comment;
 
         /**
-         * Constructor.
-         */
-        public RemoveKnowHostResult() {
-        }
-
-        /**
          * Only needed for unit tests.
          * @param statusIn status
          * @param commentIn comment
@@ -169,11 +163,7 @@ public class MgrUtilRunner {
     public static RunnerCall<ExecResult> deleteRejectedKey(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("minion", minionId);
-        RunnerCall<ExecResult> call =
-                new RunnerCall<>("mgrutil.delete_rejected_key", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.delete_rejected_key", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -184,10 +174,7 @@ public class MgrUtilRunner {
     public static RunnerCall<SshKeygenResult> generateSSHKey(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
-        RunnerCall<SshKeygenResult> call =
-                new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
-                        new TypeToken<>() { });
-        return call;
+        return new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -200,11 +187,7 @@ public class MgrUtilRunner {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("user", user);
         args.put("hostname", hostname);
-        RunnerCall<RemoveKnowHostResult> call =
-                new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -234,11 +217,7 @@ public class MgrUtilRunner {
         args.put("options", options);
         args.put("command", command);
         args.put("outputfile", outputfile);
-        RunnerCall<ExecResult> call =
-                new RunnerCall<>("mgrutil.chain_ssh_cmd", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.chain_ssh_cmd", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -259,10 +238,6 @@ public class MgrUtilRunner {
         args.put("dirtomove", dirToMove);
         args.put("basepath", basePath);
         args.put("actionpath", actionPath);
-        RunnerCall<Map<Boolean, String>> call =
-                new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args), new TypeToken<>() { });
     }
 }
