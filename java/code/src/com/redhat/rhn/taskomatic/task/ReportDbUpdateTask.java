@@ -176,64 +176,65 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
     private void fillReportDbTable(Session session, String xmlQueryName, String queryMode, String tableName,
                                    Set<String> columns, long mgmId) {
-        SelectMode m = ModeFactory.getMode(xmlQueryName, queryMode, Map.class);
-        WriteMode rd = generateDelete(tableName, session);
-        rd.executeUpdate(Map.of("mgm_id", 1));
+        SelectMode query = ModeFactory.getMode(xmlQueryName, queryMode, Map.class);
+        WriteMode delete = generateDelete(tableName, session);
+        delete.executeUpdate(Map.of("mgm_id", 1));
         WriteMode insert = generateInsert(mgmId, tableName, columns, session);
-        this.<Map<String, Object>>batchStream(m, BATCH_SIZE, 0)
-                .flatMap(batch -> batch.stream())
-                .forEach(set -> insert.executeUpdate(set));
+        this.<Map<String, Object>>batchStream(query, BATCH_SIZE, 0)
+                .forEach(batch -> insert.executeUpdates(batch));
     }
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
         ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
+        long mgmId = 1;
         //fillSystems(rh.getSession());
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", "System",
                 Set.of("system_id", "profile_name", "hostname", "minion_id",
                         "minion_os_family", "minion_kernel_live_version", "machine_id",
                         "registered_by", "registration_time", "last_checkin_time", "kernel_version",
-                        "architecture", "organization", "hardware"), 1L);
+                        "architecture", "organization", "hardware"), mgmId);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", "SystemHistory",
-                Set.of("history_id", "system_id", "event", "event_data", "event_time", "hostname"), 1L);
+                Set.of("history_id", "system_id", "event", "event_data", "event_time", "hostname"), mgmId);
 
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", "Channel",
                 Set.of("channel_id", "name", "label", "type", "arch", "summary", "description",
-                        "parent_channel_label", "organization"), 1L);
+                        "parent_channel_label", "organization"), mgmId);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", "Errata",
                 Set.of("errata_id", "advisory_name", "advisory_type", "advisory_status", "issue_date",
                         "update_date", "severity", "reboot_required", "affects_package_manager", "cve",
-                        "synopsis", "organization"), 1L);
+                        "synopsis", "organization"), mgmId);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", "Package",
             Set.of("package_id", "arch", "epoch", "installed_size", "name", "organization",
-                "package_size", "payload_size", "release", "type", "vendor", "version"), 1L);
+                "package_size", "payload_size", "release", "type", "vendor", "version"), mgmId);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", "SystemAction",
             Set.of("action_id", "system_id", "completion_time", "event", "event_data", "hostname", "pickup_time",
-                "status"), 1L);
+                "status"), mgmId);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemChannel", "SystemChannel",
             Set.of("channel_id", "system_id", "architecture_name", "description", "name", "parent_channel_id",
-                "parent_channel_name", "product_name"), 1L);
+                "parent_channel_name", "product_name"), mgmId);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemConfigChannel", "SystemConfigChannel",
-            Set.of("config_channel_id", "system_id", "name", "position"), 1L);
+            Set.of("config_channel_id", "system_id", "name", "position"), mgmId);
 
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", "SystemVirtualData",
                 Set.of("host_system_id", "virtual_system_id", "confirmed", "instance_type_name", "memory_size",
-                        "name", "state_name", "uuid", "vcpus"), 1L);
+                        "name", "state_name", "uuid", "vcpus"), mgmId);
         /* TODO: find a solution for duplicate data
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPrimaryAddress", "SystemPrimaryAddress",
                 Set.of("system_id", "ip4_addr", "ip4_broadcast", "ip4_netmask", "ip6_addr", "ip6_netmask",
                         "ip6_scope"), 1L);
         */
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", "SystemOutdated",
-                Set.of("system_id", "errata_out_of_date", "packages_out_of_date"), 1L);
+                Set.of("system_id", "errata_out_of_date", "packages_out_of_date"), mgmId);
         fillReportDbTable(rh.getSession(), "ChannelReport_queries", "SystemErrata", "SystemErrata",
-                Set.of("system_id", "errata_id", "advisory_name", "advisory_type", "hostname"), 1L);
+                Set.of("system_id", "errata_id", "advisory_name", "advisory_type", "hostname"), mgmId);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroup", "SystemGroup",
-                Set.of("system_id", "system_group_id", "current_members", "description", "name", "organization"), 1L);
+                Set.of("system_id", "system_group_id", "current_members", "description", "name", "organization"),
+                mgmId);
         fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", "SystemEntitlement",
                 Set.of("system_id", "system_group_id", "current_members", "description", "group_type",
-                        "group_type_name", "name", "organization"), 1L);
+                        "group_type_name", "name", "organization"), mgmId);
 
         rh.commitTransaction();
         rh.closeSession();
