@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { IconTag } from "components/icontag";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { AsyncButton, LinkButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Messages } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
@@ -379,32 +379,30 @@ class CVEAudit extends React.Component<Props, State> {
             />
           </Table>
           <p>
-            <a className="btn btn-link" target="_blank" rel="noopener noreferrer"
+            <a
+              className="btn btn-link"
+              target="_blank"
+              rel="noopener noreferrer"
               href={
-                "https://www.suse.com/security/cve/CVE-" +
-                this.state.cveYear  +
-                "-" + 
-                this.state.cveNumber +
-                ".html"
-              } 
+                "https://www.suse.com/security/cve/CVE-" + this.state.cveYear + "-" + this.state.cveNumber + ".html"
+              }
               data-senna-off="true"
             >
               <IconTag type="external-link" />
               {t("SUSE Security CVE link")}
             </a>
-            <a className="btn btn-link" target="_blank" rel="noopener noreferrer"
-              href={
-                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" +
-                this.state.cveYear +
-                "-" +
-                this.state.cveNumber
-              } 
+            <a
+              className="btn btn-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={ "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber
+              }
               data-senna-off="true"
             >
               <IconTag type="external-link" />
               {t("MITRE CVE link")}
             </a>
-          </p>      
+          </p>
           <a
             href={
               "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
