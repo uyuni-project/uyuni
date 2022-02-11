@@ -251,24 +251,6 @@ class CVEAudit extends React.Component<Props, State> {
               />
             </div>
           </p>
-          <p>
-            <div className="btn-group">
-              <AsyncButton
-                id="bootstrap-btn"
-                defaultType="btn-default"
-                icon="fa-external-link"
-                text={t("SUSE Security CVE Info")}
-                onClick={() => window.open("https://www.suse.com/security/cve/CVE-", this.state.cveYear, "-", this.state.cveNumber,".html")}
-              />
-              <AsyncButton
-                id="bootstrap-btn"
-                defaultType="btn-default"
-                icon="fa-external-link"
-                text={t("MITRE CVE Info")}
-                onClick={() => window.open("https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-", this.state.cveYear, "-", this.state.cveNumber )}
-              />
-            </div>
-          </p>
           <Table
             data={this.state.results}
             identifier={(row) => row.id}
@@ -395,6 +377,29 @@ class CVEAudit extends React.Component<Props, State> {
               }}
             />
           </Table>
+          <p>
+          <AsyncButton
+            id="bootstrap-btn"
+            defaultType="btn-link"
+            icon="fa-external-link"
+            text={t("SUSE Security CVE link")}
+            action={() => window.open("https://www.suse.com/security/cve/" +
+                          this.state.cveYear  +
+                          "-" + 
+                          this.state.cveNumber +
+                          ".html", '_blank','noopener')}
+          />
+          <AsyncButton
+            id="bootstrap-btn"
+            defaultType="btn-link"
+            icon="fa-external-link"
+            text={t("MITRE CVE link")}
+            action={() => window.open("https://cve.mitre.org/cgi-bin/cvename.cgi?name=" +
+                                       this.state.cveYear +
+                                       "-" +
+                                       this.state.cveNumber, '_blank','noopener')}
+          />
+          </p>
           <a
             href={
               "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
