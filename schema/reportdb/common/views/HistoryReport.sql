@@ -9,7 +9,7 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE VIEW HistoryReport AS
+CREATE OR REPLACE VIEW HistoryReport AS
       SELECT mgm_id
                 , system_id
                 , action_id AS event_id
@@ -18,6 +18,7 @@ CREATE VIEW HistoryReport AS
                 , completion_time AS event_time
                 , status
                 , event_data
+                , synced_date
         FROM SystemAction
 
     UNION ALL
@@ -30,5 +31,6 @@ CREATE VIEW HistoryReport AS
                 , event_time
                 , 'Done' AS status
                 , event_data
+                , synced_date
         FROM SystemHistory
 ;
