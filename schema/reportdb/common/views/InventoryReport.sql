@@ -9,7 +9,7 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE VIEW InventoryReport AS
+CREATE OR REPLACE VIEW InventoryReport AS
  SELECT System.system_id,
             System.profile_name,
             System.hostname,
@@ -40,7 +40,8 @@ CREATE VIEW InventoryReport AS
             SystemChannel.parent_channel_id AS parent_channel,
             SystemChannel.channel_id,
             COALESCE(SystemOutdated.packages_out_of_date, (0)::bigint) AS packages_out_of_date,
-            COALESCE(SystemOutdated.errata_out_of_date, (0)::bigint) AS errata_out_of_date
+            COALESCE(SystemOutdated.errata_out_of_date, (0)::bigint) AS errata_out_of_date,
+            System.synced_date
    FROM System
             LEFT JOIN SystemPrimaryaddress ON ( System.mgm_id = SystemPrimaryAddress.mgm_id AND System.system_id = SystemPrimaryAddress.system_id )
             LEFT JOIN SystemEntitlement ON ( System.mgm_id = SystemEntitlement.mgm_id AND System.system_id = SystemEntitlement.system_id )
