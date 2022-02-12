@@ -70,11 +70,17 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testCreateFirst() throws Exception {
-        // "dockerrun_pg" already create a new org during init, just check if Org with ID 1 exist for now but run a actual test of createFirst if no Org was found
+        /*
+         * "dockerrun_pg" already creates a new Org during Init right now.
+         * Therefore check first if Org with ID '1' exist without performing further tests then.
+         * If there is no Org yet, perform actual test of createFirst method.
+
+        */
         Org initialOrg = OrgFactory.lookupById((long) 1);
         if (initialOrg != null) {
             assertNotNull(initialOrg);
-        } else {
+        }
+        else {
             handler.createFirst(orgName[1], "fakeadmin", "password", "First",
                     "Admin", "firstadmin@example.com");
             Org testOrg = OrgFactory.lookupByName(orgName[1]);
