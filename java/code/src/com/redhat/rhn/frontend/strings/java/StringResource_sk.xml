@@ -7561,35 +7561,35 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z {3} adresárov a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov, {2} z {3} adresárov a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target/>
+        <target>Žiadne existujúce súbory v existujúcom systéme sa nelíšili od súborov spravovaných @@PRODUCT_NAME@@.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
           <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-        <target/>
+        <target>1 z 1 súboru v systéme sa líšil od súborov spravovaných @@PRODUCT_NAME@@</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
           <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target/>
+        <target>{0} z {1} súborov v systéme sa líšilo od súborov spravovaných @@PRODUCT_NAME@@.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7659,14 +7659,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0" xml:space="preserve">
           <source>{2} directories</source>
-        <target/>
+        <target>{2} adresáre</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1" xml:space="preserve">
           <source>{2} directories and {3} symlink</source>
-        <target/>
+        <target>{2} adresáre a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
@@ -11107,34 +11107,34 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
         <source>Pay-as-you-go authentication update</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
         <source>Pay-as-you-go update RMT hosts</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>
