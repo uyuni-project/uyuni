@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,5 +33,14 @@ public class ProductSyncException extends Exception {
      */
     public ProductSyncException(String message) {
         super(message);
+    }
+
+    /**
+     * Message and exception constructor.
+     * @param message the message
+     * @param exception the exception
+     */
+    public ProductSyncException(String message, Exception exception) {
+        super(message, exception);
     }
 }

@@ -185,6 +185,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.rhnpackage.Package as p where p.id = :id]]>
     </query>
 
+    <query name="Package.findByIds">
+        <![CDATA[from com.redhat.rhn.domain.rhnpackage.Package as p where p.id in (:pids)]]>
+    </query>
+
     <query name="Package.findByPackageName">
         <![CDATA[from com.redhat.rhn.domain.rhnpackage.Package as p where p.packageName = :packageName]]>
     </query>

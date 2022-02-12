@@ -1,12 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
+import { Button } from "components/buttons";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
-import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 type CalendarListProps = {
   data: {
@@ -41,7 +42,6 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
       <Table
         data={props.data}
         identifier={(row) => row.name}
-        initialItemsPerPage={window.userPrefPageSize}
         emptyText={t("No calendars created. Use Create to add a calendar.")}
       >
         <Column columnKey="calendarName" header={t("Calendar Name")} cell={(row) => row.name} />

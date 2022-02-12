@@ -8,7 +8,7 @@ require 'socket'
 # system namespace
 
 Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @system_api = XMLRPCSystemTest.new($server.ip)
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
   @system_api.login(luser, password)
 end
 
@@ -84,7 +84,7 @@ end
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @user_api = XMLRPCUserTest.new($server.ip)
+  @user_api = XMLRPCUserTest.new($server.full_hostname)
   @user_api.login(luser, password)
 end
 
@@ -149,12 +149,12 @@ end
 # channel namespace
 
 Given(/^I am logged in via XML\-RPC channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @channel_api = XMLRPCChannelTest.new($server.ip)
+  @channel_api = XMLRPCChannelTest.new($server.full_hostname)
   assert(@channel_api.login(luser, password))
 end
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
-  url = "http://#{$server.ip}/pub/AnotherRepo/"
+  url = "http://#{$server.full_hostname}/pub/AnotherRepo/"
   assert(@channel_api.create_repo(label, url))
 end
 
@@ -214,7 +214,7 @@ end
 key = nil
 
 Given(/^I am logged in via XML\-RPC activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @activation_key_api = XMLRPCActivationKeyTest.new($server.ip)
+  @activation_key_api = XMLRPCActivationKeyTest.new($server.full_hostname)
   raise unless @activation_key_api.login(luser, password)
 end
 
@@ -246,9 +246,9 @@ end
 
 Then(/^I have to see them by calling activationkey\.get_details\(\) having as description "([^"]*)"$/) do |description|
   details = @activation_key_api.get_details(key)
-  puts "Key info for the key details['key']:"
+  log "Key info for the key details['key']:"
   details.each_pair do |k, v|
-    puts "  #{k}:#{v}"
+    log "  #{k}:#{v}"
   end
   raise unless details['description'] == description
 end
@@ -289,7 +289,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via XM
   begin
     @activation_key_api.add_child_channels(key, selected_child_channels)
   rescue XMLRPC::FaultException => err
-    puts "The selected child channels can not be included: #{selected_child_channels}. Error: #{err}"
+    log "The selected child channels can not be included: #{selected_child_channels}. Error: #{err}"
   end
 end
 # rubocop:enable Metrics/BlockLength
@@ -299,9 +299,9 @@ end
 # Auth
 Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
   # Authenticate
-  @action_chain_api = XMLRPCActionChain.new($server.ip)
-  @schedule_api = XMLRPCScheduleTest.new($server.ip)
-  @system_api = XMLRPCSystemTest.new($server.ip)
+  @action_chain_api = XMLRPCActionChain.new($server.full_hostname)
+  @schedule_api = XMLRPCScheduleTest.new($server.full_hostname)
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
   @action_chain_api.login(luser, password)
   @system_api.login(luser, password)
   @schedule_api.login(luser, password)
@@ -344,7 +344,7 @@ end
 Then(/^I delete all action chains$/) do
   begin
     @action_chain_api.list_chains.each do |label|
-      puts "Delete chain: #{label}"
+      log "Delete chain: #{label}"
       @action_chain_api.delete_chain(label)
     end
   rescue XMLRPC::FaultException => e
@@ -382,9 +382,9 @@ Then(/^I should be able to see all these actions in the action chain$/) do
   begin
     actions = @action_chain_api.list_chain_actions($chain_label)
     refute_nil(actions)
-    puts 'Running actions:'
+    log 'Running actions:'
     actions.each do |action|
-      puts "\t- " + action['label']
+      log "\t- " + action['label']
     end
   rescue XMLRPC::FaultException => e
     raise format('Error listChainActions: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
@@ -430,7 +430,7 @@ When(/^I call actionchain\.remove_action on each action within the chain$/) do
     refute_nil(actions)
     actions.each do |action|
       refute(@action_chain_api.remove_action($chain_label, action['id']) < 0)
-      puts "\t- Removed \"" + action['label'] + '" action'
+      log "\t- Removed \"" + action['label'] + '" action'
     end
   rescue XMLRPC::FaultException => e
     raise format('Error remove_action: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
@@ -450,9 +450,9 @@ When(/^I wait until there are no more action chains$/) do
   repeat_until_timeout(message: 'Action Chains still present') do
     break if @action_chain_api.list_chains.empty?
     @action_chain_api.list_chains.each do |label|
-      puts "Chain still present: #{label}"
+      log "Chain still present: #{label}"
     end
-    puts
+    log
     sleep 2
   end
 end
@@ -469,7 +469,7 @@ Then(/^I cancel all scheduled actions$/) do
   end
 
   actions.each do |action|
-    puts "\t- Try to cancel \"#{action['name']}\" action"
+    log "\t- Try to cancel \"#{action['name']}\" action"
     begin
       @schedule_api.cancel_actions([action['id']])
     rescue XMLRPC::FaultException
@@ -477,7 +477,7 @@ Then(/^I cancel all scheduled actions$/) do
         @schedule_api.fail_system_action(system['server_id'], action['id'])
       end
     end
-    puts "\t- Removed \"#{action['name']}\" action"
+    log "\t- Removed \"#{action['name']}\" action"
   end
 end
 
@@ -489,24 +489,24 @@ Then(/^I wait until there are no more scheduled actions$/) do
   repeat_until_timeout(message: 'Scheduled actions still present') do
     break if @schedule_api.list_in_progress_actions.empty?
     @schedule_api.list_in_progress_actions.each do |action|
-      puts "Action still in progress: #{action}"
+      log "Action still in progress: #{action}"
     end
-    puts
+    log
     sleep 2
   end
 end
 
 Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpc_api_tester = XMLRPCApiTest.new($server.ip)
+  @rpc_api_tester = XMLRPCApiTest.new($server.full_hostname)
   assert(@rpc_api_tester.login(luser, password))
 end
 
 # power management namespace
 
 Given(/^I am logged in via XML\-RPC powermgmt as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @powermanagenent_api = XMLRPCPowermanagementTest.new($server.ip)
+  @powermanagenent_api = XMLRPCPowermanagementTest.new($server.full_hostname)
   @powermanagenent_api.login(luser, password)
-  @system_api = XMLRPCSystemTest.new($server.ip)
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
   @system_api.login(luser, password)
 end
 
@@ -543,7 +543,7 @@ end
 # cveaudit namespace
 
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @cve_audit_api = XMLRPCCVEAuditTest.new($server.ip)
+  @cve_audit_api = XMLRPCCVEAuditTest.new($server.full_hostname)
   @cve_audit_api.login(luser, password)
 end
 
@@ -574,12 +574,12 @@ Then(/^I should get the test channel$/) do
             else
               'test-channel-x86_64'
             end
-  STDERR.puts "result: #{@result}"
+  STDOUT.puts "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
-  STDERR.puts "result: #{@result}"
+  STDOUT.puts "result: #{@result}"
   assert(@result['errata_advisories'].include?(patch))
 end
 
@@ -590,7 +590,7 @@ end
 # configchannel namespace
 
 Given(/^I am logged in via XML\-RPC configchannel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @configuration_channel_api = XMLRPCConfigChannelTest.new($server.ip)
+  @configuration_channel_api = XMLRPCConfigChannelTest.new($server.full_hostname)
   @configuration_channel_api.login(luser, password)
 end
 

@@ -28,7 +28,7 @@
 %global default_py3 1
 %endif
 
-%if !( 0%{?rhel} >= 8 )
+%if !( 0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
 %global build_py2   1
 %endif
 
@@ -39,7 +39,7 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}

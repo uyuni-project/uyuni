@@ -217,7 +217,7 @@
                    bound="false"
                    headertext="Date/Time"
                    styleclass="fixedwidth">
-            <c:out value="${current.time}" escapeXml="true" />
+            <rhn:formatDate value="${current.time}" />
         </rl:column>
 
         <rl:column sortable="false"

@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-client-cert
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Summary:        Package allowing manipulation with Spacewalk client certificates
 License:        GPL-2.0-only
@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 Requires:       python3-rhn-client-tools
 Requires:       python3-rhn-setup
 %else

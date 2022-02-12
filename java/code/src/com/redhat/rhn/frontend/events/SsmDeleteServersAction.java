@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,6 +38,17 @@ public class SsmDeleteServersAction implements MessageAction {
     /** Logger instance. */
     private static Log log = LogFactory.getLog(SsmDeleteServersAction.class);
 
+    private final SystemManager systemManager;
+
+    /**
+     * Constructor
+     *
+     * @param systemManagerIn the system manager
+     */
+    public SsmDeleteServersAction(SystemManager systemManagerIn) {
+        systemManager = systemManagerIn;
+    }
+
     /** {@inheritDoc} */
     public void execute(EventMessage msg) {
         SsmDeleteServersEvent event = (SsmDeleteServersEvent) msg;
@@ -53,7 +64,7 @@ public class SsmDeleteServersAction implements MessageAction {
         try {
             for (Long sid : sids) {
                 try {
-                    SystemManager.deleteServerAndCleanup(user,
+                    systemManager.deleteServerAndCleanup(user,
                             sid,
                             event.getServerCleanupType()
                     );

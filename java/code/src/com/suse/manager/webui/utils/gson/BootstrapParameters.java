@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,12 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import static com.suse.manager.webui.utils.gson.BootstrapHostsJson.AuthMethod;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson.AuthMethod;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +33,12 @@ public class BootstrapParameters {
     private String host;
     private Optional<Integer> port;
     private String user;
-    private Optional<String> password;
-    private Optional<String> privateKey;
-    private Optional<String> privateKeyPassphrase;
+    private Optional<String> password = empty();
+    private Optional<String> privateKey = empty();
+    private Optional<String> privateKeyPassphrase = empty();
+    private Optional<Long> ansibleInventoryId = empty();
     private List<String> activationKeys;
+    private Optional<String> reactivationKey;
     private boolean ignoreHostKeys;
     private Optional<Long> proxyId;
 
@@ -43,18 +50,19 @@ public class BootstrapParameters {
      * @param userIn user
      * @param passwordIn password
      * @param activationKeysIn activation keys
+     * @param reactivationKeyIn reactivation key
      * @param ignoreHostKeysIn ignore hostIn keys?
      * @param proxyIdIn proxy id
      */
     public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, Optional<String> passwordIn,
-            List<String> activationKeysIn, boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
+            List<String> activationKeysIn, Optional<String> reactivationKeyIn, boolean ignoreHostKeysIn,
+            Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
         this.password = passwordIn;
-        this.privateKey = Optional.empty();
-        this.privateKeyPassphrase = Optional.empty();
         this.activationKeys = activationKeysIn;
+        this.reactivationKey = reactivationKeyIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
         this.proxyId = proxyIdIn;
     }
@@ -68,19 +76,45 @@ public class BootstrapParameters {
      * @param privateKeyIn SSH private key as string in PEM format
      * @param privateKeyPwdIn SSH private key passphrase
      * @param activationKeysIn activation keys
+     * @param reactivationKeyIn reactivation key
      * @param ignoreHostKeysIn ignore hostIn keys?
      * @param proxyIdIn proxy id
      */
     public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, String privateKeyIn,
-            Optional<String> privateKeyPwdIn, List<String> activationKeysIn, boolean ignoreHostKeysIn,
+            Optional<String> privateKeyPwdIn, List<String> activationKeysIn, Optional<String> reactivationKeyIn,
+            boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
+        this.host = hostIn;
+        this.port = portIn;
+        this.user = userIn;
+        this.privateKey = of(privateKeyIn);
+        this.privateKeyPassphrase = privateKeyPwdIn;
+        this.activationKeys = activationKeysIn;
+        this.reactivationKey = reactivationKeyIn;
+        this.ignoreHostKeys = ignoreHostKeysIn;
+        this.proxyId = proxyIdIn;
+    }
+
+    /**
+     * Create {@link BootstrapParameters} for Ansible pre-authentication.
+     *
+     * @param hostIn host
+     * @param portIn port
+     * @param userIn user
+     * @param ansibleInventoryIdIn the id of the Ansible Inventory Path
+     * @param activationKeysIn activation keys
+     * @param reactivationKeyIn reactivation key
+     * @param ignoreHostKeysIn ignore hostIn keys?
+     * @param proxyIdIn proxy id
+     */
+    public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, Long ansibleInventoryIdIn,
+            List<String> activationKeysIn, Optional<String> reactivationKeyIn, boolean ignoreHostKeysIn,
             Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
-        this.password = Optional.empty();
-        this.privateKey = Optional.of(privateKeyIn);
-        this.privateKeyPassphrase = privateKeyPwdIn;
+        this.ansibleInventoryId = of(ansibleInventoryIdIn);
         this.activationKeys = activationKeysIn;
+        this.reactivationKey = reactivationKeyIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
         this.proxyId = proxyIdIn;
     }
@@ -96,11 +130,16 @@ public class BootstrapParameters {
         switch (authMethod) {
             case PASSWORD:
                 return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
-                        json.maybeGetPassword(), json.getActivationKeys(), json.getIgnoreHostKeys(),
-                        Optional.ofNullable(json.getProxy()));
+                        json.maybeGetPassword(), json.getActivationKeys(), json.maybeGetReactivationKey(),
+                        json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
             case SSH_KEY:
                 return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
                         json.getPrivKey(), json.maybeGetPrivKeyPwd(), json.getActivationKeys(),
+                        json.maybeGetReactivationKey(), json.getIgnoreHostKeys(),
+                        Optional.ofNullable(json.getProxy()));
+            case ANSIBLE_PREAUTH:
+                return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
+                        json.getAnsibleInventoryId(), json.getActivationKeys(), json.maybeGetReactivationKey(),
                         json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
             default:
                 throw new UnsupportedOperationException("Unsupported auth method " + authMethod);
@@ -243,6 +282,20 @@ public class BootstrapParameters {
     }
 
     /**
+     * @return Returns the reactivationKey.
+     */
+    public Optional<String> getReactivationKey() {
+        return reactivationKey;
+    }
+
+    /**
+     * @param reactivationKeyIn The reactivationKey to set.
+     */
+    public void setReactivationKey(Optional<String> reactivationKeyIn) {
+        reactivationKey = reactivationKeyIn;
+    }
+
+    /**
      * Gets the ignoreHostKeys.
      *
      * @return ignoreHostKeys
@@ -266,5 +319,25 @@ public class BootstrapParameters {
      */
     public Optional<Long> getProxyId() {
         return proxyId;
+    }
+
+    /**
+     * Gets the ansibleInventoryId.
+     *
+     * @return ansibleInventoryId
+     */
+    public Optional<Long> getAnsibleInventoryId() {
+        return ansibleInventoryId;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("host", host)
+                .append("port", port)
+                .append("activationKeys", activationKeys)
+                .append("proxyId", proxyId)
+                .append("reactivationKey", reactivationKey)
+                .toString();
     }
 }

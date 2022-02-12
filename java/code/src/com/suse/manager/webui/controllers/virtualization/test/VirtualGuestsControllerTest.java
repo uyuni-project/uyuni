@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,11 +38,14 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.virtualization.VmInfoJson;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -63,6 +66,7 @@ import java.util.Optional;
 import java.util.TimeZone;
 
 import spark.HaltException;
+import spark.ModelAndView;
 
 /**
  * Tests for VirtualGuestsController
@@ -134,14 +138,21 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                         Collections.emptyMap(),
                         new TypeToken<Map<String, Map<String, JsonElement>>>() { });
             }
+
+            @Override
+            public Optional<HostInfo> getHostInfo(String minionId) {
+                HostInfo info = new HostInfo();
+                info.setHypervisor("kvm");
+                return Optional.of(info);
+            }
         };
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
@@ -398,6 +409,23 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("kvm", caps.getDomainsCaps().get(0).getDomain());
         assertTrue(caps.getDomainsCaps().get(0).getDevices().get("disk").get("bus").contains("virtio"));
         assertFalse(caps.getDomainsCaps().get(1).getDevices().get("disk").get("bus").contains("virtio"));
+    }
+
+    public void testShow() {
+        ModelAndView page = virtualGuestsController.show(
+                getRequestWithCsrf("/manager/systems/details/virtualization/guests/:sid",
+                        host.getId()), response, user, host);
+        Map<String, Object> model = (Map<String, Object>) page.getModel();
+        assertEquals("{\"hypervisor\":\"kvm\",\"cluster_other_nodes\":[]}", model.get("hostInfo"));
+    }
+
+    public void testShowVHM() throws Exception {
+        Server vhmHost = ServerTestUtils.createForeignSystem(user, "server_digital_id");
+        ModelAndView page = virtualGuestsController.show(
+                getRequestWithCsrf("/manager/systems/details/virtualization/guests/:sid",
+                        vhmHost.getId()), response, user, vhmHost);
+        Map<String, Object> model = (Map<String, Object>) page.getModel();
+        assertEquals("{}", model.get("hostInfo"));
     }
 
     /**

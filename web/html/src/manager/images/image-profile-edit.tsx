@@ -1,17 +1,21 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages } from "components/messages";
-import Network from "utils/network";
-import { SubmitButton, Button } from "components/buttons";
+
+import { default as ReactSelect } from "react-select";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { Button, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Select } from "components/input/Select";
-import { default as ReactSelect } from "react-select";
 import { Text } from "components/input/Text";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { Utils } from "utils/functions";
-import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/edit-profile.jade
 declare global {
@@ -65,18 +69,6 @@ class CreateImageProfile extends React.Component<Props, State> {
       messages: [],
       customData: {},
     };
-
-    [
-      "handleTokenChange",
-      "handleImageTypeChange",
-      "handleImageStoreChange",
-      "isLabelValid",
-      "onUpdate",
-      "onCreate",
-      "onFormChange",
-      "onValidate",
-      "clearFields",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
 
     this.getImageStores(typeMap[this.state.model.imageType].storeType);
     if (this.isEdit()) {
@@ -137,22 +129,22 @@ class CreateImageProfile extends React.Component<Props, State> {
     });
   }
 
-  handleTokenChange(name, value) {
+  handleTokenChange = (name, value) => {
     this.getChannels(value);
-  }
+  };
 
-  handleImageTypeChange(name, value) {
+  handleImageTypeChange = (name, value) => {
     const storeType = typeMap[value].storeType;
     this.getImageStores(storeType);
-  }
+  };
 
-  handleImageStoreChange(name, storeLabel) {
+  handleImageStoreChange = (name, storeLabel) => {
     Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel).then((res) => {
       this.setState({
         storeUri: res.success && res.data.uri,
       });
     });
-  }
+  };
 
   addCustomData(label) {
     if (label) {
@@ -176,7 +168,7 @@ class CreateImageProfile extends React.Component<Props, State> {
     }
   }
 
-  isLabelValid(label) {
+  isLabelValid = (label) => {
     if (this.state.initLabel && this.state.initLabel === label) {
       // Initial state (on edit), always valid.
       return true;
@@ -189,9 +181,9 @@ class CreateImageProfile extends React.Component<Props, State> {
     return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
       .then((res) => !res.success && isValid)
       .catch(() => false);
-  }
+  };
 
-  onUpdate(model) {
+  onUpdate = (model) => {
     if (!this.isEdit()) {
       return false;
     }
@@ -215,9 +207,9 @@ class CreateImageProfile extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onCreate(model) {
+  onCreate = (model) => {
     if (this.isEdit()) {
       return false;
     }
@@ -241,25 +233,25 @@ class CreateImageProfile extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: Object.assign({}, this.defaultModel),
     });
-  }
+  };
 
   getImageStores(type) {
     return Network.get("/rhn/manager/api/cm/imagestores/type/" + type).then((data) => {

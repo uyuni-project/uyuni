@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 18 13:50:49 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Add correct indentation for 4th level in the navigation panel
+
+-------------------------------------------------------------------
 Mon Aug 09 10:58:28 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

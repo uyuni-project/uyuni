@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,6 +29,11 @@ import java.io.IOException;
 public class MinionActionCleanup extends RhnJavaJob {
 
     private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_action_cleanup";
+    }
 
     /**
      * @param context the job execution context

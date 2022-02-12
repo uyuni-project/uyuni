@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -94,14 +94,6 @@ public class OperationDetailsDto {
     }
 
     /**
-     *
-     * @return the i18n formatted string for started date
-     */
-    public String getStartedDateString() {
-        return LocalizationService.getInstance().formatDate(getStarted());
-    }
-
-    /**
      * @param startedIn The started to set.
      */
     public void setStarted(Date startedIn) {
@@ -113,14 +105,6 @@ public class OperationDetailsDto {
      */
     public Date getModified() {
         return modified;
-    }
-
-    /**
-     *
-     * @return the i18n formatted string for modified date
-     */
-    public String getModifiedDateString() {
-        return LocalizationService.getInstance().formatDate(getModified());
     }
 
     /**

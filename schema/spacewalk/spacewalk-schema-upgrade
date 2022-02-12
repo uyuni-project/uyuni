@@ -6,27 +6,57 @@ use warnings FATAL => 'all';
 use Spacewalk::Setup ();
 use IPC::Open3 ();
 use File::Basename;
+use Getopt::Long ();
+use Pod::Usage ();
 
-my $MIN_PG_DB_VERSION = 100001;
-my $MAX_PG_DB_VERSION = 139999;
-my $MIN_PG_DB_VERSION_STRING = "10";
-my $MAX_PG_DB_VERSION_STRING = "13";
-my $OS_VERSION_CHECK = 15.3;
-my $OS_VERSION_MIN_DB_VERSION = 130000;
-my $OS_VERSION_WANTED_DB_VERSION = "13";
-my $SCHEMA_UPGRADE_DIR = '/etc/sysconfig/rhn/schema-upgrade';
-my $SCHEMA_UPGRADE_LOGDIR = '/var/log/spacewalk/schema-upgrade';
+my $MIN_PG_DB_VERSION = 130001;
+my $MAX_PG_DB_VERSION = 149999;
+my $MIN_PG_DB_VERSION_STRING = "13";
+my $MAX_PG_DB_VERSION_STRING = "14";
+my $OS_VERSION_CHECK = 15.4;
+my $OS_VERSION_MIN_DB_VERSION = 140000;
+my $OS_VERSION_WANTED_DB_VERSION = "14";
 
 my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
+
+my ($skip_confirm, $reportdb, $help);
+
+$skip_confirm = 0;
+if (not Getopt::Long::GetOptions(
+    'yes'      => \$skip_confirm,
+    'reportdb' => \$reportdb,
+    'help'     => => \$help
+)) {
+    Pod::Usage::pod2usage(0);
+}
+
+Pod::Usage::pod2usage(-verbose => 2) if $help;
 
 if (not -e $config_file) {
         die "The config file [$config_file] does not seem to exist. Was Spacewalk configured yet?\n";
 }
 
+# Load the correct module for the type of database
+my $db_specific = $reportdb ? "Spacewalk::SchemaUpgrade::ReportDb" : "Spacewalk::SchemaUpgrade::MainDb";
+
+eval {
+    (my $file = "$db_specific.pm") =~ s|::|/|g;
+    require $file;
+    $db_specific->import();
+    1;
+} or do {
+    my $error = $@;
+    die "Unable to import required module: $error";
+};
+
+my $SCHEMA_DIR = "/etc/sysconfig/rhn/" . $db_specific->DB_NAME;
+my $SCHEMA_UPGRADE_DIR = "/etc/sysconfig/rhn/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
+my $SCHEMA_UPGRADE_LOGDIR = "/var/log/spacewalk/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
+
 my %options;
 Spacewalk::Setup::read_config($config_file, \%options);
-if (not defined $options{db_backend}) {
-        die "Config file [$config_file] does not seem to have database backend info (db_backend) set.\n";
+if (not defined $options{$db_specific->BACKEND_PROPERTY}) {
+        die "Config file [$config_file] does not seem to have database backend info (" . $db_specific->BACKEND_PROPERTY . ") set.\n";
 }
 
 $ENV{NLS_LANG} = 'AMERICAN_AMERICA.UTF8';
@@ -83,10 +113,9 @@ elsif($os_version >= $OS_VERSION_CHECK && $server_version < $OS_VERSION_MIN_DB_V
     exit 1;
 }
 
-
-my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/postgres/schema-override 2> /dev/null`;
+my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' $SCHEMA_DIR/schema-override 2> /dev/null`;
 if ($?) { # the directory does not exists or is not owned by any rpm
-        $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/postgres/main.sql`;
+        $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' $SCHEMA_DIR/main.sql`;
 }
 my ($my_schema_name, $my_schema_version, $my_schema_release) = ($my_schema_version_out =~ /^(\S+)\s(\S+)\s(\S+)$/);
 if (not defined $my_schema_release) {
@@ -100,33 +129,24 @@ if ($ENV{SUMA_TEST_SCHEMA_VERSION}) {
 my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_release;
 (my $target_schema_norm = $target_schema) =~ s!^(.+-\d+(\.\d+)*-[a-zA-Z0-9]*)(\..*)*$!$1!;
 
-my $schema_version = run_query(<<EOF);
-    select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
-      from rhnVersionInfo, rhnPackageName, rhnPackageEVR PE
-     where rhnVersionInfo.label = 'schema'
-       and rhnVersionInfo.name_id = rhnPackageName.id
-       and rhnVersionInfo.evr_id = PE.id;
-EOF
+my $schema_version = run_query($db_specific->get_schema_version_query());
+
 if (not defined $schema_version) {
-    my $migrationdir = run_query(<<EOF);
-        select label
-          from rhnVersionInfo
-         where label like 'schema-from%'
-      order by label DESC;
-EOF
+    my $migrationdir = run_query($db_specific->get_migration_dir_query());
     if (! defined $migrationdir or ! -d "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
         die "No existing schema version info found in rhnVersionInfo.\n";
     }
-    my @logfiles = sort {$b cmp $a} map { glob } "/var/log/spacewalk/schema-upgrade/$migrationdir-to-*.log";
+    my @logfiles = sort {$b cmp $a} map { glob } "$SCHEMA_UPGRADE_LOGDIR/$migrationdir-to-*.log";
     my $lname = ((scalar(@logfiles) >= 1)?basename($logfiles[0]):"$migrationdir.log");
     print "Found unfinished schema migration\n";
     print "Try to continue schema migration\n";
-    run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace);
+    run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace, $skip_confirm);
 
     exit;
 }
 
-if (not $schema_version =~ /^rhn-satellite-schema-|^spacewalk-schema-|^satellite-schema-|^susemanager-schema-/) {
+my $regex = "^(uyuni|susemanager|spacewalk|satellite|rhn-satellite)-" . $db_specific->UPGRADE_PREFIX . "-";
+if (not $schema_version =~ /$regex/) {
     die "Unknown schema name [$schema_version] found.\n";
 }
 
@@ -234,13 +254,7 @@ my $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
 
 my $start = $start_schema_norm;
 my $migrationdir = "schema-from-$stamp";
-my $in = <<EOF;
-update rhnVersionInfo
-  set label = '$migrationdir',
-      modified = current_timestamp
-where label = 'schema';
-commit;
-EOF
+my $in = $db_specific->update_migration_dir($migrationdir);
 mkdir "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", 0755;
 if (not -e "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
     die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR/$migrationdir]: $!\n";
@@ -264,16 +278,16 @@ while (@path) {
         rmdir_and_die("Overrun: too many migrations", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
     }
 
-    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.ref", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{db_backend}");
+    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.ref", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}");
     for (my $i = 0; $i < @files; $i++) {
-        if ($files[$i] =~ /\.ref(\.$options{db_backend})?$/) {
+        if ($files[$i] =~ /\.ref(\.$options{$db_specific->BACKEND_PROPERTY})?$/) {
             my @subfiles;
             local *REF;
             open REF, $files[$i] or rmdir_and_die("Error reading [$files[$i]]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
             while (<REF>) {
                 chomp;
                 next if /^\s*(#|$)/;
-                my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{db_backend}");
+                my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{$db_specific->BACKEND_PROPERTY}");
                 if (not @newsubfiles) {
                     rmdir_and_die("Could not find any files matching [$_] from [$files[$i]]\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
                 }
@@ -298,8 +312,7 @@ while (@path) {
     $prenum++;
 }
 
-my $backend_dir = ( $options{db_backend} eq 'postgresql' ? 'postgres' : $options{db_backend} );
-my $endfile = "/etc/sysconfig/rhn/$backend_dir/upgrade-end.sql";
+my $endfile = "$SCHEMA_DIR/upgrade-end.sql";
 $in = "";
 local * END;
 open END, '<', $endfile or rmdir_and_die("Error reading [$endfile]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
@@ -309,14 +322,7 @@ $in .= join '', <END>;
 }
 close END;
 
-$in .= <<EOF;
-insert into rhnVersionInfo
-       ( label, name_id, evr_id, created, modified )
-       values ('schema', lookup_package_name('$my_schema_name'),
-               lookup_evr(null, '$my_schema_version' , '$my_schema_release', 'rpm' ),
-               current_timestamp, current_timestamp );
-commit;
-EOF
+$in .= $db_specific->insert_version_info($my_schema_name, $my_schema_version, $my_schema_release);
 
 local *SQL;
 open SQL, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql" or rmdir_and_die(
@@ -326,8 +332,7 @@ print SQL $in;
 close SQL;
 
 my $lname = "$migrationdir-to-$start.log";
-run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname,
-                   $target_schema, $default_tablespace);
+run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace, $skip_confirm);
 
 exit;
 
@@ -337,11 +342,12 @@ sub run_schema_upgrade
     my $logfilename = shift;
     my $target_schema = shift;
     my $default_tablespace = shift;
+    my $skip_confirm = shift;
 
     die "Migration directory [$dir] does not exist." if(! -d "$dir");
 
     print "Planning to run schema upgrade with dir '$dir'\n";
-    if (not @ARGV or $ARGV[0] ne '-y') {
+    if (not $skip_confirm) {
         local $| = 1;
         READ_ENTER:
         print "Hit Enter to continue or Ctrl+C to interrupt: ";
@@ -350,7 +356,7 @@ sub run_schema_upgrade
         if ($in ne '') {
                 goto READ_ENTER;
         }
-}
+    }
 
     my $logfile = $SCHEMA_UPGRADE_LOGDIR . "/$logfilename";
 
@@ -388,13 +394,7 @@ sub run_schema_upgrade
     }
     print "\n";
 
-    my $new_schema_version = run_query(<<EOF);
-       select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
-         from rhnVersionInfo, rhnPackageName, rhnPackageEVR PE
-        where rhnVersionInfo.label = 'schema'
-          and rhnVersionInfo.name_id = rhnPackageName.id
-          and rhnVersionInfo.evr_id = PE.id;
-EOF
+    my $new_schema_version = run_query($db_specific->get_schema_version_query());
     if (not defined $new_schema_version) {
         die "Upgrade seems to have run OK yet new schema version is not in rhnVersionInfo.\n";
     }
@@ -412,8 +412,14 @@ EOF
 sub run_query {
     my ($command) = @_;
     $ENV{'LANG'} = 'C';
+
+    my @params = ('--select-mode');
+    push @params, '--reportdb' if $reportdb;
+    push @params, '-';
+
     my $pid = IPC::Open3::open3(my $wfh, my $rfh, '>&STDERR',
-                                'spacewalk-sql', '--select-mode', '-') or return;
+                                'spacewalk-sql', @params) or return;
+
     print $wfh $command;
     print $wfh "\n";
     close $wfh;
@@ -524,7 +530,7 @@ spacewalk-schema-upgrade - utility for Spacewalk / Satellite schema upgrade
 =head1 SYNOPSIS
 
 B<spacewalk-schema-upgrade>
-[B<-y>]
+[B<-y>] [B<--reportdb>]
 
 =head1 OPTIONS
 
@@ -534,12 +540,17 @@ B<spacewalk-schema-upgrade>
 
 Proceed without asking for confirmation.
 
+=item B<--reportdb>
+
+Upgrade the local reporting database instead of the application database.
+
 =back
 
 =head1 DESCRIPTION
 
 B<spacewalk-schema-upgrade> is utility for Spacewalk and Satellite database
-schema upgrade.
+schema upgrade. It can update both the application and the reporting
+database.
 
 Let's assume you're upgrading your Satellite or Spacewalk installation
 from an earlier version and you are done with the package upgrade part
@@ -575,8 +586,10 @@ with B<-y> switch).
 
 Proceed with the schema upgrade following the upgrade path found, putting
 the output from executed sql scripts (including errors if any)
-into F</var/log/spacewalk/schema-upgrade>. For this step it is important
-that you have spacewalk-sql command in your PATH.
+into F</var/log/spacewalk/schema-upgrade> (or into
+F</var/log/spacewalk/schema-reportdb-upgrade> in case of the reporting
+database). For this step it is important that you have spacewalk-sql
+command in your PATH.
 
 =back
 
@@ -584,7 +597,8 @@ that you have spacewalk-sql command in your PATH.
 
 =over 5
 
-=item F</etc/sysconfig/rhn/schema-upgrade>
+=item F</etc/sysconfig/rhn/schema-upgrade>,
+F</etc/sysconfig/rhn/schema-reportdb-upgrade>
 
 Directory containing directories with schema upgrade scripts (one directory for
 every major upgrade step).
@@ -593,7 +607,9 @@ every major upgrade step).
 
 Default configuration file containing database connection information.
 
-=item F</var/log/spacewalk/schema-upgrade>
+=item F</var/log/spacewalk/schema-upgrade>,
+F</var/log/spacewalk/schema-reportdb-upgrade>
+
 
 Directory containing output from sql upgrade scripts.
 

@@ -13,6 +13,12 @@ import time
 import salt.utils
 from salt.exceptions import CommandExecutionError
 
+try:
+    from salt.utils.path import which_bin as _which_bin
+except:
+    from salt.utils import which_bin as _which_bin
+
+
 __salt__ = {
     'cmd.run_all': salt.modules.cmdmod.run_all,
 }
@@ -112,7 +118,7 @@ def get_net_modules():
         try:
             drivers[devdir] = get_net_module(devdir)
         except OSError as devdir:
-            log.warn("An error occurred getting net driver for {0}".format(devdir), exc_info=True)
+            log.warning("An error occurred getting net driver for {0}".format(devdir), exc_info=True)
 
     return drivers or None
 
@@ -140,10 +146,6 @@ def _klp():
     :return:
     '''
     # get 'kgr' for versions prior to SLE 15
-    try:
-        from salt.utils.path import which_bin as _which_bin
-    except:
-        from salt.utils import which_bin as _which_bin
 
     klp = _which_bin(['klp', 'kgr'])
     patchname = None

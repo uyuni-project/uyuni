@@ -10,7 +10,7 @@ if [ ! -z $PG_TMPFS_DIR ]; then
     ./docker-testing-pgsql-move-data-to-tmpfs.sh $PG_TMPFS_DIR
 fi
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
+export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
 
 echo Going to reset pgsql database

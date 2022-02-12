@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -173,8 +173,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("hostInfo", server.hasVirtualizationEntitlement() && server.asMinionServer().isPresent() ?
-                GSON.toJson(virtManager.getHostInfo(server.getMinionId()).orElse(null)) :
-                null);
+                virtManager.getHostInfo(server.getMinionId()).map(GSON::toJson).orElse("{}") :
+                "{}");
 
         return renderPage("show", () -> data);
     }

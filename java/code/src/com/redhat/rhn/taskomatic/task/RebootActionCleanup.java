@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -43,6 +44,11 @@ import java.util.Map;
  * that after this time, the reboot action has failed for some reason.
  */
 public class RebootActionCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "reboot_action_cleanup";
+    }
 
     /**
      * {@inheritDoc}
@@ -62,6 +68,11 @@ public class RebootActionCleanup extends RhnJavaJob {
         if (failedRebootActions.size() > 0) {
             log.info("Set " + failedRebootActions.size() +
                     " reboot action(s) to failed. Running longer than 6 hours.");
+            if (log.isDebugEnabled()) {
+                log.debug("failed (server,action) ids" + failedRebootActions.stream()
+                    .map(a -> "(" + a.get("server_id") + ", " + a.get("action_id") + ")")
+                    .collect(Collectors.joining(", ")));
+            }
         }
     }
 

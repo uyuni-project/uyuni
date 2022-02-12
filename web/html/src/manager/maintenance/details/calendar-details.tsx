@@ -1,13 +1,15 @@
 import * as React from "react";
 import { useState } from "react";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
+
+import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 import { MessageType } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 type CalendarDetailsProps = {
   id: number;

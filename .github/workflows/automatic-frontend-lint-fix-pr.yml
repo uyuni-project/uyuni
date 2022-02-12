@@ -1,0 +1,68 @@
+name: Automatic frontend lint fix PR
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'web/html/src/**'
+      - 'susemanager-frontend/**'
+
+jobs:
+  frontend_lint_fix_pr:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Get Yarn cache directory
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Use Yarn cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install dependencies
+      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+
+    # Run lint with fixes
+    - name: Run lint
+      run: yarn --cwd web/html/src lint
+
+    # If there's any changes, create a PR, see https://github.com/marketplace/actions/create-pull-request
+    - name: Create PR
+      uses: peter-evans/create-pull-request@v3
+      with:
+        # Delete the branch after merger
+        delete-branch: true
+        branch: automatic-frontend-lint-fix
+        author: "github-actions <github-actions[bot]@users.noreply.github.com>"
+        title: Automatic frontend lint fixes
+        body: |
+          ## What does this PR change?
+
+          Applies automatic frontend lint fixes.  
+
+          If this PR was made in error, please reach out to [@uyuni-project/frontend](https://github.com/orgs/uyuni-project/teams/frontend).  
+
+          ## Changelogs
+
+          The applied changes are only stylistic and do not need a changelog.
+
+          - [x] No changelog needed
+        commit-message: Automatic frontend lint fixes
+        # Ask for a review from the user who triggered the run, in this case the person who pushed to master
+        reviewers: ${{ github.actor }}

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,14 +24,18 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
@@ -52,6 +56,17 @@ public class ServerGroupManager {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
+
+    private final SaltApi saltApi;
+
+    /**
+     * Constructor.
+     *
+     * @param saltApiIn the Salt API
+     */
+    public ServerGroupManager(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
 
     /**
      * Lookup a ServerGroup by ID and organization.
@@ -184,7 +199,7 @@ public class ServerGroupManager {
         removeServers(group, listServers(group), user);
         dissociateAdmins(group, group.getAssociatedAdminsFor(user), user);
         SaltStateGeneratorService.INSTANCE.removeServerGroup(group);
-        ServerGroupFactory.remove(group);
+        ServerGroupFactory.remove(saltApi, group);
     }
 
     /**
@@ -327,7 +342,8 @@ public class ServerGroupManager {
         validateAccessCredentials(loggedInUser, sg, sg.getName());
         validateAdminCredentials(loggedInUser);
 
-        SystemManager.addServersToServerGroup(servers, sg);
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServersToServerGroup(servers, sg);
         updatePillarAfterGroupUpdateForServers(servers);
     }
 
@@ -340,6 +356,12 @@ public class ServerGroupManager {
         servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
                 .forEach(s -> MinionPillarManager.INSTANCE.generatePillar(s, false,
                          MinionPillarManager.PillarSubset.GROUP_MEMBERSHIP));
+
+        // Trigger pillar refresh
+        List<String> minionIds = servers.stream()
+                .flatMap(s -> Opt.stream(s.asMinionServer()))
+                .map(MinionServer::getMinionId).collect(Collectors.toList());
+        saltApi.refreshPillar(new MinionList(minionIds));
     }
 
     /**
@@ -364,7 +386,9 @@ public class ServerGroupManager {
      */
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         if (!servers.isEmpty()) {
-            SystemManager.removeServersFromServerGroup(servers, sg);
+            SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                    saltApi);
+            systemManager.removeServersFromServerGroup(servers, sg);
             updatePillarAfterGroupUpdateForServers(servers);
         }
     }

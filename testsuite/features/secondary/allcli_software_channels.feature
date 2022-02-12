@@ -1,14 +1,14 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
-Feature: Chanel subscription via SSM
+Feature: Channel subscription via SSM
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
 @sle_minion
-  Scenario: Change child channels for SLES Minion subscribed to a base channel
+  Scenario: Change child channels for SLES minion subscribed to a base channel
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
@@ -34,7 +34,7 @@ Feature: Chanel subscription via SSM
     And I follow "Clear"
 
 @sle_client
-  Scenario: Change child channels for SLES Client subscribed to a base channel
+  Scenario: Change child channels for SLES client subscribed to a base channel
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
@@ -90,6 +90,9 @@ Feature: Chanel subscription via SSM
     When I refresh the metadata for "sle_client"
     Then "1" channels with prefix "spacewalk:" should be enabled on "sle_client"
     And channel "Test-Channel-x86_64" should be enabled on "sle_client"
+
+  Scenario: Wait 3 minutes for the scheduled action to be executed
+    When I wait for "180" seconds
 
 @sle_minion
   Scenario: Check channel change has completed for the SLES minion

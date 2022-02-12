@@ -19,18 +19,21 @@
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
-%endif
-
-%{!?__python2:%global __python2 /usr/bin/python2}
 %{!?__python3:%global __python3 /usr/bin/python3}
-
-%if %{undefined python2_sitelib}
-%global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
-%endif
 
 %if %{undefined python3_sitelib}
 %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
+%endif
+
+%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
+%global build_py2   1
+%{!?__python2:%global __python2 /usr/bin/python2}
+%if %{undefined python2_sitelib}
+%global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%endif
+%endif
+
 
 %if "%{_vendor}" == "debbuild"
 # For making sure we can set the right args for deb distros
@@ -40,7 +43,7 @@
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 Name:           rhnlib
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 %if "%{_vendor}" == "debbuild"
 Group:          python
@@ -60,6 +63,7 @@ BuildArch:      noarch
 %description
 rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.
 
+%if 0%{?build_py2}
 %package -n python2-rhnlib
 Summary:        Python libraries for the Spacewalk project
 Group:          Development/Libraries
@@ -107,6 +111,7 @@ Obsoletes:      rhnlib < %{version}-%{release}
 %description -n python2-rhnlib
 rhnlib is a collection of python modules used by the Spacewalk software.
 
+%endif # 0%{?build_py2}
 
 %if 0%{?build_py3}
 %package -n python3-rhnlib
@@ -139,7 +144,8 @@ Conflicts:      spacewalk-proxy < 1.3.6
 
 %description -n python3-rhnlib
 rhnlib is a collection of python modules used by the Spacewalk software.
-%endif
+
+%endif # 0%{?build_py2}
 
 %prep
 %setup -q
@@ -152,21 +158,27 @@ if [ ! -e setup.cfg ]; then
 fi
 
 %build
+%if 0%{?build_py2}
 make -f Makefile.rhnlib PYTHON=%{__python2}
+%endif
 %if 0%{?build_py3}
 make -f Makefile.rhnlib PYTHON=%{__python3}
 %endif
 
 %install
+%if 0%{?build_py2}
 %{__python2} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root $RPM_BUILD_ROOT %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
+%endif
 %if 0%{?build_py3}
 %{__python3} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root $RPM_BUILD_ROOT %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-rhnlib
 %defattr(-,root,root)
 %doc ChangeLog COPYING README TODO
 %{python2_sitelib}/*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-rhnlib

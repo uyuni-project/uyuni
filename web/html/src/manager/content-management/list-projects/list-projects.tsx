@@ -1,20 +1,24 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useEffect } from "react";
+
 import _truncate from "lodash/truncate";
 
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
+import { LinkButton } from "components/buttons";
+import { FromNow } from "components/datetime/FromNow";
+import withPageWrapper from "components/general/with-page-wrapper";
+import { ServerMessageType } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-import { Utils } from "utils/functions";
-import { LinkButton } from "components/buttons";
 import { showSuccessToastr } from "components/toastr/toastr";
-import withPageWrapper from "components/general/with-page-wrapper";
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
-import { ServerMessageType } from "components/messages";
-import { FromNow } from "components/datetime/FromNow";
+
+import { Utils } from "utils/functions";
 
 type ContentProjectOverviewType = {
   properties: {
@@ -88,7 +92,6 @@ const ListProjects = (props: Props) => {
         data={normalizedProjects}
         identifier={(row) => row.label}
         initialSortColumnKey="name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by any value")} />}
       >
         <Column

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -57,9 +57,9 @@ import java.util.Optional;
 public class ServerTest extends BaseTestCaseWithUser {
 
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemUnentitler systemUnentitler = new SystemUnentitler(
             virtManager, monitoringManager, serverGroupManager);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
@@ -325,12 +325,11 @@ public class ServerTest extends BaseTestCaseWithUser {
     private class VirtEntitledServer extends Server {
         VirtEntitledServer(User user) {
             setOrg(user.getOrg());
-            ServerGroupManager manager = new ServerGroupManager();
-            EntitlementServerGroup group = manager.
+            EntitlementServerGroup group = serverGroupManager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
             List servers = new ArrayList();
             servers.add(this);
-            manager.addServers(group, servers, user);
+            serverGroupManager.addServers(group, servers, user);
         }
     }
 

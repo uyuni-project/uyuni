@@ -117,4 +117,13 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-forward-registration-bunch', 'Forward registrations to SUSE Customer Center', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'update-payg-data-bunch', 'Runs update-payg-data
+Parameters:
+- integer parameter payg instance ID
+- without parameter updates data for all instances', null);
+
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-update-reporting-bunch', 'Update Reporting DB with current data', null);
+
 commit;

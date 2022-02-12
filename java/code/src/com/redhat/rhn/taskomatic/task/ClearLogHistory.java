@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -34,6 +34,12 @@ import java.util.List;
 public class ClearLogHistory extends RhnJavaJob {
 
     private static final Integer DEFAULT_DAYS_VALUE = 7;
+
+    @Override
+    public String getConfigNamespace() {
+        return "clear_log_history";
+    }
+
     /**
      * {@inheritDoc}
      */

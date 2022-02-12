@@ -1,6 +1,5 @@
+import { Comparator, PagedData } from "./index";
 import PageControl from "./page-control";
-
-import { PagedData, Comparator } from "./index";
 
 export default class SimpleDataProvider {
   data: Array<any>;
@@ -13,6 +12,7 @@ export default class SimpleDataProvider {
     | null
     | undefined;
   loading: boolean | null | undefined;
+  selectable?: boolean | ((row: any) => boolean);
 
   constructor(
     data: Array<any>,
@@ -21,13 +21,15 @@ export default class SimpleDataProvider {
     comparators?: {
       [key: string]: Comparator;
     },
-    loading?: boolean
+    loading?: boolean,
+    selectable: boolean | ((row: any) => boolean) = false
   ) {
     this.data = data;
     this.identifier = identifier;
     this.filter = filter;
     this.comparators = comparators;
     this.loading = loading;
+    this.selectable = selectable;
   }
 
   get(callback: (promise: Promise<PagedData>) => any, pageControl?: PageControl): void {
@@ -59,8 +61,10 @@ export default class SimpleDataProvider {
   }
 
   getIds(callback: (promise: Promise<Array<any>>) => any, criteria?: string) {
-    const ids = this.getFilteredData(criteria).map(this.identifier);
-    callback(Promise.resolve(ids));
+    const filtered = this.getFilteredData(criteria);
+    const isSelectable = typeof this.selectable === "boolean" ? undefined : this.selectable;
+    const selectable = isSelectable != null ? filtered.filter((item) => isSelectable(item)) : filtered;
+    callback(Promise.resolve(selectable.map(this.identifier)));
   }
 
   getFilteredData(criteria: string | null | undefined): Array<any> {

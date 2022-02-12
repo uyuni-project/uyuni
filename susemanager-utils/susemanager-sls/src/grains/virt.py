@@ -5,14 +5,21 @@ Grains for virtualization hosts
 import logging
 import re
 import subprocess
-from xml.etree import ElementTree
 import salt.modules.virt
+
+try:
+    from salt.utils.path import which_bin as _which_bin
+except ImportError:
+    from salt.utils import which_bin as _which_bin
+
+from xml.etree import ElementTree
+
 
 log = logging.getLogger(__name__)
 
 
 def __virtual__():
-    return salt.modules.virt.__virtual__()
+    return salt.modules.virt.__virtual__() and _which_bin(["libvirtd"]) is not None
 
 
 def features():
@@ -43,7 +50,7 @@ def features():
             libvirt_version = 0
             for idx in range(len(matcher.groups())):
                 libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (len(matcher.groups()) - idx - 1)
-    except FileNotFoundError:
+    except OSError:
         log.error("libvirtd is not installed or is not in the PATH")
 
     return {

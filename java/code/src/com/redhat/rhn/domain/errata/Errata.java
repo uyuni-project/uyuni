@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2020 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,6 +56,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     private Date issueDate;
     private Date updateDate;
     private String notes;
+    private String rights;
     private String refersTo;
     private String advisoryName;
     private Long advisoryRel;
@@ -350,6 +351,27 @@ public class Errata extends BaseDomainHelper implements Selectable {
         }
         else {
             this.notes = notesIn;
+        }
+    }
+
+    /**
+     * Getter for rights
+     * @return the rights for this errata
+     */
+    public String getRights() {
+        return rights;
+    }
+
+    /**
+     * Setter for rights
+     * @param rightsIn value to set for this errata
+     */
+    public void setRights(String rightsIn) {
+        if (StringUtils.isEmpty(rightsIn)) {
+            this.rights = null;
+        }
+        else {
+            this.rights = rightsIn;
         }
     }
 

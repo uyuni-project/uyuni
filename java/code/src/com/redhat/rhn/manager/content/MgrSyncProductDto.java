@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -35,7 +35,10 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     /** The friendly name. */
     private String friendlyName;
 
-    /** The id. */
+    /** The product id. */
+    private Long productId;
+
+    /** The database id. */
     private Long id;
 
     /** The version. */
@@ -57,17 +60,19 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * Instantiates a new listed product.
      *
      * @param friendlyNameIn the friendly name
-     * @param idIn the id
+     * @param productIdIn the id
+     * @param idIn the database id
      * @param versionIn the version
      * @param recommendsIn product is recommended
      * @param baseChannelIn the base channel
      * @param childChannelsIn set of channels
      * @param extensionsIn set of extensions
      */
-    public MgrSyncProductDto(String friendlyNameIn, Long idIn, String versionIn, boolean recommendsIn,
-            MgrSyncChannelDto baseChannelIn, Set<MgrSyncChannelDto> childChannelsIn,
-                             Set<MgrSyncProductDto> extensionsIn) {
+    public MgrSyncProductDto(String friendlyNameIn, Long productIdIn, Long idIn, String versionIn,
+                             boolean recommendsIn, MgrSyncChannelDto baseChannelIn,
+                             Set<MgrSyncChannelDto> childChannelsIn, Set<MgrSyncProductDto> extensionsIn) {
         friendlyName = friendlyNameIn;
+        productId = productIdIn;
         id = idIn;
         version = versionIn;
         baseChannel = baseChannelIn;
@@ -101,11 +106,19 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     }
 
     /**
-     * Gets the id.
-     * @return the id
+     * Gets the database id.
+     * @return the database id.
      */
     public Long getId() {
         return id;
+    }
+
+    /**
+     * Gets the product id.
+     * @return the product id
+     */
+    public Long getProductId() {
+        return productId;
     }
 
     /**
@@ -203,7 +216,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * @return ident
      */
     public String getIdent() {
-        return id + "-" + getBaseChannel().getLabel();
+        return productId + "-" + getBaseChannel().getLabel();
     }
 
     /**
@@ -216,7 +229,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
                 .append(getNormalizedName(), other.getNormalizedName())
                 .append(getVersion(), other.getVersion())
                 .append(getArch(), other.getArch())
-                .append(getId(), other.getId())
+                .append(getProductId(), other.getProductId())
                 .append(getBaseChannel().getLabel(), other.getBaseChannel().getLabel())
                 .toComparison();
     }
@@ -242,7 +255,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
         return new EqualsBuilder()
                 .append(getNormalizedName(), otherProduct.getNormalizedName())
                 .append(getVersion(), otherProduct.getVersion())
-                .append(getId(), otherProduct.getId())
+                .append(getProductId(), otherProduct.getProductId())
                 .append(getBaseChannel().getLabel(),
                         otherProduct.getBaseChannel().getLabel())
                  .isEquals();
@@ -254,7 +267,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getId())
+            .append(getProductId())
             .append(getBaseChannel().getLabel())
             .hashCode();
     }
@@ -267,6 +280,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
             .append("name", friendlyName)
             .append("id", id)
+            .append("productId", productId)
             .append("version", version)
             .append("baseChannel", baseChannel.getLabel())
             .toString();

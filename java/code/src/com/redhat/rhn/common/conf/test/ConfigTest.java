@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,8 +23,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class ConfigTest extends RhnBaseTestCase {
     static final String TEST_KEY = "user";
@@ -33,7 +34,7 @@ public class ConfigTest extends RhnBaseTestCase {
     private Config c;
 
     public void setUp() throws Exception {
-        c = new Config();
+        super.setUp();
 
         // create test config path
         String confPath = "/tmp/" + TestUtils.randomString();
@@ -58,9 +59,7 @@ public class ConfigTest extends RhnBaseTestCase {
 
         }
 
-        c.addPath(confPath + "/conf");
-        c.addPath(confPath + "/conf/default");
-        c.parseFiles();
+        c = new Config(List.of(confPath + "/conf", confPath + "/conf/default"));
     }
 
     /**
@@ -332,12 +331,37 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     public void testNamespaceProperties() throws Exception {
+        Set<String> expectedProperties = Set.of("web.without_prefix",
+            "web.to_override_without_prefix",
+            "web.product_name",
+            "web.to_override_without_prefix1",
+            "web.property_with_prefix",
+            "web.fq_to_override",
+            "web.collision",
+            "web.java.taskomatic_cobbler_user",
+            "web.to_override"
+        );
+
         Properties prop = c.getNamespaceProperties("web");
-        assertTrue(prop.size() >= 8);
-        for (Iterator i = prop.keySet().iterator(); i.hasNext();) {
-            String key = (String)i.next();
-            assertTrue(key.startsWith("web"));
-        }
+        assertEquals(expectedProperties.size(), prop.size());
+        assertEquals(expectedProperties, prop.keySet());
+    }
+
+    public void testNamespacePropertiesWithRewriting() throws Exception {
+        Set<String> expectedProperties = Set.of("test.without_prefix",
+            "test.to_override_without_prefix",
+            "test.product_name",
+            "test.to_override_without_prefix1",
+            "test.property_with_prefix",
+            "test.fq_to_override",
+            "test.collision",
+            "test.java.taskomatic_cobbler_user",
+            "test.to_override"
+        );
+
+        Properties prop = c.getNamespaceProperties("web", "test");
+        assertEquals(expectedProperties.size(), prop.size());
+        assertEquals(expectedProperties, prop.keySet());
     }
 
     public void testBug154517IgnoreRpmsave() {

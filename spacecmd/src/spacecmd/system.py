@@ -32,6 +32,7 @@
 
 import gettext
 import shlex
+from datetime import datetime
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -3222,12 +3223,16 @@ def do_system_applyerrata(self, args):
     if options.start_time:
         opts.append('-s ' + options.start_time)
 
-    return self.do_errata_apply(' '.join(opts + errata_list), systems)
+    return self.do_errata_apply(' '.join(opts), errata_list, systems)
 
 ####################
 
 
 def help_system_listevents(self):
+    if self.check_api_version('25.0'):
+        logging.warning(_('This method is deprecated and will be removed in a future API version. '
+        'Please use system_listeventhistory instead.\n'))
+
     print(_('system_listevents: List the event history for a system'))
     print(_('usage: system_listevents <SYSTEMS>'))
     print('')
@@ -3246,6 +3251,10 @@ def do_system_listevents(self, args):
     if not args:
         self.help_system_listevents()
         return 1
+
+    if self.check_api_version('25.0'):
+        logging.warning(_('This method is deprecated and will be removed in a future API version. '
+        'Please use system_listeventhistory instead.\n'))
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -3278,6 +3287,212 @@ def do_system_listevents(self, args):
             print(_('Summary:   %s') % e.get('summary'))
             print(_('Completed: %s') % e.get('completed'))
             print(_('Details:   %s') % e.get('details'))
+
+    return 0
+
+####################
+
+
+def help_system_listeventhistory(self):
+    print(_('system_listeventhistory: List the event history for a system'))
+    print(_('''usage: system_listeventhistory <SYSTEMS> [options]
+
+options:
+  -s START_TIME list only the events happened after the specified time. [Default: returns all events]
+  -o OFFSET skip the first events. Ignored if -l is not specified as well. [Default: 0]
+  -l LIMIT limit the results to the specified number of events. [Default: no limit]'''))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def complete_system_listeventhistory(self, text, line, beg, end):
+    return self.tab_complete_systems(text)
+
+
+def do_system_listeventhistory(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-s', '--start-time')
+    arg_parser.add_argument('-o', '--offset')
+    arg_parser.add_argument('-l', '--limit')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_system_listeventhistory()
+        return 1
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning(_N('No systems selected'))
+        return 1
+
+    if not options.start_time:
+        options.start_time = datetime(1970, 1, 1)
+    else:
+        options.start_time = parse_time_input(options.start_time)
+        if not options.start_time:
+            return 1
+
+    if not options.offset:
+        options.offset = 0
+    else:
+        try:
+            options.offset = int(options.offset)
+        except ValueError:
+            logging.error(_('Invalid offset'))
+            return 1
+
+    if options.limit:
+        try:
+            options.limit = int(options.limit)
+        except ValueError:
+            logging.error(_('Invalid limit'))
+            return 1
+
+    add_separator = False
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        if add_separator:
+            print(self.SEPARATOR)
+        add_separator = True
+
+        if len(systems) > 1:
+            print(_('System: %s') % system)
+
+        if options.limit:
+            events = self.client.system.getEventHistory(self.session, system_id,
+                                                        options.start_time, options.offset, options.limit)
+        else:
+            events = self.client.system.getEventHistory(self.session, system_id, options.start_time)
+
+        for e in events:
+            print('')
+            print(_('Id:           %s') % e.get('id'))
+            print(_('History type: %s') % e.get('history_type'))
+            print(_('Status:       %s') % e.get('status'))
+            print(_('Summary:      %s') % e.get('summary'))
+            print(_('Completed:    %s') % e.get('completed'))
+
+    return 0
+
+####################
+
+
+def help_system_eventdetails(self):
+    print(_('system_eventdetails: Retrieve the details of an event for a system'))
+    print(_('usage: system_eventdetails <SYSTEM> <EVENT>'))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def complete_system_eventdetails(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return self.tab_complete_systems(text)
+
+    return None
+
+
+def do_system_eventdetails(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_system_eventdetails()
+        return 1
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+        args.pop(0)
+    else:
+        systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning(_N('No systems selected'))
+        return 1
+
+    if not args:
+        logging.warning(_N('No event specified'))
+        return 1
+
+    try:
+        event_id = int(args.pop(0))
+    except ValueError:
+        logging.error(_('Invalid event id'))
+        return 1
+
+    add_separator = False
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        if add_separator:
+            print(self.SEPARATOR)
+        add_separator = True
+
+        if len(systems) > 1:
+            print(_('System: %s') % system)
+
+        print('')
+
+        try:
+            detail = self.client.system.getEventDetails(self.session, system_id, event_id)
+        except xmlrpclib.Fault:
+            print(_('No event %s found in the history of system %s' % (event_id, system_id)))
+            continue
+
+        print(_('Id:              %s') % detail.get('id'))
+        print('')
+        print(_('History type:    %s') % detail.get('history_type'))
+        print(_('Status:          %s') % detail.get('status'))
+        print(_('Summary:         %s') % detail.get('summary'))
+        print('')
+        print(_('Created:         %s') % detail.get('created'))
+        print(_('Picked up:       %s') % detail.get('picked_up'))
+        print(_('Completed:       %s') % detail.get('completed'))
+
+        if detail.get('history_type') != 'History Event':
+            print('')
+            print(_('Earliest action: %s') % detail.get('earliest_action'))
+            print(_('Result message:  %s') % detail.get('result_msg'))
+            print(_('Result code:     %s') % detail.get('result_code'))
+
+            additional_info = detail.get('additional_info')
+            if additional_info and additional_info:
+                print('')
+                print(_('Additional info:'))
+
+                info_separator = False
+
+                for info in additional_info:
+                    if info_separator:
+                        print('')
+                    info_separator = True
+
+                    print(_('    Result:          %s') % info.get('result'))
+                    print(_('    Detail:          %s') % info.get('detail'))
 
     return 0
 

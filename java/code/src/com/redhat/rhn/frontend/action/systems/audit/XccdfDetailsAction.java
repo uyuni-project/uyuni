@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -54,8 +54,7 @@ public class XccdfDetailsAction extends RhnAction implements Listable {
         Long sid = context.getRequiredParam("sid");
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         Long xid = context.getRequiredParam("xid");
-        XccdfTestResult testResult = ScapFactory.lookupTestResultByIdAndSid(xid,
-                server.getId());
+        XccdfTestResult testResult = ScapFactory.lookupTestResultByIdAndSid(xid, server.getId());
         request.setAttribute("testResult", testResult);
         request.setAttribute("system", server);
 

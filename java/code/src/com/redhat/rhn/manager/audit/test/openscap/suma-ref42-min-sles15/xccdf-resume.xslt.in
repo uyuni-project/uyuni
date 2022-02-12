@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2012 Red Hat Inc., Durham, North Carolina. All Rights Reserved.
+
+This library is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation; either version 2.1 of the License.
+
+This library is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with this library; if not, write to the Free Software Foundation, Inc., 59
+Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+Authors:
+     Simon Lukasik <slukasik@redhat.com>
+-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+    xmlns:cdf1="http://checklists.nist.gov/xccdf/1.1"
+    xmlns:cdf2="http://checklists.nist.gov/xccdf/1.2">
+    <xsl:output method="xml" encoding="UTF-8"/>
+
+    <xsl:template match="/">
+        <benchmark-resume>
+            <xsl:apply-templates select="*[local-name()='Benchmark']"/>
+        </benchmark-resume>
+    </xsl:template>
+
+    <xsl:template match="cdf1:Benchmark | cdf2:Benchmark">
+        <xsl:copy-of select="@id"/>
+        <xsl:attribute name="version">
+            <xsl:value-of select="normalize-space(cdf1:version/text()|cdf2:version/text())"/>
+        </xsl:attribute>
+
+        <xsl:variable name="profileId" select="cdf1:TestResult[1]/cdf1:profile/@idref | cdf2:TestResult[1]/cdf2:profile/@idref"/>
+        <xsl:choose>
+            <xsl:when test="not($profileId)"/> <!-- Do not send profile element when scanning with 'default' profile. -->
+            <xsl:when test="cdf1:Profile[@id = $profileId] | cdf2:Profile[@id = $profileId]">
+                <xsl:apply-templates select="cdf1:Profile[@id = $profileId] | cdf2:Profile[@id = $profileId]"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <profile title="Tailored profile">
+                    <xsl:attribute name="id">
+                         <xsl:value-of select="$profileId"/>
+                    </xsl:attribute>
+                </profile>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates select="cdf1:TestResult[1] | cdf2:TestResult[1]"/>
+    </xsl:template>
+
+    <xsl:template match="cdf1:Profile | cdf2:Profile">
+        <profile>
+            <xsl:attribute name="title">
+                <xsl:value-of select="normalize-space(cdf1:title/text() | cdf2:title/text())"/>
+            </xsl:attribute>
+            <xsl:copy-of select="@id"/>
+            <xsl:attribute name="description">
+                <xsl:value-of select="normalize-space(cdf1:description[@xml:lang='en-US']/text() | cdf2:description[@xml:lang='en-US']/text())"/>
+            </xsl:attribute>
+        </profile>
+    </xsl:template>
+
+    <xsl:template match="cdf1:TestResult | cdf2:TestResult">
+        <TestResult>
+            <xsl:copy-of select="@id"/>
+            <xsl:copy-of select="@start-time"/>
+            <xsl:copy-of select="@end-time"/>
+            <pass>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'pass'] | cdf2:rule-result[cdf2:result = 'pass']"/>
+            </pass>
+            <fail>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'fail'] | cdf2:rule-result[cdf2:result = 'fail']"/>
+            </fail>
+            <error>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'error'] | cdf2:rule-result[cdf2:result = 'error']"/>
+            </error>
+            <unknown>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'unknown'] | cdf2:rule-result[cdf2:result = 'unknown']"/>
+            </unknown>
+            <notapplicable>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'notapplicable'] | cdf2:rule-result[cdf2:result = 'notapplicable']"/>
+            </notapplicable>
+            <notchecked>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'notchecked'] | cdf2:rule-result[cdf2:result = 'notchecked']"/>
+            </notchecked>
+            <notselected>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'notselected'] | cdf2:rule-result[cdf2:result = 'notselected']"/>
+            </notselected>
+            <informational>
+                   <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'informational'] | cdf2:rule-result[cdf2:result = 'informational']"/>
+            </informational>
+            <fixed>
+                    <xsl:apply-templates select="cdf1:rule-result[cdf1:result = 'fixed'] | cdf2:rule-result[cdf2:result = 'fixed']"/>
+            </fixed>
+        </TestResult>
+    </xsl:template>
+
+    <xsl:template match="cdf1:rule-result | cdf2:rule-result">
+        <rr>
+            <xsl:attribute name="id">
+                <xsl:value-of select="normalize-space(@idref)"/>
+            </xsl:attribute>
+            <xsl:apply-templates select="cdf1:ident | cdf2:ident"/>
+        </rr>
+    </xsl:template>
+
+    <xsl:template match="cdf1:ident | cdf2:ident">
+        <ident>
+            <xsl:copy-of select="@system"/>
+            <xsl:value-of select="normalize-space(text())"/>
+        </ident>
+    </xsl:template>
+</xsl:stylesheet>

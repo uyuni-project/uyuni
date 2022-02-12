@@ -1,17 +1,19 @@
 import * as React from "react";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import CreatorPanel from "components/panels/CreatorPanel";
-import PropertiesForm from "./properties-form";
-import { Loading } from "components/utils/Loading";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
-import PropertiesView from "./properties-view";
+import { Loading } from "components/utils/Loading";
+
 import produce from "utils/produce";
 
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import { ProjectHistoryEntry, ProjectMessageType, ProjectPropertiesType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
-
-import { ProjectMessageType, ProjectHistoryEntry, ProjectPropertiesType } from "../../../type";
+import PropertiesForm from "./properties-form";
+import PropertiesView from "./properties-view";
 
 type Props = {
   projectId: string;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.messaging;
 
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.frontend.events.CloneErrataAction;
@@ -53,6 +55,7 @@ import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
@@ -297,7 +300,8 @@ public class MessageQueue {
         MessageQueue.registerAction(new SsmChangeChannelSubscriptionsAction(),
                                     SsmChangeChannelSubscriptionsEvent.class);
 
-        MessageQueue.registerAction(new SsmDeleteServersAction(),
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        MessageQueue.registerAction(new SsmDeleteServersAction(systemManager),
                                     SsmDeleteServersEvent.class);
 
         // Used to allow SSM package installs to be run asynchronously

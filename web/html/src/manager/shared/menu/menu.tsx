@@ -1,8 +1,11 @@
-import SpaRenderer from "core/spa/spa-renderer";
-import { MessagesContainer } from "components/toastr/toastr";
+import * as React from "react";
+
 import escapeHtml from "html-react-parser";
 
-import * as React from "react";
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { MessagesContainer } from "components/toastr/toastr";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const Link = (props) => (

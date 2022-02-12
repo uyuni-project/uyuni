@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,11 +24,11 @@ import java.util.Set;
  */
 public class ImageInspectActionDetails extends ActionChild {
 
-    private long id;
-    private long actionId;
+    private Long id;
+    private Long actionId;
     private String name;
     private String version;
-    private long imageStoreId;
+    private Long imageStoreId;
     private Set<ImageInspectActionResult> results = new HashSet<>();
     private Long buildActionId;
 
@@ -63,42 +63,42 @@ public class ImageInspectActionDetails extends ActionChild {
     /**
      * @return the image store id
      */
-    public long getImageStoreId() {
+    public Long getImageStoreId() {
         return imageStoreId;
     }
 
     /**
      * @param imageStoreIdIn the image store id to set
      */
-    public void setImageStoreId(long imageStoreIdIn) {
+    public void setImageStoreId(Long imageStoreIdIn) {
         this.imageStoreId = imageStoreIdIn;
     }
 
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
     /**
      * @return the action id
      */
-    public long getActionId() {
+    public Long getActionId() {
         return actionId;
     }
 
     /**
      * @param actionIdIn the action id to set
      */
-    public void setActionId(long actionIdIn) {
+    public void setActionId(Long actionIdIn) {
         this.actionId = actionIdIn;
     }
 

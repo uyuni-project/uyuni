@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Text, Select, Form } from "components/input";
+
+import { Form, Select, Text } from "components/input";
 
 import { ProjectEnvironmentType } from "../../../type";
 

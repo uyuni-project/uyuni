@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -55,6 +55,8 @@ import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -277,6 +279,33 @@ public class ConfigChannelHandler extends BaseHandler {
         }
 
         return cm.lookupConfigRevisionByRevId(loggedInUser, cf, revision.longValue());
+    }
+
+    /**
+     * Synchronize all files on the disk to the current state of the database.
+     * @param loggedInUser The current user
+     * @param channelLabels the list of global channels to synchronize files from.
+     * @return 1 if successful with the operation, errors out otherwise.
+     *
+     * @xmlrpc.doc Synchronize all files on the disk to the current state of the database.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param
+     * #array_single("string","configuration channel labels to synchronize files from.")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int syncSaltFilesOnDisk(User loggedInUser, List<String> channelLabels) {
+        var manager = ConfigurationManager.getInstance();
+        var saltManager = ConfigChannelSaltManager.getInstance();
+        for (var label : channelLabels) {
+            try {
+                var channel = manager.lookupGlobalConfigChannel(loggedInUser, label);
+                saltManager.generateConfigChannelFiles(channel);
+            }
+            catch (Exception e) {
+                throw new ConfigFileErrorException(e.getMessage());
+            }
+        }
+        return 1;
     }
 
     /**

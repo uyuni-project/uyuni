@@ -7,6 +7,7 @@ require 'tmpdir'
 require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
+require 'cucumber'
 #require 'simplecov'
 require 'minitest/autorun'
 require 'securerandom'
@@ -18,8 +19,6 @@ require 'multi_test'
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
-$long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
-puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -72,28 +71,30 @@ Capybara.register_driver(:headless_chrome) do |app|
   )
 end
 
+Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
+Capybara.default_normalize_ws = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
-puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+
+# enable minitest assertions in steps
+enable_assertions
 
 # embed a screenshot after each failed scenario
 After do |scenario|
+  current_epoch = Time.new.to_i
+  STDOUT.puts "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      img_path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-      if page.driver.browser.respond_to?(:save_screenshot)
-        Dir.mkdir("screenshots") unless File.directory?("screenshots")
-        page.driver.browser.save_screenshot(img_path)
-      else
-        save_screenshot(img_path)
-      end
-      # embed the image name in the cucumber HTML report
-      embed current_url, 'text/plain'
-      embed img_path, 'image/png'
+      Dir.mkdir("screenshots") unless File.directory?("screenshots")
+      path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      page.driver.browser.save_screenshot(path)
+      attach path, 'image/png'
+      attach current_url, 'text/plain'
     rescue StandardError => e
-      puts "Error taking a screenshot: #{e.message}"
+      warn e.message
     ensure
       debug_server_on_realtime_failure
       previous_url = current_url
@@ -104,15 +105,21 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
-AfterStep do
-  if all('.senna-loading').any?
-    puts "WARN: Step ends with an ajax transition not finished, let's wait a bit!"
-    raise 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading')
+AfterStep do |scenario|
+  if has_css?('.senna-loading', wait: 0)
+    STDOUT.puts "WARN: Step ends with an ajax transition not finished, let's wait a bit!"
+    unless has_no_css?('.senna-loading', wait: 15)
+      # Note: See the special behavior of this step here: https://github.com/cucumber/cucumber-ruby/issues/1101
+      scenario.fail!(StandardError.new('Timeout: Waiting AJAX transition'))
+    end
   end
 end
 
-# enable minitest assertions in steps
-enable_assertions
+Before do
+  current_time = Time.new
+  @scenario_start_time = current_time.to_i
+  STDOUT.puts "This scenario ran at: #{current_time}\n"
+end
 
 # do some tests only if the corresponding node exists
 Before('@proxy') do
@@ -207,6 +214,14 @@ Before('@debian10_ssh_minion') do
   skip_this_scenario unless $debian10_ssh_minion
 end
 
+Before('@debian11_minion') do
+  skip_this_scenario unless $debian11_minion
+end
+
+Before('@debian11_ssh_minion') do
+  skip_this_scenario unless $debian11_ssh_minion
+end
+
 Before('@sle11sp4_ssh_minion') do
   skip_this_scenario unless $sle11sp4_ssh_minion
 end
@@ -291,17 +306,45 @@ Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
 end
 
+Before('@sle11sp4_buildhost') do
+  skip_this_scenario unless $sle11sp4_buildhost
+end
+
+Before('@sle11sp3_terminal') do
+  skip_this_scenario unless $sle11sp3_terminal_mac
+end
+
+Before('@sle12sp5_buildhost') do
+  skip_this_scenario unless $sle12sp5_buildhost
+end
+
+Before('@sle12sp5_terminal') do
+  skip_this_scenario unless $sle12sp5_terminal_mac
+end
+
+Before('@sle15sp3_buildhost') do
+  skip_this_scenario unless $sle15sp3_buildhost
+end
+
+Before('@sle15sp3_terminal') do
+  skip_this_scenario unless $sle15sp3_terminal_mac
+end
+
+Before('@opensuse153arm_minion') do
+  skip_this_scenario unless $opensuse153arm_minion
+end
+
 Before('@skip_for_debianlike') do |scenario|
-  filename = scenario.feature.location.file
+  filename = scenario.location.file
   skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
 end
 
 Before('@skip_for_minion') do |scenario|
-  skip_this_scenario if scenario.feature.location.file.include? 'minion'
+  skip_this_scenario if scenario.location.file.include? 'minion'
 end
 
 Before('@skip_for_traditional') do |scenario|
-  skip_this_scenario if scenario.feature.location.file.include? 'client'
+  skip_this_scenario if scenario.location.file.include? 'client'
 end
 
 # do some tests only if we have SCC credentials
@@ -344,23 +387,18 @@ Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
 end
 
-# do test only if we want to run long tests
-Before('@long_test') do
-  skip_this_scenario unless $long_tests_enabled
-end
-
 # have more infos about the errors
 def debug_server_on_realtime_failure
-  puts '=> /var/log/rhn/rhn_web_ui.log'
+  STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
   out, _code = $server.run("tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit=\"$(date --date='5 minutes ago' '+%Y-%m-%d %H:%M:%S')\" ' $0 > limit'")
   out.each_line do |line|
-    puts line.to_s
+    STDOUT.puts line.to_s
   end
-  puts
-  puts '=> /var/log/rhn/rhn_web_api.log'
+  STDOUT.puts
+  STDOUT.puts '=> /var/log/rhn/rhn_web_api.log'
   out, _code = $server.run("tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit=\"$(date --date='5 minutes ago' '+%Y-%m-%d %H:%M:%S')\" ' $0 > limit'")
   out.each_line do |line|
-    puts line.to_s
+    STDOUT.puts line.to_s
   end
-  puts
+  STDOUT.puts
 end

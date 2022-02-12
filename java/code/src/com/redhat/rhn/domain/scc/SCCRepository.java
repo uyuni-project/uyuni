@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,7 +56,18 @@ import javax.persistence.Transient;
                         " join r.products pr " +
                         " join pr.product p " +
                         " join p.channelFamily cf " +
-                        "where cf.label = :channelFamily")
+                        "where cf.label = :channelFamily"),
+        @NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
+                query = "select r from SCCRepository r " +
+                        "where r.url like :urlEndpoint"),
+        @NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
+                query = "select distinct r from SCCRepository r " +
+                        " join r.products pr " +
+                        " join pr.product p " +
+                        " join p.arch a " +
+                        " where lower(p.name) = lower(:product_name) " +
+                        " and lower(a.label) = lower(:arch_name) " +
+                        " and r.installerUpdates = 'N' ")
 })
 public class SCCRepository extends BaseDomainHelper {
 
@@ -270,12 +281,27 @@ public class SCCRepository extends BaseDomainHelper {
                     return Optional.of(a);
                 }
             }
-            else {
-                if (a.getOptionalCredentials().orElse(new Credentials()).getUrl() != null) {
+            // Credentials present
+            else if (a.getOptionalCredentials().isPresent()) {
+                Credentials ct = a.getOptionalCredentials().get(); //NOSONAR empty option is check in previous line
+                if (ct.getType().getLabel().equals(Credentials.TYPE_CLOUD_RMT)) {
+                    // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
+                    if (result.flatMap(r -> r.getOptionalCredentials())
+                            .map(c -> !Credentials.TYPE_SCC.equals(c.getType().getLabel()))
+                            .orElse(true)) {
+                        result = Optional.of(a);
+                    }
+                }
+                // Not RMT
+                else if (a.getOptionalCredentials().flatMap(c -> Optional.ofNullable(c.getUrl())).isPresent()) {
                     return Optional.of(a);
                 }
             }
-            result = Optional.of(a);
+
+            if (result.isEmpty() || a.getId() < result.get().getId()) {
+                // get always the same result and use the oldest alternative if there are multiple
+                result = Optional.of(a);
+            }
         }
         return result;
     }

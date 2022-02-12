@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,7 +23,11 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.org.OrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.org.MigrationManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +38,7 @@ import java.util.Map;
 public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
 
     private ChannelOrgHandler handler = new ChannelOrgHandler();
-    private OrgHandler orgHandler = new OrgHandler();
+    private OrgHandler orgHandler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
     public void setUp() throws Exception {
         super.setUp();

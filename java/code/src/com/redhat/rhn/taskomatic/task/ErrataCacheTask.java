@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2011 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,11 @@ public class ErrataCacheTask extends RhnQueueJob {
 
     public static final String DISPLAY_NAME = "errata_cache";
     private static Logger log = null;
+
+    @Override
+    public String getConfigNamespace() {
+        return "errata_cache";
+    }
 
     @Override
     protected Logger getLogger() {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -486,7 +486,7 @@ public class PackageListItem extends IdComboDto {
         String e = (this.getEpoch() != null) ? this.getEpoch() : "0";
         String v = (this.getVersion() != null) ? this.getVersion() : "0";
         String r = (this.getRelease() != null) ? this.getRelease() : "0";
-        return this.getName() + "-" + e + "-" + v + "-" + r;
+        return this.getName() + "-" + e + ":" + v + "-" + r;
     }
 
     /**
@@ -499,7 +499,7 @@ public class PackageListItem extends IdComboDto {
         String v = (this.getVersion() != null) ? this.getVersion() : "0";
         String r = (this.getRelease() != null) ? this.getRelease() : "0";
         String a = (this.getArch() != null) ? this.getArch() : "0";
-        return this.getName() + "-" + e + "-" + v + "-" + r + "-" + a;
+        return this.getName() + "-" + e + ":" + v + "-" + r + "." + a;
     }
 
     /**

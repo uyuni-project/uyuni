@@ -1,4 +1,5 @@
-import { render, server, click, waitFor, screen } from "utils/test-utils";
+import { click, render, screen, server, waitFor } from "utils/test-utils";
+
 import AccordionPathContent from "./accordion-path-content";
 import { createNewAnsiblePath } from "./ansible-path-type";
 
@@ -51,7 +52,7 @@ describe("AccordionPathContent summary", () => {
     await waitFor(() => {
       screen.getByText("Registered Systems:");
       screen.getByText("Unknown Hostnames:");
-      screen.getByText("my-ansible-managed-client-1.tf.local");
+      screen.getByText("my-ansible-managed-client-1.tf.local", { exact: false });
       screen.getByText("minion.tf.local");
     });
   });

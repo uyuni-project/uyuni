@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,7 @@ import java.util.List;
 
 import redstone.xmlrpc.XmlRpcInvocation;
 import redstone.xmlrpc.XmlRpcInvocationInterceptor;
+
 
 /**
  * LoggingInvocationProcessor extends the marquee-xmlrpc library to allow
@@ -186,6 +187,11 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                 return argPosition == 4;
             case "system.bootstrapWithPrivateKey":
                 return argPosition == 4 || argPosition == 5;
+            case "admin.payg.create":
+                return argPosition == 5 || argPosition == 6 || argPosition == 7 ||
+                        argPosition == 11 || argPosition == 12 || argPosition == 13;
+            case "admin.payg.setDetails":
+                return argPosition == 1;
             default:
                 return false;
         }

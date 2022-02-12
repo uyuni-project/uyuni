@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,10 +24,10 @@ import java.util.Set;
  */
 public class ImageBuildActionDetails extends ActionChild {
 
-    private long id;
-    private long actionId;
+    private Long id;
+    private Long actionId;
     private String version;
-    private long imageProfileId;
+    private Long imageProfileId;
     private Set<ImageBuildActionResult> results = new HashSet<>();
 
     /**
@@ -53,7 +53,7 @@ public class ImageBuildActionDetails extends ActionChild {
      *
      * @return the image profile id
      */
-    public long getImageProfileId() {
+    public Long getImageProfileId() {
         return imageProfileId;
     }
 
@@ -62,35 +62,35 @@ public class ImageBuildActionDetails extends ActionChild {
      *
      * @param imageProfileIdIn the image profile id
      */
-    public void setImageProfileId(long imageProfileIdIn) {
+    public void setImageProfileId(Long imageProfileIdIn) {
         this.imageProfileId = imageProfileIdIn;
     }
 
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
     /**
      * @return the action id
      */
-    public long getActionId() {
+    public Long getActionId() {
         return actionId;
     }
 
     /**
      * @param actionIdIn the action id to set
      */
-    public void setActionId(long actionIdIn) {
+    public void setActionId(Long actionIdIn) {
         this.actionId = actionIdIn;
     }
 

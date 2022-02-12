@@ -28,7 +28,7 @@
     </rhn:column>
 
     <rhn:column header="filelist.jsp.lastmodified">
-      <c:out value="${current.mtime}" />
+      <rhn:formatDate value="${current.mtime}" />
     </rhn:column>
 
     <rhn:column header="filelist.jsp.size">

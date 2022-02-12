@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -42,12 +42,14 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
         KickstartDataTest.setupTestConfiguration(user);
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
         MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));

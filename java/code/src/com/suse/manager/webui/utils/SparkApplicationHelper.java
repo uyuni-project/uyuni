@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -295,39 +295,6 @@ public class SparkApplicationHelper {
      */
     public static TemplateViewRoute withImageAdmin(TemplateViewRouteWithUser route) {
         return withRole(route, RoleFactory.IMAGE_ADMIN);
-    }
-
-    /**
-     * Use in routes to automatically get the current user, which must be an
-     * Cluster Admin, in your controller.
-     * Example: <code>Spark.get("/url", withClusterAdmin(Controller::method));</code>
-     * @param route the route
-     * @return the route
-     */
-    public static Route withClusterAdmin(RouteWithUser route) {
-        return withRole(route, RoleFactory.CLUSTER_ADMIN);
-    }
-
-    /**
-     * Use in routes to automatically get the current user, which must be an
-     * Cluster Admin, in your controller.
-     * Example: <code>Spark.get("/url", withClusterAdmin(Controller::method));</code>
-     * @param route the route
-     * @return the route
-     */
-    public static TemplateViewRoute withClusterAdmin(TemplateViewRouteWithUser route) {
-        return withRole(route, RoleFactory.CLUSTER_ADMIN);
-    }
-
-    /**
-     * Use in routes to automatically get the current user, which must be an
-     * Cluster Admin, in your controller.
-     * Example: <code>Spark.get("/url", withClusterAdmin(withUserPreferences(Controller::method));</code>
-     * @param route the route
-     * @return the route
-     */
-    public static TemplateViewRoute withClusterAdmin(TemplateViewRoute route) {
-        return withRole(route, RoleFactory.CLUSTER_ADMIN);
     }
 
     /**

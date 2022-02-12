@@ -23,13 +23,9 @@ import socket
 import subprocess
 import sys
 import tempfile
-import time
 import traceback
+import json
 from datetime import datetime
-try:
-    from html.parser import HTMLParser
-except ImportError:
-    from HTMLParser import HTMLParser
 from dateutil.parser import parse as parse_date
 from xml.dom import minidom
 import gzip
@@ -44,12 +40,12 @@ from uyuni.common.usix import raise_with_tb
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from uyuni.common import fileutils
-from spacewalk.common import rhnLog, rhnCache, rhnMail, suseLib
+from spacewalk.common import rhnLog, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common import repo
 from uyuni.common.rhnLib import isSUSE, utc
 from uyuni.common.checksum import getFileChecksum
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.context_managers import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib import importLib, mpmSource, packageImport, errataCache
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
@@ -120,13 +116,11 @@ def send_mail(sync_type="Repo"):
         headers = {
             'Subject': _("%s sync. report from %s") % (sync_type, host_label),
         }
-        comp = CFG.getComponent()
-        initCFG('web')
-        sndr = "root@%s" % host_label
-        if CFG.default_mail_from:
-            sndr = CFG.default_mail_from
-        rhnMail.send(headers, body, sender=sndr)
-        initCFG(comp)
+        with cfg_component('web') as CFG:
+            sndr = "root@%s" % host_label
+            if CFG.default_mail_from:
+                sndr = CFG.default_mail_from
+            rhnMail.send(headers, body, sender=sndr)
     else:
         print((_("+++ email requested, but there is nothing to send +++")))
 
@@ -260,7 +254,6 @@ def set_filter_opt(option, opt_str, value, parser):
 
 def getChannelRepo():
 
-    initCFG('server.satellite')
     rhnSQL.initDB()
     items = {}
     sql = """
@@ -287,7 +280,6 @@ def getChannelRepo():
 
 def getParentsChilds(b_only_custom=False):
 
-    initCFG('server.satellite')
     rhnSQL.initDB()
 
     sql = """
@@ -409,7 +401,6 @@ class RepoSync(object):
         self.show_packages_only = show_packages_only
         self.regenerate_bootstrap_repo = False
 
-        initCFG('server.susemanager')
         rhnSQL.initDB()
 
         # setup logging
@@ -417,7 +408,8 @@ class RepoSync(object):
         log_path = default_log_location + log_dir + '/' + log_filename
         if log_level is None:
             log_level = 0
-        CFG.set('DEBUG', log_level)
+        with cfg_component('server.susemanager') as CFG:
+            CFG.set('DEBUG', log_level)
         rhnLog.initLOG(log_path, log_level)
         # os.fchown isn't in 2.4 :/
         os.system("chgrp " + APACHE_GROUP + " " + log_path)
@@ -484,6 +476,7 @@ class RepoSync(object):
         #if self.checksum_cache is None:
         #    self.checksum_cache = {}
         self.arches = self.get_compatible_arches(int(self.channel['id']))
+        self.channel_arch = self.get_channel_arch(int(self.channel['id']))
         self.import_batch_size = default_import_batch_size
 
     def set_import_batch_size(self, batch_size):
@@ -504,8 +497,11 @@ class RepoSync(object):
         sync_error = 0
         repo_checksum_type = 'sha1'
         start_time = datetime.now()
+        with cfg_component('server.susemanager') as CFG:
+            mount_point = CFG.MOUNT_POINT
         for data in self.urls:
-            data['source_url'] = self.set_repo_credentials(data)
+            data['source_url_auth'] = self.set_repo_credentials(data)
+            data['source_url'] = [u["url"] for u in data['source_url_auth']]
             insecure = False
             if data['metadata_signed'] == 'N':
                 insecure = True
@@ -513,7 +509,8 @@ class RepoSync(object):
             plugin = None
             repo_type = data['repo_type']
 
-            for url in data['source_url']:
+            for source_url in data['source_url_auth']:
+                url = source_url["url"]
                 try:
                     if '://' not in url:
                         raise Exception("Unknown protocol in repo URL: %s" % url)
@@ -571,7 +568,9 @@ class RepoSync(object):
                                                   channel_label=self.channel_label,
                                                   ca_cert_file=ca_cert_file,
                                                   client_cert_file=client_cert_file,
-                                                  client_key_file=client_key_file)
+                                                  client_key_file=client_key_file,
+                                                  channel_arch=self.channel_arch,
+                                                  http_headers=source_url["http_headers"])
                     except repo.GeneralRepoException as exc:
                         log(0, "Plugin error: {}".format(exc))
                         sync_error = -1
@@ -676,13 +675,14 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        if CFG.AUTO_GENERATE_BOOTSTRAP_REPO and self.regenerate_bootstrap_repo:
-            log(0, '  Regenerating bootstrap repositories.')
-            subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
+        with cfg_component('server.susemanager') as CFG:
+            if CFG.AUTO_GENERATE_BOOTSTRAP_REPO and self.regenerate_bootstrap_repo:
+                log(0, '  Regenerating bootstrap repositories.')
+                subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
         # update permissions
-        fileutils.createPath(os.path.join(CFG.MOUNT_POINT, 'rhn'))  # if the directory exists update ownership only
-        for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'rhn')):
+        fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
+        for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
             for d in dirs:
                 fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP, chmod=int('0755', 8))
             for f in files:
@@ -714,6 +714,7 @@ class RepoSync(object):
         """Try to import the repository plugin required to sync the repository
 
         :repo_type: type of the repository; only 'yum' is currently supported
+        :channel_arch: the channel architecture
 
         """
         if repo_type == "yum" and not isSUSE():
@@ -756,13 +757,15 @@ class RepoSync(object):
             return getFileChecksum(hashtype, fd=tmp.fileno())
 
     def copy_metadata_file(self, plug, filename, comps_type, relative_dir):
+        with cfg_component('server.susemanager') as CFG:
+            mount_point = CFG.MOUNT_POINT
         old_checksum = None
         db_timestamp = datetime.fromtimestamp(0.0, utc)
         basename = os.path.basename(filename)
         log(0, '')
         log(0, "  Importing %s file %s." % (comps_type, basename))
         relativedir = os.path.join(relative_dir, self.channel_label)
-        absdir = os.path.join(CFG.MOUNT_POINT, relativedir)
+        absdir = os.path.join(mount_point, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
         compressed_suffixes = ['.gz', '.bz', '.xz']
@@ -788,7 +791,7 @@ class RepoSync(object):
                                  and comps_type_id = (select id from rhnCompsType where label = :ctype)""")
         if h.execute(cid=self.channel['id'], ctype=comps_type):
             (db_filename, db_timestamp) = h.fetchone()
-            comps_path = os.path.join(CFG.MOUNT_POINT, db_filename)
+            comps_path = os.path.join(mount_point, db_filename)
             if os.path.isfile(comps_path):
                 old_checksum = getFileChecksum('sha256', comps_path)
 
@@ -882,6 +885,7 @@ class RepoSync(object):
                return None
 
         log(0, "Add Patch %s" % patch_name)
+
         e = importLib.Erratum()
         e['errata_from']   = notice['from']
         e['advisory'] = e['advisory_name'] = patch_name
@@ -905,6 +909,7 @@ class RepoSync(object):
         e['update_date']   = updated_date
         e['org_id'] = self.org_id
         e['notes']         = ''
+        e['rights']        = notice['rights']
         e['refers_to']     = ''
         e['channels']      = [{'label':self.channel_label}]
         e['packages']      = []
@@ -1007,6 +1012,8 @@ class RepoSync(object):
             log(0, "    Packages passed filter rules: %5d" % num_passed)
         channel_id = int(self.channel['id'])
 
+        with cfg_component('server.susemanager') as CFG:
+            mount_point = CFG.MOUNT_POINT
         for pack in packages:
             if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
@@ -1033,7 +1040,7 @@ class RepoSync(object):
             if db_pack:
                 # Path in filesystem is defined
                 if db_pack['path']:
-                    pack.path = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
+                    pack.path = os.path.join(mount_point, db_pack['path'])
                 else:
                     pack.path = ""
 
@@ -1195,6 +1202,8 @@ class RepoSync(object):
         mpm_src_batch = importLib.Collection()
         affected_channels = []
         upload_caller = "server.app.uploadPackage"
+        with cfg_component('server.susemanager') as CFG:
+            mount_point = CFG.MOUNT_POINT
 
         to_download_count = sum(p[1] for p in to_process)
         import_count = 0
@@ -1229,7 +1238,7 @@ class RepoSync(object):
                     # First write the package to the filesystem to final location
                     # pylint: disable=W0703
                     try:
-                        importLib.move_package(pack.a_pkg.payload_stream.name, basedir=CFG.MOUNT_POINT,
+                        importLib.move_package(pack.a_pkg.payload_stream.name, basedir=mount_point,
                                                relpath=rel_package_path,
                                                checksum_type=pack.a_pkg.checksum_type,
                                                checksum=pack.a_pkg.checksum, force=1)
@@ -1358,6 +1367,9 @@ class RepoSync(object):
 
         channel_id = int(self.channel['id'])
 
+        with cfg_component('server.susemanager') as CFG:
+            mount_point = CFG.MOUNT_POINT
+
         for pack in packages:
 
             packs = rhnPackage.get_info_for_package(
@@ -1383,7 +1395,7 @@ class RepoSync(object):
             if db_pack:
                 # Path in filesystem is defined
                 if db_pack['path']:
-                    pack.path = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
+                    pack.path = os.path.join(mount_point, db_pack['path'])
                 else:
                     pack.path = ""
 
@@ -1601,6 +1613,9 @@ class RepoSync(object):
         if len(ks_tree_label) < 4:
             ks_tree_label += "_repo"
 
+        with cfg_component('server.susemanager') as CFG:
+            mount_point = CFG.MOUNT_POINT
+
         # construct ks_path and check we already have this KS tree synced
         id_request = """
                 select id
@@ -1611,7 +1626,7 @@ class RepoSync(object):
         if self.org_id:
             ks_path += str(self.org_id) + '/' + ks_tree_label
             # Trees synced from external repositories are expected to have full path it database
-            db_path = os.path.join(CFG.MOUNT_POINT, ks_path)
+            db_path = os.path.join(mount_point, ks_path)
             row = rhnSQL.fetchone_dict(id_request + " and org_id = :org_id", channel_id=self.channel['id'],
                                        label=ks_tree_label, org_id=self.org_id)
         else:
@@ -1646,12 +1661,12 @@ class RepoSync(object):
             else:
                 self.ks_install_type = 'generic_rpm'
 
-        fileutils.createPath(os.path.join(CFG.MOUNT_POINT, ks_path))
+        fileutils.createPath(os.path.join(mount_point, ks_path))
         # Make sure images are included
         to_download = set()
         to_download.add(treeinfo_path)
         for repo_path in treeinfo_parser.get_images():
-            local_path = os.path.join(CFG.MOUNT_POINT, ks_path, repo_path)
+            local_path = os.path.join(mount_point, ks_path, repo_path)
             # TODO: better check
             if not os.path.exists(local_path) or self.force_kickstart:
                 to_download.add(repo_path)
@@ -1703,7 +1718,7 @@ class RepoSync(object):
                     dirs_queue.append(repo_path)
                     continue
 
-                if not os.path.exists(os.path.join(CFG.MOUNT_POINT, ks_path, repo_path)) or self.force_kickstart:
+                if not os.path.exists(os.path.join(mount_point, ks_path, repo_path)) or self.force_kickstart:
                     to_download.add(repo_path)
 
         for addon_dir in treeinfo_parser.get_addons():
@@ -1726,7 +1741,7 @@ class RepoSync(object):
                     for i in xmldoc.getElementsByTagName('package'):
                         package = i.getElementsByTagName('location')[0].attributes['href'].value
                         repo_path = str(os.path.normpath(os.path.join(addon_dir, package)))
-                        if not os.path.exists(os.path.join(CFG.MOUNT_POINT, ks_path, repo_path)) \
+                        if not os.path.exists(os.path.join(mount_point, ks_path, repo_path)) \
                                 or self.force_kickstart:
                             to_download.add(repo_path)
 
@@ -1736,17 +1751,17 @@ class RepoSync(object):
             downloader = ThreadedDownloader(force=self.force_kickstart)
             for item in to_download:
                 params = {}
-                plug.set_download_parameters(params, item, os.path.join(CFG.MOUNT_POINT, ks_path, item))
+                plug.set_download_parameters(params, item, os.path.join(mount_point, ks_path, item))
                 downloader.add(params)
             downloader.set_log_obj(progress_bar)
             downloader.run()
             log2background(0, "Download finished.")
             for item in to_download:
-                st = os.stat(os.path.join(CFG.MOUNT_POINT, ks_path, item))
+                st = os.stat(os.path.join(mount_point, ks_path, item))
                 # update entity about current file in a database
                 delete_h.execute(id=ks_id, path=item)
                 insert_h.execute(id=ks_id, path=item,
-                                 checksum=getFileChecksum('sha256', os.path.join(CFG.MOUNT_POINT, ks_path, item)),
+                                 checksum=getFileChecksum('sha256', os.path.join(mount_point, ks_path, item)),
                                  st_size=st.st_size, st_time=st.st_mtime)
         else:
             log(0, "No new kickstart files to download.")
@@ -1795,6 +1810,7 @@ class RepoSync(object):
 
         """
         url = suseLib.URL(url_in)
+        headers = {}
         creds = url.get_query_param('credentials')
         if creds:
             creds_no = 0
@@ -1807,7 +1823,7 @@ class RepoSync(object):
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare("SELECT username, password FROM suseCredentials WHERE id = :id")
+            h = rhnSQL.prepare("SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id")
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
@@ -1818,7 +1834,9 @@ class RepoSync(object):
             url.password = base64.decodestring(credentials['password'].encode()).decode()
             # remove query parameter from url
             url.query = ""
-        return url.getURL()
+            if 'extra_auth' in credentials and credentials['extra_auth']:
+                headers = json.loads(credentials['extra_auth'].tobytes())
+        return {"url": url.getURL(), "http_headers": headers}
 
     def upload_patches(self, notices):
         """Insert the information from patches into the database.
@@ -2317,7 +2335,8 @@ class RepoSync(object):
         return package
 
     def sendErrorMail(self, body):
-        to = CFG.TRACEBACK_MAIL
+        with cfg_component('server.susemanager') as CFG:
+            to = CFG.TRACEBACK_MAIL
         fr = to
         if isinstance(to, type([])):
             fr = to[0].strip()
@@ -2377,9 +2396,26 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        arches = [k['label'] for k in  h.fetchall_dict()
-                if CFG.SYNC_SOURCE_PACKAGES or k['label'] not in ['src', 'nosrc']]
+        with cfg_component('server.susemanager') as CFG:
+            arches = [k['label'] for k in  h.fetchall_dict()
+                      if CFG.SYNC_SOURCE_PACKAGES or k['label'] not in ['src', 'nosrc']]
         return arches
+
+    @staticmethod
+    def get_channel_arch(channel_id):
+        """Return the basearch value for the channel"""
+        h = rhnSQL.prepare("""select ca.label
+                              from rhnChannel c,
+                              rhnChannelArch ca
+                              where c.id = :channel_id
+                              and c.channel_arch_id = ca.id""")
+        h.execute(channel_id=channel_id)
+        row = h.fetchone_dict()
+
+        if not isinstance(row, dict):
+            return None
+
+        return re.sub("^channel-([^-]+)(?:-deb)?$", "\\1", row['label'])
 
     @staticmethod
     def _update_keywords(notice):

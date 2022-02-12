@@ -35,7 +35,6 @@
   <property name="branding.css.dir" value="${branding.dir}/css"/>
   <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
   <property name="js.dir" value="${basedir}/../web/html/src/dist/javascript"/>
-  <property name="js.vendors.dir" value="${basedir}/../web/html/src/dist/vendors"/>
   <property name="js.components.dir" value="${basedir}/../web/html/src"/>
 
   <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
@@ -250,9 +249,6 @@
     <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh '${rsync.arg.rsh}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
-    <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
-    </exec>
   </target>
 
   <target name="deploy-salt-files" depends="open-ssh-socket" description="Deploy Salt files">
@@ -263,7 +259,6 @@
     </condition>
     <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
     <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
-    <property name="salt.cluster.provider" value="/usr/share/susemanager/cluster-providers"/>
 
     <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
     <exec executable="rsync">
@@ -286,13 +281,6 @@
     <exec executable="rsync">
       <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/reactor/ ${deploy.user}@${deploy.host}:${salt.reactor.files.dir}/" />
     </exec>
-    <echo message="Copying CaasP cluster provider files to remote host...${salt.cluster.provider}"/>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/metadata/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/metadata/caasp/" />
-    </exec>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/caasp/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/states/caasp/" />
-    </exec>
   </target>
 
   <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
@@ -309,7 +297,7 @@
     </exec>
   </target>
 
-  <target name="deploy-restart" depends="deploy, restart-tomcat" />
+  <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
   <target name="test" depends="jar" description="Run unit tests">
     <mkdir dir="${tests.results.dir}" />
@@ -338,7 +326,16 @@
     </junit>
   </target>
 
-  <target name="test-pr" depends="test" description="Run unit tests for Pull Requests">
+  <target name="test-report" depends="test" description="Run unit tests and produce a report">
+    <junitreport todir="${tests.results.dir}">
+      <fileset dir="${tests.results.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${tests.results.dir}/html"/>
+    </junitreport>
+  </target>
+
+  <target name="test-pr" depends="test-report" description="Run unit tests for Pull Requests">
     <fail if="junit_failed"/>
   </target>
 

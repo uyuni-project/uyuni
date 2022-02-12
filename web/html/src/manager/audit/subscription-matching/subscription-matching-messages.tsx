@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Table } from "components/table/Table";
+
 import { Column } from "components/table/Column";
-import { CsvLink } from "./subscription-matching-util";
+import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
+
+import { CsvLink } from "./subscription-matching-util";
 
 type Props = {
   messages: any[];
@@ -79,7 +82,6 @@ class Messages extends React.Component<Props> {
             data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
             identifier={(row) => row.id}
             initialSortColumnKey="message"
-            initialItemsPerPage={window.userPrefPageSize}
           >
             <Column
               columnKey="message"

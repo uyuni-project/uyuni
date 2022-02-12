@@ -22,7 +22,7 @@ module.exports = {
     const inputs = argv._;
 
     if (!inputs.filter(Boolean).length) {
-      console.log('received no inputs');
+      console.log("received no inputs");
       process.exit(1);
     }
 

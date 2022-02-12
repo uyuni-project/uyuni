@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+#
+# Copyright (c) 2021, SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# SSL Certificate Setup Tool
+#
+#
+
+
+## language imports
+import sys
+import os
+
+try:
+    import certs.mgr_ssl_cert_setup
+except KeyboardInterrupt:
+    sys.stderr.write("\nUser interrupted process.\n")
+    sys.exit(0)
+except ImportError as e:
+    sys.stderr.write("Unable to load module certs.mgr_ssl_cert_setup\n")
+    sys.stderr.write(str(e) + "\n")
+    sys.exit(1)
+
+#-------------------------------------------------------------------------------
+if __name__ == '__main__':
+    try:
+        sys.exit(certs.mgr_ssl_cert_setup.main() or 0)
+    except KeyboardInterrupt:
+        sys.stderr.write("\nUser interrupted process.\n")
+        sys.exit(0)
+    except SystemExit:
+        raise
+    except:
+        sys.stderr.write("\nERROR: unhandled exception occurred:\n")
+        raise
+#===============================================================================
+

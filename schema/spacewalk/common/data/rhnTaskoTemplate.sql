@@ -266,4 +266,25 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
                         0,
                         null);
 
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+            VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name = 'update-payg-data-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name = 'update-payg-auth'),
+                        0,
+                        null);
+
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+            VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name = 'update-payg-data-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name = 'update-payg-hosts'),
+                        1,
+                        null);
+
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+            VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-update-reporting-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='mgr-update-reporting'),
+                        0,
+                        null);
+
 commit;

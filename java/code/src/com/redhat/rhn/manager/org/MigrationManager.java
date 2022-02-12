@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.org;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
@@ -57,7 +56,16 @@ import java.util.Set;
  */
 public class MigrationManager extends BaseManager {
 
-    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private final ServerGroupManager groupManager;
+
+    /**
+     * Constructor
+     *
+     * @param groupManagerIn the server group manager
+     */
+    public MigrationManager(ServerGroupManager groupManagerIn) {
+        groupManager = groupManagerIn;
+    }
 
     /**
      * Migrate a set of servers to the organization specified
@@ -66,7 +74,7 @@ public class MigrationManager extends BaseManager {
      * @param servers List of servers to be migrated
      * @return the list of server ids successfully migrated.
      */
-    public static List<Long> migrateServers(User user, Org toOrg, List<Server> servers) {
+    public List<Long> migrateServers(User user, Org toOrg, List<Server> servers) {
 
         List<Long> serversMigrated = new ArrayList<Long>();
 
@@ -75,7 +83,7 @@ public class MigrationManager extends BaseManager {
             Org fromOrg = server.getOrg();
             Set<Entitlement> entitlements = server.getEntitlements();
 
-            MigrationManager.removeOrgRelationships(user, server);
+            removeOrgRelationships(user, server);
             MigrationManager.updateAdminRelationships(fromOrg, toOrg, server);
             MigrationManager.moveServerToOrg(toOrg, server);
             MigrationManager.updateServerEntitlements(toOrg, server, entitlements);
@@ -121,7 +129,7 @@ public class MigrationManager extends BaseManager {
      * @param user Org admin performing the migration.
      * @param server Server to be migrated.
      */
-    public static void removeOrgRelationships(User user, Server server) {
+    public void removeOrgRelationships(User user, Server server) {
 
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw new PermissionException(RoleFactory.ORG_ADMIN);
@@ -142,7 +150,7 @@ public class MigrationManager extends BaseManager {
         for (ManagedServerGroup group : server.getManagedGroups()) {
             List<Server> tempList = new LinkedList<Server>();
             tempList.add(server);
-            SERVER_GROUP_MANAGER.removeServers(group, tempList);
+            groupManager.removeServers(group, tempList);
         }
 
         // Remove from entitlement groups

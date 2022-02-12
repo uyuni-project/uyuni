@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -155,32 +155,34 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * @param basicAuth function for mapping basic auth
      * @param noAuth function for mapping no auth
      * @param tokenAuth function for mapping token auth
+     * @param cloudRmtAuth function for mapping cloud rmt auth
      * @param <T> result value type
      * @return a value of type T returned by one of the mapping functions.
      */
     public abstract  <T> T fold(Function<SCCRepositoryBasicAuth, ? extends T> basicAuth,
                Function<SCCRepositoryNoAuth, ? extends T> noAuth,
-               Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth);
+               Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
+               Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth);
 
     /**
      * @return {@link Optional} {@link SCCRepositoryBasicAuth}
      */
     public Optional<SCCRepositoryBasicAuth> basicAuth() {
-        return fold(Optional::of, n -> Optional.empty(), t -> Optional.empty());
+        return fold(Optional::of, n -> Optional.empty(), t -> Optional.empty(), c -> Optional.empty());
     }
 
     /**
      * @return {@link Optional} {@link SCCRepositoryTokenAuth}
      */
     public Optional<SCCRepositoryTokenAuth> tokenAuth() {
-        return fold(b -> Optional.empty(), n -> Optional.empty(), Optional::of);
+        return fold(b -> Optional.empty(), n -> Optional.empty(), Optional::of, c -> Optional.empty());
     }
 
     /**
      * @return {@link Optional} {@link SCCRepositoryNoAuth}
      */
     public Optional<SCCRepositoryNoAuth> noAuth() {
-        return fold(b -> Optional.empty(), Optional::of, t -> Optional.empty());
+        return fold(b -> Optional.empty(), Optional::of, t -> Optional.empty(), c -> Optional.empty());
     }
 
     /**
@@ -195,6 +197,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
         return new EqualsBuilder()
             .append(getCredentials(), otherSCCRepository.getCredentials())
             .append(getRepo(), otherSCCRepository.getRepo())
+            .append(getUrl(), otherSCCRepository.getUrl())
             .isEquals();
     }
 

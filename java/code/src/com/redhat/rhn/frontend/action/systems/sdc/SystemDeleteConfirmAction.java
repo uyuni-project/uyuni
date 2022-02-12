@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -44,6 +45,9 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev: 1 $
  */
 public class SystemDeleteConfirmAction extends RhnAction {
+
+    private final SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
+
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -87,7 +91,7 @@ public class SystemDeleteConfirmAction extends RhnAction {
 
             try {
                 // Now we can remove the system
-                SystemManager.deleteServer(loggedInUser, sid);
+                systemManager.deleteServer(loggedInUser, sid);
                 createSuccessMessage(request, "message.serverdeleted.param",
                         sid.toString());
             }

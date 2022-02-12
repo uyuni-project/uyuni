@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -52,6 +52,24 @@ public class CveFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", name);
         return (Cve)singleton.lookupObjectByNamedQuery("Cve.lookupByName", params);
+    }
+
+    /**
+     *  Looks up a CVE or inserts it if it does not exist.
+     * @param name CVE
+     * @return the CVE
+     */
+    public static Cve lookupOrInsertByName(String name) {
+        Cve cve = lookupByName(name);
+        if (cve != null) {
+            return cve;
+        }
+        else {
+            Cve newCve = new Cve();
+            newCve.setName(name);
+            save(newCve);
+            return newCve;
+        }
     }
 
     /**

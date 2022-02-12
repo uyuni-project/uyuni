@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2015 SUSE LLC
+/*
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,12 +17,10 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.formula.FormulaFactory;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -53,7 +51,6 @@ public enum ViewHelper {
     INSTANCE;
 
     private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
-    private static final ClusterManager CLUSTER_MANAGER = GlobalInstanceHolder.CLUSTER_MANAGER;
 
     ViewHelper() { }
 
@@ -249,25 +246,22 @@ public enum ViewHelper {
         if (server == null) {
             return false;
         }
-        if (!server.asMinionServer().isPresent()) {
-            return false;
-        }
-        List<String> enabledFormulas = FormulaFactory
-                .getFormulasByMinionId(MinionServerFactory.getMinionId(server.getId()));
-        if (!enabledFormulas.contains(formulaName)) {
-            return false;
-        }
+        return server.asMinionServer().map(minion -> {
+            List<String> enabledFormulas = FormulaFactory.getFormulasByMinion(minion);
+            if (!enabledFormulas.contains(formulaName)) {
+                return false;
+            }
 
-        Map<String, Object> systemData = FormulaFactory.
-                getFormulaValuesByNameAndMinionId(formulaName, server.asMinionServer().get().getMinionId())
-                .orElseGet(Collections::emptyMap);
-        Map<String, Object> groupData = FormulaFactory
-                .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
-                .orElseGet(Collections::emptyMap);
-        return Objects.toString(systemData.get(valueName), "")
-                .equals(valueToCheck) ||
-                Objects.toString(groupData.get(valueName), "")
-                        .equals(valueToCheck);
+            Map<String, Object> systemData = FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion)
+                    .orElseGet(Collections::emptyMap);
+            Map<String, Object> groupData = FormulaFactory
+                    .getGroupFormulaValuesByNameAndServer(formulaName, server)
+                    .orElseGet(Collections::emptyMap);
+            return Objects.toString(systemData.get(valueName), "")
+                    .equals(valueToCheck) ||
+                    Objects.toString(groupData.get(valueName), "")
+                            .equals(valueToCheck);
+        }).orElse(false);
     }
 
     /**
@@ -276,13 +270,5 @@ public enum ViewHelper {
      */
     public boolean hasSshPushContactMethod(Server server) {
         return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
-    }
-
-    /**
-     * @param groupId server group id
-     * @return true if the group is owned by a cluster
-     */
-    public boolean isClusterGroup(String groupId) {
-        return CLUSTER_MANAGER.isClusterGroup(Long.parseLong(groupId));
     }
 }

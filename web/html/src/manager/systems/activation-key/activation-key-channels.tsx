@@ -1,11 +1,14 @@
-import ChildChannels from "./child-channels";
-import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import * as React from "react";
-import { Loading } from "components/utils/Loading";
+
+import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
+
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
+import { Loading } from "components/utils/Loading";
+
+import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import { availableChannelsType, ChannelDto } from "./activation-key-channels-api";
+import ChildChannels from "./child-channels";
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number;
@@ -128,15 +131,17 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                         `is not compatible then the fall back will be the "${defaultChannelName}" channel.`
                     )}
                   </span>
-                  <Messages
-                    items={MessagesUtils.warning(
-                      t(
-                        `When "${this.getDefaultBase().name}" is selected and the installed ` +
-                          "product is not detected, no channel will be added even if children " +
-                          "channels are selected."
-                      )
-                    )}
-                  />
+                  {this.state.currentSelectedBaseId === -1 && (
+                    <Messages
+                      items={MessagesUtils.warning(
+                        t(
+                          `When "${this.getDefaultBase().name}" is selected and the installed ` +
+                            "product is not detected, no channel will be added even if children " +
+                            "channels are selected."
+                        )
+                      )}
+                    />
+                  )}
                 </div>
               </div>
               <div className="form-group">

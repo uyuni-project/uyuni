@@ -14,10 +14,13 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import inspect
 import imp
 import sys
 import unittest
 import json
+import os
+import time
 try:
     from io import StringIO
 except ImportError:
@@ -76,7 +79,7 @@ class RepoSyncTest(unittest.TestCase):
         imp.reload(spacewalk.satellite_tools.reposync)
 
     def test_init_succeeds_with_correct_attributes(self):
-        rs = self._init_reposync('Label', RTYPE)
+        rs = _init_reposync(self.reposync, 'Label', RTYPE)
 
         self.assertEqual(rs.channel_label, 'Label')
 
@@ -85,7 +88,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.interactive, True)
 
     def test_init_with_custom_url(self):
-        rs = self._init_reposync('Label', RTYPE, url='http://example.com')
+        rs = _init_reposync(self.reposync, 'Label', RTYPE, url='http://example.com')
 
         self.assertEqual(rs.urls, [{'source_url': 'http://example.com',
                                     'repo_label': None,
@@ -95,7 +98,7 @@ class RepoSyncTest(unittest.TestCase):
                                   }])
 
     def test_init_with_custom_flags(self):
-        rs = self._init_reposync('Label', RTYPE, fail=True, noninteractive=True)
+        rs = _init_reposync(self.reposync, 'Label', RTYPE, fail=True, noninteractive=True)
 
         self.assertEqual(rs.fail, True)
         self.assertEqual(rs.interactive, False)
@@ -117,7 +120,7 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_init_rhnlog(self):
         """Init rhnLog successfully"""
-        rs = self._init_reposync('Label', RTYPE)
+        rs = _init_reposync(self.reposync, 'Label', RTYPE)
 
         self.assertTrue(self.reposync.rhnLog.initLOG.called)
 
@@ -127,6 +130,7 @@ class RepoSyncTest(unittest.TestCase):
                                                  'id': 1,
                                                  'org_id': 1})
         self.reposync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
+        self.reposync.RepoSync.get_channel_arch = Mock('arch1')
 
         rs = self.reposync.RepoSync('Label', RTYPE)
 
@@ -138,7 +142,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertRaises(SystemExit, self.reposync.RepoSync, 'Label', RTYPE)
 
     def test_bad_repo_type(self):
-        rs = self._init_reposync('Label', RTYPE)
+        rs = _init_reposync(self.reposync, 'Label', RTYPE)
         self.assertRaises(SystemExit, rs.load_plugin, 'bad-repo-type')
         self.assertIn("Repository type bad-repo-type is not supported. "
                       "Could not import "
@@ -147,13 +151,13 @@ class RepoSyncTest(unittest.TestCase):
                       self.stderr.getvalue())
 
     def test_sync_success_no_regen(self):
-        rs = self._init_reposync()
+        rs = _init_reposync(self.reposync)
 
         rs.urls = [
           {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
         _mock_rhnsql(self.reposync, None)
-        rs = self._mock_sync(rs)
+        rs = _mock_sync(self.reposync, rs)
         rs.sync()
 
         self.assertEqual(rs.repo_plugin.call_args[0],
@@ -173,12 +177,12 @@ class RepoSyncTest(unittest.TestCase):
         self.assertFalse(self.reposync.taskomatic.add_to_erratacache_queue.called)
 
     def test_sync_success_regen(self):
-        rs = self._init_reposync()
+        rs = _init_reposync(self.reposync)
 
         rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
         _mock_rhnsql(self.reposync, {})
-        rs = self._mock_sync(rs)
+        rs = _mock_sync(self.reposync, rs)
         rs.regen = True
         rs.sync()
 
@@ -314,13 +318,16 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.RepoSync._update_keywords(notice),
                          [])
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_send_error_mail(self):
         rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
-        self.reposync.CFG.TRACEBACK_MAIL = 'recipient'
         self.reposync.hostname = 'testhost'
+        CFG = Mock()
+        CFG.TRACEBACK_MAIL = 'recipient'
 
-        rs.sendErrorMail('email body')
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            rs.sendErrorMail('email body')
 
         self.assertEqual(self.reposync.rhnMail.send.call_args, (
                 ({'To': 'recipient',
@@ -556,6 +563,10 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.RepoSync.get_compatible_arches(None),
                          ['a1', 'a2'])
 
+    def test_get_channel_arch(self):
+        _mock_rhnsql(self.reposync, {'label': 'channel-amd64-deb'})
+        self.assertEqual(self.reposync.RepoSync.get_channel_arch(None), 'amd64')
+
     def test_set_repo_credentials_no_credentials(self):
         url = {'source_url': "http://example.com"}
         rs = self._create_mocked_reposync()
@@ -573,7 +584,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
 
     def test_set_repo_credentials_bad_credentials(self):
-        rs = self._init_reposync()
+        rs = _init_reposync(self.reposync)
         rs.error_msg = Mock()
         url = {
             "source_url": [
@@ -589,9 +600,9 @@ class RepoSyncTest(unittest.TestCase):
                 "http://example.com/?credentials=testcreds_42"
             ]
         }
-        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' }])
+        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' , 'extra_auth': memoryview(b'{\"my_header\":  \"my_value\"}')}])
         self.assertEqual(
-            rs.set_repo_credentials(url), ["http://foo:secret@example.com/"])
+            rs.set_repo_credentials(url), [{"url":"http://foo:secret@example.com/", "http_headers": {"my_header": "my_value"}}])
 
     def test_is_old_style(self):
         """
@@ -627,6 +638,8 @@ class RepoSyncTest(unittest.TestCase):
             def fromtimestamp(cls, timestamp):
                 return cls.utcfromtimestamp(timestamp)
 
+        os.environ['TZ'] = 'UTC'
+        time.tzset()
         with patch("spacewalk.satellite_tools.reposync.datetime", DateTimeMock):
             self.assertEqual(self.reposync.RepoSync._to_db_date('2015-01-02 01:02:03'), '2015-01-02 01:02:03')
             self.assertEqual(self.reposync.RepoSync._to_db_date('1420160523'), '2015-01-02 01:02:03')
@@ -635,81 +648,12 @@ class RepoSyncTest(unittest.TestCase):
             self.assertEqual(self.reposync.RepoSync._to_db_date('2015-01-02T02:02:03+0100'), '2015-01-02 01:02:03')
             self.assertRaises(ValueError, self.reposync.RepoSync._to_db_date, '2015-01-02T01:02:03+nonsense')
 
-    def _init_reposync(self, label="Label", repo_type=RTYPE, **kwargs):
-        """Initialize the RepoSync object with some mocked attrs"""
-        self.reposync.RepoSync.get_compatible_arches = Mock(
-            return_value=['arch1', 'arch2'])
-        channel = {'org_id':1, 'id':1, 'arch': 'arch1'}
-        self.reposync.RepoSync.load_channel = Mock(return_value=channel)
-        rs = self.reposync.RepoSync(label, repo_type, **kwargs)
-        return rs
-
     def _create_mocked_reposync(self):
         """Create a fully mocked RepoSync"""
-        rs = self._init_reposync()
+        rs = _init_reposync(self.reposync)
         rs.urls = [{'id': None, "source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
-        rs = self._mock_sync(rs)
+        rs = _mock_sync(self.reposync, rs)
 
-        return rs
-
-    def _mock_sync(self, rs):
-        """Mock a lot of the methods that are called during sync()
-
-        erratum = reposync.Erratum()
-        erratum.populate({'advisory_name': 'update_id1-version1-arch',
-                          'advisory': 'update_id1-version1-arch',
-                          'product': 'release1',
-                          'description': 'description1',
-                          'errata_from': 'from1',
-                          'locally_modified': None,
-                          'refers_to': '',
-                          'solution': ' ',
-                          'topic': ' ',
-                          'last_modified': None,
-                          'keywords': [],
-                          'packages': [True],
-                          'files': [],
-                          'advisory_type': 'Security Advisory',
-                          'advisory_status': 'final',
-                          'issue_date': timestamp1,
-                          'notes': '',
-                          'org_id': 1,
-                          'bugs': [],
-                          'advisory_rel': 'version1',
-                          'synopsis': 'title1',
-                          'cve': [],
-                          'update_date': timestamp2,
-                          'channels': [{'label': 'Label'}]})
-        self.assertEqual(reposync.ErrataImport.call_args,
-                         (([erratum], mocked_backend), {}))
-        :rs: RepoSync object on which we're going to call sync() later
-
-        """
-        rs.import_packages = Mock(return_value=0)
-        rs.import_updates = Mock()
-        rs.import_products = Mock()
-        rs.import_susedata = Mock()
-        rs.import_groups = Mock()
-        rs.import_mediaproducts = Mock()
-        rs.import_modules = Mock()
-        self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
-        self.reposync.taskomatic.add_to_erratacache_queue = Mock()
-        self.reposync.log = Mock()
-
-        rs.mocked_plugin = Mock()
-        rs.mocked_plugin.num_packages = 0
-        rs.load_plugin = Mock(return_value=Mock(return_value=rs.mocked_plugin))
-
-        rs.update_date = Mock()
-
-        self.reposync.initCFG = Mock()
-        self.reposync.CFG = Mock()
-        self.reposync.CFG.MOUNT_POINT = '/tmp'
-        self.reposync.CFG.PREPENDED_DIR = ''
-        self.reposync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
-        self.reposync.fileutils.createPath = Mock()
-        self.reposync.os.walk = Mock(return_value=[])
-        self.reposync.subprocess.call = Mock()
         return rs
 
 
@@ -748,6 +692,7 @@ class SyncTest(unittest.TestCase):
             repo_type=RTYPE,
             url=urls
         )
+        repo_sync = _mock_sync(spacewalk.satellite_tools.reposync, repo_sync)
         repo_sync.sync()
 
     @patch('spacewalk.satellite_tools.reposync.RepoSync._url_with_repo_credentials')
@@ -799,10 +744,10 @@ class SyncTest(unittest.TestCase):
         with patcher as mock_prepare:
             self.assertEqual(
                 repo_sync._url_with_repo_credentials(urls[0]),
-                'http://{0}:{1}@some.url'.format(username, password)
+                {"url": 'http://{0}:{1}@some.url'.format(username, password), "http_headers": {}}
             )
             mock_prepare.assert_called_once_with(
-                'SELECT username, password FROM suseCredentials WHERE id = :id'
+                'SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id'
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 
@@ -861,9 +806,10 @@ class RunScriptTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        satellite_tools_dir = os.path.dirname(inspect.getfile(spacewalk.satellite_tools))
         cls.repo_sync = imp.load_source(
             'repo_sync',
-            '/manager/backend/satellite_tools/spacewalk-repo-sync')
+            os.path.join(satellite_tools_dir, 'spacewalk-repo-sync'))
 
     def setUp(self):
         config = dict(
@@ -946,47 +892,111 @@ class RunScriptTest(unittest.TestCase):
 
 
 def test_channel_exceptions():
-    """Test rasising all the different exceptions when syncing"""
+    """Test raising all the different exceptions when syncing"""
     # the only way to write a test generator with nose is if we put it
     # outside the class, so we have to repeat all the Mocks
     repoSync = spacewalk.satellite_tools.reposync
-    repoSync.rhnLog.initLOG = Mock()
-    repoSync.CFG = repoSync.initCFG = Mock()
-    repoSync.CFG.MOUNT_POINT = '/tmp'
-    repoSync.CFG.PREPENDED_DIR = ''
-    repoSync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
-    repoSync.fileutils.createPath = Mock()
-    repoSync.os.walk = Mock(return_value=[])
-    backup_os = repoSync.os
     repoSync.os = Mock()
-    repoSync.RepoSync._format_sources = Mock()
-    repoSync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
-    rs = repoSync.RepoSync("Label", RTYPE)
-    rs.urls = [{'id': None, "source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
-    rs.import_packages = Mock(return_value=0)
-    rs.import_updates = Mock()
-    rs.mocked_plugin = Mock()
-    rs.log = Mock()
-    rs.load_plugin = Mock(return_value=rs.mocked_plugin)
-    rs.update_date = Mock()
+    repoSync.rhnSQL.initDB = Mock()
+    repoSync.rhnSQL.commit = Mock()
+
+    _mock_rhnsql(
+        repoSync,
+        [
+          [{'id': 'id1', 'repo_label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y', 'repo_type': 'yum'}],
+          [{'id': 'id2', 'repo_label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N', 'repo_type': 'yum'}],
+        ]
+    )
+    rs = _create_mocked_reposync(repoSync)
     rs.sendErrorMail = Mock()
-    repoSync.os = backup_os
+    repoSync.RepoSync._format_sources = Mock()
 
     for exc_class, exc_name in [
         (repoSync.ChannelException, "ChannelException"),
         (yum_src.RepoMDError, "RepoMDError")]:
-        yield check_channel_exceptions, rs, exc_class, exc_name
 
-def check_channel_exceptions(rs, exc_class, exc_name):
-    # since this isn't a subclass of unittest.TestCase we can't use
-    # unittest's assertions
-    from nose.tools import assert_raises, assert_equal
-    rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
+        rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
+        _, ret = rs.sync()
+        assert ret == -1
+        assert rs.sendErrorMail.call_args == (("%s: %s" % (exc_name, "error msg"), ), {})
 
-    etime, ret = rs.sync()
-    assert_equal(-1, ret)
-    assert_equal(rs.sendErrorMail.call_args,
-                 (("%s: %s" % (exc_name, "error msg"), ), {}))
+def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
+    """Initialize the RepoSync object with some mocked attrs"""
+    reposync.RepoSync.get_compatible_arches = Mock(
+        return_value=['arch1', 'arch2'])
+    reposync.RepoSync.get_channel_arch = Mock(return_value=['arch1'])
+    channel = {'org_id':1, 'id':1, 'arch': 'arch1'}
+    reposync.RepoSync.load_channel = Mock(return_value=channel)
+    rs = reposync.RepoSync(label, repo_type, **kwargs)
+    return rs
+
+def _create_mocked_reposync(reposync):
+    """Create a fully mocked RepoSync"""
+    rs = _init_reposync(reposync)
+    rs.urls = [{'id': None, "source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
+    rs = _mock_sync(reposync, rs)
+
+    return rs
+
+def _mock_sync(reposync, rs):
+    """Mock a lot of the methods that are called during sync()
+
+    erratum = reposync.Erratum()
+    erratum.populate({'advisory_name': 'update_id1-version1-arch',
+                      'advisory': 'update_id1-version1-arch',
+                      'product': 'release1',
+                      'description': 'description1',
+                      'errata_from': 'from1',
+                      'locally_modified': None,
+                      'refers_to': '',
+                      'solution': ' ',
+                      'topic': ' ',
+                      'last_modified': None,
+                      'keywords': [],
+                      'packages': [True],
+                      'files': [],
+                      'advisory_type': 'Security Advisory',
+                      'advisory_status': 'final',
+                      'issue_date': timestamp1,
+                      'notes': '',
+                      'org_id': 1,
+                      'bugs': [],
+                      'advisory_rel': 'version1',
+                      'synopsis': 'title1',
+                      'cve': [],
+                      'update_date': timestamp2,
+                      'channels': [{'label': 'Label'}]})
+    self.assertEqual(reposync.ErrataImport.call_args,
+                     (([erratum], mocked_backend), {}))
+    :rs: RepoSync object on which we're going to call sync() later
+
+    """
+    rs.import_packages = Mock(return_value=0)
+    rs.import_updates = Mock()
+    rs.import_products = Mock()
+    rs.import_susedata = Mock()
+    rs.import_groups = Mock()
+    rs.import_mediaproducts = Mock()
+    rs.import_modules = Mock()
+    reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
+    reposync.taskomatic.add_to_erratacache_queue = Mock()
+    reposync.log = Mock()
+
+    rs.mocked_plugin = Mock()
+    rs.mocked_plugin.num_packages = 0
+    rs.load_plugin = Mock(return_value=Mock(return_value=rs.mocked_plugin))
+
+    rs.update_date = Mock()
+
+    reposync.initCFG = Mock()
+    reposync.CFG = Mock()
+    reposync.CFG.MOUNT_POINT = '/tmp'
+    reposync.CFG.PREPENDED_DIR = ''
+    reposync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
+    reposync.fileutils.createPath = Mock()
+    reposync.os.walk = Mock(return_value=[])
+    reposync.subprocess.call = Mock()
+    return rs
 
 
 def _mock_rhnsql(module, return_values):

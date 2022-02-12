@@ -35,7 +35,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400)
 %global build_py2   1
 %endif
 
@@ -45,7 +45,7 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
@@ -109,6 +109,7 @@ Obsoletes:      python3-%{oldname}-common < %{oldversion}
 Requires:       python3-rhn-client-tools
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host
@@ -214,18 +215,9 @@ sed -i 's,@PYTHON@,/usr/bin/python,; s,@PYTHONPATH@,%{python_sitelib},;' \
 
 %if 0%{?suse_version}
 rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
-%endif
-
-%if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
-%if 0%{?build_py3}
-%py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
-%endif
-
-%if 0%{?suse_version}
-rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
-%py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif

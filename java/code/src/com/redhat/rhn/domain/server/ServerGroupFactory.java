@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,10 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -37,6 +41,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -129,6 +137,20 @@ public class ServerGroupFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a ServerGroup by ID
+     *
+     * @param id the server group id
+     * @return server group object
+     */
+    public static ManagedServerGroup lookupById(Long id) {
+        CriteriaBuilder builder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<ManagedServerGroup> query = builder.createQuery(ManagedServerGroup.class);
+        Root<ManagedServerGroup> root = query.from(ManagedServerGroup.class);
+        query.where(builder.equal(root.get("id"), id));
+        return HibernateFactory.getSession().createQuery(query).getSingleResult();
+    }
+
+    /**
      * Lookup a ServerGroup by Name and organization.
      * @param name Server group name
      * @param org Organization
@@ -181,11 +203,18 @@ public class ServerGroupFactory extends HibernateFactory {
 
     /**
      * Remove an server group
+     * @param saltApi the Salt API
      * @param group to remove
      */
-    public static void remove(ServerGroup group) {
+    public static void remove(SaltApi saltApi, ServerGroup group) {
         if (group != null) {
+            List<String> minions = group.getServers().stream()
+                    .map(Server::asMinionServer)
+                    .flatMap(Opt::stream)
+                    .map(MinionServer::getMinionId)
+                    .collect(Collectors.toList());
             SINGLETON.removeObject(group);
+            saltApi.refreshPillar(new MinionList(minions));
         }
     }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -65,13 +65,14 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     private Server server2; // server w/provisioning ent
 
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
+    private final MigrationManager migrationManager = new MigrationManager(serverGroupManager);
 
     @Override
     public void setUp() throws Exception {
@@ -111,7 +112,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         try {
-            MigrationManager.removeOrgRelationships(user, server);
+            migrationManager.removeOrgRelationships(user, server);
             fail();
         }
         catch (PermissionException e) {
@@ -122,7 +123,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     public void testRemoveEntitlements() throws Exception {
         assertTrue(server.getEntitlements().size() > 0);
 
-        MigrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
+        migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
         server = ServerFactory.lookupById(server.getId());
 
         assertTrue(server.getEntitlements().size() == 0);
@@ -133,7 +134,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, server.getManagedGroups().size());
         ManagedServerGroup serverGroup1 = server.getManagedGroups().get(0);
 
-        MigrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
+        migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
         server = ServerFactory.lookupById(server.getId());
 
         //serverGroup1 = (ManagedServerGroup) reload(serverGroup1);
@@ -147,7 +148,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         // verify that server was initially created w/channels
         assertTrue(server.getChannels().size() > 0);
 
-        MigrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
+        migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
 
         assertEquals(0, server.getChannels().size());
     }
@@ -162,7 +163,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(2, server2.getConfigChannelCount());
 
-        MigrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server2);
+        migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server2);
 
         assertEquals(0, server2.getConfigChannelCount());
     }
@@ -206,7 +207,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         servers.add(server);
         servers.add(server2);
         User origOrgAdmin = origOrgAdmins.iterator().next();
-        MigrationManager.migrateServers(origOrgAdmin, destOrg, servers);
+        migrationManager.migrateServers(origOrgAdmin, destOrg, servers);
 
         assertEquals(server.getOrg(), destOrg);
         assertEquals(server2.getOrg(), destOrg);
@@ -254,7 +255,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
         List<Server> servers = new ArrayList<Server>();
         servers.add(bootstrapServer);
-        MigrationManager.migrateServers(origOrgAdmin, destOrg, servers);
+        migrationManager.migrateServers(origOrgAdmin, destOrg, servers);
 
         assertEquals(bootstrapServer.getOrg(), destOrg);
 

@@ -3,7 +3,25 @@ name: Update translation files
 on:
   push:
     branches:
-      - master
+      - master-weblate
+    paths:
+      - 'web/po/*.po'
+      - 'backend/po/*.po'
+      - 'susemanager/po/*.po'
+      - 'spacecmd/po/*.po'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/database/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/database/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/nav/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/nav/StringResource_en_US.xml'
+      - 'java/code/src/com/redhat/rhn/frontend/strings/template/StringResource_*.xml'
+      - '!java/code/src/com/redhat/rhn/frontend/strings/template/StringResource_en_US.xml'
+      - 'client/rhel/yum-rhn-plugin/po/*.po'
+      - 'client/rhel/mgr-daemon/po/*.po'
+      - 'client/rhel/spacewalk-client-tools/po/*.po'
 
 jobs:
  run:
@@ -18,6 +36,8 @@ jobs:
 
    - name: Checkout repo
      uses: actions/checkout@v2
+     with:
+       token: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
    - name: Setup tooling
      run: sudo apt-get install -y make git gettext intltool python3
@@ -25,13 +45,13 @@ jobs:
    - name: Setup git
      run: |
        git config --global user.name "Galaxy CI"
-       git config --global user.email "galaxy-ci@suse.de" 
+       git config --global user.email "galaxy-ci@suse.de"
 
    - name: Align translations files
      run: scripts/translation/update-all-translation-strings.sh
      env:
        ADDITIONAL_SAFE_BRANCHNAME: master
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
    - name: Push changes
      run: git push origin HEAD

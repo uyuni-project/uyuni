@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
+
 import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 type ScheduleListProps = {
   data: {
@@ -26,7 +27,6 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
       <Table
         data={props.data}
         identifier={(row) => row.id}
-        initialItemsPerPage={window.userPrefPageSize}
         emptyText={t("No schedules created. Use Create to add a schedule.")}
       >
         <Column columnKey="scheduleName" header={t("Schedule Name")} cell={(row) => row.name} />

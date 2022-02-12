@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -51,6 +52,8 @@ public class SystemMigrateAction extends RhnAction {
 
     public static final String SID = "sid";
     public static final String ORG = "to_org";
+
+    private final MigrationManager migrationManager = GlobalInstanceHolder.MIGRATION_MANAGER;
 
 
     /** {@inheritDoc} */
@@ -170,7 +173,7 @@ public class SystemMigrateAction extends RhnAction {
         List<Server> serverList = new ArrayList<Server>();
         serverList.add(s);
 
-        List<Long> serversMigrated = MigrationManager.migrateServers(user,
+        List<Long> serversMigrated = migrationManager.migrateServers(user,
                 toOrg, serverList);
 
         Iterator it = serversMigrated.iterator();

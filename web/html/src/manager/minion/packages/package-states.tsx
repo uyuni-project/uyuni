@@ -1,16 +1,20 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import { useImmer } from "use-immer";
+
 import { AsyncButton } from "components/buttons";
-import { InnerPanel } from "components/panels/InnerPanel";
 import { TextField } from "components/fields";
-import { Messages } from "components/messages";
 import withPageWrapper from "components/general/with-page-wrapper";
+import { Messages } from "components/messages";
+import { InnerPanel } from "components/panels/InnerPanel";
 import { showErrorToastr } from "components/toastr/toastr";
-import usePackageStatesApi from "./use-package-states.api";
-import { ChangesMapObject, PackagesObject, Package, OptionalValue } from "./package.type";
+
+import { ChangesMapObject, OptionalValue, Package, PackagesObject } from "./package.type";
 import * as packageHelpers from "./package-utils";
+import usePackageStatesApi from "./use-package-states.api";
 
 type PropsType = { serverId: string };
 type ViewType = "search" | "system" | "changes";
@@ -74,13 +78,9 @@ const PackageStates = ({ serverId }: PropsType) => {
   }
 
   const applyPackageState = () => {
-    onActionPackageStatesApi({ type: "Apply", serverId })
-      .then((data) => {
-        console.log("apply action queued:" + data);
-      })
-      .catch((error) => {
-        showErrorToastr(error, { autoHide: false });
-      });
+    onActionPackageStatesApi({ type: "Apply", serverId }).catch((error) => {
+      showErrorToastr(error, { autoHide: false });
+    });
   };
 
   const save = (): Promise<any> => {
@@ -183,8 +183,6 @@ const PackageStates = ({ serverId }: PropsType) => {
       for (const state in changed) {
         if (changed.hasOwnProperty(state)) {
           rows.push(changed[state]);
-        } else {
-          console.log("Cannot display emtpy object.");
         }
       }
     }

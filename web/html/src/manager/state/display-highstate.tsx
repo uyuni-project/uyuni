@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+
 import HighstateSummary from "./highstate-summary";
 
 function MinionHighstateSingle({ minion }: { minion: { id: number; name: string } }) {

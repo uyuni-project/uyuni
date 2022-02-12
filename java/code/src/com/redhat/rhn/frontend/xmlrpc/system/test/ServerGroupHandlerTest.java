@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -61,7 +61,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private ServerGroupManager manager = new ServerGroupManager();
+    private ServerGroupManager manager = new ServerGroupManager(saltApi);
     private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper, manager);
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();

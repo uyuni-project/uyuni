@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,6 +33,11 @@ public class ChannelRepodata extends RhnQueueJob {
             log = Logger.getLogger(ChannelRepodata.class);
         }
         return log;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "channel_repodata";
     }
 
     @Override

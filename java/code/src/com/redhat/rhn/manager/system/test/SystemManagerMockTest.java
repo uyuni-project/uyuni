@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -88,8 +90,9 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
 
-        SystemManager.mockSaltService(saltServiceMock);
-        SystemManager.deleteServer(server.getOrg().getActiveOrgAdmins().get(0), server.getId());
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                saltServiceMock);
+        systemManager.deleteServer(server.getOrg().getActiveOrgAdmins().get(0), server.getId());
 
         assertFalse(tokenBase.getValid());
         assertFalse(tokenChild.getValid());

@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Jan 18 14:08:42 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * fix IPv4/IPv6 address handling when replacing PXE files from
+    the Server (bsc#1189401)
+
+-------------------------------------------------------------------
+Tue Dec 07 10:38:04 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Improve logging in tftpsync receiver
+
+-------------------------------------------------------------------
+Fri Nov 05 14:13:04 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Strictly require tftp for the Proxy
+
+-------------------------------------------------------------------
 Tue Aug 10 15:32:22 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.2-1

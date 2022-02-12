@@ -1,8 +1,9 @@
 [requires]
-salt-netapi-client=0.18
+salt-netapi-client=0.19
 
 [buildrequires]
-salt-netapi-client=0.18
+salt-netapi-client=0.19
 
-[dbschema]
-conf/rhn_java.conf=4.3.1
+[conf/rhn_java.conf]
+java.min_schema_version=4.3.1
+java.min_report_schema_version=4.3.0

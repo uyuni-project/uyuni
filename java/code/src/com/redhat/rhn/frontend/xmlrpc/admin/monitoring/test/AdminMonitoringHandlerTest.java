@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -47,7 +47,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         assertEquals("enabled", res.get("node"));
         assertEquals("enabled", res.get("postgres"));
         assertEquals("enabled", res.get("tomcat"));
-        assertEquals("enabled:enable_again_to_sync_config", res.get("taskomatic"));
+        assertEquals("disabled:restart_needed", res.get("taskomatic"));
         assertEquals("enabled", res.get("self_monitoring"));
     }
 
