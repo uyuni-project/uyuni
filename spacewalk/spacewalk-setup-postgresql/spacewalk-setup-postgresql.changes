@@ -1,3 +1,5 @@
+- Switch md5 to scram-sha-256 hashing algorithm
+
 -------------------------------------------------------------------
 Tue Jan 18 14:00:36 CET 2022 - jgonzalez@suse.com
 
