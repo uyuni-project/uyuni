@@ -8,6 +8,8 @@ import shutil
 import salt.utils
 import tempfile
 
+import certs.mgr_ssl_cert_setup
+
 log = logging.getLogger(__name__)
 
 GROUP_OWNER = 'susemanager'
@@ -129,3 +131,13 @@ def move_minion_uploaded_files(minion=None, dirtomove=None, basepath=None, actio
         return {False: str(err)}
     return {True: scapstorepath}
 
+
+def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
+    '''
+    Check that the provided certificates are valid and return the certificate and key to deploy.
+    '''
+    try:
+        cert = certs.mgr_ssl_cert_setup.getContainersSetup(root_ca, intermediate_cas, server_crt, server_key)
+        return {"cert": cert}
+    except certs.mgr_ssl_cert_setup.CertCheckError as err:
+        return {"error": str(err)}
