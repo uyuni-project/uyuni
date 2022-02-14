@@ -10,6 +10,7 @@
 # which means "Enable Kiwi OS Image building"
 
 @buildhost
+@pxeboot_minion
 @scope_retail
 @scope_building_container_images
 Feature: Build OS images
