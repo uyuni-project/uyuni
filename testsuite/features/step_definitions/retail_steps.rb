@@ -28,7 +28,7 @@ end
 
 # determine image for PXE boot tests
 def compute_image_filename
-  case ENV['PXEBOOT_IMAGE']
+  case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
@@ -46,7 +46,7 @@ def compute_image_filename
 end
 
 def compute_image_name
-  case ENV['PXEBOOT_IMAGE']
+  case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     # 'POS_Image_JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
