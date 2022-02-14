@@ -18,10 +18,12 @@ import static com.redhat.rhn.domain.server.ServerFactory.createServerPaths;
 import static java.lang.Math.toIntExact;
 
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -29,20 +31,28 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.ssl.SSLCertData;
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.Assert;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class ProxyHandlerTest extends RhnBaseTestCase {
+public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     private SaltApi saltApi = new TestSaltApi();
     private SystemQuery systemQuery = new TestSystemQuery();
@@ -52,6 +62,15 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
+    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+            saltApi);
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
+    }
 
     public void testDeactivateProxyWithReload() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
@@ -64,7 +83,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
 
     public void testActivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -80,7 +99,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
 
     public void testActivateSaltProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -107,7 +126,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
 
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         int rc = ph.deactivateProxy(cert.toString());
         assertEquals(1, rc);
     }
@@ -116,13 +135,9 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         Server server = ServerFactory.lookupById(1005012107L);
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         int rc = ph.deactivateProxy(cert.toString());
         assertEquals(1, rc);
-    }
-
-    public void testLameTest() {
-        assertNotNull(new ProxyHandler(xmlRpcSystemHelper));
     }
 
     public void testListProxyClients() throws Exception {
@@ -141,9 +156,53 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         minion.getServerPaths().addAll(proxyPaths);
 
         // call method
-        List<Long> clientIds = new ProxyHandler(xmlRpcSystemHelper).listProxyClients(user, toIntExact(proxy.getId()));
+        List<Long> clientIds = new ProxyHandler(xmlRpcSystemHelper, systemManager)
+                .listProxyClients(user, toIntExact(proxy.getId()));
 
         // verify client id is in results
-        assertContains(clientIds, minion.getId());
+        Asserts.assertContains(clientIds, minion.getId());
+    }
+
+    public void testContainerConfig() throws Exception {
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        byte[] dummyConfig = "Dummy config".getBytes();
+        String server = "srv.acme.lab";
+        String proxy = "proxy.acme.lab";
+        String email = "admin@acme.lab";
+
+        SystemManager mockSystemManager = mock(SystemManager.class);
+        context().checking(new Expectations() {{
+            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, server, 2048L, email,
+                    "ROOT_CA", List.of("CA1", "CA2"), new SSLCertPair("PROXY_CERT", "PROXY_KEY"),
+                    null, null, null);
+            will(returnValue(dummyConfig));
+        }});
+
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, server,
+                2048, email, "ROOT_CA", List.of("CA1", "CA2"), "PROXY_CERT", "PROXY_KEY");
+        assertEquals(dummyConfig, actual);
+    }
+
+    public void testContainerConfigGenerateCert() throws Exception {
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        byte[] dummyConfig = "Dummy config".getBytes();
+        String server = "srv.acme.lab";
+        String proxy = "proxy.acme.lab";
+        String email = "admin@acme.lab";
+
+        SystemManager mockSystemManager = mock(SystemManager.class);
+        context().checking(new Expectations() {{
+            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, server, 2048L, email,
+                    null, Collections.emptyList(), null,
+                    new SSLCertPair("CACert", "CAKey"), "CAPass",
+                    new SSLCertData(proxy, List.of("cname1", "cname2"), "DE", "Bayern", "Nurnberg",
+                            "ACME", "ACME Tests", "coyote@acme.lab"));
+            will(returnValue(dummyConfig));
+        }});
+
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, server,
+                2048, email, "CACert", "CAKey", "CAPass", List.of("cname1", "cname2"),
+                "DE", "Bayern", "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab");
+        Assert.assertArrayEquals(dummyConfig, actual);
     }
 }

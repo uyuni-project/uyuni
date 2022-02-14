@@ -23,9 +23,6 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 
 import spark.Request;

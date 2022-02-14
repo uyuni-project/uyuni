@@ -142,7 +142,7 @@ public class HandlerFactory {
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper);
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
                 systemManager, serverGroupManager);
 
