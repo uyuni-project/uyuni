@@ -95,11 +95,8 @@ public class SSLCertManager {
             return new SSLCertPair(FileUtils.readStringFromFile(serverCertFile.getAbsolutePath()),
                     FileUtils.readStringFromFile(serverKeyFile.getAbsolutePath()));
         }
-        catch (RhnRuntimeException err) {
-            throw new SSLCertGenerationException("SSL certificates generation failed", err);
-        }
-        catch (IOException err) {
-            throw new SSLCertGenerationException("Failed to create temporary folder", err);
+        catch (RhnRuntimeException | IOException err) {
+            throw new SSLCertGenerationException(err.getMessage());
         }
         finally {
             if (sslBuildDir != null) {

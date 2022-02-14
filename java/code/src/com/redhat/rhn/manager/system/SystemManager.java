@@ -19,6 +19,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -110,6 +111,10 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.ssl.SSLCertData;
+import com.suse.manager.ssl.SSLCertGenerationException;
+import com.suse.manager.ssl.SSLCertManager;
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -117,7 +122,9 @@ import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
@@ -125,6 +132,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -142,7 +151,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * SystemManager
@@ -2132,6 +2144,117 @@ public class SystemManager extends BaseManager {
                 subscribeServerToChannel(null, server, proxyChannel);
             }
         }
+    }
+
+    private Supplier<RhnRuntimeException> raiseAndLog(String message) {
+        log.error(message);
+        return () -> new RhnRuntimeException(message);
+    }
+
+    /**
+     * Create and provide proxy container configuration.
+     *
+     * @param user the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCertKey proxy CRT and key pair
+     * @param caPair the CA certificate and key used to sign the certificate to generate.
+     *               Can be omitted if proxyCertKey is not provided
+     * @param caPassword the CA private key password.
+     *               Can be omitted if proxyCertKey is not provided
+     * @param certData the data needed to generate the new proxy SSL certificate.
+     *               Can be omitted if proxyCertKey is not provided
+     * @return the configuration file
+     */
+    public byte[] createProxyContainerConfig(User user, String proxyName, String server,
+                                             Long maxCache, String email,
+                                             String rootCA, List<String> intermediateCAs,
+                                             SSLCertPair proxyCertKey,
+                                             SSLCertPair caPair, String caPassword, SSLCertData certData)
+            throws IOException, InstantiationException, SSLCertGenerationException {
+        SSLCertPair proxyPair = proxyCertKey;
+        String rootCaCert = rootCA;
+        if (proxyCertKey == null || !proxyCertKey.isComplete()) {
+            proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
+            rootCaCert = caPair.getCertificate();
+        }
+
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        ZipOutputStream zipOut = new ZipOutputStream(bytesOut);
+
+        Map<String, Object> config = new HashMap<>();
+        config.put("server", server);
+        config.put("max_cache_size_mb", maxCache);
+        config.put("email", email);
+        MinionServer minion = null;
+        try {
+            minion = createSystemProfile(user, proxyName, Map.of("hostname", proxyName));
+        }
+        catch (SystemsExistException err) {
+            log.warn("Profile system already existing, generating proxy containers configuration for it");
+            minion = findMatchingEmptyProfiles(Optional.of(proxyName), null).get(0);
+
+        }
+
+        zipOut.putNextEntry(new ZipEntry("config.yaml"));
+        zipOut.write(YamlHelper.INSTANCE.dump(config).getBytes());
+        zipOut.closeEntry();
+
+        ClientCertificate cert = SystemManager.createClientCertificate(minion);
+        zipOut.putNextEntry(new ZipEntry("system_id.xml"));
+        zipOut.write(cert.asXml().getBytes());
+        zipOut.closeEntry();
+
+        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH)
+                .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
+        if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
+            throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
+        }
+
+        zipOut.putNextEntry(new ZipEntry("server_ssh_key.pub"));
+        zipOut.write(result.getPublicKey().getBytes());
+        zipOut.closeEntry();
+
+        // Create the proxy SSH keys
+        result = saltApi.generateSSHKey(null).orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
+        if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
+            throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
+        }
+        // Add the SSH keys to the zip
+        zipOut.putNextEntry(new ZipEntry("server_ssh_push"));
+        zipOut.write(result.getKey().getBytes());
+        zipOut.closeEntry();
+
+        zipOut.putNextEntry(new ZipEntry("server_ssh_push.pub"));
+        zipOut.write(result.getPublicKey().getBytes());
+        zipOut.closeEntry();
+
+        // Check the SSL files using mgr-ssl-cert-setup
+        try {
+            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair, intermediateCAs);
+            zipOut.putNextEntry(new ZipEntry("server.crt"));
+            zipOut.write(certificate.getBytes());
+            zipOut.closeEntry();
+
+            zipOut.putNextEntry(new ZipEntry("server.key"));
+            zipOut.write(proxyPair.getKey().getBytes());
+            zipOut.closeEntry();
+        }
+        catch (IllegalArgumentException err) {
+            throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
+        }
+
+        zipOut.putNextEntry(new ZipEntry("ca.crt"));
+        zipOut.write(rootCaCert.getBytes());
+        zipOut.closeEntry();
+
+        zipOut.close();
+
+        return bytesOut.toByteArray();
     }
 
     /**

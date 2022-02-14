@@ -1,3 +1,4 @@
+- Add XML-RPC API to generate proxy containers configuration
 - Improve image management
 - Store delta image info in the database
 - fix class cast exception during action chains (bsc#1195772)
