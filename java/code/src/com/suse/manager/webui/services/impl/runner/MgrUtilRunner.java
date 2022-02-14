@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl.runner;
 
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.salt.netapi.calls.RunnerCall;
 
 import com.google.gson.annotations.SerializedName;
@@ -239,5 +240,23 @@ public class MgrUtilRunner {
         args.put("basepath", basePath);
         args.put("actionpath", actionPath);
         return new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args), new TypeToken<>() { });
+    }
+
+    /**
+     * Check SSL certificates before deploying them.
+     *
+     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param serverCrtKey server CRT and Key pair
+     * @return the certificate and key to deploy
+     */
+    public static RunnerCall<Map<String, String>> checkSSLCert(String rootCA, SSLCertPair serverCrtKey,
+                                                            List<String> intermediateCAs) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("root_ca", rootCA);
+        args.put("server_crt", serverCrtKey.getCertificate());
+        args.put("server_key", serverCrtKey.getKey());
+        args.put("intermediate_cas", intermediateCAs);
+        return new RunnerCall<>("mgrutil.check_ssl_cert", Optional.of(args), new TypeToken<>() { });
     }
 }
