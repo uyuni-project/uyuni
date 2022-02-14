@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -1371,5 +1372,18 @@ public class SaltService implements SystemQuery, SaltApi {
         RunnerCall<MgrUtilRunner.ExecResult> call =
                 MgrKiwiImageRunner.collectImage(minion.getMinionId(), minion.getIpAddress(), filepath, imageStore);
         return callSync(call);
+    }
+
+    @Override
+    public String checkSSLCert(String rootCA, SSLCertPair serverCertKey, List<String> intermediateCAs)
+            throws IllegalArgumentException {
+        RunnerCall<Map<String, String>> call = MgrUtilRunner.checkSSLCert(rootCA, serverCertKey, intermediateCAs);
+        Map<String, String> result = callSync(call)
+                .orElseThrow(() -> new IllegalArgumentException("Unknown error while checking certificates"));
+        String error = result.getOrDefault("error", null);
+        if (error != null) {
+            throw new IllegalArgumentException(error);
+        }
+        return result.get("cert");
     }
 }

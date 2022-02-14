@@ -16,6 +16,7 @@ package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -277,5 +278,11 @@ public class TestSaltApi implements SaltApi {
 
     @Override
     public void refreshPillar(MinionList minionList) {
+    }
+
+    @Override
+    public String checkSSLCert(String rootCA, SSLCertPair serverCertKey,
+                                         List<String> intermediateCAs) throws IllegalArgumentException {
+        throw new UnsupportedOperationException();
     }
 }
