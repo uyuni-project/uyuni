@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
@@ -252,7 +253,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     }, Optional::of);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -340,12 +341,12 @@ public class SaltService implements SystemQuery, SaltApi {
             return result.fold(errorHandler, Optional::of);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
     private RuntimeException noWheelResult() {
-        return new RuntimeException("no wheel results");
+        return new RhnRuntimeException("no wheel results");
     }
 
     /**
@@ -413,7 +414,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return result.getData().getResult().fold(errorHandler, Optional::of);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -608,7 +609,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return callSync(Cmd.run(cmd), target);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -649,7 +650,7 @@ public class SaltService implements SystemQuery, SaltApi {
                         getEventStream(), cancel).orElseGet(Collections::emptyMap));
             }
             catch (SaltException e) {
-                throw new RuntimeException(e);
+                throw new RhnRuntimeException(e);
             }
         }
 
@@ -664,7 +665,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return callSync(SaltUtil.running(), target);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -709,7 +710,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     getEventStream(), cancel).orElseGet(Collections::emptyMap);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -726,7 +727,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     .collect(Collectors.toList());
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -751,7 +752,7 @@ public class SaltService implements SystemQuery, SaltApi {
             callSync(call, minionList);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -771,7 +772,7 @@ public class SaltService implements SystemQuery, SaltApi {
             callAsync(modulesRefreshCall, minionList);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -785,7 +786,7 @@ public class SaltService implements SystemQuery, SaltApi {
             callSync(call, minionList);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -799,7 +800,7 @@ public class SaltService implements SystemQuery, SaltApi {
             callSync(call, minionList);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -821,7 +822,7 @@ public class SaltService implements SystemQuery, SaltApi {
             callSync(call, minionList);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -966,7 +967,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return callAsync(call, targetIn);
         }
         catch (SaltException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
