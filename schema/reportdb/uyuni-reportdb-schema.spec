@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-reportdb-schema
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -33,7 +33,7 @@ URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
-BuildRequires:       susemanager-schema-sanity
+BuildRequires:  susemanager-schema-sanity
 %if 0%{?suse_version}
 BuildRequires:  fdupes
 %endif
