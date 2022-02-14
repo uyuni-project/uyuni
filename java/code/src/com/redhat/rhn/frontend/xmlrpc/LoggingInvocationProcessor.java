@@ -187,6 +187,8 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                         argPosition == 11 || argPosition == 12 || argPosition == 13;
             case "admin.payg.setDetails":
                 return argPosition == 1;
+            case "proxy.container_config":
+                return argPosition == 8 || argPosition == 6 || argPosition == 7;
             default:
                 return false;
         }

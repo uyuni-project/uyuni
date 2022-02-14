@@ -12,21 +12,29 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.ssl;
+package com.redhat.rhn.frontend.xmlrpc;
 
-import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.FaultException;
 
 /**
- * Exception indicating an error during SSL certificate generation
+ * XML-RPC Fault thrown when generating SSL Certificates
  */
-public class SSLCertGenerationException extends RhnRuntimeException {
+public class SSLCertFaultException extends FaultException {
+    private static final int CODE = 10005;
+    private static final String LABEL = "sslCertFault";
 
     /**
-     * Create a new SSL certificate generation exception
-     *
-     * @param message error message
+     * Constructor
      */
-    public SSLCertGenerationException(String message) {
-        super(message);
+    public SSLCertFaultException() {
+        super(CODE, LABEL, "SSL Certificate fault");
+    }
+
+    /**
+     * Constructor
+     * @param message the error message
+     */
+    public SSLCertFaultException(String message) {
+        super(CODE, LABEL, String.format("SSL Certificate fault: %s", message));
     }
 }

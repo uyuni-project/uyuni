@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.NotSupportedException;
@@ -31,12 +33,19 @@ import com.redhat.rhn.frontend.xmlrpc.ProxyAlreadyRegisteredException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyMissingEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
+import com.redhat.rhn.frontend.xmlrpc.SSLCertFaultException;
+import com.redhat.rhn.frontend.xmlrpc.SystemIdInstantiationException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.ssl.SSLCertData;
+import com.suse.manager.ssl.SSLCertGenerationException;
+import com.suse.manager.ssl.SSLCertPair;
+
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,12 +59,16 @@ import java.util.List;
 public class ProxyHandler extends BaseHandler {
     private static final Logger LOG = Logger.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
+    private final SystemManager systemManager;
 
     /**
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     * @param systemManagerIn the system manager
      */
-    public ProxyHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+    public ProxyHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn,
+                        SystemManager systemManagerIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+        systemManager = systemManagerIn;
     }
 
 
@@ -233,5 +246,131 @@ public class ProxyHandler extends BaseHandler {
         return SystemManager.listClientsThroughProxy(server.getId()).stream()
                 .map(SystemOverview::getId)
                 .collect(toList());
+    }
+
+    /**
+     * Create and provide proxy container configuration with existing proxy certificate and key.
+     *
+     * @param loggedInUser the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCrt proxy CRT content in PEM format
+     * @param proxyKey proxy SSL private key in PEM format
+     * @return the configuration file
+     *
+     * @xmlrpc.doc Compute and download the configuration for proxy containers
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "proxyName", "The FQDN of the proxy")
+     * @xmlrpc.param #param("string", "server", "The server FQDN the proxy will connect to")
+     * @xmlrpc.param #param("int", "maxCache", "Max cache size in MB")
+     * @xmlrpc.param #param("string", "email", "The proxy admin email")
+     * @xmlrpc.param #param("string", "rootCA", "The root CA used to sign the SSL certificate in PEM format")
+     * @xmlrpc.param #array_single("string", "intermediate CAs used to sign the SSL certificate in PEM format")
+     * @xmlrpc.param #param("string", "proxyCrt", "proxy CRT content in PEM format")
+     * @xmlrpc.param #param("string", "proxyKey", "proxy SSL private key in PEM format")
+     *  @xmlrpc.returntype #array_single("byte", "binary object - package file")
+     */
+    public byte[] containerConfig(User loggedInUser, String proxyName, String server, Integer maxCache, String email,
+                                  String rootCA, List<String> intermediateCAs, String proxyCrt, String proxyKey) {
+        try {
+            SSLCertPair proxyCrtKey = new SSLCertPair(proxyCrt, proxyKey);
+            if (proxyCrtKey.isInvalid()) {
+                throw new InvalidParameterException("Both proxyCrt and proxyKey need to be provided");
+            }
+
+            return systemManager.createProxyContainerConfig(loggedInUser, proxyName, server, maxCache.longValue(),
+                    email, rootCA, intermediateCAs, proxyCrtKey, null, null, null);
+        }
+        catch (InstantiationException e) {
+            LOG.error("Failed to generate proxy system id", e);
+            throw new SystemIdInstantiationException();
+        }
+        catch (IOException e) {
+            LOG.error("Failed to generate container config", e);
+            throw new IOFaultException(e);
+        }
+        catch (SSLCertGenerationException e) {
+            LOG.error("Failed to generate SSL certificate", e);
+            throw new SSLCertFaultException(e.getMessage());
+        }
+    }
+
+    /**
+     * Create and provide proxy container configuration, generate the proxy certificate and key.
+     *
+     * @param loggedInUser the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param caCrt CA certificate to use to sign the SSL certificate in PEM format
+     * @param caKey CA private key to use to sign the SSL certificate in PEM format
+     * @param caPassword the CA private key password
+     * @param cnames proxy alternate cnames to set in the SSL certificate
+     * @param country the 2-letter country code to set in the SSL certificate
+     * @param state the state to set in the SSL certificate
+     * @param city the city to set in the SSL certificate
+     * @param org the organization to set in the SSL certificate
+     * @param orgUnit the organization unit to set in the SSL certificate
+     * @param sslEmail the email to set in the SSL certificate
+     *
+     * @return the configuration file
+     *
+     * @xmlrpc.doc Compute and download the configuration for proxy containers
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "proxyName", "The FQDN of the proxy")
+     * @xmlrpc.param #param("string", "server", "The server FQDN the proxy will connect to")
+     * @xmlrpc.param #param("int", "maxCache", "Max cache size in MB")
+     * @xmlrpc.param #param("string", "email", "The proxy admin email")
+     * @xmlrpc.param #param("string", "caCrt", "CA certificate to use to sign the SSL certificate in PEM format")
+     * @xmlrpc.param #param("string", "caKey", "CA private key to use to sign the SSL certificate in PEM format")
+     * @xmlrpc.param #param("string", "caPassword", "The CA private key password")
+     * @xmlrpc.param #param("string", "cnames", "Proxy alternate cnames to set in the SSL certificate")
+     * @xmlrpc.param #param("string", "country", "The 2-letter country code to set in the SSL certificate")
+     * @xmlrpc.param #param("string", "state", "The state to set in the SSL certificate")
+     * @xmlrpc.param #param("string", "city", "The city to set in the SSL certificate")
+     * @xmlrpc.param #param("string", "org", "The organization to set in the SSL certificate")
+     * @xmlrpc.param #param("string", "orgUnit", "The organization unit to set in the SSL certificate")
+     * @xmlrpc.param #param("string", "sslEmail", "The email to set in the SSL certificate")
+     *  @xmlrpc.returntype #array_single("byte", "binary object - package file")
+     */
+    public byte[] containerConfig(User loggedInUser, String proxyName, String server, Integer maxCache, String email,
+                                  String caCrt, String caKey, String caPassword,
+                                  List<String> cnames, String country, String state, String city,
+                                  String org, String orgUnit, String sslEmail) {
+        try {
+            SSLCertPair caCrtKey = new SSLCertPair(caCrt, caKey);
+            if (caCrtKey.isInvalid()) {
+                throw new InvalidParameterException("Both caCrt and caKey need to be provided");
+            }
+
+            SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
+                    nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
+            return systemManager.createProxyContainerConfig(loggedInUser, proxyName, server, maxCache.longValue(),
+                    email, null, Collections.emptyList(), null, caCrtKey, caPassword, certData);
+        }
+        catch (InstantiationException e) {
+            LOG.error("Failed to generate proxy system id", e);
+            throw new SystemIdInstantiationException();
+        }
+        catch (IOException e) {
+            LOG.error("Failed to generate container config", e);
+            throw new IOFaultException(e);
+        }
+        catch (SSLCertGenerationException e) {
+            LOG.error("Failed to generate SSL certificate", e);
+            throw new SSLCertFaultException(e.getMessage());
+        }
+    }
+
+    private String nullable(String value) {
+        if ("".equals(value)) {
+            return null;
+        }
+        return value;
     }
 }

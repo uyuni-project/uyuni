@@ -120,11 +120,13 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -151,6 +153,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -159,6 +162,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -1854,6 +1859,77 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(eventDetail.getPickedUp());
         assertNull(eventDetail.getCompleted());
 
+    }
+
+    public void testCreateProxyContainerConfig() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        String proxyName = "pxy.mgr.lab";
+        String serverName = "srv.mgr.lab";
+        long maxCache = 4096;
+        String email = "admin@mgr.lab";
+        String rootCA = "Dummy Root CA";
+        List<String> otherCAs = List.of("CA 1", "CA 2");
+        String cert = "Dummy cert";
+        String key = "Dummy key";
+        String apacheCert = "Dummy cert for apache";
+        String sshKey = "DummySshKey";
+        String sshPubKey = "DummySshPubKey";
+        String sshPushKey = "DummySshPushKey";
+        String sshPushPubKey = "DummySshPushPubKey";
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshKey, sshPubKey))));
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshPushKey, sshPushPubKey))));
+            allowing(saltServiceMock)
+                    .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
+            will(returnValue(apacheCert));
+        }});
+
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, serverName, maxCache, email, rootCA,
+                otherCAs, new SSLCertPair(cert, key), null, null, null);
+        Map<String, String> content = readZipData(actual);
+        assertEquals(sshPushKey, content.get("server_ssh_push"));
+        assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
+        assertEquals(apacheCert, content.get("server.crt"));
+        assertEquals(key, content.get("server.key"));
+        assertEquals(rootCA, content.get("ca.crt"));
+        assertEquals(sshPubKey, content.get("server_ssh_key.pub"));
+        assertTrue(content.containsKey("system_id.xml"));
+        Map<String, String> yaml = content.get("config.yaml").lines()
+                .map(line -> line.split(": "))
+                .collect(Collectors.toMap(line -> line[0], line -> line[1]));
+        assertEquals(serverName, yaml.get("server"));
+        assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
+        assertEquals(email, yaml.get("email"));
+    }
+
+    public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
+        // For some reason duplicating the ORG_ADMIN role setting is required
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        String proxyName = "pxy.mgr.lab";
+        systemManager.createSystemProfile(user, proxyName, Map.of("hostname", proxyName));
+        testCreateProxyContainerConfig();
+    }
+
+    private Map<String, String> readZipData(byte[] data) throws IOException {
+        File tempFile = File.createTempFile("mgrtest", null);
+        tempFile.deleteOnExit();
+        FileUtils.writeByteArrayToFile(tempFile, data);
+        Map<String, String> zipContent = new HashMap<>();
+        try (ZipFile zip = new ZipFile(tempFile)) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                zipContent.put(entry.getName(), new String(zip.getInputStream(entry).readAllBytes()));
+            }
+        }
+        catch (IOException ignored) {
+
+        }
+        return zipContent;
     }
 
     private Long createHistoryEntry(Server server, String s) {
