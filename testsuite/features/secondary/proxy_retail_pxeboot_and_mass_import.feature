@@ -58,6 +58,7 @@ Feature: PXE boot a Retail terminal
     And I enter "tftp" in second CNAME alias field of example.org zone
     And I enter "proxy" in second CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
+    And I enter "salt" in third CNAME alias field of example.org zone
     And I enter the hostname of "proxy" in third CNAME name field of example.org zone
 
 @pxeboot_minion
