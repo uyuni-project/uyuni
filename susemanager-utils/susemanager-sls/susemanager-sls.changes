@@ -1,3 +1,4 @@
+- Expose SSL certificate check to Salt runner
 - Fix possible traceback in uyuni roster if no ssh port in the DB
 - Virtualization fixes for python2
 - fixing how the return code is returned in mgrutil runner (bsc#1194909)

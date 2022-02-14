@@ -43,6 +43,7 @@ Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
 BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
+BuildRequires:  python3-spacewalk-certs-tools
 # Different package names for SUSE and RHEL:
 Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
 %else
