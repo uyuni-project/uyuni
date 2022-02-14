@@ -48,7 +48,7 @@ import java.util.List;
  * server.
  */
 public class ProxyHandler extends BaseHandler {
-    private static Logger log = Logger.getLogger(ProxyHandler.class);
+    private static final Logger LOG = Logger.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
     /**
@@ -206,7 +206,7 @@ public class ProxyHandler extends BaseHandler {
      */
     public Object[] listProxies(User loggedInUser) {
         List<Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
-        List toReturn = new ArrayList();
+        List<Object> toReturn = new ArrayList<>();
         for (Server server : proxies) {
             toReturn.add(xmlRpcSystemHelper.format(server));
         }
