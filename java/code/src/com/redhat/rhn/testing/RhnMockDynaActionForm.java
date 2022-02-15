@@ -173,16 +173,14 @@ public class RhnMockDynaActionForm extends DynaActionForm
             }
 
             if (!expValue.equals(actValue)) {
-                StringBuilder msg =
-                        new StringBuilder("Did not receive expected values.\n");
-                msg.append("key [");
-                msg.append(key);
-                msg.append("] expected value [");
-                msg.append(expValue);
-                msg.append("] actual value [");
-                msg.append(actValue);
-                msg.append("]");
-                throw new AssertionFailedError(msg.toString());
+                String msg = "Did not receive expected values.\n" + "key [" +
+                        key +
+                        "] expected value [" +
+                        expValue +
+                        "] actual value [" +
+                        actValue +
+                        "]";
+                throw new AssertionFailedError(msg);
             }
         }
     }

@@ -735,15 +735,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      * {@inheritDoc}
      */
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append(this.getClass().getName());
-        result.append(" : ");
-        result.append(id);
-        result.append(" : ");
-        result.append(advisory);
-        result.append(" desc: " + description);
-        result.append(" syn: " + synopsis);
-        return result.toString();
+        return getClass().getName() + " : " + id + " : " + advisory + " desc: " + description + " syn: " + synopsis;
     }
 
     /**

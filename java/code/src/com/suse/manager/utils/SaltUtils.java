@@ -794,25 +794,17 @@ public class SaltUtils {
             try {
                 DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeOldSlsResult.class);
-                String message = distUpgradeSlsResult.getSpmigration().getChanges()
+                return distUpgradeSlsResult.getSpmigration().getChanges()
                         .getRetOpt().map(ret -> {
                             if (ret.isResult()) {
                                 return ret.getChanges().entrySet().stream()
-                                        .map(entry -> {
-                                            StringBuilder sb = new StringBuilder();
-                                            sb.append(entry.getKey());
-                                            sb.append(":");
-                                            sb.append(entry.getValue().getOldValue());
-                                            sb.append("->");
-                                            sb.append(entry.getValue().getNewValue());
-                                            return sb.toString();
-                                        }).collect(Collectors.joining(","));
+                                        .map(entry -> entry.getKey() + ":" + entry.getValue().getOldValue() + "->" +
+                                                entry.getValue().getNewValue()).collect(Collectors.joining(","));
                             }
                             else {
                                 return ret.getComment();
                             }
                         }).orElse("");
-                return message;
             }
             catch (JsonSyntaxException ex) {
                 LOG.error("Unable to parse migration result", ex);
@@ -1500,17 +1492,16 @@ public class SaltUtils {
      * @return the key
      */
     public static String packageToKey(InstalledPackage p) {
-        StringBuilder sb = new StringBuilder();
 
         // name and EVR are never null due to DB constraints
         // see schema/spacewalk/common/tables/rhnServerPackage.sql
-        sb.append(p.getName().getName());
-        sb.append("-");
-        sb.append(p.getEvr().toUniversalEvrString());
-        sb.append(".");
-        sb.append(Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown"));
 
-        return sb.toString();
+        String sb = p.getName().getName() +
+                "-" +
+                p.getEvr().toUniversalEvrString() +
+                "." +
+                Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown");
+        return sb;
     }
 
     /**

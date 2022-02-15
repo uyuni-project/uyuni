@@ -140,11 +140,7 @@ public class ActionType implements Serializable {
      * @return Returns ActionType as a String
      */
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append(label);
-        result.append(" : ");
-        result.append(name);
-        return result.toString();
+        return label + " : " + name;
     }
 
     /**

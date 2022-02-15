@@ -94,10 +94,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         }
 
         for (String key : removals) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("--remove=");
-            sb.append(key);
-            argList.add(sb.toString());
+            argList.add("--remove=" + key);
             anythingChanged = true;
         }
 

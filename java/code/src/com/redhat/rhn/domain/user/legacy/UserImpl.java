@@ -726,17 +726,8 @@ public class UserImpl extends BaseDomainHelper implements User {
     * @return String output of the User
     */
     public String toString() {
-        StringBuilder retval = new StringBuilder();
-        retval.append(LocalizationService.getInstance().
-                                   getDebugMessage("user"));
-        retval.append(" ");
-        retval.append(getLogin());
-        retval.append(" (id ");
-        retval.append(getId());
-        retval.append(", org_id ");
-        retval.append(getOrg().getId());
-        retval.append(")");
-        return retval.toString();
+        return LocalizationService.getInstance().getDebugMessage("user") + " " + getLogin() +
+                " (id " + getId() + ", org_id " + getOrg().getId() + ")";
     }
 
     /**

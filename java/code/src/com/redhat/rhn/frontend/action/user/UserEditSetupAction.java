@@ -143,12 +143,7 @@ public class UserEditSetupAction extends RhnAction {
             // and disable the item in the UI.
             if (UserFactory.IMPLIEDROLES.contains(currRole) &&
                     targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(uilabel);
-                sb.append(" - [ ");
-                sb.append(LocalizationService.getInstance().getMessage("Admin Access"));
-                sb.append(" ]");
-                uilabel = sb.toString();
+                uilabel = uilabel + (" - [ " + LocalizationService.getInstance().getMessage("Admin Access") + " ]");
 
                 disabled = true;
                 log.debug("2");

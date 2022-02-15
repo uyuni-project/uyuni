@@ -92,15 +92,10 @@ public class SubscribeConfirm extends RhnAction {
         List systems = cm.ssmSystemsForSubscribe(user);
 
         //Create the parent url. Copy the one important parameter.
-        StringBuilder parentUrl = new StringBuilder();
-        parentUrl.append(request.getRequestURI());
-        parentUrl.append("?");
-        parentUrl.append(POSITION);
-        parentUrl.append("=");
-        parentUrl.append(request.getParameter(POSITION));
 
         //store the data so the list tag can see it
-        request.setAttribute(ListTagHelper.PARENT_URL, parentUrl.toString());
+        String parentUrl = request.getRequestURI() + "?" + POSITION + "=" + request.getParameter(POSITION);
+        request.setAttribute(ListTagHelper.PARENT_URL, parentUrl);
         request.setAttribute("channelList", channels);
         request.setAttribute("systemList", systems);
 

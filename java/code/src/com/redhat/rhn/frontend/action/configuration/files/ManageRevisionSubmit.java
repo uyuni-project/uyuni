@@ -183,13 +183,10 @@ public class ManageRevisionSubmit extends RhnSetAction {
             HttpServletRequest request, Long cfid) {
         ActionMessages msg = new ActionMessages();
         Object[] args = new Object[2];
-        StringBuilder buffy = new StringBuilder();
-        buffy.append("/rhn/configuration/file/FileDetails.do?" +
-                ConfigActionHelper.FILE_ID + "=");
-        buffy.append(cfid);
-        buffy.append("&amp;" + ConfigActionHelper.REVISION_ID + "=");
-        buffy.append(revision.getId());
-        args[0] = StringEscapeUtils.escapeHtml4(buffy.toString());
+        String buffy = "/rhn/configuration/file/FileDetails.do?" +
+                ConfigActionHelper.FILE_ID + "=" + cfid + "&amp;" +
+                ConfigActionHelper.REVISION_ID + "=" + revision.getId();
+        args[0] = StringEscapeUtils.escapeHtml4(buffy);
         args[1] = revision.getRevision().toString();
 
         msg.add(ActionMessages.GLOBAL_MESSAGE,

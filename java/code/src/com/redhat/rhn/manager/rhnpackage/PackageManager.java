@@ -1715,12 +1715,11 @@ public class PackageManager extends BaseManager {
         missing.removeAll(found);
         orgNoAccess.addAll(missing);
         if (!orgNoAccess.isEmpty()) {
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" does not have access to packages: ");
-            msg.append(orgNoAccess);
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(msg.toString());
+            String msg = "User: " + user.getLogin() +
+                    " does not have access to packages: " +
+                    orgNoAccess;
+            PermissionException pex = new PermissionException(msg);
             pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.package"));
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.package"));
             throw pex;

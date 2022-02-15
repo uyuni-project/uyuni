@@ -845,12 +845,11 @@ public class ChannelManager extends BaseManager {
              * access to this channel, so catch the exception, log it, and simply
              * return false.
              */
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" either does not have subscribe privileges to Channel: ");
-            msg.append(cid);
-            msg.append(" or ChannelManager.QRY_ROLE_SUBSCRIBE is defined wrong.");
-            log.debug(msg.toString());
+            String msg = "User: " + user.getLogin() +
+                    " either does not have subscribe privileges to Channel: " +
+                    cid +
+                    " or ChannelManager.QRY_ROLE_SUBSCRIBE is defined wrong.";
+            log.debug(msg);
             return false;
         }
         return true;
@@ -871,12 +870,11 @@ public class ChannelManager extends BaseManager {
              * access to this channel, so catch the exception, log it, and simply
              * return false.
              */
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" either does not have manage privileges to Channel: ");
-            msg.append(cid);
-            msg.append(" or ChannelManager.QRY_ROLE_MANAGE is defined wrong.");
-            log.debug(msg.toString());
+            String msg = "User: " + user.getLogin() +
+                    " either does not have manage privileges to Channel: " +
+                    cid +
+                    " or ChannelManager.QRY_ROLE_MANAGE is defined wrong.";
+            log.debug(msg);
             return false;
         }
 
@@ -1244,13 +1242,9 @@ public class ChannelManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "latest_packages_similar_to");
 
-        StringBuilder pnames = new StringBuilder();
-        pnames.append("(");
-        pnames.append(packageNames.stream().map(String::trim).collect(Collectors.joining("|")));
-        pnames.append(")");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", channelId);
-        params.put("names", pnames.toString());
+        params.put("names", "(" + packageNames.stream().map(String::trim).collect(Collectors.joining("|")) + ")");
         return m.execute(params);
 
     }
@@ -1270,13 +1264,9 @@ public class ChannelManager extends BaseManager {
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
             "latest_package_like");
-        StringBuilder pname = new StringBuilder();
-        pname.append("%");
-        pname.append(packageName);
-        pname.append("%");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", channelId);
-        params.put("name", pname.toString());
+        params.put("name", "%" + packageName + "%");
         return m.execute(params);
 
     }
@@ -1295,13 +1285,10 @@ public class ChannelManager extends BaseManager {
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "latest_packages_similar_to");
-        StringBuilder pnames = new StringBuilder();
-        pnames.append("%(");
-        pnames.append(packageNames.stream().map(String::trim).collect(Collectors.joining("|")));
-        pnames.append(")%");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", channelId);
-        params.put("names", pnames.toString());
+        String pnames = "%(" + packageNames.stream().map(String::trim).collect(Collectors.joining("|")) + ")%";
+        params.put("names", pnames);
         return m.execute(params);
     }
 
@@ -1602,21 +1589,14 @@ public class ChannelManager extends BaseManager {
             // Replace '-' with '.', then split and use [0].[1]
 
             tokens = originalRelease.replace('-', '.').split("\\.");
-            return new StringBuilder().
-                    append(tokens[0]).append(".").append(tokens[1]).toString();
+            return tokens[0] + "." + tokens[1];
         }
 
         if (tokens.length <= 3) {
             return originalRelease;
         }
 
-        StringBuilder buf = new StringBuilder();
-        buf.append(tokens[0]);
-        buf.append(".");
-        buf.append(tokens[1]);
-        buf.append(".");
-        buf.append(tokens[2]);
-        return buf.toString();
+        return tokens[0] + "." + tokens[1] + "." + tokens[2];
     }
 
     /**
@@ -2314,13 +2294,11 @@ public class ChannelManager extends BaseManager {
     public static void removePackages(Channel chan, List<Long> packageIds, User user) {
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" does not have channel admin access to channel: ");
-            msg.append(chan.getLabel());
 
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(msg.toString());
+            String msg = "User: " + user.getLogin() + " does not have channel admin access to channel: " +
+                    chan.getLabel();
+            PermissionException pex = new PermissionException(msg);
             pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
             throw pex;
@@ -2376,13 +2354,12 @@ public class ChannelManager extends BaseManager {
                 );
             }
             else {
-                StringBuilder msg = new StringBuilder("User: ");
-                msg.append(user.getLogin());
-                msg.append(" does not have channel admin access to channel: ");
-                msg.append(chan.getLabel());
 
                 LocalizationService ls = LocalizationService.getInstance();
-                PermissionException pex = new PermissionException(msg.toString());
+                String msg = "User: " + user.getLogin() +
+                        " does not have channel admin access to channel: " +
+                        chan.getLabel();
+                PermissionException pex = new PermissionException(msg);
                 pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
                 pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
                 throw pex;
