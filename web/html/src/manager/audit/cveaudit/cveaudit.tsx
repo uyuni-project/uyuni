@@ -205,34 +205,6 @@ class CVEAudit extends React.Component<Props, State> {
             />
           </div>
           <div>
-            <br />
-            <p>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={
-                  "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber
-                }
-                data-senna-off="true"
-              >
-                <IconTag type="external-link" />
-                {t("MITRE CVE link")}
-              </a>
-              <br />
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={
-                  "https://www.suse.com/security/cve/CVE-" + this.state.cveYear + "-" + this.state.cveNumber + ".html"
-                }
-                data-senna-off="true"
-              >
-                <IconTag type="external-link" />
-                {t("SUSE Security CVE link")}
-              </a>
-            </p>
-          </div>
-          <div>
             {ALL.map((status) => {
               return (
                 <div className="checkbox">
@@ -280,6 +252,33 @@ class CVEAudit extends React.Component<Props, State> {
               />
             </div>
           </p>
+          <div>
+            <p>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={
+                  "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber
+                }
+                data-senna-off="true"
+              >
+                <IconTag type="external-link" />
+                {t("MITRE CVE link")}
+              </a>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={
+                  "https://www.suse.com/security/cve/CVE-" + this.state.cveYear + "-" + this.state.cveNumber + ".html"
+                }
+                data-senna-off="true"
+              >
+                <IconTag type="external-link" />
+                {t("SUSE Security CVE link")}
+              </a>
+            </p>
+          </div>
           <Table
             data={this.state.results}
             identifier={(row) => row.id}
