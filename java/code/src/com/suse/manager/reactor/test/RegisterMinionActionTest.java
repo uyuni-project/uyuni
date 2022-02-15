@@ -373,7 +373,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(key, ActivationKeyFactory.lookupByActivatedServer(minion).get(0).getKey());
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
-            Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
+            history.sort((h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
             assertNull(minion.getLock());
         }, DEFAULT_CONTACT_METHOD);
@@ -544,7 +544,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(minion.getContactMethod().getLabel(), DEFAULT_CONTACT_METHOD);
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
-            Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
+            history.sort((h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
         }, SSH_PUSH_CONTACT_METHOD);
     }

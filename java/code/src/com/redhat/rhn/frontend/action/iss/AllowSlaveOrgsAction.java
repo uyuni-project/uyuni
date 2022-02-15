@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +157,7 @@ public class AllowSlaveOrgsAction extends RhnAction {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }
 
-        Collections.sort(outList, new OrgComparator());
+        outList.sort(new OrgComparator());
 
         return outList;
     }

@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -129,11 +128,11 @@ public class DataSetManipulator {
 
         String sortDir = getActiveSortDirection();
         try {
-            Collections.sort(dataset, new DynamicComparator(sortAttr, sortDir));
+            dataset.sort(new DynamicComparator(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: " + sortAttr);
-            Collections.sort(dataset, new DynamicComparator(defaultSortAttribute, sortDir));
+            dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
         }
     }
 

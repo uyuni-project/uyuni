@@ -39,7 +39,6 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -169,7 +168,7 @@ public class SubscribeConfirm extends RhnAction {
         // Order the new channels in the order requested by user
         List rankElements = new ArrayList(
                 RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user).getElements());
-        Collections.sort(rankElements, new ConfigChannelSetComparator());
+        rankElements.sort(new ConfigChannelSetComparator());
 
         RhnSet selectedChannels = RhnSetDecl.CONFIG_CHANNELS.get(user);
 

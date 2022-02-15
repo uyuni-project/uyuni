@@ -708,19 +708,19 @@ public class SystemSearchHelper {
             // We want to sort Low to High
             SearchResultMatchedFieldComparator comparator =
                 new SearchResultMatchedFieldComparator(serverIds);
-            Collections.sort(serverList, comparator);
+            serverList.sort(comparator);
         }
         else if (CHECKIN.equals(viewMode) || CPU_MHZ_LT.equals(viewMode) ||
                 NUM_CPUS_LT.equals(viewMode) || RAM_LT.equals(viewMode)) {
             // We want to sort High to Low
             SearchResultMatchedFieldComparator comparator =
                 new SearchResultMatchedFieldComparator(serverIds, false);
-            Collections.sort(serverList, comparator);
+            serverList.sort(comparator);
         }
         else {
             SearchResultScoreComparator scoreComparator =
                 new SearchResultScoreComparator(serverIds);
-            Collections.sort(serverList, scoreComparator);
+            serverList.sort(scoreComparator);
         }
         if (log.isDebugEnabled()) {
             log.debug("sorted server data = " + serverList);

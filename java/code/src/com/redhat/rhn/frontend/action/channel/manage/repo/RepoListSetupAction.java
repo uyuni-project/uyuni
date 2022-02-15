@@ -27,7 +27,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +52,7 @@ public class RepoListSetupAction extends RhnAction {
         List<ContentSourceDto> result;
 
         result = RepoLister.getInstance().list(user);
-        Collections.sort(result, LABEL_COMPARATOR);
+        result.sort(LABEL_COMPARATOR);
         request.setAttribute(RequestContext.PAGE_LIST, result);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
