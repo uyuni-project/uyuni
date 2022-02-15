@@ -273,23 +273,14 @@ public class MethodUtil {
                         }
                     }
                 }
-                catch (IllegalArgumentException e) {
-                    throw new RuntimeException(e);
-                }
-                catch (InvocationTargetException e) {
+                catch (IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }
 
         }
-        catch (InstantiationException e) {
+        catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
            throw new RuntimeException(e);
-        }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
 
         return retval;

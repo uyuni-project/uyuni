@@ -35,7 +35,6 @@ import org.apache.struts.upload.FormFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -289,10 +288,6 @@ public class StrutsDelegate {
                     retval = fileString;
                 }
             }
-        }
-        catch (UnsupportedEncodingException e) {
-            LOG.error(e);
-            throw new RuntimeException(e);
         }
         catch (FileNotFoundException e) {
             LOG.error(e);

@@ -356,10 +356,6 @@ public class PackagesHandler extends BaseHandler {
         try {
             PackageManager.schedulePackageRemoval(loggedInUser, pkg);
         }
-        catch (FaultException e) {
-            logger.error(e.getMessage(), e);
-            throw e;
-        }
         catch (RuntimeException e) {
             logger.error(e.getMessage(), e);
             throw e;
@@ -395,10 +391,6 @@ public class PackagesHandler extends BaseHandler {
         }
         try {
             PackageManager.schedulePackageSourceRemoval(loggedInUser, pkg);
-        }
-        catch (FaultException e) {
-            logger.error(e.getMessage(), e);
-            throw e;
         }
         catch (RuntimeException e) {
             logger.error(e.getMessage(), e);

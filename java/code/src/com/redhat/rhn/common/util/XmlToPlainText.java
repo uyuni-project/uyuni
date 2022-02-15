@@ -51,10 +51,7 @@ class XmlToPlainText {
             toPlainText(doc);
             return plainText.toString();
         }
-        catch (JDOMException e) {
-            log.warn("Couldn't parse the snippet -> [" + snippet + "]", e);
-        }
-        catch (IOException e) {
+        catch (JDOMException | IOException e) {
             log.warn("Couldn't parse the snippet -> [" + snippet + "]", e);
         }
         return snippet;

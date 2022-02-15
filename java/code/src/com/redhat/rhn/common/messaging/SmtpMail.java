@@ -239,10 +239,7 @@ public class SmtpMail implements Mail {
             appendHeaders(buf, this.message.getAllHeaderLines());
             buf.append(this.message.getContent());
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (MessagingException e) {
+        catch (IOException | MessagingException e) {
             e.printStackTrace();
         }
         return buf.toString();

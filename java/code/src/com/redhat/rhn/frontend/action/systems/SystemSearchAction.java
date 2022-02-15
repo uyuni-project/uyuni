@@ -239,7 +239,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
                     invertResults,
                     whereToSearch, isFineGrained);
         }
-        catch (MalformedURLException e) {
+        catch (MalformedURLException | XmlRpcException e) {
             log.error("Caught Exception :" + e, e);
             errs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.connection_error"));
@@ -263,11 +263,6 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
                     new ActionMessage("packages.search.could_not_execute_query",
                                       searchString));
             }
-        }
-        catch (XmlRpcException e) {
-            log.error("Caught Exception :" + e, e);
-            errs.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("packages.search.connection_error"));
         }
         if (dr == null) {
             ActionMessages messages = new ActionMessages();
