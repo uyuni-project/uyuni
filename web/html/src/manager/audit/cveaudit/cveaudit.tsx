@@ -81,6 +81,7 @@ type State = {
   messages: any[];
   selectedItems: any[];
   target?: any;
+  auditExecuted?: boolean;
 };
 
 class CVEAudit extends React.Component<Props, State> {
@@ -95,7 +96,7 @@ class CVEAudit extends React.Component<Props, State> {
       results: [],
       messages: [],
       selectedItems: [],
-      auditExecuted: false
+      auditExecuted: false,
     };
   }
 
@@ -255,7 +256,7 @@ class CVEAudit extends React.Component<Props, State> {
               />
             </div>
           </p>
-          {this.state.auditExecuted === true &&
+          {this.state.auditExecuted === true && (
             <div>
               <p>
                 <a
@@ -269,7 +270,7 @@ class CVEAudit extends React.Component<Props, State> {
                   <IconTag type="external-link" />
                   {t("MITRE CVE link")}
                 </a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -283,7 +284,7 @@ class CVEAudit extends React.Component<Props, State> {
                 </a>
               </p>
             </div>
-          }
+          )}
           <Table
             data={this.state.results}
             identifier={(row) => row.id}

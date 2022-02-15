@@ -23,7 +23,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
