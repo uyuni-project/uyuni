@@ -97,6 +97,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -284,7 +285,7 @@ public class StatesAPI {
         ServerConfigChannelsJson json = GSON.fromJson(request.body(), ServerConfigChannelsJson.class);
 
         List<ConfigChannel> channels = json.getChannels().stream()
-                .sorted((a, b) -> a.getPosition() - b.getPosition())
+                .sorted(Comparator.comparingInt(ConfigChannelJson::getPosition))
                 .map(j -> configManager.lookupConfigChannel(user, j.getId()))
                 .collect(Collectors.toList());
 

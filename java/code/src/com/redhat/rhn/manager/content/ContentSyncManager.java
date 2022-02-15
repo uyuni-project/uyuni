@@ -89,6 +89,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -424,8 +425,7 @@ public class ContentSyncManager {
 
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> baseRepos = partitionBaseRepo.get(true).stream()
                     // for RHEL and Vmware which have multiple base channels for a product
-                    .sorted((a, b) -> a.getA().getChannelLabel().compareTo(b.getA().getChannelLabel()))
-                    .collect(Collectors.toList());
+                    .sorted(Comparator.comparing(a -> a.getA().getChannelLabel())).collect(Collectors.toList());
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> childRepos = partitionBaseRepo.get(false);
 
             Set<MgrSyncChannelDto> allChannels = childRepos.stream().map(c -> new MgrSyncChannelDto(

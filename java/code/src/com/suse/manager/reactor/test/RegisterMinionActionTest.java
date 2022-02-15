@@ -108,6 +108,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -373,7 +374,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(key, ActivationKeyFactory.lookupByActivatedServer(minion).get(0).getKey());
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
-            history.sort((h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
+            history.sort(Comparator.comparing(ServerHistoryEvent::getCreated));
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
             assertNull(minion.getLock());
         }, DEFAULT_CONTACT_METHOD);
@@ -544,7 +545,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(minion.getContactMethod().getLabel(), DEFAULT_CONTACT_METHOD);
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
-            history.sort((h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
+            history.sort(Comparator.comparing(ServerHistoryEvent::getCreated));
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
         }, SSH_PUSH_CONTACT_METHOD);
     }
