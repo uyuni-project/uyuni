@@ -81,18 +81,13 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         StringBuffer buf = new StringBuffer();
         try {
             // Create the call in a separate buffer for reuse
-            StringBuilder call = new StringBuilder();
-            call.append(invocation.getHandlerName());
-            call.append(".");
-            call.append(invocation.getMethodName());
-            call.append("(");
-            call.append(processArguments(invocation.getHandlerName(),
-                    invocation.getMethodName(), invocation.getArguments()));
-            call.append(")");
 
             buf.append("REQUESTED FROM: ");
             buf.append(RhnXmlRpcServer.getCallerIp());
             buf.append(" CALL: ");
+            String call = invocation.getHandlerName() + "." + invocation.getMethodName() + "(" +
+                    processArguments(invocation.getHandlerName(), invocation.getMethodName(),
+                            invocation.getArguments()) + ")";
             buf.append(call);
             buf.append(" CALLER: (");
             buf.append(getCallerLogin());

@@ -87,12 +87,11 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         ServerFactory.save(s1);
         ServerFactory.save(s2);
 
-        StringBuilder idCombo = new StringBuilder();
-        idCombo.append(p1.getPackageName().getId()).append("|");
-        idCombo.append(p1.getPackageEvr().getId()).append("|");
-        idCombo.append(p1.getPackageArch().getId());
         Set<String> idCombos = new HashSet<>();
-        idCombos.add(idCombo.toString());
+        String idCombo = p1.getPackageName().getId() + "|" +
+                p1.getPackageEvr().getId() + "|" +
+                p1.getPackageArch().getId();
+        idCombos.add(idCombo);
 
         // This call has an embedded transaction in the stored procedure:
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)

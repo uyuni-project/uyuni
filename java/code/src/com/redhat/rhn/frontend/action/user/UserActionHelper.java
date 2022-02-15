@@ -42,12 +42,8 @@ public class UserActionHelper {
         // SETUP Prefix list
         List preselct = new LinkedList();
 
-        for (String keyval : LocalizationService.getInstance().
-                availablePrefixes()) {
-            StringBuilder msgKey = new StringBuilder("user prefix ");
-            msgKey.append(keyval);
-            String display = LocalizationService.getInstance().
-                    getMessage(msgKey.toString());
+        for (String keyval : LocalizationService.getInstance().availablePrefixes()) {
+            String display = LocalizationService.getInstance().getMessage("user prefix " + keyval);
             preselct.add(new LabelValueBean(display, keyval));
         }
         return preselct;

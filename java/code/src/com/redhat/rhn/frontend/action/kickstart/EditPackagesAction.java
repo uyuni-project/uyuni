@@ -87,11 +87,8 @@ public class EditPackagesAction extends RhnAction {
             RequestContext ctx,
             KickstartData ksdata) throws Exception {
         transferEdits(ksdata, form,  ctx);
-        StringBuilder redirectUrl = new StringBuilder();
-        redirectUrl.append(request.getContextPath());
-        redirectUrl.append(mapping.getPath());
-        redirectUrl.append(".do?ksid=").append(form.get("ksid"));
-        response.sendRedirect(redirectUrl.toString());
+        String redirectUrl = request.getContextPath() + mapping.getPath() + ".do?ksid=" + form.get("ksid");
+        response.sendRedirect(redirectUrl);
         return null;
     }
 
