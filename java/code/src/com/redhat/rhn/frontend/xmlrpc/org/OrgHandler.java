@@ -209,7 +209,7 @@ public class OrgHandler extends BaseHandler {
 
         // Verify we're not trying to delete the default org (id 1):
         Org defaultOrg = OrgFactory.getSatelliteOrg();
-        if (orgId.longValue() == defaultOrg.getId().longValue()) {
+        if (orgId.longValue() == defaultOrg.getId()) {
             throw new SatelliteOrgException();
         }
 

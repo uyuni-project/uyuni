@@ -363,7 +363,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      * {@inheritDoc}
      */
     public long depth() {
-        return getDepth().longValue();
+        return getDepth();
     }
 
 

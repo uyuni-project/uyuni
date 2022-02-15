@@ -379,7 +379,7 @@ public class ErrataOverview extends BaseDto {
      * @return id as a long
      */
     public long getIdAsLong() {
-        return id.longValue();
+        return id;
     }
 
     /**

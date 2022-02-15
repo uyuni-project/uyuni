@@ -1690,7 +1690,7 @@ public class ActionManager extends BaseManager {
         kad.setParentAction(ksAction);
 
         kad.setDiskGb(pcmd.getLocalStorageSize());
-        kad.setMemMb(pcmd.getMemoryAllocation().longValue());
+        kad.setMemMb(pcmd.getMemoryAllocation());
         kad.setDiskPath(pcmd.getFilePath());
         kad.setVcpus(Long.valueOf(pcmd.getVirtualCpus()));
         kad.setGuestName(pcmd.getGuestName());

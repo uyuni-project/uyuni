@@ -92,7 +92,7 @@ public class ListTagUtil {
         long retval = -1;
         Long counter = (Long) ctx.getAttribute(name);
         if (counter != null) {
-            retval = counter.longValue();
+            retval = counter;
         }
         return retval;
     }
@@ -470,7 +470,7 @@ public class ListTagUtil {
     public static boolean toBoolean(String value) {
         boolean retval = false;
         if (value != null && value.length() > 0) {
-            retval = Boolean.valueOf(value).booleanValue();
+            retval = Boolean.valueOf(value);
             if (!retval &&
                 (value.equalsIgnoreCase("t") ||
                         value.equalsIgnoreCase("true") ||

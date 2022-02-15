@@ -283,7 +283,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         usr = UserFactory.saveNewUser(usr, addr1, orgId);
 
-        assertTrue(usr.getId().longValue() > 0);
+        assertTrue(usr.getId() > 0);
 
         assertNotNull(usr.getOrg());
 

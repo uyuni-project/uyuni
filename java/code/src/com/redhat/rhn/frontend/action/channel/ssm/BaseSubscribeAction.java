@@ -463,7 +463,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             //We dont' need to do user auth, here because if the user doesn't have
             // subscribe access to the subscribed channel we still want to let them
             //  change the systems base channel
-            Channel c = ChannelFactory.lookupById(spc.getId().longValue());
+            Channel c = ChannelFactory.lookupById(spc.getId());
 
             List<EssentialChannelDto> compatibles = ChannelManager
                     .listCompatibleBaseChannelsForChannel(user, c);
@@ -544,7 +544,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         }
 
         for (EssentialServerDto esd : dr) {
-            servers.add(esd.getId().longValue());
+            servers.add(esd.getId());
         }
 
         return servers;

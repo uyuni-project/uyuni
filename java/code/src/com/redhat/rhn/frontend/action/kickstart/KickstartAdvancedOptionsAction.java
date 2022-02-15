@@ -114,7 +114,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
                         kc.setKickstartData(cmd.getKickstartData());
                         kc.setCreated(new Date());
                         kc.setModified(new Date());
-                        if (cn.getArgs().booleanValue()) {
+                        if (cn.getArgs()) {
                             String argsName = cn.getName() + "_txt";
                             // handle password encryption
                             if (cn.getName().equals("rootpw")) {

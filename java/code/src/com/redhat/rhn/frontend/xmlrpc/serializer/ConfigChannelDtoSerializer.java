@@ -56,11 +56,11 @@ public class ConfigChannelDtoSerializer extends RhnXmlRpcCustomSerializer {
         throws XmlRpcException, IOException {
         ConfigChannelDto dto = (ConfigChannelDto) value;
         SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", dto.getId().longValue());
+        helper.add("id", dto.getId());
         helper.add("label", dto.getLabel());
         helper.add("name", dto.getName());
         helper.add("description", dto.getDescription());
-        helper.add("orgId", dto.getOrgId().longValue());
+        helper.add("orgId", dto.getOrgId());
         helper.add("configChannelType", ConfigChannelType.lookup(dto.getType()));
         helper.writeTo(output);
     }

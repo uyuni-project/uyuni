@@ -85,7 +85,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
             if (log.isDebugEnabled() && sid != null) {
                 log.debug("Working on server [" + sid.toString() + "]");
             }
-            Long serverId = sid.longValue();
+            Long serverId = sid;
             processServer(serverId);
             handleTransaction();
         }

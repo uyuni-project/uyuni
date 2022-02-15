@@ -889,7 +889,7 @@ public class ProfileHandler extends BaseHandler {
                 kc.setKickstartData(cmd.getKickstartData());
                 kc.setCreated(new Date());
                 kc.setModified(new Date());
-                if (cn.getArgs().booleanValue()) {
+                if (cn.getArgs()) {
                     // handle password encryption
                     if (cn.getName().equals("rootpw")) {
                         String pwarg = (String) option.get("arguments");

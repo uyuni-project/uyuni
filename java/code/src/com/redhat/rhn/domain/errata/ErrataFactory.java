@@ -249,7 +249,7 @@ public class ErrataFactory extends HibernateFactory {
             for (PackageOverview packOver : packs) {
                 //lookup the Package object
                 Package pack = PackageFactory.lookupByIdAndUser(
-                        packOver.getId().longValue(), user);
+                        packOver.getId(), user);
                 packagesToPush.add(pack);
             }
 
@@ -428,7 +428,7 @@ public class ErrataFactory extends HibernateFactory {
         try {
             session = HibernateFactory.getSession();
             Query q = session.getNamedQuery("ErrataFile.listByErrataAndFileType");
-            q.setLong("errata_id", errataId.longValue());
+            q.setLong("errata_id", errataId);
             q.setString("file_type", fileType.toUpperCase());
             retval =  q.list();
         }
@@ -485,7 +485,7 @@ public class ErrataFactory extends HibernateFactory {
         try {
             session = HibernateFactory.getSession();
             retval = (Errata) session.getNamedQuery("Errata.findById")
-                    .setLong("id", id.longValue()).uniqueResult();
+                    .setLong("id", id).uniqueResult();
         }
         catch (HibernateException he) {
             log.error("Error loading ActionArchTypes from DB", he);

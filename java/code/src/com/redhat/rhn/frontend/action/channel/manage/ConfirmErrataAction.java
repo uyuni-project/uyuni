@@ -146,7 +146,7 @@ public class ConfirmErrataAction extends RhnListAction {
                 archMap.get(pack.getPackageArch()).put("name", pack.getPackageArch());
             }
             Map<String, Object> arch = archMap.get(pack.getPackageArch());
-            arch.put("size",  ((Integer) arch.get("size")).intValue() + 1);
+            arch.put("size", (Integer) arch.get("size") + 1);
         }
 
         request.setAttribute("packageList", ErrataManager.lookupPacksFromErrataSet(srcChan, currentChan, user,

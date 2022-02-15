@@ -92,7 +92,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private void processRow(Long failedStateId, Map row) {
         Long sessionId = (Long) row.get("id");
         if (log.isInfoEnabled()) {
-            log.info("Processing stalled kickstart session " + sessionId.longValue());
+            log.info("Processing stalled kickstart session " + sessionId);
         }
         Long actionId = (Long) row.get("action_id");
         Long oldServerId = (Long) row.get("old_server_id");

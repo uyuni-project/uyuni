@@ -2267,7 +2267,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListOutOfDateSystems() throws Exception {
         Server testServer = ServerFactoryTest.createTestServer(regular, true);
 
-        Long sid = testServer.getId().longValue();
+        Long sid = testServer.getId();
         Package pack = PackageTest.createTestPackage(admin.getOrg());
 
         ErrataCacheManager.insertNeededErrataCache(sid, null,
@@ -2279,7 +2279,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         boolean sidExists  = false;
         for (Object oIn : array) {
             SystemOverview s = (SystemOverview) oIn;
-            if (testServer.getId().equals(s.getId().longValue())) {
+            if (testServer.getId().equals(s.getId())) {
                 sidExists = true;
                 break;
             }

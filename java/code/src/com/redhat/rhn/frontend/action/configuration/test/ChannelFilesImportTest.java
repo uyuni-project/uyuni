@@ -33,7 +33,7 @@ public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
         ConfigTestUtils.createConfigFile(user.getOrg());
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelImportFiles");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();
@@ -43,7 +43,7 @@ public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelImportFilesSubmit");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();

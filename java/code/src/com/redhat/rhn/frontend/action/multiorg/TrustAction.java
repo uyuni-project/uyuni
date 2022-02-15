@@ -177,7 +177,7 @@ public class TrustAction extends FormDispatcher {
         List<Org> list = new ArrayList<Org>();
         Set<Org> myTrusted = theOrg.getTrustedOrgs();
         for (OrgTrust trust : getOrgs(theOrg)) {
-            if (set.contains(trust.getId().longValue()) &&
+            if (set.contains(trust.getId()) &&
                 !myTrusted.contains(trust.getOrg())) {
                 list.add(trust.getOrg());
             }
@@ -190,7 +190,7 @@ public class TrustAction extends FormDispatcher {
         Set<Org> myTrusted = theOrg.getTrustedOrgs();
         for (OrgTrust trust : getOrgs(theOrg)) {
             if (myTrusted.contains(trust.getOrg()) &&
-                 !set.contains(trust.getId().longValue())) {
+                 !set.contains(trust.getId())) {
                     list.add(trust.getOrg());
             }
         }

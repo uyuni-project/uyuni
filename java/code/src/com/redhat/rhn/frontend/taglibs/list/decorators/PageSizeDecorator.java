@@ -89,7 +89,7 @@ public class PageSizeDecorator extends BaseListDecorator {
      */
     public static int getSelectedPageSize(ServletRequest request, String listName) {
         if (pageWidgetSelected(request, listName)) {
-            return Integer.valueOf(request.getParameter(makePageSizeLabel(listName)));
+            return Integer.parseInt(request.getParameter(makePageSizeLabel(listName)));
         }
         return -1;
     }
@@ -154,7 +154,7 @@ public class PageSizeDecorator extends BaseListDecorator {
         int size = DEFAULT_PAGE_SIZE;
         try {
             if (!StringUtils.isBlank(sizeStr)) {
-                size = Integer.valueOf(sizeStr);
+                size = Integer.parseInt(sizeStr);
             }
         }
         catch (NumberFormatException nfe) {

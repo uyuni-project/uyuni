@@ -249,7 +249,7 @@ public class SsmManager {
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithBaseChannel(
             List<ChannelChangeDto> channelChanges, Date earliest, User user) {
         return ChannelManager.baseChannelsInSet(user).stream().flatMap(spc -> {
-            Channel currentBase = ChannelFactory.lookupById(spc.getId().longValue());
+            Channel currentBase = ChannelFactory.lookupById(spc.getId());
             List<Server> oldBaseServers = SsmManager.findServersInSetByChannel(user, currentBase.getId());
 
             // find changes by old base
@@ -451,7 +451,7 @@ public class SsmManager {
         List<SsmAllowedChildChannelsDto> result = new ArrayList<>();
 
         for (SystemsPerChannelDto spc : ChannelManager.baseChannelsInSet(user)) {
-            Channel currentBase = ChannelFactory.lookupById(spc.getId().longValue());
+            Channel currentBase = ChannelFactory.lookupById(spc.getId());
 
             Optional<SsmBaseChannelChangesDto.Change> baseChange =
                 changes.getChanges().stream()

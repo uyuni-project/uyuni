@@ -30,7 +30,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelUploadFiles");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();
@@ -42,7 +42,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelImportFiles");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();
@@ -54,7 +54,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelCreateFiles");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();

@@ -235,7 +235,7 @@ public class StatesAPI {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
         StateTargetType type = StateTargetType.valueOf(request.queryParams("type"));
-        long id = Long.valueOf(request.queryParams("id"));
+        long id = Long.parseLong(request.queryParams("id"));
 
         // Lookup assigned states
         List<ConfigChannel> assignedStates = handleTarget(type, id,

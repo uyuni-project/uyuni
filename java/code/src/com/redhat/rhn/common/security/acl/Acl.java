@@ -465,8 +465,8 @@ public class Acl {
                 }
 
                 try {
-                    result = ((Boolean)handler.invoke(pair.getInstance(),
-                        new Object[] {context, paramArray })).booleanValue();
+                    result = (Boolean) handler.invoke(pair.getInstance(),
+                            new Object[]{context, paramArray});
                 }
                 // we shouldn't hit any of these exceptions, because the
                 // handler classes should have been adequately junit-tested

@@ -170,7 +170,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         Long overrides = m.get("override") == null ? 0L : (Long)m.get("override");
 
         ActionMessages msgs = new ActionMessages();
-        if (successes.longValue() == 1) {
+        if (successes == 1) {
             if (actionChain == null) {
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "deployconfirm.jsp.success", successes));
@@ -193,7 +193,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
             }
         }
 
-        if (overrides.longValue() == 1) {
+        if (overrides == 1) {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("deployconfirm.jsp.override", overrides));
         }

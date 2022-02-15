@@ -152,7 +152,7 @@ public class NavNodeTest extends RhnBaseTestCase {
         MethodUtils.invokeMethod(node, "set" + methodname, args);
         Boolean rc = (Boolean) MethodUtils.invokeMethod(node, "get" +
                 methodname, null);
-        assertTrue(rc.booleanValue());
+        assertTrue(rc);
     }
 
     @Override

@@ -94,7 +94,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
                 request.getRequestURI());
         request.setAttribute("user", user);
         request.setAttribute("userIsOrgAdmin",
-                Boolean.valueOf(user.hasRole(RoleFactory.ORG_ADMIN)));
+                user.hasRole(RoleFactory.ORG_ADMIN));
 
 
 

@@ -59,7 +59,7 @@ public class SaltEventFactory extends HibernateFactory {
                     .filter(c -> c[0].equals(i))
                     .map(c -> (Long) c[1])
                     .findFirst()
-                    .orElse(Long.valueOf(0L));
+                    .orElse(0L);
         }).boxed().collect(Collectors.toList());
     }
 

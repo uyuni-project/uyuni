@@ -113,7 +113,7 @@ public class ChildChannelAction extends RhnAction {
                     systemsPerChannelDto.getId())) {
                     DataResult<EssentialServerDto> sis =
                             SystemManager.systemsSubscribedToChannelInSet(
-                            childChannelDto.getId().longValue(), user,
+                                    childChannelDto.getId(), user,
                         RhnSetDecl.SYSTEMS.getLabel());
                     childChannelDto.setSystemCount(0L + sis.size());
                     availableChildren.add(childChannelDto);

@@ -130,7 +130,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     private void addPackageFormatDetails(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
+        long pkgId = pkgDto.getId();
 
         localHandler.startElement("format");
 
@@ -163,7 +163,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     private void addBasicPackageDetails(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
+        long pkgId = pkgDto.getId();
 
         localHandler.addElementWithCharacters("name", sanitize(pkgId, pkgDto
                 .getName()));

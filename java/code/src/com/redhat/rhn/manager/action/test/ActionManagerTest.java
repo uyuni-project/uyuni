@@ -268,7 +268,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, null);
 
-        Long actionid = parent.getId().longValue();
+        Long actionid = parent.getId();
         TestUtils.arraySearch(dr.toArray(), "getId", actionid);
         assertNotEmpty(dr);
     }
@@ -713,7 +713,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.rescheduleAction(a1);
         sa = (ServerAction) ActionFactory.reload(sa);
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
-        assertTrue(sa.getRemainingTries().longValue() > 0);
+        assertTrue(sa.getRemainingTries() > 0);
     }
 
     public void testInProgressSystems() throws Exception {

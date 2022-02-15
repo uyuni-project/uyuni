@@ -1575,7 +1575,7 @@ public class ErrataManager extends BaseManager {
             List args = new ArrayList();
             args.add("errata");
             Boolean rc = (Boolean)client.invoke("admin.updateIndex", args);
-            flag =  rc.booleanValue();
+            flag = rc;
         }
         catch (XmlRpcFault e) {
             // right now updateIndex doesn't throw any faults.
