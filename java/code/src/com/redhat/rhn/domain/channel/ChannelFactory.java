@@ -86,7 +86,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if userIn)
      */
     public static Channel lookupByIdAndUser(Long id, User userIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", id);
         params.put("userId", userIn.getId());
         return (Channel) singleton.lookupObjectByNamedQuery(
@@ -100,7 +100,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if userIn)
      */
     public static Channel lookupByLabelAndUser(String label, User userIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         params.put("userId", userIn.getId());
         return (Channel) singleton.lookupObjectByNamedQuery(
@@ -113,7 +113,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceType
      */
     public static ContentSourceType lookupContentSourceType(String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         return (ContentSourceType) singleton.lookupObjectByNamedQuery(
                 "ContentSourceType.findByLabel", params);
@@ -134,7 +134,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupContentSources(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org", org);
         return singleton.listObjectsByNamedQuery(
                 "ContentSource.findByOrg", params);
@@ -186,7 +186,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupContentSources(Org org, Channel c) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel", c);
         if (org != null) {
             params.put("org", org);
@@ -207,7 +207,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ContentSource lookupContentSourceByOrgAndLabel(Org org,
             String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org", org);
         params.put("label", label);
         return (ContentSource) singleton.lookupObjectByNamedQuery(
@@ -220,7 +220,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static ContentSource lookupVendorContentSourceByLabel(String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         return (ContentSource) singleton.lookupObjectByNamedQuery(
                 "ContentSource.findVendorContentSourceByLabel", params);
@@ -235,7 +235,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> lookupContentSourceByOrgAndRepo(Org org,
             ContentSourceType repoType, String repoUrl) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org", org);
         params.put("type_id", repoType.getId());
         params.put("url", repoUrl);
@@ -250,7 +250,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return content source
      */
     public static ContentSource lookupContentSource(Long id, Org orgIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("org", orgIn);
         return (ContentSource) singleton.lookupObjectByNamedQuery(
@@ -264,7 +264,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceFilters
      */
     public static List<ContentSourceFilter> lookupContentSourceFiltersById(Long id) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("source_id", id);
         return singleton.listObjectsByNamedQuery(
                 "ContentSourceFilter.findBySourceId", params);
@@ -276,14 +276,14 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channel ids
      */
     public static List<Long> getChannelIds(List<String> labelsIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("labels", labelsIn);
         List<Long> list = singleton.listObjectsByNamedQuery(
                 "Channel.findChannelIdsByLabels", params);
         if (list != null) {
             return list;
         }
-        return new ArrayList<Long>();
+        return new ArrayList<>();
     }
 
     /**
@@ -332,10 +332,10 @@ public class ChannelFactory extends HibernateFactory {
 
         CallableMode m = ModeFactory.getCallableMode(
                 "Channel_queries", "delete_channel");
-        Map<String, Object> inParams = new HashMap<String, Object>();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("cid", c.getId());
 
-        m.execute(inParams, new HashMap<String, Integer>());
+        m.execute(inParams, new HashMap<>());
     }
 
     /**
@@ -368,7 +368,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return Base Channel for the given server id.
      */
     public static Channel getBaseChannel(Long sid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         return (Channel) singleton.lookupObjectByNamedQuery(
                 "Channel.findBaseChannel", params);
@@ -381,7 +381,7 @@ public class ChannelFactory extends HibernateFactory {
      * clonable errata.
      */
     public static List<ClonedChannel> getChannelsWithClonableErrata(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org", org);
         return singleton.listObjectsByNamedQuery(
                 "Channel.channelsWithClonableErrata", params, false);
@@ -394,7 +394,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the list of Channel ids which the given orgid has access to.
      */
     public static List<Channel> getUserAcessibleChannels(Long orgid, Long cid) {
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("org_id", orgid);
         params.put("cid", cid);
         return singleton.listObjectsByNamedQuery(
@@ -409,7 +409,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> getAccessibleChildChannels(Channel baseChannel,
                                                                     User user) {
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("userId", user.getId());
         params.put("cid", baseChannel.getId());
         return singleton.listObjectsByNamedQuery(
@@ -423,7 +423,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return A list of Channel Objects.
      */
     public static List<Channel> getAccessibleChannelsByOrg(Long orgid) {
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("org_id", orgid);
         return singleton.listObjectsByNamedQuery("Org.accessibleChannels", params);
     }
@@ -445,7 +445,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if it is accessible
      */
     public static boolean isAccessibleBy(String channelLabel, Long orgId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabel);
         params.put("org_id", orgId);
         return (int)singleton.lookupObjectByNamedQuery("Channel.isAccessibleBy", params) > 0;
@@ -484,7 +484,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Channel whose label matches the given label.
      */
     public static Channel lookupByLabel(Org org, String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         params.put("orgId", org.getId());
         return (Channel) singleton.lookupObjectByNamedQuery("Channel.findByLabelAndOrgId",
@@ -517,7 +517,7 @@ public class ChannelFactory extends HibernateFactory {
     public static boolean isGloballySubscribable(Org org, Channel c) {
         SelectMode mode = ModeFactory.getMode(
                 "Channel_queries", "is_not_globally_subscribable");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("cid", c.getId());
         params.put("label", "not_globally_subscribable");
@@ -566,7 +566,7 @@ public class ChannelFactory extends HibernateFactory {
     private static void removeOrgChannelSetting(Org org, Channel channel, String label) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                                       "remove_org_channel_setting");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("cid", channel.getId());
         params.put("label", label);
@@ -582,7 +582,7 @@ public class ChannelFactory extends HibernateFactory {
     private static void addOrgChannelSetting(Org org, Channel channel, String label) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                                       "add_org_channel_setting");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("cid", channel.getId());
         params.put("label", label);
@@ -597,7 +597,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void addChannelPackage(Long cid, Long pid) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
         "add_channel_package");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         params.put("pid", pid);
         m.executeUpdate(params);
@@ -632,11 +632,11 @@ public class ChannelFactory extends HibernateFactory {
     public static void refreshNewestPackageCache(Long channelId, String label) {
         CallableMode m = ModeFactory.getCallableMode("Channel_queries",
             "refresh_newest_package");
-        Map<String, Object> inParams = new HashMap<String, Object>();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("cid", channelId);
         inParams.put("label", label);
 
-        m.execute(inParams, new HashMap<String, Integer>());
+        m.execute(inParams, new HashMap<>());
     }
 
     /**
@@ -648,7 +648,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void cloneNewestPackageCache(Long fromChannelId, Long toChannelId) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
             "clone_newest_package");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("from_cid", fromChannelId);
         params.put("to_cid", toChannelId);
         m.executeUpdate(params);
@@ -660,7 +660,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if the given label is in use.
      */
     public static boolean doesChannelLabelExist(String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         Object o = singleton.lookupObjectByNamedQuery(
                 "Channel.verifyLabel", params, false);
@@ -673,7 +673,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if the given name is in use.
      */
     public static boolean doesChannelNameExist(String name) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         Object o = singleton.lookupObjectByNamedQuery(
                 "Channel.verifyName", params, false);
@@ -687,7 +687,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channels
      */
     public static List<Channel> getKickstartableTreeChannels(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.kickstartableTreeChannels", params, false);
@@ -700,7 +700,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channels
      */
     public static List<Channel> getKickstartableChannels(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.kickstartableChannels", params, false);
@@ -712,7 +712,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of Channels
      */
     public static List<Channel> listCustomBaseChannels(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.findCustomBaseChannels", params);
@@ -733,7 +733,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChecksumType instance for given label
      */
     public static ChecksumType findChecksumTypeByLabel(String checksum) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", checksum);
         return (ChecksumType)
             singleton.lookupObjectByNamedQuery("ChecksumType.findByLabel", params);
@@ -749,7 +749,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Long>
             getChannelPackageWithErrata(Channel chan, Collection<Long> eids) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", chan.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.packageInChannelAndErrata", params, eids, "eids");
@@ -762,7 +762,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChannelArch if found, otherwise null
      */
     public static ChannelArch lookupArchByName(String name) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return (ChannelArch)
             singleton.lookupObjectByNamedQuery("ChannelArch.findByName", params);
@@ -774,7 +774,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChannelArch if found, otherwise null
      */
     public static ChannelArch lookupArchByLabel(String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         return (ChannelArch)
             singleton.lookupObjectByNamedQuery("ChannelArch.findByLabel", params);
@@ -787,9 +787,9 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Long> getPackageIds(Long cid) {
         if (cid == null) {
-            return new ArrayList<Long>();
+            return new ArrayList<>();
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         return singleton.listObjectsByNamedQuery("Channel.getPackageIdList", params);
     }
@@ -800,7 +800,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return number of packages in this channel.
      */
     public static int getPackageCount(Channel channel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", channel.getId());
         return (Integer)singleton.lookupObjectByNamedQuery
                                 ("Channel.getPackageCount", params);
@@ -812,7 +812,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the errata count as an int
      */
     public static int getErrataCount(Channel channel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", channel.getId());
         return (Integer)singleton.lookupObjectByNamedQuery
                                 ("Channel.getErrataCount", params);
@@ -825,7 +825,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of packages
      */
     public static List<Long> findOriginalPackages(Channel channel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("from_cid", channel.getId());
         return singleton.listObjectsByNamedQuery(
                     "Channel.lookupOriginalPackages", params);
@@ -841,7 +841,7 @@ public class ChannelFactory extends HibernateFactory {
     public static ReleaseChannelMap lookupDefaultReleaseChannelMapForChannel(
             Channel channel) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel", channel);
         List<ReleaseChannelMap> list = singleton.listObjectsByNamedQuery(
                 "ReleaseChannelMap.findDefaultForChannel", params);
@@ -870,7 +870,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of dist channel maps
      */
     public static List<DistChannelMap> listAllDistChannelMapsByOrg(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery("DistChannelMap.listAllByOrg", params);
     }
@@ -882,7 +882,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return DistChannelMap, null if none is found
      */
     public static DistChannelMap lookupDistChannelMapById(Long id) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         return (DistChannelMap)singleton.lookupObjectByNamedQuery(
                 "DistChannelMap.lookupById", params);
@@ -900,7 +900,7 @@ public class ChannelFactory extends HibernateFactory {
     public static DistChannelMap lookupDistChannelMapByPnReleaseArch(
             Org org, String productName, String release, ChannelArch channelArch) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("for_org_id", org.getId());
         params.put("product_name", productName);
         params.put("release", release);
@@ -922,7 +922,7 @@ public class ChannelFactory extends HibernateFactory {
     public static DistChannelMap lookupDistChannelMapByOrgReleaseArch(Org org,
             String release, ChannelArch channelArch) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("release", release);
         params.put("channel_arch_id", channelArch.getId());
@@ -937,7 +937,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of dist channel mappings, empty list if none is found
      */
     public static List<DistChannelMap> listCompatibleDcmByServerInNullOrg(Server server) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("release", server.getRelease());
         params.put("server_arch_id", server.getServerArch().getId());
         return singleton.listObjectsByNamedQuery(
@@ -953,7 +953,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> listCompatibleDcmForChannelSSMInNullOrg(User user,
             Channel channel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("channel_id", channel.getId());
         return singleton.listObjectsByNamedQuery(
@@ -967,7 +967,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of compatible channels, empty list if none is found
      */
     public static List<Channel> listCompatibleBasesForSSMNoBaseInNullOrg(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.findCompatibleSSMNoBaseInNullOrg", params);
@@ -981,7 +981,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of channels.
      */
     public static List<Channel> listCustomBaseChannelsForSSM(User user, Channel channel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("channel_id", channel.getId());
@@ -996,7 +996,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of channels.
      */
     public static List<Channel> listCustomBaseChannelsForSSMNoBase(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         return singleton.listObjectsByNamedQuery(
@@ -1034,7 +1034,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<DistChannelMap> listDistChannelMaps(Channel c) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel", c);
         return singleton.listObjectsByNamedQuery(
                 "DistChannelMap.findByChannel", params);
@@ -1053,7 +1053,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of channels (including children) accessible for the provided user
      */
     public static List<Channel> findAllByUserOrderByChild(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("userId", user.getId());
         return singleton.listObjectsByNamedQuery("Channel.findAllByUserOrderByChild", params);
     }
@@ -1063,7 +1063,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of Channels
      */
     public static List<Channel> listRedHatBaseChannels() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         return singleton.listObjectsByNamedQuery("Channel.findRedHatBaseChannels", params);
     }
 
@@ -1074,7 +1074,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of Red Hat base channels
      */
     public static List<Channel> listRedHatBaseChannels(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("userId", user.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.findRedHatBaseChannelsByUserId", params);
@@ -1086,7 +1086,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return The channel that was cloned, null if none
      */
     public static Channel lookupOriginalChannel(Channel chan) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("clone", chan);
         return (Channel)singleton.lookupObjectByNamedQuery(
                 "Channel.lookupOriginal", params);
@@ -1099,7 +1099,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return Product name if found, null otherwise.
      */
     public static ProductName lookupProductNameByLabel(String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         return (ProductName)singleton.lookupObjectByNamedQuery(
                 "ProductName.findByLabel", params);
@@ -1122,7 +1122,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of custom channels
      */
     public static List<Channel> listSubscribableBaseChannels(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.findSubscribableBaseChannels", params);
@@ -1134,7 +1134,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of custom channels
      */
     public static List<Channel> listAllBaseChannels(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         return singleton.listObjectsByNamedQuery(
@@ -1146,7 +1146,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of base channels
      */
     public static List<Channel> listAllBaseChannels() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         return singleton.listObjectsByNamedQuery(
                 "Channel.findAllBaseChannelsOnSatellite", params);
     }
@@ -1158,7 +1158,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of children of the parent
      */
     public static List<Channel> listAllChildrenForChannel(Channel parent) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("parent", parent);
         return singleton.listObjectsByNamedQuery(
                 "Channel.listAllChildren", params);
@@ -1248,11 +1248,11 @@ public class ChannelFactory extends HibernateFactory {
     public static List<Long> listManagerIdsForChannel(Org org, Long channelId) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "managers_for_channel_in_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("channel_id", channelId);
         DataResult<Map<String, Long>> dr = m.execute(params);
-        List<Long> ids = new ArrayList<Long>();
+        List<Long> ids = new ArrayList<>();
         for (Map<String, Long> row : dr) {
             ids.add(row.get("id"));
         }
@@ -1268,11 +1268,11 @@ public class ChannelFactory extends HibernateFactory {
     public static List<Long> listSubscriberIdsForChannel(Org org, Long channelId) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "subscribers_for_channel_in_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("channel_id", channelId);
         DataResult<Map<String, Long>> dr = m.execute(params);
-        List<Long> ids = new ArrayList<Long>();
+        List<Long> ids = new ArrayList<>();
         for (Map<String, Long> row : dr) {
             ids.add(row.get("id"));
         }
@@ -1295,7 +1295,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void addErrataToChannel(Set<Long> eids, Long cid) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                 "add_cloned_erratum_to_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         for (Long eid : eids) {
             params.put("eid", eid);
@@ -1309,7 +1309,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Channel> listVendorChannels() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         List<Channel> result = singleton.listObjectsByNamedQuery(
                 "Channel.findVendorChannels", params);
         if (result != null) {

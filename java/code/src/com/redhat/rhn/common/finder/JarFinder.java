@@ -52,7 +52,7 @@ class JarFinder implements Finder {
             String starts = conn.getEntryName();
             JarFile jfile = conn.getJarFile();
 
-            List<String> result = new LinkedList<String>();
+            List<String> result = new LinkedList<>();
 
             Enumeration<JarEntry> e = jfile.entries();
             while (e.hasMoreElements()) {

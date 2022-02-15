@@ -83,7 +83,11 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         assertEquals(original.isGPGCheck(), cloned.isGPGCheck());
 
         // run CloneErrataAction
-        Collection<Long> errataIds = new LinkedList<Long>() { { add(errata.getId()); } };
+        Collection<Long> errataIds = new LinkedList<>() {
+            {
+                add(errata.getId());
+            }
+        };
         CloneErrataEvent event = new CloneErrataEvent(cloned, errataIds, admin);
         new CloneErrataAction().execute(event);
 
@@ -101,7 +105,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
     private int countActiveRepomdTasks(String label) {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
             TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_label", label);
         return selector.execute(params).size();
     }

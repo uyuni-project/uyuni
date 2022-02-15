@@ -373,7 +373,7 @@ public class DataSetManipulator {
      * @return the set of characters that are active
      */
     public Set<Character> getAlphaBarIndex() {
-        Set<Character> chars = new HashSet<Character>();
+        Set<Character> chars = new HashSet<>();
         int i = 0;
         for (Object inputRow : dataset) {
             String value = getAlphaValue(inputRow);

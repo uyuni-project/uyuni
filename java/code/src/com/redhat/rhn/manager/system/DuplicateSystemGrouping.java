@@ -36,7 +36,7 @@ public class DuplicateSystemGrouping implements Expandable, Identifiable {
      */
     public DuplicateSystemGrouping(NetworkDto net) {
         key = net.getKey();
-        systems = new ArrayList<NetworkDto>();
+        systems = new ArrayList<>();
         systems.add(net);
     }
 

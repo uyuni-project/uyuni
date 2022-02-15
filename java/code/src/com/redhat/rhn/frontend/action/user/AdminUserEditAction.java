@@ -148,14 +148,14 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
         // Build a set of the users current role labels to help determine what we need
         // to add and remove:
-        Set<String> existingRoles = new HashSet<String>();
+        Set<String> existingRoles = new HashSet<>();
         for (Role r : targetUser.getPermanentRoles()) {
             existingRoles.add(r.getLabel());
         }
 
         // Look for an add/remove setting for each org role in the form:
-        List<String> rolesToAdd = new LinkedList<String>();
-        List<String> rolesToRemove = new LinkedList<String>();
+        List<String> rolesToAdd = new LinkedList<>();
+        List<String> rolesToRemove = new LinkedList<>();
         for (Role role : orgRoles) {
 
             if (disabledRoles.contains(role.getLabel())) {
@@ -209,7 +209,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
     private Set<String> extractDisabledRoles(HttpServletRequest request) {
         String hiddenInput = request.getParameter("disabledRoles");
-        Set<String> returnVal = new HashSet<String>(
+        Set<String> returnVal = new HashSet<>(
                 Arrays.asList(hiddenInput.split("\\|")));
         log.debug("Found disabled inputs: " + returnVal);
         return returnVal;

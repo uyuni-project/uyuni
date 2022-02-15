@@ -135,7 +135,7 @@ public class ImageProfileController {
      * @return the model and view
      */
     public static ModelAndView createView(Request req, Response res, User user) {
-        List<String> imageTypesDataFromTheServer = new ArrayList<String>();
+        List<String> imageTypesDataFromTheServer = new ArrayList<>();
         imageTypesDataFromTheServer.add("dockerfile");
         if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
             imageTypesDataFromTheServer.add("kiwi");
@@ -170,7 +170,7 @@ public class ImageProfileController {
             res.redirect("/rhn/manager/cm/imageprofiles/create");
         }
 
-        List<String> imageTypesDataFromTheServer = new ArrayList<String>();
+        List<String> imageTypesDataFromTheServer = new ArrayList<>();
         imageTypesDataFromTheServer.add("dockerfile");
         if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
             imageTypesDataFromTheServer.add("kiwi");

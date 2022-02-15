@@ -55,7 +55,7 @@ public class DocSearchSetupAction extends BaseSearchAction {
         String searchString = form.getString(SEARCH_STR);
         String viewmode = form.getString(VIEW_MODE);
 
-        List<Map<String, String>> searchOptions = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> searchOptions = new ArrayList<>();
         addOption(searchOptions, "docsearch.content_title", OPT_CONTENT_TITLE);
         addOption(searchOptions, "docsearch.free_form", OPT_FREE_FORM);
         addOption(searchOptions, "docsearch.content", OPT_CONTENT_ONLY);
@@ -128,7 +128,7 @@ public class DocSearchSetupAction extends BaseSearchAction {
                 args.remove(args.size() - 2);
                 results = (List)client.invoke("index.search", args);
 
-                List<ValidatorWarning> warnings = new LinkedList<ValidatorWarning>();
+                List<ValidatorWarning> warnings = new LinkedList<>();
                 warnings.add(new ValidatorWarning
                         ("packages.search.index_files_missing_for_docs"));
 
@@ -148,7 +148,7 @@ public class DocSearchSetupAction extends BaseSearchAction {
             return Collections.emptyList();
         }
 
-        List<HelpDocumentOverview> docs = new ArrayList<HelpDocumentOverview>();
+        List<HelpDocumentOverview> docs = new ArrayList<>();
         for (Object resultIn : results) {
             HelpDocumentOverview doc = new HelpDocumentOverview();
             Map item = (Map) resultIn;

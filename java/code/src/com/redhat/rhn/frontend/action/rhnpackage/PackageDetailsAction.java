@@ -116,7 +116,7 @@ public class PackageDetailsAction extends RhnAction {
             }
 
             // remove references to channels we can't see
-            Set<Channel> channels = new HashSet<Channel>(pkg.getChannels());
+            Set<Channel> channels = new HashSet<>(pkg.getChannels());
             channels.retainAll(ChannelFactory.getAccessibleChannelsByOrg(user.getOrg()
                     .getId()));
             request.setAttribute("channels", channels);
@@ -178,7 +178,7 @@ public class PackageDetailsAction extends RhnAction {
             throw new PermissionException("Invalid id_combo and cid/sid");
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pkg.getId());
         return getStrutsDelegate().forwardParams(mapping.findForward("package"),
                 params);

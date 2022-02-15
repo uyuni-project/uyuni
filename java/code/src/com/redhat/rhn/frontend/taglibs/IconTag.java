@@ -40,7 +40,7 @@ public class IconTag extends TagSupport {
     private static Map<String, String> icons;
 
     static {
-        icons = new HashMap<String, String>();
+        icons = new HashMap<>();
         icons.put("action-failed", "fa fa-times-circle-o fa-1-5x text-danger");
         icons.put("action-ok", "fa fa-check-circle-o fa-1-5x text-success");
         icons.put("action-pending", "fa fa-clock-o fa-1-5x");

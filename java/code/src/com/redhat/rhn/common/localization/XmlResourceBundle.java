@@ -68,7 +68,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      * @throws IOException if the file can't be parsed/loaded
      */
     public XmlResourceBundle(String filelocation) throws IOException {
-        strings = new HashMap<String, String>();
+        strings = new HashMap<>();
         try {
             // These are namespace URLs, and don't actually
             // resolve to real documents that get downloaded on the
@@ -121,7 +121,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      *         Useful for searching for a partial match.
      */
     public Enumeration<String> getKeys() {
-        List<String> keys = new LinkedList<String>();
+        List<String> keys = new LinkedList<>();
 
         if (parent != null) {
             Enumeration<String> e = parent.getKeys();
@@ -135,7 +135,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
         }
         // Ugh, have to convert back to the old Enumeration interface
         // This isn't pretty but it works.
-        return new Vector<String>(keys).elements();
+        return new Vector<>(keys).elements();
     }
 
 }

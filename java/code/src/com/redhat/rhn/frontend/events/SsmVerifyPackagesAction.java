@@ -90,7 +90,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
             // Get the packages out of the elaborator
             List elabList = (List) data.get("elaborator0");
 
-            List<PackageListItem> items = new ArrayList<PackageListItem>(elabList.size());
+            List<PackageListItem> items = new ArrayList<>(elabList.size());
             for (Object oIn : elabList) {
                 Map elabData = (Map) oIn;
                 String idCombo = (String) elabData.get("id_combo");

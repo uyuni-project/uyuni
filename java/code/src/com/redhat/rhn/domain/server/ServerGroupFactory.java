@@ -67,7 +67,7 @@ public class ServerGroupFactory extends HibernateFactory {
      * @return the ServerGroups that the user can administer.
      */
     public static List listAdministeredServerGroups(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("uid", user.getId());
         return SINGLETON.listObjectsByNamedQuery(
                 "ServerGroup.lookupAdministeredServerGroups", params);
@@ -267,7 +267,7 @@ public class ServerGroupFactory extends HibernateFactory {
      * @return the list of servergroups without any admins.
      */
     public static List listNoAdminGroups(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return SINGLETON.listObjectsByNamedQuery(
                 "ServerGroup.lookupGroupsWithNoAssocAdmins", params);
@@ -279,7 +279,7 @@ public class ServerGroupFactory extends HibernateFactory {
      * @return list of User objects that can administer the server group
      */
     public static List listAdministrators(ServerGroup sg) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sg.getId());
         params.put("org_id", sg.getOrg().getId());
         return SINGLETON.listObjectsByNamedQuery(
@@ -293,13 +293,13 @@ public class ServerGroupFactory extends HibernateFactory {
      *                      the server group
      */
     public static List<Server> listServers(ServerGroup sg) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sg.getId());
         params.put("org_id", sg.getOrg().getId());
         List<Number> ids =
                 SINGLETON.listObjectsByNamedQuery(
                 "ServerGroup.lookupServerIds", params);
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         for (Number n : ids) {
             serverIds.add(n.longValue());
         }
@@ -331,7 +331,7 @@ public class ServerGroupFactory extends HibernateFactory {
      * @return the value of the the currentmemebers column.
      */
     public static Long getCurrentMembers(ServerGroup sg) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sg.getId());
         Object obj  = SINGLETON.lookupObjectByNamedQuery(
                 "ServerGroup.lookupCurrentMembersValue", params);
@@ -343,7 +343,7 @@ public class ServerGroupFactory extends HibernateFactory {
     }
 
     private static List listServerGroups(Server s, String queryName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", s.getId());
         return  SINGLETON.listObjectsByNamedQuery(queryName, params);
     }
@@ -371,7 +371,7 @@ public class ServerGroupFactory extends HibernateFactory {
     }
 
     private static List<? extends ServerGroup> listServerGroups(Org org, String queryName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org", org);
         return  SINGLETON.listObjectsByNamedQuery(queryName, params);
     }
@@ -400,7 +400,7 @@ public class ServerGroupFactory extends HibernateFactory {
         return listServerIds(sg, threshold, "ServerGroup.lookupInactiveServerIds");    }
 
     private static List<Long> listServerIds(ServerGroup sg, Long threshold, String query) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sg.getId());
         params.put("threshold", threshold);
         return  SINGLETON.listObjectsByNamedQuery(query, params);

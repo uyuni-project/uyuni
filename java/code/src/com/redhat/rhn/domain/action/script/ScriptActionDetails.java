@@ -108,7 +108,7 @@ public class ScriptActionDetails extends ActionChild {
      */
     public void addResult(ScriptResult r) {
         if (this.results == null) { //init results if needed
-            this.results = new HashSet<ScriptResult>();
+            this.results = new HashSet<>();
         }
         r.setParentScriptActionDetails(this);
         this.results.add(r);

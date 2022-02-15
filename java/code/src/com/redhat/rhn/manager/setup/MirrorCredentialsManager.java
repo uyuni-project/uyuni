@@ -57,7 +57,7 @@ public class MirrorCredentialsManager {
      * @return list of all available mirror credentials
      */
     public List<MirrorCredentialsDto> findMirrorCredentials() {
-        List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
+        List<MirrorCredentialsDto> credsList = new ArrayList<>();
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             MirrorCredentialsDto creds = new MirrorCredentialsDto(
                     c.getUsername(), c.getPassword());
@@ -277,7 +277,7 @@ public class MirrorCredentialsManager {
         Map<String, String> familyNameByLabel = ChannelFamilyFactory.getAllChannelFamilies()
                 .stream().collect(Collectors.toMap(cf -> cf.getLabel(), cf -> cf.getName()));
         // Go through all of the given subscriptions
-        List<SubscriptionDto> dtos = new ArrayList<SubscriptionDto>();
+        List<SubscriptionDto> dtos = new ArrayList<>();
         for (SCCSubscriptionJson s : subscriptions) {
             // Skip all non-active
             if (!s.getStatus().equals("ACTIVE")) {

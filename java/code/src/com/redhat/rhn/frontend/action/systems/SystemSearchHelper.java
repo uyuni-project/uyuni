@@ -450,7 +450,7 @@ public class SystemSearchHelper {
         else {
             throw new ValidatorException("Mode: " + mode + " not supported.");
         }
-        Map<String, String> retval = new HashMap<String, String>();
+        Map<String, String> retval = new HashMap<>();
         retval.put("query", query);
         retval.put("index", index);
         return retval;

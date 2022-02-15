@@ -112,7 +112,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         Channel c2 = ChannelFactoryTest.createTestChannel(user);
         assertFalse(c1.equals(c2));
         Channel c3 = ChannelFactory.lookupById(c1.getId());
-        Set<Channel> testSet = new HashSet<Channel>();
+        Set<Channel> testSet = new HashSet<>();
         testSet.add(c1);
         testSet.add(c2);
         testSet.add(c3);

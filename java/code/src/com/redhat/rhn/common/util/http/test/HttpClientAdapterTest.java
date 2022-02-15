@@ -59,7 +59,7 @@ public class HttpClientAdapterTest extends TestCase {
      * @throws Exception in case there is a problem
      */
     public void testGetRequestAuthenticated() throws Exception {
-        Callable<Integer> requester = new Callable<Integer>() {
+        Callable<Integer> requester = new Callable<>() {
             @Override
             public Integer call() throws Exception {
                 HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
@@ -69,7 +69,7 @@ public class HttpClientAdapterTest extends TestCase {
             }
         };
 
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Host", SERVER_MOCK.getURI().getAuthority());
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         assertEquals((Integer) HttpStatus.SC_OK,
@@ -88,7 +88,7 @@ public class HttpClientAdapterTest extends TestCase {
         proxySettings.setPassword(PROXY_TEST_PASSWORD);
         ProxySettingsManagerTest.setProxySettings(proxySettings);
 
-        Callable<Integer> requester = new Callable<Integer>() {
+        Callable<Integer> requester = new Callable<>() {
             @Override
             public Integer call() throws Exception {
                 HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
@@ -98,7 +98,7 @@ public class HttpClientAdapterTest extends TestCase {
             }
         };
 
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Host", TEST_AUTHORITY);
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         headers.put("Proxy-Authorization", EXPECTED_PROXY_AUTHORIZATION);

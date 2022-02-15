@@ -54,7 +54,7 @@ public class AdminListAction extends BaseListAction {
     protected void processHelper(ListSessionSetHelper helper) {
         helper.ignoreEmptySelection();
 
-        Set<String> preselected = new HashSet<String>();
+        Set<String> preselected = new HashSet<>();
         for (User item : (List<User>) ServerGroupFactory.listAdministrators(serverGroup)) {
                 preselected.add(item.getId().toString());
         }

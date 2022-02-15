@@ -42,16 +42,20 @@ public class ProductTest extends TestCase {
                 "test",
                 "test product",
                 "",
-                new MandatoryChannels(new LinkedList<Channel>() { {
-                    add(new Channel("test channel 1", Channel.STATUS_PROVIDED, false));
-                    add(new Channel("test channel 2", Channel.STATUS_PROVIDED, false));
-                    add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED, false));
-                } }),
-                new OptionalChannels(new LinkedList<Channel>() { {
-                    add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED, false));
-                    add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED, false));
-                    add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED, false));
-                } })
+                new MandatoryChannels(new LinkedList<>() {
+                    {
+                        add(new Channel("test channel 1", Channel.STATUS_PROVIDED, false));
+                        add(new Channel("test channel 2", Channel.STATUS_PROVIDED, false));
+                        add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED, false));
+                    }
+                }),
+                new OptionalChannels(new LinkedList<>() {
+                    {
+                        add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED, false));
+                        add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED, false));
+                        add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED, false));
+                    }
+                })
        );
 
        assertEquals(false, nonSynchronizingProduct.isProvided());
@@ -63,16 +67,20 @@ public class ProductTest extends TestCase {
                "test",
                "test product",
                "",
-               new MandatoryChannels(new LinkedList<Channel>() { {
-                   add(new Channel("test channel 1", Channel.STATUS_PROVIDED, false));
-                   add(new Channel("test channel 2", Channel.STATUS_PROVIDED, false));
-                   add(new Channel("test channel 3", Channel.STATUS_PROVIDED, false));
-               } }),
-               new OptionalChannels(new LinkedList<Channel>() { {
-                   add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED, false));
-                   add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED, false));
-                   add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED, false));
-               } })
+               new MandatoryChannels(new LinkedList<>() {
+                   {
+                       add(new Channel("test channel 1", Channel.STATUS_PROVIDED, false));
+                       add(new Channel("test channel 2", Channel.STATUS_PROVIDED, false));
+                       add(new Channel("test channel 3", Channel.STATUS_PROVIDED, false));
+                   }
+               }),
+               new OptionalChannels(new LinkedList<>() {
+                   {
+                       add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED, false));
+                       add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED, false));
+                       add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED, false));
+                   }
+               })
       );
 
       assertEquals(true, synchronizingProduct.isProvided());
@@ -82,7 +90,7 @@ public class ProductTest extends TestCase {
      * Test compareTo().
      */
     public void testCompareTo() {
-        List<SetupWizardProductDto> products = new LinkedList<SetupWizardProductDto>();
+        List<SetupWizardProductDto> products = new LinkedList<>();
 
         SetupWizardProductDto prodAs390 = new SetupWizardProductDto(
             1L,
@@ -91,8 +99,8 @@ public class ProductTest extends TestCase {
             "product_a_s390",
             "Product A",
             "",
-            new MandatoryChannels(new LinkedList<Channel>()),
-            new OptionalChannels(new LinkedList<Channel>())
+            new MandatoryChannels(new LinkedList<>()),
+            new OptionalChannels(new LinkedList<>())
         );
         SetupWizardProductDto prodAx64 = new SetupWizardProductDto(
             2L,
@@ -101,8 +109,8 @@ public class ProductTest extends TestCase {
             "product_a_x86_64",
             "Product A",
             "",
-            new MandatoryChannels(new LinkedList<Channel>()),
-            new OptionalChannels(new LinkedList<Channel>())
+            new MandatoryChannels(new LinkedList<>()),
+            new OptionalChannels(new LinkedList<>())
         );
         SetupWizardProductDto prodA1s390 = new SetupWizardProductDto(
             3L,
@@ -111,8 +119,8 @@ public class ProductTest extends TestCase {
             "product_a1",
             "Product A1",
             "product_a1_s390",
-            new MandatoryChannels(new LinkedList<Channel>()),
-            new OptionalChannels(new LinkedList<Channel>())
+            new MandatoryChannels(new LinkedList<>()),
+            new OptionalChannels(new LinkedList<>())
         );
         SetupWizardProductDto prodA2s390 = new SetupWizardProductDto(
             4L,
@@ -121,8 +129,8 @@ public class ProductTest extends TestCase {
             "product_a2",
             "Product A2",
             "product_a2_s390",
-            new MandatoryChannels(new LinkedList<Channel>()),
-            new OptionalChannels(new LinkedList<Channel>())
+            new MandatoryChannels(new LinkedList<>()),
+            new OptionalChannels(new LinkedList<>())
         );
 
         products.add(prodA2s390);

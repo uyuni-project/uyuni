@@ -70,14 +70,14 @@ public class EntitlementManager extends BaseManager {
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
     static {
-        ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
+        ADDON_ENTITLEMENTS = new LinkedHashSet<>();
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
         ADDON_ENTITLEMENTS.add(CONTAINER_BUILD_HOST);
         ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
         ADDON_ENTITLEMENTS.add(MONITORING);
         ADDON_ENTITLEMENTS.add(ANSIBLE_CONTROL_NODE);
 
-        BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
+        BASE_ENTITLEMENTS = new LinkedHashSet<>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
         BASE_ENTITLEMENTS.add(SALT);
         BASE_ENTITLEMENTS.add(FOREIGN);

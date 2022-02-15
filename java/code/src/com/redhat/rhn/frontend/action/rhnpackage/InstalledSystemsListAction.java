@@ -68,7 +68,7 @@ public class InstalledSystemsListAction extends RhnAction {
                 pid);
         DataResult<SystemOverview> result = SystemManager
                 .listSystemsWithPackage(user, pid);
-        result.setElaborationParams(new HashMap<String, Object>());
+        result.setElaborationParams(new HashMap<>());
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);

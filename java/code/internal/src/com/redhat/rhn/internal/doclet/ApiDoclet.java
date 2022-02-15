@@ -182,7 +182,7 @@ public abstract class ApiDoclet implements Doclet {
         List<TypeElement> serializers = getSerializers(classes, docEnv.getTypeUtils());
         List<TypeElement> handlers = getHandlers(classes, docEnv.getTypeUtils());
         Map<String, String> serialMap = getSerialMap(serializers, docEnv.getDocTrees());
-        List<Handler> handlerList = new ArrayList<Handler>();
+        List<Handler> handlerList = new ArrayList<>();
 
         for (TypeElement clas : handlers) {
             DocCommentTree docTree = docEnv.getDocTrees().getDocCommentTree(clas);
@@ -319,7 +319,7 @@ public abstract class ApiDoclet implements Doclet {
     }
 
     private Map<String, String> getSerialMap(List<TypeElement> classes, DocTrees docTrees) {
-        Map<String, String> map  = new HashMap<String, String>();
+        Map<String, String> map  = new HashMap<>();
 
         for (TypeElement clas : classes) {
             String doc = new DocTreeScanner<String, Void>() {
@@ -349,7 +349,7 @@ public abstract class ApiDoclet implements Doclet {
         return classes.stream()
             .filter(clazz -> clazz.getSuperclass() != null &&
                     types.asElement(clazz.getSuperclass()).getSimpleName().contentEquals("BaseHandler"))
-            .sorted(new Comparator<TypeElement>() {
+            .sorted(new Comparator<>() {
                 @Override
                 public int compare(TypeElement o1, TypeElement o2) {
                     return o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString());

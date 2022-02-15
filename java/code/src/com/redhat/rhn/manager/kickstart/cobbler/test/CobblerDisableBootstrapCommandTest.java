@@ -47,7 +47,7 @@ public class CobblerDisableBootstrapCommandTest extends BaseTestCaseWithUser {
         CobblerDisableBootstrapCommand command = new CobblerDisableBootstrapCommand(user);
         command.store();
 
-        HashMap<String, Object> criteria = new HashMap<String, Object>();
+        HashMap<String, Object> criteria = new HashMap<>();
         criteria.put("name", Distro.BOOTSTRAP_NAME);
         List<Map<String, Object>> distro = CobblerDisableBootstrapCommandTest.invoke(
             connection, "find_distro", criteria);

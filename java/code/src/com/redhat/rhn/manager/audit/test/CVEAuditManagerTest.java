@@ -131,7 +131,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * @throws Exception if anything goes wrong
      */
     public void testListAllServers() throws Exception {
-        Set<SystemOverview> expected = new HashSet<SystemOverview>();
+        Set<SystemOverview> expected = new HashSet<>();
         User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
         Server server1 = createTestServer(user1);
         SystemOverview sysOverview1 = new SystemOverview();
@@ -209,7 +209,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertTrue(channels.contains(childChannel3));
 
         // Query the other way around: findChannelProducts()
-        List<Long> channelIDs = new ArrayList<Long>();
+        List<Long> channelIDs = new ArrayList<>();
         for (Channel c : channels) {
             channelIDs.add(c.getId());
         }
@@ -379,7 +379,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create server and install product
         User user = createTestUser();
-        List<Channel> subscribedChannels = new ArrayList<Channel>(Arrays.asList(baseChannel, childChannel1));
+        List<Channel> subscribedChannels = new ArrayList<>(Arrays.asList(baseChannel, childChannel1));
         Server server = createTestServer(user, subscribedChannels);
         installSUSEProductOnServer(product, server);
 
@@ -416,7 +416,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel childChannel2 = createTestVendorChildChannel(baseChannel, channelProduct);
 
         // All channels defined above should be returned
-        List<Long> productIDs = new ArrayList<Long>(Arrays.asList(channelProduct.getId()));
+        List<Long> productIDs = new ArrayList<>(Arrays.asList(channelProduct.getId()));
         List<Channel> channels = CVEAuditManager.findProductChannels(productIDs, baseChannel.getId());
         assertEquals(3, channels.size());
         assertTrue(channels.contains(baseChannel));
@@ -454,7 +454,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata but no vulnerable
@@ -462,7 +462,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         createTestPackage(user, errata, channel, "noarch");
         Server server = createTestServer(user, channels);
@@ -493,7 +493,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata and a patch package
@@ -501,7 +501,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Package unpatched = createTestPackage(user, channel, "noarch");
         Package patched = createLaterTestPackage(user, errata, channel, unpatched);
@@ -535,7 +535,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata and an upgradable package
@@ -543,7 +543,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Package unpatched = createTestPackage(user, channel, "noarch");
         createLaterTestPackage(user, errata, channel, unpatched);
@@ -577,7 +577,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a product
@@ -600,7 +600,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createLaterTestPackage(user, errata, childChannel, unpatched);
 
         // Create server with unpatched package
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(baseChannel);
         Server server = createTestServer(user, channels);
         createTestInstalledPackage(unpatched, server);
@@ -633,14 +633,14 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata and an upgradable package
         // already installed
         User user = createTestUser();
         Channel channel = createTestChannel(user);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Package unpatched = createTestPackage(user, channel, "noarch");
         Server server = createTestServer(user, channels);
@@ -666,7 +666,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a channel with errata and packages
@@ -675,7 +675,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel channel = createTestChannel(user, errata);
         Package unpatched = createTestPackage(user, channel, "noarch");
         Package patched = createLaterTestPackage(user, errata, channel, unpatched);
-        List<Package> packages = new ArrayList<Package>();
+        List<Package> packages = new ArrayList<>();
         packages.add(unpatched);
         packages.add(patched);
 
@@ -685,7 +685,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
                 createTestClonedChannel(user, errataClone, channel, packages);
 
         // Subscribe server to channel and install unpatched package
-        Set<Channel> assignedChannels = new HashSet<Channel>();
+        Set<Channel> assignedChannels = new HashSet<>();
         assignedChannels.add(channelClone);
         Server server = createTestServer(user, assignedChannels);
         createTestInstalledPackage(unpatched, server);
@@ -711,7 +711,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create just a server and a channel
         User user = createTestUser();
         Channel channel = createTestChannel(user);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Server server = createTestServer(user, channels);
         CVEAuditManager.populateCVEChannels();
@@ -729,7 +729,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create just a server and a channel
         User user = createTestUser();
         Channel channel = createTestChannel(user);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         @SuppressWarnings("unused")
         Server server = createTestServer(user, channels);
@@ -748,7 +748,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata and a patch package
@@ -756,7 +756,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Package unpatched = createTestPackage(user, channel, "noarch");
         Package patched = createLaterTestPackage(user, errata, channel, unpatched);
@@ -783,7 +783,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata, one upgradable package
@@ -791,7 +791,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         // order is important first package is installed, the second one
         // can be upgraded.
@@ -955,7 +955,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata
@@ -963,7 +963,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
 
         Package p1 = createTestPackage(user, errata, channel, "noarch");
@@ -990,7 +990,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create SP2 and SP3 products + upgrade path
@@ -1027,7 +1027,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createLaterTestPackage(user, errataSP3, updateChannelSP3, patchedLTSS);
 
         // Setup SP2 channels
-        Set<Channel> channelsSP2 = new HashSet<Channel>();
+        Set<Channel> channelsSP2 = new HashSet<>();
         channelsSP2.add(baseChannelSP2);
         channelsSP2.add(ltssChannelSP2);
 
@@ -1065,7 +1065,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create SP2 and SP3 products + upgrade path
@@ -1105,7 +1105,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, patchedSP3);
 
         // Setup SP2 channels
-        Set<Channel> channelsSP2 = new HashSet<Channel>();
+        Set<Channel> channelsSP2 = new HashSet<>();
         channelsSP2.add(baseChannelSP2);
         channelsSP2.add(ltssChannelSP2);
 
@@ -1196,7 +1196,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create SP2 and SP3 products + upgrade path
@@ -1237,7 +1237,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
                 user, errataSP3, updateChannelSP3, unpatched);
 
         // Create server: no patch is installed
-        Set<Channel> channelsSP3 = new HashSet<Channel>();
+        Set<Channel> channelsSP3 = new HashSet<>();
         channelsSP3.add(baseChannelSP3);
         channelsSP3.add(updateChannelSP3);
         Server server = createTestServer(user, channelsSP3);
@@ -1261,7 +1261,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create one errata that spreads over two different channels
@@ -1283,7 +1283,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // server1: SDK channel not assigned, patched package not installed
         // -> AFFECTED_PATCH_APPLICABLE
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(baseChannelSP3);
         Server server1 = createTestServer(user, serverChannels);
         createTestInstalledPackage(unpatched, server1);
@@ -1315,7 +1315,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create two errata that patches the same bug. 1 for kgraft and one for kernel
@@ -1357,7 +1357,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // server: old kernel but new kgraft-patch installed from cloned channels
         // -> PATCHED
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(baseChannelClone);
         serverChannels.add(channelClone);
         Server server = createTestServer(user, serverChannels);
@@ -1527,7 +1527,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create two errata that patches the same bug. 1 for kgraft and one for kernel
@@ -1569,7 +1569,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // server: old kernel but new kgraft-patch installed from cloned channels
         // -> PATCHED
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(baseChannelClone);
         serverChannels.add(channelClone);
         Server server = createTestServer(user, serverChannels);
@@ -1598,12 +1598,12 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cvesKgraft = new HashSet<Cve>();
+        Set<Cve> cvesKgraft = new HashSet<>();
         cvesKgraft.add(cve);
 
         String cveNameKernelExclusive = TestUtils.randomString().substring(0, 13);
         Cve cveKernelExclusive = createTestCve(cveNameKernelExclusive);
-        Set<Cve> cvesKernel = new HashSet<Cve>();
+        Set<Cve> cvesKernel = new HashSet<>();
         cvesKernel.add(cve);
         cvesKernel.add(cveKernelExclusive);
 
@@ -1648,7 +1648,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // server: old kernel but new kgraft-patch installed from cloned channels
         // -> PATCHED
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(baseChannelClone);
         serverChannels.add(channelClone);
         Server server = createTestServer(user, serverChannels);
@@ -1676,7 +1676,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata but no vulnerable
@@ -1684,7 +1684,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         createTestPackage(user, errata, channel, "noarch");
         ImageInfo image = createImageInfo(channels, user);
@@ -1716,7 +1716,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata and an upgradable package
@@ -1724,7 +1724,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Package unpatched = createTestPackage(user, channel, "noarch");
         createLaterTestPackage(user, errata, channel, unpatched);
@@ -1755,7 +1755,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a server with a channel, one errata and an upgradable package
@@ -1763,7 +1763,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errata = createTestErrata(user, cves);
         Channel channel = createTestChannel(user, errata);
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Package unpatched = createTestPackage(user, channel, "noarch");
         createLaterTestPackage(user, errata, channel, unpatched, null, unpatched.getPackageEvr().getVersion(),
@@ -1792,7 +1792,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a product
@@ -1815,7 +1815,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createLaterTestPackage(user, errata, childChannel, unpatched);
 
         // Create server with unpatched package
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(baseChannel);
 
         ImageInfo image = createImageInfo(channels, user);
@@ -1850,7 +1850,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a channel with errata and packages
@@ -1859,7 +1859,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel channel = createTestChannel(user, errata);
         Package unpatched = createTestPackage(user, channel, "noarch");
         Package patched = createLaterTestPackage(user, errata, channel, unpatched);
-        List<Package> packages = new ArrayList<Package>();
+        List<Package> packages = new ArrayList<>();
         packages.add(unpatched);
         packages.add(patched);
 
@@ -1868,7 +1868,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel channelClone = createTestClonedChannel(user, errataClone, channel, packages);
 
         // Subscribe two servers to channel and install unpatched package
-        Set<Channel> assignedChannels = new HashSet<Channel>();
+        Set<Channel> assignedChannels = new HashSet<>();
         assignedChannels.add(channelClone);
         Server server1 = createTestServer(user, assignedChannels);
         createTestInstalledPackage(unpatched, server1);
@@ -1888,7 +1888,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         // Create a channel with errata and packages
@@ -1898,7 +1898,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package unpatched = createTestPackage(user, channel, "noarch");
         Package patched = createLaterTestPackage(user, errata, channel, unpatched, null,
                 unpatched.getPackageEvr().getVersion(), unpatched.getPackageEvr().getRelease());
-        List<Package> packages = new ArrayList<Package>();
+        List<Package> packages = new ArrayList<>();
         packages.add(unpatched);
         packages.add(patched);
 
@@ -1907,7 +1907,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel channelClone = createTestClonedChannel(user, errataClone, channel, packages);
 
         // Subscribe two servers to channel and install unpatched package
-        Set<Channel> assignedChannels = new HashSet<Channel>();
+        Set<Channel> assignedChannels = new HashSet<>();
         assignedChannels.add(channelClone);
         Server server1 = createTestServer(user, assignedChannels);
         createTestInstalledPackage(unpatched, server1);

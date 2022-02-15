@@ -1174,7 +1174,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result.size());
 
         // try to delete custom values using undefined keys
-        List<String> valuesToDelete = new ArrayList<String>();
+        List<String> valuesToDelete = new ArrayList<>();
         valuesToDelete.add(fooKey);
         try {
             setResult = handler.deleteCustomValues(admin,
@@ -2022,9 +2022,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
-        List<String> entitlements = new LinkedList<String>() { {
-            add(EntitlementManager.VIRTUALIZATION_ENTITLED);
-        } };
+        List<String> entitlements = new LinkedList<>() {
+            {
+                add(EntitlementManager.VIRTUALIZATION_ENTITLED);
+            }
+        };
 
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
@@ -2047,9 +2049,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
-        List<String> entitlements = new LinkedList<String>() { {
-            add(EntitlementManager.VIRTUALIZATION_ENTITLED);
-        } };
+        List<String> entitlements = new LinkedList<>() {
+            {
+                add(EntitlementManager.VIRTUALIZATION_ENTITLED);
+            }
+        };
 
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
@@ -2497,7 +2501,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
         "insert_into_rhnServerPath");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", server.getId());
         params.put("proxy_server_id", proxy1.getId());
         params.put("proxy_hostname", proxy1.getName());
@@ -2845,7 +2849,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        List<String> stateNames = new LinkedList<String>();
+        List<String> stateNames = new LinkedList<>();
         stateNames.add("channels");
 
         Long actionId = getMockedHandler().scheduleApplyStates(

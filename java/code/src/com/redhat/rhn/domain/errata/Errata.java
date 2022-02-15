@@ -43,7 +43,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     protected Set<Package> packages;
 
     private Set<Channel> channels = new HashSet<>();
-    private Set<Cve> cves = new HashSet<Cve>();
+    private Set<Cve> cves = new HashSet<>();
     private Long id;
     private String advisory;
     private String advisoryType;
@@ -63,7 +63,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     private Boolean locallyModified;
     private Date lastModified;
     private Org org;
-    private Set<Bug> bugs = new HashSet<Bug>();
+    private Set<Bug> bugs = new HashSet<>();
     private Set<ErrataFile> files;
     private Set<Keyword> keywords;
     private boolean selected;
@@ -563,7 +563,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     public void addFile(ErrataFile fileIn) {
         if (this.files == null) {
-            this.files = new HashSet<ErrataFile>();
+            this.files = new HashSet<>();
         }
 
         this.files.add(fileIn);
@@ -607,7 +607,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     public void addKeyword(String keywordIn) {
         if (this.keywords == null) {
-            this.keywords = new HashSet<Keyword>();
+            this.keywords = new HashSet<>();
         }
         for (Keyword k : getKeywords()) {
             if (k.getKeyword().equals(keywordIn)) {
@@ -632,7 +632,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     public void addKeyword(Keyword keywordIn) {
         if (this.keywords == null) {
-            this.keywords = new HashSet<Keyword>();
+            this.keywords = new HashSet<>();
         }
         // add keyword to set
         keywords.add(keywordIn);
@@ -686,7 +686,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     public void addPackage(Package packageIn) {
         if (this.packages == null) {
-            this.packages = new HashSet<Package>();
+            this.packages = new HashSet<>();
         }
         packages.add(packageIn);
     }

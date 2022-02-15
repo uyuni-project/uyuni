@@ -108,8 +108,8 @@ public class SystemGroupListSetupAction extends RhnAction
         RhnSet systemSet = RhnSetDecl.SYSTEMS.create(user);
         RhnSet groupSet = getSetDecl().get(user);
 
-        List<Long> firstList = new ArrayList<Long>();
-        List<Long> secondList = new ArrayList<Long>();
+        List<Long> firstList = new ArrayList<>();
+        List<Long> secondList = new ArrayList<>();
 
         //for the first group, add all the systems to firstList
         Long sgid = groupSet.getElementValues().iterator().next();
@@ -130,7 +130,7 @@ public class SystemGroupListSetupAction extends RhnAction
             }
 
             firstList = listIntersection(firstList, secondList);
-            secondList = new ArrayList<Long>();
+            secondList = new ArrayList<>();
         }
 
         //add all the systems to the set
@@ -146,7 +146,7 @@ public class SystemGroupListSetupAction extends RhnAction
 
     private List<Long> listIntersection(List<Long> one, List<Long> two) {
 
-        List<Long> retval = new ArrayList<Long>();
+        List<Long> retval = new ArrayList<>();
         for (Long i : one) {
             if (two.contains(i)) {
                 retval.add(i);

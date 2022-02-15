@@ -50,7 +50,7 @@ public class SatManager extends BaseManager {
      */
     public static List getAllSatAdmins() {
         SelectMode m = ModeFactory.getMode("User_queries", "all_sat_admins");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         DataResult dr = m.execute(params);
         if (dr == null) {
             return Collections.EMPTY_LIST;
@@ -66,7 +66,7 @@ public class SatManager extends BaseManager {
      */
     public static List getActiveSatAdmins() {
         SelectMode m = ModeFactory.getMode("User_queries", "active_sat_admins");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         DataResult dr = m.execute(params);
         if (dr == null) {
             return Collections.EMPTY_LIST;

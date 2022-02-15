@@ -45,7 +45,7 @@ public class PreservationListDeleteSingleTest extends RhnMockStrutsTestCase {
         assertTrue(forward.startsWith(path));
         assertEquals(path.length(), forward.indexOf("?"));
         String queryString = forward.substring(forward.indexOf("?") + 1);
-        List<String> query = new ArrayList<String>(Arrays.asList(queryString.split("&")));
+        List<String> query = new ArrayList<>(Arrays.asList(queryString.split("&")));
         assertEquals(3, query.size());
         assertTrue(query.contains("dispatch=Delete+File+List"));
         assertTrue(query.contains("setupdated=true"));

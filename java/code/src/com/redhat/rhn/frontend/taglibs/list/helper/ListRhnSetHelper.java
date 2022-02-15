@@ -150,7 +150,7 @@ public class ListRhnSetHelper extends ListSetHelper {
 
     /** {@inheritDoc} */
     protected Map getSelections() {
-        Map<String, String> selections = new HashMap<String, String>();
+        Map<String, String> selections = new HashMap<>();
         for (Long id : set.getElementValues()) {
             selections.put(id.toString(), id.toString());
         }

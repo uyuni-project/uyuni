@@ -224,7 +224,7 @@ public class ActionManager extends BaseManager {
 
         //TODO: put this in the hibernate lookup query
         SelectMode m = ModeFactory.getMode("Action_queries", "visible_to_user");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("aid", aid);
@@ -275,7 +275,7 @@ public class ActionManager extends BaseManager {
     public static void deleteActions(User user, String label) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "delete_actions");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("label", label);
@@ -304,7 +304,7 @@ public class ActionManager extends BaseManager {
     public static void archiveActions(User user, String label) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "archive_actions");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("label", label);
@@ -429,7 +429,7 @@ public class ActionManager extends BaseManager {
      * @param actionsIds List of action ids to be deleted
      */
     public static void deleteActionsById(User user, List actionsIds) {
-        List<Action> actions = new ArrayList<Action>();
+        List<Action> actions = new ArrayList<>();
         for (Number actionsIdIn : (Iterable<Number>) actionsIds) {
             long actionId = actionsIdIn.longValue();
             Action action = ActionManager.lookupAction(user, actionId);
@@ -803,7 +803,7 @@ public class ActionManager extends BaseManager {
             long age) {
         SelectMode m = ModeFactory.getMode("Action_queries",
                 "recently_scheduled_action_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("age", age);
@@ -866,7 +866,7 @@ public class ActionManager extends BaseManager {
             String setLabel, Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "pending_actions_to_delete_in_set");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
@@ -941,7 +941,7 @@ public class ActionManager extends BaseManager {
     private static DataResult getActions(User user, PageControl pc, String mode,
             String setLabel, boolean noLimit) {
         SelectMode m = ModeFactory.getMode("Action_queries", mode);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
@@ -997,7 +997,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getPackageList(Long aid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_associated_with_action");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
@@ -1016,7 +1016,7 @@ public class ActionManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Errata_queries",
                 "errata_associated_with_action");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1032,7 +1032,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getConfigFileUploadList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "upload_action_status");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1048,7 +1048,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getConfigFileDeployList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "config_action_revisions");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1064,7 +1064,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getConfigFileDiffList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "diff_action_revisions");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1086,7 +1086,7 @@ public class ActionManager extends BaseManager {
             String mode) {
 
         SelectMode m = ModeFactory.getMode("System_queries", mode);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("aid", action.getId());
         params.put("user_id", user.getId());
@@ -1439,9 +1439,9 @@ public class ActionManager extends BaseManager {
     public static Action schedulePackageLock(User scheduler,
             Set<Package> packages, Date earliest, Server...servers)
         throws TaskomaticApiException {
-        List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
+        List<Map<String, Long>> packagesList = new ArrayList<>();
         for (Package pkg : packages) {
-            Map<String, Long> pkgMeta = new HashMap<String, Long>();
+            Map<String, Long> pkgMeta = new HashMap<>();
             pkgMeta.put("name_id", pkg.getPackageName().getId());
             pkgMeta.put("evr_id", pkg.getPackageEvr().getId());
             pkgMeta.put("arch_id", pkg.getPackageArch().getId());
@@ -1477,7 +1477,7 @@ public class ActionManager extends BaseManager {
 
         checkScriptingOnServers(sids);
 
-        Set<Long> sidSet = new HashSet<Long>();
+        Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
         ScriptRunAction sra = (ScriptRunAction) scheduleAction(scheduler,
                 ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
@@ -1541,13 +1541,13 @@ public class ActionManager extends BaseManager {
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
         maintenanceManager.canActionBeScheduled(serverIds, action);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
         params.put("tries", REMAINING_TRIES);
         params.put("parent_id", action.getId());
 
         WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
-        List<Long> sidList = new ArrayList<Long>();
+        List<Long> sidList = new ArrayList<>();
         sidList.addAll(serverIds);
         m.executeUpdate(params, sidList);
     }
@@ -1828,7 +1828,7 @@ public class ActionManager extends BaseManager {
         // Do not elaborate, we need only the IDs in here
         DataResult<Errata> errata = SystemManager.unscheduledErrata(scheduler,
                 srvr.getId(), null);
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         for (Errata e : errata) {
             errataIds.add(e.getId());
         }
@@ -1882,7 +1882,7 @@ public class ActionManager extends BaseManager {
             row.put("arch_id", pkg.getPackageArch().getId());
             packages.add(row);
         }
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         serverIds.add(server.getId());
 
         return schedulePackageAction(scheduler, packages,
@@ -1908,7 +1908,7 @@ public class ActionManager extends BaseManager {
             ActionType type,
             Date earliestAction,
             Server...servers) throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         for (Server s : servers) {
             serverIds.add(s.getId());
         }
@@ -2076,7 +2076,7 @@ public class ActionManager extends BaseManager {
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
             String parameters, String ovalFiles, Date earliestAction) throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         serverIds.add(srvr.getId());
         return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction);
     }
@@ -2421,7 +2421,7 @@ public class ActionManager extends BaseManager {
                                .map(minion -> minion.getId())
                                .collect(toList());
 
-        List<Long> ret = new ArrayList<Long>();
+        List<Long> ret = new ArrayList<>();
         if (!sshIds.isEmpty()) {
             // action for SSH minions - update channel configuration
             Action a = scheduleApplyStates(loggedInUser, sshIds,

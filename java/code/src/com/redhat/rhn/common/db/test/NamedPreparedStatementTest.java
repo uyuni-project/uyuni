@@ -152,7 +152,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     }
 
     public void testNotFoundBindParam() throws Exception {
-        Map<String, List<Integer>> pMap = new HashMap<String, List<Integer>>();
+        Map<String, List<Integer>> pMap = new HashMap<>();
 
         String jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY,
                                                              pMap);
@@ -171,7 +171,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
 
         session.doWork(connection -> {
             PreparedStatement ps = connection.prepareStatement(jdbcQuery);
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("BAD_DATA", "GARBAGE");
             try {
                 NamedPreparedStatement.execute(ps, pMap, parameters);

@@ -58,7 +58,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      */
     public static List<Server> setUpTestProvisionableSsmServers(User user)
             throws Exception {
-        List<Server> result = new LinkedList<Server>();
+        List<Server> result = new LinkedList<>();
         for (int i = 0; i < 2; i++) {
             Server server = ServerTestUtils.createTestSystem(user);
             result.add(server);

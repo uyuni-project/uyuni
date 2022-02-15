@@ -310,7 +310,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * @return package evr object
      */
     private static Map<String, String> parseEvr(String evr) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("epoch", null);
         map.put("version", null);
         map.put("release", null);

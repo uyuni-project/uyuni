@@ -48,7 +48,7 @@ public class SsmPowerManagementAction implements MessageAction {
         SsmPowerManagementEvent event = (SsmPowerManagementEvent) msgIn;
         Long userId = event.getUserId();
         User user = UserFactory.lookupById(userId);
-        List<Long> sids = new ArrayList<Long>();
+        List<Long> sids = new ArrayList<>();
         for (SystemOverview systemOverview : event.getSystemOverviews()) {
             sids.add(systemOverview.getId());
         }

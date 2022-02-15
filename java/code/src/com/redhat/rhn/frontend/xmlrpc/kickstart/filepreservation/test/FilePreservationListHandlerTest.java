@@ -70,7 +70,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
 
         // Test
-        List<String> files = new ArrayList<String>();
+        List<String> files = new ArrayList<>();
         files.add("file1");
         files.add("file2");
         int result = handler.create(admin, "list1", files);
@@ -119,7 +119,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
     }
 
     private FileList createFileList() {
-        List<String> files = new ArrayList<String>();
+        List<String> files = new ArrayList<>();
         files.add("file1");
         files.add("file2");
         int result = handler.create(admin, "list1", files);

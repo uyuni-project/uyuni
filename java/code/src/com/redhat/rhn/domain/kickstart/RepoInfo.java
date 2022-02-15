@@ -158,7 +158,7 @@ public class RepoInfo {
      * @return the standard repos..
      */
     public static List<RepoInfo> getStandardRepos(KickstartableTree  tree) {
-        ArrayList<RepoInfo> repoList = new ArrayList<RepoInfo>();
+        ArrayList<RepoInfo> repoList = new ArrayList<>();
         String[] repos = {"Cluster", "ClusterStorage", "HighAvailability",
                         "LoadBalancer", "ResilientStorage", "VT", "Workstation",
                         "ScalableFileSystem",

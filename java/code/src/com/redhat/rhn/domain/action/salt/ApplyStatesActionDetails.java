@@ -178,7 +178,7 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void addResult(ApplyStatesActionResult resultIn) {
         if (results == null) {
-            results = new HashSet<ApplyStatesActionResult>();
+            results = new HashSet<>();
         }
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);

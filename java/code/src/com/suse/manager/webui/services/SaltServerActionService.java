@@ -2014,7 +2014,7 @@ public class SaltServerActionService {
                  keyList = (List)map.get(key);
             }
             catch (ClassCastException e) {
-                keyList = new ArrayList<String>();
+                keyList = new ArrayList<>();
                 keyList.add((String) map.get(key));
             }
             if (keyList.isEmpty()) {
@@ -2383,7 +2383,7 @@ public class SaltServerActionService {
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
             List<String> results = Opt.fold(
                     saltApi.callAsync(call, new MinionList(minionIds), Optional.of(metadata)),
-                    () -> new ArrayList<String>(),
+                    () -> new ArrayList<>(),
                     l -> l.getMinions());
 
             result = minionSummaries.stream().collect(Collectors

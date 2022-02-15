@@ -84,7 +84,7 @@ public final class NamedPreparedStatement {
 
             List<Integer> lst = parameterMap.get(name);
             if (lst == null) {
-                lst = new ArrayList<Integer>();
+                lst = new ArrayList<>();
             }
             lst.add(variableNumber);
             parameterMap.put(name, lst);

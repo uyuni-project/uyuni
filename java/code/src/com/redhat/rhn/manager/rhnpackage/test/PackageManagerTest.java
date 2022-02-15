@@ -232,7 +232,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             WriteMode m =
                 ModeFactory.
                 getWriteMode("test_queries", "insert_into_rhnServerPackage_with_arch");
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("server_id", srvr.getId());
             params.put("pn_id", p.getPackageName().getId());
             params.put("evr_id", p.getPackageEvr().getId());
@@ -258,7 +258,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             WriteMode m = ModeFactory.getWriteMode("test_queries",
                 "insert_into_rhnServerPackage_with_arch");
 
-            Map<String, Long> params = new HashMap<String, Long>(4);
+            Map<String, Long> params = new HashMap<>(4);
             params.put("server_id", srvr.getId());
             params.put("pn_id", p.getPackageName().getId());
             params.put("evr_id", p.getPackageEvr().getId());
@@ -424,7 +424,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
                 "insert_into_rhnPackageProvides");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pkg_id", kickstartPkg.getId());
         params.put("capability_id", kickstartCapability.getId());
         params.put("sense_id", 8);
@@ -556,7 +556,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         // Setup
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Set<Long> doomedPackageIds = new HashSet<Long>(numPackagesToDelete);
+        Set<Long> doomedPackageIds = new HashSet<>(numPackagesToDelete);
         for (int ii = 0; ii < numPackagesToDelete; ii++) {
             Package pack = PackageTest.createTestPackage(user.getOrg());
             doomedPackageIds.add(pack.getId());

@@ -80,9 +80,9 @@ public class SSMGroupManageAction extends RhnAction
     }
 
     private Map<Long, Long> processList(User user, HttpServletRequest request) {
-        List<Long> addList = new ArrayList<Long>();
-        List<Long> removeList = new ArrayList<Long>();
-        List<Long> noChangeList = new ArrayList<Long>();
+        List<Long> addList = new ArrayList<>();
+        List<Long> removeList = new ArrayList<>();
+        List<Long> noChangeList = new ArrayList<>();
 
         Enumeration<String> names = request.getParameterNames();
         while (names.hasMoreElements()) {
@@ -122,7 +122,7 @@ public class SSMGroupManageAction extends RhnAction
         }
         RhnSetManager.store(cset);
 
-        Map<Long, Long> currentChoices = new HashMap<Long, Long>();
+        Map<Long, Long> currentChoices = new HashMap<>();
         for (RhnSetElement elt : cset.getElements()) {
             currentChoices.put(elt.getElement(), elt.getElementTwo());
         }

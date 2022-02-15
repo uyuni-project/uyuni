@@ -1257,8 +1257,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testListErrataNamesForServer() throws Exception {
-        Set<Long> serverIds = new HashSet<Long>();
-        Set<Long> errataIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
+        Set<Long> errataIds = new HashSet<>();
 
         Server srv = ServerFactoryTest.createTestServer(user, true);
         serverIds.add(srv.getId());
@@ -1290,8 +1290,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testListErrataNamesForServerSLE11() throws Exception {
-        Set<Long> serverIds = new HashSet<Long>();
-        Set<Long> errataIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
+        Set<Long> errataIds = new HashSet<>();
 
         Server srv = ServerFactoryTest.createTestServer(user, true);
         serverIds.add(srv.getId());

@@ -180,7 +180,7 @@ public class MaintenanceHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("type");
         validKeys.add("calendar");
         validateMap(validKeys, details);
@@ -340,7 +340,7 @@ public class MaintenanceHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("url");
         validKeys.add("ical");
         validateMap(validKeys, details);

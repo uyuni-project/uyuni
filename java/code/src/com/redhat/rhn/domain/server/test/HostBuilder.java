@@ -153,7 +153,7 @@ public class HostBuilder {
 
     private  List<VirtualInstance> createGuests(User user, int numberOfGuests,
                                                 boolean register) throws Exception {
-        List<VirtualInstance> guests = new LinkedList<VirtualInstance>();
+        List<VirtualInstance> guests = new LinkedList<>();
         for (int i = 0; i < numberOfGuests; i++) {
             VirtualInstanceManufacturer vim = new VirtualInstanceManufacturer(user);
 

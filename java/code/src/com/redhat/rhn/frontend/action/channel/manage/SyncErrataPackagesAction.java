@@ -105,7 +105,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
             getStrutsDelegate().saveMessages(rc.getRequest(), msg);
 
 
-            Map<String, Long> params = new HashMap<String, Long>();
+            Map<String, Long> params = new HashMap<>();
             params.put(RequestContext.CID, chan.getId());
             return getStrutsDelegate().forwardParams(mapping.findForward("submit"),
                     params);

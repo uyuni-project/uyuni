@@ -77,7 +77,7 @@ public class UserHandler extends BaseHandler {
      * bugzilla 469957.
      */
     private static final Map<String, String> USER_EDITABLE_DETAILS =
-        new HashMap<String, String>();
+            new HashMap<>();
     static {
         USER_EDITABLE_DETAILS.put("first_name", "first_names");
         USER_EDITABLE_DETAILS.put("first_names", "first_names");
@@ -317,7 +317,7 @@ public class UserHandler extends BaseHandler {
      * @return all the role labels that are assignable to a user.
      */
     private Set<String> getAssignableRoles(User user) {
-        Set<String> assignableRoles = new LinkedHashSet<String>();
+        Set<String> assignableRoles = new LinkedHashSet<>();
         for (Role r : UserManager.listRolesAssignableBy(user)) {
             assignableRoles.add(r.getLabel());
         }
@@ -677,7 +677,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int addDefaultSystemGroup(User loggedInUser, String login, String name) {
-        List<String> ids = new LinkedList<String>();
+        List<String> ids = new LinkedList<>();
         ids.add(name);
         return addDefaultSystemGroups(loggedInUser, login, ids);
     }
@@ -766,7 +766,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeDefaultSystemGroup(User loggedInUser, String login, String sgName) {
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(sgName);
         return removeDefaultSystemGroups(loggedInUser, login, names);
     }
@@ -932,7 +932,7 @@ public class UserHandler extends BaseHandler {
 
         // Iterate once to lookup the server groups and avoid removing some when
         // an exception will only be thrown later:
-        List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
+        List<ManagedServerGroup> groups = new LinkedList<>();
         for (String name : systemGroupNames) {
             ManagedServerGroup sg = null;
             try {
@@ -996,7 +996,7 @@ public class UserHandler extends BaseHandler {
      */
     public int addAssignedSystemGroup(User loggedInUser, String login, String sgName,
             Boolean setDefault) {
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(sgName);
         return addAssignedSystemGroups(loggedInUser, login, names, setDefault);
     }
@@ -1032,7 +1032,7 @@ public class UserHandler extends BaseHandler {
         // Iterate once just to make sure all the server groups exist. Done to
         // prevent adding a bunch of valid groups and then throwing an exception
         // when coming across one that doesn't exist.
-        List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
+        List<ManagedServerGroup> groups = new LinkedList<>();
         for (Object sgNameIn : sgNames) {
             String serverGroupName = (String) sgNameIn;
 

@@ -110,7 +110,7 @@ public class XmlRpcSystemHelper {
      * @return a Map with just enough info to get details on a server
      */
     public Map<String, Object> format(Server server) {
-        Map<String, Object> serverMap = new HashMap<String, Object>();
+        Map<String, Object> serverMap = new HashMap<>();
         serverMap.put("id", server.getId());
         serverMap.put("name", server.getName());
         serverMap.put("last_checkin", server.getLastCheckin());

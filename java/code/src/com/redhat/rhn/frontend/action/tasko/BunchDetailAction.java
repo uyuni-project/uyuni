@@ -64,7 +64,7 @@ public class BunchDetailAction extends RhnAction implements Listable {
         if (ctx.wasDispatched("bunch.edit.jsp.button-schedule")) {
             try {
                 Date date = new TaskomaticApi().scheduleSingleSatBunch(loggedInUser,
-                        bunchLabel, new HashMap<String, String>());
+                        bunchLabel, new HashMap<>());
                 ActionMessages msgs = new ActionMessages();
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("message.bunch.singlescheduled", bunchLabel,

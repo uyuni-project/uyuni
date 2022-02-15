@@ -39,7 +39,7 @@ public class TestResultDiffer {
      */
     public static List<Map<String, Object>> diff(XccdfTestResult first,
             XccdfTestResult second) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> result = new ArrayList<>();
         result.add(buildItem("id", linkToScan(first), linkToScan(second)));
         result.add(buildItem("system.audit.xccdfdetails.jsp.benchmarkid",
                 first.getBenchmark().getIdentifier(),
@@ -89,7 +89,7 @@ public class TestResultDiffer {
        if (differs == null) {
            return diff(first, second);
        }
-       List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+       List<Map<String, Object>> result = new ArrayList<>();
        for (Map<String, Object> item : diff(first, second)) {
            if (differs.equals(item.get(DIFFERS))) {
                result.add(item);
@@ -100,7 +100,7 @@ public class TestResultDiffer {
 
     private static Map<String, Object> buildItem(String localizationString,
             Object first, Object second) {
-        Map<String, Object> item = new HashMap<String, Object>();
+        Map<String, Object> item = new HashMap<>();
         item.put("msg", localizationString);
         item.put(FIRST, first == null ? "" : first);
         item.put(SECOND, second == null ? "" : second);

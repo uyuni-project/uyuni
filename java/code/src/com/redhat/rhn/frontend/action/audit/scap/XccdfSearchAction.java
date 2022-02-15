@@ -133,7 +133,7 @@ public class XccdfSearchAction extends BaseSearchAction {
 
     private void setupRuleResultLabelOptions(HttpServletRequest request) {
         List<Map<String, String>> possibleResults = ScapManager.ruleResultTypeLabels();
-        Map<String, String> anyLabel = new HashMap<String, String>();
+        Map<String, String> anyLabel = new HashMap<>();
         anyLabel.put("label", ANY_LABEL);
         possibleResults.add(0, anyLabel);
 

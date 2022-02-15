@@ -48,7 +48,8 @@ public class VirtManagerSaltTest extends TestCase {
                 return SaltTestUtils.<R>getSaltResponse(
                         "/com/suse/manager/virtualization/test/virt.vm_info.all.json",
                         Collections.emptyMap(),
-                        new TypeToken<R>() { });
+                        new TypeToken<>() {
+                        });
             }
         };
         VirtManager virtManager = new VirtManagerSalt(testSaltApi);
@@ -85,7 +86,8 @@ public class VirtManagerSaltTest extends TestCase {
                 return SaltTestUtils.<R>getSaltResponse(
                         "/com/suse/manager/virtualization/test/virt.features.json",
                         Collections.emptyMap(),
-                        new TypeToken<R>() { });
+                        new TypeToken<>() {
+                        });
             }
         };
         VirtManager virtManager = new VirtManagerSalt(testSaltApi);

@@ -134,7 +134,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
 
         //go to the next page.
         ActionForward base = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         processParamMap(formIn, request, params);
         return getStrutsDelegate().forwardParams(base, params);
     }

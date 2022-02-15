@@ -106,7 +106,7 @@ public class DailySummary extends RhnJavaJob {
     public int dequeueOrg(Long orgId) {
         WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_DEQUEUE_DAILY_SUMMARY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         return m.executeUpdate(params);
     }
@@ -119,7 +119,7 @@ public class DailySummary extends RhnJavaJob {
     public void queueOrgEmails(Long orgId) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_USERS_WANTING_REPORTS);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
 
         StopWatch watch = new StopWatch();
@@ -164,7 +164,7 @@ public class DailySummary extends RhnJavaJob {
     public List getAwolServers(Long uid) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_USERS_AWOL_SERVERS);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
         params.put("checkin_threshold",
                 Config.get().getInteger(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
@@ -180,7 +180,7 @@ public class DailySummary extends RhnJavaJob {
     public List getActionInfo(Long uid) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_GET_ACTION_INFO);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
 
         return m.execute(params);

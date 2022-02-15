@@ -112,15 +112,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<NetworkInterface> networkInterfaces;
     private Set<CustomDataValue> customDataValues;
     private Set<Channel> channels = new HashSet<>();
-    private List<ConfigChannel> configChannels = new ArrayList<ConfigChannel>();
-    private Set<ConfigChannel> localChannels = new HashSet<ConfigChannel>();
+    private List<ConfigChannel> configChannels = new ArrayList<>();
+    private Set<ConfigChannel> localChannels = new HashSet<>();
     private Location serverLocation;
-    private Set<VirtualInstance> guests = new HashSet<VirtualInstance>();
+    private Set<VirtualInstance> guests = new HashSet<>();
     private VirtualInstance virtualInstance;
     private PushClient pushClient;
     private final ConfigChannelListProcessor configListProc =
         new ConfigChannelListProcessor();
-    private Set<ServerHistoryEvent> history = new HashSet<ServerHistoryEvent>();
+    private Set<ServerHistoryEvent> history = new HashSet<>();
     private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
     private Set<ServerGroup> groups = new HashSet<>();
@@ -434,10 +434,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Protected constructor
      */
     protected Server() {
-        devices = new HashSet<Device>();
-        notes = new HashSet<Note>();
-        networkInterfaces = new HashSet<NetworkInterface>();
-        customDataValues = new HashSet<CustomDataValue>();
+        devices = new HashSet<>();
+        notes = new HashSet<>();
+        networkInterfaces = new HashSet<>();
+        customDataValues = new HashSet<>();
         fqdns = new HashSet<>();
 
         ignoreEntitlementsForMigration = Boolean.FALSE;
@@ -1098,7 +1098,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the hostname aliases for this server
      */
     public List<String> getCnames() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         List<String> proxyCnames = Config.get().getList(
                 VALID_CNAMES +
                 serverInfo.getId().toString());
@@ -1123,7 +1123,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the primary hostname for this server
      */
     public List<String> getDecodedCnames() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String host : getCnames()) {
             result.add(IDN.toUnicode(host));
         }
@@ -1571,7 +1571,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return A read-only collection of VirtualInstance objects.
      */
     public Collection<VirtualInstance> getGuests() {
-        Set<VirtualInstance> retval = new HashSet<VirtualInstance>();
+        Set<VirtualInstance> retval = new HashSet<>();
         for (VirtualInstance vi : getVirtualGuests()) {
             // Filter out the hosts that sometimes show up in this table.
             // Hosts have no UUID defined.
@@ -1760,7 +1760,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public Set<Channel> getChildChannels() {
         // Make sure we return NULL if none are found
         if (this.getChannels() != null) {
-            Set<Channel> retval = new HashSet<Channel>();
+            Set<Channel> retval = new HashSet<>();
             for (Channel c : this.getChannels()) {
                 // add non base channels (children)
                 // to return set.
@@ -1769,11 +1769,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 }
             }
             if (retval.size() == 0) {
-                return new HashSet<Channel>();
+                return new HashSet<>();
             }
             return retval;
         }
-        return new HashSet<Channel>();
+        return new HashSet<>();
     }
 
     /**
@@ -1809,7 +1809,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Set of valid addon Entitlement instances for this server
      */
     public Set<Entitlement> getValidAddonEntitlementsForServer() {
-        Set<Entitlement> retval = new TreeSet<Entitlement>();
+        Set<Entitlement> retval = new TreeSet<>();
         for (Entitlement ent : this.getOrg().getValidAddOnEntitlementsForOrg()) {
             if (ent.isAllowedOnServer(this)) {
                 retval.add(ent);

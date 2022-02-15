@@ -751,7 +751,8 @@ public class SaltService implements SystemQuery, SaltApi {
 
             // Salt pillar refresh doesn't reload the modules with the new pillar
             LocalCall<Boolean> modulesRefreshCall = new LocalCall<>("saltutil.refresh_modules",
-                    Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { });
+                    Optional.empty(), Optional.empty(), new TypeToken<>() {
+            });
             callAsync(modulesRefreshCall, minionList);
         }
         catch (SaltException e) {

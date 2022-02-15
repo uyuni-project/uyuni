@@ -112,7 +112,7 @@ public class RemoveSlavesAction extends RhnAction {
     }
 
     private List<IssSlave> findSelectedSlaves(Set sessionSet, Object sidIn) {
-        List<IssSlave> slaves = new ArrayList<IssSlave>();
+        List<IssSlave> slaves = new ArrayList<>();
 
         if (sessionSet != null) {
             for (String sid : (Set<String>) sessionSet) {

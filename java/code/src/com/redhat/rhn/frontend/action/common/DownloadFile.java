@@ -141,21 +141,21 @@ public class DownloadFile extends DownloadAction {
         }
         else if (url.startsWith("/cblr/svc/op/ks/")) {
             url = url.replaceFirst("ks", "autoinstall");
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
         }
         else if (url.startsWith("/cblr/svc/op/autoinstall/")) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
         }
         else if (url.startsWith("/cobbler_api")) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER_API);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
@@ -196,7 +196,7 @@ public class DownloadFile extends DownloadAction {
      *     child    (opt)
      */
     public static Map<String, String> parseDistUrl(String url) {
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
 
 
         if (url.charAt(0) == '/') {
@@ -297,7 +297,7 @@ public class DownloadFile extends DownloadAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return mapping.findForward("error");
             }
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE, DownloadManager.DOWNLOAD_TYPE_KICKSTART);
             params.put(TREE, tree);
             params.put(CHILD, child);
@@ -313,7 +313,7 @@ public class DownloadFile extends DownloadAction {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return mapping.findForward("error");
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(TYPE, DownloadManager.DOWNLOAD_TYPE_KICKSTART);
         params.put(TREE, tree);
         params.put(FILENAME, path);
@@ -329,7 +329,7 @@ public class DownloadFile extends DownloadAction {
             ActionMapping mapping) {
         List<String> split = Arrays.asList(url.split("/"));
         Iterator<String> it = split.iterator();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         String type = getNextValue(it);
         String hash = getNextValue(it);

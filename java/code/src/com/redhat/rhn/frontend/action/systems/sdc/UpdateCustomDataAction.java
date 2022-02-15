@@ -70,7 +70,7 @@ public class UpdateCustomDataAction extends RhnAction {
         User loggedInUser = context.getCurrentUser();
         Long sid = context.getRequiredParam(RequestContext.SID);
         Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         params.put(RequestContext.SID, request.getParameter(RequestContext.SID));
@@ -149,7 +149,7 @@ public class UpdateCustomDataAction extends RhnAction {
     }
 
     private Object makeValidationMap(DynaActionForm formIn) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(VAL_PARAM, formIn.getString(VAL_PARAM));
         return map;
     }

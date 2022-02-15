@@ -95,7 +95,7 @@ public class ShowProfileAction extends RhnAction {
 
         User user = new RequestContext(request).getCurrentUser();
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.clear(user);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", request.getParameter("sid"));
         params.put("sid_1", f.get("server"));
         return getStrutsDelegate().forwardParams(mapping.findForward("comparesystems"),
@@ -107,7 +107,7 @@ public class ShowProfileAction extends RhnAction {
             HttpServletResponse response) {
         User user = new RequestContext(request).getCurrentUser();
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.clear(user);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", request.getParameter("sid"));
         params.put("prid", f.get("profile"));
         return getStrutsDelegate().forwardParams(mapping.findForward("compareprofiles"),
@@ -117,7 +117,7 @@ public class ShowProfileAction extends RhnAction {
     private ActionForward create(ActionMapping mapping, DynaActionForm f,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", request.getParameter("sid"));
         return getStrutsDelegate().forwardParams(mapping.findForward("create"),
                 params);
@@ -133,14 +133,14 @@ public class ShowProfileAction extends RhnAction {
         Server server = (Server) request.getAttribute("system");
         List<Profile> dbprofiles =
                 ProfileManager.compatibleWithServer(server, user.getOrg());
-        List<LabelValueBean> profiles = new ArrayList<LabelValueBean>(dbprofiles.size());
+        List<LabelValueBean> profiles = new ArrayList<>(dbprofiles.size());
         for (Profile p : dbprofiles) {
             profiles.add(new LabelValueBean(p.getName(), p.getId().toString()));
         }
 
         List<Map<String, Object>> dbservers =
                 SystemManager.compatibleWithServer(user, server);
-        List<LabelValueBean> servers = new ArrayList<LabelValueBean>(dbservers.size());
+        List<LabelValueBean> servers = new ArrayList<>(dbservers.size());
         for (Map<String, Object> m : dbservers) {
             servers.add(new LabelValueBean((String) m.get("name"), m.get("id").toString()));
         }

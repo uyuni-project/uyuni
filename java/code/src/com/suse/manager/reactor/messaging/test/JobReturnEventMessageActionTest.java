@@ -130,7 +130,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
-            new JsonParser<>(new TypeToken<Event>() { });
+            new JsonParser<>(new TypeToken<>() {
+            });
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
@@ -1306,7 +1307,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
 
         TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
-                new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+                new TypeToken<>() {
+                };
         Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
                 jsonElement, typeToken.getType());
         Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream()

@@ -28,7 +28,7 @@ import java.util.Set;
 public class ServerGroupType extends AbstractLabelNameHelper {
     private char permanent;
     private char isBaseChar;
-    private Set<Feature> features = new HashSet<Feature>();
+    private Set<Feature> features = new HashSet<>();
 
     /**
      * @return Returns the isBase.
