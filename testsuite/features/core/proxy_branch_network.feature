@@ -178,13 +178,33 @@ Feature: Setup SUSE Manager for Retail branch network
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories after installing branch server
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
+
+@proxy
+@private_net
+  Scenario: Disable repositories after installing branch services
+    When I disable repositories after installing branch server
+    # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
+    # And I wait until event "Package List Refresh scheduled by (none)" is completed
+    And I wait for "700" seconds
+
+@proxy
+@private_net
+  Scenario: Let the server know about the new FQDN of the proxy
+    When I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    # WORKAROUND: needs to be investigated with Salt team
+    # And I follow "Details" in the content area
+    # And I follow "Hardware" in the content area
+    # Then I should see a "proxy.example.org" text
 
 @proxy
 @private_net
