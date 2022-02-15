@@ -195,7 +195,7 @@ public class OrgHandler extends BaseHandler {
     private void validateCreateOrgData(String orgName, String password, String firstName,
             String lastName, String email, Boolean usePamAuth) {
 
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("orgName", orgName);
         values.put("desiredPassword", password);
         values.put("desiredPasswordConfirm", password);
@@ -203,7 +203,7 @@ public class OrgHandler extends BaseHandler {
         values.put("lastName", lastName);
 
         ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
-                values, new LinkedList<String>(values.keySet()), VALIDATION_XSD);
+                values, new LinkedList<>(values.keySet()), VALIDATION_XSD);
 
         if (!result.isEmpty()) {
             log.error("Validation errors:");
@@ -463,7 +463,7 @@ public class OrgHandler extends BaseHandler {
 
         Org toOrg = verifyOrgExists(toOrgId);
 
-        List<Server> servers = new LinkedList<Server>();
+        List<Server> servers = new LinkedList<>();
 
         for (Integer sid : sids) {
             Long serverId = sid.longValue();
@@ -536,7 +536,7 @@ public class OrgHandler extends BaseHandler {
             Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         Org org = verifyOrgExists(orgId);
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put("enabled", org.getOrgConfig().isScapfileUploadEnabled());
         result.put("size_limit", org.getOrgConfig().getScapFileSizelimit());
         return result;
@@ -567,7 +567,7 @@ public class OrgHandler extends BaseHandler {
      */
     public int setPolicyForScapFileUpload(User loggedInUser, Integer orgId,
             Map<String, Object> newSettings) {
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("enabled");
         validKeys.add("size_limit");
         validateMap(validKeys, newSettings);
@@ -610,7 +610,7 @@ public class OrgHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         Org org = verifyOrgExists(orgId);
         Long retentionPeriod = org.getOrgConfig().getScapRetentionPeriodDays();
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put("enabled", retentionPeriod != null);
         result.put("retention_period",
                 (retentionPeriod != null) ? retentionPeriod : Long.valueOf(0));
@@ -641,7 +641,7 @@ public class OrgHandler extends BaseHandler {
      */
     public int setPolicyForScapResultDeletion(User loggedInUser, Integer orgId,
             Map<String, Object> newSettings) {
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("enabled");
         validKeys.add("retention_period");
         validateMap(validKeys, newSettings);

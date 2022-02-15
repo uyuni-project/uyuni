@@ -34,7 +34,7 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);
-    private static ThreadLocal<User> caller = new ThreadLocal<User>();
+    private static ThreadLocal<User> caller = new ThreadLocal<>();
 
     private static ThreadLocal timer = new ThreadLocal() {
         protected synchronized Object initialValue() {

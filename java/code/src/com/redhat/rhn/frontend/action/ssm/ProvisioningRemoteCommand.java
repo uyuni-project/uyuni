@@ -224,7 +224,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
                         form.getString("script_body").trim());
 
                 List<SystemOverview> servers = getResult(context);
-                List<Long> serverIds = new ArrayList<Long>();
+                List<Long> serverIds = new ArrayList<>();
 
                 for (SystemOverview system : servers) {
                     serverIds.add(system.getId());

@@ -37,7 +37,7 @@ public enum SystemEntitlement {
 
     SystemEntitlement(String... entitlementsIn) {
         this.entitlements = Collections.unmodifiableList(
-                new ArrayList<String>(Arrays.asList(entitlementsIn)));
+                new ArrayList<>(Arrays.asList(entitlementsIn)));
     }
 
     /**
@@ -53,11 +53,11 @@ public enum SystemEntitlement {
      * @return list of all entitlements
      */
     public static List<String> getAllEntitlements() {
-       Set<String> entitlements = new HashSet<String>();
+       Set<String> entitlements = new HashSet<>();
        for (SystemEntitlement value : SystemEntitlement.values()) {
           entitlements.addAll(value.getEntitlements());
        }
-       return Collections.unmodifiableList(new ArrayList<String>(entitlements));
+       return Collections.unmodifiableList(new ArrayList<>(entitlements));
     }
 
     /**
@@ -66,7 +66,7 @@ public enum SystemEntitlement {
      * @return list of product classes
      */
     public static List<String> getProductClasses(String entitlement) {
-        List<String> productClasses = new ArrayList<String>();
+        List<String> productClasses = new ArrayList<>();
         for (SystemEntitlement value : SystemEntitlement.values()) {
             if (value.getEntitlements().contains(entitlement)) {
                 productClasses.add(value.name());

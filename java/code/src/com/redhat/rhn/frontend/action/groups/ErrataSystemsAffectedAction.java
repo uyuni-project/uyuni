@@ -54,7 +54,7 @@ public final class ErrataSystemsAffectedAction extends BaseListAction {
         ManagedServerGroup serverGroup = context.lookupAndBindServerGroup();
         Errata erratum = context.lookupErratum();
 
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put(RequestContext.SERVER_GROUP_ID, serverGroup.getId());
         params.put(RequestContext.ERRATA_ID, erratum.getId());
         return params;

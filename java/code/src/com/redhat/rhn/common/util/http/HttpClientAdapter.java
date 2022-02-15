@@ -88,7 +88,7 @@ public class HttpClientAdapter {
     private HttpClient httpClient;
 
     /** The no proxy domains. */
-    private List<String> noProxyDomains = new ArrayList<String>();
+    private List<String> noProxyDomains = new ArrayList<>();
 
     /** The request config. */
     private RequestConfig requestConfig;

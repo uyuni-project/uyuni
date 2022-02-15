@@ -86,7 +86,7 @@ public class GathererRunner {
         args.add("--logfile");
         args.add(LOG_DESTINATION);
 
-        Map<String, String> env = new HashMap<String, String>(System.getenv());
+        Map<String, String> env = new HashMap<>(System.getenv());
         ConfigDefaults config = ConfigDefaults.get();
         String proxyHostname = config.getProxyHost();
         if (!StringUtils.isBlank(proxyHostname)) {

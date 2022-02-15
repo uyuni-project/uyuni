@@ -151,10 +151,10 @@ public enum SaltStateGeneratorService {
                                                         OSImageInspectSlsResult.Bundle bundle,
                                                         OSImageInspectSlsResult.BootImage bootImage, String urlBase,
                                                         String name, String version, String localPath) {
-        Map<String, Object> imagePillar = new TreeMap<String, Object>();
-        Map<String, Object> imagePillarBase = new TreeMap<String, Object>();
-        Map<String, Object> imagePillarDetails = new TreeMap<String, Object>();
-        Map<String, Object> imagePillarDetailsSync = new TreeMap<String, Object>();
+        Map<String, Object> imagePillar = new TreeMap<>();
+        Map<String, Object> imagePillarBase = new TreeMap<>();
+        Map<String, Object> imagePillarDetails = new TreeMap<>();
+        Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
         imagePillarDetailsSync.put("bundle_hash", bundle.getChecksum().getChecksum());
         imagePillarDetailsSync.put("bundle_url", urlBase + "/" + bundle.getFilename());
@@ -186,11 +186,11 @@ public enum SaltStateGeneratorService {
     private Map<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
                                                         String bootImageName,
                                                         String systemLocalPath, String bootLocalPath) {
-        Map<String, Object> bootImagePillar = new TreeMap<String, Object>();
-        Map<String, Object> bootImagePillarBase = new TreeMap<String, Object>();
-        Map<String, Object> bootImagePillarInitrd = new TreeMap<String, Object>();
-        Map<String, Object> bootImagePillarKernel = new TreeMap<String, Object>();
-        Map<String, Object> bootImagePillarSync = new TreeMap<String, Object>();
+        Map<String, Object> bootImagePillar = new TreeMap<>();
+        Map<String, Object> bootImagePillarBase = new TreeMap<>();
+        Map<String, Object> bootImagePillarInitrd = new TreeMap<>();
+        Map<String, Object> bootImagePillarKernel = new TreeMap<>();
+        Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
         bootImagePillarBase.put("arch", bootImage.getArch());
         bootImagePillarBase.put("basename", bootImage.getBasename());

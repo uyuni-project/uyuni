@@ -49,7 +49,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
     }
 
     protected Map<String, Distro> getDistros() {
-        Map<String, Distro> toReturn = new HashMap<String, Distro>();
+        Map<String, Distro> toReturn = new HashMap<>();
         List<Distro> distros = Distro.list(CobblerXMLRPCHelper.getAutomatedConnection());
         for (Distro distro : distros) {
             toReturn.put(distro.getUid(), distro);
@@ -64,7 +64,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
      * @return an error if applicable
      */
     public ValidatorError syncNullDistros() {
-        List<String> errors = new LinkedList<String>();
+        List<String> errors = new LinkedList<>();
         List<KickstartableTree> unSynced = KickstartFactory.listUnsyncedKickstartTrees();
         String err;
         for (KickstartableTree tree : unSynced) {
@@ -147,7 +147,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
      */
     @Override
     public ValidatorError store() {
-        List<String> errors = new LinkedList<String>();
+        List<String> errors = new LinkedList<>();
 
         List<KickstartableTree> trees = KickstartFactory.lookupKickstartTrees();
 

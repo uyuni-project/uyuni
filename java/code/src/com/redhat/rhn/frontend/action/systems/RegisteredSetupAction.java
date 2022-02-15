@@ -53,7 +53,7 @@ public class RegisteredSetupAction extends BaseSystemsAction {
             HttpServletResponse response) {
         ActionForward forward = super.execute(mapping, formIn, request, response);
         LocalizationService ls = LocalizationService.getInstance();
-        List<LabelValueBean> optionsLabelValueBeans = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> optionsLabelValueBeans = new ArrayList<>();
 
         for (String optionIn : OPTIONS) {
             optionsLabelValueBeans.add(new LabelValueBean(ls.getMessage(optionIn),

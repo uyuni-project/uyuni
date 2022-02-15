@@ -234,7 +234,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     private List<Method> findMethods(Method[] methods, Collection params,
             String beanifiedMethod) throws XmlRpcFault {
 
-        List<Method> toReturn = new ArrayList<Method>();
+        List<Method> toReturn = new ArrayList<>();
 
         //Loop through the methods array and find the one we are trying to call.
         for (Method methodIn : methods) {

@@ -151,7 +151,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
                 .setName("test-distro")
                 .setKernel("test-kernel")
                 .setInitrd("test-initrd")
-                .setKsmeta(new HashMap<String, Object>())
+                .setKsmeta(new HashMap<>())
                 .build(connection);
         Profile.create(connection, "test-profile", distro);
         KickstartLister kickstartLister = KickstartLister.getInstance();

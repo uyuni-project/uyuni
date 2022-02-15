@@ -143,7 +143,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
      * @return the test subscriptions
      */
     private List<SubscriptionDto> getTestSubscriptions() {
-        List<SubscriptionDto> ret = new ArrayList<SubscriptionDto>();
+        List<SubscriptionDto> ret = new ArrayList<>();
         ret.add(getTestSubscriptionDto());
         return ret;
     }

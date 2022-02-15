@@ -793,7 +793,7 @@ public class ReportDbHibernateFactory {
      * @return a list of the objects found
      */
     protected <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
-        return findByIds(ids, queryName, idsParameterName, new HashMap<String, Object>());
+        return findByIds(ids, queryName, idsParameterName, new HashMap<>());
     }
 
     /**

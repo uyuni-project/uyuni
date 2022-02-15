@@ -75,7 +75,7 @@ public class FilePreservationListsCommand extends BaseKickstartCommand {
         if (ksdata.getPreserveFileLists() != null) {
             return ksdata.getPreserveFileLists();
         }
-        return new HashSet<FileList>();
+        return new HashSet<>();
     }
 
 }

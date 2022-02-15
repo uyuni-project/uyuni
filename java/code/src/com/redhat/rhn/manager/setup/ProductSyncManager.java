@@ -396,7 +396,7 @@ public class ProductSyncManager {
         // Check for queued items (merge this with the above method?)
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabel);
         if (selector.execute(params).size() > 0) {
             return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
@@ -435,7 +435,7 @@ public class ProductSyncManager {
     private List<SetupWizardProductDto> convertProducts(
             Collection<MgrSyncProductDto> products) {
         List<SetupWizardProductDto> displayProducts =
-                new ArrayList<SetupWizardProductDto>();
+                new ArrayList<>();
         for (MgrSyncProductDto p : products) {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 SetupWizardProductDto displayProduct = convertProduct(p);

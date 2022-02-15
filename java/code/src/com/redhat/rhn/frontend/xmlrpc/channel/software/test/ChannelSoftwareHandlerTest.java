@@ -144,7 +144,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Package pkg1 = PackageTest.createTestPackage(admin.getOrg());
         Package pkg2 = PackageTest.createTestPackage(admin.getOrg());
 
-        List<Long> packages2add = new ArrayList<Long>();
+        List<Long> packages2add = new ArrayList<>();
         packages2add.add(pkg1.getId());
         packages2add.add(pkg2.getId());
 
@@ -653,7 +653,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
                 "apiTestChanName", "apiTestSummary", "channel-x86_64", null,
-                "sha1", new HashMap<String, String>(), false);
+                "sha1", new HashMap<>(), false);
         assertEquals(1, i);
         Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), "api-test-chan-label");
         assertNotNull(c);
@@ -884,7 +884,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         original.addErrata(errata);
 
         String label = "test-clone-label";
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
         details.put("name", "test-clone");
         details.put("summary", "summary");
         details.put("label", label);
@@ -914,7 +914,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         original.addErrata(errata);
 
         String label = "test-clone-label";
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
         details.put("name", "test-clone");
         details.put("summary", "summary");
         details.put("label", label);
@@ -946,7 +946,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         original.addErrata(errata);
 
         String label = "test-clone-label-2";
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
         details.put("name", "test-clone2");
         details.put("summary", "summary2");
         details.put("label", label);
@@ -999,7 +999,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         List<ErrataOverview> toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(toList.size(), 0);
 
-        Map<String, Object> errataInfo = new HashMap<String, Object>();
+        Map<String, Object> errataInfo = new HashMap<>();
         String advisoryName = TestUtils.randomString();
         errataInfo.put("synopsis", TestUtils.randomString());
         errataInfo.put("advisory_name", advisoryName);
@@ -1014,10 +1014,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("notes", TestUtils.randomString());
         errataInfo.put("severity", "unspecified");
 
-        List<Integer> packages = new ArrayList<Integer>();
-        List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
-        List<String> keywords = new ArrayList<String>();
-        List<String> channels = new ArrayList<String>();
+        List<Integer> packages = new ArrayList<>();
+        List<Map<String, Object>> bugs = new ArrayList<>();
+        List<String> keywords = new ArrayList<>();
+        List<String> channels = new ArrayList<>();
         channels.add(mergeFrom.getLabel());
 
         Errata errata = errataHandler.create(admin, errataInfo,
@@ -1039,7 +1039,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
 
-        Map<String, Object> errataInfo = new HashMap<String, Object>();
+        Map<String, Object> errataInfo = new HashMap<>();
         String advisoryName = TestUtils.randomString();
         errataInfo.put("synopsis", TestUtils.randomString());
         errataInfo.put("advisory_name", advisoryName);
@@ -1054,10 +1054,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("notes", TestUtils.randomString());
         errataInfo.put("severity", "unspecified");
 
-        List<Integer> packages = new ArrayList<Integer>();
-        List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
-        List<String> keywords = new ArrayList<String>();
-        List<String> channels = new ArrayList<String>();
+        List<Integer> packages = new ArrayList<>();
+        List<Map<String, Object>> bugs = new ArrayList<>();
+        List<String> keywords = new ArrayList<>();
+        List<String> channels = new ArrayList<>();
         channels.add(mergeFrom.getLabel());
         channels.add(mergeTo.getLabel());
 
@@ -1087,7 +1087,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         List<ErrataOverview> toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(toList.size(), 0);
 
-        Map<String, Object> errataInfo = new HashMap<String, Object>();
+        Map<String, Object> errataInfo = new HashMap<>();
         String advisoryName = TestUtils.randomString();
         errataInfo.put("synopsis", TestUtils.randomString());
         errataInfo.put("advisory_name", advisoryName);
@@ -1102,10 +1102,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("notes", TestUtils.randomString());
         errataInfo.put("severity", "unspecified");
 
-        List<Integer> packages = new ArrayList<Integer>();
-        List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
-        List<String> keywords = new ArrayList<String>();
-        List<String> channels = new ArrayList<String>();
+        List<Integer> packages = new ArrayList<>();
+        List<Map<String, Object>> bugs = new ArrayList<>();
+        List<String> keywords = new ArrayList<>();
+        List<String> channels = new ArrayList<>();
         channels.add(mergeFrom.getLabel());
 
         Errata errata = errataHandler.create(admin, errataInfo,

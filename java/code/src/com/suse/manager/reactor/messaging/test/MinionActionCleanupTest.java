@@ -150,7 +150,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<Jobs.Info>() { });
+        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<>() {
+        });
         return jsonParser.parse(eventString);
     }
 

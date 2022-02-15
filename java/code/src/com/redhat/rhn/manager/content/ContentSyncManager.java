@@ -223,7 +223,11 @@ public class ContentSyncManager {
         // if repos are read with "fromdir", no credentials are used. We signal this
         // with one null Credentials object
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
-            return new ArrayList<Credentials>() { { add(null); } };
+            return new ArrayList<>() {
+                {
+                    add(null);
+                }
+            };
         }
 
         List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
@@ -241,7 +245,7 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public List<SCCProductJson> getProducts() throws ContentSyncException {
-        Set<SCCProductJson> productList = new HashSet<SCCProductJson>();
+        Set<SCCProductJson> productList = new HashSet<>();
         List<Credentials> credentials = filterCredentials();
         Iterator<Credentials> i = credentials.iterator();
 
@@ -1147,7 +1151,7 @@ public class ContentSyncManager {
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:" + e.getMessage());
-            return new ArrayList<SCCSubscriptionJson>();
+            return new ArrayList<>();
         }
     }
 
@@ -1159,7 +1163,7 @@ public class ContentSyncManager {
      */
     public Collection<SCCSubscriptionJson> updateSubscriptions() throws ContentSyncException {
         log.info("ContentSyncManager.getSubscriptions called");
-        Set<SCCSubscriptionJson> subscriptions = new HashSet<SCCSubscriptionJson>();
+        Set<SCCSubscriptionJson> subscriptions = new HashSet<>();
         List<Credentials> credentials = filterCredentials();
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
@@ -2175,7 +2179,7 @@ public class ContentSyncManager {
      * @return comma separated list of missing attribute names
      */
     private String verifySCCProduct(SCCProductJson product) {
-        List<String> missingAttributes = new ArrayList<String>();
+        List<String> missingAttributes = new ArrayList<>();
         if (product.getProductClass() == null) {
             missingAttributes.add("Product Class");
         }
@@ -2241,7 +2245,7 @@ public class ContentSyncManager {
      */
     private List<String> getInstalledChannelLabels() {
         List<Channel> installedChannels = ChannelFactory.listVendorChannels();
-        List<String> installedChannelLabels = new ArrayList<String>();
+        List<String> installedChannelLabels = new ArrayList<>();
         for (Channel c : installedChannels) {
             installedChannelLabels.add(c.getLabel());
         }

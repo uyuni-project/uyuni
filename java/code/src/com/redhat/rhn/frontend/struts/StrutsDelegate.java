@@ -81,7 +81,7 @@ public class StrutsDelegate {
      * param and value.
      */
     public ActionForward forwardParam(ActionForward base, String param, String value) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(param, value);
         return forwardParams(base, params);
     }

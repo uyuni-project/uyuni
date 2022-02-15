@@ -98,7 +98,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
 
             getStrutsDelegate().saveMessages(requestContext.getRequest(), msg);
 
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("cid", cid);
             return getStrutsDelegate().forwardParams(mapping.findForward("complete"),
                     params);
@@ -110,7 +110,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
 
 
     private void removePackages(User user, Channel chan, RhnSet set) {
-        List<Long> ids = new ArrayList<Long>();
+        List<Long> ids = new ArrayList<>();
         ids.addAll(set.getElementValues());
         ChannelManager.removePackages(chan, ids, user);
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), ids);

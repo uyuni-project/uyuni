@@ -235,7 +235,7 @@ public class ErrataHandler extends BaseHandler {
 
         Errata errata = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
 
-        Map<String, Object> errataMap = new HashMap<String, Object>();
+        Map<String, Object> errataMap = new HashMap<>();
 
         errataMap.put("id", errata.getId());
         if (errata.getIssueDate() != null) {
@@ -340,7 +340,7 @@ public class ErrataHandler extends BaseHandler {
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("synopsis");
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
@@ -987,8 +987,8 @@ public class ErrataHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        List<Errata> errataToClone = new ArrayList<Errata>();
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Errata> errataToClone = new ArrayList<>();
+        List<Long> errataIds = new ArrayList<>();
         Optional<Org> originalChannelOrg = ofNullable(original).map(c -> c.getOrg());
         //We loop through once, making sure all the errata exist
         for (String advisory : advisoryNames) {
@@ -1175,7 +1175,7 @@ public class ErrataHandler extends BaseHandler {
             throws InvalidChannelRoleException {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("synopsis");
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");

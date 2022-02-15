@@ -292,7 +292,7 @@ public class KickstartFactory extends HibernateFactory {
         names = session.getNamedQuery(query).setCacheable(true).list();
 
         // Filter out the unsupported Commands for the passed in profile
-        List<KickstartCommandName> retval = new LinkedList<KickstartCommandName>();
+        List<KickstartCommandName> retval = new LinkedList<>();
         for (Object nameIn : names) {
             KickstartCommandName cn = (KickstartCommandName) nameIn;
             if (cn.getName().equals("selinux") && ksdata.isLegacyKickstart()) {
@@ -724,7 +724,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return list of KickstartableTrees
      */
     public static List<KickstartableTree> lookupAccessibleTreesByOrg(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
                 "KickstartableTree.findAccessibleToOrg", params, false);
@@ -736,7 +736,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartableTree objects if found
      */
     public static List<KickstartableTree> listTreesByOrg(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
                 "KickstartableTree.findByOrg", params, false);
@@ -749,7 +749,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static List<KickstartData> listKickstartDataByCKeyDescription(
             String ckDescription) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("ck_description", ckDescription);
         return singleton.listObjectsByNamedQuery(
                 "KickstartData.findByCKeyDescription", params, true);

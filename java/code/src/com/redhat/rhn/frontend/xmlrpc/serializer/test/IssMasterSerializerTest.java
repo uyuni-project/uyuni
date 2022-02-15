@@ -77,7 +77,7 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
         master.setLabel("testMaster" + TestUtils.randomString());
         master.makeDefaultMaster();
         master.setCaCert("/tmp/FOO-CA-CERT");
-        Set<IssMasterOrg> orgs = new HashSet<IssMasterOrg>();
+        Set<IssMasterOrg> orgs = new HashSet<>();
         for (String orgName : masterOrgNames) {
             IssMasterOrg anOrg = new IssMasterOrg();
             anOrg.setMasterOrgId(baseId++);

@@ -148,7 +148,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
 
         // create and delete more than 1 salt event
         int count = 2;
-        List<SaltEvent> saltEvents = new ArrayList<SaltEvent>();
+        List<SaltEvent> saltEvents = new ArrayList<>();
 
         IntStream.range(0, count).forEach(
                 i -> {

@@ -56,11 +56,11 @@ public class ServerSnapshot extends BaseDomainHelper {
     private Server server;
     private Long id;
     private String reason;
-    private Set<Channel> channels = new HashSet<Channel>();
-    private Set<ConfigChannel> configChannels = new HashSet<ConfigChannel>();
-    private Set<ConfigRevision> configRevisions = new HashSet<ConfigRevision>();
-    private Set<ServerGroup> groups = new HashSet<ServerGroup>();
-    private Set<PackageNevra> packages = new HashSet<PackageNevra>();
+    private Set<Channel> channels = new HashSet<>();
+    private Set<ConfigChannel> configChannels = new HashSet<>();
+    private Set<ConfigRevision> configRevisions = new HashSet<>();
+    private Set<ServerGroup> groups = new HashSet<>();
+    private Set<PackageNevra> packages = new HashSet<>();
     private InvalidSnapshotReason invalidReason;
     private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -327,7 +327,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      */
     private int getDiffs(Long sid, String name, String mode) {
         SelectMode m = ModeFactory.getMode(name, mode);
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("ss_id", id);
         params.put("sid", sid);
         DataResult dr = m.execute(params);
@@ -417,12 +417,12 @@ public class ServerSnapshot extends BaseDomainHelper {
         // deploy the particular config files
         Set<ConfigRevision> revs = getConfigRevisions();
         if (revs != null) {
-            List<Long> revLongs = new ArrayList<Long>();
+            List<Long> revLongs = new ArrayList<>();
             for (ConfigRevision rev : revs) {
                 revLongs.add(rev.getId());
                 deployed = true;
             }
-            List<Long> serverIds = new ArrayList<Long>();
+            List<Long> serverIds = new ArrayList<>();
             serverIds.add(this.server.getId());
             ActionManager.createConfigAction(user, revLongs, serverIds,
                                   ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date());
@@ -435,7 +435,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      * @return Returns a DataResult of maps representing channels
      */
     public DataResult<Map<String, Object>> snapshotChannelList() {
-       Map<String, Long> params = new HashMap<String, Long>();
+       Map<String, Long> params = new HashMap<>();
        params.put("sid", server.getId());
        params.put("ss_id", this.id);
        SelectMode m = ModeFactory.getMode("Channel_queries",
@@ -447,12 +447,12 @@ public class ServerSnapshot extends BaseDomainHelper {
     private DataResult preparePackagesForSync() {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "compare_packages_to_snapshot");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", this.server.getId());
         params.put("ss_id", this.id);
         DataResult<Map<String, Object>> pkgsDiff = m.execute(params);
 
-        List<PackageMetadata> pkgsMeta =  new ArrayList<PackageMetadata>();
+        List<PackageMetadata> pkgsMeta = new ArrayList<>();
 
         for (Map pkgDiff : pkgsDiff) {
             PackageListItem systemPkg   = new PackageListItem();
@@ -486,7 +486,7 @@ public class ServerSnapshot extends BaseDomainHelper {
             pm.updateActionStatus();
             pkgsMeta.add(pm);
         }
-        return new DataResult<PackageMetadata>(pkgsMeta);
+        return new DataResult<>(pkgsMeta);
     }
 
     /**

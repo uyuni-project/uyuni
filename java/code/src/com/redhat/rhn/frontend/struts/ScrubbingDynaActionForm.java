@@ -45,8 +45,8 @@ public class ScrubbingDynaActionForm extends DynaActionForm {
     public void scrub() {
         List keys = new LinkedList(dynaValues.keySet());
 
-        Set<String> noScrub = new HashSet<String>();
-        Set<String> noParenScrub = new HashSet<String>();
+        Set<String> noScrub = new HashSet<>();
+        Set<String> noParenScrub = new HashSet<>();
 
         if (dynaValues.containsKey(NO_SCRUB)) {
             for (String item : StringUtils.split(

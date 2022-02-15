@@ -29,7 +29,7 @@ class ActionExecutor implements Runnable {
     private static final Logger LOG = Logger.getLogger(ActionExecutor.class);
 
     private EventMessage msg;
-    private List<MessageAction> actionHandlers = new ArrayList<MessageAction>();
+    private List<MessageAction> actionHandlers = new ArrayList<>();
 
     /**
      * Constructor

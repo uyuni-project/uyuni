@@ -72,7 +72,7 @@ public class MigrateSystemsAction extends RhnAction implements Listable {
 
         if (context.wasDispatched("ssm.migrate.systems.confirmbutton")) {
             RhnSet set = RhnSetDecl.SYSTEMS.get(context.getCurrentUser());
-            List<Server> serverList = new ArrayList<Server>();
+            List<Server> serverList = new ArrayList<>();
 
             for (Object oIn : set) {
                 Long sid = ((RhnSetElement) oIn).getElement();

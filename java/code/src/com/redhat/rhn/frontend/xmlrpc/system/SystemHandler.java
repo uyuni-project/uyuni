@@ -345,7 +345,11 @@ public class SystemHandler extends BaseHandler {
         final Entitlement entitlement = EntitlementManager.getByName(entitlementLevel);
 
         // Make sure we got a valid entitlement and the server can be entitled to it
-        validateEntitlements(new ArrayList<Entitlement>() { { add(entitlement); } });
+        validateEntitlements(new ArrayList<>() {
+            {
+                add(entitlement);
+            }
+        });
         if (!this.systemEntitlementManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
         }
@@ -420,7 +424,7 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
-        List<Long> channelIds = new ArrayList<Long>();
+        List<Long> channelIds = new ArrayList<>();
         if (receivedLabels) {
             channelIds = ChannelFactory.getChannelIds(channelIdsOrLabels);
 
@@ -523,10 +527,10 @@ public class SystemHandler extends BaseHandler {
             cmd = new UpdateBaseChannelCommand(loggedInUser, server, -1L);
         }
         else {
-            List<String> channelLabels = new ArrayList<String>();
+            List<String> channelLabels = new ArrayList<>();
             channelLabels.add(channelLabel);
 
-            List<Long> channelIds = new ArrayList<Long>();
+            List<Long> channelIds = new ArrayList<>();
             channelIds = ChannelFactory.getChannelIds(channelLabels);
 
             if (channelIds.size() > 0) {
@@ -687,7 +691,7 @@ public class SystemHandler extends BaseHandler {
         //Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
         Channel baseChannel = server.getBaseChannel();
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
 
         List<EssentialChannelDto> list =
                 ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
@@ -824,10 +828,10 @@ public class SystemHandler extends BaseHandler {
             User loggedInUser, List<Integer> serverIds) throws FaultException {
         List<Server> servers = xmlRpcSystemHelper.lookupServers(
                 loggedInUser, serverIds);
-        List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> ret = new ArrayList<>();
         for (Server server : servers) {
             if (!server.isInactive()) {
-                Map<String, Object> m = new HashMap<String, Object>();
+                Map<String, Object> m = new HashMap<>();
                 m.put("id", server.getId());
                 m.put("name", server.getName());
                 m.put("minion_id", server.getMinionId());
@@ -853,18 +857,18 @@ public class SystemHandler extends BaseHandler {
                 }
 
                 m.put("network_devices",
-                        new ArrayList<NetworkInterface>(server
+                        new ArrayList<>(server
                                 .getNetworkInterfaces()));
 
-                List<Map<String, Object>> channels = new ArrayList<Map<String, Object>>();
+                List<Map<String, Object>> channels = new ArrayList<>();
                 Channel base = server.getBaseChannel();
                 if (base != null) {
-                    Map<String, Object> basec = new HashMap<String, Object>();
+                    Map<String, Object> basec = new HashMap<>();
                     basec.put("channel_id", base.getId());
                     basec.put("channel_label", base.getLabel());
                     channels.add(basec);
                     for (Channel child : server.getChildChannels()) {
-                        Map<String, Object> childc = new HashMap<String, Object>();
+                        Map<String, Object> childc = new HashMap<>();
                         childc.put("channel_id", child.getId());
                         childc.put("channel_label", child.getLabel());
                         channels.add(childc);
@@ -873,7 +877,7 @@ public class SystemHandler extends BaseHandler {
                 m.put("subscribed_channels", channels);
 
                 Collection<VirtualInstance> guests = server.getGuests();
-                List<Long> guestList = new ArrayList<Long>();
+                List<Long> guestList = new ArrayList<>();
                 for (VirtualInstance guest : guests) {
                     Server g = guest.getGuestSystem();
                     if (g != null && !g.isInactive()) {
@@ -889,7 +893,7 @@ public class SystemHandler extends BaseHandler {
 
     private Map<String, Object> createChannelMap(EssentialChannelDto channel,
             Boolean currentBase) {
-        Map<String, Object> ret = new HashMap<String, Object>();
+        Map<String, Object> ret = new HashMap<>();
 
         ret.put("id", channel.getId());
         ret.put("name", channel.getName());
@@ -928,7 +932,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
         Channel baseChannel = server.getBaseChannel();
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
 
         //make sure channel is not null
         if (baseChannel == null) {
@@ -943,7 +947,7 @@ public class SystemHandler extends BaseHandler {
         //TODO: This should go away once we teach marquee how to deal with nulls in a list.
         //      Luckily, this list shouldn't be too long.
         for (Map<String, Object> row : dr) {
-            Map<String, Object> channel = new HashMap<String, Object>();
+            Map<String, Object> channel = new HashMap<>();
 
             channel.put("id", row.get("id"));
             channel.put("label", row.get("label"));
@@ -1121,7 +1125,7 @@ public class SystemHandler extends BaseHandler {
             throws NoSuchPackageException {
         DataResult<Map<String, Object>> installed = SystemManager.installedPackages(server.getId());
 
-        List<Map<String, Object>> toCheck = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> toCheck = new ArrayList<>();
         // Get a list of packages with matching name
         for (Map<String, Object> pkg : installed) {
             String pkgName = StringUtils.trim((String) pkg.get("name"));
@@ -1148,7 +1152,7 @@ public class SystemHandler extends BaseHandler {
     private Map<String, String> fillOutPackage(String pkgName,
             String pkgVersion, String pkgRelease,
             String pkgEpoch) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("name", StringUtils.defaultString(pkgName));
         map.put("version", StringUtils.defaultString(pkgVersion));
         map.put("release", StringUtils.defaultString(pkgRelease));
@@ -1377,12 +1381,12 @@ public class SystemHandler extends BaseHandler {
     public List<Map<String, Object>> listLatestAvailablePackage(User loggedInUser,
             List<Integer> systemIds, String name) throws FaultException {
 
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = new ArrayList<>();
 
         for (Integer sid : systemIds) {
             Server server = lookupServer(loggedInUser, sid);
 
-            Map<String, Object> systemMap = new HashMap<String, Object>();
+            Map<String, Object> systemMap = new HashMap<>();
 
             // get the package name ID
             Map pkgEvr = PackageManager.lookupEvrIdByPackageName(sid.longValue(), name);
@@ -1395,7 +1399,7 @@ public class SystemHandler extends BaseHandler {
 
                 // build the hash to return
                 if (pkg != null && !pkg.isPartOfRetractedPatch()) {
-                    Map<String, Object> pkgMap = new HashMap<String, Object>();
+                    Map<String, Object> pkgMap = new HashMap<>();
                     pkgMap.put("id", pkg.getId());
                     pkgMap.put("name", pkg.getPackageName().getName());
                     pkgMap.put("version", pkg.getPackageEvr().getVersion());
@@ -1439,7 +1443,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
 
         // A list of entitlements to return
-        List<String> entitlements = new ArrayList<String>();
+        List<String> entitlements = new ArrayList<>();
 
         // Loop through the entitlement objects for this server and stick
         // label into the entitlements list to return
@@ -1635,7 +1639,7 @@ public class SystemHandler extends BaseHandler {
                     ") does not represent a host system");
         }
 
-        List<String> availableGuests = new ArrayList<String>();
+        List<String> availableGuests = new ArrayList<>();
 
         for (VirtualInstance vi : server.getGuests()) {
             availableGuests.add(vi.getName());
@@ -1705,8 +1709,8 @@ public class SystemHandler extends BaseHandler {
     public int deleteSystems(User loggedInUser, List<Integer> systemIds, String cleanupType)
             throws FaultException {
 
-        List<Integer> skippedSids = new ArrayList<Integer>();
-        List<Long> deletion = new LinkedList<Long>();
+        List<Integer> skippedSids = new ArrayList<>();
+        List<Long> deletion = new LinkedList<>();
         // Loop through the sids and try to delete the server
         for (Integer sysId : systemIds) {
             if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
@@ -1839,7 +1843,7 @@ public class SystemHandler extends BaseHandler {
         String hostname = server.getHostname();
 
         // Stick in a map and return
-        Map<String, String> network = new HashMap<String, String>();
+        Map<String, String> network = new HashMap<>();
         network.put("ip", StringUtils.defaultString(ip));
         network.put("ip6", StringUtils.defaultString(ip6));
         network.put("hostname", StringUtils.defaultString(hostname));
@@ -1874,7 +1878,7 @@ public class SystemHandler extends BaseHandler {
         List<Server> servers = this.xmlRpcSystemHelper.lookupServers(loggedInUser, systemIDs);
 
         for (Server server : servers) {
-            Map<String, Object> network = new HashMap<String, Object>();
+            Map<String, Object> network = new HashMap<>();
             network.put("system_id", server.getId());
             network.put("ip", StringUtils.defaultString(server.getIpAddress()));
             network.put("ip6", StringUtils.defaultString(server.getIp6Address()));
@@ -1908,7 +1912,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
         Set<NetworkInterface> devices = server.getNetworkInterfaces();
-        return new ArrayList<NetworkInterface>(devices);
+        return new ArrayList<>(devices);
     }
 
     /**
@@ -1940,7 +1944,7 @@ public class SystemHandler extends BaseHandler {
                     loggedInUser);
 
 
-            List<Server> servers = new ArrayList<Server>(1);
+            List<Server> servers = new ArrayList<>(1);
             servers.add(server);
 
             if (member) {
@@ -1987,12 +1991,12 @@ public class SystemHandler extends BaseHandler {
 
         DataResult<Map<String, Object>> groups =
                 SystemManager.availableSystemGroups(server, loggedInUser);
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
 
 
         // More stupid data munging...
         for (Map<String, Object> map : groups) {
-            Map<String, Object> row = new HashMap<String, Object>();
+            Map<String, Object> row = new HashMap<>();
 
             row.put("id", map.get("id"));
             row.put("sgid", map.get("id").toString());
@@ -2069,7 +2073,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
         Org org = loggedInUser.getOrg();
-        List<String> skippedKeys = new ArrayList<String>();
+        List<String> skippedKeys = new ArrayList<>();
 
         /*
          * Loop through the map the user sent us. Check to make sure that the org has the
@@ -2132,7 +2136,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
 
         Set<CustomDataValue> customDataValues = server.getCustomDataValues();
-        Map<String, String> returnMap = new HashMap<String, String>();
+        Map<String, String> returnMap = new HashMap<>();
 
         /*
          * Loop through the customDataValues set for the server. We're only interested in
@@ -2174,7 +2178,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
         loggedInUser.getOrg();
-        List<String> skippedKeys = new ArrayList<String>();
+        List<String> skippedKeys = new ArrayList<>();
 
         /*
          * Loop through the list the user sent us. Check to make sure that the org has the
@@ -3121,7 +3125,7 @@ public class SystemHandler extends BaseHandler {
      */
     public Map<String, Object> getName(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
-        Map<String, Object> name = new HashMap<String, Object>();
+        Map<String, Object> name = new HashMap<>();
         name.put("id", server.getId());
         name.put("name", server.getName());
         name.put("last_checkin", server.getLastCheckin());
@@ -3168,10 +3172,10 @@ public class SystemHandler extends BaseHandler {
         Set<Channel> childChannels = server.getChildChannels();
 
         if (childChannels == null) {
-            return new ArrayList<Channel>();
+            return new ArrayList<>();
         }
 
-        return new ArrayList<Channel>(childChannels);
+        return new ArrayList<>(childChannels);
     }
 
 
@@ -3670,7 +3674,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
             List<Integer> errataIds) {
-        List<Integer> serverIds = new ArrayList<Integer>();
+        List<Integer> serverIds = new ArrayList<>();
         serverIds.add(sid);
 
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, false);
@@ -3695,7 +3699,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
                                           Boolean allowModules) {
-        List<Integer> serverIds = new ArrayList<Integer>();
+        List<Integer> serverIds = new ArrayList<>();
         serverIds.add(sid);
 
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, allowModules);
@@ -3720,7 +3724,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
             List<Integer> errataIds, Date earliestOccurrence) {
-        List<Integer> serverIds = new ArrayList<Integer>();
+        List<Integer> serverIds = new ArrayList<>();
         serverIds.add(sid);
 
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, earliestOccurrence, false);
@@ -3748,7 +3752,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
                                           Date earliestOccurrence, Boolean allowModules) {
-        List<Integer> serverIds = new ArrayList<Integer>();
+        List<Integer> serverIds = new ArrayList<>();
         serverIds.add(sid);
 
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, earliestOccurrence, allowModules);
@@ -3893,7 +3897,7 @@ public class SystemHandler extends BaseHandler {
      */
     public Map<String, Long> getMemory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
-        Map<String, Long> memory = new HashMap<String, Long>();
+        Map<String, Long> memory = new HashMap<>();
         memory.put("swap", server.getSwap());
         memory.put("ram", server.getRam());
         return memory;
@@ -3933,7 +3937,7 @@ public class SystemHandler extends BaseHandler {
     private Long[] schedulePackagesAction(User loggedInUser, List<Integer> sids,
             List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, Boolean allowModules) {
 
-        List<Long> actionIds = new ArrayList<Long>();
+        List<Long> actionIds = new ArrayList<>();
 
         if (!allowModules) {
             boolean hasModules = false;
@@ -4020,11 +4024,11 @@ public class SystemHandler extends BaseHandler {
      */
     private List<Map<String, Long>> packageIdsToMaps(User user, List<Integer> packageIds) {
 
-        List<Map<String, Long>> packageMaps = new LinkedList<Map<String, Long>>();
+        List<Map<String, Long>> packageMaps = new LinkedList<>();
 
         for (Integer pkgId : packageIds) {
 
-            Map<String, Long> pkgMap = new HashMap<String, Long>();
+            Map<String, Long> pkgMap = new HashMap<>();
 
             Package p = PackageManager.lookupByIdAndUser(pkgId.longValue(), user);
 
@@ -4056,11 +4060,11 @@ public class SystemHandler extends BaseHandler {
     private List<Map<String, Long>> packageNevrasToMaps(User user,
             List<Map<String, String>> packageNevraList, Boolean lookupNevra) {
 
-        List<Map<String, Long>> packageMaps = new LinkedList<Map<String, Long>>();
+        List<Map<String, Long>> packageMaps = new LinkedList<>();
 
         for (Map<String, String> packageNevra : packageNevraList) {
 
-            Map<String, Long> pkgMap = new HashMap<String, Long>();
+            Map<String, Long> pkgMap = new HashMap<>();
             PackageArch arch = PackageFactory
                     .lookupPackageArchByLabel(packageNevra.get("package_arch"));
 
@@ -4424,7 +4428,7 @@ public class SystemHandler extends BaseHandler {
     public int schedulePackageRemove(User loggedInUser, Integer sid,
             List<Integer> packageIds, Date earliestOccurrence) {
 
-        List<Integer> sids = new ArrayList<Integer>();
+        List<Integer> sids = new ArrayList<>();
         sids.add(sid);
 
         return schedulePackagesAction(loggedInUser, sids,
@@ -4455,7 +4459,7 @@ public class SystemHandler extends BaseHandler {
     public int schedulePackageRemove(User loggedInUser, Integer sid,
                                      List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
-        List<Integer> sids = new ArrayList<Integer>();
+        List<Integer> sids = new ArrayList<>();
         sids.add(sid);
 
         return schedulePackagesAction(loggedInUser, sids,
@@ -4561,7 +4565,7 @@ public class SystemHandler extends BaseHandler {
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
-        List<Integer> sids = new ArrayList<Integer>();
+        List<Integer> sids = new ArrayList<>();
         sids.add(sid);
 
         return schedulePackagesAction(loggedInUser, sids,
@@ -4601,7 +4605,7 @@ public class SystemHandler extends BaseHandler {
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid, List<Map<String,
             String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
-        List<Integer> sids = new ArrayList<Integer>();
+        List<Integer> sids = new ArrayList<>();
         sids.add(sid);
 
         return schedulePackagesAction(loggedInUser, sids,
@@ -4851,7 +4855,7 @@ public class SystemHandler extends BaseHandler {
                 timeout.longValue(), script);
         ScriptAction action = null;
 
-        List<Long> servers = new ArrayList<Long>();
+        List<Long> servers = new ArrayList<>();
 
         for (Integer sidAsInt : systemIds) {
             Long sid = sidAsInt.longValue();
@@ -4945,7 +4949,7 @@ public class SystemHandler extends BaseHandler {
                                      String groupname, Integer timeout, String script,
                                      Date earliest) {
 
-        List<Integer> systemIds = new ArrayList<Integer>();
+        List<Integer> systemIds = new ArrayList<>();
         systemIds.add(sid);
 
         return scheduleScriptRun(loggedInUser, null, systemIds, username, groupname,
@@ -4984,7 +4988,7 @@ public class SystemHandler extends BaseHandler {
     public Integer scheduleScriptRun(User loggedInUser, String label, Integer sid, String
             username, String groupname, Integer timeout, String script, Date earliest) {
 
-        List<Integer> systemIds = new ArrayList<Integer>();
+        List<Integer> systemIds = new ArrayList<>();
         systemIds.add(sid);
 
         return scheduleScriptRun(loggedInUser, label, systemIds, username, groupname,
@@ -5017,7 +5021,7 @@ public class SystemHandler extends BaseHandler {
             return new Object [] {};
         }
 
-        List<ScriptResult> results = new LinkedList<ScriptResult>();
+        List<ScriptResult> results = new LinkedList<>();
         for (ScriptResult r : details.getResults()) {
             results.add(r);
         }
@@ -5046,7 +5050,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      */
     public Map<String, Object> getScriptActionDetails(User loggedInUser, Integer actionId) {
-        Map<String, Object> retDetails = new HashMap<String, Object>();
+        Map<String, Object> retDetails = new HashMap<>();
         ScriptRunAction action = lookupScriptRunAction(actionId, loggedInUser);
         ScriptActionDetails details = action.getScriptActionDetails();
         retDetails.put("id", action.getId());
@@ -5056,7 +5060,7 @@ public class SystemHandler extends BaseHandler {
         retDetails.put("timeout", details.getTimeout());
 
         if (details.getResults() != null) {
-            List<ScriptResult> results = new LinkedList<ScriptResult>();
+            List<ScriptResult> results = new LinkedList<>();
             for (ScriptResult r : details.getResults()) {
                 results.add(r);
             }
@@ -5180,7 +5184,7 @@ public class SystemHandler extends BaseHandler {
             Map<String, Object> details) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("profile_name");
         validKeys.add("base_entitlement");
         validKeys.add("auto_errata_update");
@@ -5373,7 +5377,7 @@ public class SystemHandler extends BaseHandler {
             List<String> entitlements) {
         boolean needsSnapshot = false;
         Entitlement entitlement = null;
-        List<Entitlement> entitlementL = new ArrayList<Entitlement>();
+        List<Entitlement> entitlementL = new ArrayList<>();
         for (String e : entitlements) {
             entitlement = EntitlementManager.getByName(e);
             entitlementL.add(entitlement);
@@ -5389,7 +5393,7 @@ public class SystemHandler extends BaseHandler {
 
         validateEntitlements(entitlementL);
 
-        List<String> addOnEnts = new LinkedList<String>(entitlements);
+        List<String> addOnEnts = new LinkedList<>(entitlements);
         // first process base entitlements
         for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
             if (addOnEnts.contains(en.getLabel())) {
@@ -5452,7 +5456,7 @@ public class SystemHandler extends BaseHandler {
     public int removeEntitlements(User loggedInUser, Integer serverId,
             List<String> entitlements) {
         boolean needsSnapshot = false;
-        List<Entitlement> entitlementL = new ArrayList<Entitlement>();
+        List<Entitlement> entitlementL = new ArrayList<>();
         Entitlement entitlement;
         for (String e : entitlements) {
             entitlement = EntitlementManager.getByName(e);
@@ -5470,7 +5474,7 @@ public class SystemHandler extends BaseHandler {
 
         validateEntitlements(entitlementL);
 
-        List<Entitlement> baseEnts = new LinkedList<Entitlement>();
+        List<Entitlement> baseEnts = new LinkedList<>();
 
         for (String entitlementIn : entitlements) {
             Entitlement ent = EntitlementManager.getByName(entitlementIn);
@@ -5540,7 +5544,7 @@ public class SystemHandler extends BaseHandler {
 
         Server server = validateClientCertificate(clientCert);
         String systemIdStr = server.getId().toString();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put(csvStamp, 0);
 
         File[] files = transitionFolder.listFiles();
@@ -5808,7 +5812,7 @@ public class SystemHandler extends BaseHandler {
 
         // For each of the package ids provided, retrieve the pkg id combo
         // which includes name_id|evr_id|arch_id
-        Set<String> pkgIdCombos = new HashSet<String>();
+        Set<String> pkgIdCombos = new HashSet<>();
         for (Integer i : packageIds) {
             Package pkg = PackageManager.lookupByIdAndUser(i.longValue(), loggedInUser);
 
@@ -6277,7 +6281,7 @@ public class SystemHandler extends BaseHandler {
 
         DataResult<ActivationKeyDto> result = SystemManager.getActivationKeys(server);
 
-        List<String> returnList = new ArrayList<String>();
+        List<String> returnList = new ArrayList<>();
         for (ActivationKeyDto key : result) {
             returnList.add(key.getToken());
         }
@@ -6506,7 +6510,7 @@ public class SystemHandler extends BaseHandler {
                 ksData.getCobblerObject(loggedInUser).getName());
 
         // Set network device information to the server
-        Set<NetworkInterface> set = new HashSet<NetworkInterface>();
+        Set<NetworkInterface> set = new HashSet<>();
         for (HashMap<String, String> map : netDevices) {
             // FIXME: why do we need this?
             CobblerNetworkInterface device = cmd.new CobblerNetworkInterface();
@@ -6624,7 +6628,7 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchCobblerSystemRecordException();
         }
 
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("netboot", rec.isNetbootEnabled());
         vars.put("variables", rec.getKsMeta());
 
@@ -6695,9 +6699,9 @@ public class SystemHandler extends BaseHandler {
 
     private List<Map<String, Object>> transformDuplicate(
             List<DuplicateSystemGrouping> list, String propName) {
-        List<Map<String, Object>> toRet = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> toRet = new ArrayList<>();
         for (DuplicateSystemGrouping b : list) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put(propName, b.getKey());
             map.put("systems", b.getSystems());
             toRet.add(map);
@@ -6787,7 +6791,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("map", "multipliers", "Map of score multipliers")
      */
     public Map<String, Integer> getSystemCurrencyMultipliers(User loggedInUser) {
-        Map<String, Integer> multipliers = new HashMap<String, Integer>();
+        Map<String, Integer> multipliers = new HashMap<>();
         multipliers.put("scCrit", ConfigDefaults.get().getSCCrit());
         multipliers.put("scImp", ConfigDefaults.get().getSCImp());
         multipliers.put("scMod", ConfigDefaults.get().getSCMod());
@@ -6823,9 +6827,9 @@ public class SystemHandler extends BaseHandler {
     public List<Map<String, Long>> getSystemCurrencyScores(User loggedInUser) {
         DataResult<SystemCurrency> dr = SystemManager.systemCurrencyList(loggedInUser,
                 null);
-        List<Map<String, Long>> l = new ArrayList<Map<String, Long>>();
+        List<Map<String, Long>> l = new ArrayList<>();
         for (SystemCurrency systemCurrencyIn : dr) {
-            Map<String, Long> m = new HashMap<String, Long>();
+            Map<String, Long> m = new HashMap<>();
             SystemCurrency s = systemCurrencyIn;
             m.put("sid", s.getId());
             m.put("crit", s.getCritical());
@@ -6961,10 +6965,10 @@ public class SystemHandler extends BaseHandler {
         DataResult<PackageListItem> dr =
                 SystemManager.listExtraPackages(Long.valueOf(serverId));
 
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
 
         for (PackageListItem row : dr) {
-            Map<String, Object> pkg = new HashMap<String, Object>();
+            Map<String, Object> pkg = new HashMap<>();
 
             pkg.put("name", row.getName());
             pkg.put("version", row.getVersion());
@@ -7131,7 +7135,7 @@ public class SystemHandler extends BaseHandler {
      */
     public Map<String, Object> getOsaPing(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         if (server.getPushClient() != null) {
             if (server.getPushClient().getState().getName() == null) {
                 map.put("state", "unknown");
@@ -7179,7 +7183,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
             Integer serverId) {
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
         Server server = lookupServer(loggedInUser, serverId);
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
         if (!installedProducts.isPresent()) {
@@ -7197,7 +7201,7 @@ public class SystemHandler extends BaseHandler {
             if (!ps.getIsEveryChannelSynced()) {
                 continue;
             }
-            Map<String, Object> target = new HashMap<String, Object>();
+            Map<String, Object> target = new HashMap<>();
 
             target.put("ident", ps.getSerializedProductIDs());
             target.put("friendly", ps.toString());

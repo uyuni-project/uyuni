@@ -87,7 +87,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByOrg(Org orgIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("orgId", orgIn.getId());
         return (ChannelFamily) singleton.lookupObjectByNamedQuery(
                                        "ChannelFamily.findByOrgId", params);
@@ -142,7 +142,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
         //for which this org does not have appropriate permissions
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "families_for_org_without_permissions");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         Iterator i = m.execute(params).iterator();
 
@@ -217,7 +217,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return name for given label or null
      */
     public static String getNameByLabel(String label) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         Object o = singleton.lookupObjectByNamedQuery(
                 "ChannelFamily.getNameByLabel", params, false);

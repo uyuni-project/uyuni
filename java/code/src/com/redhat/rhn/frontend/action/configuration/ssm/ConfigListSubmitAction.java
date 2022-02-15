@@ -118,7 +118,7 @@ public class ConfigListSubmitAction extends BaseSetOperateOnSelectedItemsAction 
         if (set.isEmpty()) {
             return handleEmptySelection(mapping, formIn, request);
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("feature", feature.getLabel());
         return getStrutsDelegate().forwardParams(
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

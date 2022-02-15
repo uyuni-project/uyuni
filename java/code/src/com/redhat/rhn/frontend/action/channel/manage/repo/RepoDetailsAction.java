@@ -168,7 +168,7 @@ public class RepoDetailsAction extends RhnAction {
     }
 
     private Map<String, String> makeValidationMap(DynaActionForm form) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(LABEL, form.getString(LABEL));
         map.put(URL, form.getString(URL));
         return map;
@@ -201,7 +201,7 @@ public class RepoDetailsAction extends RhnAction {
     }
 
     private void setupContentTypes(RequestContext context) {
-        List<LabelValueBean> contentTypes = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> contentTypes = new ArrayList<>();
         for (ContentSourceType ct : ChannelFactory.listContentSourceTypes()) {
             contentTypes.add(lv(ct.getLabel(), ct.getLabel()));
         }
@@ -209,7 +209,7 @@ public class RepoDetailsAction extends RhnAction {
     }
 
     private void setupCryptoKeys(RequestContext context) {
-        List<LabelValueBean> sslCrytpoKeyOptions = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> sslCrytpoKeyOptions = new ArrayList<>();
         sslCrytpoKeyOptions.add(lv(LocalizationService.getInstance().
                 getMessage("generic.jsp.none"), ""));
         for (SslCryptoKey sck : KickstartFactory.lookupSslCryptoKeys(
@@ -240,7 +240,7 @@ public class RepoDetailsAction extends RhnAction {
         String filterGroup = "";
         List<ContentSourceFilter> filters = ChannelFactory
                 .lookupContentSourceFiltersById(repo.getId());
-        List<String> filterGroups = new ArrayList<String>();
+        List<String> filterGroups = new ArrayList<>();
 
         for (ContentSourceFilter filter : filters) {
             String flag = filter.getFlag();
@@ -275,7 +275,7 @@ public class RepoDetailsAction extends RhnAction {
 
     private List<ContentSourceFilter> processFilters(String formFilters)
             throws InvalidParameterException {
-        List<ContentSourceFilter> ret = new ArrayList<ContentSourceFilter>();
+        List<ContentSourceFilter> ret = new ArrayList<>();
         if (!formFilters.isEmpty()) {
             // split on whitespace
             String[] filters = formFilters.split("\\s+");

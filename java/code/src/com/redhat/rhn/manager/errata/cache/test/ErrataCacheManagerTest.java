@@ -76,7 +76,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     public static Long insertRowIntoErrataCacheQueue(Org orgIn) {
         Long oid = orgIn.getId();
         WriteMode m = ModeFactory.getWriteMode("test_queries", "ready_errata_cache_queue");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", oid);
         params.put("server_count", 3);
         params.put("processed", 0);

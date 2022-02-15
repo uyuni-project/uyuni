@@ -75,8 +75,8 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
 
         // First, find the channels the user chose to operate on, as stored
         // in an RhnSet by ChildChannelAction
-        List<Channel> chanSubList = new ArrayList<Channel>();
-        List<Channel> chanUnsubList = new ArrayList<Channel>();
+        List<Channel> chanSubList = new ArrayList<>();
+        List<Channel> chanUnsubList = new ArrayList<>();
 
         findChannelsFromSet(user, chanSubList, chanUnsubList);
 
@@ -108,7 +108,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
                     "ssm.subscription.operation.label", null);
 
             SsmOperationManager.associateServersWithOperation(operationId, user.getId(),
-                    new ArrayList<Long>(sysSubList.keySet()));
+                    new ArrayList<>(sysSubList.keySet()));
 
             // Fire the request off asynchronously
             SsmChangeChannelSubscriptionsEvent event =
@@ -130,7 +130,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
 
 
     protected List<Channel> filterChannels(Collection<Channel> chans, User user) {
-        List<Channel> newChannels = new ArrayList<Channel>();
+        List<Channel> newChannels = new ArrayList<>();
         for (Channel c : chans) {
             // Verify the user roles, caching the role for the channel
             Boolean hasAcceptableRole =

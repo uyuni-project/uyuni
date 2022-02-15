@@ -406,7 +406,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             if (arch != null) {
                 SelectMode mode = getMode();
-                Map<String, Object> params = new HashMap<String, Object>();
+                Map<String, Object> params = new HashMap<>();
                 params.put("org_id", this.user.getOrg().getId());
                 params.put("prim_arch_id", arch.getId());
                 if (arch.getName().equals("x86_64")) {
@@ -1054,7 +1054,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         Server hostServer = getHostServer();
-        Set<Long> serverChannelIds = new HashSet<Long>();
+        Set<Long> serverChannelIds = new HashSet<>();
         for (Channel c : hostServer.getChannels()) {
             serverChannelIds.add(c.getId());
         }
@@ -1105,7 +1105,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @return a ValidationError or null
      */
     public Map<String, Long> findKickstartPackageToInstall(Collection<Long> channelIds) {
-        List<Map<String, Long>> results = new LinkedList<Map<String, Long>>();
+        List<Map<String, Long>> results = new LinkedList<>();
 
         for (Long chnnelId : channelIds) {
             log.debug("    Checking on:" + chnnelId + " for: " + this.ksdata.getKickstartPackageNameForTraditional());
@@ -1115,7 +1115,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
             for (Map<String, Object> aPackage : packages) {
                 log.debug("    Found the package: " + aPackage);
-                Map<String, Long> result = new HashMap<String, Long>();
+                Map<String, Long> result = new HashMap<>();
                 result.put("name_id", (Long)aPackage.get("name_id"));
                 result.put("evr_id", (Long)aPackage.get("evr_id"));
                 result.put("arch_id", (Long)aPackage.get("package_arch_id"));
@@ -1126,7 +1126,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         if (!results.isEmpty()) {
-            return Collections.max(results, new Comparator<Map<String, Long>>() {
+            return Collections.max(results, new Comparator<>() {
                 @Override
                 public int compare(Map<String, Long> o1In, Map<String, Long> o2In) {
                     PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(

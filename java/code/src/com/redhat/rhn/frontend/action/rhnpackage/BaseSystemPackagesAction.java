@@ -106,7 +106,7 @@ public abstract class BaseSystemPackagesAction extends RhnAction {
     private ActionForward handleDispatchAction(ActionMapping mapping,
             RequestContext context) {
         Server server = context.lookupAndBindServer();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, server.getId().toString());
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         return strutsDelegate.forwardParams(

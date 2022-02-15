@@ -270,7 +270,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      * {@inheritDoc}
      */
     public List<String> getCallBackColumns() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("ACTION_STATUS".toLowerCase());
         list.add("TALLY".toLowerCase());
         return list;

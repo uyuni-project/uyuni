@@ -166,7 +166,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertFalse(dr.stream().flatMapToLong(id -> LongStream.of(((ConfigSystemDto) id).getId()))
                 .anyMatch(id->id == minion.getId()));
 
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("cfnid", cfnids[0]);
         elabParams.put("label", ConfigChannelType.local().getLabel());
         dr.elaborate(elabParams);
@@ -369,7 +369,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
         assertEquals(5, dr.getTotalSize());
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("ccid", gcc1.getId());
         params.put("cfnid", theFile.getConfigFileName().getId());
         dr.elaborate(params);
@@ -902,7 +902,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         //
         DataResult dr = ConfigurationManager.getInstance().listSystemInfoForChannel(user,
                 gcc1, null);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("ccid", gcc1.getId());
         dr.elaborate(elabParams);
 
@@ -1059,7 +1059,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         ServerFactory.save(srv1);
 
-        Set<ConfigRevision> revisions = new HashSet<ConfigRevision>();
+        Set<ConfigRevision> revisions = new HashSet<>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
@@ -1083,7 +1083,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(gcc2);
 
         // System 1 - both g1f1 and g1f2 should deploy here
-        Set<Server> systems  = new HashSet<Server>();
+        Set<Server> systems  = new HashSet<>();
         systems.add(srv1);
         mgr.deployConfiguration(user, systems, new Date());
         DataResult<ScheduledAction> actions = ActionManager.

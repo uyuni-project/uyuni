@@ -48,7 +48,7 @@ public class MasterHandler extends BaseHandler {
     };
     private static final Set<String> VALIDMASTERORGATTR;
     static {
-        VALIDMASTERORGATTR = new HashSet<String>(Arrays.asList(VALID_MASTER_ORG_ATTRS));
+        VALIDMASTERORGATTR = new HashSet<>(Arrays.asList(VALID_MASTER_ORG_ATTRS));
     }
 
     public static final String[] REQUIRED_MASTER_ORG_ATTRS = {
@@ -57,7 +57,7 @@ public class MasterHandler extends BaseHandler {
     private static final Set<String> REQUIREDMASTERORGATTRS;
     static {
         REQUIREDMASTERORGATTRS =
-                new HashSet<String>(Arrays.asList(REQUIRED_MASTER_ORG_ATTRS));
+                new HashSet<>(Arrays.asList(REQUIRED_MASTER_ORG_ATTRS));
     }
 
     /**
@@ -271,7 +271,7 @@ public class MasterHandler extends BaseHandler {
      */
     public List<IssMasterOrg> getMasterOrgs(User loggedInUser, Integer masterId) {
         IssMaster master = getMaster(loggedInUser, masterId);
-        ArrayList<IssMasterOrg> orgs = new ArrayList<IssMasterOrg>();
+        ArrayList<IssMasterOrg> orgs = new ArrayList<>();
         orgs.addAll(master.getMasterOrgs());
         return orgs;
     }
@@ -301,7 +301,7 @@ public class MasterHandler extends BaseHandler {
                              Integer masterId,
                              List<Map<String, Object>> orgMaps) {
         IssMaster master = getMaster(loggedInUser, masterId);
-        Set<IssMasterOrg> orgs = new HashSet<IssMasterOrg>();
+        Set<IssMasterOrg> orgs = new HashSet<>();
         for (Map<String, Object> anOrgMap : orgMaps) {
             IssMasterOrg o = validateOrg(anOrgMap);
             orgs.add(o);

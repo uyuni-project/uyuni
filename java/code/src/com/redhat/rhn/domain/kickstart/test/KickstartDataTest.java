@@ -212,7 +212,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.setKickstartDefaults(d1);
 
 
-        SortedSet<KickstartCommand> optionsSet = new TreeSet<KickstartCommand>();
+        SortedSet<KickstartCommand> optionsSet = new TreeSet<>();
         k.setCustomOptions(optionsSet);
 
         createCobblerObjects(k);

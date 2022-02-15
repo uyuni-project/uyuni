@@ -125,7 +125,7 @@ public class ErrataListConfirmAction extends RhnAction implements
         List<Long> serverIds = getSystemIds(request);
 
         RhnSet erratas = getSetDecl().get(context.getCurrentUser());
-        List<Long> errataIds = new ArrayList<Long>(erratas.size());
+        List<Long> errataIds = new ArrayList<>(erratas.size());
         errataIds.addAll(erratas.getElementValues());
 
         MessageQueue.publish(new SsmErrataEvent(

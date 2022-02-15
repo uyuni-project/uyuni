@@ -247,7 +247,7 @@ public class SetupWizardProductDto implements Selectable,
 
     /** Addon products. */
     private List<SetupWizardProductDto> addonProducts =
-            new LinkedList<SetupWizardProductDto>();
+            new LinkedList<>();
 
     /** Aggregated product sync status. */
     private SyncStatus syncStatus;

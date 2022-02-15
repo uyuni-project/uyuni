@@ -64,7 +64,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
     public List<KickstartOptionValue> getDisplayOptions() {
         log.debug("getDisplayOptions()");
 
-        List<KickstartOptionValue> l = new LinkedList<KickstartOptionValue>();
+        List<KickstartOptionValue> l = new LinkedList<>();
         Set<KickstartCommand> options = this.ksdata.getOptions();
 
         for (KickstartCommandName cn : availableOptions) {

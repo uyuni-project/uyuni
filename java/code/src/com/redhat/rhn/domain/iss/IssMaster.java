@@ -37,7 +37,7 @@ public class IssMaster extends BaseDto {
     private String label;
     private String isCurrentMaster = "N";
     private String caCert;
-    private Set<IssMasterOrg> masterOrgs = new HashSet<IssMasterOrg>();
+    private Set<IssMasterOrg> masterOrgs = new HashSet<>();
 
     /**
      * Getter for id
@@ -161,14 +161,14 @@ public class IssMaster extends BaseDto {
      * @param org org to be added
      */
     public void addToMaster(IssMasterOrg org) {
-        Set<IssMasterOrg> orgs = new HashSet<IssMasterOrg>();
+        Set<IssMasterOrg> orgs = new HashSet<>();
         orgs.add(org);
         setMasterOrgsInternal(orgs, false);
     }
 
     private void setMasterOrgsInternal(Set<IssMasterOrg> inOrgs, boolean replace) {
         // Make sure everything incoming points to "us"
-        Map<String, IssMasterOrg> findIncoming = new HashMap<String, IssMasterOrg>();
+        Map<String, IssMasterOrg> findIncoming = new HashMap<>();
         for (IssMasterOrg org : inOrgs) {
             findIncoming.put(org.getMasterOrgName(), org);
             org.setMaster(this);

@@ -135,7 +135,7 @@ public class SsmManager {
      */
     public static List<Long> listServerIds(User user) {
         RhnSet ssm = RhnSetDecl.SYSTEMS.lookup(user);
-        List<Long> sids = new ArrayList<Long>();
+        List<Long> sids = new ArrayList<>();
         if (ssm != null) {
             for (RhnSetElement rse : ssm.getElements()) {
                 sids.add(rse.getElement());

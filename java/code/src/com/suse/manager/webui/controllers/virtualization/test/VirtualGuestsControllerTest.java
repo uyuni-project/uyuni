@@ -103,7 +103,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
                 return SaltTestUtils.getSaltResponse(
                         "/com/suse/manager/webui/controllers/virtualization/test/virt.guest.allcaps.json", null,
-                        new TypeToken<Map<String, JsonElement>>() { });
+                        new TypeToken<>() {
+                        });
             }
 
             @Override
@@ -116,7 +117,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 Optional<Map<String, JsonElement>> vm = SaltTestUtils.getSaltResponse(
                         "/com/suse/manager/webui/controllers/virtualization/test/virt_utils.vm_definition.json",
                         Collections.emptyMap(),
-                        new TypeToken<Map<String, JsonElement>>() { });
+                        new TypeToken<>() {
+                        });
                 return vm.map(data -> {
                     Optional<VmInfoJson> info = Optional.empty();
                     if (data.containsKey("info")) {
@@ -136,7 +138,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 return SaltTestUtils.<Map<String, Map<String, JsonElement>>>getSaltResponse(
                         "/com/suse/manager/webui/controllers/virtualization/test/virt_utils.vm.info.json",
                         Collections.emptyMap(),
-                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+                        new TypeToken<>() {
+                        });
             }
 
             @Override
@@ -305,7 +308,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         // Make sure the setVpu action was queued
         DataResult<ScheduledAction> scheduledActions = ActionManager.pendingActions(user, null);
-        ArrayList<VirtualizationSetMemoryGuestAction> virtActions = new ArrayList<VirtualizationSetMemoryGuestAction>();
+        ArrayList<VirtualizationSetMemoryGuestAction> virtActions = new ArrayList<>();
         scheduledActions.stream().forEach(action -> virtActions.add(
                 (VirtualizationSetMemoryGuestAction)ActionManager.lookupAction(user, action.getId())));
         virtActions.sort((VirtualizationSetMemoryGuestAction a1, VirtualizationSetMemoryGuestAction a2) ->

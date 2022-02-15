@@ -84,7 +84,7 @@ public class PackagePushAction extends RhnSetAction {
 
 
         //Load up all the packages
-        Set<Package> filePackages = new HashSet<Package>();
+        Set<Package> filePackages = new HashSet<>();
         for (RhnSetElement element : set.getElements()) {
             Package p = PackageManager.lookupByIdAndUser(element.getElement(), user);
             filePackages.add(p);

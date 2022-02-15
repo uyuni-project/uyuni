@@ -57,7 +57,7 @@ public class NavDialogMenuTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             pageContext.getOut().print(renderUtils.renderNavigationMenu(
-                    pageContext, definition, renderer, mindepth, maxdepth, new HashMap<String, String>()));
+                    pageContext, definition, renderer, mindepth, maxdepth, new HashMap<>()));
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);

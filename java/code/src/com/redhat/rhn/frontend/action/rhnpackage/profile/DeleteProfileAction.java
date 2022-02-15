@@ -72,7 +72,7 @@ public class DeleteProfileAction extends RhnAction {
             ActionMessages msgs = processForm(profile, f);
             strutsDelegate.saveMessages(request, msgs);
 
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             if (requestContext.getRequest().getRequestURI().contains(
                     "systems/details/packages/profiles/DeleteProfile")) {
                 // we only care about the sid if the action is executed from the system

@@ -253,7 +253,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         flushAndEvict(s);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Package pkg = PackageTest.createTestPackage(orgA);
-        List<Long> packages = new ArrayList<Long>();
+        List<Long> packages = new ArrayList<>();
         packages.add(pkg.getId());
         List<Map<String, Object>> affected =
             handler.listSystemsAffected(

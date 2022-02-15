@@ -64,7 +64,7 @@ public class TargetSystemsAction extends RhnAction implements Listable {
 
 
         if (helper.isDispatched()) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.CID, cid);
             return getStrutsDelegate().forwardParams(
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

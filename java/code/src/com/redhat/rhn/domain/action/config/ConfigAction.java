@@ -106,9 +106,9 @@ public class ConfigAction extends Action {
      * @return sorted list of revision actions
      */
     protected List<ConfigRevisionAction> getConfigRevisionActionsSorted() {
-        List<ConfigRevisionAction> revisionActions = new ArrayList<ConfigRevisionAction>(
+        List<ConfigRevisionAction> revisionActions = new ArrayList<>(
                 this.getConfigRevisionActions());
-        Collections.sort(revisionActions, new Comparator<ConfigRevisionAction>() {
+        Collections.sort(revisionActions, new Comparator<>() {
             public int compare(ConfigRevisionAction o1, ConfigRevisionAction o2) {
                 String p1 = o1.getConfigRevision().getConfigFile().
                         getConfigFileName().getPath();

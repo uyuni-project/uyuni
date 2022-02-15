@@ -60,7 +60,7 @@ public class SystemDeleteConfirmAction extends RhnAction {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         ActionForward forward = null;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         User loggedInUser = rctx.getCurrentUser();
         Long sid = rctx.getRequiredParam(RequestContext.SID);

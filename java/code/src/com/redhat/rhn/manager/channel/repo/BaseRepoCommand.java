@@ -53,8 +53,8 @@ public abstract class BaseRepoCommand {
     private String label;
     private String url;
     private String type;
-    private Set<SslContentSource> sslSetsToAdd = new HashSet<SslContentSource>();
-    private Set<SslContentSource> sslSetsToDelete = new HashSet<SslContentSource>();
+    private Set<SslContentSource> sslSetsToAdd = new HashSet<>();
+    private Set<SslContentSource> sslSetsToDelete = new HashSet<>();
     private Org org;
     private boolean metadata_signed;
 

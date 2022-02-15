@@ -236,11 +236,11 @@ public class KickstartFormatter {
      */
     public String getFileData() {
         RegistrationType regType = ksdata.getRegistrationType(user);
-        List<KickstartScript> l = new LinkedList<KickstartScript>(this.ksdata.getScripts());
+        List<KickstartScript> l = new LinkedList<>(this.ksdata.getScripts());
         Collections.sort(l);
-        List<KickstartScript> preScripts = new ArrayList<KickstartScript>();
-        List<KickstartScript> postBeforeRedHatScripts = new ArrayList<KickstartScript>();
-        List<KickstartScript> postAfterRedHatScripts = new ArrayList<KickstartScript>();
+        List<KickstartScript> preScripts = new ArrayList<>();
+        List<KickstartScript> postBeforeRedHatScripts = new ArrayList<>();
+        List<KickstartScript> postAfterRedHatScripts = new ArrayList<>();
         for (KickstartScript ks : l) {
             if (ks.getScriptType().equals(KickstartScript.TYPE_PRE)) {
                 preScripts.add(ks);
@@ -851,7 +851,7 @@ public class KickstartFormatter {
      */
     private static List<ActivationKey> generateActKeyTokens(KickstartData ksdata,
             KickstartSession ksession) {
-        List<ActivationKey> tokens = new ArrayList<ActivationKey>();
+        List<ActivationKey> tokens = new ArrayList<>();
         log.debug("Computing Activation Keys");
         // If we are in a KickstartSession and dont have any activation keys
         // associated with this KickstartProfile then we want to create a
@@ -923,7 +923,7 @@ public class KickstartFormatter {
      */
     private HashSet<String> getUpdatePackages(List<ActivationKey> keys) {
         log.debug("getUpdatePackages() ..");
-        HashSet<String> retval = new HashSet<String>();
+        HashSet<String> retval = new HashSet<>();
         Channel c = ksdata.getKickstartDefaults().getKstree().getChannel();
         for (ActivationKey key : keys) {
             if (key.getChannels() != null) {
@@ -987,7 +987,7 @@ public class KickstartFormatter {
         else if (ksdata.isRhel3() || ksdata.isRhel4()) {
             pkglist = FRESH_PKG_NAMES_RHEL34;
         }
-        HashSet<String> retval = new HashSet<String>();
+        HashSet<String> retval = new HashSet<>();
         for (String pkg : pkglist) {
             Long packageId = ChannelManager.getLatestPackageEqualInTree(c.getId(), pkg);
             if (packageId != null) {

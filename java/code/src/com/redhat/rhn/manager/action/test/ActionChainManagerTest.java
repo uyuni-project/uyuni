@@ -97,7 +97,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> info =
                 ErrataCacheManagerTest.createServerNeededCache(user,
                         ErrataFactory.ERRATA_TYPE_BUG);
-        List<Integer> upgradePackages = new ArrayList<Integer>();
+        List<Integer> upgradePackages = new ArrayList<>();
         Server s = (Server) info.get("server");
         Errata e = (Errata) info.get("errata");
 

@@ -90,7 +90,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * Construct new Org
      */
     protected Org() {
-        usergroups = new HashSet<UserGroup>();
+        usergroups = new HashSet<>();
     }
 
     /**
@@ -178,7 +178,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return Set of Roles associated with this Org
      */
     public Set<Role> getRoles() {
-        Set<Role> orgRoles = new HashSet<Role>();
+        Set<Role> orgRoles = new HashSet<>();
         for (UserGroup ug : usergroups) {
             orgRoles.add(ug.getRole());
         }
@@ -283,7 +283,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      */
     public void addOwnedChannel(Channel channelIn) {
         if (this.ownedChannels == null) {
-            this.ownedChannels = new HashSet<Channel>();
+            this.ownedChannels = new HashSet<>();
         }
         channelIn.setOrg(this);
         this.ownedChannels.add(channelIn);
@@ -316,7 +316,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     private void manipulateChannelPerms(String modeName, Long uid, Long cid,
             String roleLabel) {
         WriteMode mode = ModeFactory.getWriteMode("Org_queries", modeName);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(USER_ID_KEY, uid);
         params.put("cid", cid);
         params.put("role_label", roleLabel);
@@ -370,7 +370,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      */
     public List<User> getActiveOrgAdmins() {
         SelectMode m = ModeFactory.getMode("User_queries", "active_org_admins");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID_KEY, this.getId());
         DataResult dr = m.execute(params);
         if (dr == null) {
@@ -425,7 +425,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return Set of Entitlements
      */
     public Set<Entitlement> getValidBaseEntitlementsForOrg() {
-        Set<Entitlement> baseEntitlements = new HashSet<Entitlement>();
+        Set<Entitlement> baseEntitlements = new HashSet<>();
 
         for (EntitlementServerGroup entitlementServerGroupIn : getEntitledServerGroups()) {
             ServerGroupType sgt = entitlementServerGroupIn.getGroupType();
@@ -447,7 +447,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return Set of Entitlements
      */
     public Set<Entitlement> getValidAddOnEntitlementsForOrg() {
-        Set<Entitlement> addonEntitlements = new HashSet<Entitlement>();
+        Set<Entitlement> addonEntitlements = new HashSet<>();
 
         for (EntitlementServerGroup entitlementServerGroupIn : getEntitledServerGroups()) {
             ServerGroupType sgt = entitlementServerGroupIn.getGroupType();

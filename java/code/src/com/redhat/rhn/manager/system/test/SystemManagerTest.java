@@ -609,7 +609,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
                                                     "add_to_client_capabilities");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("capability", capability);
         params.put("version", version);
@@ -801,7 +801,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testMemoryChangeWarnings() throws Exception {
         Server host = setupHostWithGuests(1);
 
-        List<Long> guestIds = new LinkedList<Long>();
+        List<Long> guestIds = new LinkedList<>();
         VirtualInstance vi = host.getGuests().iterator().next();
         guestIds.add(vi.getId());
 
@@ -1226,7 +1226,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             this.getClass().getSimpleName());
 
         String setLabel = TestUtils.randomString();
-        List<String> entitlements = new ArrayList<String>();
+        List<String> entitlements = new ArrayList<>();
         entitlements.add(EntitlementManager.ENTERPRISE_ENTITLED);
         int actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
                 entitlements);
@@ -1262,7 +1262,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             this.getClass().getSimpleName());
 
         String setLabel = TestUtils.randomString();
-        List<String> entitlements = new ArrayList<String>();
+        List<String> entitlements = new ArrayList<>();
         entitlements.add(EntitlementManager.ENTERPRISE_ENTITLED);
         int actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
                 entitlements);

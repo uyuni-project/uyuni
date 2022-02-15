@@ -70,12 +70,12 @@ public class ActivationKeyCloneCommand {
         cak.setDisabled(ak.isDisabled());
 
         // Entitlements
-        Set<ServerGroupType> cloneEnt = new HashSet<ServerGroupType>();
+        Set<ServerGroupType> cloneEnt = new HashSet<>();
         cloneEnt.addAll(ak.getEntitlements());
         cak.setEntitlements(cloneEnt);
 
         // child channels
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.addAll(ak.getChannels());
         cak.setChannels(channels);
 
@@ -88,17 +88,17 @@ public class ActivationKeyCloneCommand {
         }
 
         // Configuration channels
-        List<String> lcloneConfigChannels = new ArrayList<String>();
+        List<String> lcloneConfigChannels = new ArrayList<>();
         for (ConfigChannel configChannelIn : ak.getConfigChannelsFor(userIn)) {
             lcloneConfigChannels.add(configChannelIn.getLabel());
         }
 
-        List<String> lcak = new ArrayList<String>();
+        List<String> lcak = new ArrayList<>();
         lcak.add(cak.getKey());
         setConfigChannels(userIn, lcak, lcloneConfigChannels);
 
         // Groups
-        Set<ServerGroup> cloneServerGroups = new HashSet<ServerGroup>();
+        Set<ServerGroup> cloneServerGroups = new HashSet<>();
         cloneServerGroups.addAll(ak.getServerGroups());
         cak.setServerGroups(cloneServerGroups);
 

@@ -307,7 +307,7 @@ public class SnapshotHandler extends BaseHandler {
 
     private void validateDateKeys(Map map) throws InvalidArgsException {
         // confirm that map contains only valid keys
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("startDate");
         validKeys.add("endDate");
         validateMap(validKeys, map);

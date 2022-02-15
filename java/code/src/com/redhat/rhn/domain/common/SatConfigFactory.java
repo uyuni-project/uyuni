@@ -83,7 +83,7 @@ public class SatConfigFactory extends HibernateFactory {
      * @return value
      */
     public static String getSatConfigValue(String key) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", key);
         SelectMode m = ModeFactory.getMode("util_queries",
                 "get_satconfig_value");
@@ -101,7 +101,7 @@ public class SatConfigFactory extends HibernateFactory {
      * @param value value
      */
     public static void setSatConfigValue(String key, String value) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", key);
         if (StringUtils.isEmpty(value)) {
             params.put("value", null);
@@ -133,7 +133,7 @@ public class SatConfigFactory extends HibernateFactory {
      * @param key key
      */
     public static void resetSatConfigDefaultValue(String key) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", key);
         WriteMode m = ModeFactory.getWriteMode("util_queries",
             "reset_satconfig_default_value");

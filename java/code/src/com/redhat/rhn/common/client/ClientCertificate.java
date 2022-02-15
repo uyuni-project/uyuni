@@ -44,10 +44,10 @@ public class ClientCertificate {
      */
     public ClientCertificate() {
 
-        members = new ArrayList<Member>();
-        byName = new HashMap<String, String[]>();
+        members = new ArrayList<>();
+        byName = new HashMap<>();
         // boy this is some ugly stuff
-        checksumFields = new HashMap<String, String>();
+        checksumFields = new HashMap<>();
         checksumFields.put("username", "");
         checksumFields.put("os_release", "");
         checksumFields.put("operating_system", "");

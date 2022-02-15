@@ -167,7 +167,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // for package search, we need to insert an entry into rhnVisibleObjects
         WriteMode mode = ModeFactory.getWriteMode(
                 "test_queries", "insert_into_visibleobjects");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         //"sessionid, obj_id, obj_type"
         params.put("sessionid", session.getId());
         params.put("obj_id", e.getId());
@@ -207,7 +207,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataFactory.save(e);
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
-        List<Errata> errataList = new ArrayList<Errata>();
+        List<Errata> errataList = new ArrayList<>();
         errataList.add(e);
         List<Errata> publishedList = ErrataFactory.addToChannel(errataList,
                 baseChannel, user, false);
@@ -397,7 +397,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 .relevantToOneChannelButNotAnother(original.getId(), cloned.getId());
         Set<Long> eids = ErrataManager.cloneChannelErrata(toClone, cloned.getId(), user);
         assertTrue(eids.size() > 0);
-        assertTrue(new HashSet<Long>(eids).size() == eids.size());
+        assertTrue(new HashSet<>(eids).size() == eids.size());
     }
 
     /**
@@ -421,12 +421,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
         Channel channel3 = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> server1Channels = new HashSet<Channel>();
+        Set<Channel> server1Channels = new HashSet<>();
         server1Channels.add(channel1);
         server1Channels.add(channel3);
         Server server1 = createTestServer(user, server1Channels);
 
-        Set<Channel> server2Channels = new HashSet<Channel>();
+        Set<Channel> server2Channels = new HashSet<>();
         server2Channels.add(channel2);
         server2Channels.add(channel3);
         Server server2 = createTestServer(user, server2Channels);
@@ -459,12 +459,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata3.getId(), package3.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
         errataIds.add(errata3.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -482,7 +482,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // server1 do not contain the erratas for server2
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -491,7 +491,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -548,12 +548,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
         Channel channel3 = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> server1Channels = new HashSet<Channel>();
+        Set<Channel> server1Channels = new HashSet<>();
         server1Channels.add(channel1);
         server1Channels.add(channel3);
         Server server1 = createTestServer(user, server1Channels);
 
-        Set<Channel> server2Channels = new HashSet<Channel>();
+        Set<Channel> server2Channels = new HashSet<>();
         server2Channels.add(channel2);
         server2Channels.add(channel3);
         Server server2 = createTestServer(user, server2Channels);
@@ -602,14 +602,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), yumErrata1.getId(), yumPackage1.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
         errataIds.add(errata3.getId());
         errataIds.add(yumErrata1.getId());
         errataIds.add(yumErrata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -627,7 +627,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // server1 do not contain the erratas for server2
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -636,7 +636,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -743,12 +743,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
         Channel channel3 = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> server1Channels = new HashSet<Channel>();
+        Set<Channel> server1Channels = new HashSet<>();
         server1Channels.add(channel1);
         server1Channels.add(channel3);
         Server server1 = createTestServer(user, server1Channels);
 
-        Set<Channel> server2Channels = new HashSet<Channel>();
+        Set<Channel> server2Channels = new HashSet<>();
         server2Channels.add(channel2);
         server2Channels.add(channel3);
         Server server2 = createTestServer(user, server2Channels);
@@ -813,14 +813,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), yumErrata1.getId(), yumPackage1.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
         errataIds.add(errata3.getId());
         errataIds.add(yumErrata1.getId());
         errataIds.add(yumErrata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -838,7 +838,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // server1 do not contain the erratas for server2
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -847,7 +847,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -891,10 +891,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
@@ -911,9 +911,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testApplyErrataNoErrata() throws Exception {
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
         serverIds.add(server1.getId());
 
@@ -932,8 +932,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testApplyErrataNoErrataNoSystems() throws Exception {
-        List<Long> errataIds = new ArrayList<Long>();
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
+        List<Long> serverIds = new ArrayList<>();
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
@@ -953,10 +953,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
         serverIds.add(server1.getId());
 
@@ -984,7 +984,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
         Server server1 = createTestServer(user, serverChannels);
         Server server2 = createTestServer(user, serverChannels);
@@ -1009,11 +1009,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata2.getId(), package2.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -1031,7 +1031,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
         assertEquals("2 actions have been scheduled for server 1", 2,
                 actionsServer1.size());
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -1042,7 +1042,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
         assertEquals("2 actions have been scheduled for server 2", 2,
                 actionsServer2.size());
-        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -1080,7 +1080,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
         Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
         server1.addChannel(channel);
@@ -1107,11 +1107,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata2.getId(), package2.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -1128,7 +1128,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
         assertEquals("1 action has been scheduled for server 1", 1, actionsServer1.size());
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -1143,7 +1143,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 actionsServer1.get(0), actionsServer2.get(0));
         assertEquals("action actually has 2 servers", 2,
                 actionsServer1.get(0).getServerActions().size());
-        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -1183,7 +1183,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
         Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
         server1.addChannel(channel);
@@ -1210,11 +1210,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata2.getId(), package2.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -1231,7 +1231,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
         assertEquals("1 action has been scheduled for server 1", 1, actionsServer1.size());
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -1246,7 +1246,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 actionsServer1.get(0), actionsServer2.get(0));
         assertEquals("action actually has 2 servers", 2,
                 actionsServer1.get(0).getServerActions().size());
-        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -1284,7 +1284,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
         Server server1 = createTestServer(user, serverChannels);
         Server server2 = createTestServer(user, serverChannels);
@@ -1325,11 +1325,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata2.getId(), package2.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -1407,7 +1407,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
         Server server1 = createTestServer(user, serverChannels);
         Server server2 = createTestServer(user, serverChannels);
@@ -1432,11 +1432,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata2.getId(), package2.getId());
         HibernateFactory.getSession().flush();
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
         errataIds.add(errata2.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
@@ -1524,7 +1524,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
 
-        Set<Channel> serverChannels = new HashSet<Channel>();
+        Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel1);
         Server server = createTestServer(user, serverChannels);
 
@@ -1554,7 +1554,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
 
-        Set<Keyword> kw = new HashSet<Keyword>();
+        Set<Keyword> kw = new HashSet<>();
         Keyword k = new Keyword();
         k.setKeyword("restart_suggested");
         k.setErrata(errata3);

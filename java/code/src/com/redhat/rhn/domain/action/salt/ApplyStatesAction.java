@@ -89,7 +89,7 @@ public class ApplyStatesAction extends Action {
         }
         resultList.get().stream()
         .sorted(
-                new Comparator<StateResult>() {
+                new Comparator<>() {
                     public int compare(StateResult r1, StateResult r2) {
                         return (r2.getRunNum() < r1.getRunNum()) ? 1 : -1;
                     }

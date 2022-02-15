@@ -114,7 +114,8 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                 return SaltTestUtils.getSaltResponse(
                         "/com/suse/manager/webui/controllers/virtualization/test/virt.pool.caps.json",
                         null,
-                        new TypeToken<PoolCapabilitiesJson>() { });
+                        new TypeToken<>() {
+                        });
             }
         };
         SaltApi saltApi = new TestSaltApi();

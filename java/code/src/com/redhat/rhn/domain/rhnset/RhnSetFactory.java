@@ -61,7 +61,7 @@ public class RhnSetFactory extends HibernateFactory {
      * @return the RhnSet which matched the given uid and label.
      */
     public static RhnSet lookupByLabel(Long uid, String label, SetCleanup cleanup) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
         params.put("label", label);
         SelectMode m = ModeFactory.getMode(CATALOG, "lookup_set");
@@ -176,7 +176,7 @@ public class RhnSetFactory extends HibernateFactory {
 
     private static void executeMode(RhnSetElement elem,
             WriteMode el3, WriteMode el2, WriteMode el1) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", elem.getUserId());
         params.put("label", elem.getLabel());
         params.put("el_one", elem.getElement());
@@ -202,7 +202,7 @@ public class RhnSetFactory extends HibernateFactory {
      */
     public static void removeByLabel(Long userId, String label) {
         WriteMode m = ModeFactory.getWriteMode(CATALOG, "delete_set");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", userId);
         params.put("label", label);
         m.executeUpdate(params);

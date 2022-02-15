@@ -72,7 +72,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);
         helper.ignoreEmptySelection();
 
-        Set<String> preselected = new HashSet<String>();
+        Set<String> preselected = new HashSet<>();
         for (Long uid : ChannelManager.listChannelSubscriberIdsForChannel(
                                                 user.getOrg(), currentChan)) {
             preselected.add(uid.toString());

@@ -237,8 +237,8 @@ public abstract class HibernateFactory {
             return Collections.EMPTY_LIST;
         }
 
-        ArrayList<Long> tmpList = new ArrayList<Long>();
-        List<Long> toRet = new ArrayList<Long>();
+        ArrayList<Long> tmpList = new ArrayList<>();
+        List<Long> toRet = new ArrayList<>();
         tmpList.addAll(col);
 
         for (int i = 0; i < col.size();) {
@@ -783,7 +783,7 @@ public abstract class HibernateFactory {
      * @return a list of the objects found
      */
     protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
-        return findByIds(ids, queryName, idsParameterName, new HashMap<String, Object>());
+        return findByIds(ids, queryName, idsParameterName, new HashMap<>());
     }
 
     /**

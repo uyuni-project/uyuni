@@ -129,12 +129,12 @@ public class PowerManagementOperationsAction extends RhnAction implements
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),
-            new LinkedList<String>() {
-                {
-                    add(EntitlementManager.BOOTSTRAP_ENTITLED);
-                    add(EntitlementManager.ENTERPRISE_ENTITLED);
-                    add(EntitlementManager.SALT_ENTITLED);
-                }
-            });
+                new LinkedList<>() {
+                    {
+                        add(EntitlementManager.BOOTSTRAP_ENTITLED);
+                        add(EntitlementManager.ENTERPRISE_ENTITLED);
+                        add(EntitlementManager.SALT_ENTITLED);
+                    }
+                });
     }
 }

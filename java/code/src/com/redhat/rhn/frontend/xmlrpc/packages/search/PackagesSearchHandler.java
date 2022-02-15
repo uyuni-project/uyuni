@@ -211,12 +211,12 @@ public class PackagesSearchHandler extends BaseHandler {
             throw new InvalidChannelLabelException();
         }
         List<PackageDto> pkgsInChan = ChannelManager.listAllPackages(channel);
-        Set<Long> temp = new HashSet<Long>();
+        Set<Long> temp = new HashSet<>();
         for (PackageDto pdto : pkgsInChan) {
             temp.add(pdto.getId());
         }
         // Lookup what packages are in what channel and filter
-        List<PackageOverview> result = new ArrayList<PackageOverview>();
+        List<PackageOverview> result = new ArrayList<>();
         for (PackageOverview pOver : pkgs) {
             if (temp.contains(pOver.getId())) {
                 result.add(pOver);
@@ -280,7 +280,7 @@ public class PackagesSearchHandler extends BaseHandler {
             return Collections.EMPTY_LIST;
         }
         // build up a set of all package names and archs in act key
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         for (TokenPackage tPkg : keyPkgs) {
             String value = tPkg.getPackageName().getName();
             if (tPkg.getPackageArch() != null) {
@@ -289,7 +289,7 @@ public class PackagesSearchHandler extends BaseHandler {
             ids.add(value);
         }
         // filter out any packages not in act key
-        List<PackageOverview> results = new ArrayList<PackageOverview>();
+        List<PackageOverview> results = new ArrayList<>();
         for (PackageOverview pOver : pkgs) {
             String value = pOver.getPackageName();
             // First check to see if package name only is in act key

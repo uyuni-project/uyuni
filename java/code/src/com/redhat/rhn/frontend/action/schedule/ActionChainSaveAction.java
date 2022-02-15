@@ -105,7 +105,7 @@ public class ActionChainSaveAction {
 
             // update groups' sort order
             List<List<ActionChainEntry>> entryGroups =
-                new LinkedList<List<ActionChainEntry>>();
+                    new LinkedList<>();
             for (Integer reorderedSortOrderIn : reorderedSortOrders) {
                 entryGroups.add(ActionChainFactory.getActionChainEntries(
                         actionChain, reorderedSortOrderIn));
@@ -136,7 +136,7 @@ public class ActionChainSaveAction {
      * @return a JSON string
      */
     private String makeResult(boolean success, String messageId) {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put(SUCCESS_FIELD, success);
         result.put(TEXT_FIELD, LocalizationService.getInstance().getMessage(messageId));
         return new JSONWriter().write(result);

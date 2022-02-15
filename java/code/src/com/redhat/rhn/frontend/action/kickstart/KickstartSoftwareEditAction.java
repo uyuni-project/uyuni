@@ -149,7 +149,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         setupChildChannels(ctx, channelId, cmd);
 
         // Setup list of releases and channels
-        List<LabelValueBean> channels = new LinkedList<LabelValueBean>();
+        List<LabelValueBean> channels = new LinkedList<>();
         Collection<Channel> channelList = cmd.getAvailableChannels();
         for (Channel c : channelList) {
             log.debug("channel : " + c);
@@ -196,7 +196,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         ctx.getRequest().setAttribute(AVAIL_CHILD_CHANNELS, childchannels);
 
         // Setup the list of selected child channels
-        Map<Long, Long> selectedChannels = new HashMap<Long, Long>();
+        Map<Long, Long> selectedChannels = new HashMap<>();
         if (cmd.getKickstartData().getChildChannels() != null) {
             Set<Channel> channelSet = cmd.getKickstartData().getChildChannels();
             for (Channel c : channelSet) {
@@ -308,7 +308,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         if (tree != null && !tree.getInstallType().isRhel2() &&
                 !tree.getInstallType().isRhel3() &&
                 !tree.getInstallType().isRhel4()) {
-            List<LabelValueEnabledBean> repos = new LinkedList<LabelValueEnabledBean>();
+            List<LabelValueEnabledBean> repos = new LinkedList<>();
             for (RepoInfo repo : RepoInfo.getStandardRepos(tree)) {
                 repos.add(lve(repo.getName(), repo.getName(), !repo.isAvailable()));
             }

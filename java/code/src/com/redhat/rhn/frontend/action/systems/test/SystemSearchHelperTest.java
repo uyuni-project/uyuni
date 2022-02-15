@@ -78,12 +78,12 @@ public class SystemSearchHelperTest extends TestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        dtos = new HashMap<String, SystemOverview>();
-        scores = new HashMap<Long, Map<String, Double>>();
+        dtos = new HashMap<>();
+        scores = new HashMap<>();
 
         for (String vals : TEST_DATA) {
             String[] entries = vals.split(";");
-            Map<String, Double> serverScore = new HashMap<String, Double>();
+            Map<String, Double> serverScore = new HashMap<>();
             SystemOverview aDto = new SystemOverview();
             aDto.setId(Long.parseLong(entries[SID]));
             aDto.setName(entries[PROFILE_NAME]);
@@ -194,7 +194,7 @@ should sort to
     "null-2-1201;-1.0d;profile2;1201",
 */
     public void testListSort() {
-        List<SystemOverview> systems = new ArrayList<SystemOverview>(dtos.values());
+        List<SystemOverview> systems = new ArrayList<>(dtos.values());
         assertEquals(dtos.size(), systems.size());
         java.util.Collections.sort(systems, cmp);
         assertTrue(1115L == systems.get(0).getId());

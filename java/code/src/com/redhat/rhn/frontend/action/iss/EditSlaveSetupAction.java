@@ -87,7 +87,7 @@ public class EditSlaveSetupAction extends RhnAction {
 
          IssSlave theSlave = IssFactory.lookupSlaveById(sid);
         Set<Long> mappedOrgs = mappedLocalOrgs(
-                        new ArrayList<Org>(theSlave.getAllowedOrgs()));
+                new ArrayList<>(theSlave.getAllowedOrgs()));
         List<OrgDto> locals = fromOrgs(OrgFactory.lookupAllOrgs());
 
         Set sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
@@ -139,7 +139,7 @@ public class EditSlaveSetupAction extends RhnAction {
     }
 
     protected List<OrgDto> fromOrgs(List<Org> orgs) {
-        List<OrgDto> outList = new ArrayList<OrgDto>();
+        List<OrgDto> outList = new ArrayList<>();
         for (Org o : orgs) {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }
@@ -150,7 +150,7 @@ public class EditSlaveSetupAction extends RhnAction {
     }
 
     protected Set<Long> mappedLocalOrgs(List<Org> orgs) {
-        Set<Long> outIds = new HashSet<Long>();
+        Set<Long> outIds = new HashSet<>();
         for (Org o : orgs) {
             outIds.add(o.getId());
         }

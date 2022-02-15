@@ -74,7 +74,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);
         helper.ignoreEmptySelection();
 
-        Set<String> preselected = new HashSet<String>();
+        Set<String> preselected = new HashSet<>();
         for (Long uid : ChannelManager.listChannelManagerIdsForChannel(
                                                 user.getOrg(), currentChan)) {
             preselected.add(uid.toString());

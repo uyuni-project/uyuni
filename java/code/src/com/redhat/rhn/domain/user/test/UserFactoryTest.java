@@ -119,8 +119,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     public void testLookupByIds() throws Exception {
-        List<Long> idList = new ArrayList<Long>();
-        List<User> userList = new ArrayList<User>();
+        List<Long> idList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         Long firstId = UserTestUtils.createUser("testUserOne", "testOrgOne");
         Long secondId = UserTestUtils.createUser("testUserSecond", "testOrgSecond");
         idList.add(firstId);

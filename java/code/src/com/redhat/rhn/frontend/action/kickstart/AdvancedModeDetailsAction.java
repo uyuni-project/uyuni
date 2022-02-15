@@ -380,7 +380,7 @@ public class AdvancedModeDetailsAction extends RhnAction {
     }
 
     private Map<String, Object> makeValidationMap(DynaActionForm form) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put(KSTREE_ID_PARAM, form.get(KSTREE_ID_PARAM));
         map.put(KICKSTART_LABEL_PARAM, form.get(KICKSTART_LABEL_PARAM));
         return map;

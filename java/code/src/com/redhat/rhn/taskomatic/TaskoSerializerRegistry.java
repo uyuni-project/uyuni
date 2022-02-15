@@ -32,7 +32,7 @@ public class TaskoSerializerRegistry {
 
     private static final List<Class> TASKO_SERIALIZER_CLASSES;
     static {
-        TASKO_SERIALIZER_CLASSES = new LinkedList<Class>();
+        TASKO_SERIALIZER_CLASSES = new LinkedList<>();
         TASKO_SERIALIZER_CLASSES.add(TaskoScheduleSerializer.class);
         TASKO_SERIALIZER_CLASSES.add(TaskoRunSerializer.class);
         TASKO_SERIALIZER_CLASSES.add(TaskoBunchSerializer.class);

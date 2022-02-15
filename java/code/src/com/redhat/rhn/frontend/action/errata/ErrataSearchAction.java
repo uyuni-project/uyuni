@@ -263,8 +263,8 @@ public class ErrataSearchAction extends BaseSearchAction {
         // so we can get the actual results we are to display to the user.
         // also save the items into a Map for lookup later.
 
-        List<Long> ids = new ArrayList<Long>();
-        Map<Long, Integer> lookupmap = new HashMap<Long, Integer>();
+        List<Long> ids = new ArrayList<>();
+        Map<Long, Integer> lookupmap = new HashMap<>();
         // do it in reverse because the search server can return more than one
         // record for a given package name, but that means if we don't go
         // in reverse we risk getting the wrong rank in the lookupmap.
@@ -282,7 +282,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // In order to maintain the ranking from the search server, we
         // need to reorder the database results to match. This will lead
         // to a better user experience.
-        List<ErrataOverview> unsorted = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> unsorted = new ArrayList<>();
         if (OPT_PKG_NAME.equals(mode)) {
             unsorted = ErrataManager.searchByPackageIdsWithOrg(ids,
                     ctx.getCurrentUser().getOrg());
@@ -300,12 +300,12 @@ public class ErrataSearchAction extends BaseSearchAction {
                 eo.setCves(dr);
             }
         }
-        List<ErrataOverview> filtered = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> filtered = new ArrayList<>();
         // Filter based on errata type selected
-        List<ErrataOverview> filteredByType = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> filteredByType = new ArrayList<>();
         filteredByType = filterByAdvisoryType(unsorted, formIn);
 
-        List<ErrataOverview> filteredByIssueDate = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> filteredByIssueDate = new ArrayList<>();
         if (dateSearch && !StringUtils.isBlank(searchString)) {
             // search string is not blank, therefore a search was run so filter the results
             LOG.debug("Performing filter on issue date, we only want records between " +
@@ -339,7 +339,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // When we "flesh" out the ErrataOverview by calling into the database we
         // lose this order, that's what we are trying to reclaim, this way when then
         // results are returned to the webpage they will be in a meaningfull order.
-        List<ErrataOverview> ordered = new LinkedList<ErrataOverview>();
+        List<ErrataOverview> ordered = new LinkedList<>();
 
         for (ErrataOverview eo : filtered) {
             if (LOG.isDebugEnabled()) {
@@ -376,7 +376,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             LOG.debug("Filtering " + unfiltered.size() + " records based on Issue Date");
             LOG.debug("Allowed issue date range is " + startDate + " to " + endDate);
         }
-        List<ErrataOverview> filteredByIssueDate = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> filteredByIssueDate = new ArrayList<>();
         for (ErrataOverview eo : unfiltered) {
             if (!startDate.after(eo.getIssueDateObj()) &&
                     !eo.getIssueDateObj().after(endDate)) {
@@ -394,7 +394,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             LOG.debug("Security = " + formIn.get(ERRATA_SEC));
             LOG.debug("Enhancement = " + formIn.get(ERRATA_ENH));
         }
-        List<ErrataOverview> filteredByType = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> filteredByType = new ArrayList<>();
         for (ErrataOverview eo : unfiltered) {
             Boolean type = null;
             if (eo.isBugFix()) {
@@ -429,7 +429,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // Chunk the work to avoid issue with Oracle not liking
         // an input parameter list to contain more than 1000 entries.
         // issue most commonly seen with issue date range search
-        List<ErrataOverview> unsorted = new ArrayList<ErrataOverview>();
+        List<ErrataOverview> unsorted = new ArrayList<>();
         int chunkCount = 500;
         if (chunkCount > idsIn.size()) {
             chunkCount = idsIn.size();

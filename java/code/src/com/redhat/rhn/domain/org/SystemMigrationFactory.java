@@ -69,7 +69,7 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByFromOrg(Org fromOrg) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("fromOrg", fromOrg);
         return singleton.listObjectsByNamedQuery(
                 "SystemMigration.lookupByFromOrg", params);
@@ -82,7 +82,7 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByToOrg(Org toOrg) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("toOrg", toOrg);
         return singleton.listObjectsByNamedQuery(
                 "SystemMigration.lookupByToOrg", params);
@@ -94,7 +94,7 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByServer(Server server) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server", server);
         return singleton.listObjectsByNamedQuery(
                 "SystemMigration.lookupByServer", params);

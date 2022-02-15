@@ -47,7 +47,7 @@ class FileFinder implements Finder {
 
     /** {@inheritDoc} */
     public List<String> findExcluding(String[] excludes, String endStr) {
-        List<String> results = new LinkedList<String>();
+        List<String> results = new LinkedList<>();
 
         if (!startDir.exists()) {
             // Shouldn't ever happen, because the FinderFactory should only

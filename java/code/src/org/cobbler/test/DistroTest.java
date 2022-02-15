@@ -51,7 +51,7 @@ public class DistroTest extends TestCase {
                 .setName(name)
                 .setKernel(kernel)
                 .setInitrd(initrd)
-                .setKsmeta(new HashMap<String, Object>())
+                .setKsmeta(new HashMap<>())
                 .setBreed(breed)
                 .setOsVersion(osVersion)
                 .setArch(arch)

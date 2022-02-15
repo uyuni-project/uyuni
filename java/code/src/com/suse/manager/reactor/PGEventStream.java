@@ -68,7 +68,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             1,
             0L,
             TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<Runnable>(),
+                new LinkedBlockingQueue<>(),
             new BasicThreadFactory.Builder()
                 .namingPattern(i == 0 ? "salt-global-event-thread-%d" : String.format("salt-event-thread-%d", i))
                 .build()

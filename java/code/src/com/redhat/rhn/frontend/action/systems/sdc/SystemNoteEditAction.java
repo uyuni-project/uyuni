@@ -55,7 +55,7 @@ public class SystemNoteEditAction extends RhnAction {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         ActionForward forward = null;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         Long nid = null;
         if (!(request.getParameter("nid") == null)) {

@@ -51,7 +51,7 @@ public class SSHPushDriver implements QueueDriver {
 
     // Synchronized set of systems we are currently talking to
     private static Set<SystemSummary> currentSystems =
-            Collections.synchronizedSet(new HashSet<SystemSummary>());
+            Collections.synchronizedSet(new HashSet<>());
 
     // String constants
     private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
@@ -280,7 +280,7 @@ public class SSHPushDriver implements QueueDriver {
     private int skipRunningJobs() {
         WriteMode delete = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SKIP_RUNNING_AND_READY_JOBS_BY_LABEL);
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("job_label", JOB_LABEL);
         return delete.executeUpdate(params);
     }

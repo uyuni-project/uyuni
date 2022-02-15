@@ -105,7 +105,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
 
         LocalizationService ls = LocalizationService.getInstance();
 
-        List<LabelValueBean> displayList = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> displayList = new ArrayList<>();
         displayList.add(new LabelValueBean(ls.getMessage("cloneerrata.anychannel"),
             ANY_CHANNEL));
 

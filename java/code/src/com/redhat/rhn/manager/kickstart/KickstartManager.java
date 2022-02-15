@@ -162,7 +162,7 @@ public class KickstartManager extends BaseManager {
      */
     public DataResult<SystemOverview> kickstartableSystemsInSsm(User user) {
         SelectMode m = ModeFactory.getMode("System_queries", "ssm_kickstartable");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         return makeDataResult(params, Collections.EMPTY_MAP, null, m);
     }
@@ -220,7 +220,7 @@ public class KickstartManager extends BaseManager {
         DataResult ipRanges = null;
         SelectMode mode = ModeFactory.getMode("General_queries",
             "org_ks_ip_ranges_for_ip");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         params.put("ip", clientIpIn.getLongNumber());
         ipRanges = mode.execute(params);
@@ -252,7 +252,7 @@ public class KickstartManager extends BaseManager {
      * @return List of KickstartableTree objects
      */
     public List<KickstartableTree> removeInvalid(List<KickstartableTree> trees) {
-        List<KickstartableTree> ret = new LinkedList<KickstartableTree>(trees);
+        List<KickstartableTree> ret = new LinkedList<>(trees);
         for (Iterator<KickstartableTree> itr = ret.iterator(); itr.hasNext();) {
             KickstartableTree tree = itr.next();
             if (!tree.isValid()) {
