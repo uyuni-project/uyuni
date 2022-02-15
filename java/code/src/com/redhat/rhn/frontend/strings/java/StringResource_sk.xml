@@ -7743,63 +7743,63 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} files</source>
-        <target/>
+        <target>{1} súbory</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} files and {3} symlink</source>
-        <target/>
+        <target>{1} súbory a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} files and {3} symlinks</source>
-        <target/>
+        <target>{1} súbory a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directory</source>
-        <target/>
+        <target>{1} súbory a {2} adresár</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlink</source>
-        <target/>
+        <target>{1} súbory, {2} adresár a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlinks</source>
-        <target/>
+        <target>{1} súbory, {2} adresár a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directories</source>
-        <target/>
+        <target>{1} súbory a {2} adresáre</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlink</source>
-        <target/>
+        <target>{1} súbory, {2} adresáre a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{1} súbory, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
@@ -7820,7 +7820,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state</source>
-        <target/>
+        <target>{0} stav</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
