@@ -20,8 +20,6 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 
-import java.util.Iterator;
-
 /**
  * Generic XML RPC fault
  * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
@@ -85,14 +83,10 @@ public class FaultException extends RuntimeException  {
      */
     public static FaultException create(int errorIn, String labelIn,
             ValidatorResult resultIn) {
-        for (Iterator<ValidatorError> iter = resultIn.getErrors().iterator();
-                iter.hasNext();) {
-            ValidatorError ve = iter.next();
+        for (ValidatorError ve : resultIn.getErrors()) {
             return new FaultException(errorIn, labelIn, ve.getKey(), ve.getValues());
         }
-        for (Iterator<ValidatorWarning> iter = resultIn.getWarnings().iterator();
-                iter.hasNext();) {
-            ValidatorWarning vw = iter.next();
+        for (ValidatorWarning vw : resultIn.getWarnings()) {
             return new FaultException(errorIn, labelIn, vw.getKey(), vw.getValues());
         }
         return new FaultException(errorIn, labelIn, "");

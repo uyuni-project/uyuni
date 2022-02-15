@@ -331,8 +331,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private List<Action> createActionList(User user, Action... actions) {
         List<Action> returnList = new LinkedList<>();
 
-        for (int i = 0; i < actions.length; i++) {
-            returnList.add(actions[i]);
+        for (Action actionIn : actions) {
+            returnList.add(actionIn);
         }
 
         return returnList;
@@ -1106,12 +1106,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
                 new DataResult<PackageListItem>(b), "foo");
 
-        for (Iterator<PackageMetadata> itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = itr.next();
+        for (PackageMetadata pm : pkgs) {
             log.warn("pm [" + pm.toString() + "] compare [" +
                     pm.getComparison() + "] release [" +
                     (pm.getSystem() != null ? pm.getSystem().getRelease() :
-                        pm.getOther().getRelease()) + "]");
+                            pm.getOther().getRelease()) + "]");
         }
 //        assertEquals(1, diff.size());
 //        PackageMetadata pm = (PackageMetadata) diff.get(0);

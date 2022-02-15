@@ -137,8 +137,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     @Override
     protected void generateWizardSteps(Map wizardSteps) {
         List<Method> methods = findMethods("run");
-        for (Iterator<Method> iter = methods.iterator(); iter.hasNext();) {
-            Method m = iter.next();
+        for (Method m : methods) {
             String stepName = m.getName().substring(3).toLowerCase();
             WizardStep wizStep = new WizardStep();
             wizStep.setWizardMethod(m);

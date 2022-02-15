@@ -71,7 +71,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -365,8 +364,7 @@ public class ProfileHandler extends BaseHandler {
 
         List<String> childChannels = new ArrayList<String>();
         if (ksdata.getChildChannels() != null) {
-            for (Iterator itr = ksdata.getChildChannels().iterator(); itr.hasNext();) {
-                Channel channel = (Channel) itr.next();
+            for (Channel channel : ksdata.getChildChannels()) {
                 childChannels.add(channel.getLabel());
             }
         }
@@ -403,9 +401,9 @@ public class ProfileHandler extends BaseHandler {
             ksdata.getChildChannels().clear();
         }
 
-        for (int i = 0; i < channelLabels.size(); i++) {
-            Channel channel = ChannelManager.lookupByLabelAndUser(channelLabels.get(i),
-                 loggedInUser);
+        for (String channelLabelIn : channelLabels) {
+            Channel channel = ChannelManager.lookupByLabelAndUser(channelLabelIn,
+                    loggedInUser);
             if (channel == null) {
                 throw new InvalidChannelLabelException();
             }
@@ -875,38 +873,38 @@ public class ProfileHandler extends BaseHandler {
 
         Set<KickstartCommand> customSet = new HashSet<KickstartCommand>();
 
-        for (Iterator itr = cmd.getAvailableOptions().iterator(); itr.hasNext();) {
+        for (Object oIn : cmd.getAvailableOptions()) {
             Map option = null;
-            KickstartCommandName cn = (KickstartCommandName) itr.next();
+            KickstartCommandName cn = (KickstartCommandName) oIn;
             if (givenOptions.contains(cn.getName())) {
-              for (Map o : options) {
-                if (cn.getName().equals(o.get("name"))) {
-                  option = o;
-                  break;
+                for (Map o : options) {
+                    if (cn.getName().equals(o.get("name"))) {
+                        option = o;
+                        break;
+                    }
                 }
-              }
 
-              KickstartCommand kc = new KickstartCommand();
-              kc.setCommandName(cn);
-              kc.setKickstartData(cmd.getKickstartData());
-              kc.setCreated(new Date());
-              kc.setModified(new Date());
-              if (cn.getArgs().booleanValue()) {
-                  // handle password encryption
-                  if (cn.getName().equals("rootpw")) {
-                      String pwarg = (String) option.get("arguments");
+                KickstartCommand kc = new KickstartCommand();
+                kc.setCommandName(cn);
+                kc.setKickstartData(cmd.getKickstartData());
+                kc.setCreated(new Date());
+                kc.setModified(new Date());
+                if (cn.getArgs().booleanValue()) {
+                    // handle password encryption
+                    if (cn.getName().equals("rootpw")) {
+                        String pwarg = (String) option.get("arguments");
                         // password already encrypted
-                      if (!md5cryptRootPw(options)) {
-                          kc.setArguments(pwarg);
-                      }
+                        if (!md5cryptRootPw(options)) {
+                            kc.setArguments(pwarg);
+                        }
                         // password changed, encrypt it
-                      else {
-                          kc.setArguments(MD5Crypt.crypt(pwarg));
-                      }
-                  }
-                  else {
-                      kc.setArguments((String) option.get("arguments"));
-                  }
+                        else {
+                            kc.setArguments(MD5Crypt.crypt(pwarg));
+                        }
+                    }
+                    else {
+                        kc.setArguments((String) option.get("arguments"));
+                    }
                 }
                 customSet.add(kc);
             }
@@ -1486,13 +1484,12 @@ public class ProfileHandler extends BaseHandler {
             List<RepoInfo> repoList = RepoInfo.getStandardRepos(
                     ksData.getKickstartDefaults().getKstree());
             Map<String, RepoInfo> repoSet = new HashMap<String, RepoInfo>();
-            for (Iterator<RepoInfo> ri = repoList.iterator(); ri.hasNext();) {
-                RepoInfo rInfo = ri.next();
+            for (RepoInfo rInfo : repoList) {
                 repoSet.put(rInfo.getName(), rInfo);
             }
             Set<RepoInfo> selected = new HashSet<RepoInfo>();
-            for (int i = 0; i < reposIn.size(); i++) {
-                RepoInfo repoInfo = repoSet.get(reposIn.get(i));
+            for (String repoIn : reposIn) {
+                RepoInfo repoInfo = repoSet.get(repoIn);
                 if (repoInfo != null) {
                     selected.add(repoInfo);
                 }

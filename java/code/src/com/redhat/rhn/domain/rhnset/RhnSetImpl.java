@@ -129,8 +129,8 @@ public class RhnSetImpl implements RhnSet {
             return;
         }
 
-        for (int i = 0; i < elems.length; i++) {
-            addElement(elems[i]);
+        for (String elemIn : elems) {
+            addElement(elemIn);
         } // for
     }
 
@@ -143,10 +143,10 @@ public class RhnSetImpl implements RhnSet {
             return;
         }
 
-        for (int i = 0; i < elems.length; i++) {
-            if (elems[i] != null && elems[i].length() > 0) {
+        for (String elemIn : elems) {
+            if (elemIn != null && elemIn.length() > 0) {
                 RhnSetElement elem = new RhnSetElement(getUserId(),
-                                                        getLabel(), elems[i]);
+                        getLabel(), elemIn);
                 removeElement(elem);
             } // if
         } // for
@@ -192,8 +192,7 @@ public class RhnSetImpl implements RhnSet {
      */
     public Set<Long> getElementValues() {
         Set<Long> values = new HashSet<Long>();
-        for (Iterator<RhnSetElement> it = elements.iterator(); it.hasNext();) {
-            RhnSetElement element = it.next();
+        for (RhnSetElement element : elements) {
             values.add(element.getElement());
         }
         return values;

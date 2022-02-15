@@ -683,10 +683,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
             if (oldkeys != null) {
                 log.debug("** Removing old tokens");
-                Iterator i = oldkeys.iterator();
-                while (i.hasNext()) {
+                for (Object oldkeyIn : oldkeys) {
                     log.debug("removing key.");
-                    ActivationKey oldkey =  (ActivationKey) i.next();
+                    ActivationKey oldkey = (ActivationKey) oldkeyIn;
                     ActivationKeyFactory.removeKey(oldkey);
                 }
             }
@@ -1012,9 +1011,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 lookupAllKickstartSessionsByServer(hostServer.getId());
         if (sessions != null) {
             log.debug("    Found sessions: " + sessions);
-            Iterator i = sessions.iterator();
-            while (i.hasNext()) {
-                KickstartSession sess = (KickstartSession) i.next();
+            for (Object sessionIn : sessions) {
+                KickstartSession sess = (KickstartSession) sessionIn;
                 if (sess != null &&
                         sess.getState() != null) {
                     log.debug("    Working with session: " +
@@ -1028,13 +1026,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                             hostServer.getId() + " sess.hostServer: " +
                             (sess.getHostServer() == null ?
                                     "null" :
-                                        "" + sess.getHostServer().getId()));
+                                    "" + sess.getHostServer().getId()));
                     if (sess.getHostServer() != null &&
                             sess.getHostServer().getId().equals(hostServer.getId())) {
                         log.debug("    Marking session failed.");
                         sess.markFailed(
                                 LocalizationService.getInstance().
-                                getMessage("kickstart.session.newsession"));
+                                        getMessage("kickstart.session.newsession"));
                     }
                 }
             }
@@ -1057,9 +1055,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         Server hostServer = getHostServer();
         Set<Long> serverChannelIds = new HashSet<Long>();
-        Iterator<Channel> i = hostServer.getChannels().iterator();
-        while (i.hasNext()) {
-            Channel c = i.next();
+        for (Channel c : hostServer.getChannels()) {
             serverChannelIds.add(c.getId());
         }
 

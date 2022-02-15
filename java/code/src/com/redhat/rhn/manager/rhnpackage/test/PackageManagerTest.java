@@ -67,7 +67,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -96,8 +95,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
         assertEquals(1, dr.size());
 
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : dr) {
             assertTrue(o instanceof PackageListItem);
         }
     }
@@ -137,8 +135,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
         assertEquals(1, dr.size());
 
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : dr) {
             assertTrue(o instanceof PackageListItem);
             PackageListItem pli = (PackageListItem) o;
             assertEquals(p1.getId(), pli.getPackageId());
@@ -217,8 +214,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
         assertEquals(0, dr.size());
 
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : dr) {
             assertTrue(o instanceof PackageListItem);
         }
     }
@@ -390,9 +386,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageName pn = PackageFactory.lookupOrCreatePackageByName("up2date");
         if (pn != null) {
             List<Package> packages = PackageFactory.listPackagesByPackageName(pn);
-            Iterator<Package> i = packages.iterator();
-            while (i.hasNext()) {
-                Package innerp = i.next();
+            for (Package innerp : packages) {
                 PackageEvr evr = innerp.getPackageEvr();
                 if (evr != null &&
                         evr.getVersion().equals(version)) {

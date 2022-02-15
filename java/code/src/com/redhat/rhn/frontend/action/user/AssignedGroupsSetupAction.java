@@ -45,7 +45,6 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -115,8 +114,8 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         else {
             helper.syncSelections(set, dr);
             set.clear();
-            for (Iterator it = dr.iterator(); it.hasNext();) {
-                SystemGroupOverview group = (SystemGroupOverview) it.next();
+            for (Object oIn : dr) {
+                SystemGroupOverview group = (SystemGroupOverview) oIn;
                 if (group.isSelected()) {
                     RhnSetElement elem = new RhnSetElement(currentUser.getId(),
                             RhnSetDecl.SYSTEM_GROUPS.getLabel(), group.getId().toString());
@@ -158,8 +157,8 @@ public class AssignedGroupsSetupAction extends RhnListAction {
      * @param selDefaults Selected Defaults.
      */
     private void processList(DataResult dr, List selGroups, List selDefaults) {
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            SystemGroupOverview item = (SystemGroupOverview)itr.next();
+        for (Object oIn : dr) {
+            SystemGroupOverview item = (SystemGroupOverview) oIn;
 
             String display = item.getName();
 
@@ -195,9 +194,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         // we are getting a Set of Longs, so convert it and set it.
         Set groups = user.getDefaultSystemGroupIds();
         Set groupStrings = new HashSet();
-        Iterator i = groups.iterator();
-        while (i.hasNext()) {
-            Object o = i.next();
+        for (Object o : groups) {
             groupStrings.add(o.toString());
         }
         return (String[]) groupStrings.toArray(new String[0]);
@@ -234,8 +231,8 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         String[] groupArray = (String[])form.get("defaultGroups");
 
         Set groupSet = new HashSet();
-        for (int i = 0; i < groupArray.length; i++) {
-            groupSet.add(Long.valueOf(groupArray[i]));
+        for (String sIn : groupArray) {
+            groupSet.add(Long.valueOf(sIn));
         }
         user.setDefaultSystemGroupIds(groupSet);
 

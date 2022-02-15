@@ -49,7 +49,6 @@ import org.apache.struts.action.ActionMessages;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -544,9 +543,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     RhnSetDecl.SYSTEMS.getLabel());
         }
 
-        Iterator<EssentialServerDto> itr = dr.iterator();
-        while (itr.hasNext()) {
-            EssentialServerDto esd = itr.next();
+        for (EssentialServerDto esd : dr) {
             servers.add(esd.getId().longValue());
         }
 

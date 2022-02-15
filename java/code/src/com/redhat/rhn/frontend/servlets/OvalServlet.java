@@ -32,7 +32,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -79,8 +78,8 @@ public class OvalServlet extends HttpServlet {
             format = format.toLowerCase();
         }
         List erratas = new LinkedList();
-        for (int x = 0; x < errataIds.length; x++) {
-            List tmp = ErrataManager.lookupErrataByIdentifier(errataIds[x], user.getOrg());
+        for (String errataIdIn : errataIds) {
+            List tmp = ErrataManager.lookupErrataByIdentifier(errataIdIn, user.getOrg());
             if (tmp != null && tmp.size() > 0) {
                 erratas.addAll(tmp);
             }
@@ -100,11 +99,11 @@ public class OvalServlet extends HttpServlet {
             }
         }
         else if (erratas.size() > 1) {
-            for (Iterator iter = erratas.iterator(); iter.hasNext();) {
-                Errata errata = (Errata) iter.next();
+            for (Object errataIn : erratas) {
+                Errata errata = (Errata) errataIn;
                 List files =
-                    ErrataFactory.lookupErrataFilesByErrataAndFileType(
-                            errata.getId(), "oval");
+                        ErrataFactory.lookupErrataFilesByErrataAndFileType(
+                                errata.getId(), "oval");
                 ovalFiles.addAll(files);
             }
         }
@@ -125,8 +124,8 @@ public class OvalServlet extends HttpServlet {
         }
         try {
             ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(tempFile));
-            for (Iterator iter = files.iterator(); iter.hasNext();) {
-                File f = (File) iter.next();
+            for (Object fileIn : files) {
+                File f = (File) fileIn;
                 ZipEntry entry = new ZipEntry(f.getName());
                 zipOut.putNextEntry(entry);
                 writeFileEntry(f, zipOut);
@@ -251,8 +250,8 @@ public class OvalServlet extends HttpServlet {
             throws JDOMException, IOException {
         OvalFileAggregator aggregator = new OvalFileAggregator();
         String retval = null;
-        for (Iterator iter = files.iterator(); iter.hasNext();) {
-            File f = (File) iter.next();
+        for (Object fileIn : files) {
+            File f = (File) fileIn;
             if (f == null) {
                 continue;
             }

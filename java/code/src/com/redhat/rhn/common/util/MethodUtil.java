@@ -79,15 +79,15 @@ public class MethodUtil {
                InvocationTargetException {
         Method[] meths = clazz.getMethods();
 
-        for (int i = 0; i < meths.length; i++) {
-            if (!meths[i].getName().equals(method)) {
+        for (Method methIn : meths) {
+            if (!methIn.getName().equals(method)) {
                 continue;
             }
-            if (!Modifier.isStatic(meths[i].getModifiers())) {
+            if (!Modifier.isStatic(methIn.getModifiers())) {
                 throw new MethodNotStaticException("Method " + method + " is not static");
             }
-            if (isCompatible(meths[i].getParameterTypes(), args)) {
-                return meths[i].invoke(null, args);
+            if (isCompatible(methIn.getParameterTypes(), args)) {
+                return methIn.invoke(null, args);
             }
         }
         throw new NoSuchMethodException("Could not find " + method + " in " + clazz);
@@ -125,9 +125,9 @@ public class MethodUtil {
         Method foundMethod = null;
         Object[] converted = new Object[params.length];
         boolean rightMethod = false;
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals(methodCalled)) {
-                foundMethod = methods[i];
+        for (Method methodIn : methods) {
+            if (methodIn.getName().equals(methodCalled)) {
+                foundMethod = methodIn;
 
                 Class[] types = foundMethod.getParameterTypes();
                 if (types.length != params.length) {
@@ -143,19 +143,19 @@ public class MethodUtil {
                     Object curr = params[j];
                     if (log.isDebugEnabled()) {
                         log.debug("Trying to translate from: " +
-                                 ((curr == null) ? null : curr.getClass()) +
-                                 " to: " + types[j] +
-                                 " isInstance: " + types[j].isInstance(curr));
+                                ((curr == null) ? null : curr.getClass()) +
+                                " to: " + types[j] +
+                                " isInstance: " + types[j].isInstance(curr));
                     }
                     if (curr != null && curr.getClass().isPrimitive() &&
-                        types[j].isPrimitive()) {
+                            types[j].isPrimitive()) {
                         if (log.isDebugEnabled()) {
                             log.debug("2 primitives");
                         }
                         converted[j] = curr;
                     }
                     if ((curr == null && !types[j].isPrimitive()) ||
-                        types[j].isInstance(curr)) {
+                            types[j].isInstance(curr)) {
                         if (log.isDebugEnabled()) {
                             log.debug("same type");
                         }
@@ -170,7 +170,7 @@ public class MethodUtil {
                     }
                     catch (TranslationException e) {
                         log.debug("Couldn't translate between " + curr +
-                                  " and " + types[j]);
+                                " and " + types[j]);
                         // move on to the next method.
                         found = false;
                         break;

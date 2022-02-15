@@ -41,7 +41,6 @@ import org.apache.struts.action.ActionMessages;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -179,10 +178,8 @@ public class ChannelAction extends RhnSetAction {
      */
     public Set<Long> getChannelIdsFromRhnSet(RhnSet set) {
         Set<Long> retval = new HashSet<Long>();
-        Iterator<RhnSetElement> itr = set.getElements().iterator();
 
-        while (itr.hasNext()) {
-            RhnSetElement element = itr.next();
+        for (RhnSetElement element : set.getElements()) {
             retval.add(element.getElement());
         }
         if (log.isDebugEnabled()) {

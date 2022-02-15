@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -272,15 +271,13 @@ public class TrustAction extends FormDispatcher {
                     // unsubscribe children first if subscribed
                     List<Channel> children = channel
                             .getAccessibleChildrenFor(orgUser);
-                    Iterator<Channel> i = children.iterator();
-                    while (i.hasNext()) {
-                        Channel child = i.next();
+                    for (Channel child : children) {
                         if (s.isSubscribed(child)) {
                             // unsubscribe server from child channel
                             child.getTrustedOrgs().remove(theOrg);
                             ChannelFactory.save(child);
                             s = SystemManager.
-                            unsubscribeServerFromChannel(s, child);
+                                    unsubscribeServerFromChannel(s, child);
                         }
                     }
                 }

@@ -65,8 +65,8 @@ public class ErrataMailer extends RhnJavaJob {
             if (log.isDebugEnabled()) {
                 log.debug("=== Queued up " + results.size() + " patches");
             }
-            for (Iterator iter = results.iterator(); iter.hasNext();) {
-                Map row = (Map) iter.next();
+            for (Object resultIn : results) {
+                Map row = (Map) resultIn;
                 Long errataId = (Long) row.get("errata_id");
                 Long orgId = (Long) row.get("org_id");
                 Long channelId = (Long) row.get("channel_id");
@@ -254,8 +254,8 @@ public class ErrataMailer extends RhnJavaJob {
         //      the table according to the String Resource bundle.
         StringWriter writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer, true);
-        for (Iterator iter = servers.iterator(); iter.hasNext();) {
-            Map row = (Map) iter.next();
+        for (Object serverIn : servers) {
+            Map row = (Map) serverIn;
             String release = (String) row.get("release");
             printWriter.print(release);
             for (int i = 0; i < (11 - release.length()); i++) {

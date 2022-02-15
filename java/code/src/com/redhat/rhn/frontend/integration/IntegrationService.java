@@ -151,8 +151,8 @@ public class IntegrationService {
         }
         String[] decodedLogin = SessionSwap.extractData(encodedRandom);
         StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < decodedLogin.length; i++) {
-            buff.append(decodedLogin[i]);
+        for (String sIn : decodedLogin) {
+            buff.append(sIn);
         }
         if (randomTokenStore.containsValue(buff.toString())) {
             log.debug("encodedRandom found. valid!");

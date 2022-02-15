@@ -764,8 +764,8 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
 
         List<String> names = new LinkedList<String>();
-        for (int i = 0; i < assocGrps.length; i++) {
-                names.add(((ServerGroup)assocGrps[i]).getName());
+        for (Object assocGrpIn : assocGrps) {
+            names.add(((ServerGroup) assocGrpIn).getName());
         }
 
         assertEquals(1, handler.removeAssignedSystemGroups(admin,

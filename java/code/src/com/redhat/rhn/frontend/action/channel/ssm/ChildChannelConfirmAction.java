@@ -41,7 +41,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -156,9 +155,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
     // was saved from the child-list page
     protected void findChannelsFromSet(User u, List<Channel> subs, List<Channel> unsubs) {
         RhnSet cset = RhnSetDecl.SSM_CHANNEL_LIST.get(u);
-        Iterator itr = cset.getElements().iterator();
-        while (itr.hasNext()) {
-            RhnSetElement rse = (RhnSetElement)itr.next();
+        for (RhnSetElement rse : cset.getElements()) {
             Channel c = ChannelFactory.lookupById(rse.getElement());
             if (rse.getElementTwo().equals(ChannelActionDAO.SUBSCRIBE)) {
                 subs.add(c);

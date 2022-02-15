@@ -51,7 +51,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -228,8 +227,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         assertTrue(server.getEntitlements().size() > 0);
 
         EntitlementServerGroup eGrp = null;
-        for (Iterator itr = server.getEntitledGroups().iterator(); itr.hasNext();) {
-            EntitlementServerGroup sg = (EntitlementServerGroup)itr.next();
+        for (EntitlementServerGroup sg : server.getEntitledGroups()) {
             if (sg.getGroupType().equals(
                     ServerConstants.getServerGroupTypeEnterpriseEntitled())) {
                 eGrp = sg;

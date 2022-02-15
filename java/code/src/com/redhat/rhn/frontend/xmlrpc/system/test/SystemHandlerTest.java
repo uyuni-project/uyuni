@@ -175,7 +175,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -708,8 +707,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertTrue(results.length > 0);
         //make sure that every channel returned has null for parent_channel
-        for (int i = 0; i < results.length; i++) {
-            Map map = (Map) results[i];
+        for (Object resultIn : results) {
+            Map map = (Map) resultIn;
             Number id = (Number) map.get("id");
             Long cid = id.longValue();
             Channel c = ChannelManager.lookupByIdAndUser(cid, admin);
@@ -749,8 +748,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertTrue(results.length > 0);
         //make sure that every channel returned has null for parent_channel
-        for (int i = 0; i < results.length; i++) {
-            Map map = (Map) results[i];
+        for (Object resultIn : results) {
+            Map map = (Map) resultIn;
             Number id = (Number) map.get("id");
             Long cid = id.longValue();
             Channel c = ChannelManager.lookupByIdAndUser(cid, admin);
@@ -1389,9 +1388,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         boolean containsRegular = false;
         boolean containsNonGroupAdmin = false;  //we want this to be false to pass
 
-        for (Iterator itr = users.iterator(); itr.hasNext();) {
+        for (Object userIn : users) {
 
-            User user = (User) itr.next();
+            User user = (User) userIn;
             if (user.getLogin().equals(admin.getLogin())) {
                 containsAdmin = true;
             }
@@ -2278,8 +2277,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertTrue(array.length > 0);
         boolean sidExists  = false;
-        for (int i = 0; i < array.length; i++) {
-            SystemOverview s = (SystemOverview)array[i];
+        for (Object oIn : array) {
+            SystemOverview s = (SystemOverview) oIn;
             if (testServer.getId().equals(s.getId().longValue())) {
                 sidExists = true;
                 break;
@@ -2297,8 +2296,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List<SystemOverview> servers = handler.listUngroupedSystems(admin);
         assertTrue(servers.size() > 0);
         boolean sidExists  = false;
-        for (int i = 0; i < servers.size(); i++) {
-            SystemOverview s = servers.get(i);
+        for (SystemOverview s : servers) {
             if (testServer.getId().equals(s.getId())) {
                 sidExists = true;
                 break;

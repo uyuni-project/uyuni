@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -177,9 +176,9 @@ public class TaskomaticDaemon {
     private Map parseOverrides(CommandLine commandLine) {
         Map configOverrides = new HashMap();
         // Loop thru all possible options and let's see what we get
-        for (Iterator iter = this.masterOptionsMap.keySet().iterator(); iter.hasNext();) {
+        for (Object oIn : this.masterOptionsMap.keySet()) {
 
-            String optionName = (String) iter.next();
+            String optionName = (String) oIn;
 
             if (commandLine.hasOption(optionName)) {
 

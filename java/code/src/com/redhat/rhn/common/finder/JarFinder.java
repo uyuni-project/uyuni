@@ -71,8 +71,8 @@ class JarFinder implements Finder {
                     if (entryName.endsWith(endStr)) {
                         if (excludes != null) {
                             boolean exclude = false;
-                            for (int j = 0; j < excludes.length; j++) {
-                                String excludesEnds = excludes[j] + "." + endStr;
+                            for (String excludeIn : excludes) {
+                                String excludesEnds = excludeIn + "." + endStr;
                                 if (entryName.endsWith(excludesEnds)) {
                                     exclude = true;
                                     break;

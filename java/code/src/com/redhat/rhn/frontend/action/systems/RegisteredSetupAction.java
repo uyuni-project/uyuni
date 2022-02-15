@@ -55,9 +55,9 @@ public class RegisteredSetupAction extends BaseSystemsAction {
         LocalizationService ls = LocalizationService.getInstance();
         List<LabelValueBean> optionsLabelValueBeans = new ArrayList<LabelValueBean>();
 
-        for (int j = 0; j < OPTIONS.length; ++j) {
-            optionsLabelValueBeans.add(new LabelValueBean(ls.getMessage(OPTIONS[j]),
-                                                                        OPTIONS[j]));
+        for (String optionIn : OPTIONS) {
+            optionsLabelValueBeans.add(new LabelValueBean(ls.getMessage(optionIn),
+                    optionIn));
         }
 
         request.setAttribute("options", optionsLabelValueBeans);

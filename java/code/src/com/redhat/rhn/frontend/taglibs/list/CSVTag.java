@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.taglibs.IconTag;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -272,8 +271,8 @@ public class CSVTag extends BodyTagSupport {
 
     private Map makePartialResult(List result) {
         Map output = new HashMap();
-        for (Iterator iter = result.iterator(); iter.hasNext();) {
-            SystemSearchResult r = (SystemSearchResult) iter.next();
+        for (Object oIn : result) {
+            SystemSearchResult r = (SystemSearchResult) oIn;
             SystemSearchPartialResult partial = new SystemSearchPartialResult(r);
             output.put(r.getId(), partial);
         }

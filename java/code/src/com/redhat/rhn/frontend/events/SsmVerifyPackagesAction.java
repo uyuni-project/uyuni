@@ -34,7 +34,6 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -79,21 +78,21 @@ public class SsmVerifyPackagesAction implements MessageAction {
         DataResult result = event.getResult();
 
         // Loop over each server that will have packages upgraded
-        for (Iterator it = result.iterator(); it.hasNext();) {
+        for (Object valueIn : result) {
 
             // Add action for each package found in the elaborator
-            Map data = (Map) it.next();
+            Map data = (Map) valueIn;
 
             // Load the server
-            Long sid = (Long)data.get("id");
+            Long sid = (Long) data.get("id");
             Server server = SystemManager.lookupByIdAndUser(sid, user);
 
             // Get the packages out of the elaborator
             List elabList = (List) data.get("elaborator0");
 
             List<PackageListItem> items = new ArrayList<PackageListItem>(elabList.size());
-            for (Iterator elabIt = elabList.iterator(); elabIt.hasNext();) {
-                Map elabData = (Map) elabIt.next();
+            for (Object oIn : elabList) {
+                Map elabData = (Map) oIn;
                 String idCombo = (String) elabData.get("id_combo");
                 PackageListItem item = PackageListItem.parse(idCombo);
                 items.add(item);
@@ -104,7 +103,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
 
             // Create the action(s)
             ActionChainManager.schedulePackageVerify(user, server, packageListData,
-                earliest, actionChain);
+                    earliest, actionChain);
         }
 
     }

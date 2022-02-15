@@ -61,7 +61,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -98,8 +97,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertTrue(a.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY));
         //complete it
         assertNotNull(a.getServerActions());
-        for (Iterator itr = a.getServerActions().iterator(); itr.hasNext();) {
-            ServerAction next = (ServerAction) itr.next();
+        for (ServerAction next : a.getServerActions()) {
             next.setCompletionTime(new Date());
             next.setStatus(ActionFactory.STATUS_COMPLETED);
         }

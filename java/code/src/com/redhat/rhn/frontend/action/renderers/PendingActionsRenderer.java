@@ -23,8 +23,6 @@ import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 
-import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -43,9 +41,9 @@ public class PendingActionsRenderer extends BaseFragmentRenderer {
         LocalizationService ls = LocalizationService.getInstance();
         String pendingActionsCSSTable = null;
         DataResult padr = ActionManager.recentlyScheduledActions(user, pc, 30);
-        for (Iterator i = padr.iterator(); i.hasNext();) {
+        for (Object oIn : padr) {
             StringBuilder buffer = new StringBuilder();
-            ScheduledAction sa = (ScheduledAction) i.next();
+            ScheduledAction sa = (ScheduledAction) oIn;
 
             Action action = ActionManager.lookupAction(user, sa.getId());
 
@@ -58,7 +56,7 @@ public class PendingActionsRenderer extends BaseFragmentRenderer {
             }
 
             long hoursSinceCreation = System.currentTimeMillis() -
-                     action.getCreated().getTime();
+                    action.getCreated().getTime();
             hoursSinceCreation /= 3600000;
             if (hoursSinceCreation > 24) {
                 buffer.append(hoursSinceCreation / 24);

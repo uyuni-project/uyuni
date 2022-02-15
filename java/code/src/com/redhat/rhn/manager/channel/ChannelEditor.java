@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -96,8 +95,8 @@ public class ChannelEditor {
 
         // make sure we work with long ids
         List<Long> longPackageIds = new ArrayList();
-        for (Iterator it = packageIds.iterator(); it.hasNext();) {
-            longPackageIds.add(((Number) it.next()).longValue());
+        for (Object packageIdIn : packageIds) {
+            longPackageIds.add(((Number) packageIdIn).longValue());
         }
 
 

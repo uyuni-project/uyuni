@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,9 +91,8 @@ public class ManagersSetupAction extends RhnAction implements Listable {
 
             long updated = 0;
             // remove channel managers
-            for (Iterator<String> iter = helper.getRemovedKeys().iterator();
-                    iter.hasNext();) {
-                Long uid = Long.valueOf(iter.next());
+            for (String valueIn : (Iterable<String>) helper.getRemovedKeys()) {
+                Long uid = Long.valueOf(valueIn);
                 if (!UserManager.hasRole(uid, RoleFactory.CHANNEL_ADMIN)) {
                     user.getOrg().removeChannelPermissions(uid, currentChan.getId(),
                             ChannelManager.QRY_ROLE_MANAGE);
@@ -103,9 +101,8 @@ public class ManagersSetupAction extends RhnAction implements Listable {
             }
 
             // add channel managers
-            for (Iterator<String> iter = helper.getAddedKeys().iterator();
-                    iter.hasNext();) {
-                Long uid = Long.valueOf(iter.next());
+            for (String oIn : (Iterable<String>) helper.getAddedKeys()) {
+                Long uid = Long.valueOf(oIn);
                 if (!UserManager.hasRole(uid, RoleFactory.CHANNEL_ADMIN)) {
                     user.getOrg().removeChannelPermissions(uid, currentChan.getId(),
                             ChannelManager.QRY_ROLE_MANAGE);

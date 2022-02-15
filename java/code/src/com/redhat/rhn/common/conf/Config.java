@@ -25,7 +25,6 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -482,8 +481,8 @@ public class Config {
             // loop through all of the config values in the properties file
             // making sure the prefix is there.
             Properties newProps = new Properties();
-            for (Iterator j = props.keySet().iterator(); j.hasNext();) {
-                String key = (String) j.next();
+            for (Object oIn : props.keySet()) {
+                String key = (String) oIn;
                 String newKey = key;
                 if (!key.startsWith(ns)) {
                     newKey = ns + "." + key;

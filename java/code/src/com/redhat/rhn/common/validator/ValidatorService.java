@@ -18,7 +18,6 @@ import com.redhat.rhn.common.util.StringUtil;
 
 import org.apache.log4j.Logger;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -98,9 +97,8 @@ public class ValidatorService {
             List constraintNames) {
 
         ValidatorResult result = new ValidatorResult();
-        Iterator i = validatorIn.getConstraints().iterator();
-        while (i.hasNext()) {
-            Constraint c = (Constraint) i.next();
+        for (Object oIn : validatorIn.getConstraints()) {
+            Constraint c = (Constraint) oIn;
             if (constraintNames != null) {
                 if (!constraintNames.contains(c.getIdentifier())) {
                     continue;

@@ -56,7 +56,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -121,8 +120,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             return false;
         }
         // Loop through the custom data keys and check for the label
-        for (Iterator<CustomDataKey> itr = customDataKeys.iterator(); itr.hasNext();) {
-            CustomDataKey key = itr.next();
+        for (CustomDataKey key : customDataKeys) {
             if (label.equals(key.getLabel())) {
                 // Found it! no need to check anything else.
                 return true;
@@ -181,8 +179,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      */
     public Set<Role> getRoles() {
         Set<Role> orgRoles = new HashSet<Role>();
-        for (Iterator<UserGroup> i = usergroups.iterator(); i.hasNext();) {
-            UserGroup ug = i.next();
+        for (UserGroup ug : usergroups) {
             orgRoles.add(ug.getRole());
         }
         return Collections.unmodifiableSet(orgRoles);
@@ -220,8 +217,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return the UserGroup if found, otherwise null.
      */
     public UserGroup getUserGroup(Role roleIn) {
-        for (Iterator<UserGroup> i = usergroups.iterator(); i.hasNext();) {
-            UserGroup ug = i.next();
+        for (UserGroup ug : usergroups) {
             if (ug.getRole().equals(roleIn)) {
                 return ug;
             }
@@ -408,10 +404,9 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      */
     private List getListFromResult(DataResult dataresult, String key) {
         List userIds = new ArrayList();
-        Iterator iter = dataresult.iterator();
-        while (iter.hasNext()) {
+        for (Object oIn : dataresult) {
             // convert these to Longs
-            Long bd = (Long) ((HashMap) iter.next()).get(key);
+            Long bd = (Long) ((HashMap) oIn).get(key);
             userIds.add(bd);
         }
         return userIds;
@@ -432,14 +427,12 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     public Set<Entitlement> getValidBaseEntitlementsForOrg() {
         Set<Entitlement> baseEntitlements = new HashSet<Entitlement>();
 
-        Iterator<EntitlementServerGroup> i = getEntitledServerGroups().iterator();
-
-        while (i.hasNext()) {
-            ServerGroupType sgt = i.next().getGroupType();
+        for (EntitlementServerGroup entitlementServerGroupIn : getEntitledServerGroups()) {
+            ServerGroupType sgt = entitlementServerGroupIn.getGroupType();
 
             // Filter out the bootstrap entitlement
             if (sgt.isBase() &&
-                !sgt.getLabel().equals(EntitlementManager.BOOTSTRAP.getLabel())) {
+                    !sgt.getLabel().equals(EntitlementManager.BOOTSTRAP.getLabel())) {
                 baseEntitlements.add(EntitlementManager.getByName(sgt
                         .getLabel()));
             }
@@ -456,10 +449,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     public Set<Entitlement> getValidAddOnEntitlementsForOrg() {
         Set<Entitlement> addonEntitlements = new HashSet<Entitlement>();
 
-        Iterator<EntitlementServerGroup> i = getEntitledServerGroups().iterator();
-
-        while (i.hasNext()) {
-            ServerGroupType sgt = i.next().getGroupType();
+        for (EntitlementServerGroup entitlementServerGroupIn : getEntitledServerGroups()) {
+            ServerGroupType sgt = entitlementServerGroupIn.getGroupType();
 
             if (!sgt.isBase()) {
                 Entitlement ent = EntitlementManager.getByName(sgt.getLabel());

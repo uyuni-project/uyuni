@@ -87,9 +87,7 @@ public class NavTreeIndex {
         List<NavNode> nodesAtCurrentDepth = new ArrayList<NavNode>(tree.getNodes());
         nodeLevels.add(depth, nodesAtCurrentDepth);
 
-        Iterator<NavNode> i = nodesAtCurrentDepth.iterator();
-        while (i.hasNext()) {
-            NavNode n = i.next();
+        for (NavNode n : nodesAtCurrentDepth) {
             indexNode(n, depth + 1);
         }
     }
@@ -111,20 +109,15 @@ public class NavTreeIndex {
             nodesByLabel.put(parent.getLabel(), parent);
         }
 
-        Iterator<NavNode> i = nodesAtCurrentDepth.iterator();
-        while (i.hasNext()) {
-            NavNode child = i.next();
+        for (NavNode child : nodesAtCurrentDepth) {
             childToParentMap.put(child, parent);
 
             indexNode(child, depth + 1);
         }
     }
     private void addURLMaps(NavNode node) {
-        Iterator<String> i = node.getURLs().iterator();
 
-        while (i.hasNext()) {
-            String url = i.next();
-
+        for (String url : node.getURLs()) {
             List<NavNode> currentNodes = nodeURLMap.get(url);
             if (currentNodes == null) {
                 currentNodes = new ArrayList<NavNode>();
@@ -138,11 +131,8 @@ public class NavTreeIndex {
     }
 
     private void addDirMaps(NavNode node) {
-        Iterator<String> i = node.getDirs().iterator();
 
-        while (i.hasNext()) {
-            String dir = i.next();
-
+        for (String dir : node.getDirs()) {
             List<NavNode> currentNodes = nodeDirMap.get(dir);
             if (currentNodes == null) {
                 currentNodes = new ArrayList<NavNode>();
@@ -247,14 +237,14 @@ public class NavTreeIndex {
 
     private NavNode findBestNode(String[] urls) {
 
-        for (int i = 0; i < urls.length; i++) {
+        for (String urlIn : urls) {
 
             if (log.isDebugEnabled()) {
-                log.debug("Url being searched [" + urls[i] + "]");
+                log.debug("Url being searched [" + urlIn + "]");
             }
             // first match by the primary url which is the
             // first rhn-tab-url definition in the sitenav.xml.
-            String url = urls[i];
+            String url = urlIn;
             Optional<NavNode> result = primaryURLMap.entrySet().stream()
                     .filter(entry -> {
                         String key = entry.getKey().replaceAll("\\$\\{[^}]*\\}", ".*");
@@ -280,15 +270,15 @@ public class NavTreeIndex {
             // accessible.  Let's go through the other url mappings (if any)
             // looking for an accessible url.
 
-            List<NavNode> nodesByUrl = nodeURLMap.get(urls[i]);
+            List<NavNode> nodesByUrl = nodeURLMap.get(urlIn);
             if (nodesByUrl != null) {
                 Iterator<NavNode> nodeItr = nodesByUrl.iterator();
                 while (nodeItr.hasNext()) {
                     NavNode next = nodeItr.next();
                     if (canViewUrl(next, 1)) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Best node for [" + urls[i] + "] is [" +
-                                    primaryURLMap.get(urls[i]) + "]");
+                            log.debug("Best node for [" + urlIn + "] is [" +
+                                    primaryURLMap.get(urlIn) + "]");
                         }
                         return next;
                     }
@@ -301,12 +291,12 @@ public class NavTreeIndex {
             // definition.  Otherwise, we're just going to bail and return
             // null.
 
-            if (nodeDirMap.get(urls[i]) != null) {
-                List<NavNode> nodes = nodeDirMap.get(urls[i]);
+            if (nodeDirMap.get(urlIn) != null) {
+                List<NavNode> nodes = nodeDirMap.get(urlIn);
                 // what do we do with a list that contains
                 // more than one.
                 if (log.isDebugEnabled()) {
-                    log.debug("Best node for [" + urls[i] + "] is [" +
+                    log.debug("Best node for [" + urlIn + "] is [" +
                             nodes.get(0) + "]");
                 }
                 return nodes.get(0);

@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -141,8 +140,8 @@ public abstract class HibernateFactory {
         }
 
         Set entrySet = parameters.entrySet();
-        for (Iterator itr = entrySet.iterator(); itr.hasNext();) {
-            Map.Entry entry = (Map.Entry) itr.next();
+        for (Object oIn : entrySet) {
+            Map.Entry entry = (Map.Entry) oIn;
             if (entry.getValue() instanceof Collection) {
                 Collection c = (Collection) entry.getValue();
                 if (c.size() > 1000) {

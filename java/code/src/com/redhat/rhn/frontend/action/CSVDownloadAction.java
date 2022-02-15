@@ -31,7 +31,6 @@ import org.apache.struts.actions.DownloadAction;
 
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -224,8 +223,8 @@ public class CSVDownloadAction extends DownloadAction {
     }
 
     private List mergeWithPartialResult(List full, Map partial) {
-        for (Iterator iter = full.iterator(); iter.hasNext();) {
-            SystemSearchResult r = (SystemSearchResult) iter.next();
+        for (Object oIn : full) {
+            SystemSearchResult r = (SystemSearchResult) oIn;
             SystemSearchPartialResult p =
                     (SystemSearchPartialResult) partial.get(r.getId());
             r.setMatchingField(p.getMatchingField());

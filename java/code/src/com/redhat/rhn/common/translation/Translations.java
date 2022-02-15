@@ -61,13 +61,13 @@ public class Translations {
                                     Class want, boolean bestMatch)
             throws TranslationException {
 
-        for (int i = 0; i < methods.length; i++) {
-            Class returnType = methods[i].getReturnType();
-            Class[] params = methods[i].getParameterTypes();
+        for (Method methodIn : methods) {
+            Class returnType = methodIn.getReturnType();
+            Class[] params = methodIn.getParameterTypes();
 
             // All conversions have a single parameter, the object to transform
             if (!bestMatch && have != null &&
-                (params.length != 1 || !params[0].equals(have.getClass()))) {
+                    (params.length != 1 || !params[0].equals(have.getClass()))) {
                 continue;
             }
             else if (bestMatch && have != null &&
@@ -78,17 +78,17 @@ public class Translations {
             if (returnType.equals(want)) {
                 Object[] objs = {have};
                 try {
-                    return methods[i].invoke(null, objs);
+                    return methodIn.invoke(null, objs);
                 }
                 catch (IllegalAccessException e) {
                     throw new TranslationException("Could not execute " +
-                                    "translator for " + have.getClass() +
-                                    " to " + want, e);
+                            "translator for " + have.getClass() +
+                            " to " + want, e);
                 }
                 catch (InvocationTargetException e) {
                     throw new TranslationException("Error when executing " +
-                                    "translator for " + have.getClass() +
-                                    " to " + want, e.getCause());
+                            "translator for " + have.getClass() +
+                            " to " + want, e.getCause());
                 }
             }
         }

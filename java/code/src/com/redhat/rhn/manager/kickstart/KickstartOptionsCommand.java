@@ -22,7 +22,6 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 
 import org.apache.log4j.Logger;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -121,8 +120,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
     public List refreshOptions(Map mapIn) {
         List l = new LinkedList();
 
-        for (Iterator itr = availableOptions.iterator(); itr.hasNext();) {
-            KickstartCommandName cn = (KickstartCommandName) itr.next();
+        for (KickstartCommandName cn : availableOptions) {
             String name = cn.getName();
             KickstartOptionValue v = new KickstartOptionValue();
             v.setHasArgs(cn.getArgs());
@@ -130,7 +128,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
             v.setRequired(cn.getRequired());
             v.setEnabled(Boolean.valueOf(mapIn.containsKey(name)));
 
-            String [] s = (String[])mapIn.get(name + "_txt");
+            String[] s = (String[]) mapIn.get(name + "_txt");
             if ((s != null) && (v.getEnabled().booleanValue())) {
                 v.setArg(s[0]);
             }

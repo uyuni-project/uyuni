@@ -47,7 +47,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -210,8 +209,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
 
     private Set buildIds(RhnSet revisions) {
         Set s = new HashSet();
-        for (Iterator itr = revisions.getElements().iterator(); itr.hasNext();) {
-            RhnSetElement elt = (RhnSetElement)itr.next();
+        for (RhnSetElement elt : revisions.getElements()) {
             Long id = elt.getElement();
             s.add(id);
         }

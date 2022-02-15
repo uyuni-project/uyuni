@@ -149,15 +149,15 @@ public class DocSearchSetupAction extends BaseSearchAction {
         }
 
         List<HelpDocumentOverview> docs = new ArrayList<HelpDocumentOverview>();
-        for (int x = 0; x < results.size(); x++) {
+        for (Object resultIn : results) {
             HelpDocumentOverview doc = new HelpDocumentOverview();
-            Map item = (Map) results.get(x);
+            Map item = (Map) resultIn;
             log.debug("SearchServer sent us item [" + item.get("rank") + "], score = " +
                     item.get("score") + ", summary = " + item.get("summary") +
                     ", title = " + item.get("title") + ", url = " + item.get("url"));
-            doc.setUrl((String)item.get("url"));
-            doc.setTitle((String)item.get("title"));
-            doc.setSummary((String)item.get("summary"));
+            doc.setUrl((String) item.get("url"));
+            doc.setTitle((String) item.get("title"));
+            doc.setSummary((String) item.get("summary"));
             docs.add(doc);
         }
         return docs;

@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.BaseTransactionCommand;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -80,8 +79,8 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
             log.debug("allservers returned [" + dr.size() + "]");
         }
 
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            Map item = (Map) itr.next();
+        for (Object oIn : dr) {
+            Map item = (Map) oIn;
             Long sid = (Long) item.get("id");
             if (log.isDebugEnabled() && sid != null) {
                 log.debug("Working on server [" + sid.toString() + "]");

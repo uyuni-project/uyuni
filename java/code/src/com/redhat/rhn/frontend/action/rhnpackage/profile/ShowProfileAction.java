@@ -34,7 +34,6 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -135,17 +134,15 @@ public class ShowProfileAction extends RhnAction {
         List<Profile> dbprofiles =
                 ProfileManager.compatibleWithServer(server, user.getOrg());
         List<LabelValueBean> profiles = new ArrayList<LabelValueBean>(dbprofiles.size());
-        for (Iterator<Profile> itr = dbprofiles.iterator(); itr.hasNext();) {
-            Profile p = itr.next();
+        for (Profile p : dbprofiles) {
             profiles.add(new LabelValueBean(p.getName(), p.getId().toString()));
         }
 
         List<Map<String, Object>> dbservers =
                 SystemManager.compatibleWithServer(user, server);
         List<LabelValueBean> servers = new ArrayList<LabelValueBean>(dbservers.size());
-        for (Iterator<Map<String, Object>> itr = dbservers.iterator(); itr.hasNext();) {
-            Map<String, Object> m = itr.next();
-            servers.add(new LabelValueBean((String)m.get("name"), m.get("id").toString()));
+        for (Map<String, Object> m : dbservers) {
+            servers.add(new LabelValueBean((String) m.get("name"), m.get("id").toString()));
         }
 
         request.setAttribute("profiles", profiles);

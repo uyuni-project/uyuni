@@ -148,9 +148,9 @@ public class ExceptionsWrapperTest extends TestCase {
                 }
                 catch (WrappedSQLException w) {
                     StackTraceElement[] elements = w.getStackTrace();
-                    for (int i = 0; i < elements.length; i++) {
-                        String method = elements[i].getMethodName();
-                        String className = elements[i].getClassName();
+                    for (StackTraceElement elementIn : elements) {
+                        String method = elementIn.getMethodName();
+                        String className = elementIn.getClassName();
                         assertFalse(className.equals(EXCEPTION_TRANSLATOR));
                         assertFalse(method.equals("convert"));
                     }

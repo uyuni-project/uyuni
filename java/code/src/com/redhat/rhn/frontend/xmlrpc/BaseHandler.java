@@ -237,14 +237,14 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         List<Method> toReturn = new ArrayList<Method>();
 
         //Loop through the methods array and find the one we are trying to call.
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals(beanifiedMethod)) {
+        for (Method methodIn : methods) {
+            if (methodIn.getName().equals(beanifiedMethod)) {
                 // We found a method with the right name, but does the parameter count
                 // match?
-                int numberOfParams = methods[i].getParameterTypes().length;
+                int numberOfParams = methodIn.getParameterTypes().length;
                 if (numberOfParams == params.size()) {
                     //Method name and number of parameters match.
-                    toReturn.add(methods[i]);
+                    toReturn.add(methodIn);
                 }
             }
         }
@@ -411,8 +411,8 @@ public class BaseHandler implements XmlRpcInvocationHandler {
      */
     protected void validateMap(Set<String> validKeys, Map map) {
         String errors = null;
-        for (Iterator it = map.keySet().iterator(); it.hasNext();) {
-            String key = (String) it.next();
+        for (Object oIn : map.keySet()) {
+            String key = (String) oIn;
 
             if (!validKeys.contains(key)) {
                 // user passed an invalid key...

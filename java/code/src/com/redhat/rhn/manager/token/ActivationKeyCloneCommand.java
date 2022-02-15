@@ -32,7 +32,6 @@ import org.hibernate.NonUniqueObjectException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -84,17 +83,14 @@ public class ActivationKeyCloneCommand {
         cak.setDeployConfigs(ak.getDeployConfigs());
 
         // packages
-        for (Iterator<TokenPackage> it = ak.getPackages().iterator(); it
-                .hasNext();) {
-            TokenPackage temp = it.next();
+        for (TokenPackage temp : ak.getPackages()) {
             cak.addPackage(temp.getPackageName(), temp.getPackageArch());
         }
 
         // Configuration channels
         List<String> lcloneConfigChannels = new ArrayList<String>();
-        for (Iterator<ConfigChannel> it = ak.getConfigChannelsFor(userIn)
-                .iterator(); it.hasNext();) {
-            lcloneConfigChannels.add(it.next().getLabel());
+        for (ConfigChannel configChannelIn : ak.getConfigChannelsFor(userIn)) {
+            lcloneConfigChannels.add(configChannelIn.getLabel());
         }
 
         List<String> lcak = new ArrayList<String>();
