@@ -312,13 +312,8 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         List<NetworkInterface> nics = new LinkedList<>(
                 server.getNetworkInterfaces());
 
-        for (Iterator<NetworkInterface> itr = nics.iterator(); itr.hasNext();) {
-            NetworkInterface nic = itr.next();
-            if (nic.isDisabled() || nic.getIPv4Addresses().isEmpty() ||
-                    nic.getIPv4Addresses().get(0).getAddress().equals("127.0.0.1")) {
-                itr.remove();
-            }
-        }
+        nics.removeIf(nic -> nic.isDisabled() || nic.getIPv4Addresses().isEmpty() ||
+                nic.getIPv4Addresses().get(0).getAddress().equals("127.0.0.1"));
 
         return nics;
     }

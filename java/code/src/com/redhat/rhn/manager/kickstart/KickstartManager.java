@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.BaseManager;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -253,12 +252,7 @@ public class KickstartManager extends BaseManager {
      */
     public List<KickstartableTree> removeInvalid(List<KickstartableTree> trees) {
         List<KickstartableTree> ret = new LinkedList<>(trees);
-        for (Iterator<KickstartableTree> itr = ret.iterator(); itr.hasNext();) {
-            KickstartableTree tree = itr.next();
-            if (!tree.isValid()) {
-                itr.remove();
-            }
-        }
+        ret.removeIf(tree -> !tree.isValid());
         return ret;
     }
 }
