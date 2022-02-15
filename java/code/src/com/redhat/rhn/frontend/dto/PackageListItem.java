@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * PackageListItem
@@ -644,7 +645,7 @@ public class PackageListItem extends IdComboDto {
 
         PackageListItem that = (PackageListItem) o;
 
-        return idCombo != null ? !idCombo.equals(that.idCombo) : that.idCombo != null;
+        return !Objects.equals(idCombo, that.idCombo);
     }
 
     /** {@inheritDoc} */
