@@ -32,6 +32,7 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Show the overview page of the proxy
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "proxy"
+    And I wait until event "Package List Refresh scheduled by (none)" is completed
 
 @proxy
 @private_net
