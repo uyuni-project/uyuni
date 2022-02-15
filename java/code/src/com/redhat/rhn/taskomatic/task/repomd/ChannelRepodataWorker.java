@@ -261,7 +261,6 @@ public class ChannelRepodataWorker implements QueueWorker {
             logger.error("Error removing Channel from queue for Channel: " +
                     channelLabelToProcess, e);
             HibernateFactory.rollbackTransaction();
-            return;
         }
     }
 }
