@@ -322,18 +322,18 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         serializer.serialize(key, output, new XmlRpcSerializer());
         String finalResult = output.toString();
 
-        assertTrue(finalResult.indexOf(newKey) >= 0);
-        assertTrue(finalResult.indexOf(KEY_DESCRIPTION) >= 0);
-        assertTrue(finalResult.indexOf("<i4>" + KEY_USAGE_LIMIT + "</i4>") >= 0);
-        assertTrue(finalResult.indexOf("<string>" + baseChannelLabel + "</string>") >= 0);
+        assertTrue(finalResult.contains(newKey));
+        assertTrue(finalResult.contains(KEY_DESCRIPTION));
+        assertTrue(finalResult.contains("<i4>" + KEY_USAGE_LIMIT + "</i4>"));
+        assertTrue(finalResult.contains("<string>" + baseChannelLabel + "</string>"));
 
-        assertTrue(finalResult.indexOf(newName.getName()) >= 0);
-        assertTrue(finalResult.indexOf(newName2.getName()) >= 0);
-        assertTrue(finalResult.indexOf(newName3.getName()) >= 0);
+        assertTrue(finalResult.contains(newName.getName()));
+        assertTrue(finalResult.contains(newName2.getName()));
+        assertTrue(finalResult.contains(newName3.getName()));
 
         // Verify that the contact method is returned
-        assertTrue(finalResult.indexOf("<member><name>contact_method</name>" +
-                "<value><string>default</string></value></member>") >= 0);
+        assertTrue(finalResult.contains("<member><name>contact_method</name>" +
+                "<value><string>default</string></value></member>"));
     }
 
     public void testSetAddOnEntitlement() throws Exception {

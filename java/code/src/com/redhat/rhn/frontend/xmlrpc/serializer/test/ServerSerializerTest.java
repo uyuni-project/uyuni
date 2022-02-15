@@ -42,7 +42,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         serializer.serialize(server, output, new XmlRpcSerializer());
         String finalOutput = output.toString();
         commonAssertions(finalOutput, server);
-        assertTrue(finalOutput.indexOf("machine_id") < 0);
+        assertTrue(!finalOutput.contains("machine_id"));
 
     }
     /**
@@ -58,7 +58,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         serializer.serialize(server, output, new XmlRpcSerializer());
         String finalOutput = output.toString();
         commonAssertions(finalOutput, server);
-        assertTrue(finalOutput.indexOf("machine_id") >= 0);
+        assertTrue(finalOutput.contains("machine_id"));
     }
     /**
      * Test server of type Normal with machine Id
@@ -74,7 +74,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         serializer.serialize(server, output, new XmlRpcSerializer());
         String finalOutput = output.toString();
         commonAssertions(finalOutput, server);
-        assertTrue(finalOutput.indexOf("machine_id") >= 0);
+        assertTrue(finalOutput.contains("machine_id"));
 
     }
     /**
@@ -83,21 +83,21 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * @param server
      */
     public void commonAssertions(String finalOutput, Server server) {
-        assertTrue(finalOutput.indexOf(server.getName()) >= 0);
-        assertTrue(finalOutput.indexOf(EntitlementManager.ENTERPRISE_ENTITLED) >= 0);
-        assertTrue(finalOutput.indexOf("addon_entitlements") >= 0);
-        assertTrue(finalOutput.indexOf("auto_update") >= 0);
-        assertTrue(finalOutput.indexOf("description") >= 0);
-        assertTrue(finalOutput.indexOf("address1") >= 0);
-        assertTrue(finalOutput.indexOf("address2") >= 0);
-        assertTrue(finalOutput.indexOf("city") >= 0);
-        assertTrue(finalOutput.indexOf("state") >= 0);
-        assertTrue(finalOutput.indexOf("country") >= 0);
-        assertTrue(finalOutput.indexOf("building") >= 0);
-        assertTrue(finalOutput.indexOf("room") >= 0);
-        assertTrue(finalOutput.indexOf("rack") >= 0);
-        assertTrue(finalOutput.indexOf("lock_status") >= 0);
-        assertTrue(finalOutput.indexOf("contact_method") >= 0);
+        assertTrue(finalOutput.contains(server.getName()));
+        assertTrue(finalOutput.contains(EntitlementManager.ENTERPRISE_ENTITLED));
+        assertTrue(finalOutput.contains("addon_entitlements"));
+        assertTrue(finalOutput.contains("auto_update"));
+        assertTrue(finalOutput.contains("description"));
+        assertTrue(finalOutput.contains("address1"));
+        assertTrue(finalOutput.contains("address2"));
+        assertTrue(finalOutput.contains("city"));
+        assertTrue(finalOutput.contains("state"));
+        assertTrue(finalOutput.contains("country"));
+        assertTrue(finalOutput.contains("building"));
+        assertTrue(finalOutput.contains("room"));
+        assertTrue(finalOutput.contains("rack"));
+        assertTrue(finalOutput.contains("lock_status"));
+        assertTrue(finalOutput.contains("contact_method"));
     }
 
 }

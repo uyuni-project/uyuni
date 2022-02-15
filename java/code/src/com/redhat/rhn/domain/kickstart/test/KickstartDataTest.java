@@ -175,13 +175,13 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         String contents = FileUtils.readStringFromFile(k.buildCobblerFileName());
         assertTrue(contents.indexOf("\\$") > 0);
-        assertTrue(contents.indexOf("\\$" +
-                KickstartUrlHelper.COBBLER_MEDIA_VARIABLE) < 0);
+        assertTrue(!contents.contains("\\$" +
+                KickstartUrlHelper.COBBLER_MEDIA_VARIABLE));
         assertTrue(contents.indexOf("$" +
                 KickstartUrlHelper.COBBLER_MEDIA_VARIABLE) > 0);
 
         // Check for SNIPPETS
-        assertTrue(contents.indexOf("\\$SNIPPET") < 0);
+        assertTrue(!contents.contains("\\$SNIPPET"));
         assertTrue(contents.indexOf("$SNIPPET") > 0);
 
     }

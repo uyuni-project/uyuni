@@ -88,7 +88,7 @@ public class ExceptionsWrapperTest extends TestCase {
                     throw SqlExceptionTranslator.sqlException(e);
                 }
                 catch (ConstraintViolationException c) {
-                    assertTrue(c.getConstraint().indexOf("EXCEPTIONS_TEST_PK") >= 0);
+                    assertTrue(c.getConstraint().contains("EXCEPTIONS_TEST_PK"));
                     assertEquals(c.getConstraintType(), ExceptionConstants.VALUE_TOO_LARGE);
                 }
                 // PostgreSQL

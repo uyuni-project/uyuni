@@ -55,7 +55,7 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
         //trying show bttn logic
         assertEquals(Boolean.TRUE.toString(),
                     request.getAttribute("showApplyErrata"));
-        assertTrue(getActualForward().indexOf("errata.jsp") > -1);
+        assertTrue(getActualForward().contains("errata.jsp"));
 
         assertTrue(request.getAttribute("showApplyErrata").equals("true"));
         clearRequestParameters();

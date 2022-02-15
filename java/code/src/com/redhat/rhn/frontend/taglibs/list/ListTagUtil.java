@@ -709,7 +709,7 @@ public class ListTagUtil {
             for (StringTokenizer strtok = new StringTokenizer(queryString, "&");
                     strtok.hasMoreTokens();) {
                 String token = strtok.nextToken();
-                if (token.indexOf(listName) > -1 && token.indexOf("_page=") > -1) {
+                if (token.contains(listName) && token.contains("_page=")) {
                     continue;
                 }
                 if (url.endsWith("?")) {

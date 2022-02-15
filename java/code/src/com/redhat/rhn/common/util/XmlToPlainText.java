@@ -84,7 +84,7 @@ class XmlToPlainText {
     private void process(Text current) {
         String text = current.getTextTrim();
         if (!StringUtils.isBlank(text)) {
-            if (plainText.length() > 0 && IGNORABLES.indexOf(text) < 0) {
+            if (plainText.length() > 0 && !IGNORABLES.contains(text)) {
                 plainText.append(" ");
             }
             plainText.append(text);
