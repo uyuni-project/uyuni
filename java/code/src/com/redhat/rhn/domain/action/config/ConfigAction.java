@@ -107,7 +107,7 @@ public class ConfigAction extends Action {
     protected List<ConfigRevisionAction> getConfigRevisionActionsSorted() {
         List<ConfigRevisionAction> revisionActions = new ArrayList<>(
                 this.getConfigRevisionActions());
-        Collections.sort(revisionActions, (o1, o2) -> {
+        revisionActions.sort((o1, o2) -> {
             String p1 = o1.getConfigRevision().getConfigFile().
                     getConfigFileName().getPath();
             String p2 = o2.getConfigRevision().getConfigFile().

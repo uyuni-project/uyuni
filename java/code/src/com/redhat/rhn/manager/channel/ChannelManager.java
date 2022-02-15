@@ -2019,7 +2019,7 @@ public class ChannelManager extends BaseManager {
         if (dr.size() == 0) {
             return null;
         }
-        Collections.sort(dr, new EusReleaseComparator(rhelVersion));
+        dr.sort(new EusReleaseComparator(rhelVersion));
         return dr.get(dr.size() - 1);
     }
 

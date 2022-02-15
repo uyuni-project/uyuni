@@ -217,7 +217,7 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             Optional<SUSEProductSet> installedProducts, ChannelArch arch, User user) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
-        Collections.sort(migrationTargets, (tgt1, tgt2) -> {
+        migrationTargets.sort((tgt1, tgt2) -> {
             int i = PRODUCT_VERSION_COMPARATOR.compare(tgt2.getBaseProduct(), tgt1.getBaseProduct());
             if (i != 0) {
                 return i;

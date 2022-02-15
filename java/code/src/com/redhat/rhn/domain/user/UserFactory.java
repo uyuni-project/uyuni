@@ -39,7 +39,6 @@ import org.hibernate.query.Query;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -532,7 +531,7 @@ public  class UserFactory extends HibernateFactory {
 
             //Now sort the timezones, GMT+0000 at top, then East-to-West
             if (timeZones != null) {
-                Collections.sort(timeZones, (Comparator) (o1, o2) -> {
+                timeZones.sort((Comparator) (o1, o2) -> {
                     RhnTimeZone t1 = (RhnTimeZone) o1;
                     RhnTimeZone t2 = (RhnTimeZone) o2;
                     Integer offSet1 = t1.getTimeZone().getRawOffset();

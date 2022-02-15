@@ -35,7 +35,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -144,7 +143,7 @@ public class EditSlaveSetupAction extends RhnAction {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }
 
-        Collections.sort(outList, new OrgComparator());
+        outList.sort(new OrgComparator());
 
         return outList;
     }
