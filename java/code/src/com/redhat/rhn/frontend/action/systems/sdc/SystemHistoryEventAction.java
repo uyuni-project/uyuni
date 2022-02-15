@@ -72,9 +72,17 @@ public class SystemHistoryEventAction extends RhnAction {
         try {
             action = ActionManager.lookupAction(requestContext.getCurrentUser(), aid);
             serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+            if (serverAction == null) {
+                throw new LookupException("Could not find server action with id: " + action.getId());
+            }
         }
         catch (LookupException e) {
             ServerHistoryEvent event = ActionFactory.lookupHistoryEventById(aid);
+            // If there was no event found we assume the action details are no longer present
+            // and we forward to the system history
+            if (event == null) {
+                return mapping.findForward("continue");
+            }
             request.setAttribute("actionname", event.getSummary());
             request.setAttribute("actiontype", event.getSummary());
             request.setAttribute("earliestaction", event.getCreated());
