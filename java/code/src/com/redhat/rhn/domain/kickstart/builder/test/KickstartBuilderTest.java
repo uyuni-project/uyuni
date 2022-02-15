@@ -102,11 +102,11 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
         contents = FileUtils.readStringFromFile(rhel5data.getCobblerFileName());
         System.out.println("Contents: " + contents);
-        assertTrue(contents.indexOf("langsupport") < 0);
-        assertTrue(contents.indexOf("mouse") < 0);
-        assertTrue(contents.indexOf("zerombr yes") < 0);
+        assertTrue(!contents.contains("langsupport"));
+        assertTrue(!contents.contains("mouse"));
+        assertTrue(!contents.contains("zerombr yes"));
         assertTrue(contents.indexOf("zerombr") > 0);
-        assertTrue(contents.indexOf("resolvedeps") < 0);
+        assertTrue(!contents.contains("resolvedeps"));
 
     }
 
@@ -132,7 +132,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         builder.buildCommands(ksData, lines, tree);
 
         KickstartCommand rootpw = ksData.getCommand("rootpw");
-        assertTrue(rootpw.getArguments().indexOf("--iscrypted") < 0);
+        assertTrue(!rootpw.getArguments().contains("--iscrypted"));
         assertTrue(rootpw.getArguments().startsWith("$1$"));
     }
 

@@ -65,7 +65,7 @@ public class DoubleConstraint extends RequiredIfConstraint {
         try {
             double doubleValue = Double.parseDouble(value.toString());
             // Now we know its a valid number, lets check for a decimal value
-            if (value.toString().indexOf(".") > -1) {
+            if (value.toString().contains(".")) {
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
                 args[1] = getMinInclusive();

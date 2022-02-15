@@ -60,7 +60,7 @@ public class UserEditSetupAction extends RhnAction {
 
         //UserDetails under /rhn/users needs parameter, but /rhn/account does not
         Long uid = requestContext.getParamAsLong("uid");
-        if (request.getRequestURL().toString().indexOf("/rhn/users/") != -1 &&
+        if (request.getRequestURL().toString().contains("/rhn/users/") &&
                 uid == null) {
             throw new BadParameterException("Invalid uid for /rhn/users/");
         }
