@@ -18,6 +18,8 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.filter.DepthAware;
 
+import java.util.Objects;
+
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
@@ -253,10 +255,7 @@ public class VirtualSystemOverview extends SystemOverview
      * @return Returns the number of instances.
      */
     public Long getCountTotalInstances() {
-        if (countTotalInstances == null) {
-            return 0L;
-        }
-        return countTotalInstances;
+        return Objects.requireNonNullElse(countTotalInstances, 0L);
     }
     /**
      * @param countTotalInstancesIn the count of instances to set
@@ -270,10 +269,7 @@ public class VirtualSystemOverview extends SystemOverview
      *         state is not 'stopped' or 'crashed'.
      */
     public Long getCountActiveInstances() {
-        if (countActiveInstances == null) {
-            return 0L;
-        }
-        return countActiveInstances;
+        return Objects.requireNonNullElse(countActiveInstances, 0L);
     }
     /**
      * @param countActiveInstancesIn the count of active instances to set

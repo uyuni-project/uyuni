@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -120,12 +121,7 @@ public class SatConfigFactory extends HibernateFactory {
      * @param value value
      */
     public static void setSatConfigBooleanValue(String key, Boolean value) {
-        if (value == null) {
-            setSatConfigValue(key, Boolean.FALSE.toString());
-        }
-        else {
-            setSatConfigValue(key, value.toString());
-        }
+        setSatConfigValue(key, Objects.requireNonNullElse(value, Boolean.FALSE).toString());
     }
 
     /**

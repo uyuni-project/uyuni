@@ -62,6 +62,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.security.auth.login.LoginException;
@@ -1142,9 +1143,6 @@ public class UserManager extends BaseManager {
             serverGroupsName = (serverGroupsName == null) ? sg.getName() :
                 serverGroupsName + ", " + sg.getName();
         }
-        if (serverGroupsName == null) {
-            return "(none)";
-        }
-        return serverGroupsName;
+        return Objects.requireNonNullElse(serverGroupsName, "(none)");
     }
 }
