@@ -58,7 +58,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         RequestContext requestContext = new RequestContext(request);
         Long uid = requestContext.getParamAsLong("uid");
         //UserPreferences under /rhn/users needs parameter, but /rhn/account does not
-        if (request.getRequestURL().toString().indexOf("/rhn/users/") != -1 &&
+        if (request.getRequestURL().toString().contains("/rhn/users/") &&
                 uid == null) {
             throw new BadParameterException(
                     "Invalid [null] value for parameter uid");

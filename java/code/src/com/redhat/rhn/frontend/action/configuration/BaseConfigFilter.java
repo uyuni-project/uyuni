@@ -61,7 +61,7 @@ public abstract class BaseConfigFilter implements ListFilter {
         if (methodName != null) {
             String value = ListTagUtil.getBeanValue(object, methodName);
             if (value != null) {
-                retval = value.toLowerCase().indexOf(criteria) >= 0;
+                retval = value.toLowerCase().contains(criteria);
             }
         }
         return retval;

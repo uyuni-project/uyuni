@@ -388,7 +388,7 @@ public class CachedStatement implements Serializable {
         }
 
         // If we aren't actually operating on a list, just elaborate.
-        if (sqlStatement.indexOf("%s") == -1) {
+        if (!sqlStatement.contains("%s")) {
             return (DataResult<Object>) executeChecking(sqlStatement, qMap, parameters,
                     mode, resultList);
         }
