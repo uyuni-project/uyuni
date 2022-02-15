@@ -128,11 +128,7 @@ public class CheckinCandidatesSimulationTest extends TestCase {
      */
     private void addResult(HashMap<Integer, List<Integer>> results, Integer hour,
             Integer minutes) {
-        List<Integer> list = results.get(hour);
-        if (list == null) {
-            list = new ArrayList<>();
-            results.put(hour, list);
-        }
+        List<Integer> list = results.computeIfAbsent(hour, k -> new ArrayList<>());
         list.add(minutes);
     }
 

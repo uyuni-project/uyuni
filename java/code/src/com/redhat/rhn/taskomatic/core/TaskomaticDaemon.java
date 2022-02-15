@@ -218,9 +218,7 @@ public class TaskomaticDaemon {
         OptionBuilder.withDescription(description);
         Option option = OptionBuilder.create(longopt);
         accum.addOption(option);
-        if (this.masterOptionsMap.get(longopt) == null) {
-            this.masterOptionsMap.put(longopt, option);
-        }
+        this.masterOptionsMap.putIfAbsent(longopt, option);
     }
 
     /**

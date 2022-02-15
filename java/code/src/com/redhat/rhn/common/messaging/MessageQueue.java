@@ -204,11 +204,7 @@ public class MessageQueue {
                     " class: " + eventType.getName());
         }
         synchronized (ACTIONS) {
-            List<MessageAction> handlers = ACTIONS.get(eventType);
-            if (handlers == null) {
-                handlers = new ArrayList<>();
-                ACTIONS.put(eventType, handlers);
-            }
+            List<MessageAction> handlers = ACTIONS.computeIfAbsent(eventType, k -> new ArrayList<>());
             handlers.add(act);
         }
     }
