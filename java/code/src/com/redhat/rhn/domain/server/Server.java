@@ -309,12 +309,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     protected void setConfigChannelsHibernate(
             List<ConfigChannel> configChannelsIn) {
         configChannels = configChannelsIn;
-        for (Iterator<ConfigChannel> itr = configChannels.iterator(); itr
-                .hasNext();) {
-            if (itr.next() == null) {
-                itr.remove();
-            }
-        }
+        configChannels.removeIf(Objects::isNull);
     }
 
     /**

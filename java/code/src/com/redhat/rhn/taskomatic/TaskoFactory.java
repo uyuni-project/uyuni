@@ -32,7 +32,6 @@ import org.hibernate.criterion.Subqueries;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -484,11 +483,7 @@ public class TaskoFactory extends HibernateFactory {
             Integer scheduleId) {
         List<TaskoRun> runs = listRunsBySchedule(scheduleId.longValue());
         // verify it belongs to the right org
-        for (Iterator<TaskoRun> iter = runs.iterator(); iter.hasNext();) {
-            if (!runBelongToOrg(orgId, iter.next())) {
-                iter.remove();
-            }
-        }
+        runs.removeIf(taskoRunIn -> !runBelongToOrg(orgId, taskoRunIn));
         return runs;
     }
 

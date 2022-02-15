@@ -37,7 +37,6 @@ import org.cobbler.Distro;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -186,11 +185,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         }
         else {
             // Remove the Proxy channels from the child channel list
-            for (Iterator<Channel> iter = childchannels.iterator(); iter.hasNext();) {
-                if (iter.next().isProxy()) {
-                    iter.remove();
-                }
-            }
+            childchannels.removeIf(Channel::isProxy);
         }
         log.debug("AVAIL_CHILD_CHANNELS: " + childchannels);
         ctx.getRequest().setAttribute(AVAIL_CHILD_CHANNELS, childchannels);
