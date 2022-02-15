@@ -205,18 +205,20 @@ class CVEAudit extends React.Component<Props, State> {
             />
           </div>
           <div>
-          <br/>
+          <br />
             <p>
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href={"https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber}
+                href={
+                  "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber
+                }
                 data-senna-off="true"
                 >
-                  <IconTag type="external-link" />
-                  {t("MITRE CVE link")}
+                <IconTag type="external-link" />
+                {t("MITRE CVE link")}
               </a>
-              <br/>
+              <br />
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -225,8 +227,8 @@ class CVEAudit extends React.Component<Props, State> {
                 }
                 data-senna-off="true"
               >
-                <IconTag type="external-link" />
-                {t("SUSE Security CVE link")}
+              <IconTag type="external-link" />
+              {t("SUSE Security CVE link")}
               </a>
             </p>
           </div>
