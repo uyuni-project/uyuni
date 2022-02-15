@@ -24,7 +24,7 @@ Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.3.0
+Version:        4.3.1
 Release:        1
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
