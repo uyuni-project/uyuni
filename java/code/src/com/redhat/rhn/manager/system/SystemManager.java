@@ -728,12 +728,10 @@ public class SystemManager extends BaseManager {
         toRemove.stream().forEach(vi ->
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(vi));
 
-        server.asMinionServer().ifPresent(minion -> {
-            minion.getAccessTokens().forEach(token -> {
-                token.setValid(false);
-                AccessTokenFactory.save(token);
-            });
-        });
+        server.asMinionServer().ifPresent(minion -> minion.getAccessTokens().forEach(token -> {
+            token.setValid(false);
+            AccessTokenFactory.save(token);
+        }));
 
 
         // clean known_hosts

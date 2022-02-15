@@ -135,9 +135,8 @@ public class SaltActionChainGeneratorService {
             SaltState state = states.get(i);
 
             if (state instanceof AbstractSaltRequisites) {
-                prevRequisiteRef(fileStates).ifPresent(ref -> {
-                    ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue());
-                });
+                prevRequisiteRef(fileStates)
+                        .ifPresent(ref -> ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue()));
             }
             if (state instanceof IdentifiableSaltState) {
                 IdentifiableSaltState modRun = (IdentifiableSaltState)state;
@@ -382,9 +381,7 @@ public class SaltActionChainGeneratorService {
                 String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
                         "_" + minionServer.getMachineId() + "_*.sls";
                 try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir, filePattern)) {
-                    stream.forEach(slsFile -> {
-                        deleteSlsAndRefs(targetDir,  slsFile);
-                    });
+                    stream.forEach(slsFile -> deleteSlsAndRefs(targetDir,  slsFile));
                 }
                 catch (IOException e) {
                     LOG.warn("Error deleting action chain files", e);
@@ -407,9 +404,7 @@ public class SaltActionChainGeneratorService {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir,
                 ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId.map(id -> Long.toString(id)).orElse("*") +
                         "_" + machineId + "_*.sls")) {
-            stream.forEach(slsFile -> {
-                deleteSlsAndRefs(targetDir,  slsFile);
-            });
+            stream.forEach(slsFile -> deleteSlsAndRefs(targetDir,  slsFile));
         }
         catch (IOException e) {
             LOG.warn("Error deleting action chain files", e);

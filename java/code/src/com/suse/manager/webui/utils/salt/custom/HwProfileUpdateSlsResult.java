@@ -181,11 +181,9 @@ public class HwProfileUpdateSlsResult {
      * @return list of custom fqdns.
      */
     public List<String> getCustomFqdns() {
-        return Optional.ofNullable(this.getGrains().get("susemanager")).flatMap(susemanager -> {
-            return Optional.ofNullable(
-                    (List<String>)((Map<String, Object>)susemanager).get("custom_fqdns")
-            );
-        }).orElseGet(Collections::emptyList);
+        return Optional.ofNullable(this.getGrains().get("susemanager")).flatMap(susemanager -> Optional.ofNullable(
+                (List<String>)((Map<String, Object>)susemanager).get("custom_fqdns")
+        )).orElseGet(Collections::emptyList);
     }
 
 }

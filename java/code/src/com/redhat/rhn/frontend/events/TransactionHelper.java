@@ -50,12 +50,11 @@ public abstract class TransactionHelper {
 
         Optional<Exception> transactionException = handleTransactions(commit);
 
-        concat(stream(applicationException), stream(transactionException)).findFirst().ifPresent(e -> {
-            handlingTransaction(
+        concat(stream(applicationException), stream(transactionException)).findFirst()
+                .ifPresent(e -> handlingTransaction(
                     () -> errorHandler.accept(e),
                     f -> log.error("Additional Exception during Exception handling", f)
-            );
-        });
+        ));
     }
 
     private static Optional<Exception> run(Runnable r) {

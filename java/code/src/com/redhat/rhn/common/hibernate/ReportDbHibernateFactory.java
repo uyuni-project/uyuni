@@ -810,9 +810,7 @@ public class ReportDbHibernateFactory {
             Map<String, Object> parameters) {
         Query<Integer> query = getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
     }
@@ -833,9 +831,7 @@ public class ReportDbHibernateFactory {
             String idsParameterName, Map<String, Object> parameters) {
         Query<T> query = getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
                 new ArrayList<T>(), ListUtils::union);

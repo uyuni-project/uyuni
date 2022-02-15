@@ -273,13 +273,11 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getFormulaValuesByNameAndMinion(formula, server);
-                data.ifPresent(formData -> {
-                    server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
-                        server.getPillars().add(pillar);
-                        return pillar;
-                    }).setPillar(formData);
-                });
+                data.ifPresent(formData -> server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
+                    server.getPillars().add(pillar);
+                    return pillar;
+                }).setPillar(formData));
                 FileUtils.deleteFile(new File(getPillarDir() +
                         server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
@@ -495,13 +493,11 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getGroupFormulaValuesByNameAndGroup(formula, group);
-                data.ifPresent(formData -> {
-                    group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
-                        group.getPillars().add(pillar);
-                        return pillar;
-                    }).setPillar(formData);
-                });
+                data.ifPresent(formData -> group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
+                    group.getPillars().add(pillar);
+                    return pillar;
+                }).setPillar(formData));
                 FileUtils.deleteFile(new File(getGroupPillarDir() +
                         group.getId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });

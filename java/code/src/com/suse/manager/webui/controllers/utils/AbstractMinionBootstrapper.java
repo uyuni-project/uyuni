@@ -208,9 +208,7 @@ public abstract class AbstractMinionBootstrapper {
                         // Clean up the generated key pair in case of failure
                         boolean success = !errMessage.isPresent() &&
                                 result.getRetcode() == 0;
-                        errMessage.ifPresent(msg -> {
-                            LOG.error("States failed during bootstrap: " + msg);
-                        });
+                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: " + msg));
                         return new BootstrapResult(success, Optional.of(contactMethod),
                                 Opt.fold(errMessage, () -> null, m -> m.split("\\r?\\n")));
                     }

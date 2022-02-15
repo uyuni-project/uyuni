@@ -800,9 +800,7 @@ public abstract class HibernateFactory {
             Map<String, Object> parameters) {
         Query<Integer> query = HibernateFactory.getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
     }
@@ -823,9 +821,7 @@ public abstract class HibernateFactory {
             String idsParameterName, Map<String, Object> parameters) {
         Query<T> query = HibernateFactory.getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
                 new ArrayList<T>(), ListUtils::union);

@@ -304,18 +304,18 @@ public class SaltReactor {
     private Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
         if (beaconEvent.getBeacon().equals("pkgset") && beaconEvent.getAdditional().equals("changed")) {
             return of(
-                    new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
-                        MinionServerFactory.findByMinionId(beaconEvent.getMinionId()).ifPresent(minionServer -> {
-                            try {
-                                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
-                            }
-                            catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: " +
-                                        minionServer.getMinionId());
-                                LOG.error(e);
-                            }
-                        });
-                    })
+                    new RunnableEventMessage("ZypperEvent.PackageSetChanged",
+                            () -> MinionServerFactory.findByMinionId(beaconEvent.getMinionId())
+                                    .ifPresent(minionServer -> {
+                        try {
+                            ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                        }
+                        catch (TaskomaticApiException e) {
+                            LOG.error("Could not schedule package refresh for minion: " +
+                                    minionServer.getMinionId());
+                            LOG.error(e);
+                        }
+                    }))
             );
         }
         return empty();

@@ -679,9 +679,8 @@ public class HardwareMapper {
                 }
             }
             else {
-                virtualInstances.forEach(virtualInstance -> {
-                    updateVirtualInstance(vCPUs, memory, virtType, virtualInstance);
-                });
+                virtualInstances.forEach(
+                        virtualInstance -> updateVirtualInstance(vCPUs, memory, virtType, virtualInstance));
             }
         }
     }

@@ -118,10 +118,8 @@ public class ServerFactory extends HibernateFactory {
             SINGLETON.removeObject(value);
         }
         server.getCustomDataValues().clear();
-        server.asMinionServer().ifPresent(minion -> {
-           MinionPillarManager.INSTANCE.generatePillar(minion, false,
-               MinionPillarManager.PillarSubset.CUSTOM_INFO);
-        });
+        server.asMinionServer().ifPresent(minion -> MinionPillarManager.INSTANCE.generatePillar(minion, false,
+            MinionPillarManager.PillarSubset.CUSTOM_INFO));
     }
 
     /**
@@ -136,10 +134,8 @@ public class ServerFactory extends HibernateFactory {
         if (value != null) {
             SINGLETON.removeObject(value);
         }
-        server.asMinionServer().ifPresent(minion -> {
-           MinionPillarManager.INSTANCE.generatePillar(minion, false,
-               MinionPillarManager.PillarSubset.CUSTOM_INFO);
-        });
+        server.asMinionServer().ifPresent(minion -> MinionPillarManager.INSTANCE.generatePillar(minion, false,
+            MinionPillarManager.PillarSubset.CUSTOM_INFO));
     }
 
     /**
@@ -714,10 +710,8 @@ public class ServerFactory extends HibernateFactory {
             Server server = value.getServer();
             server.getCustomDataValues().remove(value);
             SINGLETON.removeObject(value);
-            server.asMinionServer().ifPresent(minion -> {
-                MinionPillarManager.INSTANCE.generatePillar(minion, false,
-                        MinionPillarManager.PillarSubset.CUSTOM_INFO);
-            });
+            server.asMinionServer().ifPresent(minion -> MinionPillarManager.INSTANCE.generatePillar(minion, false,
+                    MinionPillarManager.PillarSubset.CUSTOM_INFO));
         }
 
         SINGLETON.removeObject(keyIn);

@@ -331,12 +331,10 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return a stream of suse product channels which are required by the channel
      */
     public static Stream<SUSEProductSCCRepository> findAllMandatoryChannels(String channelLabel) {
-        return lookupByChannelLabelFirst(channelLabel).map(spsr -> {
-            return findAllMandatoryChannels(
-                    spsr.getProduct(),
-                    spsr.getRootProduct()
-            );
-        }).orElseGet(Stream::empty);
+        return lookupByChannelLabelFirst(channelLabel).map(spsr -> findAllMandatoryChannels(
+                spsr.getProduct(),
+                spsr.getRootProduct()
+        )).orElseGet(Stream::empty);
     }
 
     /**

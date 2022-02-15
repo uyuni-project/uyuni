@@ -1171,9 +1171,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testHardwareProfileXenHost()  throws Exception {
-        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json", (server) -> {
-            assertFalse("system should not be a virtual guest", server.isVirtualGuest());
-        });
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json",
+                (server) -> assertFalse("system should not be a virtual guest", server.isVirtualGuest()));
     }
 
     public void testHardwareProfilePublicCloud()  throws Exception {

@@ -98,9 +98,8 @@ public class ActivationKeysController {
      * @return the json response
      */
     public static String getChannels(Request request, Response response, User user) {
-        return withActivationKey(request, response, user, (activationKey) -> {
-            return json(response, ResultJson.success(ChannelsJson.fromChannelSet(activationKey.getChannels())));
-        });
+        return withActivationKey(request, response, user, (activationKey) -> json(response,
+                ResultJson.success(ChannelsJson.fromChannelSet(activationKey.getChannels()))));
     }
 
 

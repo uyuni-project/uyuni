@@ -558,9 +558,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
         setChangedValues(ucc, details);
 
         ucc.update(channelId.longValue());
-        ServerFactory.listMinionsByChannel(channelId).stream().forEach(ms -> {
-            MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet());
-        });
+        ServerFactory.listMinionsByChannel(channelId).stream()
+                .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
         return 1;
     }
 

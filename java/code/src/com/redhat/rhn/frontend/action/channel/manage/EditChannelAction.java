@@ -413,10 +413,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             updated.setGloballySubscribable((sharing != null) &&
                     ("all".equals(sharing)), loggedInUser.getOrg());
             updated = (Channel) ChannelFactory.reload(updated);
-            ServerFactory.listMinionsByChannel(updated.getId()).stream().forEach(ms -> {
-                MinionPillarManager.INSTANCE.generatePillar(ms, false,
-                        Collections.emptySet());
-            });
+            ServerFactory.listMinionsByChannel(updated.getId()).stream()
+                    .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
 
         }
         catch (InvalidGPGFingerprintException borg) {

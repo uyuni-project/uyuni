@@ -127,9 +127,8 @@ public class AdminViewsController {
         Integer sshPaygId = Integer.valueOf(request.params("id"));
         Optional<PaygSshData> paygSshDataOptional = PaygSshDataFactory.lookupById(sshPaygId);
 
-        paygSshDataOptional.ifPresent(paygSshData -> {
-            data.put("paygInstance", GSON.toJson(PaygResponseMappers.mapPaygPropertiesFullFromDB(paygSshData)));
-        });
+        paygSshDataOptional.ifPresent(paygSshData -> data.put("paygInstance",
+                GSON.toJson(PaygResponseMappers.mapPaygPropertiesFullFromDB(paygSshData))));
         if (!paygSshDataOptional.isEmpty()) {
             data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(request));
         }

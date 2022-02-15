@@ -1562,9 +1562,7 @@ public class SystemHandler extends BaseHandler {
             item.put("release", pi.getRelease());
             item.put("arch", Optional.ofNullable(pi.getArch())
                     .orElseGet(() -> LocalizationService.getInstance().getMessage("Unknown")));
-            Optional.ofNullable(pi.getInstallTimeObj()).ifPresent(it -> {
-                item.put("installtime", it);
-            });
+            Optional.ofNullable(pi.getInstallTimeObj()).ifPresent(it -> item.put("installtime", it));
             item.put("retracted", pi.isRetracted());
             return item;
         }).collect(toList());
@@ -2092,10 +2090,8 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
-        server.asMinionServer().ifPresent(minion -> {
-            MinionPillarManager.INSTANCE.generatePillar(minion, false,
-                MinionPillarManager.PillarSubset.CUSTOM_INFO);
-        });
+        server.asMinionServer().ifPresent(minion -> MinionPillarManager.INSTANCE.generatePillar(minion, false,
+            MinionPillarManager.PillarSubset.CUSTOM_INFO));
 
         // If we skipped any keys, we need to throw an exception and let the user know.
         if (skippedKeys.size() > 0) {
