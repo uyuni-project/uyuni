@@ -176,7 +176,7 @@ public class TestUtils {
      */
     public static String readAll(InputStream stream) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuffer expected = new StringBuffer();
+        StringBuilder expected = new StringBuilder();
         while (reader.ready()) {
             expected.append(reader.readLine()).append("\n");
         }

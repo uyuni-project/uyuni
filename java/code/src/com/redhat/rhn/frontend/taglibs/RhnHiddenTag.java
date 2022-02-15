@@ -97,7 +97,7 @@ public class RhnHiddenTag extends TagSupport {
     public int doStartTag() throws JspException {
         JspWriter out = null;
         try {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             out = pageContext.getOut();
 
             HtmlTag baseTag = new HiddenInputTag();

@@ -173,8 +173,8 @@ public class RhnMockDynaActionForm extends DynaActionForm
             }
 
             if (!expValue.equals(actValue)) {
-                StringBuffer msg =
-                        new StringBuffer("Did not receive expected values.\n");
+                StringBuilder msg =
+                        new StringBuilder("Did not receive expected values.\n");
                 msg.append("key [");
                 msg.append(key);
                 msg.append("] expected value [");
