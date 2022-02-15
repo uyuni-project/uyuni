@@ -151,7 +151,6 @@ public class SchedulerKernel {
                     this.shutdownLock.wait();
                 }
                 catch (InterruptedException ignored) {
-                    return;
                 }
             }
         }
@@ -248,7 +247,6 @@ public class SchedulerKernel {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 }
