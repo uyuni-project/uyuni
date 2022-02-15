@@ -155,7 +155,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the groups.
      */
     public Set<ServerGroup> getUnmodifiableGroups() {
-        return  Collections.unmodifiableSet(new HashSet<>(groups));
+        return Set.copyOf(groups);
     }
 
     /**
