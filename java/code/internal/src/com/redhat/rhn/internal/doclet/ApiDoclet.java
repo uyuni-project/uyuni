@@ -209,7 +209,7 @@ public abstract class ApiDoclet implements Doclet {
                         handler.setDesc(text);
                     }
                     return null;
-                };
+                }
             }.scan(docTree.getBlockTags(), handler);
 
             if (handler.isIgnored()) {
@@ -276,11 +276,11 @@ public abstract class ApiDoclet implements Doclet {
                                             call.setReturnDoc(rawText);
                                         }
                                         return null;
-                                    };
+                                    }
                                 }.scan(docEnv.getDocTrees().getDocCommentTree(executable).getBlockTags(), null);
 
                                 return call;
-                            };
+                            }
                         }.visit(element);
                         return call;
                     })
@@ -329,11 +329,11 @@ public abstract class ApiDoclet implements Doclet {
                         return text;
                     }
                     return null;
-                };
+                }
 
                 public String reduce(String r1, String r2) {
                     return (r1 == null ? "" : r1) + (r2 == null ? "" : r2);
-                };
+                }
             }.scan(docTrees.getDocCommentTree(clas).getBlockTags(), null);
 
             if (doc != null) {
@@ -365,7 +365,7 @@ public abstract class ApiDoclet implements Doclet {
         @Override
         public String visitText(TextTree node, Void p) {
             return node.getBody();
-        };
+        }
 
         @Override
         public String visitEntity(EntityTree node, Void p) {
@@ -379,6 +379,6 @@ public abstract class ApiDoclet implements Doclet {
 
         public String reduce(String r1, String r2) {
             return (r2 == null ? "" : r2) + (r1 == null ? "" : r1);
-        };
+        }
     }
 }
