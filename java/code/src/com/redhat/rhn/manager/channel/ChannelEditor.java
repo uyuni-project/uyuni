@@ -79,15 +79,13 @@ public class ChannelEditor {
                                 Collection packageIds, boolean add) {
         //Make sure the person adding packages is a channel admin
         if (!UserManager.verifyChannelAdmin(user, channel)) {
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" does not have channel admin access to channel: ");
-            msg.append(channel.getLabel());
 
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(msg.toString());
+            String msg = "User: " + user.getLogin() + " does not have channel admin access to channel: " +
+                    channel.getLabel();
+            PermissionException pex = new PermissionException(msg);
             pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
             throw pex;
