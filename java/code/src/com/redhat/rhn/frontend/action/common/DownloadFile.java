@@ -846,7 +846,7 @@ public class DownloadFile extends DownloadAction {
         response.addHeader("Accept-Ranges", "bytes");
         if (log.isDebugEnabled()) {
             log.debug("Added header last-modified: " + fdate);
-            log.debug("Added header Content-Length: " + String.valueOf(size));
+            log.debug("Added header Content-Length: " + size);
             log.debug("Added header Content-Range: " + "bytes " + start +
                     "-" + end + "/" + totalSize);
             log.debug("Added header Accept-Ranges: bytes");
