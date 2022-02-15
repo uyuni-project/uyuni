@@ -77,6 +77,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
@@ -153,7 +154,7 @@ public class SaltService implements SystemQuery, SaltApi {
             MinionPendingRegistrationService.containsSSHMinion(mid) ||
                         MinionServerFactory
                                 .findByMinionId(mid)
-                                .filter(m -> MinionServerUtils.isSshPushMinion(m))
+                                .filter(MinionServerUtils::isSshPushMinion)
                                 .isPresent();
 
     private static final String CLEANUP_MINION_SALT_STATE = "cleanup_minion";
@@ -317,8 +318,8 @@ public class SaltService implements SystemQuery, SaltApi {
         try {
             LOG.debug("Runner callSync: " + runnerCallToString(call));
             Result<R> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
-            return result.fold(p -> errorHandler.apply(p),
-                    r -> Optional.of(r)
+            return result.fold(errorHandler::apply,
+                    Optional::of
             );
         }
         catch (SaltException e) {
@@ -394,8 +395,8 @@ public class SaltService implements SystemQuery, SaltApi {
             LOG.debug("Wheel callSync: " + wheelCallToString(call));
             WheelResult<Result<R>> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
             return result.getData().getResult().fold(
-                    err -> errorHandler.apply(err),
-                    r -> Optional.of(r));
+                    errorHandler::apply,
+                    Optional::of);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -707,7 +708,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     callSync(Match.compound(target, Optional.empty()), new Glob("*"));
             return result.entrySet().stream()
                     .filter(e -> e.getValue().result().isPresent() && Boolean.TRUE.equals(e.getValue().result().get()))
-                    .map(e -> e.getKey())
+                    .map(Entry::getKey)
                     .collect(Collectors.toList());
         }
         catch (SaltException e) {
@@ -933,7 +934,7 @@ public class SaltService implements SystemQuery, SaltApi {
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
-                Opt.fold(metadataIn, () -> ScheduleMetadata.getDefaultMetadata(), Function.identity()).withBatchMode();
+                Opt.fold(metadataIn, ScheduleMetadata::getDefaultMetadata, Function.identity()).withBatchMode();
         LOG.debug("Local callAsync: " + SaltService.localCallToString(callIn));
         return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
@@ -1276,7 +1277,7 @@ public class SaltService implements SystemQuery, SaltApi {
                         throw new NoSuchElementException();
                     }
                 )
-        ).map(s -> s.getContainers());
+        ).map(MgrK8sRunner.ContainersList::getContainers);
     }
 
     /**
@@ -1354,7 +1355,7 @@ public class SaltService implements SystemQuery, SaltApi {
         //response is empty in case the minion is down
         if (response.isPresent()) {
             return response.get().values().stream().filter(value -> !value.isResult())
-                    .map(value -> value.getComment())
+                    .map(StateApplyResult::getComment)
                     .collect(Collectors.collectingAndThen(Collectors.toList(),
                             (list) -> list.isEmpty() ? Optional.<List<String>>empty() :
                                     Optional.of(list)));

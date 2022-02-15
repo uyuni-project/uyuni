@@ -193,16 +193,13 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
-    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = new Comparator<>() {
-        @Override
-        public int compare(SUSEProduct o1, SUSEProduct o2) {
-            int result = new RpmVersionComparator().compare(
-                    o1.getVersion(), o2.getVersion());
-            if (result != 0) {
-                return result;
-            }
-            return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
+    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = (o1, o2) -> {
+        int result = new RpmVersionComparator().compare(
+                o1.getVersion(), o2.getVersion());
+        if (result != 0) {
+            return result;
         }
+        return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
     };
 
     public static final Comparator<List<SUSEProduct>> PRODUCT_LIST_VERSION_COMPARATOR =
@@ -345,7 +342,7 @@ public class DistUpgradeManager extends BaseManager {
                                     baseSucc.getFriendlyName() + ":");
                             // let's print out list of list with friendly names
                             compatibleExtensionSuccessors.stream()
-                                    .map(css -> css.stream().map(cs -> cs.getFriendlyName()).collect(toList()))
+                                    .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
                                     .forEach(css -> logger.debug(css));
                             logger.debug("-----------------------");
                         }

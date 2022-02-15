@@ -28,7 +28,6 @@ import com.sun.source.util.DocTrees;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -349,12 +348,7 @@ public abstract class ApiDoclet implements Doclet {
         return classes.stream()
             .filter(clazz -> clazz.getSuperclass() != null &&
                     types.asElement(clazz.getSuperclass()).getSimpleName().contentEquals("BaseHandler"))
-            .sorted(new Comparator<>() {
-                @Override
-                public int compare(TypeElement o1, TypeElement o2) {
-                    return o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString());
-                }
-            })
+            .sorted((o1, o2) -> o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString()))
             .collect(Collectors.toList());
     }
 

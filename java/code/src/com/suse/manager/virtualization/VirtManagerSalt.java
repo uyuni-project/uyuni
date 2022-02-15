@@ -160,7 +160,7 @@ public class VirtManagerSalt implements VirtManager {
         // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
         return result.entrySet().stream()
                 .filter(entry -> entry.getValue().isJsonObject())
-                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getAsJsonObject()));
     }
 
     @Override
@@ -210,7 +210,7 @@ public class VirtManagerSalt implements VirtManager {
         // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
         return result.entrySet().stream()
                 .filter(entry -> entry.getValue().isJsonObject())
-                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getAsJsonObject()));
     }
 
     /**

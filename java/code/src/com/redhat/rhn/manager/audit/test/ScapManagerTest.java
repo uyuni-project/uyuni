@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.audit.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -332,7 +333,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         Set<String> resultIds = result.getResults().stream()
                 .filter(rr -> rr.getResultType().getLabel().equals(ruleType))
                 .flatMap(rr -> rr.getIdents().stream())
-                .map(ident -> ident.getIdentifier())
+                .map(XccdfIdent::getIdentifier)
                 .collect(Collectors.toSet());
         assertEquals(ruleIds.size(), resultIds.size());
         assertTrue("Expected but missing rules: " + resultIds.stream()

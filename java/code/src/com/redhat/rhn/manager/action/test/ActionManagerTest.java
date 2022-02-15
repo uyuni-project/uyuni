@@ -554,7 +554,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 .map(a -> new ImmutablePair<>(
                                 a,
                                 a.getServerActions().stream()
-                                        .map(sa -> sa.getServer())
+                                        .map(ServerAction::getServer)
                                         .collect(toSet())
                         )
                 )

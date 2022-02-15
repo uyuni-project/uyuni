@@ -164,7 +164,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void cleanupOrphanVendorContentSource() {
         List<ContentSource> unused = singleton.listObjectsByNamedQuery(
                 "ContentSource.findUnusedVendorContentSources", Collections.EMPTY_MAP);
-        unused.forEach(cs -> remove(cs));
+        unused.forEach(ChannelFactory::remove);
     }
 
     /**
@@ -1020,7 +1020,7 @@ public class ChannelFactory extends HibernateFactory {
                 .listObjectsByNamedQuery("Channel.findChildChannelsByParentInSSM", params);
         return res
                 .stream()
-                .map(r -> Arrays.asList(r))
+                .map(Arrays::asList)
                 .map(r -> new SsmChannelDto((long)r.get(0), (String)r.get(1), r.get(2) != null))
                 .collect(Collectors.toList());
     }

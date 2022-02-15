@@ -39,6 +39,7 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.utils.Key;
 
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -164,12 +165,7 @@ public class SchedulerKernel {
      * separate thread to prevent Quartz scheduler errors.
      */
     public void startShutdown() {
-        Runnable shutdownTask = new Runnable() {
-            @Override
-            public void run() {
-                shutdown();
-            }
-        };
+        Runnable shutdownTask = () -> shutdown();
         Thread t = new Thread(shutdownTask);
         t.setDaemon(true);
         t.start();
@@ -206,7 +202,7 @@ public class SchedulerKernel {
         Date now = new Date();
         try {
             jobNames = SchedulerKernel.scheduler.getJobKeys(GroupMatcher.anyJobGroup())
-                    .stream().map(jobKey -> jobKey.getName()).collect(toSet());
+                    .stream().map(Key::getName).collect(toSet());
             for (TaskoSchedule schedule : TaskoFactory.listActiveSchedulesByOrg(null)) {
                 if (!jobNames.contains(schedule.getJobLabel())) {
                     schedule.sanityCheckForPredefinedSchedules();

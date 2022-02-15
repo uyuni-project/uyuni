@@ -143,7 +143,7 @@ public class PaygAdminManager {
         ValidatorResult result = new ValidatorResult();
         details.keySet().forEach(field -> {
             if (!Arrays.stream(PaygAdminFields.values())
-                    .filter(f-> f.isEditable())
+                    .filter(PaygAdminFields::isEditable)
                     .anyMatch(f -> f.name().equals(field))) {
                 result.addError("payg.unknown_edit_field", field);
             }
@@ -345,9 +345,9 @@ public class PaygAdminManager {
         LOG.debug("deleting " + paygSshData.getId() + " -> " + paygSshData.getHost());
         List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.
                 lookupRepositoryAuthByCredential(paygSshData.getCredentials());
-        existingRepos.forEach(a -> SCCCachingFactory.deleteRepositoryAuth(a));
-        Optional.ofNullable(paygSshData.getCredentials()).ifPresent(c-> CredentialsFactory.removeCredentials(c));
-        Optional.ofNullable(paygSshData.getRmtHosts()).ifPresent(h -> CloudRmtHostFactory.deleteCloudRmtHost(h));
+        existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);
+        Optional.ofNullable(paygSshData.getCredentials()).ifPresent(CredentialsFactory::removeCredentials);
+        Optional.ofNullable(paygSshData.getRmtHosts()).ifPresent(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.deletePaygSshData(paygSshData);
         return true;
     }

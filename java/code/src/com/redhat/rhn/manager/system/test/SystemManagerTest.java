@@ -90,6 +90,7 @@ import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
+import com.redhat.rhn.frontend.dto.NetworkDto;
 import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
@@ -1897,7 +1898,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 .get()
                 .getSystems()
                 .stream()
-                .map(dto -> dto.getId())
+                .map(NetworkDto::getId)
                 .collect(Collectors.toSet());
     }
 }

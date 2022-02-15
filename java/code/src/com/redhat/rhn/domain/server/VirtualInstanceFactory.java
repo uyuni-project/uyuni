@@ -127,12 +127,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * is found.
      */
     public VirtualInstance lookupById(final Long id) {
-        return (VirtualInstance)execute(new HibernateCallback() {
-           @Override
-        public Object executeInSession(Session session) {
-                return session.get(VirtualInstance.class, id);
-            }
-        });
+        return (VirtualInstance)execute(session -> session.get(VirtualInstance.class, id));
     }
 
     /**

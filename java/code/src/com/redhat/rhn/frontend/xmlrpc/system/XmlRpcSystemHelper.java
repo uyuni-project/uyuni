@@ -94,7 +94,7 @@ public class XmlRpcSystemHelper {
     public List<Server> lookupServers(User user, List<? extends Number> serverIds) throws NoSuchSystemException {
         try {
             return SystemManager.lookupByServerIdsAndUser(
-                    serverIds.stream().map(s -> s.longValue()).collect(Collectors.toList()), user.getId());
+                    serverIds.stream().map(Number::longValue).collect(Collectors.toList()), user.getId());
         }
         catch (LookupException e) {
             throw new NoSuchSystemException("No such systems found for user: " + user.getId());

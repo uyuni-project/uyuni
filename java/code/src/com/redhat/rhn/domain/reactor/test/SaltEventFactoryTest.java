@@ -107,11 +107,11 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         List<SaltEvent> saltEvents = IntStream.range(0, count)
                 .mapToObj(i -> new SaltEvent(i, "minion_" + i, "data_minion_" + i, i % 3 + 1))
                 .collect(Collectors.toList());
-        saltEvents.forEach(se -> insertIntoSuseSaltEvent(se));
+        saltEvents.forEach(this::insertIntoSuseSaltEvent);
 
 
         Map<Integer, List<SaltEvent>> hashedSaltEvents =  saltEvents.stream()
-                .collect(Collectors.groupingBy(se -> se.getQueue()));
+                .collect(Collectors.groupingBy(SaltEvent::getQueue));
 
         saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 2L, 1L, 1L), saltEventsCount);
@@ -120,7 +120,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
             List<SaltEvent> popedEvents = SaltEventFactory.popSaltEvents(count, queue).collect(Collectors.toList());
             assertEquals(popedEvents.size(), hashedSaltEvents.getOrDefault(queue, new ArrayList<>()).size());
             assertTrue(popedEvents.stream()
-                    .allMatch(pse -> hashedSaltEvents.get(queue).stream().anyMatch(se -> pse.equals(se))));
+                    .allMatch(pse -> hashedSaltEvents.get(queue).stream().anyMatch(pse::equals)));
         });
 
         saltEventsCount = SaltEventFactory.countSaltEvents(4);

@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -228,7 +229,7 @@ public class SsmManager {
 
         return systemsWithNoBaseChannel.stream()
                 .map(srv -> handleSingleSystemChannelAddition(srvChanges, srv, earliest, user))
-                .filter(c -> c != null);
+                .filter(Objects::nonNull);
     }
 
     private static ChannelSelectionResult handleSingleSystemChannelAddition(Set<ChannelChangeDto> srvChanges,
@@ -364,7 +365,7 @@ public class SsmManager {
                     childChannels,
                     earliest,
                     actionChain);
-            long actionId = actions.stream().findFirst().map(a -> a.getId())
+            long actionId = actions.stream().findFirst().map(Action::getId)
                     .orElseThrow(() -> new RuntimeException("No subscribe channels actions was scheduled"));
 
             return results.stream()
@@ -616,7 +617,7 @@ public class SsmManager {
 
             Optional<Channel> newRootChannel = newBaseChannelDto
                     .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user))
-                    .map(channel -> ChannelManager.getOriginalChannel(channel));
+                    .map(ChannelManager::getOriginalChannel);
 
             newRootChannel.ifPresent(rootChannel -> {
                 Stream<Channel> childChannelStream = change.getChildChannels().stream()

@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
@@ -67,7 +68,8 @@ public class ContentProjectSerializer extends RhnXmlRpcCustomSerializer {
                 .max(Comparator.naturalOrder())
                 .orElse(null));
         helper.add("orgId", contentProject.getOrg().getId());
-        helper.add("firstEnvironment", contentProject.getFirstEnvironmentOpt().map(e -> e.getLabel()).orElse(null));
+        helper.add("firstEnvironment",
+                contentProject.getFirstEnvironmentOpt().map(ContentEnvironment::getLabel).orElse(null));
         helper.writeTo(writer);
     }
 }

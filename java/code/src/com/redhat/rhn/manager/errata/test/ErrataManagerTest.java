@@ -27,6 +27,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
@@ -126,7 +127,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testSearchByPackagesIds() throws Exception {
         searchByPackagesIdsHelper(
                 Optional.empty(),
-                (pids) -> ErrataManager.searchByPackageIds(pids));
+                ErrataManager::searchByPackageIds);
     }
 
     public void testSearchByPackagesIdsInOrg() throws Exception {
@@ -158,7 +159,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.addPackage(p);
         ErrataFactory.save(e);
 
-        channel.ifPresent(c -> e.addChannel(c));
+        channel.ifPresent(e::addChannel);
 
         WebSession session = WebSessionFactory.createSession();
         WebSessionFactory.save(session);
@@ -1353,10 +1354,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
         Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server1))
-            .map(e -> e.getAction())
-            .map(a -> errataActionFromAction(a))
+            .map(ActionChainEntry::getAction)
+            .map(this::errataActionFromAction)
             .flatMap(a -> a.getErrata().stream())
-            .map(e -> e.getId())
+            .map(Errata::getId)
             .collect(Collectors.toSet());
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
@@ -1365,15 +1366,15 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
         assertEquals("action chain actually has 2 entries", 2, actionChain.getEntries().size());
         assertEquals("action chain points to 2 actions only", 2,
-                actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
+                actionChain.getEntries().stream().map(ActionChainEntry::getActionId).distinct().count());
         assertEquals("action chain points to 2 servers", 2,
-                actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+                actionChain.getEntries().stream().map(ActionChainEntry::getServerId).distinct().count());
         Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server2))
-            .map(e -> e.getAction())
-            .map(a -> errataActionFromAction(a))
+            .map(ActionChainEntry::getAction)
+            .map(this::errataActionFromAction)
             .flatMap(a -> a.getErrata().stream())
-            .map(e -> e.getId())
+            .map(Errata::getId)
             .collect(Collectors.toSet());
 
         assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
@@ -1460,10 +1461,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
         Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server1))
-            .map(e -> e.getAction())
-            .map(a -> errataActionFromAction(a))
+            .map(ActionChainEntry::getAction)
+            .map(this::errataActionFromAction)
             .flatMap(a -> a.getErrata().stream())
-            .map(e -> e.getId())
+            .map(Errata::getId)
             .collect(Collectors.toSet());
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
@@ -1472,15 +1473,15 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
         assertEquals("action chain actually has 4 entries", 4, actionChain.getEntries().size());
         assertEquals("action chain points to 4 actions", 4,
-                actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
+                actionChain.getEntries().stream().map(ActionChainEntry::getActionId).distinct().count());
         assertEquals("action chain points to 2 servers", 2,
-                actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+                actionChain.getEntries().stream().map(ActionChainEntry::getServerId).distinct().count());
         Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server2))
-            .map(e -> e.getAction())
-            .map(a -> errataActionFromAction(a))
+            .map(ActionChainEntry::getAction)
+            .map(this::errataActionFromAction)
             .flatMap(a -> a.getErrata().stream())
-            .map(e -> e.getId())
+            .map(Errata::getId)
             .collect(Collectors.toSet());
 
         assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
@@ -1658,7 +1659,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataFactory.save(retractedPatch);
 
         DataResult<ErrataOverview> patches = ErrataManager.allErrata(user);
-        Map<Long, ErrataOverview> patchesMap = patches.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        Map<Long, ErrataOverview> patchesMap = patches.stream()
+                .collect(Collectors.toMap(ErrataOverview::getId, p -> p));
         assertEquals(2, patches.size());
         assertEquals(AdvisoryStatus.FINAL, patchesMap.get(patch.getId()).getAdvisoryStatus());
         assertEquals(AdvisoryStatus.RETRACTED, patchesMap.get(retractedPatch.getId()).getAdvisoryStatus());

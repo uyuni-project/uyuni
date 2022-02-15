@@ -36,8 +36,6 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import simple.http.Request;
-import simple.http.Response;
 
 /**
  * Tests for {@link SCCClient} methods.
@@ -234,16 +232,13 @@ public class SCCClientTest extends TestCase {
      * @throws Exception if things go wrong
      */
     public void testErrorResponse() throws Exception {
-        Responder errorResponder = new Responder() {
-            @Override
-            public void respond(Request requestIn, Response responseIn) {
-                responseIn.setCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
-                try {
-                    responseIn.getPrintStream().close();
-                }
-                catch (IOException e) {
-                    // never happens
-                }
+        Responder errorResponder = (requestIn, responseIn) -> {
+            responseIn.setCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
+            try {
+                responseIn.getPrintStream().close();
+            }
+            catch (IOException e) {
+                // never happens
             }
         };
 

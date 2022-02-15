@@ -17,6 +17,7 @@ package com.suse.manager.reactor.messaging.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -220,22 +221,22 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         Action action11 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion1))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
-                .map(e -> e.getAction())
+                .map(ActionChainEntry::getAction)
                 .findFirst().get();
         Action action12 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion1))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
-                .map(e -> e.getAction())
+                .map(ActionChainEntry::getAction)
                 .findFirst().get();
         Action action21 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion2))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
-                .map(e -> e.getAction())
+                .map(ActionChainEntry::getAction)
                 .findFirst().get();
         Action action22 = actionChain.getEntries().stream()
                 .filter(e -> e.getServer().equals(minion2))
                 .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
-                .map(e -> e.getAction())
+                .map(ActionChainEntry::getAction)
                 .findFirst().get();
 
         context().checking(new Expectations() {

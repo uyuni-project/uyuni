@@ -174,7 +174,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             ()-> LOG.error("Aborting: needed grains are not found for minion: " + minionId),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
-                Optional<String> mkey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
+                Optional<String> mkey = grains.getSuseManagerGrain()
+                        .flatMap(MinionStartupGrains.SuseManagerGrain::getManagementKey);
                 Optional<ActivationKey> managementKey =
                         mkey.flatMap(mk -> ofNullable(ActivationKeyFactory.lookupByKey(mk)));
                 Optional<String> validReactivationKey =
@@ -440,7 +441,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             Org org = activationKey.map(ActivationKey::getOrg)
                             .orElseGet(() -> creator.map(User::getOrg)
                             .orElseGet(() -> getProxyOrg(master, isSaltSSH, saltSSHProxyId)
-                            .orElseGet(() -> OrgFactory.getSatelliteOrg())));
+                            .orElseGet(OrgFactory::getSatelliteOrg)));
             if (minion.getOrg() == null) {
                 minion.setOrg(org);
             }
@@ -540,7 +541,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private Optional<Org> getProxyOrg(String master, boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
         if (isSaltSSH) {
             return saltSSHProxyId
-                    .map(proxyId -> ServerFactory.lookupById(proxyId))
+                    .map(ServerFactory::lookupById)
                     .map(Server::getOrg);
         }
         else {
@@ -887,7 +888,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             "VERSION=%{VERSION}\\n" +
                             "PROVIDENAME=[%{PROVIDENAME},]\\n" +
                             "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" " + pkg)
-                        .entrySet().stream().findFirst().map(e -> e.getValue())
+                        .entrySet().stream().findFirst().map(Map.Entry::getValue)
                         .flatMap(res -> res.fold(
                                 err -> err.fold(
                                         err1 -> rpmErrQueryRHELRelease(err1, minionId),
@@ -895,7 +896,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         err3 -> rpmErrQueryRHELRelease(err3, minionId),
                                         err4 -> rpmErrQueryRHELRelease(err4, minionId),
                                         err5 -> rpmErrQueryRHELRelease(err5, minionId)),
-                                r -> of(r)
+                                Optional::of
                         ))
                         .map(result -> {
                             if (result.split("\\r?\\n").length > 3) {

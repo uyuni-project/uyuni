@@ -516,7 +516,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Set<Long> guestIds = Arrays.asList(virtualHost1, virtualHost2).stream()
                 .flatMap(s -> s.getGuests().stream())
-                .map(vi -> vi.getGuestSystem())
+                .map(VirtualInstance::getGuestSystem)
                 .map(Server::getId)
                 .collect(Collectors.toSet());
         assertTrue(virtualizationGroup.getVirtualGuestIds().containsAll(guestIds));

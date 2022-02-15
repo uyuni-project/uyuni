@@ -348,7 +348,7 @@ public class SaltUtils {
         Map<String, Change<List<Pkg.Info>>> collect = changes.entrySet().stream()
                 .collect(
                 Collectors.toMap(
-                        e -> e.getKey(),
+                        Map.Entry::getKey,
                         e -> e.getValue().map(
                                 xor -> xor.getOrElse(Collections::emptyList))
                 )
@@ -512,7 +512,7 @@ public class SaltUtils {
                     new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
             CmdResult result = stateApplyResult.entrySet().stream()
                     .findFirst().map(e -> e.getValue().getChanges())
-                    .orElseGet(() -> new CmdResult());
+                    .orElseGet(CmdResult::new);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
@@ -1159,7 +1159,7 @@ public class SaltUtils {
                 Optional.of(ret.getInfoInstalled().getChanges().getRet())
                         .map(saltPkgs -> saltPkgs.entrySet().stream()
                                 .flatMap(entry -> Opt.stream(entry.getValue().right())
-                                        .flatMap(infoList -> infoList.stream())
+                                        .flatMap(Collection::stream)
                                         .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
                                 .collect(Collectors.toSet()));
 
@@ -1412,7 +1412,7 @@ public class SaltUtils {
                 .collect(Collectors.toMap(
                         SaltUtils::packageToKey,
                         Function.identity(),
-                        (first, second) -> resolveDuplicatePackage(first, second)
+                        SaltUtils::resolveDuplicatePackage
                 ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
@@ -2014,7 +2014,7 @@ public class SaltUtils {
                     .flatMap(Optional::stream)
                     .collect(Collectors.joining(" "))
                 ).filter(s -> !s.isEmpty());
-        return error.orElseGet(() -> saltErr.toString());
+        return error.orElseGet(saltErr::toString);
     }
 
     /**

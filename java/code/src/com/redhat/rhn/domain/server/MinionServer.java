@@ -358,7 +358,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      * @return <code>true</code> if the path has been changed
      */
     public boolean updateServerPaths(Optional<Long> proxyId) {
-        return updateServerPaths(proxyId.map(id -> ServerFactory.lookupById(id)), Optional.empty());
+        return updateServerPaths(proxyId.map(ServerFactory::lookupById), Optional.empty());
     }
 
     private boolean updateServerPaths(Optional<Server> proxy, Optional<String> hostname) {

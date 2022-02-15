@@ -989,7 +989,7 @@ public class ErrataHandler extends BaseHandler {
 
         List<Errata> errataToClone = new ArrayList<>();
         List<Long> errataIds = new ArrayList<>();
-        Optional<Org> originalChannelOrg = ofNullable(original).map(c -> c.getOrg());
+        Optional<Org> originalChannelOrg = ofNullable(original).map(Channel::getOrg);
         //We loop through once, making sure all the errata exist
         for (String advisory : advisoryNames) {
             Errata toClone = lookupAccessibleErratum(advisory, originalChannelOrg, loggedInUser.getOrg());
@@ -1292,7 +1292,7 @@ public class ErrataHandler extends BaseHandler {
         }
 
         ErrataFactory.save(newErrata);
-        List<Channel> vendorChannels = channels.stream().filter(c -> c.isVendorChannel()).collect(toList());
+        List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
         if (!vendorChannels.isEmpty()) {
             log.warn("Errata " + newErrata.getAdvisory() + " added to vendor channels " +
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
@@ -1340,7 +1340,7 @@ public class ErrataHandler extends BaseHandler {
     public Errata publish(User loggedInUser, String advisory, List<String> channelLabels) {
         List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
-        List<Channel> vendorChannels = channels.stream().filter(c -> c.isVendorChannel()).collect(toList());
+        List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
         Errata toPublish = lookupAccessibleErratum(advisory, empty(), loggedInUser.getOrg());
         if (!vendorChannels.isEmpty()) {
             log.warn("Errata " + toPublish.getAdvisory() + " added to vendor channels " +

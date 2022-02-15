@@ -30,7 +30,6 @@ import com.redhat.rhn.testing.TestUtils;
 import org.stringtree.json.JSONReader;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -91,12 +90,7 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
 
         List<ActionChainEntry> sortedEntries = new LinkedList<>();
         sortedEntries.addAll(entries);
-        Collections.sort(sortedEntries, new Comparator<>() {
-            @Override
-            public int compare(ActionChainEntry entry1, ActionChainEntry entry2) {
-                return entry1.getId().compareTo(entry2.getId());
-            }
-        });
+        Collections.sort(sortedEntries, (entry1, entry2) -> entry1.getId().compareTo(entry2.getId()));
         for (int i = 0; i < sortedEntries.size(); i++) {
             assertEquals((Integer) (1 - i / 2), sortedEntries.get(i).getSortOrder());
         }

@@ -112,7 +112,7 @@ public class SaltActionChainGeneratorService {
     public Map<MinionSummary, Integer> getChunksPerMinion(Map<MinionSummary, List<SaltState>> minionStates) {
         return minionStates.entrySet().stream().collect(
                         Collectors.toMap(
-                                entry -> entry.getKey(),
+                                Map.Entry::getKey,
                                 entry -> entry.getValue().stream()
                                         .mapToInt(state -> mustSplit(state, entry.getKey()) ? 1 : 0).sum() + 1));
     }
@@ -298,7 +298,7 @@ public class SaltActionChainGeneratorService {
                     if (!paramPillar.get("param_pkgs").stream()
                             .filter(e -> e.size() > 0)
                             .map(e -> e.get(0))
-                            .filter(e -> "salt".equals(e))
+                            .filter("salt"::equals)
                             .collect(Collectors.toList()).isEmpty()) {
                         return true;
                     }
@@ -474,8 +474,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private boolean refInList(List<String> refList, String fileRef) {
-        return refList.stream().anyMatch(listRef ->
-            fileRef.startsWith(listRef)
+        return refList.stream().anyMatch(fileRef::startsWith
         );
     }
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.system;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.client.ClientCertificate;
@@ -487,17 +486,17 @@ public class SystemManager extends BaseManager {
             throw new IllegalArgumentException("hwAddress or hostname key must be present.");
         }
 
-        Set<String> hwAddrs = hwAddress.map(a -> singleton(a)).orElse(emptySet());
+        Set<String> hwAddrs = hwAddress.map(Collections::singleton).orElse(emptySet());
         List<MinionServer> matchingProfiles = findMatchingEmptyProfiles(hostname, hwAddrs);
         if (!matchingProfiles.isEmpty()) {
-            throw new SystemsExistException(matchingProfiles.stream().map(p -> p.getId()).collect(Collectors.toList()));
+            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).collect(Collectors.toList()));
         }
 
         // craft unique id based on given data
         String delimiter = "_";
         String uniqueId = delimiter + Arrays.asList(hwAddress, hostname)
                 .stream()
-                .flatMap(o -> Opt.stream(o))
+                .flatMap(Opt::stream)
                 .reduce((i1, i2) -> i1 + delimiter + i2)
                 .get();
 
@@ -507,7 +506,7 @@ public class SystemManager extends BaseManager {
 
         // Set network device information to the server so we have something to match with
         server.setCreator(creator);
-        hostname.ifPresent(n -> server.setHostname(n));
+        hostname.ifPresent(server::setHostname);
         server.setDigitalServerId(uniqueId);
         server.setMachineId(uniqueId);
         server.setMinionId(uniqueId);
@@ -546,7 +545,7 @@ public class SystemManager extends BaseManager {
      */
     public static List<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
         List<MinionServer> hostnameMatches = hostname
-                .map(n -> MinionServerFactory.findEmptyProfilesByHostName(n))
+                .map(MinionServerFactory::findEmptyProfilesByHostName)
                 .orElse(emptyList());
         if (!hostnameMatches.isEmpty()) {
             return hostnameMatches;
@@ -759,7 +758,8 @@ public class SystemManager extends BaseManager {
         boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
         if (!removed) {
             log.warn("Hostname " + server.getHostname() + " could not be removed from " +
-                    "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+                    "/var/lib/salt/.ssh/known_hosts: " +
+                    result.map(MgrUtilRunner.RemoveKnowHostResult::getComment).orElse(""));
         }
     }
 
@@ -3606,11 +3606,11 @@ public class SystemManager extends BaseManager {
                                             Optional<Channel> baseChannel,
                                             Collection<Channel> childChannels) {
         long baseChannelId =
-                baseChannel.map(base -> base.getId()).orElse(-1L);
+                baseChannel.map(Channel::getId).orElse(-1L);
 
         // if there's no base channel present the there are no child channels to set
         List<Long> childChannelIds = baseChannel.isPresent() ?
-                childChannels.stream().map(c -> c.getId()).collect(Collectors.toList()) :
+                childChannels.stream().map(Channel::getId).collect(Collectors.toList()) :
                 emptyList();
 
         UpdateBaseChannelCommand baseChannelCommand =

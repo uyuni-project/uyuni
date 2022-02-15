@@ -359,7 +359,7 @@ public class SetupWizardProductDto implements Selectable,
                 getMandatoryChannels().stream(),
                 getOptionalChannels().stream()
                 )
-                .filter(c -> c.isInstallerUpdates())
+                .filter(Channel::isInstallerUpdates)
                 .collect(Collectors.toList());
     }
 

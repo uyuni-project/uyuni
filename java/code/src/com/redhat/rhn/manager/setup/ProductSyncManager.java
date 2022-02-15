@@ -78,7 +78,7 @@ public class ProductSyncManager {
         List<SetupWizardProductDto> result = convertProducts(products);
 
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = ChannelFactory.listVendorChannels()
-                .stream().collect(Collectors.toMap(c -> c.getLabel(), c -> c));
+                .stream().collect(Collectors.toMap(com.redhat.rhn.domain.channel.Channel::getLabel, c -> c));
 
         // Determine their product sync status separately
         for (SetupWizardProductDto p : result) {
@@ -456,7 +456,7 @@ public class ProductSyncManager {
         // Sort product channels (mandatory/optional)
 
         Map<Boolean, List<MgrSyncChannelDto>> collect = productIn.getChannels().stream()
-                .collect(Collectors.partitioningBy(c -> c.isMandatory()));
+                .collect(Collectors.partitioningBy(MgrSyncChannelDto::isMandatory));
 
         Function<MgrSyncChannelDto, Channel> mapping = channelIn -> {
             MgrSyncStatus statusIn = channelIn.getStatus();
