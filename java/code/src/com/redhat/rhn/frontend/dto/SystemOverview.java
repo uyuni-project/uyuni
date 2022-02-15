@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
@@ -404,10 +405,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the configFilesWithDifferences.
      */
     public Long getConfigFilesWithDifferences() {
-        if (configFilesWithDifferences == null) {
-            return 0L;
-        }
-        return configFilesWithDifferences;
+        return Objects.requireNonNullElse(configFilesWithDifferences, 0L);
     }
     /**
      * @param configFilesWithDifferencesIn The configFilesWithDifferences to set.
