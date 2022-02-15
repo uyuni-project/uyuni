@@ -468,7 +468,6 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         catch (IOException e) {
             log.warn("Cannot create " + NOREPO_FILE + " file.");
         }
-        return;
     }
 
     private String getRepoMetadataRelativeFilename(Channel channel, String metadataType) {

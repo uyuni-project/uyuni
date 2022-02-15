@@ -2556,7 +2556,6 @@ public class SaltServerActionService {
               });
             }
         }
-        return;
     }
 
     /**
