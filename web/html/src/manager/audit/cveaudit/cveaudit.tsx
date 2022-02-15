@@ -256,7 +256,7 @@ class CVEAudit extends React.Component<Props, State> {
               />
             </div>
           </p>
-          {this.state.auditExecuted === true && (
+          {this.state.auditExecuted && (
             <div>
               <p>
                 <a
