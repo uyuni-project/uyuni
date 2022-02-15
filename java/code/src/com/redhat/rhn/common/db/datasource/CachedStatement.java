@@ -681,13 +681,7 @@ public class CachedStatement implements Serializable {
         catch (SQLException e) {
             throw SqlExceptionTranslator.sqlException(e);
         }
-        catch (ClassNotFoundException e) {
-            throw new ObjectCreateWrapperException("Could not create " + className, e);
-        }
-        catch (InstantiationException e) {
-            throw new ObjectCreateWrapperException("Could not create " + className, e);
-        }
-        catch (IllegalAccessException e) {
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new ObjectCreateWrapperException("Could not create " + className, e);
         }
         finally {

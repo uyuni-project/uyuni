@@ -73,19 +73,7 @@ public class TaskoJob implements Job {
         try {
             return Class.forName(task.getTaskClass()).newInstance() instanceof RhnQueueJob;
         }
-        catch (InstantiationException e) {
-            // will be caught later
-            log.error("Error trying to instance a new class of " +
-                    task.getTaskClass() + ": " + e.getMessage());
-            return false;
-        }
-        catch (IllegalAccessException e) {
-            // will be caught later
-            log.error("Error trying to instance a new class of " +
-                    task.getTaskClass() + ": " + e.getMessage());
-            return false;
-        }
-        catch (ClassNotFoundException e) {
+        catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
             // will be caught later
             log.error("Error trying to instance a new class of " +
                     task.getTaskClass() + ": " + e.getMessage());

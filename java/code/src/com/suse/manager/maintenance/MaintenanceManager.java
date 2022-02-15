@@ -702,13 +702,9 @@ public class MaintenanceManager {
             http.cleanup(response);
             return ical;
         }
-        catch (IOException e) {
+        catch (IOException | ParseException e) {
             log.error("Download failed.", e);
             throw new DownloadException(url, e.getMessage(), 500);
-        }
-        catch (ParseException p) {
-            log.error("Download failed.", p);
-            throw new DownloadException(url, p.getMessage(), 500);
         }
     }
 

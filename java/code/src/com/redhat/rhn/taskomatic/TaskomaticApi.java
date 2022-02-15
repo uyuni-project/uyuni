@@ -87,10 +87,7 @@ public class TaskomaticApi {
         try {
             return getClient().invoke(name, args);
         }
-        catch (XmlRpcException e) {
-            throw new TaskomaticApiException(e);
-        }
-        catch (XmlRpcFault e) {
+        catch (XmlRpcException | XmlRpcFault e) {
             throw new TaskomaticApiException(e);
         }
     }

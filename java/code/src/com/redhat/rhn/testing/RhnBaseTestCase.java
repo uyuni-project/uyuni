@@ -187,15 +187,7 @@ public abstract class RhnBaseTestCase extends TestCase {
         try {
             return PropertyUtils.getProperty(bean, propName);
         }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException("Could not get property " + propName +
-                    " from " + bean, e);
-        }
-        catch (InvocationTargetException e) {
-            throw new RuntimeException("Could not get property " + propName +
-                    " from " + bean, e);
-        }
-        catch (NoSuchMethodException e) {
+        catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException("Could not get property " + propName +
                     " from " + bean, e);
         }

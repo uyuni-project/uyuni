@@ -218,15 +218,7 @@ public class ListViewHelper {
                     accum.add(o);
                 }
             }
-            catch (IllegalAccessException e) {
-                e.printStackTrace();
-                continue;
-            }
-            catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                continue;
-            }
-            catch (InvocationTargetException e) {
+            catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
                 e.printStackTrace();
                 continue;
             }

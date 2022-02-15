@@ -259,12 +259,7 @@ public class Acl {
             AclHandler instance = (AclHandler)aclClazz.newInstance();
             registerHandler(instance);
         }
-        catch (InstantiationException e) {
-            IllegalArgumentException exc = new IllegalArgumentException();
-            exc.initCause(e);
-            throw exc;
-        }
-        catch (IllegalAccessException e) {
+        catch (InstantiationException | IllegalAccessException e) {
             IllegalArgumentException exc = new IllegalArgumentException();
             exc.initCause(e);
             throw exc;
