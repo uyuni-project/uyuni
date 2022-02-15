@@ -1138,13 +1138,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 SALT_SERVER_ACTION_SERVICE.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
 
         assertEquals(1, localCallListMap.size());
-        localCallListMap.entrySet().forEach(result -> {
-            assertEquals(2, result.getValue().size());
-            final LocalCall<?> call = result.getKey();
+        localCallListMap.forEach((call, value) -> {
+            assertEquals(2, value.size());
             assertEquals("state.apply", call.getPayload().get("fun"));
-            Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
+            Map<String, Object> kwarg = (Map<String, Object>) call.getPayload().get("kwarg");
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
-            Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
+            Map<String, Object> pillar = (Map<String, Object>) kwarg.get("pillar");
             Collection<String> regularPatches = (Collection<String>) pillar
                     .get(SaltServerActionService.PARAM_REGULAR_PATCHES);
             assertEquals(1, regularPatches.size());
