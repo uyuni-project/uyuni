@@ -296,8 +296,8 @@ public class ListTag extends BodyTagSupport {
             String msg = "Cannot set the column filter - [%s], " +
                         "since the table has been has already assigned a filter - [%s]";
 
-            throw new JspException(String.format(msg, String.valueOf(f),
-                                                        String.valueOf(filter)));
+            throw new JspException(String.format(msg, f,
+                    filter));
         }
         filter = f;
         Context threadContext = Context.getCurrentContext();

@@ -116,7 +116,7 @@ public class DWRItemSelector {
             StringBuilder headerMessage = new StringBuilder();
             headerMessage.append("<span id='spacewalk-set-system_list-counter'")
                          .append(" class='badge'>")
-                         .append(Integer.toString(setSize))
+                         .append(setSize)
                          .append("</span>");
             if (setSize == 1) {
                 headerMessage.append(ls.getMessage("header.jsp.singleSystemSelected"));
