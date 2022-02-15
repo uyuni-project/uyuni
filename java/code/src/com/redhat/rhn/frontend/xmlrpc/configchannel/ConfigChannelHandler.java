@@ -573,9 +573,7 @@ public class ConfigChannelHandler extends BaseHandler {
         }
         validateMap(validKeys, data);
 
-        if (data.get(ConfigRevisionSerializer.SELINUX_CTX) == null) {
-            data.put(ConfigRevisionSerializer.SELINUX_CTX, "");
-        }
+        data.putIfAbsent(ConfigRevisionSerializer.SELINUX_CTX, "");
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(loggedInUser, channelLabel);
@@ -632,9 +630,7 @@ public class ConfigChannelHandler extends BaseHandler {
         validKeys.add(ConfigRevisionSerializer.REVISION);
         validKeys.add(ConfigRevisionSerializer.SELINUX_CTX);
         validateMap(validKeys, data);
-        if (data.get(ConfigRevisionSerializer.SELINUX_CTX) == null) {
-            data.put(ConfigRevisionSerializer.SELINUX_CTX, "");
-        }
+        data.putIfAbsent(ConfigRevisionSerializer.SELINUX_CTX, "");
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(loggedInUser, channelLabel);
