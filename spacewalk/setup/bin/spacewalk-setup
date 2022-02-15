@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 #
+# Copyright (c) 2010--2022 SUSE LLC
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,7 +33,6 @@ use Spacewalk::Setup ();
 use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
 use IO::Socket ();
 use RHN::DB ();
-use File::Copy;
 use MIME::Base64;
 
 my $DEBUG;
@@ -49,6 +49,7 @@ use constant COBBLER_COMMAND => 'spacewalk-setup-cobbler';
 my %opts = Spacewalk::Setup::parse_options();
 
 my %answers = ();
+$answers{'db-backend'} = 'postgresql'; # the only supported currently
 my @skip = ();
 push @skip, Spacewalk::Setup::EMBEDDED_DB_ANSWERS
     if not Spacewalk::Setup::is_embedded_db(\%opts);
@@ -103,20 +104,7 @@ setup_cc(\%opts, \%answers);
 
 setup_default_proxy(\%answers);
 
-choose_database_schema(\%answers);
-
-# If Oracle was selected, call the Oracle specific setup script. If it turns
-# out we need a PostgreSQL specific setup script as well, refactor this to
-# something generic.
-if ($answers{'db-backend'} eq 'oracle') {
-    Spacewalk::Setup::oracle_setup_db(\%opts, \%answers);
-}
-elsif ($answers{'db-backend'} eq 'postgresql') {
-    Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
-}
-else {
-    die "No idea how to install to database: " . $answers{'db-backend'};
-}
+Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
 
 if ($opts{'db-only'}) {
     exit;
@@ -158,6 +146,10 @@ setup_jabberd(\%opts, \%answers);
 print Spacewalk::Setup::loc("* Creating SSL certificates.\n");
 setup_ssl_certs(\%opts, \%answers);
 
+if(not $opts{"skip-reportdb-setup"}) {
+    Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
+}
+
 print Spacewalk::Setup::loc("* Deploying configuration files.\n");
 populate_final_configs(\%opts, \%answers);
 
@@ -190,30 +182,6 @@ if ($opts{'upgrade'}) {
 
 exit 0;
 
-
-
-sub choose_database_schema {
-    my $answers = shift;
-
-    my %is_valid_schema = (
-        'oracle' => 1,
-        'postgresql' => 1,
-        );
-
-    my $question = "Choose your database backend ("
-        . join(", ", sort(keys(%is_valid_schema)))
-        . ")";
-
-    Spacewalk::Setup::ask(
-            -noninteractive => $opts{"non-interactive"},
-            -question => $question,
-            -test => sub {
-                my $text = shift;
-                $is_valid_schema{$text}
-            },
-            -answer => \$answers->{'db-backend'});
-
-}
 
 sub remove_old_jvm {
         my $opts = shift;
@@ -860,10 +828,6 @@ sub populate_initial_configs {
     # TODO: This may need to be addressed. Can query this for postgresql with
     # "show client_encoding;":
     my $charset = 'UTF8';
-    if ($answers{'db-backend'} eq 'oracle') {
-        my %nls_database_paramaters = Spacewalk::Setup::get_nls_database_parameters($answers);
-        $charset = $nls_database_paramaters{NLS_CHARACTERSET};
-    }
 
     # Define some db specific settings:
     Spacewalk::Setup::set_hibernate_conf($answers);
@@ -872,7 +836,7 @@ sub populate_initial_configs {
     my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
     $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
 
-  my %config_opts =
+    my %config_opts =
     (
      mount_point => $answers->{'mount-point'} || '/var/spacewalk',
      kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
@@ -896,7 +860,15 @@ sub populate_initial_configs {
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},
-     );
+     report_db_backend => $answers->{'db-backend'},
+     report_db_user => $answers->{'report-db-user'},
+     report_db_password => $answers->{'report-db-password'},
+     report_db_name => $answers->{'report-db-name'},
+     report_db_host => $answers->{'report-db-host'},
+     report_db_port => $answers->{'report-db-port'},
+     report_db_ssl_enabled => $answers->{'report-db-ssl-enabled'},
+     report_db_sslrootcert => $answers->{'report-db-ca-cert'}
+    );
 
     for ($config_opts{'db_password'}) {
         s/\\/\\\\/g if defined $_;

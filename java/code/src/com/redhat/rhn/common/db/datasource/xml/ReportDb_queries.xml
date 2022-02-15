@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2022 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<datasource_modes>
+
+<write-mode name="delete_system">
+  <query params="mgm_id">
+    DELETE FROM System WHERE mgm_id = :mgm_id
+  </query>
+</write-mode>
+
+<write-mode name="insert_system">
+  <query params="mgm_id, system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware">
+    INSERT INTO System ( mgm_id, system_id, profile_name, hostname, minion_id, minion_os_family, minion_kernel_live_version, machine_id, registered_by, registration_time, last_checkin_time, kernel_version, architecture, organization, hardware, synced_date )
+      VALUES (:mgm_id, :system_id, :profile_name, :hostname, :minion_id, :minion_os_family, :minion_kernel_live_version, :machine_id, :registered_by, :registration_time, :last_checkin_time, :kernel_version, :architecture, :organization, :hardware, current_timestamp)
+  </query>
+</write-mode>
+
+</datasource_modes>
+

@@ -67,7 +67,7 @@ import javax.persistence.criteria.Root;
  */
 public abstract class HibernateFactory {
 
-    private static ConnectionManager connectionManager = new ConnectionManager();
+    private static ConnectionManager connectionManager = ConnectionManagerFactory.defaultConnectionManager();
     private static final Logger LOG = Logger.getLogger(HibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
 

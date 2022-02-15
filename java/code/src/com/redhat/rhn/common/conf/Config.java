@@ -23,10 +23,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
 
@@ -115,6 +117,16 @@ public class Config {
     public Config() throws ConfigException {
         addPath(DEFAULT_DEFAULT_CONF_DIR);
         addPath(getDefaultConfigFilePath());
+        parseFiles();
+    }
+
+    /**
+     * Read the entries only for the specified path list.
+     *
+     * @param pathList the list of path to be evaluated
+     */
+    public Config(Collection<String> pathList) {
+        pathList.forEach(this::addPath);
         parseFiles();
     }
 
@@ -488,20 +500,41 @@ public class Config {
      * not a particularly fast method and should be used only at startup or
      * some other discreet time.  Repeated calls to this method are guaranteed
      * to be slow.
+     *
      * @param namespace Namespace of properties to be returned.
      * @return subset of the properties that begin with the given namespace.
      */
     public Properties getNamespaceProperties(String namespace) {
-        Properties prop = new Properties();
-        for (Iterator i = configValues.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        return getNamespaceProperties(namespace, namespace);
+    }
+
+    /**
+     * Returns a subset of the properties for the given namespace. All the properties
+     * will be moved to the specified new namespace. This is not a particularly
+     * fast method and should be used only at startup or some other discreet time.
+     * Repeated calls to this method are guaranteed to be slow.
+     *
+     * @param namespace Namespace of properties to be returned.
+     * @param newNamespace the new namespace
+     * @return subset of the properties that begin with the given namespace.
+     */
+    public Properties getNamespaceProperties(String namespace, String newNamespace) {
+        final Properties prop = new Properties();
+        for (Map.Entry<Object, Object> entry : configValues.entrySet()) {
+            String key = (String) entry.getKey();
             if (key.startsWith(namespace)) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Looking for key: [" + key + "]");
                 }
-                prop.put(key, configValues.getProperty(key));
+
+                if (!namespace.equals(newNamespace)) {
+                    key = key.replaceFirst(namespace, newNamespace);
+                }
+
+                prop.put(key, entry.getValue());
             }
         }
+
         return prop;
     }
 }

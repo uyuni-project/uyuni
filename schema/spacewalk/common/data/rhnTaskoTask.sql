@@ -128,4 +128,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'update-payg-auth', 'com.redh
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'update-payg-hosts', 'com.redhat.rhn.taskomatic.task.payg.PaygUpdateHostsTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-update-reporting', 'com.redhat.rhn.taskomatic.task.ReportDbUpdateTask');
+
 commit;
