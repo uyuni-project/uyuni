@@ -154,8 +154,8 @@ public class CVEAuditController {
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, ResultJson.error("According to our records, your systems/images are not affected by " +
-                    "this CVE. Please follow the provided links for more information."));
+            return json(res, ResultJson.error("The specified CVE number was not found in our database. " +
+                    "You can get more information about this CVE from the links given below"));
         }
     }
 
