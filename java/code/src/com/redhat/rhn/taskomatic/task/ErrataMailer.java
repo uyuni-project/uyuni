@@ -145,7 +145,7 @@ public class ErrataMailer extends RhnJavaJob {
             log.info("Notification for user " + login + "(" + userId + ") about " +
                     servers.size()  + " relevant server(s).");
             String emailBody = formatEmail(login, email, errata, servers);
-            StringBuffer subject = new StringBuffer();
+            StringBuilder subject = new StringBuilder();
             subject.append(Config.get().getString("web.product_name") + " Patch Alert: ");
             subject.append(errata.getAdvisory()).append(" - ");
             subject.append(errata.getSynopsis());

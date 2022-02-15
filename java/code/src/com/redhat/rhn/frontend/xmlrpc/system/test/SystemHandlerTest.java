@@ -1099,7 +1099,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     private String getLongTestString() {
-        StringBuffer longString = new StringBuffer();
+        StringBuilder longString = new StringBuilder();
         //run 15 times for good measure
         for (int i = 0; i < 15; i++) {
             longString.append(TestUtils.randomString());

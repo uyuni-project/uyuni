@@ -348,7 +348,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private void outputErrataList(List erratas) throws IOException {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
         for (Object errataIn : erratas) {
             Errata e = (Errata) errataIn;
             output.append(e.toString());
