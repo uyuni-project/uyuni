@@ -425,11 +425,6 @@ When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
   find(:xpath, "#{zone_xpath}//input[contains(@id, '#{fieldids[field]}')]").set(value)
 end
 
-When(/^I enter the hostname of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  system_name = get_system_name(host)
-  step %(I enter "#{system_name}." in #{field} field of #{zone} zone)
-end
-
 When(/^I enter the IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
   node = get_target(host)
   step %(I enter "#{node.public_ip}" in #{field} field of #{zone} zone)
