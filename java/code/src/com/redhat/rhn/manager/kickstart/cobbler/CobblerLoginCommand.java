@@ -92,7 +92,7 @@ public class CobblerLoginCommand {
         }
         log.debug("token received from cobbler: " + retval);
 
-        return retval.booleanValue();
+        return retval;
     }
 
 }

@@ -777,11 +777,11 @@ public class KickstartFormatter {
                      NEWLINE);
         }
 
-        if (this.ksdata.getKickstartDefaults().getRemoteCommandFlag().booleanValue()) {
+        if (this.ksdata.getKickstartDefaults().getRemoteCommandFlag()) {
             retval.append(REMOTE_CMD + NEWLINE);
         }
 
-        if (this.ksdata.getKickstartDefaults().getCfgManagementFlag().booleanValue()) {
+        if (this.ksdata.getKickstartDefaults().getCfgManagementFlag()) {
             retval.append(CONFIG_CMD + NEWLINE);
         }
 

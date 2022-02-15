@@ -945,7 +945,7 @@ public class UserHandler extends BaseHandler {
         }
 
         for (ManagedServerGroup sg : groups) {
-            UserManager.revokeServerGroupPermission(user, sg.getId().longValue());
+            UserManager.revokeServerGroupPermission(user, sg.getId());
         }
 
         return 1;
@@ -1051,7 +1051,7 @@ public class UserHandler extends BaseHandler {
         UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:
-        if (setDefault.booleanValue()) {
+        if (setDefault) {
             addDefaultSystemGroups(loggedInUser, login, sgNames);
         }
 

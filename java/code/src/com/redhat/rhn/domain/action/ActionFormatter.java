@@ -59,14 +59,14 @@ public class ActionFormatter {
 
         StringBuilder retval = new StringBuilder();
 
-        if (action.getFailedCount().longValue() > 0) {
+        if (action.getFailedCount() > 0) {
             retval.append(getActionLink("action.failedlink",
-                    action.getFailedCount().longValue()));
+                    action.getFailedCount()));
         }
 
-        if (action.getSuccessfulCount().longValue() > 0) {
+        if (action.getSuccessfulCount() > 0) {
             retval.append(getActionLink("action.completelink",
-                    action.getSuccessfulCount().longValue()));
+                    action.getSuccessfulCount()));
 
         }
         return retval.toString();

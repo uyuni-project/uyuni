@@ -154,7 +154,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     private KickstartableTree lookupById(Long id) throws Exception {
         Session session = HibernateFactory.getSession();
         return (KickstartableTree) session.getNamedQuery("KickstartableTree.findById")
-                          .setLong("id", id.longValue())
+                          .setLong("id", id)
                           .uniqueResult();
     }
 

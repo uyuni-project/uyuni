@@ -356,7 +356,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     private void checkPermanentOrgAdmin() {
         if (wasOrgAdmin == null) {
-            wasOrgAdmin = Boolean.valueOf(hasPermanentRole(RoleFactory.ORG_ADMIN));
+            wasOrgAdmin = hasPermanentRole(RoleFactory.ORG_ADMIN);
         }
     }
 

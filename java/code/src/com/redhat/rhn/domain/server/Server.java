@@ -766,7 +766,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return lastBoot time as a Date object
      */
     public Date getLastBootAsDate() {
-        return new Date(this.lastBoot.longValue() * 1000);
+        return new Date(this.lastBoot * 1000);
     }
 
     /**

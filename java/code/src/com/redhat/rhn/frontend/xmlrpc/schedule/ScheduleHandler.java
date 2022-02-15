@@ -381,7 +381,7 @@ public class ScheduleHandler extends BaseHandler {
         for (Integer actionId : actionIds) {
             Action action = ActionManager.lookupAction(loggedInUser, Long.valueOf(actionId));
             if (action != null) {
-                action.setArchived(Long.valueOf(1));
+                action.setArchived(1L);
             }
         }
         return 1;

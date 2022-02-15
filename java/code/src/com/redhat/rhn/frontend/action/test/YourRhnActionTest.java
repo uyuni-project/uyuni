@@ -26,7 +26,7 @@ public class YourRhnActionTest extends RhnMockStrutsTestCase {
 
         setRequestPathInfo("/YourRhn");
         actionPerform();
-         assertTrue((((Boolean)request.getAttribute("anyListsSelected")).booleanValue()));
+         assertTrue(((Boolean) request.getAttribute("anyListsSelected")));
 
          assertNotNull(request.getAttribute("inactiveSystems"));
          assertNotNull(request.getAttribute("tasks"));

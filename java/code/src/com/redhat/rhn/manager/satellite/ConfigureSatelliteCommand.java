@@ -213,7 +213,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             }
         }
         else {
-            if (Config.get().getBoolean(configKey) != newValue.booleanValue()) {
+            if (Config.get().getBoolean(configKey) != newValue) {
                 Config.get().setBoolean(configKey, newValue.toString());
                 keysToBeUpdated.add(configKey);
             }

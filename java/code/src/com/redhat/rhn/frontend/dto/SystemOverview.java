@@ -206,7 +206,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
         if (this.lastBoot == null) {
           return null;
         }
-        return new Date(this.lastBoot.longValue() * 1000);
+        return new Date(this.lastBoot * 1000);
     }
 
     /**
@@ -725,7 +725,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
             ls.getMessage("filter-form.jspf.days");
         }
         else if (lastCheckinDaysAgo.compareTo(7L) >= 0) {
-            buffer.append(lastCheckinDaysAgo.longValue() / 7);
+            buffer.append(lastCheckinDaysAgo / 7);
             ls.getMessage("filter-form.jspf.weeks");
         }
 

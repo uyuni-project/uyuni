@@ -334,7 +334,7 @@ public class SnapshotHandler extends BaseHandler {
             }
 
             ServerSnapshot snapshot =
-                    ServerFactory.lookupSnapshotById(snapshotId.intValue());
+                    ServerFactory.lookupSnapshotById(snapshotId);
             if (snapshot == null) {
                 throw new SnapshotLookupException(snapshotId);
             }

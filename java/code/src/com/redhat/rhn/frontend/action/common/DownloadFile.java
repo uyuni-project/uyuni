@@ -714,7 +714,7 @@ public class DownloadFile extends DownloadAction {
                     KickstartSessionState.IN_PROGRESS)) {
                 log.debug("Incrementing counter.");
                 ksession.setPackageFetchCount(
-                        ksession.getPackageFetchCount().longValue() + 1);
+                        ksession.getPackageFetchCount() + 1);
                 ksession.setLastFileRequest(path);
             }
             log.debug("Saving session.");
@@ -809,7 +809,7 @@ public class DownloadFile extends DownloadAction {
             start = 0;
         }
         else {
-            start = Long.valueOf(rangeMatcher.group(1));
+            start = Long.parseLong(rangeMatcher.group(1));
         }
         File actualFile = new File(diskPath);
         long totalSize = actualFile.length();
@@ -817,7 +817,7 @@ public class DownloadFile extends DownloadAction {
             end = totalSize;
         }
         else {
-            end = Long.valueOf(rangeMatcher.group(2));
+            end = Long.parseLong(rangeMatcher.group(2));
         }
         if (log.isDebugEnabled()) {
             log.debug("manualServeByteRange Start    : " + start);

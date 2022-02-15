@@ -103,7 +103,7 @@ public class ConfigRevisionDto extends BaseDto {
      * @return A localized display of the file size of this revision
      */
     public String getSizeDisplay() {
-        return StringUtil.displayFileSize(fileSize.longValue());
+        return StringUtil.displayFileSize(fileSize);
     }
 
 }

@@ -68,8 +68,7 @@ public class SystemDetailsHandler extends BaseHandler {
     public boolean checkConfigManagement(User loggedInUser, String ksLabel) {
         ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
-        return command.getKickstartData().getKickstartDefaults().getCfgManagementFlag().
-            booleanValue();
+        return command.getKickstartData().getKickstartDefaults().getCfgManagementFlag();
     }
 
     /**
@@ -133,8 +132,7 @@ public class SystemDetailsHandler extends BaseHandler {
     public boolean checkRemoteCommands(User loggedInUser, String ksLabel) {
         ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
-        return command.getKickstartData().getKickstartDefaults().getRemoteCommandFlag().
-            booleanValue();
+        return command.getKickstartData().getKickstartDefaults().getRemoteCommandFlag();
     }
 
     /**

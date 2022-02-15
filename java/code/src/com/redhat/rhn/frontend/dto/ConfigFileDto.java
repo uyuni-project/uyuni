@@ -271,7 +271,7 @@ public class ConfigFileDto extends BaseDto {
      * @return Returns a formatted and localized version of the total file size
      */
     public String getTotalFileSizeDisplay() {
-        return StringUtil.displayFileSize(totalFileSize.longValue(), false);
+        return StringUtil.displayFileSize(totalFileSize, false);
     }
 
     /**
@@ -308,7 +308,7 @@ public class ConfigFileDto extends BaseDto {
      * @return Returns a formatted and localized version of the latest revision size
      */
     public String getLatestRevisionSizeDisplay() {
-        return StringUtil.displayFileSize(latestRevisionSize.longValue(), false);
+        return StringUtil.displayFileSize(latestRevisionSize, false);
     }
 
     /**

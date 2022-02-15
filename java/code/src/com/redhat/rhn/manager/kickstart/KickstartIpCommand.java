@@ -157,7 +157,7 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      * @return coverted long array
      */
     private long [] convertLongArr(Long[] arrIn) {
-        return new long[]{arrIn[0].longValue(), arrIn[1].longValue(), arrIn[2].longValue(), arrIn[3].longValue()};
+        return new long[]{arrIn[0], arrIn[1], arrIn[2], arrIn[3]};
     }
 
     /**

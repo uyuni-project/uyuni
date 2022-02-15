@@ -196,7 +196,7 @@ public class ActivationKeyHandler extends BaseHandler {
 
             ActivationKey newKey = akm.createNewActivationKey(
                         loggedInUser, key, description, limit,
-                         baseChannel, universalDefault.booleanValue());
+                         baseChannel, universalDefault);
 
             akm.addEntitlements(newKey, entitlements);
 
@@ -467,14 +467,14 @@ public class ActivationKeyHandler extends BaseHandler {
         // Check if we need to override the usage_limit and set to unlimited:
         if (details.containsKey("unlimited_usage_limit")) {
             Boolean unlimited = (Boolean)details.get("unlimited_usage_limit");
-            if (unlimited.booleanValue()) {
+            if (unlimited) {
                 aKey.setUsageLimit(null);
             }
         }
 
         if (details.containsKey("universal_default")) {
             Boolean universalDefault = (Boolean)details.get("universal_default");
-            aKey.setUniversalDefault(universalDefault.booleanValue());
+            aKey.setUniversalDefault(universalDefault);
         }
 
         if (details.containsKey("disabled")) {

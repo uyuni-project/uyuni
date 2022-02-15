@@ -273,7 +273,7 @@ public class ActivationKeyFactory extends HibernateFactory {
     public static int removeKeysForServer(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("System_queries", "remove_activation_keys");
         Map params = new HashMap();
-        params.put("sid", sid.longValue());
+        params.put("sid", sid);
         return m.executeUpdate(params);
     }
 

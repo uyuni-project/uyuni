@@ -58,7 +58,7 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
                     buffer.append(ls.getMessage("filter-form.jspf.days"));
                 }
                 else if (lastCheckin.compareTo(7L) >= 0) {
-                    buffer.append(lastCheckin.longValue() / 7);
+                    buffer.append(lastCheckin / 7);
                     buffer.append(' ');
                     buffer.append(ls.getMessage("filter-form.jspf.weeks"));
                 }

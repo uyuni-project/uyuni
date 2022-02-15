@@ -55,7 +55,7 @@ public class WebSessionImpl implements WebSession {
 
     /** {@inheritDoc} */
     public void setWebUserId(Long idIn) {
-        if (idIn != null && idIn.longValue() == 0) {
+        if (idIn != null && idIn == 0) {
             throw new IllegalArgumentException("user id must be null or non-zero");
         }
         webUserId = idIn;
@@ -101,7 +101,7 @@ public class WebSessionImpl implements WebSession {
      * {@inheritDoc}
      */
     public String getKey() {
-        if (id == null || id.longValue() < 0) {
+        if (id == null || id < 0) {
             throw new InvalidSessionIdException("Attempted to get key for session with " +
                                                 "an invalid id");
         }

@@ -159,7 +159,7 @@ public class RepoDetailsAction extends RhnAction {
         }
         if (isCreateMode(request)) {
             // default for has signed metadata should be true
-            form.set(METADATA_SIGNED, Boolean.valueOf(true));
+            form.set(METADATA_SIGNED, Boolean.TRUE);
         }
         setup(request, form, isCreateMode(request));
 
@@ -255,7 +255,7 @@ public class RepoDetailsAction extends RhnAction {
                 currentFlag = flag;
             }
         }
-        form.set(METADATA_SIGNED, Boolean.valueOf(repo.getMetadataSigned()));
+        form.set(METADATA_SIGNED, repo.getMetadataSigned());
 
         // finally add the last one
         filterGroups.add(filterGroup);
@@ -339,7 +339,7 @@ public class RepoDetailsAction extends RhnAction {
         repoCmd.setLabel(label);
         repoCmd.setUrl(url);
         repoCmd.setType(type);
-        repoCmd.setMetadataSigned(metadataSigned.booleanValue());
+        repoCmd.setMetadataSigned(metadataSigned);
 
         try {
             // Add SSL
