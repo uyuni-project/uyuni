@@ -18,6 +18,7 @@ package com.suse.manager.webui.controllers.virtualization.test;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
@@ -59,6 +60,7 @@ import org.jmock.Expectations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,8 +193,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         List<Map<String, Object>> model = GSON.fromJson(json, List.class);
 
         // Sort both actual and expected arrays to ease assertions
-        Arrays.sort(guests, (VirtualInstance o1, VirtualInstance o2) -> o1.getUuid().compareTo(o2.getUuid()));
-        model.sort((o1, o2) -> ((String)o1.get("uuid")).compareTo((String)o2.get("uuid")));
+        Arrays.sort(guests, Comparator.comparing(VirtualInstance::getUuid));
+        model.sort(Comparator.comparing(oIn -> ((String) oIn.get("uuid"))));
 
         assertEquals(size, model.size());
         assertEquals(guests[0].getUuid(), model.get(0).get("uuid"));
@@ -294,7 +296,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     public void testSetMemMultiAction() throws Exception {
 
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[host.getGuests().size()]);
-        Arrays.sort(guests, (VirtualInstance o1, VirtualInstance o2) -> o1.getUuid().compareTo(o2.getUuid()));
+        Arrays.sort(guests, Comparator.comparing(VirtualInstance::getUuid));
         Long sid = host.getId();
 
         Integer mem = 2048;
@@ -311,8 +313,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         ArrayList<VirtualizationSetMemoryGuestAction> virtActions = new ArrayList<>();
         scheduledActions.stream().forEach(action -> virtActions.add(
                 (VirtualizationSetMemoryGuestAction)ActionManager.lookupAction(user, action.getId())));
-        virtActions.sort((VirtualizationSetMemoryGuestAction a1, VirtualizationSetMemoryGuestAction a2) ->
-                a1.getUuid().compareTo(a2.getUuid()));
+        virtActions.sort(Comparator.comparing(BaseVirtualizationGuestAction::getUuid));
 
         assertEquals(ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY.getName(),
                 scheduledActions.get(0).getTypeName());
