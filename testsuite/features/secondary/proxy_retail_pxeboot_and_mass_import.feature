@@ -59,7 +59,7 @@ Feature: PXE boot a Retail terminal
     And I enter "proxy" in second CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
     And I enter "salt" in third CNAME alias field of example.org zone
-    And I enter the hostname of "proxy" in third CNAME name field of example.org zone
+    And I enter "proxy" in third CNAME name field of example.org zone
 
 @pxeboot_minion
   Scenario: Configure PXE part of DHCP on the branch server
@@ -371,8 +371,6 @@ Feature: PXE boot a Retail terminal
     And I press "Remove Item" in salt CNAME of example.org zone section
     And I press "Remove Item" in tftp CNAME of example.org zone section
     And I press "Remove Item" in ftp CNAME of example.org zone section
-    And I press "Remove Item" in dhcp CNAME of example.org zone section
-    And I press "Remove Item" in dns CNAME of example.org zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
