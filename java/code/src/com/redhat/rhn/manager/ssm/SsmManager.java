@@ -495,13 +495,10 @@ public class SsmManager {
                         }
                     }
 
-                    groupByBaseChange.forEach(defaultBase -> {
-                        defaultBase.getNewBaseChannel().ifPresent(newBaseChannel -> {
-                            fillChildChannels(user,
-                                    defaultBase,
-                                    newBaseChannel.getId());
-                        });
-                    });
+                    groupByBaseChange.forEach(defaultBase -> defaultBase.getNewBaseChannel()
+                            .ifPresent(newBaseChannel -> fillChildChannels(user,
+                                defaultBase,
+                                newBaseChannel.getId())));
                     result.addAll(groupByBaseChange);
 
                 }
@@ -597,13 +594,8 @@ public class SsmManager {
                 // else no base change. since system has no base there are no child channels to find
 
             }
-            allowedNoBase.forEach(allowed -> {
-                allowed.getNewBaseChannel().ifPresent(newBaseChannel -> {
-                    fillChildChannels(user,
-                            allowed,
-                            newBaseChannel.getId());
-                });
-            });
+            allowedNoBase.forEach(allowed -> allowed.getNewBaseChannel()
+                    .ifPresent(newBaseChannel -> fillChildChannels(user, allowed, newBaseChannel.getId())));
             result.addAll(allowedNoBase);
         });
         // else no change for systems without a base channel =>

@@ -65,33 +65,31 @@ public class SCCSystemRegistrationManager {
      * @param forceDBDeletion force delete the cache item when set to true
      */
     public void deregister(List<SCCRegCacheItem> items, boolean forceDBDeletion) {
-        items.forEach(cacheItem -> {
-            cacheItem.getOptSccId().ifPresentOrElse(
-                    sccId -> {
-                        Credentials itemCredentials = cacheItem.getOptCredentials().get();
-                        try {
-                            LOG.debug("de-register system " + cacheItem);
-                            sccClient.deleteSystem(sccId, itemCredentials.getUsername(), itemCredentials.getPassword());
-                            SCCCachingFactory.deleteRegCacheItem(cacheItem);
-                        }
-                        catch (SCCClientException e) {
-                            LOG.error("SCC error while deregistering system " + cacheItem.getId(), e);
-                            if (forceDBDeletion || e.getHttpStatusCode() == 404) {
-                                SCCCachingFactory.deleteRegCacheItem(cacheItem);
-                            }
-                            cacheItem.setRegistrationErrorTime(new Date());
-                        }
-                        catch (Exception e) {
-                            LOG.error("Error deregistering system " + cacheItem.getId(), e);
-                            cacheItem.setRegistrationErrorTime(new Date());
-                        }
-                    },
-                    () -> {
-                        LOG.debug("delete not registered cache item " + cacheItem);
+        items.forEach(cacheItem -> cacheItem.getOptSccId().ifPresentOrElse(
+                sccId -> {
+                    Credentials itemCredentials = cacheItem.getOptCredentials().get();
+                    try {
+                        LOG.debug("de-register system " + cacheItem);
+                        sccClient.deleteSystem(sccId, itemCredentials.getUsername(), itemCredentials.getPassword());
                         SCCCachingFactory.deleteRegCacheItem(cacheItem);
                     }
-            );
-        });
+                    catch (SCCClientException e) {
+                        LOG.error("SCC error while deregistering system " + cacheItem.getId(), e);
+                        if (forceDBDeletion || e.getHttpStatusCode() == 404) {
+                            SCCCachingFactory.deleteRegCacheItem(cacheItem);
+                        }
+                        cacheItem.setRegistrationErrorTime(new Date());
+                    }
+                    catch (Exception e) {
+                        LOG.error("Error deregistering system " + cacheItem.getId(), e);
+                        cacheItem.setRegistrationErrorTime(new Date());
+                    }
+                },
+                () -> {
+                    LOG.debug("delete not registered cache item " + cacheItem);
+                    SCCCachingFactory.deleteRegCacheItem(cacheItem);
+                }
+        ));
     }
 
     /**
@@ -146,10 +144,9 @@ public class SCCSystemRegistrationManager {
         if (srv.isVirtualGuest()) {
             hwinfo.put("hypervisor", srv.getVirtualInstance().getType().getHypervisor().orElse(""));
             hwinfo.put("cloud_provider", srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
-            ofNullable(srv.getVirtualInstance().getUuid()).ifPresent(u -> {
-                hwinfo.put("uuid", u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
-                        "$1-$2-$3-$4-$5"));
-            });
+            ofNullable(srv.getVirtualInstance().getUuid())
+                    .ifPresent(u -> hwinfo.put("uuid", u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
+                    "$1-$2-$3-$4-$5")));
         }
         else {
             // null == physical instance

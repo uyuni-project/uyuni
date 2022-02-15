@@ -757,9 +757,8 @@ public class ContentManager {
             DependencyResolutionResult result = resolver.resolveFilters(filters);
 
             // align the contents
-            newSrcTgtPairs.forEach(srcTgt -> {
-                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user);
-            });
+            newSrcTgtPairs.forEach(srcTgt -> alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(),
+                    result.getFilters(), async, user));
         }
         catch (DependencyResolutionException e) {
             // Build shouldn't be allowed if dependency resolution fails

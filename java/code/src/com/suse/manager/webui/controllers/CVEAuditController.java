@@ -141,9 +141,7 @@ public class CVEAuditController {
                     List<CVEAuditServer> cveAuditServers = CVEAuditManager
                     .listSystemsByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
-                    cveAuditServers.forEach(serv -> {
-                            serv.setSelected(systemSet.contains(serv.getId()));
-                    });
+                    cveAuditServers.forEach(serv -> serv.setSelected(systemSet.contains(serv.getId())));
                     return json(res, ResultJson.success(cveAuditServers));
                 case IMAGE:
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager

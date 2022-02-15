@@ -665,10 +665,8 @@ public class SaltServerActionService {
         catch (SaltException e) {
             LOG.error("Error handling action chain execution: ", e);
             // fail the entire chain
-            sshMinions.forEach(minion -> {
-                failActionChain(minion.getMinionId(), Optional.of(actionChain.getId()), firstActionId,
-                        Optional.of("Error handling action chain execution: " + e.getMessage()));
-            });
+            sshMinions.forEach(minion -> failActionChain(minion.getMinionId(), Optional.of(actionChain.getId()),
+                    firstActionId, Optional.of("Error handling action chain execution: " + e.getMessage())));
         }
     }
 
@@ -756,11 +754,9 @@ public class SaltServerActionService {
                                                 rebootServerAction.get().setPickupTime(new Date());
                                             }
                                         },
-                                        () -> {
-                                            LOG.error("Action of type " + SYSTEM_REBOOT +
-                                                    " found in action chain result but not in actions for minion " +
-                                                    minionId);
-                                        });
+                                        () -> LOG.error("Action of type " + SYSTEM_REBOOT +
+                                                " found in action chain result but not in actions for minion " +
+                                                minionId));
                             }
                         }
 
@@ -1426,16 +1422,14 @@ public class SaltServerActionService {
 
     private static Map<String, Object> dockerRegPillar(List<ImageStore> stores) {
         Map<String, Object> dockerRegistries = new HashMap<>();
-        stores.forEach(store -> {
-            Optional.ofNullable(store.getCreds())
-                    .ifPresent(credentials -> {
-                        Map<String, Object> reg = new HashMap<>();
-                        reg.put("email", "tux@example.com");
-                        reg.put("password", credentials.getPassword());
-                        reg.put("username", credentials.getUsername());
-                        dockerRegistries.put(store.getUri(), reg);
-                    });
-        });
+        stores.forEach(store -> Optional.ofNullable(store.getCreds())
+                .ifPresent(credentials -> {
+                    Map<String, Object> reg = new HashMap<>();
+                    reg.put("email", "tux@example.com");
+                    reg.put("password", credentials.getPassword());
+                    reg.put("username", credentials.getUsername());
+                    dockerRegistries.put(store.getUri(), reg);
+                }));
         return dockerRegistries;
     }
 
@@ -1528,19 +1522,18 @@ public class SaltServerActionService {
                         pillar.put("cert", certificate);
                         String repocontent = "";
                         if (profile.getToken() != null) {
-                            repocontent = profile.getToken().getChannels().stream().map(s -> {
-                                return "[susemanager:" + s.getLabel() + "]\n\n" +
-                                        "name=" + s.getName() + "\n\n" +
-                                        "enabled=1\n\n" +
-                                        "autorefresh=1\n\n" +
-                                        "baseurl=https://" + host +
-                                        ":443/rhn/manager/download/" + s.getLabel() + "?" +
-                                        token + "\n\n" +
-                                        "type=rpm-md\n\n" +
-                                        "gpgcheck=1\n\n" +
-                                        "repo_gpgcheck=0\n\n" +
-                                        "pkg_gpgcheck=1\n\n";
-                            }).collect(Collectors.joining("\n\n"));
+                            repocontent = profile.getToken().getChannels().stream()
+                                .map(s -> "[susemanager:" + s.getLabel() + "]\n\n" +
+                                    "name=" + s.getName() + "\n\n" +
+                                    "enabled=1\n\n" +
+                                    "autorefresh=1\n\n" +
+                                    "baseurl=https://" + host +
+                                    ":443/rhn/manager/download/" + s.getLabel() + "?" +
+                                    token + "\n\n" +
+                                    "type=rpm-md\n\n" +
+                                    "gpgcheck=1\n\n" +
+                                    "repo_gpgcheck=0\n\n" +
+                                    "pkg_gpgcheck=1\n\n").collect(Collectors.joining("\n\n"));
 
                         }
                         pillar.put("repo", repocontent);

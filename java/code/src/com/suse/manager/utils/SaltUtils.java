@@ -328,9 +328,7 @@ public class SaltUtils {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
         else {
-            HibernateFactory.doWithoutAutoFlushing(() -> {
-                applyDeltaPackageInfo(changes, server);
-            });
+            HibernateFactory.doWithoutAutoFlushing(() -> applyDeltaPackageInfo(changes, server));
             return PackageChangeOutcome.DONE;
         }
     }
@@ -371,9 +369,7 @@ public class SaltUtils {
                 String key = packageToKey(name, info);
                 if (!newPackages.containsKey(key)) {
                     Optional.ofNullable(currentPackages.get(key))
-                    .ifPresent(ip -> {
-                        server.getPackages().remove(ip);
-                    });
+                    .ifPresent(ip -> server.getPackages().remove(ip));
                 }
             });
 
@@ -400,35 +396,33 @@ public class SaltUtils {
     public static PackageChangeOutcome applyChangesFromStateApply(
             Map<String, JsonElement> apply, Server server) {
         List<StateApplyResult<JsonElement>> collect =
-                apply.entrySet().stream().flatMap(e -> {
-            return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>
-                    map(fn -> {
-                if (fn.equals("mgrcompat.module_run")) {
-                    StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
-                            e.getValue(),
-                            new TypeToken<StateApplyResult<JsonElement>>() {
-                            }.getType()
-                    );
-                    if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
-                        return Stream.of(ap);
+                apply.entrySet().stream()
+                        .flatMap(e -> extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>map(fn -> {
+                    if (fn.equals("mgrcompat.module_run")) {
+                        StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
+                                e.getValue(),
+                                new TypeToken<StateApplyResult<JsonElement>>() {
+                                }.getType()
+                        );
+                        if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
+                            return Stream.of(ap);
+                        }
+                        else {
+                            return Stream.empty();
+                        }
+                    }
+                    else if (PKG_STATE_MODULES.contains(fn)) {
+                        return Stream.of(
+                                Json.GSON.<StateApplyResult<JsonElement>>fromJson(e.getValue(),
+                                        new TypeToken<StateApplyResult<JsonElement>>() {
+                                        }.getType()
+                                )
+                        );
                     }
                     else {
                         return Stream.empty();
                     }
-                }
-                else if (PKG_STATE_MODULES.contains(fn)) {
-                    return Stream.of(
-                            Json.GSON.<StateApplyResult<JsonElement>>fromJson(e.getValue(),
-                                    new TypeToken<StateApplyResult<JsonElement>>() {
-                                    }.getType()
-                            )
-                    );
-                }
-                else {
-                    return Stream.empty();
-                }
-            }).orElseGet(Stream::empty);
-        })
+                }).orElseGet(Stream::empty))
                 // we sort by run order process multiple package changing states right
                 .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
                 .collect(Collectors.toList());
@@ -556,10 +550,9 @@ public class SaltUtils {
             else {
                 serverAction.setResultMsg("Success");
             }
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        PkgProfileUpdateSlsResult.class));
-            });
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
+                    PkgProfileUpdateSlsResult.class)));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             handlePackageLockData(serverAction, jsonResult, action);
@@ -571,10 +564,9 @@ public class SaltUtils {
             else {
                 serverAction.setResultMsg("Success");
             }
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        HwProfileUpdateSlsResult.class), serverAction);
-            });
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
+                    HwProfileUpdateSlsResult.class), serverAction));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
@@ -719,9 +711,8 @@ public class SaltUtils {
                         }
                     },
                     () -> serverAction.setResultMsg(msg));
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                PackageManager.syncLockedPackages(minionServer.getId(), action.getId());
-            });
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), action.getId()));
         }
         else {
             String msg = "Successfully changed lock status";
@@ -787,17 +778,15 @@ public class SaltUtils {
                     distUpgradeSlsResult.getSpmigration();
             String message = spmig.getComment();
             if (spmig.isResult()) {
-                message = spmig.getChanges().getRetOpt().map(ret -> {
-                    return ret.entrySet().stream().map(entry -> {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(entry.getKey());
-                        sb.append(":");
-                        sb.append(entry.getValue().getOldValue());
-                        sb.append("->");
-                        sb.append(entry.getValue().getNewValue());
-                        return sb.toString();
-                    }).collect(Collectors.joining(","));
-                }).orElse(spmig.getComment());
+                message = spmig.getChanges().getRetOpt().map(ret -> ret.entrySet().stream().map(entry -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(entry.getKey());
+                    sb.append(":");
+                    sb.append(entry.getValue().getOldValue());
+                    sb.append("->");
+                    sb.append(entry.getValue().getNewValue());
+                    return sb.toString();
+                }).collect(Collectors.joining(","))).orElse(spmig.getComment());
             }
             return message;
         }
@@ -1001,29 +990,28 @@ public class SaltUtils {
             }
             Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
             profileOpt.ifPresentOrElse(p -> {
-                p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    // Download the built Kiwi image to SUSE Manager server
-                    List<OSImageInspectSlsResult.Bundle> bundles =
-                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet().getBundles();
-                    infoOpt.ifPresent(info -> info.setChecksum(
-                            ImageInfoFactory.convertChecksum(bundles.get(0).getChecksum())));
-                    bundles.stream().forEach(bundleInfo -> {
-                        MgrUtilRunner.ExecResult collectResult = systemQuery
-                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
-                            .orElseThrow(() -> new RuntimeException("Failed to download image."));
+                p.asKiwiProfile()
+                        .ifPresent(kiwiProfile -> serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                // Download the built Kiwi image to SUSE Manager server
+                List<OSImageInspectSlsResult.Bundle> bundles =
+                        Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                .getKiwiBuildInfo().getChanges().getRet().getBundles();
+                infoOpt.ifPresent(info -> info.setChecksum(
+                        ImageInfoFactory.convertChecksum(bundles.get(0).getChecksum())));
+                bundles.stream().forEach(bundleInfo -> {
+                    MgrUtilRunner.ExecResult collectResult = systemQuery
+                        .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
+                        .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                        if (collectResult.getReturnCode() != 0) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            serverAction.setResultMsg(StringUtils
-                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                        1024));
-                        }
-                    });
-                    });
+                    if (collectResult.getReturnCode() != 0) {
+                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                        serverAction.setResultMsg(StringUtils
+                            .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                    1024));
+                    }
                 });
+                }));
                 ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                         action.getSchedulerUser(),
                         action.getServerActions()
@@ -1260,9 +1248,7 @@ public class SaltUtils {
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
-        HibernateFactory.doWithoutAutoFlushing(() -> {
-            updatePackages(server, result);
-        });
+        HibernateFactory.doWithoutAutoFlushing(() -> updatePackages(server, result));
 
         Optional.ofNullable(result.getListProducts())
                 .map(products -> products.getChanges().getRet())
@@ -1835,9 +1821,7 @@ public class SaltUtils {
         ServerFactory.save(minion);
 
         if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
-            systemInfo.getMaster().ifPresent(master -> {
-                updateMinionConnectionPath(minion, master);
-            });
+            systemInfo.getMaster().ifPresent(master -> updateMinionConnectionPath(minion, master));
         }
 
         //Update the uptime

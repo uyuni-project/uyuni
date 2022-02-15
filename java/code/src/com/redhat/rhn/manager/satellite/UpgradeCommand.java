@@ -374,9 +374,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
         });
 
         // Convert group formulas
-        OrgFactory.lookupAllOrgs().forEach(org -> {
-            ServerGroupFactory.listManagedGroups(org).forEach(FormulaFactory::convertGroupFormulasFromFiles);
-        });
+        OrgFactory.lookupAllOrgs().forEach(org -> ServerGroupFactory.listManagedGroups(org)
+                .forEach(FormulaFactory::convertGroupFormulasFromFiles));
         log.warn("Migrated pillars and formula pillars to database");
     }
 }

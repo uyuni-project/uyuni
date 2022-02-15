@@ -149,12 +149,8 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void setPillarsMap(Optional<Map<String, Object>> op) {
         op.ifPresentOrElse(
-            p -> {
-                pillars = Json.GSON.toJson(p);
-            },
-            () -> {
-                pillars = null;
-            });
+            p -> pillars = Json.GSON.toJson(p),
+            () -> pillars = null);
     }
 
     /**
