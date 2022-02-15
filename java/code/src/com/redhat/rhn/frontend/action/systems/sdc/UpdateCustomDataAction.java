@@ -134,10 +134,8 @@ public class UpdateCustomDataAction extends RhnAction {
             cdv.setModified(new Date());
             cdv.setLastModifier(user);
             server.addCustomDataValue(cdv);
-            server.asMinionServer().ifPresent(minion -> {
-                MinionPillarManager.INSTANCE.generatePillar(minion, false,
-                    MinionPillarManager.PillarSubset.CUSTOM_INFO);
-            });
+            server.asMinionServer().ifPresent(minion -> MinionPillarManager.INSTANCE.generatePillar(minion, false,
+                MinionPillarManager.PillarSubset.CUSTOM_INFO));
 
             request.setAttribute(VAL_PARAM, form.get(VAL_PARAM));
             return getStrutsDelegate().forwardParams(mapping.findForward("updated"),

@@ -424,9 +424,8 @@ public class ContentSyncManager {
 
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> baseRepos = partitionBaseRepo.get(true).stream()
                     // for RHEL and Vmware which have multiple base channels for a product
-                    .sorted((a, b) -> {
-                        return a.getA().getChannelLabel().compareTo(b.getA().getChannelLabel());
-                    }).collect(Collectors.toList());
+                    .sorted((a, b) -> a.getA().getChannelLabel().compareTo(b.getA().getChannelLabel()))
+                    .collect(Collectors.toList());
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> childRepos = partitionBaseRepo.get(false);
 
             Set<MgrSyncChannelDto> allChannels = childRepos.stream().map(c -> new MgrSyncChannelDto(
@@ -622,18 +621,16 @@ public class ContentSyncManager {
         if (orphanChannels != null) {
             log.debug("found orphan vendor channels: " + orphanChannels.size());
             // find sccrepository auth and create content source and link
-            orphanChannels.forEach(c -> {
-                Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
-                    () -> log.error("No repository found for channel: '" + c.getLabel() + "'"),
-                    repo -> {
-                        log.debug("configure orphan repo " + repo.toString());
-                        repo.getBestAuth().ifPresentOrElse(
-                                a -> createOrUpdateContentSource(a, c, mirrorUrl),
-                                () -> log.info("No Auth available for " + repo.toString())
-                                );
-                    }
-                );
-            });
+            orphanChannels.forEach(c -> Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
+                () -> log.error("No repository found for channel: '" + c.getLabel() + "'"),
+                repo -> {
+                    log.debug("configure orphan repo " + repo.toString());
+                    repo.getBestAuth().ifPresentOrElse(
+                            a -> createOrUpdateContentSource(a, c, mirrorUrl),
+                            () -> log.info("No Auth available for " + repo.toString())
+                            );
+                }
+            ));
         }
         // update URL if needed
         for (SCCRepositoryAuth auth : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
@@ -888,37 +885,36 @@ public class ContentSyncManager {
             .forEach(SCCCachingFactory::deleteRepositoryAuth);
 
         if (withFix) {
-            SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").stream().findFirst().ifPresent(rhel6 -> {
-                SUSEProductFactory.lookupPSRByChannelLabel("rhel7-pool-x86_64").stream()
-                        .findFirst().ifPresent(rhel7 -> {
-                    SCCRepository repository6 = rhel6.getRepository();
-                    SCCRepository repository7 = rhel7.getRepository();
-                    repository6.setDistroTarget("i386");
-                    // content source value in susesccrepositoryauth
-                    repository6.getBestAuth().ifPresent(auth -> {
-                        Channel channel7 = ChannelFactory.lookupByLabel(rhel7.getChannelLabel());
-                        Channel channel6 = ChannelFactory.lookupByLabel(rhel6.getChannelLabel());
-                        if (channel6 != null && channel7 != null) {
-                            repository7.getRepositoryAuth().forEach(ra -> {
-                                ra.setContentSource(auth.getContentSource());
-                                SCCCachingFactory.saveRepositoryAuth(ra);
-                            });
-                        }
-                        else if (channel6 == null && channel7 != null) {
-                            repository7.getRepositoryAuth().forEach(ra -> {
-                                ra.setContentSource(auth.getContentSource());
-                                SCCCachingFactory.saveRepositoryAuth(ra);
-                            });
-                            repository6.getRepositoryAuth().forEach(ra -> {
-                                ra.setContentSource(null);
-                                SCCCachingFactory.saveRepositoryAuth(ra);
-                            });
-                        }
-                    });
-                    SCCCachingFactory.saveRepository(repository6);
-                    SCCCachingFactory.saveRepository(repository7);
+            SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").stream().findFirst()
+                    .ifPresent(rhel6 -> SUSEProductFactory.lookupPSRByChannelLabel("rhel7-pool-x86_64").stream()
+                    .findFirst().ifPresent(rhel7 -> {
+                SCCRepository repository6 = rhel6.getRepository();
+                SCCRepository repository7 = rhel7.getRepository();
+                repository6.setDistroTarget("i386");
+                // content source value in susesccrepositoryauth
+                repository6.getBestAuth().ifPresent(auth -> {
+                    Channel channel7 = ChannelFactory.lookupByLabel(rhel7.getChannelLabel());
+                    Channel channel6 = ChannelFactory.lookupByLabel(rhel6.getChannelLabel());
+                    if (channel6 != null && channel7 != null) {
+                        repository7.getRepositoryAuth().forEach(ra -> {
+                            ra.setContentSource(auth.getContentSource());
+                            SCCCachingFactory.saveRepositoryAuth(ra);
+                        });
+                    }
+                    else if (channel6 == null && channel7 != null) {
+                        repository7.getRepositoryAuth().forEach(ra -> {
+                            ra.setContentSource(auth.getContentSource());
+                            SCCCachingFactory.saveRepositoryAuth(ra);
+                        });
+                        repository6.getRepositoryAuth().forEach(ra -> {
+                            ra.setContentSource(null);
+                            SCCCachingFactory.saveRepositoryAuth(ra);
+                        });
+                    }
                 });
-            });
+                SCCCachingFactory.saveRepository(repository6);
+                SCCCachingFactory.saveRepository(repository7);
+            }));
         }
     }
 
@@ -1449,9 +1445,7 @@ public class ContentSyncManager {
             }
         }
         return productTreeFix(
-            tree.stream().filter(e -> {
-                return e.getTags().isEmpty() || e.getTags().contains(tag);
-            }).collect(Collectors.toList())
+            tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag)).collect(Collectors.toList())
         );
     }
 
@@ -1601,23 +1595,22 @@ public class ContentSyncManager {
         }).collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
 
 
-        Map<Long, SCCRepository> repoMap = reposById.values().stream().map(repoJson -> {
-                return Opt.fold(Optional.ofNullable(dbReposById.get(repoJson.getSCCId())),
-                    () -> {
-                        SCCRepository r = new SCCRepository();
-                        r.update(repoJson);
-                        dbReposById.put(r.getSccId(), r);
-                        return r;
-                    },
-                    r -> {
-                        r.setName(repoJson.getName());
-                        r.setDescription(repoJson.getDescription());
-                        r.setUrl(repoJson.getUrl());
-                        r.setInstallerUpdates(repoJson.isInstallerUpdates());
-                        dbReposById.put(r.getSccId(), r);
-                        return r;
-                    });
-        }).collect(Collectors.toMap(SCCRepository::getSccId, p -> p));
+        Map<Long, SCCRepository> repoMap = reposById.values().stream()
+                .map(repoJson -> Opt.fold(Optional.ofNullable(dbReposById.get(repoJson.getSCCId())),
+            () -> {
+                SCCRepository r = new SCCRepository();
+                r.update(repoJson);
+                dbReposById.put(r.getSccId(), r);
+                return r;
+            },
+            r -> {
+                r.setName(repoJson.getName());
+                r.setDescription(repoJson.getDescription());
+                r.setUrl(repoJson.getUrl());
+                r.setInstallerUpdates(repoJson.isInstallerUpdates());
+                dbReposById.put(r.getSccId(), r);
+                return r;
+            })).collect(Collectors.toMap(SCCRepository::getSccId, p -> p));
 
         Map<Tuple3<Long, Long, Long>, SUSEProductSCCRepository> productReposToSave = new HashMap<>();
         Map<Tuple3<Long, Long, Long>, SUSEProductExtension> extensionsToSave = new HashMap<>();
@@ -1960,12 +1953,10 @@ public class ContentSyncManager {
      */
     public List<MgrSyncChannelDto> listChannels() {
 
-        List<MgrSyncChannelDto> collect = listProducts().stream().flatMap(p -> {
-            return Stream.concat(
-                    p.getChannels().stream(),
-                    p.getExtensions().stream().flatMap(e -> e.getChannels().stream())
-                    );
-        }).collect(Collectors.toList());
+        List<MgrSyncChannelDto> collect = listProducts().stream().flatMap(p -> Stream.concat(
+                p.getChannels().stream(),
+                p.getExtensions().stream().flatMap(e -> e.getChannels().stream())
+                )).collect(Collectors.toList());
         return collect;
     }
 
@@ -2013,14 +2004,12 @@ public class ContentSyncManager {
                     ChannelFactory.save(dbChannel);
 
                     // update Mandatory Flag
-                    dbChannel.getSuseProductChannels().forEach(pc -> {
-                        suseProductSCCRepositories.forEach(pr -> {
-                            if (pr.getProduct().equals(pc.getProduct()) && pr.isMandatory() != pc.isMandatory()) {
-                                pc.setMandatory(pr.isMandatory());
-                                SUSEProductFactory.save(pc);
-                            }
-                        });
-                    });
+                    dbChannel.getSuseProductChannels().forEach(pc -> suseProductSCCRepositories.forEach(pr -> {
+                        if (pr.getProduct().equals(pc.getProduct()) && pr.isMandatory() != pc.isMandatory()) {
+                            pc.setMandatory(pr.isMandatory());
+                            SUSEProductFactory.save(pc);
+                        }
+                    }));
                 });
     }
 

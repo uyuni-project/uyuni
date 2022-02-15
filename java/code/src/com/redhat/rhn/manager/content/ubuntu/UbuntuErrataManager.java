@@ -230,9 +230,12 @@ public class UbuntuErrataManager {
                 .flatMap(entry -> {
 
 
-                Map<Channel, Set<Package>> matchingPackagesByChannel =
-                        TimeUtils.logTime(LOG, "matching packages for " + entry.getId(), () -> {
-                            return ubuntuChannels.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, c -> {
+            Map<Channel, Set<Package>> matchingPackagesByChannel =
+                    TimeUtils.logTime(LOG, "matching packages for " + entry.getId(),
+                            () -> ubuntuChannels.entrySet().stream()
+                                    .collect(Collectors.toMap(Map.Entry::getKey,
+                                            c -> c.getValue().stream().filter(p -> entry.getPackages().stream()
+                                                    .anyMatch(e -> {
 
                                     PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
                                     return e.getC().stream()
@@ -263,24 +266,33 @@ public class UbuntuErrataManager {
                             return newErrata;
                         });
 
-                Map<Optional<Org>, Map<Channel, Set<Package>>> collect = matchingPackagesByChannel.entrySet().stream()
-                        .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
-                                Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+                errata.setAdvisory(entry.getId());
+                errata.setAdvisoryName(entry.getId());
+                errata.setAdvisoryStatus(AdvisoryStatus.STABLE);
+                errata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
+                errata.setIssueDate(Date.from(entry.getDate()));
+                errata.setUpdateDate(Date.from(entry.getDate()));
+                String[] split = entry.getId().split("-", 2);
+                errata.setAdvisoryRel(Long.parseLong(split[1]));
+                errata.setProduct("Ubuntu");
+                errata.setSolution("-");
+                errata.setSynopsis(entry.getIsummary());
+                Set<Cve> cves = entry.getCves().stream()
+                        .filter(c -> c.startsWith("CVE-"))
+                        .map(cveByName::get)
+                        .collect(Collectors.toSet());
+                errata.setCves(cves);
+                errata.setDescription(entry.getDescription());
 
                 Set<Package> packages = e.getValue().entrySet().stream()
                         .flatMap(x -> x.getValue().stream())
                         .collect(Collectors.toSet());
-                if (errata.getPackages() == null) {
-                    errata.setPackages(packages);
-                }
-                else {
-                    errata.getPackages().addAll(packages);
-                }
+                errata.getPackages().addAll(packages);
 
-                    Set<Channel> matchingChannels = e.getValue().entrySet().stream()
-                            .filter(c -> !c.getValue().isEmpty())
-                            .map(Map.Entry::getKey)
-                            .collect(Collectors.toSet());
+                Set<Channel> matchingChannels = e.getValue().entrySet().stream()
+                        .filter(c -> !c.getValue().isEmpty())
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toSet());
 
                 errata.getChannels().addAll(matchingChannels);
 

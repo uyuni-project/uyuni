@@ -350,9 +350,7 @@ public class ProductsController {
                                 }
                                 else {
                                     Optional.ofNullable(extensionByProductId.get(baseProduct.getProductId()))
-                                            .ifPresent(e -> {
-                                        e.getExtensions().add(extensionByProductId.get(extProductId));
-                                    });
+                                        .ifPresent(e -> e.getExtensions().add(extensionByProductId.get(extProductId)));
                                 }
                             }
                     }

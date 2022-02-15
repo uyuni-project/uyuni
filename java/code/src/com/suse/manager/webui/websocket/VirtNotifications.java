@@ -147,9 +147,7 @@ public class VirtNotifications {
                         Map<String, List<ServerAction>> groupedActions = serverActions.stream()
                                 .filter(sa -> ActionFactory.isVirtualizationActionType(
                                         sa.getParentAction().getActionType()))
-                                .collect(Collectors.toMap(sa -> {
-                                            return sa.getParentAction().getWebSocketActionId();
-                                        },
+                                .collect(Collectors.toMap(sa -> sa.getParentAction().getWebSocketActionId(),
                                         Arrays::asList,
                                         (sa1, sa2) -> {
                                             List<ServerAction> merged = new ArrayList<>(sa1);

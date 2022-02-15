@@ -255,9 +255,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
     };
 
-    private Consumer<Void> CLEANUP = (arg) -> {
-        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-    };
+    private Consumer<Void> CLEANUP = (arg) -> MinionServerFactory.findByMachineId(MACHINE_ID)
+            .ifPresent(ServerFactory::delete);
 
     @Override
     public void setUp() throws Exception {
@@ -398,9 +397,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             assertEquals(m.getCreated(), server.getCreated());
                             assertEquals(m.getId(), server.getId());
                         },
-                        () -> {
-                            assertTrue("Machine ID not found", false);
-                        });
+                        () -> assertTrue("Machine ID not found", false));
             }, null, DEFAULT_CONTACT_METHOD);
         }
         finally {
@@ -419,16 +416,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
-            MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
-                    m -> {
-                        assertTrue(m.getCreated().equals(server.getCreated()));
-                        assertEquals(m.getId(), server.getId());
-                    },
-                    () -> {
-                        assertTrue("Machine ID not found", false);
-                    });
-        }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER,
+                (minion, machineId, key) -> MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                m -> {
+                    assertTrue(m.getCreated().equals(server.getCreated()));
+                    assertEquals(m.getId(), server.getId());
+                },
+                () -> assertTrue("Machine ID not found", false)), null, DEFAULT_CONTACT_METHOD,
+                Optional.of(minionStartUpGrains));
     }
 
     /*
@@ -465,9 +460,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
                 will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
                 allowing(saltServiceMock).deleteKey(server2.getMinionId());
-            }}, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
-                assertFalse(optMinion.isPresent());
-            }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+            }}, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()),
+                    null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
             assertContains(e.getMessage(), "Systems with conflicting minion_id and machine-id were found");
@@ -501,9 +495,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
             allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
             exactly(1).of(saltServiceMock).deleteKey(server.getMinionId());
-        }}, null, (minion, machineId, key) -> {
-            assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
-        }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+        }}, null, (minion, machineId, key) -> assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent()),
+                null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
 
     public void testWithMissingMachineIdStartUpGrains() throws Exception {
@@ -513,9 +506,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).getMachineId(MINION_ID);
             will(returnValue(Optional.of(MACHINE_ID)));
 
-        }}, null, (minion, machineId, key) -> {
-            assertFalse(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
-        }, null, DEFAULT_CONTACT_METHOD, Optional.of(new MinionStartupGrains()));
+        }}, null, (minion, machineId, key) -> assertFalse(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent()),
+                null, DEFAULT_CONTACT_METHOD, Optional.of(new MinionStartupGrains()));
     }
 
     public void testAlreadyRegisteredRetailMinion() throws Exception {
@@ -534,9 +526,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(MACHINE_ID)));
             allowing(saltServiceMock).getGrains(MINION_ID);
             will(returnValue(getGrains(MINION_ID, null, key)));
-        }}, null, (minion, machineId, key) -> {
-            assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
-        }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+        }}, null, (minion, machineId, key) -> assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent()),
+                null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
 
     public void testChangeContactMethodRegisterMinion() throws Exception {
@@ -675,9 +666,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                (contactMethod) -> {
-                    return null;
-                },
+                (contactMethod) -> null,
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     MinionServer minion = optMinion.get();
@@ -721,9 +710,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                (contactMethod) -> {
-                    return null;
-                },
+                (contactMethod) -> null,
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     MinionServer minion = optMinion.get();
@@ -1366,9 +1353,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 SLES_NO_AK_EXPECTATIONS,
                 (cm) -> null,
-                (minion, machineId, key) -> {
-                    assertEquals(OrgFactory.getSatelliteOrg(), minion.get().getOrg());
-                },
+                (minion, machineId, key) -> assertEquals(OrgFactory.getSatelliteOrg(), minion.get().getOrg()),
                 DEFAULT_CONTACT_METHOD
         );
     }
@@ -1387,9 +1372,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             executeTest(
                     SLES_NO_AK_EXPECTATIONS,
                     (cm) -> null,
-                    (minion, machineId, key) -> {
-                        assertEquals(creator.getOrg(), minion.get().getOrg());
-                    },
+                    (minion, machineId, key) -> assertEquals(creator.getOrg(), minion.get().getOrg()),
                     DEFAULT_CONTACT_METHOD
                     );
         }
@@ -1412,9 +1395,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             executeTest(
                     SLES_EXPECTATIONS,
                     ACTIVATION_KEY_SUPPLIER,
-                    (minion, machineId, key) -> {
-                        assertEquals(ActivationKeyFactory.lookupByKey(key).getOrg(), minion.get().getOrg());
-                    },
+                    (minion, machineId, key) -> assertEquals(ActivationKeyFactory.lookupByKey(key).getOrg(),
+                            minion.get().getOrg()),
                     DEFAULT_CONTACT_METHOD
                     );
         }
@@ -1512,9 +1494,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 with(any(String.class)));
                     }},
                     (contactMethod) -> null, // no AK
-                    (optMinion, machineId, key) -> {
-                        assertFalse(optMinion.isPresent());
-                    }, DEFAULT_CONTACT_METHOD);
+                    (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()), DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
             return;
@@ -1562,9 +1542,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 with(any(String.class)));
                     }},
                     (contactMethod) -> null, // no AK
-                    (optMinion, machineId, key) -> {
-                        assertFalse(optMinion.isPresent());
-                    }, DEFAULT_CONTACT_METHOD);
+                    (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()), DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
             return;
@@ -1784,9 +1762,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 with(any(String.class)));
                     }},
                     (contactMethod) -> null, // no AK
-                    (optMinion, machineId, key) -> {
-                        assertFalse(optMinion.isPresent());
-                    }, DEFAULT_CONTACT_METHOD);
+                    (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()), DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
             return;
@@ -2198,9 +2174,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, null, key)));
                 }},
-                (contactMethod) -> {
-                    return "1-re-already-used";
-                },
+                (contactMethod) -> "1-re-already-used",
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     MinionServer minion = optMinion.get();
@@ -2242,9 +2216,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, null, key)));
                 }},
-                (contactMethod) -> {
-                    return "1-re-already-used";
-                },
+                (contactMethod) -> "1-re-already-used",
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     MinionServer minion = optMinion.get();

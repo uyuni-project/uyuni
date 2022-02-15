@@ -762,13 +762,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         // Get the names of the VMs defined on the cluster if any
         host.asMinionServer()
                 .flatMap(minionServer -> virtManager.getVmInfos(minionServer.getMinionId()))
-                .ifPresent(data -> {
-                        names.putAll(data.entrySet().stream()
-                                .filter(entry -> entry.getValue().containsKey("uuid"))
-                                .collect(Collectors.toMap(
-                                        entry -> entry.getValue().get("uuid").getAsString().replaceAll("-", ""),
-                                        Map.Entry::getKey)));
-        });
+                .ifPresent(data -> names.putAll(data.entrySet().stream()
+                        .filter(entry -> entry.getValue().containsKey("uuid"))
+                        .collect(Collectors.toMap(
+                                entry -> entry.getValue().get("uuid").getAsString().replaceAll("-", ""),
+                                Map.Entry::getKey))));
 
         return names;
     }
