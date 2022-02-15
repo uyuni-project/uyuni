@@ -16,8 +16,6 @@
 package com.redhat.rhn.manager.content;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +34,7 @@ public enum SystemEntitlement {
     private final List<String> entitlements;
 
     SystemEntitlement(String... entitlementsIn) {
-        this.entitlements = Collections.unmodifiableList(
-                new ArrayList<>(Arrays.asList(entitlementsIn)));
+        this.entitlements = List.of(entitlementsIn);
     }
 
     /**
@@ -57,7 +54,7 @@ public enum SystemEntitlement {
        for (SystemEntitlement value : SystemEntitlement.values()) {
           entitlements.addAll(value.getEntitlements());
        }
-       return Collections.unmodifiableList(new ArrayList<>(entitlements));
+       return List.copyOf(entitlements);
     }
 
     /**
