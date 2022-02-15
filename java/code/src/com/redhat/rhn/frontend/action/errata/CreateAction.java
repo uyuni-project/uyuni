@@ -41,7 +41,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -126,9 +125,8 @@ public class CreateAction extends RhnSetAction {
         String keywordsField = form.getString("keywords");
         if (keywordsField != null) {
             List keywords = Arrays.asList(keywordsField.split(","));
-            Iterator keywordItr = keywords.iterator();
-            while (keywordItr.hasNext()) {
-                String keyword = (String) keywordItr.next();
+            for (Object keywordIn : keywords) {
+                String keyword = (String) keywordIn;
                 keyword = keyword.trim();
                 if (keyword != null && keyword.length() > 0) {
                     e.addKeyword(keyword);

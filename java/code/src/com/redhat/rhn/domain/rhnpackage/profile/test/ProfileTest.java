@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -125,8 +124,7 @@ public class ProfileTest extends RhnBaseTestCase {
         List list = qry.list();
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
-        for (Iterator itr = list.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : list) {
             assertEquals("Contains non Profile objects",
                     Profile.class, o.getClass());
         }

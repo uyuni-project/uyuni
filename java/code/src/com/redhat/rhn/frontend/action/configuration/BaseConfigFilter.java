@@ -76,8 +76,8 @@ public abstract class BaseConfigFilter implements ListFilter {
         LocalizationService ls = LocalizationService.getInstance();
         fieldMap = new HashMap();
         List names = activeNames();
-        for (int i = 0; i < names.size(); i++) {
-            String aName = names.get(i).toString();
+        for (Object nameIn : names) {
+            String aName = nameIn.toString();
             fieldMap.put(ls.getMessage(getI18NPrefix() + "." + aName, aLoc), aName);
         }
     }

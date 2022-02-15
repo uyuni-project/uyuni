@@ -61,7 +61,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -711,14 +710,13 @@ public class ServerFactory extends HibernateFactory {
         // "Custom Info" value associated with it must have that
         // value removed...
         List<CustomDataValue> values = lookupCustomDataValues(keyIn);
-        for (Iterator itr = values.iterator(); itr.hasNext();) {
-            CustomDataValue value = (CustomDataValue) itr.next();
+        for (CustomDataValue value : values) {
             Server server = value.getServer();
             server.getCustomDataValues().remove(value);
             SINGLETON.removeObject(value);
             server.asMinionServer().ifPresent(minion -> {
                 MinionPillarManager.INSTANCE.generatePillar(minion, false,
-                    MinionPillarManager.PillarSubset.CUSTOM_INFO);
+                        MinionPillarManager.PillarSubset.CUSTOM_INFO);
             });
         }
 

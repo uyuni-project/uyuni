@@ -61,7 +61,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -359,8 +358,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     private List<String> buildEntitlementsList(String [] entitlements) {
         List<String> entitlementList = new LinkedList<String>();
-        for (int i = 0; i < entitlements.length; i++) {
-            entitlementList.add(entitlements[i]);
+        for (String entitlementIn : entitlements) {
+            entitlementList.add(entitlementIn);
         }
         return entitlementList;
     }
@@ -720,8 +719,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     private boolean keyHasEntitlement(ActivationKey key, ServerGroupType entitlement) {
         boolean found = false;
-        for (Iterator it = key.getEntitlements().iterator(); it.hasNext();) {
-            ServerGroupType current = (ServerGroupType)it.next();
+        for (ServerGroupType current : key.getEntitlements()) {
             if (current.getId() == entitlement.getId()) {
                 found = true;
                 break;

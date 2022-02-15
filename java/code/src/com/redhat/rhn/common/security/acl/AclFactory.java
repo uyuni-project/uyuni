@@ -50,9 +50,9 @@ public class AclFactory {
         // Add the mixin handlers as well.
         if (mixinsIn != null) {
             String[] mixin = StringUtils.split(mixinsIn, ",");
-            for (int i = 0; i < mixin.length; i++) {
-                if (!mixin[i].equals(Access.class.getName())) {
-                    aclObj.registerHandler(StringUtils.trim(mixin[i]));
+            for (String sIn : mixin) {
+                if (!sIn.equals(Access.class.getName())) {
+                    aclObj.registerHandler(StringUtils.trim(sIn));
                 }
             }
         }

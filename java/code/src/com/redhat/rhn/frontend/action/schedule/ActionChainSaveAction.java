@@ -106,9 +106,9 @@ public class ActionChainSaveAction {
             // update groups' sort order
             List<List<ActionChainEntry>> entryGroups =
                 new LinkedList<List<ActionChainEntry>>();
-            for (int sortOrder = 0; sortOrder < reorderedSortOrders.size(); sortOrder++) {
+            for (Integer reorderedSortOrderIn : reorderedSortOrders) {
                 entryGroups.add(ActionChainFactory.getActionChainEntries(
-                    actionChain, reorderedSortOrders.get(sortOrder)));
+                        actionChain, reorderedSortOrderIn));
             }
             for (int sortOrder = 0; sortOrder < reorderedSortOrders.size(); sortOrder++) {
                 log.debug("Changing group order from " + entryGroups.get(sortOrder) +

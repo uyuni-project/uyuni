@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,8 +53,8 @@ public class PackageHelper {
         // deal with the providing channels first
         DataResult dr = PackageManager.providingChannels(user, pkg.getId());
         List channelLabels = new ArrayList();
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            Map map = (Map) itr.next();
+        for (Object oIn : dr) {
+            Map map = (Map) oIn;
             channelLabels.add(map.get("label"));
         }
         pkgMap.put("providing_channels", channelLabels);

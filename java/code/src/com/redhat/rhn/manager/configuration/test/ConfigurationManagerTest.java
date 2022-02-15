@@ -1330,15 +1330,15 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         List revisions = new ArrayList();
 
-        for (int i = 0; i < paths.length; i++) {
+        for (String pathIn : paths) {
             ConfigFile fl = sandbox.createConfigFile(
-                    ConfigFileState.normal(), paths[i]);
+                    ConfigFileState.normal(), pathIn);
             ConfigRevision rev = ConfigTestUtils.createConfigRevision(fl,
-                                               ConfigTestUtils.createConfigContent(),
-                                               ConfigTestUtils.createConfigInfo(),
+                    ConfigTestUtils.createConfigContent(),
+                    ConfigTestUtils.createConfigInfo(),
                     (long) RandomUtils.nextInt(0,
                             Integer.MAX_VALUE)
-                                               );
+            );
             revisions.add(rev.getRevision());
             ConfigurationFactory.commit(sandbox);
         }

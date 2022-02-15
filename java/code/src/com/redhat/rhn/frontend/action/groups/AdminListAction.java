@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -76,9 +75,8 @@ public class AdminListAction extends BaseListAction {
 
         long updated = 0;
         // remove admins
-        for (Iterator<String> iter = helper.getRemovedKeys().iterator();
-                iter.hasNext();) {
-            Long uid = Long.valueOf(iter.next());
+        for (String valueIn : (Iterable<String>) helper.getRemovedKeys()) {
+            Long uid = Long.valueOf(valueIn);
             if (!UserManager.hasRole(uid, RoleFactory.ORG_ADMIN)) {
                 UserManager.revokeServerGroupPermission(uid, serverGroup.getId());
             }
@@ -86,9 +84,8 @@ public class AdminListAction extends BaseListAction {
         }
 
         // add group admins
-        for (Iterator<String> iter = helper.getAddedKeys().iterator();
-                iter.hasNext();) {
-            Long uid = Long.valueOf(iter.next());
+        for (String oIn : (Iterable<String>) helper.getAddedKeys()) {
+            Long uid = Long.valueOf(oIn);
             if (!UserManager.hasRole(uid, RoleFactory.ORG_ADMIN)) {
                 UserManager.revokeServerGroupPermission(uid, serverGroup.getId());
                 UserManager.grantServerGroupPermission(uid, serverGroup.getId());

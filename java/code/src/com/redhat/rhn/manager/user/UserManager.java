@@ -482,9 +482,8 @@ public class UserManager extends BaseManager {
         DataResult dr = prefixMode.execute(params);
 
         Set groupSet = new HashSet();
-        Iterator i = dr.iterator();
-        while (i.hasNext()) {
-            Map row = (Map)i.next();
+        for (Object oIn : dr) {
+            Map row = (Map) oIn;
             groupSet.add(row.get("system_group_id"));
         }
         return groupSet;
@@ -507,9 +506,8 @@ public class UserManager extends BaseManager {
         m.executeUpdate(params);
 
         m = ModeFactory.getWriteMode("User_queries", "set_system_group");
-        Iterator i = groups.iterator();
-        while (i.hasNext()) {
-            Long sgid = (Long)i.next();
+        for (Object groupIn : groups) {
+            Long sgid = (Long) groupIn;
             params.put("sgid", sgid);
             m.executeUpdate(params);
         }

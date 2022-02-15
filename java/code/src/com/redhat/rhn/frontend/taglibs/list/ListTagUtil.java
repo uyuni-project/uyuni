@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -549,8 +548,8 @@ public class ListTagUtil {
         }
         ListTagUtil.write(pageContext,
                 "<div class=\"spacewalk-list-pagination-btns btn-group\">");
-        for (int x = 0; x < linkNames.length; x++) {
-            String[] linkData = (String[]) links.get(linkNames[x]);
+        for (String linkNameIn : linkNames) {
+            String[] linkData = (String[]) links.get(linkNameIn);
             ListTagUtil.write(pageContext, "<button ");
             ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs ");
             ListTagUtil.write(pageContext, linkData[0]);
@@ -627,8 +626,8 @@ public class ListTagUtil {
             ListTagUtil.write(pageContext, "<select name=\"");
             ListTagUtil.write(pageContext, filterByKey);
             ListTagUtil.write(pageContext, "\">");
-            for (Iterator iter = fields.iterator(); iter.hasNext();) {
-                String field = (String) iter.next();
+            for (Object fieldIn : fields) {
+                String field = (String) fieldIn;
                 ListTagUtil.write(pageContext, "<option value=\"");
                 ListTagUtil.write(pageContext, field);
                 ListTagUtil.write(pageContext, "\" ");

@@ -51,7 +51,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -141,8 +140,8 @@ public class UserHandler extends BaseHandler {
 
         //Loop through the target users roles and stick the labels into the ArrayList
         Set roleObjects = target.getPermanentRoles();
-        for (Iterator itr = roleObjects.iterator(); itr.hasNext();) {
-            Role r = (Role) itr.next();
+        for (Object roleObjectIn : roleObjects) {
+            Role r = (Role) roleObjectIn;
             roles.add(r.getLabel());
         }
 
@@ -717,15 +716,15 @@ public class UserHandler extends BaseHandler {
         // I couldn't find anything that would create a map from a list using
         // a property from the object in the list as the key. This is where
         // python would be useful.
-        for (Iterator itr = groups.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) itr.next();
+        for (Object groupIn : groups) {
+            ServerGroup sg = (ServerGroup) groupIn;
             groupMap.put(sg.getName(), sg);
         }
 
         // Doing full check of all supplied names, if one is bad
         // throw an exception, prior to altering the DefaultSystemGroup Set.
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            String name = (String)itr.next();
+        for (Object nameIn : sgNames) {
+            String name = (String) nameIn;
             ServerGroup sg = (ServerGroup) groupMap.get(name);
             if (sg == null) {
                 throw new LookupServerGroupException(name);
@@ -734,8 +733,8 @@ public class UserHandler extends BaseHandler {
 
         // now for the real reason we're in this method.
         Set defaults = target.getDefaultSystemGroupIds();
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) groupMap.get(itr.next());
+        for (Object sgNameIn : sgNames) {
+            ServerGroup sg = (ServerGroup) groupMap.get(sgNameIn);
             if (sg != null) {
                 // not a simple add to the groups.  Needs to call
                 // UserManager as DataSource is being used.
@@ -805,15 +804,15 @@ public class UserHandler extends BaseHandler {
         // I couldn't find anything that would create a map from a list using
         // a property from the object in the list as the key. This is where
         // python would be useful.
-        for (Iterator itr = groups.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) itr.next();
+        for (Object groupIn : groups) {
+            ServerGroup sg = (ServerGroup) groupIn;
             groupMap.put(sg.getName(), sg);
         }
 
         // Doing full check of all supplied names, if one is bad
         // throw an exception, prior to altering the DefaultSystemGroup Set.
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            String name = (String)itr.next();
+        for (Object nameIn : sgNames) {
+            String name = (String) nameIn;
             ServerGroup sg = (ServerGroup) groupMap.get(name);
             if (sg == null) {
                 throw new LookupServerGroupException(name);
@@ -822,8 +821,8 @@ public class UserHandler extends BaseHandler {
 
         // now for the real reason we're in this method.
         Set defaults = target.getDefaultSystemGroupIds();
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) groupMap.get(itr.next());
+        for (Object sgNameIn : sgNames) {
+            ServerGroup sg = (ServerGroup) groupMap.get(sgNameIn);
             if (sg != null) {
                 // not a simple remove to the groups.  Needs to call
                 // UserManager as DataSource is being used.
@@ -1034,8 +1033,8 @@ public class UserHandler extends BaseHandler {
         // prevent adding a bunch of valid groups and then throwing an exception
         // when coming across one that doesn't exist.
         List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
-        for (Iterator it = sgNames.iterator(); it.hasNext();) {
-            String serverGroupName =  (String)it.next();
+        for (Object sgNameIn : sgNames) {
+            String serverGroupName = (String) sgNameIn;
 
             // Make sure the server group exists:
             ManagedServerGroup group;

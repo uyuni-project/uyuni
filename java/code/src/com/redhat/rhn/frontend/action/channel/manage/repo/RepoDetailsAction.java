@@ -57,7 +57,6 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -213,9 +212,8 @@ public class RepoDetailsAction extends RhnAction {
         List<LabelValueBean> sslCrytpoKeyOptions = new ArrayList<LabelValueBean>();
         sslCrytpoKeyOptions.add(lv(LocalizationService.getInstance().
                 getMessage("generic.jsp.none"), ""));
-        for (Iterator<SslCryptoKey> iter = KickstartFactory.lookupSslCryptoKeys(
-                context.getCurrentUser().getOrg()).iterator(); iter.hasNext();) {
-            SslCryptoKey sck = iter.next();
+        for (SslCryptoKey sck : KickstartFactory.lookupSslCryptoKeys(
+                context.getCurrentUser().getOrg())) {
             sslCrytpoKeyOptions.add(lv(sck.getDescription(), sck.getId().toString()));
         }
         context.getRequest().setAttribute("sslcryptokeys", sslCrytpoKeyOptions);

@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -102,8 +101,8 @@ public class LocalizationService {
         // Get the list of configured classnames from the config file.
         String[] packages = Config.get().getStringArray(
                 ConfigDefaults.WEB_L10N_RESOURCEBUNDLES);
-        for (int i = 0; i < packages.length; i++) {
-            addKeysToMap(packages[i]);
+        for (String packageIn : packages) {
+            addKeysToMap(packageIn);
         }
         if (supportedLocales.size() > 0) {
             supportedLocales.clear();
@@ -148,8 +147,7 @@ public class LocalizationService {
             LocaleInfo li = new LocaleInfo(locale);
             this.supportedLocales.put(locale, li);
         }
-        for (Iterator<String> iter = compoundLocales.iterator(); iter.hasNext();) {
-            String cl = iter.next();
+        for (String cl : compoundLocales) {
             String[] parts = cl.split("_");
             LocaleInfo li = new LocaleInfo(parts[0], cl);
             if (this.supportedLocales.get(parts[0]) == null) {
@@ -558,9 +556,7 @@ public class LocalizationService {
         DataResult<Map<String, Object>> dr = prefixMode.execute(new HashMap());
 
         SortedSet<String> ret = new TreeSet<String>();
-        Iterator<Map<String, Object>> i = dr.iterator();
-        while (i.hasNext()) {
-            Map<String, Object> row = i.next();
+        for (Map<String, Object> row : dr) {
             ret.add((String) row.get("prefix"));
         }
         return ret;
@@ -592,8 +588,7 @@ public class LocalizationService {
                     .asList(excluded)));
         }
         SortedMap<String, String> ret = new TreeMap<String, String>();
-        for (Iterator<String> iter = validCountries.iterator(); iter.hasNext();) {
-            String isoCountry = iter.next();
+        for (String isoCountry : validCountries) {
             ret.put(this.getMessage(isoCountry), isoCountry);
         }
 
@@ -626,9 +621,7 @@ public class LocalizationService {
      */
     public List<String> getConfiguredLocales() {
         List<String> tmp = new LinkedList<String>();
-        for (Iterator<String> iter = this.supportedLocales.keySet().iterator(); iter
-                .hasNext();) {
-            String key = iter.next();
+        for (String key : this.supportedLocales.keySet()) {
             LocaleInfo li = this.supportedLocales.get(key);
             if (!li.isAlias()) {
                 tmp.add(key);

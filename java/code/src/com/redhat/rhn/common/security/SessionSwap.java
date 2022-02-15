@@ -60,10 +60,10 @@ public class SessionSwap {
      *         where D1... are the input data and HEX is the hex signature.
      */
     public static String encodeData(String[] in) {
-        for (int i = 0; i < in.length; i++) {
-            if (!StringUtils.containsOnly(in[i], HEX_CHARS)) {
+        for (String sIn : in) {
+            if (!StringUtils.containsOnly(sIn, HEX_CHARS)) {
                 throw new IllegalArgumentException("encodeData input must be " +
-                                                   "lowercase hex, but wasn't: " + in[i]);
+                        "lowercase hex, but wasn't: " + sIn);
             }
         }
 

@@ -40,7 +40,6 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -159,13 +158,13 @@ public class AddPackagesAction extends RhnAction implements Listable {
 
         // Loop through the channels and see if the channel name is in the list of
         // subscribable channels. If so, add it to the viewoptions list.
-        for (Iterator itr = channels.iterator(); itr.hasNext();) {
+        for (Object channelIn : channels) {
             //get the channel from the list
-            Channel channel = (Channel) itr.next();
+            Channel channel = (Channel) channelIn;
             if (subscribableChannels.contains(channel.getName())) {
                 //Channel is subscribable by this user so add it to the list of options
                 viewoptions.add(new LabelValueBean(channel.getName(),
-                    channel.getId().toString()));
+                        channel.getId().toString()));
             }
         }
 

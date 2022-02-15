@@ -23,8 +23,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
-import java.util.Iterator;
-
 /**
  * ErrataSetupActionTest
  */
@@ -45,8 +43,7 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
         addRequestParameter("sid", server.getId().toString());
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        for (Iterator itr = e.getPackages().iterator(); itr.hasNext();) {
-            Package pkg = (Package) itr.next();
+        for (Package pkg : e.getPackages()) {
             ErrataCacheManager.insertNeededErrataCache(server.getId(),
                     e.getId(), pkg.getId());
         }
@@ -64,8 +61,7 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
         clearRequestParameters();
         addRequestParameter("sid", server.getId().toString());
         addRequestParameter("allowVendorChange", new String[]{ "false" });
-        for (Iterator itr = e.getPackages().iterator(); itr.hasNext();) {
-            Package pkg = (Package) itr.next();
+        for (Package pkg : e.getPackages()) {
             ErrataCacheManager.deleteNeededCache(server.getId(),
                     e.getId(), pkg.getId());
         }

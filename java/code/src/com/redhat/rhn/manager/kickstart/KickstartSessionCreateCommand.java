@@ -30,7 +30,6 @@ import com.redhat.rhn.manager.profile.ProfileManager;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -111,9 +110,7 @@ public class KickstartSessionCreateCommand {
         User orgAdmin = UserFactory.findRandomOrgAdmin(this.ksession.getOrg());
         List<Channel> channels = ProfileManager.getChildChannelsNeededForProfile(orgAdmin,
                 baseChannel, profile);
-        Iterator<Channel> i = channels.iterator();
-        while (i.hasNext()) {
-            Channel child = i.next();
+        for (Channel child : channels) {
             log.debug("** adding child channel for profile: " + child.getLabel());
             key.addChannel(child);
         }

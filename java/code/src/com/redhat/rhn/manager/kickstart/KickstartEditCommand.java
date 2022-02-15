@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -252,8 +251,8 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         }
 
         if (childchannelIds != null) {
-            for (int i = 0; i < childchannelIds.length; i++) {
-                Long channelId = Long.valueOf(childchannelIds[i]);
+            for (String childchannelIdIn : childchannelIds) {
+                Long channelId = Long.valueOf(childchannelIdIn);
                 Channel c = ChannelManager.lookupByIdAndUser(channelId,
                         user);
                 getKickstartData().addChildChannel(c);
@@ -369,13 +368,12 @@ public class KickstartEditCommand extends BaseKickstartCommand {
             List<RepoInfo> repoList = RepoInfo.getStandardRepos(
                     ksdata.getKickstartDefaults().getKstree());
             Map<String, RepoInfo> repoSet = new HashMap<String, RepoInfo>();
-            for (Iterator<RepoInfo> ri = repoList.iterator(); ri.hasNext();) {
-                RepoInfo rInfo = ri.next();
+            for (RepoInfo rInfo : repoList) {
                 repoSet.put(rInfo.getName(), rInfo);
             }
             Set<RepoInfo> selected = new HashSet<RepoInfo>();
-            for (int i = 0; i < reposIn.length; i++) {
-                selected.add(repoSet.get(reposIn[i]));
+            for (String repoIn : reposIn) {
+                selected.add(repoSet.get(repoIn));
             }
             ksdata.setRepoInfos(selected);
             KickstartWizardHelper ksHelper = new KickstartWizardHelper(user);

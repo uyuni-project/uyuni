@@ -35,7 +35,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,9 +74,8 @@ public class MigrateSystemsAction extends RhnAction implements Listable {
             RhnSet set = RhnSetDecl.SYSTEMS.get(context.getCurrentUser());
             List<Server> serverList = new ArrayList<Server>();
 
-            Iterator it = set.iterator();
-            while (it.hasNext()) {
-                Long sid = ((RhnSetElement)it.next()).getElement();
+            for (Object oIn : set) {
+                Long sid = ((RhnSetElement) oIn).getElement();
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
                 serverList.add(server);
             }

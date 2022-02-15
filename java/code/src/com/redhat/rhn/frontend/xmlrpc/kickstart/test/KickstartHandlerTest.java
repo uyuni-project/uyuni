@@ -73,8 +73,8 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertTrue(ksTrees.size() > 0);
 
         boolean found = false;
-        for (int i = 0; i < ksTrees.size(); i++) {
-            KickstartableTree t = (KickstartableTree)ksTrees.get(i);
+        for (Object ksTreeIn : ksTrees) {
+            KickstartableTree t = (KickstartableTree) ksTreeIn;
             if (t.getId().equals(testTree.getId())) {
                 found = true;
                 break;

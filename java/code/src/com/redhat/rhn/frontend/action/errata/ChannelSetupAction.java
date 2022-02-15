@@ -38,7 +38,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -76,10 +75,7 @@ public class ChannelSetupAction extends RhnListAction {
 
         //loop through the ones that will be displayed on the page, and get
         //the number of relevant packages.
-        Iterator<ChannelOverview> itr = channels.iterator();
-        while (itr.hasNext()) {
-            ChannelOverview channel = itr.next();
-
+        for (ChannelOverview channel : channels) {
             List<Long> pkgs;
             //so if the channel is not a clone or the errata is not cloned, we simply allow
             //the package name match to be used
@@ -88,7 +84,7 @@ public class ChannelSetupAction extends RhnListAction {
             }
             //Else we check and see if the original channel was listed in
             //      the original errata
-            else if (e != null && (e.isCloned() && errataInChannel(((ClonedErrata)e).getOriginal(),
+            else if (e != null && (e.isCloned() && errataInChannel(((ClonedErrata) e).getOriginal(),
                     channel.getOriginalId()))) {
                 pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             } //if it wasn't then no packages are listed
@@ -120,10 +116,9 @@ public class ChannelSetupAction extends RhnListAction {
             if (e != null) {
                 //get the channels for this errata
                 Set<Channel> channelsInErrata = e.getChannels();
-                Iterator<Channel> channelItr = channelsInErrata.iterator();
                 //loop through and add them to the set
-                while (channelItr.hasNext()) {
-                    Long cid = (channelItr.next()).getId(); //get channel id
+                for (Channel channelsInErratumIn : channelsInErrata) {
+                    Long cid = channelsInErratumIn.getId(); //get channel id
                     set.addElement(cid); //add to set
                 }
             }
@@ -139,10 +134,9 @@ public class ChannelSetupAction extends RhnListAction {
             List<String> ids = new ArrayList<String>();
             Set<RhnSetElement> elems =
                     RhnSetDecl.CHANNELS_FOR_ERRATA.get(user).getElements();
-            Iterator<RhnSetElement> idItr = elems.iterator();
-            while (idItr.hasNext()) {
+            for (RhnSetElement elemIn : elems) {
                 //get a string version of the id from the RhnSetElment object
-                String id = (idItr.next()).getElement().toString();
+                String id = elemIn.getElement().toString();
                 ids.add(id); //add to the list
             }
         }

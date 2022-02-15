@@ -106,8 +106,8 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
 
         }
         StringBuffer messages = new StringBuffer();
-        for (int i = 0; i < errors.size(); i++) {
-            messages.append(errors.get(i));
+        for (String errorIn : errors) {
+            messages.append(errorIn);
             messages.append("\n");
         }
         if (messages.length() == 0) {
@@ -201,8 +201,8 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             }
         }
         StringBuffer messages = new StringBuffer();
-        for (int i = 0; i < errors.size(); i++) {
-            messages.append(errors.get(i));
+        for (String errorIn : errors) {
+            messages.append(errorIn);
             messages.append("\n");
         }
         if (messages.length() == 0) {

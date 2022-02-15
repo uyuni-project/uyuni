@@ -116,7 +116,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -167,8 +166,8 @@ public class ActionManager extends BaseManager {
      */
     public static int removeActions(List actionIds) {
         int failed = 0;
-        for (Iterator ids = actionIds.iterator(); ids.hasNext();) {
-            Long actionId = (Long) ids.next();
+        for (Object actionIdIn : actionIds) {
+            Long actionId = (Long) actionIdIn;
             failed += ActionFactory.removeAction(actionId);
         }
         return failed;
@@ -431,8 +430,8 @@ public class ActionManager extends BaseManager {
      */
     public static void deleteActionsById(User user, List actionsIds) {
         List<Action> actions = new ArrayList<Action>();
-        for (Iterator<Number> ai = actionsIds.iterator(); ai.hasNext();) {
-            long actionId = ai.next().longValue();
+        for (Number actionsIdIn : (Iterable<Number>) actionsIds) {
+            long actionId = actionsIdIn.longValue();
             Action action = ActionManager.lookupAction(user, actionId);
             if (action != null) {
                 // check, whether the actions are archived
@@ -533,9 +532,8 @@ public class ActionManager extends BaseManager {
         addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
-        Iterator i = filenames.iterator();
-        while (i.hasNext()) {
-            Long cfnid = (Long)i.next();
+        for (Object filenameIn : filenames) {
+            Long cfnid = (Long) filenameIn;
             /*
              * We are using ConfigurationFactory to lookup the config file name
              * instead of ConfigurationManager.  If we used ConfigurationManager,
@@ -1354,9 +1352,9 @@ public class ActionManager extends BaseManager {
     // Check if we want to delete the old package when installing  a
     // new rev of one.
     private static boolean isPackageRemovable(String name) {
-        for (int i = 0; i < PACKAGES_NOT_REMOVABLE.length; i++) {
-            log.debug("Checking: " + name + " for: " + PACKAGES_NOT_REMOVABLE[i]);
-            if (name.equals(PACKAGES_NOT_REMOVABLE[i])) {
+        for (String sIn : PACKAGES_NOT_REMOVABLE) {
+            log.debug("Checking: " + name + " for: " + sIn);
+            if (name.equals(sIn)) {
                 return false;
             }
         }
@@ -2036,9 +2034,7 @@ public class ActionManager extends BaseManager {
         throws TaskomaticApiException {
 
         List packages = new LinkedList();
-        Iterator i = pkgs.getElements().iterator();
-        while (i.hasNext()) {
-            RhnSetElement rse = (RhnSetElement) i.next();
+        for (RhnSetElement rse : pkgs.getElements()) {
             Map row = new HashMap();
             row.put("name_id", rse.getElement());
             row.put("evr_id", rse.getElementTwo());

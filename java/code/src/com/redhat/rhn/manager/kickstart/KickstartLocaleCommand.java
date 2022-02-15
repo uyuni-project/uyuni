@@ -151,9 +151,8 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         DataResult dr = KickstartLister.getInstance()
         .getValidTimezones(getKickstartData().getId());
 
-        Iterator iter = dr.iterator();
-        while (iter.hasNext()) {
-            TimezoneDto tz = (TimezoneDto) iter.next();
+        for (Object oIn : dr) {
+            TimezoneDto tz = (TimezoneDto) oIn;
             if (tz.getLabel().equals(timezone)) {
                 return Boolean.TRUE;
             }

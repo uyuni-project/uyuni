@@ -77,10 +77,9 @@ public class CreateUserAction extends RhnAction {
 
         // Put any validationErrors into ActionErrors object
         ValidatorError[] validationErrors = command.validate();
-        for (int i = 0; i < validationErrors.length; i++) {
-            ValidatorError err = validationErrors[i];
+        for (ValidatorError err : validationErrors) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
-                       new ActionMessage(err.getKey(), err.getValues()));
+                    new ActionMessage(err.getKey(), err.getValues()));
         }
 
         Address addr = UserFactory.createAddress();

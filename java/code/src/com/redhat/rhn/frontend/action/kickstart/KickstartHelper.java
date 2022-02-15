@@ -401,9 +401,9 @@ public class KickstartHelper {
     private boolean hasPackages(Channel c, String[] packageNames) {
         log.debug("HasPackages: " + c.getId());
         //Go through every package name.
-        for (int i = 0; i < packageNames.length; i++) {
-            log.debug("hasPackages : Checking for package: " + packageNames[i]);
-            Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNames[i]);
+        for (String packageNameIn : packageNames) {
+            log.debug("hasPackages : Checking for package: " + packageNameIn);
+            Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNameIn);
             //No package by this name exists in this package.
             if (pid == null) {
                 log.debug("hasPackages : not found");
@@ -437,9 +437,7 @@ public class KickstartHelper {
         }
         for (String pkgName : packagesToLook) {
             boolean found = false;
-            Iterator<Channel> i = channelsToCheck.iterator();
-            while (i.hasNext()) {
-                Channel current = i.next();
+            for (Channel current : channelsToCheck) {
                 Long pid = ChannelManager.getLatestPackageEqual(current.getId(), pkgName);
                 if (pid != null) {
                     found = true;
@@ -463,15 +461,13 @@ public class KickstartHelper {
                 user.getOrg().getId(), channel.getId());
         channelsToCheck.add(channel);
 
-        Iterator<Channel> i = channelsToCheck.iterator();
-        while (i.hasNext()) {
-            Channel current = i.next();
+        for (Channel current : channelsToCheck) {
             log.debug("Current.channel : " + current.getId());
             //Look for the auto-kickstart package.
             List<Map<String, Object>> kspackages =
                     ChannelManager.listLatestPackagesLike(
-                    current.getId(),
-                    ksdata.getKickstartPackageNames());
+                            current.getId(),
+                            ksdata.getKickstartPackageNames());
             //found it, this channel is good.
             if (kspackages.size() > 0) {
                 return true;

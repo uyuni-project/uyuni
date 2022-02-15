@@ -509,9 +509,7 @@ public class ChannelManager extends BaseManager {
          * add the names of the channels this user has permissions to
          * to the subscribableChannels list.
          */
-        Iterator<ChannelPerms> i = subscribable.iterator();
-        while (i.hasNext()) {
-            ChannelPerms perms = i.next();
+        for (ChannelPerms perms : subscribable) {
             //if the user has permissions for this channel
             if (perms.isHasPerm()) {
                 //add the name to the list
@@ -1361,8 +1359,8 @@ public class ChannelManager extends BaseManager {
 
         DataResult dr = m.execute(params);
         List<Long> channelIds = new ArrayList<Long>();
-        for (Iterator it = dr.iterator(); it.hasNext();) {
-            channelIds.add((Long) ((Map) it.next()).get("id"));
+        for (Object oIn : dr) {
+            channelIds.add((Long) ((Map) oIn).get("id"));
         }
         if (expectOne && channelIds.size() > 1) {
             // Multiple channels have this package, highly unlikely we can guess which
@@ -1496,17 +1494,12 @@ public class ChannelManager extends BaseManager {
         Channel baseChannel = current.getBaseChannel();
         Channel foundChannel = null;
 
-        Iterator<Channel> i =
-                ChannelManager.userAccessibleChildChannels(
-                user.getOrg().getId(), baseChannel.getId()).iterator();
-        while (i.hasNext()) {
-            Channel child = i.next();
+        for (Channel child : ChannelManager.userAccessibleChildChannels(
+                user.getOrg().getId(), baseChannel.getId())) {
             Set<DistChannelMap> distChannelMaps = child.getDistChannelMaps();
             log.debug("distChannelMaps null? " + (distChannelMaps == null));
             if (distChannelMaps != null) {
-                Iterator<DistChannelMap> di = distChannelMaps.iterator();
-                while (di.hasNext()) {
-                    DistChannelMap dcm = di.next();
+                for (DistChannelMap dcm : distChannelMaps) {
                     log.debug("got DistChannelMap: " + dcm);
                     if (dcm.getOs().equals(osProductName)) {
                         log.debug("found a channel to subscribe: " + dcm.getChannel());
@@ -1691,10 +1684,7 @@ public class ChannelManager extends BaseManager {
      */
     public static Set<ChannelVersion> getChannelVersions(Channel channel) {
         Set<ChannelVersion> returnSet = new HashSet<ChannelVersion>();
-        Iterator<DistChannelMap> iter = channel.getDistChannelMaps().iterator();
-        while (iter.hasNext()) {
-            DistChannelMap dcm = iter.next();
-
+        for (DistChannelMap dcm : channel.getDistChannelMaps()) {
             returnSet.add(ChannelVersion.getChannelVersionForDistChannelMap(dcm));
         }
         return returnSet;

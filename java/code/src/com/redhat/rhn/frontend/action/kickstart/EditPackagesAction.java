@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -121,8 +120,8 @@ public class EditPackagesAction extends RhnAction {
         Set ksPackages = ksdata.getKsPackages();
         if (ksPackages != null && ksPackages.size() > 0) {
             StringBuilder buf = new StringBuilder();
-            for (Iterator iter = ksPackages.iterator(); iter.hasNext();) {
-                KickstartPackage pn = (KickstartPackage)iter.next();
+            for (Object ksPackageIn : ksPackages) {
+                KickstartPackage pn = (KickstartPackage) ksPackageIn;
                 buf.append(pn.getPackageName().getName());
                 buf.append("\n");
             }

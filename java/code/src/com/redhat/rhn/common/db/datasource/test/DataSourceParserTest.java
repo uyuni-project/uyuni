@@ -150,13 +150,11 @@ public class DataSourceParserTest extends RhnBaseTestCase {
             PreparedStatement ps = null;
             try {
                 Collection<?> fileSet = ModeFactory.getKeys();
-                Iterator<?> i = fileSet.iterator();
-                while (i.hasNext()) {
-                    String file = (String)i.next();
-                    Iterator<?> j = ModeFactory.getFileKeys(file).values().iterator();
+                for (Object valueIn : fileSet) {
+                    String file = (String) valueIn;
 
-                    while (j.hasNext()) {
-                        ParsedMode m = (ParsedMode)j.next();
+                    for (Object oIn : ModeFactory.getFileKeys(file).values()) {
+                        ParsedMode m = (ParsedMode) oIn;
 
                         if (shouldSkip(m)) {
                             continue;
@@ -205,10 +203,9 @@ public class DataSourceParserTest extends RhnBaseTestCase {
             Map hm = (Map)i.next();
             List elab = (List)hm.get(elabName);
             assertTrue(elab.size() > 0);
-            Iterator j = elab.iterator();
-            while (j.hasNext()) {
-                Map curr = (Map)j.next();
-                assertTrue(((Number)curr.get("column_id")).intValue() > 0);
+            for (Object oIn : elab) {
+                Map curr = (Map) oIn;
+                assertTrue(((Number) curr.get("column_id")).intValue() > 0);
                 assertNotNull(curr.get("column_name"));
                 assertNotNull(curr.get("table_name"));
             }

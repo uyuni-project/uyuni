@@ -28,7 +28,6 @@ import org.quartz.JobExecutionException;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -68,8 +67,8 @@ public class KickstartCleanup extends RhnJavaJob {
                 log.warn("Failed kickstart state id not found");
                 return;
             }
-            for (Iterator iter = dr.iterator(); iter.hasNext();) {
-                Map row = (Map) iter.next();
+            for (Object oIn : dr) {
+                Map row = (Map) oIn;
                 processRow(failedStateId, row);
             }
         }

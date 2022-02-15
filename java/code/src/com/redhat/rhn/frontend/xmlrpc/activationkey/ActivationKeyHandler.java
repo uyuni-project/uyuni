@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -592,8 +591,8 @@ public class ActivationKeyHandler extends BaseHandler {
 
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
-        for (Iterator it = childChannelLabels.iterator(); it.hasNext();) {
-            String childChannelLabel = (String)it.next();
+        for (Object childChannelLabelIn : childChannelLabels) {
+            String childChannelLabel = (String) childChannelLabelIn;
 
             Channel childChannel = null;
             try {
@@ -645,8 +644,8 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        for (Iterator it = childChannelLabels.iterator(); it.hasNext();) {
-            String childChannelLabel = (String)it.next();
+        for (Object childChannelLabelIn : childChannelLabels) {
+            String childChannelLabel = (String) childChannelLabelIn;
 
             Channel childChannel = null;
             try {
@@ -688,8 +687,8 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        for (Iterator it = serverGroupIds.iterator(); it.hasNext();) {
-            Number serverGroupId = (Number)it.next();
+        for (Object serverGroupIdIn : serverGroupIds) {
+            Number serverGroupId = (Number) serverGroupIdIn;
 
             ManagedServerGroup group = null;
             try {
@@ -725,8 +724,8 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        for (Iterator it = serverGroupIds.iterator(); it.hasNext();) {
-            Integer serverGroupId = (Integer)it.next();
+        for (Object serverGroupIdIn : serverGroupIds) {
+            Integer serverGroupId = (Integer) serverGroupIdIn;
 
             ServerGroup group = null;
             try {

@@ -228,8 +228,8 @@ public class KickstartManager extends BaseManager {
         IpAddressRange bestRange = null;
 
         // find innermost range and return profile
-        for (Iterator itr = ipRanges.iterator(); itr.hasNext();) {
-            KickstartIpRangeDto range = (KickstartIpRangeDto)itr.next();
+        for (Object ipRangeIn : ipRanges) {
+            KickstartIpRangeDto range = (KickstartIpRangeDto) ipRangeIn;
             IpAddressRange iprange = new IpAddressRange(range.getMin().longValue(),
                     range.getMax().longValue(),
                     range.getId().longValue());

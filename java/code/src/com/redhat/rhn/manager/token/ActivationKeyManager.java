@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -85,9 +84,7 @@ public class ActivationKeyManager {
      */
     public List<ActivationKey> findByServer(Server server, User user) {
         List<ActivationKey> keys = ActivationKeyFactory.lookupByServer(server);
-        Iterator i = keys.iterator();
-        while (i.hasNext()) {
-            ActivationKey key = (ActivationKey) i.next();
+        for (ActivationKey key : keys) {
             validateCredentials(user, null, key);
         }
         return keys;
@@ -228,10 +225,9 @@ public class ActivationKeyManager {
      */
     public void addEntitlements(ActivationKey key, List<String> entitlementLabels) {
         validateAddOnEntitlements(entitlementLabels, true);
-        for (Iterator it = entitlementLabels.iterator(); it.hasNext();) {
-            String label = (String)it.next();
+        for (String label : entitlementLabels) {
             ServerGroupType entitlement =
-                ServerFactory.lookupServerGroupTypeByLabel(label);
+                    ServerFactory.lookupServerGroupTypeByLabel(label);
             key.addEntitlement(entitlement);
         }
     }

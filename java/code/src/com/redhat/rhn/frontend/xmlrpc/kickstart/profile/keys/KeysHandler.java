@@ -30,7 +30,6 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.manager.kickstart.KickstartActivationKeysCommand;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -68,8 +67,7 @@ public class KeysHandler extends BaseHandler {
         // (e.g. "1-asdflkajdklajdfk").  As a result, we'll use the token to
         // retrieve this additional info.
         List<ActivationKey> keys = new ArrayList<ActivationKey>();
-        for (Iterator itr = data.getDefaultRegTokens().iterator(); itr.hasNext();) {
-            Token token = (Token)itr.next();
+        for (Token token : data.getDefaultRegTokens()) {
             ActivationKey key = ActivationKeyFactory.lookupByToken(token);
             keys.add(key);
         }

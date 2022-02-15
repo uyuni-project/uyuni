@@ -94,8 +94,8 @@ public class UserPrefAction extends RhnAction {
         Set hiddenPanes = new HashSet(allPanes.values());
 
         if (selections != null) {
-            for (int i = 0; i < selections.length; i++) {
-                hiddenPanes.remove(allPanes.get(selections[i]));
+            for (String selectionIn : selections) {
+                hiddenPanes.remove(allPanes.get(selectionIn));
             }
         }
         user.setHiddenPanes(hiddenPanes);

@@ -114,7 +114,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -832,8 +831,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
         boolean found = false;
-        for (Iterator itr = list.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : list) {
             assertEquals("List contains something other than Profiles",
                     HashMap.class, o.getClass());
             Map s = (Map) o;

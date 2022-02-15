@@ -70,8 +70,7 @@ public class RepositoriesAction extends RhnAction implements Listable {
         if (!context.isSubmitted()) {
             List<ContentSource> result = getResult(context);
             Set<String> preSelect = new HashSet<String>();
-            for (int i = 0; i < result.size(); i++) {
-                ContentSource src = result.get(i);
+            for (ContentSource src : result) {
                 if (src.getChannels().contains(chan)) {
                     preSelect.add(src.getId().toString());
                 }

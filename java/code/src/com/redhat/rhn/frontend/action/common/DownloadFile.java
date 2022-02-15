@@ -500,9 +500,7 @@ public class DownloadFile extends DownloadAction {
 
                 String results = "";
                 if (details.getResults() != null) {
-                    for (Iterator<ScriptResult> it = details.getResults().iterator(); it
-                            .hasNext();) {
-                        ScriptResult r = it.next();
+                    for (ScriptResult r : details.getResults()) {
                         results += r.getOutputContents();
                     }
                 }

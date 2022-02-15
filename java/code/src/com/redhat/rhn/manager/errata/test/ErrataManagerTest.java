@@ -81,7 +81,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -350,9 +349,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     private void outputErrataList(List erratas) throws IOException {
         StringBuffer output = new StringBuffer();
-        Iterator i = erratas.iterator();
-        while (i.hasNext()) {
-            Errata e = (Errata) i.next();
+        for (Object errataIn : erratas) {
+            Errata e = (Errata) errataIn;
             output.append(e.toString());
         }
         FileWriter fr = new FileWriter(new File("errataout" + erratas.size() +  ".txt"));

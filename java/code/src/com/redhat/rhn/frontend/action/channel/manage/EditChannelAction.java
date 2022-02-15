@@ -66,7 +66,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -327,9 +326,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                         // unsubscribe children first if subscribed
                         List<Channel> children = channelIn
                                 .getAccessibleChildrenFor(user);
-                        Iterator<Channel> i = children.iterator();
-                        while (i.hasNext()) {
-                            Channel child = i.next();
+                        for (Channel child : children) {
                             if (s.isSubscribed(child)) {
                                 // unsubscribe server from child channel
 
@@ -337,7 +334,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                                 child.setAccess(accessIn);
                                 ChannelFactory.save(child);
                                 s = SystemManager.
-                                unsubscribeServerFromChannel(s, child);
+                                        unsubscribeServerFromChannel(s, child);
                             }
                         }
                     }

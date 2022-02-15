@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -294,9 +293,8 @@ public class KickstartFactory extends HibernateFactory {
 
         // Filter out the unsupported Commands for the passed in profile
         List<KickstartCommandName> retval = new LinkedList<KickstartCommandName>();
-        Iterator i = names.iterator();
-        while (i.hasNext()) {
-            KickstartCommandName cn = (KickstartCommandName) i.next();
+        for (Object nameIn : names) {
+            KickstartCommandName cn = (KickstartCommandName) nameIn;
             if (cn.getName().equals("selinux") && ksdata.isLegacyKickstart()) {
                 continue;
             }
@@ -451,9 +449,8 @@ public class KickstartFactory extends HibernateFactory {
                 ksdataIn.getCobblerId());
         if (p != null && p.getKsMeta() != null) {
             Map ksmeta = p.getKsMeta();
-            Iterator i = ksmeta.keySet().iterator();
-            while (i.hasNext()) {
-                String name = (String) i.next();
+            for (Object oIn : ksmeta.keySet()) {
+                String name = (String) oIn;
                 log.debug("fixing ksmeta: " + name);
                 fileData = StringUtils.replace(fileData, "\\$" + name, "$" + name);
             }
@@ -1103,9 +1100,8 @@ public class KickstartFactory extends HibernateFactory {
         q.setParameter("state", state);
         q.setParameter("kickstartSession", ksSession);
         List results = q.list();
-        Iterator iter = results.iterator();
-        while (iter.hasNext()) {
-            KickstartSessionHistory history = (KickstartSessionHistory)iter.next();
+        for (Object resultIn : results) {
+            KickstartSessionHistory history = (KickstartSessionHistory) resultIn;
             history.setMessage(message);
         }
 

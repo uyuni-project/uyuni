@@ -66,7 +66,6 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -246,8 +245,7 @@ public class MessageQueue {
             if (ACTIONS.keySet().size() > 0) {
                 retval = new String[ACTIONS.keySet().size()];
                 int index = 0;
-                for (Iterator<Class> iter = ACTIONS.keySet().iterator(); iter.hasNext();) {
-                    Class klazz = iter.next();
+                for (Class klazz : ACTIONS.keySet()) {
                     retval[index] = klazz.getName();
                     index++;
                 }

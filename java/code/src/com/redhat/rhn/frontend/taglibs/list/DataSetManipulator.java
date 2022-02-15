@@ -484,11 +484,11 @@ public class DataSetManipulator {
      */
     static String getPaginationParam(ServletRequest request, String uniqueName) {
 
-        for (int x = 0; x < LINK_PREFIXES.length; x++) {
-            String imgLink = "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
+        for (String linkPrefixIn : LINK_PREFIXES) {
+            String imgLink = "list_" + uniqueName + "_page" + linkPrefixIn;
 
             if (request.getParameter(imgLink) != null) {
-                return "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
+                return "list_" + uniqueName + "_page" + linkPrefixIn;
 
             }
         }

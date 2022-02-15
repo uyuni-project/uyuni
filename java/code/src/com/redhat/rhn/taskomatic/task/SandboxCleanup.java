@@ -23,7 +23,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +65,8 @@ public class SandboxCleanup extends RhnJavaJob {
             }
             Map<String, Object> params = new HashMap<String, Object>();
             Map out = new HashMap();
-            for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-                Map row = (Map) iter.next();
+            for (Object candidateIn : candidates) {
+                Map row = (Map) candidateIn;
                 params.put("id", row.get("id"));
                 removeMode.execute(params, out);
             }

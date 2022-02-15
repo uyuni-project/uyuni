@@ -44,7 +44,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -169,8 +168,8 @@ public class ChannelOverviewTasks extends RhnAction {
         }
 
         Set crids = new HashSet();
-        for (Iterator itr = revs.iterator(); itr.hasNext();) {
-            ConfigFileDto cfd = (ConfigFileDto)itr.next();
+        for (Object revIn : revs) {
+            ConfigFileDto cfd = (ConfigFileDto) revIn;
             crids.add(cfd.getLatestConfigRevisionId());
         }
 
@@ -178,8 +177,8 @@ public class ChannelOverviewTasks extends RhnAction {
                 new HashMap<Long, Collection<Long>>();
 
         List<Long> servers = new LinkedList<Long>();
-        for (Iterator itr = systems.iterator(); itr.hasNext();) {
-            ConfigSystemDto csd = (ConfigSystemDto)itr.next();
+        for (Object systemIn : systems) {
+            ConfigSystemDto csd = (ConfigSystemDto) systemIn;
             servers.add(csd.getId());
             serverConfigMap.put(csd.getId(), crids);
         }

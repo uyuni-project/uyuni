@@ -42,7 +42,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -315,8 +314,8 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         assertFalse(dr.isEmpty());
         assertEquals(1, dr.size());
 
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            ErrataCacheDto ecd = (ErrataCacheDto) itr.next();
+        for (Object oIn : dr) {
+            ErrataCacheDto ecd = (ErrataCacheDto) oIn;
             assertNotNull(ecd);
             assertEquals(server.getId(), ecd.getServerId());
             assertEquals(pkg.getId(), ecd.getPackageId());
