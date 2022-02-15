@@ -86,7 +86,7 @@ public class ScapFactory extends HibernateFactory {
                 .setLong("serverId", serverId)
                 .setLong("actionId", actionId)
                 .list();
-        results.forEach(tr -> delete(tr));
+        results.forEach(ScapFactory::delete);
     }
 
     /**

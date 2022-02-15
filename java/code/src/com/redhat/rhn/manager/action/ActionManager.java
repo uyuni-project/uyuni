@@ -389,7 +389,7 @@ public class ActionManager extends BaseManager {
                             .filter(sa -> isMinionServer(sa.getServer()))
                             .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
                             .filter(sa -> servers.contains(sa.getServer()))
-                            .map(sa -> sa.getServer())
+                            .map(ServerAction::getServer)
                             .collect(toSet())
                         )
                 )
@@ -419,7 +419,7 @@ public class ActionManager extends BaseManager {
 
         // run post-actions
         actionsToDelete.stream()
-                .forEach(a ->a.onCancelAction());
+                .forEach(Action::onCancelAction);
     }
 
     /**
@@ -2220,7 +2220,7 @@ public class ActionManager extends BaseManager {
     public static Action scheduleChannelState(User user, List<MinionServer> minionServers)
             throws TaskomaticApiException {
         List<String> states = Collections.singletonList("channels");
-        List<Long> sids = minionServers.stream().map(ms->ms.getId()).collect(toList());
+        List<Long> sids = minionServers.stream().map(Server::getId).collect(toList());
         Action action = scheduleApplyStates(user, sids, states, new Date());
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2295,7 +2295,7 @@ public class ActionManager extends BaseManager {
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
         actionDetails.setPillarsMap(pillar);
-        test.ifPresent(t -> actionDetails.setTest(t));
+        test.ifPresent(actionDetails::setTest);
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
@@ -2355,7 +2355,7 @@ public class ActionManager extends BaseManager {
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
-        buildActionId.ifPresent(aid -> actionDetails.setBuildActionId(aid));
+        buildActionId.ifPresent(actionDetails::setBuildActionId);
         actionDetails.setVersion(version);
         actionDetails.setImageStoreId(store.getId());
         action.setDetails(actionDetails);
@@ -2378,7 +2378,7 @@ public class ActionManager extends BaseManager {
     public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
         throws TaskomaticApiException {
         List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(m -> m.getId()).collect(toList());
+                    .map(Server::getId).collect(toList());
         if (!visible.containsAll(sysids)) {
             sysids.removeAll(visible);
             throw new UnsupportedOperationException("Some System not available or not managed with Salt: " + sysids);
@@ -2387,7 +2387,7 @@ public class ActionManager extends BaseManager {
         List<MinionServer> minions = sysids.stream().map(
             id -> SystemManager.lookupByIdAndUser(id, loggedInUser).asMinionServer().get()).collect(toList());
 
-        List<Long> proxies = minions.stream().filter(m -> m.isProxy()).map(m -> m.getId()).collect(toList());
+        List<Long> proxies = minions.stream().filter(Server::isProxy).map(Server::getId).collect(toList());
         if (!proxies.isEmpty()) {
             throw new UnsupportedOperationException("Some of the minions are proxies: " + proxies);
         }
@@ -2402,7 +2402,7 @@ public class ActionManager extends BaseManager {
                 }
             });
         }
-        Optional<Long> proxyIdOpt = proxy.map(p -> p.getId());
+        Optional<Long> proxyIdOpt = proxy.map(Server::getId);
 
         List<Long> sshIds = minions.stream()
                             .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
@@ -2418,7 +2418,7 @@ public class ActionManager extends BaseManager {
 
         List<Long> normalIds = minions.stream()
                                .filter(minion -> !ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
-                               .map(minion -> minion.getId())
+                               .map(Server::getId)
                                .collect(toList());
 
         List<Long> ret = new ArrayList<>();
@@ -2435,7 +2435,7 @@ public class ActionManager extends BaseManager {
         if (!normalIds.isEmpty()) {
             // action for normal minions - update salt master, the channels will be updated after minion restart
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_server", proxy.map(p -> p.getHostname()).orElse(ConfigDefaults.get().getCobblerHost()));
+            pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getCobblerHost()));
 
             Action a = scheduleApplyStates(loggedInUser, normalIds,
                        Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),

@@ -1554,12 +1554,12 @@ public class ChannelManager extends BaseManager {
         Map<String, Object> result = sbm.execute(inParams, outParams);
 
         Optional<Channel> guessedChannel = Opt.fold(ofNullable((Long) result.get("result")),
-                () -> empty(),
+                Optional::empty,
                 guessedId -> ofNullable(ChannelFactory.lookupByIdAndUser(guessedId, usr)));
 
         return Opt.or(guessedChannel, () ->
                 Opt.fold(listPossibleSuseBaseChannelsForServer(s),
-                    () -> empty(),
+                        Optional::empty,
                     dr -> dr.isEmpty() ? empty() : ofNullable(ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr))
                 )
         );
@@ -1806,7 +1806,7 @@ public class ChannelManager extends BaseManager {
             channelDtos.addAll(baseEusChans);
         }
 
-        listPossibleSuseBaseChannelsForServer(s).ifPresent(dr -> channelDtos.addAll(dr));
+        listPossibleSuseBaseChannelsForServer(s).ifPresent(channelDtos::addAll);
 
         // Get all the possible base-channels owned by this Org
         channelDtos.addAll(listCustomBaseChannelsForServer(s));
@@ -2848,7 +2848,7 @@ public class ChannelManager extends BaseManager {
         Optional<SUSEProductChannel> baseChannelProduct = originalBaseChannel.findProduct();
 
         return childChannels.collect(Collectors.toMap(
-                c -> c.getId(),
+                Channel::getId,
                 c -> {
                     Channel original = getOriginalChannel(c);
                     Optional<SUSEProductChannel> extProduct = original.findProduct();

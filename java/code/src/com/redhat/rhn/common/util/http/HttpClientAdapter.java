@@ -117,7 +117,7 @@ public class HttpClientAdapter {
         }
 
         HttpClientBuilder clientBuilder = HttpClientBuilder.create();
-        sslSocketFactory.ifPresent(sf -> clientBuilder.setSSLSocketFactory(sf));
+        sslSocketFactory.ifPresent(clientBuilder::setSSLSocketFactory);
 
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
         Builder requestConfigBuilder = RequestConfig.custom()

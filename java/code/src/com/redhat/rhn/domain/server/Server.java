@@ -2069,7 +2069,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return the minion id if the server is a salt minion client, else empty string
      */
     public String getMinionId() {
-        return Opt.fold(this.asMinionServer(), () -> "", m -> m.getMinionId());
+        return Opt.fold(this.asMinionServer(), () -> "", MinionServer::getMinionId);
     }
 
     /**
@@ -2207,7 +2207,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return the channel hostname
      */
     public String getChannelHost() {
-        return this.getFirstServerPath().map(p -> p.getHostname())
+        return this.getFirstServerPath().map(ServerPath::getHostname)
                 .orElseGet(() -> ConfigDefaults.get().getCobblerHost());
     }
 

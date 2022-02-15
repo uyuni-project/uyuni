@@ -339,7 +339,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(serversToAdd, serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -350,7 +350,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(Arrays.asList(testServer1), serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -365,7 +365,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(Arrays.asList(testServerDifferentOrg), serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -373,7 +373,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(new ArrayList<>(), serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 

@@ -735,7 +735,7 @@ public class TaskomaticApi {
             // (those that have any other minion should NOT be unscheduled!)
             .filter(e -> e.getKey().getServerActions().stream()
                     .map(ServerAction::getServer)
-                    .filter(s -> MinionServerUtils.isMinionServer(s))
+                    .filter(MinionServerUtils::isMinionServer)
                     .allMatch(s -> e.getValue().contains(s))
             )
             .map(Map.Entry::getKey);

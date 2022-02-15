@@ -167,8 +167,8 @@ public class HwProfileUpdateSlsResult {
     private Optional<Map<String, Object>> getSmbiosRecords(
             Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecords) {
         return smbiosRecords
-                .map(result -> result.getChanges())
-                .map(changes -> changes.getRet())
+                .map(StateApplyResult::getChanges)
+                .map(Ret::getRet)
                 .map(records -> records.isEmpty() ?
                         Collections.emptyMap() : records.get(0).getData());
     }

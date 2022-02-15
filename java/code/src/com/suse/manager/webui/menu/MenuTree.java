@@ -637,13 +637,13 @@ public class MenuTree {
     public String getTitlePage(PageContext pageContext) {
         String title = "";
         Optional<MenuItem> activeItem = getMenuTree(pageContext).stream()
-                .filter(node -> node.getActive()).findFirst();
+                .filter(MenuItem::getActive).findFirst();
         while (activeItem.isPresent()) {
           title += " - " + activeItem.get().getLabel();
           activeItem = activeItem.get().getSubmenu() == null ?
                   Optional.empty() :
                   activeItem.get().getSubmenu().stream()
-                      .filter(node -> node.getActive()).findFirst();
+                      .filter(MenuItem::getActive).findFirst();
         }
         return title;
     }

@@ -452,7 +452,7 @@ public class MaintenanceHandler extends BaseHandler {
                 .lookupScheduleByUserAndName(loggedInUser, scheduleName)
                 .orElseThrow(() -> new EntityNotExistsFaultException(scheduleName));
 
-        Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
+        Set<Long> longIds = systemIds.stream().map(Integer::longValue).collect(Collectors.toSet());
         try {
             return mm.assignScheduleToSystems(loggedInUser, schedule, longIds,
                     createStrategiesFromStrings(rescheduleStrategy));
@@ -481,7 +481,7 @@ public class MaintenanceHandler extends BaseHandler {
     public Integer retractScheduleFromSystems(User loggedInUser, List<Integer> systemIds) {
         ensureOrgAdmin(loggedInUser);
 
-        Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
+        Set<Long> longIds = systemIds.stream().map(Integer::longValue).collect(Collectors.toSet());
         try {
             return mm.retractScheduleFromSystems(loggedInUser, longIds);
         }

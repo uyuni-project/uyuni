@@ -532,40 +532,37 @@ public  class UserFactory extends HibernateFactory {
 
             //Now sort the timezones, GMT+0000 at top, then East-to-West
             if (timeZones != null) {
-                Collections.sort(timeZones, new Comparator() {
-                    @Override
-                    public int compare(Object o1, Object o2) {
-                        RhnTimeZone t1 = (RhnTimeZone) o1;
-                        RhnTimeZone t2 = (RhnTimeZone) o2;
-                        Integer offSet1 = t1.getTimeZone().getRawOffset();
-                        Integer offSet2 = t2.getTimeZone().getRawOffset();
+                Collections.sort(timeZones, (Comparator) (o1, o2) -> {
+                    RhnTimeZone t1 = (RhnTimeZone) o1;
+                    RhnTimeZone t2 = (RhnTimeZone) o2;
+                    Integer offSet1 = t1.getTimeZone().getRawOffset();
+                    Integer offSet2 = t2.getTimeZone().getRawOffset();
 
-                        // Make sure GMT+0000 is first
-                        if (offSet1 == 0 && offSet2 != 0) {
-                            // first one GMT
-                            return -1;
-                        }
-
-                        if (offSet1 != 0 && offSet2 == 0) {
-                            // second one GMT
-                            return 1;
-                        }
-
-                        // Make sure negative offsets 'win' over positive
-                        if (offSet1 < 0 && offSet2 > 0) {
-                            return -1;
-                        }
-
-                        if (offSet1 > 0 && offSet2 < 0) {
-                            return 1;
-                        }
-
-                        if (offSet2.equals(offSet1)) {
-                            return t2.getOlsonName().compareTo(t1.getOlsonName());
-                        }
-
-                        return offSet2.compareTo(offSet1);
+                    // Make sure GMT+0000 is first
+                    if (offSet1 == 0 && offSet2 != 0) {
+                        // first one GMT
+                        return -1;
                     }
+
+                    if (offSet1 != 0 && offSet2 == 0) {
+                        // second one GMT
+                        return 1;
+                    }
+
+                    // Make sure negative offsets 'win' over positive
+                    if (offSet1 < 0 && offSet2 > 0) {
+                        return -1;
+                    }
+
+                    if (offSet1 > 0 && offSet2 < 0) {
+                        return 1;
+                    }
+
+                    if (offSet2.equals(offSet1)) {
+                        return t2.getOlsonName().compareTo(t1.getOlsonName());
+                    }
+
+                    return offSet2.compareTo(offSet1);
                 });
             }
 

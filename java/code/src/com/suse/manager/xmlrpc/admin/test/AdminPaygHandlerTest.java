@@ -60,7 +60,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        PaygSshDataFactory.lookupPaygSshData().forEach(data -> PaygSshDataFactory.deletePaygSshData(data));
+        PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         HibernateFactory.commitTransaction();
     }
 

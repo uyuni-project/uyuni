@@ -181,7 +181,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         delete.executeUpdate(Map.of("mgm_id", 1));
         WriteMode insert = generateInsert(mgmId, tableName, columns, session);
         this.<Map<String, Object>>batchStream(query, BATCH_SIZE, 0)
-                .forEach(batch -> insert.executeUpdates(batch));
+                .forEach(insert::executeUpdates);
     }
 
     @Override

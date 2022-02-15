@@ -196,7 +196,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     VirtualizationPoolRefreshAction virtAction = (VirtualizationPoolRefreshAction)action;
                     return virtAction.getPoolName();
                 },
-                scheduled -> scheduled.getId()));
+                ScheduledAction::getId));
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("pool0", actionsIds.get("pool0")).matches(model));
         assertTrue(IsMapContaining.hasEntry("pool1", actionsIds.get("pool1")).matches(model));

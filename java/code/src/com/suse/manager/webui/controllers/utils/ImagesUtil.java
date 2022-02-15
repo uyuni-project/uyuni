@@ -36,7 +36,7 @@ public class ImagesUtil {
     public static boolean isImageRuntimeInfoEnabled() {
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         return modules.keySet().stream()
-                .filter(key -> VirtualHostManagerFactory.KUBERNETES.equalsIgnoreCase(key))
+                .filter(VirtualHostManagerFactory.KUBERNETES::equalsIgnoreCase)
                 .findFirst().isPresent();
     }
 

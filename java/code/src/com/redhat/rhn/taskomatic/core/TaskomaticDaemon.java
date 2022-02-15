@@ -147,15 +147,13 @@ public class TaskomaticDaemon {
         }
         try {
             this.kernel = new SchedulerKernel();
-            Runnable r = new Runnable() {
-                public void run() {
-                    try {
-                        kernel.startup();
-                    }
-                    catch (Throwable e) {
-                        LOG.fatal(e.getMessage());
-                        System.exit(-1);
-                    }
+            Runnable r = () -> {
+                try {
+                    kernel.startup();
+                }
+                catch (Throwable e) {
+                    LOG.fatal(e.getMessage());
+                    System.exit(-1);
                 }
             };
             Thread t = new Thread(r);

@@ -836,8 +836,8 @@ public class HardwareMapper {
                     ServerNetworkFactory.saveServerNetAddress4(ipv4);
                 }
             }
-            dbipv4.stream().filter(ipv4 -> !dbfound.contains(ipv4)).forEach(del ->
-                ServerNetworkFactory.removeServerNetAddress4(del));
+            dbipv4.stream().filter(ipv4 -> !dbfound.contains(ipv4))
+                    .forEach(ServerNetworkFactory::removeServerNetAddress4);
 
             List<ServerNetAddress6> dbipv6 = ServerNetworkFactory.findServerNetAddress6(iface.getInterfaceId());
             List<Network.INet6> saltipv6 = Optional.ofNullable(saltIface.getInet6()).orElse(new LinkedList<>());
@@ -866,8 +866,8 @@ public class HardwareMapper {
                     ServerNetworkFactory.saveServerNetAddress6(ipv6);
                 }
             }
-            dbipv6.stream().filter(ipv6 -> !dbfound6.contains(ipv6)).forEach(del ->
-                ServerNetworkFactory.removeServerNetAddress6(del));
+            dbipv6.stream().filter(ipv6 -> !dbfound6.contains(ipv6))
+                    .forEach(ServerNetworkFactory::removeServerNetAddress6);
         });
 
         // reset primary IP flag, we will re-compute it

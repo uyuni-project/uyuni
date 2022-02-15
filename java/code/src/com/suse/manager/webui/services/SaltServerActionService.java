@@ -98,6 +98,7 @@ import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.KiwiProfile;
+import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -109,6 +110,7 @@ import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -142,6 +144,7 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
@@ -584,7 +587,7 @@ public class SaltServerActionService {
         try {
             // first check if there's an action chain with a reboot already executing
             Map<String, Result<Map<String, String>>> pendingResumeConf = saltApi.getPendingResume(
-                    sshMinions.stream().map(minion -> minion.getMinionId())
+                    sshMinions.stream().map(MinionSummary::getMinionId)
                             .collect(Collectors.toList())
             );
             List<MinionSummary> targetSSHMinions = sshMinions.stream()
@@ -600,7 +603,7 @@ public class SaltServerActionService {
                                         ));
                                         return Optional.empty();
                                     },
-                                    res -> Optional.of(res));
+                                        Optional::of);
                         if (!confValues.isPresent() || confValues.get().isEmpty()) {
                             // all good, no action chain currently executing on the minion
                             return true;
@@ -621,7 +624,7 @@ public class SaltServerActionService {
             }
 
             Map<String, Result<Map<String, ApplyResult>>> res = saltSSHService.callSyncSSH(call,
-                    new MinionList(targetSSHMinions.stream().map(minion -> minion.getMinionId())
+                    new MinionList(targetSSHMinions.stream().map(MinionSummary::getMinionId)
                             .collect(Collectors.toList())),
                     extraFilerefs);
 
@@ -783,8 +786,7 @@ public class SaltServerActionService {
                     });
                 }
                 // update minion last checkin
-                MinionServerFactory.findByMinionId(minionId).ifPresent(minion ->
-                        minion.updateServerInfo());
+                MinionServerFactory.findByMinionId(minionId).ifPresent(Server::updateServerInfo);
             }
             else {
                 LOG.error("'state.apply mgractionchains.startssh' was successful " +
@@ -854,13 +856,13 @@ public class SaltServerActionService {
 
                     // Salt calls for each minion
                     Map<MinionSummary, List<LocalCall<?>>> callsPerMinion =
-                            actionCalls.values().stream().flatMap(m -> m.stream())
+                            actionCalls.values().stream().flatMap(Collection::stream)
                                 .collect(Collectors
                                         .toMap(Function.identity(),
                                                 m -> actionCalls.entrySet()
                                                         .stream()
                                                         .filter(e -> e.getValue().contains(m))
-                                                        .map(e -> e.getKey())
+                                                        .map(Map.Entry::getKey)
                                                         .collect(Collectors.toList())
                                 ));
 
@@ -884,8 +886,7 @@ public class SaltServerActionService {
         // split minions into regular and salt-ssh
         Map<Boolean, Set<MinionSummary>> minionPartitions =
                 minionCalls.keySet().stream()
-                        .collect(Collectors.partitioningBy(minionSummary ->
-                        minionSummary.isSshPush(), Collectors.toSet()));
+                        .collect(Collectors.partitioningBy(MinionSummary::isSshPush, Collectors.toSet()));
 
         Set<MinionSummary> sshMinionIds = minionPartitions.get(true);
         Set<MinionSummary> regularMinionIds = minionPartitions.get(false);
@@ -1061,20 +1062,20 @@ public class SaltServerActionService {
                 params.put(PARAM_REGULAR_PATCHES,
                     entry.getKey().stream()
                         .filter(e -> !e.isUpdateStack())
-                        .map(e -> e.getName())
+                        .map(ErrataInfo::getName)
                         .sorted()
                         .collect(toList())
                 );
                 params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
                     entry.getKey().stream()
-                        .filter(e -> e.isUpdateStack())
-                        .map(e -> e.getName())
+                        .filter(ErrataInfo::isUpdateStack)
+                        .map(ErrataInfo::getName)
                         .sorted()
                         .collect(toList())
                 );
                 if (!entry.getKey().stream()
-                        .filter(e -> e.includeSalt())
+                        .filter(ErrataInfo::includeSalt)
                         .collect(toList()).isEmpty()) {
                     params.put("include_salt_upgrade", true);
                 }
@@ -1143,7 +1144,7 @@ public class SaltServerActionService {
             List<MinionSummary> minionSummaries, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
+        List<Long> sids = minionSummaries.stream().map(MinionSummary::getServerId).collect(toList());
 
         List<String> nevraStrings = action.getDetails().stream().map(details -> {
             PackageName name = details.getPackageName();
@@ -1154,12 +1155,12 @@ public class SaltServerActionService {
 
         List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackagesByNevra(nevraStrings, sids);
         Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
-                .collect(groupingBy(t -> t.getB(), mapping(t -> t.getA(), toList())));
+                .collect(groupingBy(Tuple2::getB, mapping(Tuple2::getA, toList())));
         action.getServerActions().forEach(sa -> {
             List<Long> packageIds = retractedPidsBySid.get(sa.getServerId());
             if (packageIds != null) {
                 sa.fail("contains retracted packages: " +
-                        packageIds.stream().map(i -> i.toString()).collect(joining(",")));
+                        packageIds.stream().map(Object::toString).collect(joining(",")));
             }
         });
         List<MinionSummary> filteredMinions = minionSummaries.stream()
@@ -1253,8 +1254,8 @@ public class SaltServerActionService {
                         Collectors.mapping(ConfigRevisionAction::getConfigRevision, Collectors.toSet())));
         Map<Set<ConfigRevision>, Set<MinionSummary>> revsServersMap = serverConfigMap.entrySet()
                 .stream()
-                .collect(Collectors.groupingBy(entry -> entry.getValue(),
-                        Collectors.mapping(entry -> entry.getKey(), Collectors.toSet())));
+                .collect(Collectors.groupingBy(Map.Entry::getValue,
+                        Collectors.mapping(Map.Entry::getKey, Collectors.toSet())));
         revsServersMap.forEach((configRevisions, selectedServers) -> {
             List<Map<String, Object>> fileStates = configRevisions
                     .stream()
@@ -1277,7 +1278,7 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> diffFiles(List<MinionSummary> minionSummaries, ConfigAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
-                .map(revAction -> revAction.getConfigRevision())
+                .map(ConfigRevisionAction::getConfigRevision)
                 .filter(revision -> revision.isFile() ||
                         revision.isDirectory() ||
                         revision.isSymlink())
@@ -1546,7 +1547,7 @@ public class SaltServerActionService {
 
                         // Add custom info values
                         pillar.put("customvalues", profile.getCustomDataValues().stream()
-                                .collect(toMap(v -> v.getKey().getLabel(), v -> v.getValue())));
+                                .collect(toMap(v -> v.getKey().getLabel(), ProfileCustomDataValue::getValue)));
                     });
 
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {
@@ -2339,7 +2340,7 @@ public class SaltServerActionService {
         }
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
-                    .map(e -> e.getId()).collect(Collectors.toSet());
+                    .map(Errata::getId).collect(Collectors.toSet());
             Map<Long, Map<Long, Set<ErrataInfo>>> errataNames = ServerFactory
                     .listErrataNamesForServers(minionSummaries.stream().map(MinionSummary::getServerId)
                             .collect(Collectors.toSet()), errataIds);
@@ -2383,8 +2384,8 @@ public class SaltServerActionService {
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
             List<String> results = Opt.fold(
                     saltApi.callAsync(call, new MinionList(minionIds), Optional.of(metadata)),
-                    () -> new ArrayList<>(),
-                    l -> l.getMinions());
+                    ArrayList::new,
+                    LocalAsyncResult::getMinions);
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));
@@ -2578,7 +2579,7 @@ public class SaltServerActionService {
                 ofNullable(serverAction.getParentAction())
                         .map(Action::getPrerequisite)
                         .map(Action::getServerActions)
-                        .map(a -> a.stream());
+                        .map(Collection::stream);
 
         return prerequisites
                 .flatMap(serverActions ->

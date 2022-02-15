@@ -189,7 +189,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                             .orElse(false))
                     .collect(Collectors.toList())//This is needed to make sure we don't return early but execute
                     .stream()                    // handlePackageChange for all the results in actions chain result.
-                    .anyMatch(s->Boolean.TRUE.equals(s));
+                    .anyMatch(Boolean.TRUE::equals);
             if (packageRefreshNeeded) {
                 schedulePackageRefresh(jobReturnEvent.getMinionId());
             }
@@ -236,7 +236,7 @@ public class JobReturnEventMessageAction implements MessageAction {
 
             MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minion -> {
                 ActionChainFactory.getAllActionChains().stream()
-                        .filter(ac -> ac.isDone())
+                        .filter(ActionChain::isDone)
                         .filter(ac ->
                                 ac.getEntries().stream()
                                         .flatMap(ace -> ace.getAction().getServerActions().stream())

@@ -253,7 +253,7 @@ public class MinionActionUtils {
         Optional<String> jid = salt.jobsByMetadata(metadata)
                 .map(info -> info.keySet().stream().findFirst())
                 .orElse(Optional.empty());
-        return jid.flatMap(id -> salt.listJob(id));
+        return jid.flatMap(salt::listJob);
     }
 
     /**
@@ -368,7 +368,7 @@ public class MinionActionUtils {
     public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(earliest
-                .orElseGet(() -> LocalDateTime.now())
+                .orElseGet(LocalDateTime::now)
                 .atZone(zoneId).toInstant());
     }
 }

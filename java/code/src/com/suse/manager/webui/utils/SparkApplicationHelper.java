@@ -217,7 +217,7 @@ public class SparkApplicationHelper {
             User user = new RequestContext(request.raw()).getCurrentUser();
             ModelAndView modelAndView = route.handle(request, response, user);
             List<String> roles = user.getRoles().stream()
-                    .map(role -> role.getLabel())
+                    .map(Role::getLabel)
                     .collect(Collectors.toList());
             Object model = modelAndView.getModel();
             if (model instanceof Map) {

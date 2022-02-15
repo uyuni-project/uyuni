@@ -353,7 +353,7 @@ public class ServerGroupManager {
      * @param servers a collection of servers to add.
      */
     public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
-        servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
+        servers.stream().map(Server::asMinionServer).flatMap(Opt::stream)
                 .forEach(s -> MinionPillarManager.INSTANCE.generatePillar(s, false,
                          MinionPillarManager.PillarSubset.GROUP_MEMBERSHIP));
 

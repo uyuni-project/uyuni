@@ -70,7 +70,6 @@ import org.cobbler.SystemRecord;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1126,15 +1125,12 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         if (!results.isEmpty()) {
-            return Collections.max(results, new Comparator<>() {
-                @Override
-                public int compare(Map<String, Long> o1In, Map<String, Long> o2In) {
-                    PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
-                            o1In.get("evr_id"));
-                    PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
-                            o2In.get("evr_id"));
-                    return evr1.compareTo(evr2);
-                }
+            return Collections.max(results, (o1In, o2In) -> {
+                PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
+                        o1In.get("evr_id"));
+                PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
+                        o2In.get("evr_id"));
+                return evr1.compareTo(evr2);
             });
         }
         else {

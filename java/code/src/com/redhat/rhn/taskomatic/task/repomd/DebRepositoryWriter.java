@@ -154,7 +154,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
 
     private void loadExtraTags(DataResult<PackageDto> packageBatch) {
         List<Long> pkgIds = packageBatch.stream()
-                .map(pkgDto -> pkgDto.getId())
+                .map(PackageDto::getId)
                 .collect(Collectors.toList());
         Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(pkgIds);
         packageBatch.stream().forEach(pkgDto ->

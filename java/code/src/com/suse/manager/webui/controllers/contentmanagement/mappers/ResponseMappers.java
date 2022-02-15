@@ -143,7 +143,7 @@ public class ResponseMappers {
                     environmentResponse.setProjectLabel(envDB.getContentProject().getLabel());
                     environmentResponse.setStatus(
                             envDB.computeStatus()
-                                    .map(status -> status.getLabel())
+                                    .map(EnvironmentTarget.Status::getLabel)
                                     .orElse(null)
                     );
                     environmentResponse.setBuiltTime(envDB.computeBuiltTime().orElse(null));
@@ -206,7 +206,7 @@ public class ResponseMappers {
                     contentProjectResumeResponse.setProperties(mapProjectPropertiesFromDB(project));
                     contentProjectResumeResponse.setEnvironments(
                             environments.stream()
-                                    .map(env -> env.getName())
+                                    .map(ContentEnvironment::getName)
                                     .collect(Collectors.toList())
                     );
                     return contentProjectResumeResponse;

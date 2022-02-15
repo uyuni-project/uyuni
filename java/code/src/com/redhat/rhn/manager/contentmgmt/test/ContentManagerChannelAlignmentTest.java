@@ -116,7 +116,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         // check that newest packages cache has been updated
         assertEquals(
-                srcChannel.getPackages().stream().map(p -> p.getId()).collect(toSet()),
+                srcChannel.getPackages().stream().map(Package::getId).collect(toSet()),
                 ChannelManager.latestPackagesInChannel(tgtChannel).stream()
                         .map(m -> m.get("id"))
                         .collect(toSet()));
@@ -297,7 +297,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // both packages are in the cache for the server
         assertEquals(2, needingUpdates.size());
         assertTrue(needingUpdates.stream()
-                        .map(errataCache -> errataCache.getPackageId())
+                        .map(ErrataCacheDto::getPackageId)
                         .collect(Collectors.toList())
                 .containsAll(Arrays.asList(pack1.getId(), pack2.getId())));
 

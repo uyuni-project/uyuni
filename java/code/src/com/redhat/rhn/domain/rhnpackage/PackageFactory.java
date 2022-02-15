@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.CachedStatement;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.QuerySanitizer;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -467,13 +466,7 @@ public class PackageFactory extends HibernateFactory {
             // in a string, and therefore not dangerous.
             m = ModeFactory.getMode("Package_queries", "searchByIdAndArches");
             CachedStatement cs = m.getQuery();
-            cs.modifyQuery(":channel_arch_labels", archLabels, new QuerySanitizer() {
-
-                @Override
-                public boolean isSanitary(String value) {
-                    return value.matches("^[a-zA-Z0-9\\-_]*$");
-                }
-            });
+            cs.modifyQuery(":channel_arch_labels", archLabels, value -> value.matches("^[a-zA-Z0-9\\-_]*$"));
         }
         else if (searchType.equals(PackageSearchAction.RELEVANT)) {
             if (relevantUserId == null) {
