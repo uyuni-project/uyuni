@@ -110,7 +110,7 @@ public class YourRhnAction extends RhnAction {
                 request.setAttribute(key, "y");
             }
         }
-        request.setAttribute(ANY_LISTS_SELECTED, Boolean.valueOf(anyListsSelected));
+        request.setAttribute(ANY_LISTS_SELECTED, anyListsSelected);
         request.setAttribute("legends", "yourrhn");
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

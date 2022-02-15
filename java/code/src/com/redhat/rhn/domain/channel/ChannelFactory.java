@@ -1176,7 +1176,7 @@ public class ChannelFactory extends HibernateFactory {
         List<Package> pkgs = HibernateFactory.getSession()
           .getNamedQuery("Channel.packageByFileName")
           .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId().longValue())
+          .setLong("channel_id", channel.getId())
           .list();
         if (pkgs.isEmpty()) {
             return null;
@@ -1198,7 +1198,7 @@ public class ChannelFactory extends HibernateFactory {
         List<Package> pkgs = HibernateFactory.getSession()
           .getNamedQuery("Channel.packageByFileNameAndRange")
           .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId().longValue())
+          .setLong("channel_id", channel.getId())
           .setInteger("headerStart", headerStart)
           .setInteger("headerEnd", headerEnd)
           .list();

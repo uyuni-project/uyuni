@@ -499,9 +499,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(cf);
 
         //Simple checks to see that everything committed alright
-        assertTrue(cf.getId().longValue() > 0);
+        assertTrue(cf.getId() > 0);
         assertNotNull(cf.getConfigChannel());
-        assertTrue(cf.getConfigChannel().getId().longValue() > 0);
+        assertTrue(cf.getConfigChannel().getId() > 0);
 
         //Only Config Admins can use this manager function.
         //Making the user a config admin will also automatically
@@ -1093,7 +1093,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.getName().
                     equals(action.getTypeName())) {
                 ca = (ConfigAction)ActionManager.lookupAction(user,
-                                                    action.getId().longValue());
+                        action.getId());
             }
         }
         assertNotNull(ca);
@@ -1209,7 +1209,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         rev1 = ConfigTestUtils.createConfigRevision(g1f1,
                                 ConfigTestUtils.createConfigContent(),
                                 ConfigTestUtils.createConfigInfo(),
-                rev1.getRevision().longValue() + 1);
+                rev1.getRevision() + 1);
         ConfigurationFactory.commit(gcc1);
 
         //add a duuplicate file to gcc2

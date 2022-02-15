@@ -304,7 +304,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         sa = (ServerAction) ActionFactory.reload(sa);
 
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
-        assertTrue(sa.getRemainingTries().longValue() > 0);
+        assertTrue(sa.getRemainingTries() > 0);
 
     }
 
@@ -323,7 +323,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         sa = (ServerAction) ActionFactory.reload(sa);
 
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
-        assertTrue(sa.getRemainingTries().longValue() > 0);
+        assertTrue(sa.getRemainingTries() > 0);
 
     }
 

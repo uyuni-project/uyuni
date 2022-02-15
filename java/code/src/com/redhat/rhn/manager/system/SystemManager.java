@@ -2405,7 +2405,7 @@ public class SystemManager extends BaseManager {
                     guest.getState().getId().equals(running.getId())) {
                 Integer currentGuestCpus = guest.getNumberOfCPUs();
                 if (currentGuestCpus != null && proposedVcpuSetting >
-                currentGuestCpus.intValue()) {
+                        currentGuestCpus) {
                     result.addWarning(new ValidatorWarning(
                             "systems.details.virt.vcpu.increase.warning",
                             new Object [] {proposedVcpuSetting,
@@ -2452,7 +2452,7 @@ public class SystemManager extends BaseManager {
 
                 if (guest.getTotalMemory() != null) {
                     log.debug("   " + guest.getName() + " = " +
-                            (guest.getTotalMemory().longValue() / 1024) + "MB");
+                            (guest.getTotalMemory() / 1024) + "MB");
 
                     if (guestIds.contains(guest.getId())) {
                         // Warn the user that a change to max memory will require a reboot

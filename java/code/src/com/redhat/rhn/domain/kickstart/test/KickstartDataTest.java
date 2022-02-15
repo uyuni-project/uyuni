@@ -319,8 +319,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     private KickstartData lookupById(Org orgIn, Long id) throws Exception {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setLong("id", id.longValue())
-                          .setLong("org_id", orgIn.getId().longValue())
+                          .setLong("id", id)
+                          .setLong("org_id", orgIn.getId())
                           .uniqueResult();
     }
 

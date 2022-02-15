@@ -98,7 +98,7 @@ public class DuplicateSystemGrouping implements Expandable, Identifiable {
      * {@inheritDoc}
      */
     public Long getId() {
-        return Long.valueOf(key.hashCode());
+        return (long) key.hashCode();
     }
 
 }

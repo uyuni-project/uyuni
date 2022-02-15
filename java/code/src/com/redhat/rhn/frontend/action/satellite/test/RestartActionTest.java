@@ -46,7 +46,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
 
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();
-        assertFalse(((Boolean) form.get(RestartAction.RESTART)).booleanValue());
+        assertFalse((Boolean) form.get(RestartAction.RESTART));
     }
 
     public void testExecuteSubmitTrue() throws Exception {

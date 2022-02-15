@@ -422,8 +422,8 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("advisory_release")) {
             Long rel = Long.valueOf((Integer)details.get("advisory_release"));
-            if (rel.longValue() > ErrataManager.MAX_ADVISORY_RELEASE) {
-                throw new InvalidAdvisoryReleaseException(rel.longValue());
+            if (rel > ErrataManager.MAX_ADVISORY_RELEASE) {
+                throw new InvalidAdvisoryReleaseException(rel);
             }
             errata.setAdvisoryRel(rel);
         }

@@ -638,7 +638,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
             if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.getName().
                     equals(action.getTypeName())) {
                 ca = (ConfigAction)ActionManager.lookupAction(regular,
-                                                    action.getId().longValue());
+                        action.getId());
             }
         }
         assertNotNull(ca);

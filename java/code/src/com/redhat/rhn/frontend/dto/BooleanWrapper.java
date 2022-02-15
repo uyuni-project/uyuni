@@ -53,7 +53,7 @@ public class BooleanWrapper {
      */
     public boolean booleanValue() {
         if (bool != null) {
-            return bool.booleanValue();
+            return bool;
         }
 
         return false;

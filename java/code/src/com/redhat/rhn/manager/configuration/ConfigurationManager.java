@@ -1194,7 +1194,7 @@ public class ConfigurationManager extends BaseManager {
         DataResult dr = getFileInfo(user, channel);
         if (dr != null && dr.size() > 0) {
             ConfigFileDto mostRecent = (ConfigFileDto)dr.get(0);
-            Long revid = mostRecent.getId().longValue();
+            Long revid = mostRecent.getId();
             ConfigRevision rev =
                     ConfigurationManager.getInstance().lookupConfigRevision(user, revid);
             summary.setMostRecentMod(rev);
@@ -1206,7 +1206,7 @@ public class ConfigurationManager extends BaseManager {
         dr = getSystemInfo(user, channel);
         if (dr != null && dr.size() > 0) {
             ConfigSystemDto mostRecent = (ConfigSystemDto)dr.get(0);
-            Long sysid = mostRecent.getId().longValue();
+            Long sysid = mostRecent.getId();
             Server sys = ServerFactory.lookupById(sysid);
             summary.setMostRecentSystem(sys);
             Date modDate = mostRecent.getModified();
@@ -1851,16 +1851,16 @@ public class ConfigurationManager extends BaseManager {
             String fileType = (String) map.get("file_type");
 
             if (ConfigFileType.file().getLabel().equals(fileType)) {
-                files = count.longValue();
+                files = count;
             }
             else if (ConfigFileType.sls().getLabel().equals(fileType)) {
-                slsFiles = count.longValue();
+                slsFiles = count;
             }
             else if (ConfigFileType.symlink().getLabel().equals(fileType)) {
-                symlinks = count.longValue();
+                symlinks = count;
             }
             else {
-                dirs = count.longValue();
+                dirs = count;
             }
         }
 
@@ -2287,7 +2287,7 @@ public class ConfigurationManager extends BaseManager {
             system.add(server);
             Set<Long> revs = new HashSet<Long>();
             for (ConfigFileNameDto dto : names) {
-                revs.add(getDeployableRevisionForFileName(dto.getId().longValue(),
+                revs.add(getDeployableRevisionForFileName(dto.getId(),
                         server.getId()));
             }
 
@@ -2448,7 +2448,7 @@ public class ConfigurationManager extends BaseManager {
                 return null;
             }
             ConfigSystemDto csd = (ConfigSystemDto)dr.get(0);
-            sid = csd.getId().longValue();
+            sid = csd.getId();
             return sid;
         }
         return null;

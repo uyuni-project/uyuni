@@ -188,7 +188,7 @@ public class KickstartBuilder {
             kc.setKickstartData(ksData);
             kc.setCreated(new Date());
             kc.setModified(new Date());
-            if (cn.getArgs().booleanValue()) {
+            if (cn.getArgs()) {
                 if (cn.getName().equals("rootpw")) {
 
                     // RHN only stores encrypted passwords and assumes it should add the

@@ -1595,7 +1595,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
 
         DataResult<PackageListItem> lockedPackagesResult =
-                PackageManager.systemLockedPackages(server.getId().longValue(), null);
+                PackageManager.systemLockedPackages(server.getId(), null);
 
         return lockedPackagesResult.stream().map(pi -> {
             Map<String, Object> item = new LinkedHashMap<>();
@@ -4856,7 +4856,7 @@ public class SystemHandler extends BaseHandler {
         for (Integer sidAsInt : systemIds) {
             Long sid = sidAsInt.longValue();
             try {
-                SystemManager.lookupByIdAndUser(sid.longValue(),
+                SystemManager.lookupByIdAndUser(sid,
                         loggedInUser);
                 servers.add(sid);
             }
@@ -5236,7 +5236,7 @@ public class SystemHandler extends BaseHandler {
         if (details.containsKey("auto_errata_update")) {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
-            if (autoUpdate.booleanValue()) {
+            if (autoUpdate) {
                 server.setAutoUpdate("Y");
             }
             else {

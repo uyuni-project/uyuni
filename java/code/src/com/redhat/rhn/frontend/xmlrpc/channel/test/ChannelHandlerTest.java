@@ -257,7 +257,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         Org org = OrgFactory.createOrg();
         org.setName("org created by OrgFactory test: " + TestUtils.randomString());
         org = OrgFactory.save(org);
-        assertTrue(org.getId().longValue() > 0);
+        assertTrue(org.getId() > 0);
         return org;
     }
 }

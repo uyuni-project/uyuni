@@ -204,7 +204,7 @@ public class SystemOverviewAction extends RhnAction {
 
         if (lockValue != null) {
 
-            if (lockValue.longValue() == 1) {
+            if (lockValue == 1) {
                 if (s.getLock() == null) {
                     SystemManager.lockServer(user,
                                              s,
@@ -216,7 +216,7 @@ public class SystemOverviewAction extends RhnAction {
                                          s.getName());
                 }
             }
-            else if (lockValue.longValue() == 0) {
+            else if (lockValue == 0) {
                 if (s.getLock() != null) {
 
                     SystemManager.unlockServer(user, s);
@@ -235,7 +235,7 @@ public class SystemOverviewAction extends RhnAction {
     protected void processPing(User user, Server s, RequestContext rctx) {
         Long pingValue = rctx.getParamAsLong("ping");
 
-        if (pingValue != null && pingValue.longValue() == 1) {
+        if (pingValue != null && pingValue == 1) {
             s.getPushClient().setLastPingTime(new Date(System.currentTimeMillis()));
             s.getPushClient().setNextActionTime(null);
             SystemManager.storeServer(s);
@@ -249,7 +249,7 @@ public class SystemOverviewAction extends RhnAction {
     protected void proccessSatApplet(User user, Server s, RequestContext rctx) {
         Long appValue = rctx.getParamAsLong("applet");
 
-        if (appValue != null && appValue.longValue() == 1) {
+        if (appValue != null && appValue == 1) {
             Action a = ActionManager.createBaseAction(user,
                                                       s,
                                                       ActionFactory

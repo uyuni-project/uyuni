@@ -447,7 +447,7 @@ public class TestUtils {
      */
     public static boolean isLocalized(String checkMe) {
         if (!Boolean.valueOf(
-                Config.get().getString("java.l10n_debug", "false")).booleanValue()) {
+                Config.get().getString("java.l10n_debug", "false"))) {
             throw new
                 IllegalArgumentException("java.l10n_debug is set to false.  " +
                         "This test doesnt mean anything if its set to false. ");

@@ -78,7 +78,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
     public void testLookupById() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertNotNull(org1);
-        assertTrue(org1.getId().longValue() > 0);
+        assertTrue(org1.getId() > 0);
     }
 
     public void testCommitOrg() throws Exception {
@@ -141,7 +141,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         Channel channel1 = ChannelFactoryTest.createTestChannel(org1);
         flushAndEvict(channel1);
         org1.addOwnedChannel(channel1);
-        assertTrue(org1.getId().longValue() > 0);
+        assertTrue(org1.getId() > 0);
         return org1;
     }
 
@@ -161,7 +161,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         flushAndEvict(channel1);
         orig.addOwnedChannel(channel1);
         orig = OrgFactory.save(orig);
-        assertTrue(orig.getId().longValue() > 0);
+        assertTrue(orig.getId() > 0);
 
         assertNull(orig.getToken());
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);

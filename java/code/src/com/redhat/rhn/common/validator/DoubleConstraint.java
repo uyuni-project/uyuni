@@ -63,7 +63,7 @@ public class DoubleConstraint extends RequiredIfConstraint {
 
         // Validate against range specifications
         try {
-            double doubleValue = Double.valueOf(value.toString());
+            double doubleValue = Double.parseDouble(value.toString());
             // Now we know its a valid number, lets check for a decimal value
             if (value.toString().indexOf(".") > -1) {
                 Object[] args = new Object[2];

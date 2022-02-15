@@ -745,8 +745,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         boolean foundCustom = false;
 
         for (EssentialChannelDto ecd : compatibles) {
-            foundBase |= c.getId().equals(ecd.getId().longValue());
-            foundCustom |= custom.getId().equals(ecd.getId().longValue());
+            foundBase |= c.getId().equals(ecd.getId());
+            foundCustom |= custom.getId().equals(ecd.getId());
         }
         assertFalse(foundBase);
         assertTrue(foundCustom);
