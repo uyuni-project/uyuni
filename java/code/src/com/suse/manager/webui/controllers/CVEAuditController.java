@@ -23,6 +23,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
@@ -154,9 +155,8 @@ public class CVEAuditController {
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, ResultJson.error("The specified CVE number was not" +
-                    " found. This can happen for very old or yet-unknown numbers, please" +
-                    " also check it for possible typing errors."));
+            return json(res, ResultJson.error("According to our records, your systems/images are not affected by " +
+                    "this CVE. Please follow the provided links for more information."));
         }
     }
 
