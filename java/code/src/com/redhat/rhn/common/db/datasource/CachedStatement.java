@@ -351,7 +351,7 @@ public class CachedStatement implements Serializable {
                 sb.append("'").append((String) value).append("'");
             }
             else {
-                sb.append(String.valueOf(value));
+                sb.append(value);
             }
         }
         return sb.toString();

@@ -213,7 +213,7 @@ public class AddressTag extends TagSupport {
                       .append("/EditAddress.do?type=")
                       .append(type)
                       .append("&amp;uid=")
-                      .append(String.valueOf(user.getId()))
+                      .append(user.getId())
                       .append("\">")
                       .append(ls.getMessage("Edit this address"))
                       .append("</a>");
@@ -229,7 +229,7 @@ public class AddressTag extends TagSupport {
                       .append("/EditAddress.do?type=")
                       .append(type)
                       .append("&amp;uid=")
-                      .append(String.valueOf(user.getId()))
+                      .append(user.getId())
                       .append("\">")
                       .append(ls.getMessage("Fill in this address"))
                       .append("</a>");

@@ -732,9 +732,9 @@ public class UserImpl extends BaseDomainHelper implements User {
         retval.append(" ");
         retval.append(getLogin());
         retval.append(" (id ");
-        retval.append(String.valueOf(getId()));
+        retval.append(getId());
         retval.append(", org_id ");
-        retval.append(String.valueOf(getOrg().getId()));
+        retval.append(getOrg().getId());
         retval.append(")");
         return retval.toString();
     }

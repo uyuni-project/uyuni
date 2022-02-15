@@ -483,8 +483,8 @@ public class SaltActionChainGeneratorService {
      * @return the file name
      */
     public static String getActionChainSLSFileName(Long actionChainId, MinionSummary minionServer, int chunk) {
-        return (ACTIONCHAIN_SLS_FILE_PREFIX + Long.toString(actionChainId) +
-                "_" + minionServer.getMachineId() + "_" + Integer.toString(chunk) + ".sls");
+        return (ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
+                "_" + minionServer.getMachineId() + "_" + chunk + ".sls");
     }
 
     private void saveChunkSLS(List<SaltState> states, MinionSummary minion, long actionChainId, int chunk) {
