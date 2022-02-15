@@ -352,11 +352,7 @@ public class PackageFactory extends HibernateFactory {
         if (epoch == null || packages.size() < 2) {
             return packages;
         }
-        for (Package pack : packages) {
-            if (!epoch.equals(pack.getPackageEvr().getEpoch())) {
-                packages.remove(pack);
-            }
-        }
+        packages.removeIf(pack -> !epoch.equals(pack.getPackageEvr().getEpoch()));
         return packages;
     }
 
@@ -389,11 +385,7 @@ public class PackageFactory extends HibernateFactory {
         }
 
         if (epoch != null && packages.size() > 1) {
-            for (Package pack : packages) {
-                if (!epoch.equals(pack.getPackageEvr().getEpoch())) {
-                    packages.remove(pack);
-                }
-            }
+            packages.removeIf(pack -> !epoch.equals(pack.getPackageEvr().getEpoch()));
         }
 
         return packages.get(0);

@@ -76,7 +76,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -1468,14 +1467,9 @@ public class ErrataHandler extends BaseHandler {
         // just want to make sure the caller is logged in.
 
         List<Errata> erratas = ErrataManager.lookupByCVE(cveName);
-        for (Iterator<Errata> iter = erratas.iterator(); iter.hasNext();) {
-            Errata errata = iter.next();
-            // Remove errata that do not apply to the user's org
-            if (errata.getOrg() != null &&
-                    !errata.getOrg().equals(loggedInUser.getOrg())) {
-                iter.remove();
-            }
-        }
+        // Remove errata that do not apply to the user's org
+        erratas.removeIf(errata -> errata.getOrg() != null &&
+                !errata.getOrg().equals(loggedInUser.getOrg()));
         return erratas;
     }
 

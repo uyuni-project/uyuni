@@ -153,13 +153,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Check for all expected system IDs and remove them from the set
         for (SystemOverview s1 : systems) {
-            Iterator<SystemOverview> expectedIterator = expected.iterator();
-            while (expectedIterator.hasNext()) {
-                SystemOverview s2 = expectedIterator.next();
-                if (s1.getId().equals(s2.getId())) {
-                    expectedIterator.remove();
-                }
-            }
+            expected.removeIf(s2 -> s1.getId().equals(s2.getId()));
             // Stop if all servers were found
             if (expected.isEmpty()) {
                 break;

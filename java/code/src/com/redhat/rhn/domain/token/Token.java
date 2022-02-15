@@ -32,9 +32,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -473,11 +473,7 @@ public class Token implements Identifiable {
      */
     protected void setConfigChannels(List cfgChannels) {
         this.configChannels = cfgChannels;
-        for (Iterator itr = configChannels.iterator(); itr.hasNext();) {
-            if (itr.next() == null) {
-                itr.remove();
-            }
-        }
+        configChannels.removeIf(Objects::isNull);
     }
 
     /**

@@ -41,7 +41,6 @@ import org.cobbler.Profile;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -496,12 +495,7 @@ public class KickstartLister extends BaseManager {
         for (KickstartableTree tree : trees) {
             ids.add(tree.getId());
         }
-        for (Iterator<KickstartDto> itr = profiles.iterator(); itr.hasNext();) {
-            KickstartDto dto = itr.next();
-            if (StringUtils.isBlank(dto.getCobblerId()) ||
-                            !ids.contains(dto.getKstreeId())) {
-                itr.remove();
-            }
-        }
+        profiles.removeIf(dto -> StringUtils.isBlank(dto.getCobblerId()) ||
+                !ids.contains(dto.getKstreeId()));
     }
 }

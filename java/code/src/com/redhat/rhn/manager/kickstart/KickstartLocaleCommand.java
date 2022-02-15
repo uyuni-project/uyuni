@@ -99,12 +99,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
 
             if (args != null) {
                 tokens = (LinkedList) StringUtil.stringToList(args);
-                Iterator iter = tokens.iterator();
-                while (iter.hasNext()) {
-                    if (current.equals(iter.next())) {
-                        iter.remove();
-                    }
-                }
+                tokens.removeIf(current::equals);
             }
 
             tokens.add(timezoneIn);
