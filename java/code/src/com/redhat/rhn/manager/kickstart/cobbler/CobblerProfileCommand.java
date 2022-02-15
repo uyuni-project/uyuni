@@ -83,7 +83,7 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
         if (ksession != null) {
             ActivationKey key = ActivationKeyFactory.lookupByKickstartSession(ksession);
 
-            StringBuffer keystring = new StringBuffer();
+            StringBuilder keystring = new StringBuilder();
             keystring.append(key.getKey());
             if (this.ksData.getDefaultRegTokens() != null) {
                 log.debug("Adding associated activation keys.");

@@ -221,7 +221,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
     public void testCreateNewRevisionFromStream() throws Exception {
         String startData = "this is some original data";
-        StringBuffer stringBuffer1 = new StringBuffer(startData);
+        StringBuilder stringBuffer1 = new StringBuilder(startData);
         ByteArrayInputStream stream =
             new ByteArrayInputStream(stringBuffer1.toString().getBytes("UTF-8"));
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());

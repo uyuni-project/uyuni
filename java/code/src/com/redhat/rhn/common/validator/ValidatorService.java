@@ -126,7 +126,7 @@ public class ValidatorService {
 
         Validator validator;
         try {
-            StringBuffer xsdName = new StringBuffer();
+            StringBuilder xsdName = new StringBuilder();
             xsdName.append(StringUtil.getClassNameNoPackage(validateIn.getClass()));
             xsdName.append(".xsd");
             validator = Validator.getInstance(validateIn.getClass().
