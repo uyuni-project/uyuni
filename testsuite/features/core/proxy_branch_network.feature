@@ -180,6 +180,18 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+  Scenario: Let the server know about the new FQDN of the proxy
+    When I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    Then I should see a "proxy.example.org" text
+
+@proxy
+@private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
     Then terminal "sle_client" should have got a retail network IP address
