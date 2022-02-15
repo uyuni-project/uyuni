@@ -841,20 +841,10 @@ public class SystemHandler extends BaseHandler {
                 m.put("swap", server.getSwap());
 
                 CPU cpu = server.getCpu();
-                if (cpu == null) {
-                  m.put("cpu_info", new HashMap<String, String>());
-                }
-                else {
-                  m.put("cpu_info", cpu);
-                }
+                m.put("cpu_info", Objects.requireNonNullElseGet(cpu, HashMap::new));
 
                 Dmi dmi = server.getDmi();
-                if (dmi == null) {
-                  m.put("dmi_info", new HashMap<String, String>());
-                }
-                else {
-                  m.put("dmi_info", dmi);
-                }
+                m.put("dmi_info", Objects.requireNonNullElseGet(dmi, HashMap::new));
 
                 m.put("network_devices",
                         new ArrayList<>(server
