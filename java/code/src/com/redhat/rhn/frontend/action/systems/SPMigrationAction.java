@@ -52,7 +52,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -394,7 +393,7 @@ public class SPMigrationAction extends RhnAction {
         List<Channel> channels = baseChannel.getAccessibleChildrenFor(user);
 
         // Sort channels by name
-        Collections.sort(channels, new DynamicComparator("name", RequestContext.SORT_ASC));
+        channels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<ChildChannelDto> childChannels = new ArrayList<>();
         for (Channel channelIn : channels) {
@@ -425,7 +424,7 @@ public class SPMigrationAction extends RhnAction {
         List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(ctx.getCurrentUser());
 
         // Sort channels by name
-        Collections.sort(childChannels, new DynamicComparator("name", RequestContext.SORT_ASC));
+        childChannels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<EssentialChannelDto> channelDTOs = new ArrayList<>();
         for (Channel child : childChannels) {

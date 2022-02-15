@@ -30,7 +30,7 @@ public class DynamicComparatorTest extends RhnJmockBaseTestCase {
         List list = generateRandomList();
         DynamicComparator comp = new DynamicComparator("stringField",
                 RequestContext.SORT_ASC);
-        Collections.sort(list, comp);
+        list.sort(comp);
         assertTrue(((TestObject) list.get(0)).getStringField().equals("A"));
         assertTrue(((TestObject) list.get(list.size() - 1)).getStringField().equals("Z"));
     }

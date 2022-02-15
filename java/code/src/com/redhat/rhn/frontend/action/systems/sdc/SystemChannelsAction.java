@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,8 +97,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
             Channel baseChannel = s.getBaseChannel();
             List channels = baseChannel.getAccessibleChildrenFor(user);
 
-            Collections.sort(channels,
-                    new DynamicComparator("name", RequestContext.SORT_ASC));
+            channels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
 
             ChildChannelDto[] childchannels = new ChildChannelDto[channels.size()];
             for (int i = 0; i < channels.size(); i++) {

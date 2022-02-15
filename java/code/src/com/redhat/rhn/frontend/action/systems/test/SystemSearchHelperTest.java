@@ -196,7 +196,7 @@ should sort to
     public void testListSort() {
         List<SystemOverview> systems = new ArrayList<>(dtos.values());
         assertEquals(dtos.size(), systems.size());
-        java.util.Collections.sort(systems, cmp);
+        systems.sort(cmp);
         assertTrue(1115L == systems.get(0).getId());
         assertTrue(1215L == systems.get(1).getId());
         assertTrue(1110L == systems.get(2).getId());
