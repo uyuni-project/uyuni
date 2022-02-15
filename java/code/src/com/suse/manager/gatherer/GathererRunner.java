@@ -174,11 +174,8 @@ public class GathererRunner {
                 return null;
             }
         }
-        catch (IOException ioe) {
+        catch (IOException | InterruptedException ioe) {
             logger.error("execute(String[])", ioe);
-        }
-        catch (InterruptedException e) {
-            logger.error("execute(String[])", e);
         }
         return hosts;
     }

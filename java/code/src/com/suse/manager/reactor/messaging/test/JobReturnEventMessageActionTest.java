@@ -102,7 +102,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
@@ -1683,9 +1682,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("a64dbc025c748bde968b888db6b7b9e3",
                         images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
             }
-            catch (FileNotFoundException e) {
-                fail("Cannot find OS Image generated pillar");
-            }
             catch (IOException e) {
                 fail("Cannot find OS Image generated pillar");
             }
@@ -1746,9 +1742,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("gzip", images.get("POS_Image_JeOS6").get("6.0.0").get("compressed"));
                 assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
                         images.get("POS_Image_JeOS6").get("6.0.0").get("compressed_hash"));
-            }
-            catch (FileNotFoundException e) {
-                fail("Cannot find OS Image generated pillar");
             }
             catch (IOException e) {
                 fail("Cannot find OS Image generated pillar");

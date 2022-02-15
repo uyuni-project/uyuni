@@ -70,11 +70,7 @@ public class OvalFileAggregator {
             builder.setValidation(false);
             add(builder.build(f));
         }
-        catch (JDOMException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
-        catch (IOException e) {
+        catch (JDOMException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
         }

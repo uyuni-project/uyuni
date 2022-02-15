@@ -375,10 +375,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             result = handler.setChildChannels(admin, sid, cids);
             fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
         }
-        catch (InvalidChannelException e) {
-            //success
-        }
-        catch (ChannelSubscriptionException e) {
+        catch (InvalidChannelException | ChannelSubscriptionException e) {
             //success
         }
 
@@ -468,10 +465,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             result = handler.setChildChannels(admin, sid, channelLabels);
             fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
         }
-        catch (InvalidChannelException e) {
-            //success
-        }
-        catch (ChannelSubscriptionException e) {
+        catch (InvalidChannelException | ChannelSubscriptionException e) {
             //success
         }
 

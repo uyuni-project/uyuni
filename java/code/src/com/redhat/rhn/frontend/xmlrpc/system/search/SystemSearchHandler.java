@@ -54,7 +54,7 @@ public class SystemSearchHandler extends BaseHandler {
                     invertResults,
                     whereToSearch, true);
         }
-        catch (MalformedURLException e) {
+        catch (MalformedURLException | XmlRpcException e) {
             log.info("Caught Exception :" + e);
             e.printStackTrace();
             throw new SearchServerCommException();
@@ -70,12 +70,8 @@ public class SystemSearchHandler extends BaseHandler {
             throw new SearchServerQueryException();
             // Could not parse query
         }
-        catch (XmlRpcException e) {
-            log.info("Caught Exception :" + e);
-            e.printStackTrace();
-            // Connection error
-            throw new SearchServerCommException();
-        }
+        // Connection error
+
         if (dr != null) {
             dr.elaborate(Collections.EMPTY_MAP);
             return dr;

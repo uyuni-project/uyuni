@@ -319,17 +319,13 @@ public class PackagesSearchHandler extends BaseHandler {
             pkgs = PackageSearchHelper.performSearch(sessionId, query, mode, null, null,
                             true, null, PackageSearchAction.WHERE_ALL);
         }
-        catch (MalformedURLException e) {
+        catch (MalformedURLException | XmlRpcFault e) {
             log.info("Caught Exception :" + e);
             e.printStackTrace();
             throw new SearchServerCommException();
         }
-        catch (XmlRpcFault e) {
-            log.info("Caught Exception :" + e);
-            e.printStackTrace();
-            // Connection error
-            throw new SearchServerCommException();
-        }
+        // Connection error
+
         if (log.isDebugEnabled()) {
             log.debug("Query = : " + query + ", mode = " + mode);
             log.debug(pkgs.size() + " packages were fetched");

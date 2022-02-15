@@ -696,13 +696,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         catch (PermissionCheckFailureException e) {
             // expected
         }
-        catch (InvalidChannelLabelException e) {
-            fail("Wasn't expecting this in this test.");
-        }
-        catch (InvalidChannelNameException e) {
-            fail("Wasn't expecting this in this test.");
-        }
-        catch (InvalidParentChannelException e) {
+        catch (InvalidChannelLabelException | InvalidParentChannelException | InvalidChannelNameException e) {
             fail("Wasn't expecting this in this test.");
         }
     }
@@ -716,7 +710,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                     "channel-x86_64", null);
             fail("create did not throw exception when given a null label");
         }
-        catch (IllegalArgumentException iae) {
+        catch (IllegalArgumentException | InvalidParentChannelException | InvalidChannelNameException iae) {
             fail("Wasn't expecting this in this test.");
         }
         catch (PermissionCheckFailureException e) {
@@ -725,32 +719,20 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         catch (InvalidChannelLabelException expected) {
             // expected
         }
-        catch (InvalidChannelNameException e) {
-            fail("Wasn't expecting this in this test.");
-        }
-        catch (InvalidParentChannelException e) {
-            fail("Wasn't expecting this in this test.");
-        }
 
         try {
             csh.create(admin, "api-test-nonnull", null, "api test summary",
                     "channel-x86_64", null);
             fail("create did not throw exception when given a null label");
         }
-        catch (IllegalArgumentException iae) {
+        catch (IllegalArgumentException | InvalidParentChannelException | InvalidChannelLabelException iae) {
             fail("Wasn't expecting this in this test.");
         }
         catch (PermissionCheckFailureException e) {
             fail("We're not looking for this exception right now");
         }
-        catch (InvalidChannelLabelException e) {
-            fail("Wasn't expecting this in this test.");
-        }
         catch (InvalidChannelNameException expected) {
             // expected
-        }
-        catch (InvalidParentChannelException e) {
-            fail("Wasn't expecting this in this test.");
         }
     }
 
@@ -773,10 +755,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             csh.create(admin, "api-test-chan-label",
                     "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
         }
-        catch (PermissionCheckFailureException e) {
-            fail("Not looking for this");
-        }
-        catch (InvalidChannelLabelException e) {
+        catch (PermissionCheckFailureException | InvalidChannelLabelException e) {
             fail("Not looking for this");
         }
         catch (InvalidChannelNameException e) {
@@ -790,14 +769,11 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             csh.create(admin, "api-test-chan-label",
                     "apiTestChanName1010101", "apiTestSummary", "channel-x86_64", null);
         }
-        catch (PermissionCheckFailureException e) {
+        catch (PermissionCheckFailureException | InvalidChannelNameException e) {
             fail("Not looking for this");
         }
         catch (InvalidChannelLabelException e) {
             // do nothing, this we expect
-        }
-        catch (InvalidChannelNameException e) {
-            fail("Not looking for this");
         }
         catch (InvalidParentChannelException e) {
             fail("Wasn't expecting this in this test.");
