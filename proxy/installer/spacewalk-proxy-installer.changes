@@ -1,4 +1,8 @@
-- integrate new TLS Certificate deployment tool
+-------------------------------------------------------------------
+Tue Feb 15 10:04:10 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * integrate new TLS Certificate deployment tool
 
 -------------------------------------------------------------------
 Tue Jan 18 13:58:09 CET 2022 - jgonzalez@suse.com
