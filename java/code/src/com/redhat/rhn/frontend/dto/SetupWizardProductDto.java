@@ -213,7 +213,7 @@ public class SetupWizardProductDto implements Selectable,
         public boolean isFinished() {
             return equals(SyncStatus.SyncStage.FINISHED);
         }
-    };
+    }
 
     /** The product id */
     private Long productId;
