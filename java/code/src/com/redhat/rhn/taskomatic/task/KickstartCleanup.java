@@ -112,7 +112,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private void markFailed(Long sessionId, Long failedStateId) {
         WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_MARK_SESSION_FAILED);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("session_id", sessionId);
         params.put("failed_state_id", failedStateId);
         update.executeUpdate(params);
@@ -121,7 +121,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private Long findTopmostParentAction(Long startingAction) {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_PREREQ_ACTION);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("action_id", startingAction);
         if (log.isDebugEnabled()) {
             log.debug("StartingAction: " + startingAction);

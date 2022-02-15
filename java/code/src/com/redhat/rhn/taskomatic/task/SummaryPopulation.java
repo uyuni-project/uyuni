@@ -88,7 +88,7 @@ public class SummaryPopulation extends RhnJavaJob {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SUMMARYPOP_AWOL_SERVER_IN_ORGS);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         int checkin = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
         if (log.isDebugEnabled()) {
             log.debug("Server checkin threshold for AWOL servers: " + checkin);
@@ -104,7 +104,7 @@ public class SummaryPopulation extends RhnJavaJob {
     }
 
     private int enqueueOrg(Long orgId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_VERIFY_SUMMARY_QUEUE);

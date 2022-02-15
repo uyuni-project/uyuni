@@ -42,7 +42,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the XccdfTestResult found
      */
     public static XccdfTestResult lookupTestResultById(Long xid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("xid", xid);
         return (XccdfTestResult)singleton.lookupObjectByNamedQuery(
                 "XccdfTestResult.findById", params);

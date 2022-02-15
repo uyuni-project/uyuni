@@ -164,7 +164,7 @@ public class TrustAction extends FormDispatcher {
     }
 
     private List<OrgTrust> getOrgs(Org theOrg) {
-        List<OrgTrust> list = new ArrayList<OrgTrust>();
+        List<OrgTrust> list = new ArrayList<>();
         for (Org org : OrgFactory.lookupAllOrgs()) {
             if (!org.equals(theOrg)) {
                 list.add(new OrgTrust(org));
@@ -174,7 +174,7 @@ public class TrustAction extends FormDispatcher {
     }
 
     private List<Org> getAdded(Org theOrg, RhnSet set) {
-        List<Org> list = new ArrayList<Org>();
+        List<Org> list = new ArrayList<>();
         Set<Org> myTrusted = theOrg.getTrustedOrgs();
         for (OrgTrust trust : getOrgs(theOrg)) {
             if (set.contains(trust.getId()) &&
@@ -186,7 +186,7 @@ public class TrustAction extends FormDispatcher {
     }
 
     private List<Org> getRemoved(Org theOrg, RhnSet set) {
-        List<Org> list = new ArrayList<Org>();
+        List<Org> list = new ArrayList<>();
         Set<Org> myTrusted = theOrg.getTrustedOrgs();
         for (OrgTrust trust : getOrgs(theOrg)) {
             if (myTrusted.contains(trust.getOrg()) &&
@@ -211,7 +211,7 @@ public class TrustAction extends FormDispatcher {
         Long oid = context.getParamAsLong(RequestContext.ORG_ID);
         Org theOrg = OrgFactory.lookupById(oid);
         helper.updateSet(set, LIST_NAME);
-        List<OrgTrust> removed = new ArrayList<OrgTrust>();
+        List<OrgTrust> removed = new ArrayList<>();
         for (Org org : getRemoved(theOrg, set)) {
             DataResult<Map<String, Object>> dr =
                 SystemManager.subscribedInOrgTrust(theOrg.getId(), org.getId());
@@ -315,8 +315,8 @@ public class TrustAction extends FormDispatcher {
         request.setAttribute("orgB", orgB);
         DataResult<Map<String, Object>> dr =
                 SystemManager.subscribedInOrgTrust(oid[0], oid[1]);
-        List<Map<String, Object>> sysA = new ArrayList<Map<String, Object>>();
-        List<Map<String, Object>> sysB = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> sysA = new ArrayList<>();
+        List<Map<String, Object>> sysB = new ArrayList<>();
         for (Map<String, Object> m : dr) {
             long orgId = (Long)m.get("org_id");
             if (orgId == oid[0]) {

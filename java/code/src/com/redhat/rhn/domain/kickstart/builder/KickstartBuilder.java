@@ -72,9 +72,9 @@ public class KickstartBuilder {
     // in our database. This map will be used to convert to the supported version.
     private static Map<String, String> optionAliases;
     private static Set<String> installationTypes;
-    private static Set<String> partitionCommands = new HashSet<String>();
+    private static Set<String> partitionCommands = new HashSet<>();
     static {
-        optionAliases = new HashMap<String, String>();
+        optionAliases = new HashMap<>();
         optionAliases.put("authconfig", "auth");
 
         partitionCommands.add("logvol");
@@ -84,7 +84,7 @@ public class KickstartBuilder {
         partitionCommands.add("volgroup");
         partitionCommands.add("%include");
 
-        installationTypes = new HashSet<String>();
+        installationTypes = new HashSet<>();
         installationTypes.add("nfs");
         installationTypes.add("url");
         installationTypes.add("cdrom");
@@ -115,12 +115,12 @@ public class KickstartBuilder {
         List<KickstartCommandName> availableOptions = KickstartFactory
                 .lookupAllKickstartCommandNames(ksData);
         Map<String, KickstartCommandName> commandNames =
-                new HashMap<String, KickstartCommandName>();
+                new HashMap<>();
         for (KickstartCommandName cmdName : availableOptions) {
             commandNames.put(cmdName.getName(), cmdName);
         }
 
-        Set<KickstartCommand> commandOptions = new HashSet<KickstartCommand>();
+        Set<KickstartCommand> commandOptions = new HashSet<>();
 
         boolean isReallyKickstartProfile = false;
         for (String currentLine : lines) {
@@ -244,7 +244,7 @@ public class KickstartBuilder {
                     "%packages tag.");
         }
 
-        Set<KickstartPackage> ksPackagesSet = new TreeSet<KickstartPackage>();
+        Set<KickstartPackage> ksPackagesSet = new TreeSet<>();
         Long pos = 0L;
         for (String currentLine : lines) {
             if (currentLine.startsWith("#") || currentLine.startsWith("%packages") ||
@@ -395,7 +395,7 @@ public class KickstartBuilder {
         setupBasicInfo(label, ksdata, tree, virtualizationType, updateType);
 
         if (ksdata.getKsPackages() == null) {
-            ksdata.setKsPackages(new TreeSet<KickstartPackage>());
+            ksdata.setKsPackages(new TreeSet<>());
         }
         buildCommands(ksdata, parser.getOptionLines(), tree);
         buildPackages(ksdata, parser.getPackageLines());
@@ -557,7 +557,7 @@ public class KickstartBuilder {
         setupBasicInfo(ksLabel, ksdata, tree, virtType, updateType);
         KickstartCommandName kcn = null;
         KickstartCommand kscmd = null;
-        ksdata.setCommands(new LinkedHashSet<KickstartCommand>());
+        ksdata.setCommands(new LinkedHashSet<>());
         kcn = KickstartFactory.lookupKickstartCommandName("url");
         kscmd = new KickstartCommand();
         kscmd.setCommandName(kcn);
@@ -582,7 +582,7 @@ public class KickstartBuilder {
         cmd.processSkipKey(ksdata);
         cmd.processRepos(ksdata);
         if (ksdata.getKsPackages() == null) {
-            ksdata.setKsPackages(new TreeSet<KickstartPackage>());
+            ksdata.setKsPackages(new TreeSet<>());
         }
         cmd.store(ksdata);
         return ksdata;

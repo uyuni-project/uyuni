@@ -93,7 +93,7 @@ public class ErrataCloneAction extends RhnListAction {
             // if its one of the Dispatch actions handle it..
             helper.updateSet(set, LIST_NAME);
             if (!set.isEmpty()) {
-                Map<String, Object> params = new HashMap<String, Object>();
+                Map<String, Object> params = new HashMap<>();
                 params.put(CID, request.getParameter(CID));
                 params.put(ConfirmErrataAction.SELECTED_CHANNEL, original.getId());
                 return getStrutsDelegate().forwardParams(mapping.findForward("submit"),

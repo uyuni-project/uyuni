@@ -50,7 +50,7 @@ public class RescheduleResult {
     public RescheduleResult(String scheduleNameIn, boolean successIn) {
         strategy = "";
         scheduleName = scheduleNameIn;
-        actionsServers = new HashMap<Action, List<Server>>();
+        actionsServers = new HashMap<>();
         success = successIn;
     }
 

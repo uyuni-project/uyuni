@@ -66,7 +66,7 @@ public class KeysHandler extends BaseHandler {
         // token is similar to an activation key, it lacks the actual key value
         // (e.g. "1-asdflkajdklajdfk").  As a result, we'll use the token to
         // retrieve this additional info.
-        List<ActivationKey> keys = new ArrayList<ActivationKey>();
+        List<ActivationKey> keys = new ArrayList<>();
         for (Token token : data.getDefaultRegTokens()) {
             ActivationKey key = ActivationKeyFactory.lookupByToken(token);
             keys.add(key);
@@ -97,7 +97,7 @@ public class KeysHandler extends BaseHandler {
                 ksdata.getId(), loggedInUser);
 
         ActivationKey activationKey = lookupKey(key, loggedInUser);
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<Long> ids = new ArrayList<>();
         ids.add(activationKey.getId());
 
         command.addTokensByIds(ids);
@@ -129,7 +129,7 @@ public class KeysHandler extends BaseHandler {
                 ksdata.getId(), loggedInUser);
 
         ActivationKey activationKey = lookupKey(key, loggedInUser);
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<Long> ids = new ArrayList<>();
         ids.add(activationKey.getId());
 
         command.removeTokensByIds(ids);

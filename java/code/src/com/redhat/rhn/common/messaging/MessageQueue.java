@@ -84,7 +84,7 @@ public class MessageQueue {
     private static Logger logger = Logger.getLogger(MessageQueue.class);
 
     private static final Map<Class, List<MessageAction>> ACTIONS =
-            new HashMap<Class, List<MessageAction>>();
+            new HashMap<>();
     private static Channel messages = new LinkedQueue();
     private static Thread dispatcherThread = null;
     private static MessageDispatcher dispatcher = null;
@@ -206,7 +206,7 @@ public class MessageQueue {
         synchronized (ACTIONS) {
             List<MessageAction> handlers = ACTIONS.get(eventType);
             if (handlers == null) {
-                handlers = new ArrayList<MessageAction>();
+                handlers = new ArrayList<>();
                 ACTIONS.put(eventType, handlers);
             }
             handlers.add(act);

@@ -78,7 +78,7 @@ public class RebootActionCleanup extends RhnJavaJob {
     private void invalidateKickstartSession(Long serverId, Long actionId) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_LOOKUP_KICKSTART_SESSION_ID);
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("server_id", serverId);
         params.put("action_id", actionId);
 
@@ -96,7 +96,7 @@ public class RebootActionCleanup extends RhnJavaJob {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_LOOKUP_REBOOT_ACTION_CLEANUP);
 
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Integer> params = new HashMap<>();
         // 6 hours
         params.put("threshold", 6);
         return m.execute(params);
@@ -104,7 +104,7 @@ public class RebootActionCleanup extends RhnJavaJob {
 
     private List<Long> invalidateActionRecursive(Long serverId, Long actionId) {
         List<Long> childIds = lookupChildAction(serverId, actionId);
-        List<Long> aIds = new ArrayList<Long>();
+        List<Long> aIds = new ArrayList<>();
         for (Long childAction : childIds) {
             List<Long> cIds = invalidateActionRecursive(serverId, childAction);
             aIds.addAll(cIds);
@@ -128,9 +128,9 @@ public class RebootActionCleanup extends RhnJavaJob {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_LOOKUP_CHILD_ACTION);
         DataResult<?> retval = null;
-        List<Long> childActions = new ArrayList<Long>();
+        List<Long> childActions = new ArrayList<>();
 
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("server_id", serverId);
         params.put("action_id", actionId);
         retval = m.execute(params);

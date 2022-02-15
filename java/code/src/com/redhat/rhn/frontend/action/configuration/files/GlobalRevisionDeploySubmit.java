@@ -76,7 +76,7 @@ public class GlobalRevisionDeploySubmit extends BaseSetOperateOnSelectedItemsAct
             HttpServletRequest request,
             HttpServletResponse response) {
         updateSet(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         processParamMap(formIn, request, params);
         return getStrutsDelegate().forwardParams(
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

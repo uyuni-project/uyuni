@@ -127,7 +127,8 @@ public class MgrUtilRunner {
         args.put("minion", minionId);
         RunnerCall<ExecResult> call =
                 new RunnerCall<>("mgrutil.delete_rejected_key", Optional.of(args),
-                        new TypeToken<ExecResult>() { });
+                        new TypeToken<>() {
+                        });
         return call;
     }
 
@@ -141,7 +142,8 @@ public class MgrUtilRunner {
         args.put("path", path);
         RunnerCall<ExecResult> call =
                 new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
-                        new TypeToken<ExecResult>() { });
+                        new TypeToken<>() {
+                        });
         return call;
     }
 
@@ -157,7 +159,8 @@ public class MgrUtilRunner {
         args.put("hostname", hostname);
         RunnerCall<RemoveKnowHostResult> call =
                 new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args),
-                        new TypeToken<RemoveKnowHostResult>() { });
+                        new TypeToken<>() {
+                        });
         return call;
     }
 
@@ -190,7 +193,7 @@ public class MgrUtilRunner {
         args.put("outputfile", outputfile);
         RunnerCall<ExecResult> call =
                 new RunnerCall<>("mgrutil.chain_ssh_cmd", Optional.of(args),
-                        new TypeToken<ExecResult>() {
+                        new TypeToken<>() {
                         });
         return call;
     }
@@ -215,7 +218,8 @@ public class MgrUtilRunner {
         args.put("actionpath", actionPath);
         RunnerCall<Map<Boolean, String>> call =
                 new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args),
-                        new TypeToken<Map<Boolean, String>>() { });
+                        new TypeToken<>() {
+                        });
         return call;
     }
 }

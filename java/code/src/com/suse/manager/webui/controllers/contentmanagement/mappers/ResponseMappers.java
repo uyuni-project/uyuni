@@ -249,7 +249,7 @@ public class ResponseMappers {
                     contentFilterResponse.setRule(filter.getRule().getLabel());
                     contentFilterResponse.setProjects(
                             projects.stream()
-                                    .map(p -> new ImmutablePair<String, String>(p.getLabel(), p.getName()))
+                                    .map(p -> new ImmutablePair<>(p.getLabel(), p.getName()))
                                     .collect(Collectors.toList())
                     );
                     return contentFilterResponse;

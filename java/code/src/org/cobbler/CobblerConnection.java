@@ -144,7 +144,7 @@ public class CobblerConnection {
      */
     public Object invokeTokenMethod(String procedureName,
                                     Object... args) {
-        List<Object> params = new LinkedList<Object>(Arrays.asList(args));
+        List<Object> params = new LinkedList<>(Arrays.asList(args));
         params.add(token);
         return invokeMethod(procedureName, params);
     }

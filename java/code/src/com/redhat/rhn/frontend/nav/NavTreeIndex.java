@@ -51,14 +51,14 @@ public class NavTreeIndex {
      * @param treeIn the tree to index
      */
     public NavTreeIndex(NavTree treeIn) {
-        nodesByLabel = new HashMap<String, NavNode>();
-        childToParentMap = new HashMap<NavNode, NavNode>();
-        depthMap = new HashMap<NavNode, Integer>();
-        nodeDirMap = new HashMap<String, List<NavNode>>();
-        nodeURLMap = new HashMap<String, List<NavNode>>();
-        primaryURLMap = new HashMap<String, NavNode>();
-        nodeLevels = new ArrayList<List<NavNode>>();
-        activeNodes = new HashSet<NavNode>();
+        nodesByLabel = new HashMap<>();
+        childToParentMap = new HashMap<>();
+        depthMap = new HashMap<>();
+        nodeDirMap = new HashMap<>();
+        nodeURLMap = new HashMap<>();
+        primaryURLMap = new HashMap<>();
+        nodeLevels = new ArrayList<>();
+        activeNodes = new HashSet<>();
 
         tree = treeIn;
         indexTree();
@@ -84,7 +84,7 @@ public class NavTreeIndex {
 
     private void indexTree() {
         int depth = 0;
-        List<NavNode> nodesAtCurrentDepth = new ArrayList<NavNode>(tree.getNodes());
+        List<NavNode> nodesAtCurrentDepth = new ArrayList<>(tree.getNodes());
         nodeLevels.add(depth, nodesAtCurrentDepth);
 
         for (NavNode n : nodesAtCurrentDepth) {
@@ -99,7 +99,7 @@ public class NavTreeIndex {
         }
         primaryURLMap.put(parent.getPrimaryURL(), parent);
 
-        List<NavNode> nodesAtCurrentDepth = new ArrayList<NavNode>(parent.getNodes());
+        List<NavNode> nodesAtCurrentDepth = new ArrayList<>(parent.getNodes());
         nodeLevels.add(depth, nodesAtCurrentDepth);
 
         addURLMaps(parent);
@@ -120,7 +120,7 @@ public class NavTreeIndex {
         for (String url : node.getURLs()) {
             List<NavNode> currentNodes = nodeURLMap.get(url);
             if (currentNodes == null) {
-                currentNodes = new ArrayList<NavNode>();
+                currentNodes = new ArrayList<>();
                 if (log.isDebugEnabled()) {
                     log.debug("adding url map [" + url + "]");
                 }
@@ -135,7 +135,7 @@ public class NavTreeIndex {
         for (String dir : node.getDirs()) {
             List<NavNode> currentNodes = nodeDirMap.get(dir);
             if (currentNodes == null) {
-                currentNodes = new ArrayList<NavNode>();
+                currentNodes = new ArrayList<>();
                 if (log.isDebugEnabled()) {
                     log.debug("adding dir map [" + dir + "]");
                 }
@@ -156,7 +156,7 @@ public class NavTreeIndex {
         String url = StringUtils.strip(urlIn, "/");
         String[] splitPath = StringUtils.split(url, "/");
 
-        List<String> pathPrefixes = new ArrayList<String>(splitPath.length + 1);
+        List<String> pathPrefixes = new ArrayList<>(splitPath.length + 1);
 
         // loop through the path parts of URL, creating a new split
         // URL for each pass, starting with longest, going to shortest
@@ -222,7 +222,7 @@ public class NavTreeIndex {
 
         NavNode walker = bestNode;
 
-        activeNodes = new HashSet<NavNode>();
+        activeNodes = new HashSet<>();
         while (walker != null) {
             activeNodes.add(walker);
             walker = childToParentMap.get(walker);

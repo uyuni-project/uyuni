@@ -518,7 +518,7 @@ public class PackageListItem extends IdComboDto {
      * @return a map.
      */
     public Map<String, Long> getKeyMap() {
-        Map<String, Long> ret = new HashMap<String, Long>();
+        Map<String, Long> ret = new HashMap<>();
         ret.put("name_id", getIdOne());
         ret.put("evr_id", getIdTwo());
         ret.put("arch_id", getIdThree());
@@ -539,7 +539,7 @@ public class PackageListItem extends IdComboDto {
      * @return the list of key maps associated with the given items
      */
     public static  List<Map<String, Long>> toKeyMaps(List<PackageListItem> items) {
-        List<Map<String, Long>> ret = new LinkedList<Map<String, Long>>();
+        List<Map<String, Long>> ret = new LinkedList<>();
         for (PackageListItem item : items) {
             ret.add(item.getKeyMap());
         }

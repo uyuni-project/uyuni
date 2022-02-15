@@ -75,7 +75,7 @@ public final class XmlMessages {
     }
 
     private void initBundleCache() {
-        bundles = new HashMap<String, ResourceBundle>();
+        bundles = new HashMap<>();
     }
 
     /**

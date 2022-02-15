@@ -362,7 +362,7 @@ public class ProfileHandler extends BaseHandler {
                 "No Kickstart Profile found with label: " + kslabel);
         }
 
-        List<String> childChannels = new ArrayList<String>();
+        List<String> childChannels = new ArrayList<>();
         if (ksdata.getChildChannels() != null) {
             for (Channel channel : ksdata.getChildChannels()) {
                 childChannels.add(channel.getLabel());
@@ -431,7 +431,7 @@ public class ProfileHandler extends BaseHandler {
         checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(label, loggedInUser.getOrg());
 
-        ArrayList<KickstartScript> scripts = new ArrayList<KickstartScript>(
+        ArrayList<KickstartScript> scripts = new ArrayList<>(
                 data.getScripts());
         Collections.sort(scripts);
 
@@ -488,9 +488,9 @@ public class ProfileHandler extends BaseHandler {
         Set<KickstartScript> scripts = data.getScripts();
 
         // validate the input
-        List<KickstartScript> myPreScripts = new ArrayList<KickstartScript>();
-        List<KickstartScript> myPostScripts = new ArrayList<KickstartScript>();
-        Map<Integer, KickstartScript> idToScript = new HashMap<Integer, KickstartScript>();
+        List<KickstartScript> myPreScripts = new ArrayList<>();
+        List<KickstartScript> myPostScripts = new ArrayList<>();
+        Map<Integer, KickstartScript> idToScript = new HashMap<>();
         for (KickstartScript script : scripts) {
             idToScript.put(script.getId().intValue(), script);
             if (script.getScriptType().equals(KickstartScript.TYPE_PRE)) {
@@ -841,7 +841,7 @@ public class ProfileHandler extends BaseHandler {
 
         List<String> validOptions = Arrays.asList(VALIDOPTIONNAMES);
 
-        Set<String> givenOptions = new HashSet<String>();
+        Set<String> givenOptions = new HashSet<>();
         for (Map option : options) {
             givenOptions.add((String) option.get("name"));
         }
@@ -860,7 +860,7 @@ public class ProfileHandler extends BaseHandler {
         List<KickstartCommandName> requiredOptions = KickstartFactory.
             lookupKickstartRequiredOptions();
 
-        List<String> requiredOptionNames = new ArrayList<String>();
+        List<String> requiredOptionNames = new ArrayList<>();
         for (KickstartCommandName kcn : requiredOptions) {
             requiredOptionNames.add(kcn.getName());
           }
@@ -871,7 +871,7 @@ public class ProfileHandler extends BaseHandler {
                     requiredOptionNames);
           }
 
-        Set<KickstartCommand> customSet = new HashSet<KickstartCommand>();
+        Set<KickstartCommand> customSet = new HashSet<>();
 
         for (Object oIn : cmd.getAvailableOptions()) {
             Map option = null;
@@ -1157,15 +1157,15 @@ public class ProfileHandler extends BaseHandler {
             keysHandler.getActivationKeys(loggedInUser, kickstartLabel2);
 
         // Set operations to determine deltas
-        List<ActivationKey> onlyInKickstart1 = new ArrayList<ActivationKey>(keyList1);
+        List<ActivationKey> onlyInKickstart1 = new ArrayList<>(keyList1);
         onlyInKickstart1.removeAll(keyList2);
 
-        List<ActivationKey> onlyInKickstart2 = new ArrayList<ActivationKey>(keyList2);
+        List<ActivationKey> onlyInKickstart2 = new ArrayList<>(keyList2);
         onlyInKickstart2.removeAll(keyList1);
 
         // Package up for return
         Map<String, List<ActivationKey>> results =
-            new HashMap<String, List<ActivationKey>>(2);
+                new HashMap<>(2);
 
         results.put(kickstartLabel1, onlyInKickstart1);
         results.put(kickstartLabel2, onlyInKickstart2);
@@ -1233,7 +1233,7 @@ public class ProfileHandler extends BaseHandler {
 
 
         // Package for return
-        Map<String, Set<String>> results = new HashMap<String, Set<String>>(2);
+        Map<String, Set<String>> results = new HashMap<>(2);
 
         results.put(kickstartLabel1, onlyInProfile1);
         results.put(kickstartLabel2, onlyInProfile2);
@@ -1242,7 +1242,7 @@ public class ProfileHandler extends BaseHandler {
     }
 
     private Set<String> getPackageNamesForKS(KickstartData ksdata) {
-        Set<String> toRet = new HashSet<String>();
+        Set<String> toRet = new HashSet<>();
         for (KickstartPackage ksPack : ksdata.getKsPackages()) {
             toRet.add(ksPack.getPackageName().getName());
         }
@@ -1325,7 +1325,7 @@ public class ProfileHandler extends BaseHandler {
 
         // Package for transport
         Map<String, List<KickstartOptionValue>> results =
-            new HashMap<String, List<KickstartOptionValue>>(2);
+                new HashMap<>(2);
         results.put(kickstartLabel1, onlyInProfile1);
         results.put(kickstartLabel2, onlyInProfile2);
 
@@ -1424,7 +1424,7 @@ public class ProfileHandler extends BaseHandler {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartableTree ksTree = ksData.getKickstartDefaults().getKstree();
 
-        List<String> repos = new ArrayList<String>();
+        List<String> repos = new ArrayList<>();
         for (RepoInfo repo : RepoInfo.getStandardRepos(ksTree)) {
             if (repo.isAvailable()) {
                 repos.add(repo.getName());
@@ -1450,7 +1450,7 @@ public class ProfileHandler extends BaseHandler {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartableTree ksTree = ksData.getKickstartDefaults().getKstree();
 
-        List<String> items = new ArrayList<String>();
+        List<String> items = new ArrayList<>();
         if (ksTree != null && !ksTree.getInstallType().isRhel2() &&
                 !ksTree.getInstallType().isRhel3() &&
                 !ksTree.getInstallType().isRhel4()) {
@@ -1483,11 +1483,11 @@ public class ProfileHandler extends BaseHandler {
         if (ksData.isRhel5OrGreater()) {
             List<RepoInfo> repoList = RepoInfo.getStandardRepos(
                     ksData.getKickstartDefaults().getKstree());
-            Map<String, RepoInfo> repoSet = new HashMap<String, RepoInfo>();
+            Map<String, RepoInfo> repoSet = new HashMap<>();
             for (RepoInfo rInfo : repoList) {
                 repoSet.put(rInfo.getName(), rInfo);
             }
-            Set<RepoInfo> selected = new HashSet<RepoInfo>();
+            Set<RepoInfo> selected = new HashSet<>();
             for (String repoIn : reposIn) {
                 RepoInfo repoInfo = repoSet.get(repoIn);
                 if (repoInfo != null) {

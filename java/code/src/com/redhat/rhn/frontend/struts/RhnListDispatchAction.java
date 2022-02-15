@@ -42,7 +42,7 @@ public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
      * {@inheritDoc}
      */
     protected Map<String, String> getKeyMethodMap() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(RequestContext.FILTER_KEY, "filter");
         processMethodKeys(map);
         return map;
@@ -61,7 +61,7 @@ public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
                                      ActionForm formIn,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         //Put the filter string as a parameter
         params.put(RequestContext.FILTER_STRING,
                 request.getParameter(RequestContext.FILTER_STRING));

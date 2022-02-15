@@ -97,7 +97,7 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
             request.setAttribute(MODIFIER_PARAM, "");
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(CIKID_PARAM, cikid);
         ListHelper helper = new ListHelper(this, request, params);
         helper.execute();

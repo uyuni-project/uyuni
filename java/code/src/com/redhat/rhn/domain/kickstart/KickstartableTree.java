@@ -276,7 +276,7 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return default kernel paths
      */
     public String[] getDefaultKernelPaths() {
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         String arch = this.getChannel().getChannelArch().getLabel();
         if (this.installType.isSUSE()) {
             String archName = this.getChannel().getChannelArch().getName().toLowerCase();
@@ -340,7 +340,7 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return default initrd paths
      */
     public String[] getDefaultInitrdPaths() {
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         String arch = this.getChannel().getChannelArch().getLabel();
         if (this.installType.isSUSE()) {
             String archName = this.getChannel().getChannelArch().getName().toLowerCase();

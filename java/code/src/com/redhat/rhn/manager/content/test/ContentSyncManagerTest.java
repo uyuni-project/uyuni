@@ -123,7 +123,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 "", "", Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList(), null, false);
 
-        List<SCCProductJson> products = new ArrayList<SCCProductJson>();
+        List<SCCProductJson> products = new ArrayList<>();
         products.add(p);
 
         // Call updateSUSEProducts()
@@ -933,7 +933,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 friendlyName, productClass, ReleaseStage.released, "", false, "", "",
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 null, false);
-        List<SCCProductJson> products = new ArrayList<SCCProductJson>();
+        List<SCCProductJson> products = new ArrayList<>();
         products.add(p);
 
         // Call updateSUSEProducts()
@@ -989,7 +989,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Set a new friendly name that should be updated
         String friendlyNameNew = TestUtils.randomString();
         p = p.copy().setFriendlyName(friendlyNameNew).build();
-        List<SCCProductJson> products = new ArrayList<SCCProductJson>();
+        List<SCCProductJson> products = new ArrayList<>();
         products.add(p);
 
         // Call updateSUSEProducts()
@@ -1247,7 +1247,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 TestUtils.saveAndFlush(p);
             }
 
-            List<SCCProductJson> products = new ArrayList<SCCProductJson>();
+            List<SCCProductJson> products = new ArrayList<>();
             int productId = 10012345;
             assertNull(SUSEProductFactory.lookupByProductId(productId));
             String name = TestUtils.randomString();
@@ -1326,7 +1326,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         File upgradePathsEmptyJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
         try {
-            List<SCCProductJson> products = new ArrayList<SCCProductJson>();
+            List<SCCProductJson> products = new ArrayList<>();
 
             // Setup a product as it comes from SCC
             long product1Id = 10012345;
@@ -1393,7 +1393,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         File upgradePathsEmptyJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
         try {
-            List<SCCProductJson> products = new ArrayList<SCCProductJson>();
+            List<SCCProductJson> products = new ArrayList<>();
 
             // Setup a product as it comes from SCC
             long product1Id = 10012345;

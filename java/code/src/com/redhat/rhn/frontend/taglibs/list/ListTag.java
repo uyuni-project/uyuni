@@ -129,7 +129,7 @@ public class ListTag extends BodyTagSupport {
 
     private List<ListDecorator> getDecorators() {
         if (decorators == null) {
-            decorators = new LinkedList<ListDecorator>();
+            decorators = new LinkedList<>();
         }
         return decorators;
     }
@@ -887,7 +887,7 @@ public class ListTag extends BodyTagSupport {
                 }
 
                 ListTagUtil.write(pageContext, "<br /><a href=\"");
-                List<String> excludeParams = new ArrayList<String>();
+                List<String> excludeParams = new ArrayList<>();
                 excludeParams.add(ListTagUtil.makeSelectActionName(getUniqueName()));
                 excludeParams.add(ListTagUtil.makeFilterByLabel(getUniqueName()));
                 excludeParams.add(ListTagUtil.makeFilterValueByLabel(getUniqueName()));

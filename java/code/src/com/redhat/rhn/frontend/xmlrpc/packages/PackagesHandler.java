@@ -202,7 +202,7 @@ public class PackagesHandler extends BaseHandler {
          * Loop through the data result and merge the data into the correct format
          */
         for (PackageFileDto file : dr) {
-            Map<String, Object> row = new HashMap<String, Object>();
+            Map<String, Object> row = new HashMap<>();
 
             // Default items (mtime and file_size cannot be null)
             row.put("path", StringUtils.defaultString(file.getName()));

@@ -358,7 +358,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     // in the SystemManager.entitleServer, which we don't want to kick-in in these tests.
     private void entitleServerMonitoring(Server hostServer) {
         CallableMode m = ModeFactory.getCallableMode("System_queries", "entitle_server");
-        Map<String, Object> in = new HashMap<String, Object>();
+        Map<String, Object> in = new HashMap<>();
         in.put("sid", hostServer.getId());
         in.put("entitlement", EntitlementManager.MONITORING.getLabel());
         m.execute(in, new HashMap<>());

@@ -696,10 +696,10 @@ public class FormulaFactory {
      * @return a list of formulas in correct order of execution
      */
     public static List<String> orderFormulas(List<String> formulasToOrder) {
-        LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
+        LinkedList<String> formulas = new LinkedList<>(formulasToOrder);
         formulas.sort(String.CASE_INSENSITIVE_ORDER);
 
-        Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
+        Map<String, List<String>> dependencyMap = new HashMap<>();
 
         for (String formula : formulas) {
             List<String> dependsOnList = (List<String>) getMetadata(formula, "after")
@@ -710,7 +710,7 @@ public class FormulaFactory {
 
         int index = 0;
         int minLength = formulas.size();
-        LinkedList<String> orderedList = new LinkedList<String>();
+        LinkedList<String> orderedList = new LinkedList<>();
 
         while (!formulas.isEmpty()) {
             String formula = formulas.removeFirst();

@@ -36,7 +36,7 @@ public class AsyncErrataCloneCounter {
     private static AsyncErrataCloneCounter instance = new AsyncErrataCloneCounter();
 
     private AsyncErrataCloneCounter() {
-        count = new Hashtable<Long, Integer>();
+        count = new Hashtable<>();
     }
 
     /**

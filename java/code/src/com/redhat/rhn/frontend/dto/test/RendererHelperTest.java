@@ -83,7 +83,7 @@ public class RendererHelperTest extends RhnBaseTestCase {
     private void createCriticalServerWithErrataCount(User user, Channel channel,
             int errataCount, int serverIndex)
         throws Exception {
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         Server server = ErrataTestUtils.createTestServerWithName(user, channels,
                 "server_" + serverIndex);
@@ -91,7 +91,7 @@ public class RendererHelperTest extends RhnBaseTestCase {
         // ERRATA
         String cveName = TestUtils.randomString().substring(0, 13);
         Cve cve = ErrataTestUtils.createTestCve(cveName);
-        Set<Cve> cves = new HashSet<Cve>();
+        Set<Cve> cves = new HashSet<>();
         cves.add(cve);
 
         for (int i = 0; i < errataCount; i++) {

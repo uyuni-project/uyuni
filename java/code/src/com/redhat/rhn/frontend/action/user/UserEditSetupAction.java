@@ -109,8 +109,8 @@ public class UserEditSetupAction extends RhnAction {
 
         Set<Role> orgRoles = targetUser.getOrg().getRoles();
 
-        List<UserRoleStatusBean> adminRoles = new LinkedList<UserRoleStatusBean>();
-        List<UserRoleStatusBean> regularRoles = new LinkedList<UserRoleStatusBean>();
+        List<UserRoleStatusBean> adminRoles = new LinkedList<>();
+        List<UserRoleStatusBean> regularRoles = new LinkedList<>();
 
         // Bit of a hack here. We're trying to represent three states to the processing
         // code with a checkbox that can only submit two. (i.e., there's no way to

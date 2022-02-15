@@ -186,7 +186,7 @@ public class SystemScapHandler extends BaseHandler {
             throw new InvalidSystemException();
         }
 
-        HashSet<Long> longServerIds = new HashSet<Long>();
+        HashSet<Long> longServerIds = new HashSet<>();
         for (Object serverIdIn : serverIds) {
             longServerIds.add(Long.valueOf((Integer) serverIdIn));
         }

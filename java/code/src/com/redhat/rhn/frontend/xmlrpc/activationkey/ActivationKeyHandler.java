@@ -163,7 +163,7 @@ public class ActivationKeyHandler extends BaseHandler {
 
         // Validate the input parameters.  We will use the RhnValidationHelper
         // for this which is also used to validate input if user entered it from the UI.
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("description", description);
         values.put("key", key);
         if (usageLimit != null) {
@@ -171,7 +171,7 @@ public class ActivationKeyHandler extends BaseHandler {
         }
 
         ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
-                values, new LinkedList<String>(values.keySet()), VALIDATION_XSD);
+                values, new LinkedList<>(values.keySet()), VALIDATION_XSD);
 
         if (!result.isEmpty()) {
             log.error("Validation errors:");
@@ -416,7 +416,7 @@ public class ActivationKeyHandler extends BaseHandler {
         throws FaultException {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("description");
         validKeys.add("base_channel_label");
         validKeys.add("usage_limit");
@@ -765,7 +765,7 @@ public class ActivationKeyHandler extends BaseHandler {
             List<Map<String, String>> packages) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
         validKeys.add("arch");
         for (Map<String, String> pkg : packages) {
@@ -818,7 +818,7 @@ public class ActivationKeyHandler extends BaseHandler {
             List<Map<String, String>> packages) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
         validKeys.add("arch");
         for (Map<String, String> pkg : packages) {
@@ -857,7 +857,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *   #array_end()
      */
     public List<ActivationKey> listActivationKeys(User loggedInUser) {
-        List<ActivationKey> result = new ArrayList<ActivationKey>();
+        List<ActivationKey> result = new ArrayList<>();
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         for (ActivationKey key : manager.findAll(loggedInUser)) {
             try {
@@ -894,17 +894,17 @@ public class ActivationKeyHandler extends BaseHandler {
     public Object[] listActivatedSystems(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        List<Server> servers =  new LinkedList<Server>(
+        List<Server> servers = new LinkedList<>(
                 activationKey.getToken().getActivatedServers());
 
-        List<Object> returnList = new ArrayList<Object>();
+        List<Object> returnList = new ArrayList<>();
 
         // For this API, we don't need to pass back to the user all of the
         // information that is defined for a "Server" as would be returned
         // by the ServerSerializer; therefore, we'll just pull a few key
         // pieces of information.
         for (Server server : servers) {
-            Map<String, Object> system = new HashMap<String, Object>();
+            Map<String, Object> system = new HashMap<>();
 
             system.put("id", server.getId());
             system.put("hostname", server.getHostname());

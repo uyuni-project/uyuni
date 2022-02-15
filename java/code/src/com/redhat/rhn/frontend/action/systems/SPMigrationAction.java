@@ -285,7 +285,7 @@ public class SPMigrationAction extends RhnAction {
 
             // Create new map, put original channels first
             HashMap<Channel, List<ChildChannelDto>> channelMap =
-                    new LinkedHashMap<Channel, List<ChildChannelDto>>();
+                    new LinkedHashMap<>();
             channelMap.put(suseBaseChannel, getChildChannels(
                     suseBaseChannel, ctx, server, extractIDs(requiredChannels)));
 
@@ -324,7 +324,7 @@ public class SPMigrationAction extends RhnAction {
             SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
 
             // Setup list of channels to subscribe to
-            List<Long> channelIDs = new ArrayList<Long>();
+            List<Long> channelIDs = new ArrayList<>();
             channelIDs.addAll(Arrays.asList(targetChildChannels));
             channelIDs.add(targetBaseChannel);
 
@@ -339,7 +339,7 @@ public class SPMigrationAction extends RhnAction {
             String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
             String[] msgParams = new String[] {server.getId().toString(), actionID.toString(), product};
             getStrutsDelegate().saveMessage(msgKey, msgParams, request);
-            Map<String, Long> params = new HashMap<String, Long>();
+            Map<String, Long> params = new HashMap<>();
             params.put("sid", server.getId());
             return getStrutsDelegate().forwardParams(forward, params);
         }
@@ -396,7 +396,7 @@ public class SPMigrationAction extends RhnAction {
         // Sort channels by name
         Collections.sort(channels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
-        List<ChildChannelDto> childChannels = new ArrayList<ChildChannelDto>();
+        List<ChildChannelDto> childChannels = new ArrayList<>();
         for (Channel channelIn : channels) {
             Channel child = (Channel) channelIn;
             ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
@@ -427,7 +427,7 @@ public class SPMigrationAction extends RhnAction {
         // Sort channels by name
         Collections.sort(childChannels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
-        List<EssentialChannelDto> channelDTOs = new ArrayList<EssentialChannelDto>();
+        List<EssentialChannelDto> channelDTOs = new ArrayList<>();
         for (Channel child : childChannels) {
             if (channelIDs.contains(child.getId())) {
                 EssentialChannelDto dto = new EssentialChannelDto(child);
@@ -444,7 +444,7 @@ public class SPMigrationAction extends RhnAction {
      * @return set of SUSE products
      */
     private SUSEProductSet createProductSet(Long baseProduct, Long[] addonProducts) {
-        List<Long> addonProductsList = new ArrayList<Long>();
+        List<Long> addonProductsList = new ArrayList<>();
         addonProductsList.addAll(Arrays.asList(addonProducts));
         return new SUSEProductSet(baseProduct, addonProductsList);
     }
@@ -456,7 +456,7 @@ public class SPMigrationAction extends RhnAction {
      * @return list of the channel IDs
      */
     private List<Long> extractIDs(List<EssentialChannelDto> channels) {
-        List<Long> channelIDs = new ArrayList<Long>();
+        List<Long> channelIDs = new ArrayList<>();
         for (EssentialChannelDto c : channels) {
             channelIDs.add(c.getId());
         }
@@ -481,11 +481,11 @@ public class SPMigrationAction extends RhnAction {
         List<SUSEProductSet> allMigrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, channelArch, user);
 
-        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
+        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<>());
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts,
                 allMigrationTargets, missingSuccessorExtensions);
         request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS,
-                missingSuccessorExtensions.orElse(new HashSet<String>()));
+                missingSuccessorExtensions.orElse(new HashSet<>()));
         return migrationTargets;
     }
 

@@ -125,7 +125,7 @@ public class ChannelEditor {
      */
     private void updateChannel(Channel channel) {
         CallableMode m = ModeFactory.getCallableMode("Package_queries", "update_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", channel.getId());
         m.execute(params, new HashMap());
     }

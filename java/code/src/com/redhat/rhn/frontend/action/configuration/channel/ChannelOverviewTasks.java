@@ -174,9 +174,9 @@ public class ChannelOverviewTasks extends RhnAction {
         }
 
         Map<Long, Collection<Long>> serverConfigMap =
-                new HashMap<Long, Collection<Long>>();
+                new HashMap<>();
 
-        List<Long> servers = new LinkedList<Long>();
+        List<Long> servers = new LinkedList<>();
         for (Object systemIn : systems) {
             ConfigSystemDto csd = (ConfigSystemDto) systemIn;
             servers.add(csd.getId());

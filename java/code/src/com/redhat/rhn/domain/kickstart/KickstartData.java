@@ -78,8 +78,8 @@ public class KickstartData {
     private Set<Channel> childChannels;
     private Set<Token> defaultRegTokens;
     private Set<FileList> preserveFileLists;
-    private Set<KickstartPackage> ksPackages = new HashSet<KickstartPackage>();
-    private Collection<KickstartCommand> commands = new LinkedHashSet<KickstartCommand>();
+    private Set<KickstartPackage> ksPackages = new HashSet<>();
+    private Collection<KickstartCommand> commands = new LinkedHashSet<>();
     private Set<KickstartIpRange> ips; // rhnKickstartIpRange
     private Set<KickstartScript> scripts;      // rhnKickstartScript
     private KickstartDefaults kickstartDefaults;
@@ -110,19 +110,19 @@ public class KickstartData {
      * Initializes properties.
      */
     public KickstartData() {
-        cryptoKeys = new HashSet<CryptoKey>();
-        defaultRegTokens = new HashSet<Token>();
-        preserveFileLists = new HashSet<FileList>();
-        ksPackages = new TreeSet<KickstartPackage>();
-        commands = new LinkedHashSet<KickstartCommand>();
-        ips = new HashSet<KickstartIpRange>();
-        scripts = new HashSet<KickstartScript>();
+        cryptoKeys = new HashSet<>();
+        defaultRegTokens = new HashSet<>();
+        preserveFileLists = new HashSet<>();
+        ksPackages = new TreeSet<>();
+        commands = new LinkedHashSet<>();
+        ips = new HashSet<>();
+        scripts = new HashSet<>();
         postLog = false;
         preLog = false;
         ksCfg = false;
         verboseUp2date = false;
         nonChrootPost = false;
-        childChannels = new HashSet<Channel>();
+        childChannels = new HashSet<>();
         kickstartType = TYPE_WIZARD;
         noBase = false;
         ignoreMissing = false;
@@ -355,7 +355,7 @@ public class KickstartData {
      */
     public void addChildChannel(Channel childChnl) {
         if (this.childChannels == null) {
-            this.childChannels = new HashSet<Channel>();
+            this.childChannels = new HashSet<>();
         }
         this.childChannels.add(childChnl);
     }
@@ -602,7 +602,7 @@ public class KickstartData {
     }
 
     private Set<KickstartCommand> getCommandSubset(String name) {
-        Set<KickstartCommand> retval = new LinkedHashSet<KickstartCommand>();
+        Set<KickstartCommand> retval = new LinkedHashSet<>();
         if (this.commands != null && this.commands.size() > 0) {
             for (KickstartCommand cmd : this.commands) {
                 logger.debug("getCommandSubset : working with: " +
@@ -638,7 +638,7 @@ public class KickstartData {
      */
     public Set<RepoInfo> getRepoInfos() {
         Set<KickstartCommand> repoCommands =  getRepos();
-        Set<RepoInfo> info = new HashSet<RepoInfo>();
+        Set<RepoInfo> info = new HashSet<>();
         for (KickstartCommand cmd : repoCommands) {
             info.add(RepoInfo.parse(cmd));
         }
@@ -650,7 +650,7 @@ public class KickstartData {
      * @param repos the repos to update
      **/
     public void setRepoInfos(Collection<RepoInfo> repos) {
-        Set<KickstartCommand> repoCommands = new HashSet<KickstartCommand>();
+        Set<KickstartCommand> repoCommands = new HashSet<>();
         for (RepoInfo repo : repos) {
             KickstartCommand cmd = KickstartFactory.createKickstartCommand(this, "repo");
             repo.setArgumentsIn(cmd);
@@ -664,7 +664,7 @@ public class KickstartData {
      * @return Returns the customOptions.
      */
     public LinkedHashSet<KickstartCommand> getCustomOptions() {
-        return new LinkedHashSet<KickstartCommand>(getCommandSubset("custom"));
+        return new LinkedHashSet<>(getCommandSubset("custom"));
     }
 
     /**
@@ -700,7 +700,7 @@ public class KickstartData {
     public Set<KickstartCommand> getOptions() {
         // 'partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom'
         logger.debug("returning all commands except: " + ADANCED_OPTIONS);
-        Set<KickstartCommand> retval = new HashSet<KickstartCommand>();
+        Set<KickstartCommand> retval = new HashSet<>();
         if (this.commands != null && this.commands.size() > 0) {
             for (KickstartCommand cmd : this.commands) {
                 logger.debug("working with: " + cmd.getCommandName().getName());
@@ -1191,7 +1191,7 @@ public class KickstartData {
         cloned.setNonChrootPost(this.getNonChrootPost());
         cloned.setVerboseUp2date(this.getVerboseUp2date());
         cloned.setOrg(this.getOrg());
-        cloned.setChildChannels(new HashSet<Channel>(this.getChildChannels()));
+        cloned.setChildChannels(new HashSet<>(this.getChildChannels()));
         cloned.setPartitionData(getPartitionData());
         copyKickstartCommands(getCommands(), cloned);
 
@@ -1200,7 +1200,7 @@ public class KickstartData {
         // complain that you are using the same collection
         // in two objects.
         if (this.getCryptoKeys() != null) {
-            cloned.setCryptoKeys(new HashSet<CryptoKey>(this.getCryptoKeys()));
+            cloned.setCryptoKeys(new HashSet<>(this.getCryptoKeys()));
         }
 
 
@@ -1219,7 +1219,7 @@ public class KickstartData {
         }
 
         if (this.getPreserveFileLists() != null) {
-            cloned.setPreserveFileLists(new HashSet<FileList>(this.getPreserveFileLists()));
+            cloned.setPreserveFileLists(new HashSet<>(this.getPreserveFileLists()));
         }
 
         if (this.getScripts() != null) {
@@ -1230,7 +1230,7 @@ public class KickstartData {
         }
 
         //copy all of the non-session related kickstarts
-        Set<Token> newTokens = new HashSet<Token>();
+        Set<Token> newTokens = new HashSet<>();
         if (this.getDefaultRegTokens() != null) {
             for (Token tok : this.getDefaultRegTokens()) {
                 ActivationKey key = ActivationKeyFactory.lookupByToken(tok);

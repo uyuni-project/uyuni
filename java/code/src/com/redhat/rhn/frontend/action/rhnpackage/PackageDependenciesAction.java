@@ -47,7 +47,7 @@ public class PackageDependenciesAction extends RhnAction {
             return null;
         }
 
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
 
         // Loop through all items in data result
         for (Object oIn : dr) {

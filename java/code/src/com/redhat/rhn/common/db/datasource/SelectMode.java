@@ -29,7 +29,7 @@ import java.util.Map;
 public class SelectMode extends BaseMode implements Serializable {
 
     private String clazz;
-    private List<CachedStatement> elaborators = new ArrayList<CachedStatement>();
+    private List<CachedStatement> elaborators = new ArrayList<>();
     private int maxRows;
 
     // increase this number on any data change

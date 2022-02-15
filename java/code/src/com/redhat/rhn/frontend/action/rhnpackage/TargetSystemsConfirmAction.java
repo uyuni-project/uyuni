@@ -139,15 +139,15 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
             throw new PermissionException("Invalid pid");
         }
 
-        List<Map<String, Long>> pkgMapList = new ArrayList<Map<String, Long>>();
-        Map<String, Long> pkgMap = new HashMap<String, Long>();
+        List<Map<String, Long>> pkgMapList = new ArrayList<>();
+        Map<String, Long> pkgMap = new HashMap<>();
         pkgMap.put("name_id", pkg.getPackageName().getId());
         pkgMap.put("evr_id", pkg.getPackageEvr().getId());
         pkgMap.put("arch_id", pkg.getPackageArch().getId());
         pkgMapList.add(pkgMap);
 
         List<SystemOverview> data = getDataResult(request);
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         for (SystemOverview system : data) {
             serverIds.add(system.getId());
         }
@@ -187,7 +187,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
             strutsDelegate.saveMessages(request, errors);
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         processParamMap(formIn, request, params);
         return strutsDelegate.forwardParams(mapping.findForward(RhnHelper.CONFIRM_FORWARD),
                 params);

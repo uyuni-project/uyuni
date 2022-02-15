@@ -37,7 +37,7 @@ public class PageSizeDecorator extends BaseListDecorator {
 
     private static Logger logger = Logger.getLogger(PageSizeDecorator.class);
     private static final int DEFAULT_PAGE_SIZE = 25;
-    private static final List<Integer> PAGE_SIZE = new LinkedList<Integer>();
+    private static final List<Integer> PAGE_SIZE = new LinkedList<>();
     /** static value for max results per page. */
     public static final int MAX_PER_PAGE = 500;
     private static final String PAGE_SIZE_LABEL = "PAGE_SIZE_LABEL";
@@ -196,7 +196,7 @@ public class PageSizeDecorator extends BaseListDecorator {
         }
 
         try {
-            List<Integer> ret = new LinkedList<Integer>();
+            List<Integer> ret = new LinkedList<>();
             for (String size : sizes) {
                 ret.add(Integer.valueOf(size.trim()));
             }

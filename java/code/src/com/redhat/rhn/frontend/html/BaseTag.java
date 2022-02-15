@@ -40,7 +40,7 @@ public abstract class BaseTag {
     }
 
     protected BaseTag(String tagIn, boolean spaceBefore) {
-        attribs = new LinkedHashMap<String, String>();
+        attribs = new LinkedHashMap<>();
         tag = tagIn;
         body = new ArrayList();
         spaceBeforeEndTag = spaceBefore;

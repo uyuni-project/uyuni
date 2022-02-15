@@ -114,7 +114,7 @@ public class ServerConfigHandler extends BaseHandler {
         if (listLocal) {
             return cm.listFileNamesForSystemQuick(loggedInUser, server, null);
         }
-        List<ConfigFileNameDto> files = new LinkedList<ConfigFileNameDto>();
+        List<ConfigFileNameDto> files = new LinkedList<>();
         List<ConfigFileDto> currentFiles = cm.listCurrentFiles(loggedInUser,
                 server.getSandboxOverride(), null);
         for (ConfigFileDto dto : currentFiles) {
@@ -193,7 +193,7 @@ public class ServerConfigHandler extends BaseHandler {
             Boolean commitToLocal) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add(ConfigRevisionSerializer.OWNER);
         validKeys.add(ConfigRevisionSerializer.GROUP);
         validKeys.add(ConfigRevisionSerializer.PERMISSIONS);
@@ -267,7 +267,7 @@ public class ServerConfigHandler extends BaseHandler {
             Boolean commitToLocal) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add(ConfigRevisionSerializer.TARGET_PATH);
         validKeys.add(ConfigRevisionSerializer.SELINUX_CTX);
         validKeys.add(ConfigRevisionSerializer.REVISION);
@@ -320,7 +320,7 @@ public class ServerConfigHandler extends BaseHandler {
             Integer sid, List<String> paths, Boolean searchLocal) {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List<ConfigRevision> revisions = new LinkedList<ConfigRevision>();
+        List<ConfigRevision> revisions = new LinkedList<>();
         for (String path : paths) {
             ConfigFile cf;
             if (searchLocal) {
@@ -416,7 +416,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int deployAll(User loggedInUser, List<Number> serverIds, Date date) {
-        List<Server> servers = new ArrayList<Server>(serverIds.size());
+        List<Server> servers = new ArrayList<>(serverIds.size());
         for (Number sid : serverIds) {
             servers.add(xmlRpcSystemHelper.lookupServer(loggedInUser, sid));
         }

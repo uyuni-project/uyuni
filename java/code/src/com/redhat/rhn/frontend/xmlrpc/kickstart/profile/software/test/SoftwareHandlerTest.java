@@ -45,7 +45,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
         KickstartData ksProfile  = KickstartDataTest.createKickstartWithProfile(admin);
 
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         packages.add("gcc");
 
         int result = handler.setSoftwareList(admin, ksProfile.getLabel(), packages);
@@ -67,7 +67,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
         KickstartData ksProfile = KickstartDataTest.createKickstartWithProfile(admin);
 
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         packages.add("gcc");
 
         int result = handler.setSoftwareList(admin, ksProfile.getLabel(), packages,
@@ -92,7 +92,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
         int numPackagesInitial = ksProfile.getKsPackages().size();
 
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         packages.add("bash");
         packages.add("gcc");
 

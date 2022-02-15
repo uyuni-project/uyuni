@@ -152,7 +152,7 @@ public class VirtNotifications {
                                         },
                                         sa -> Arrays.asList(sa),
                                         (sa1, sa2) -> {
-                                            List<ServerAction> merged = new ArrayList<ServerAction>(sa1);
+                                            List<ServerAction> merged = new ArrayList<>(sa1);
                                             merged.addAll(sa2);
                                             return merged;
                                         }));

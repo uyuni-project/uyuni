@@ -125,7 +125,7 @@ public class ChannelAction extends RhnSetAction {
         }
 
         // Save off original channel ids so we can update caches
-        Set<Channel> originalChannels = new HashSet<Channel>(errata.getChannels());
+        Set<Channel> originalChannels = new HashSet<>(errata.getChannels());
         Set<Long> newChannels = getChannelIdsFromRhnSet(set);
         //Otherwise, add each channel to errata
         //The easiest way to do this is to clear the errata's channels and add back the
@@ -137,8 +137,8 @@ public class ChannelAction extends RhnSetAction {
 
         // Compute list of old and NEW channels so we can
         // refresh both of their caches.
-        List<Channel> channelsToRemove = new LinkedList<Channel>();
-        List<Long> channelsToAdd = new LinkedList<Long>();
+        List<Channel> channelsToRemove = new LinkedList<>();
+        List<Long> channelsToAdd = new LinkedList<>();
         for (Channel c : originalChannels) {
             if (!newChannels.contains(c.getId())) {
                 //We are removing the errata from the channel
@@ -156,7 +156,7 @@ public class ChannelAction extends RhnSetAction {
         log.debug("updateChannels() - channels to remove errata: " + channelsToRemove);
 
         //If the errata was removed from any channels lets remove it.
-        List<Long> eList = new ArrayList<Long>();
+        List<Long> eList = new ArrayList<>();
         eList.add(errata.getId());
         for (Channel toRemove : channelsToRemove) {
             ErrataManager.removeErratumFromChannel(errata, toRemove, user);
@@ -177,7 +177,7 @@ public class ChannelAction extends RhnSetAction {
      * @return Set of channelIds
      */
     public Set<Long> getChannelIdsFromRhnSet(RhnSet set) {
-        Set<Long> retval = new HashSet<Long>();
+        Set<Long> retval = new HashSet<>();
 
         for (RhnSetElement element : set.getElements()) {
             retval.add(element.getElement());

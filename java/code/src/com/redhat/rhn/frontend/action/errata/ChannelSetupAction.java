@@ -89,7 +89,7 @@ public class ChannelSetupAction extends RhnListAction {
                 pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             } //if it wasn't then no packages are listed
             else {
-                pkgs = new ArrayList<Long>();
+                pkgs = new ArrayList<>();
             }
 
             if (pkgs.isEmpty()) { //There must be 0 relevant packages
@@ -131,7 +131,7 @@ public class ChannelSetupAction extends RhnListAction {
          * or unselect all. Either way, we need to init the set to what is in the db.
          */
         else if (request.getParameter("setupdated") != null) {
-            List<String> ids = new ArrayList<String>();
+            List<String> ids = new ArrayList<>();
             Set<RhnSetElement> elems =
                     RhnSetDecl.CHANNELS_FOR_ERRATA.get(user).getElements();
             for (RhnSetElement elemIn : elems) {

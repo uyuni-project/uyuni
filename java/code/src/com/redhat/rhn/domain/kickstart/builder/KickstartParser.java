@@ -37,18 +37,18 @@ public class KickstartParser {
     public KickstartParser(String kickstartFileContentsIn) {
         ksFileContents = kickstartFileContentsIn;
 
-        optionLines = new LinkedList<String>();
-        packageLines = new LinkedList<String>();
-        preScriptLines = new LinkedList<String>();
-        postScriptLines = new LinkedList<String>();
+        optionLines = new LinkedList<>();
+        packageLines = new LinkedList<>();
+        preScriptLines = new LinkedList<>();
+        postScriptLines = new LinkedList<>();
 
         String [] ksFileLines = ksFileContents.split("\\n");
 
-        List<String> currentSectionLines = new LinkedList<String>();
+        List<String> currentSectionLines = new LinkedList<>();
         for (String currentLine : ksFileLines) {
             if (isNewSection(currentLine)) {
                 storeSection(currentSectionLines);
-                currentSectionLines = new LinkedList<String>();
+                currentSectionLines = new LinkedList<>();
             }
 
             currentSectionLines.add(currentLine);

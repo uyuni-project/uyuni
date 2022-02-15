@@ -77,7 +77,7 @@ public class LocalizationService {
 
     // List of supported locales
     private final Map<String, LocaleInfo> supportedLocales =
-            new HashMap<String, LocaleInfo>();
+            new HashMap<>();
 
     /**
      * hidden constructor
@@ -96,7 +96,7 @@ public class LocalizationService {
             log.warn("Reloading XML StringResource files.");
             XmlMessages.getInstance().resetBundleCache();
         }
-        keyToBundleMap = new HashMap<String, String>();
+        keyToBundleMap = new HashMap<>();
 
         // Get the list of configured classnames from the config file.
         String[] packages = Config.get().getStringArray(
@@ -137,7 +137,7 @@ public class LocalizationService {
         if (rawLocales == null) {
             return;
         }
-        List<String> compoundLocales = new LinkedList<String>();
+        List<String> compoundLocales = new LinkedList<>();
         for (Enumeration<Object> locales = new StringTokenizer(rawLocales, ","); locales
                 .hasMoreElements();) {
             String locale = (String) locales.nextElement();
@@ -555,7 +555,7 @@ public class LocalizationService {
         // no params for this query
         DataResult<Map<String, Object>> dr = prefixMode.execute(new HashMap());
 
-        SortedSet<String> ret = new TreeSet<String>();
+        SortedSet<String> ret = new TreeSet<>();
         for (Map<String, Object> row : dr) {
             ret.add((String) row.get("prefix"));
         }
@@ -578,16 +578,16 @@ public class LocalizationService {
      * @return SortedMap sorted map of available countries.
      */
     public SortedMap<String, String> availableCountries() {
-        List<String> validCountries = new LinkedList<String>(
+        List<String> validCountries = new LinkedList<>(
                 Arrays.asList(Locale
-                .getISOCountries()));
+                        .getISOCountries()));
         String[] excluded = Config.get().getStringArray(
                 ConfigDefaults.WEB_EXCLUDED_COUNTRIES);
         if (excluded != null) {
-            validCountries.removeAll(new LinkedList<String>(Arrays
+            validCountries.removeAll(new LinkedList<>(Arrays
                     .asList(excluded)));
         }
-        SortedMap<String, String> ret = new TreeMap<String, String>();
+        SortedMap<String, String> ret = new TreeMap<>();
         for (String isoCountry : validCountries) {
             ret.put(this.getMessage(isoCountry), isoCountry);
         }
@@ -609,7 +609,7 @@ public class LocalizationService {
      * @return supported locales
      */
     public List<String> getSupportedLocales() {
-        List<String> tmp = new LinkedList<String>(this.supportedLocales.keySet());
+        List<String> tmp = new LinkedList<>(this.supportedLocales.keySet());
         Collections.sort(tmp);
         return Collections.unmodifiableList(tmp);
     }
@@ -620,7 +620,7 @@ public class LocalizationService {
      * @return list of configured locales
      */
     public List<String> getConfiguredLocales() {
-        List<String> tmp = new LinkedList<String>();
+        List<String> tmp = new LinkedList<>();
         for (String key : this.supportedLocales.keySet()) {
             LocaleInfo li = this.supportedLocales.get(key);
             if (!li.isAlias()) {
@@ -637,7 +637,7 @@ public class LocalizationService {
      * @return list of installed documentation locales
      */
     public List<String> getInstalledDocsLocales() {
-        List<String> tmp = new LinkedList<String>();
+        List<String> tmp = new LinkedList<>();
 
         // Get locales of installed documentations
         File f = new File("/srv/www/htdocs/docs");

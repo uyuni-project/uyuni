@@ -209,14 +209,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         List<ErrataOverview> errata = ChannelManager.listErrataNeedingResync(channel,
                 loggedInUser);
-        List<Long> eids = new ArrayList<Long>();
+        List<Long> eids = new ArrayList<>();
         for (ErrataOverview e : errata) {
             eids.add(e.getId());
         }
 
         List<PackageOverview> packages = ChannelManager
                 .listErrataPackagesForResync(channel, loggedInUser);
-        List<Long> pids = new ArrayList<Long>();
+        List<Long> pids = new ArrayList<>();
         for (PackageOverview p : packages) {
             pids.add(p.getId());
         }
@@ -538,7 +538,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         channelAdminPermCheck(loggedInUser);
 
         Channel channel = lookupChannelById(loggedInUser, channelId.longValue());
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("checksum_label");
         validKeys.add("name");
         validKeys.add("summary");
@@ -828,7 +828,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         return create(loggedInUser, label, name,
                 summary, archLabel, parentLabel, checksumType,
-                new HashMap<String, String>());
+                new HashMap<>());
     }
 
     /**
@@ -1285,7 +1285,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        HashSet<Errata> errataToRemove = new HashSet<Errata>();
+        HashSet<Errata> errataToRemove = new HashSet<>();
 
         for (String erratumName : errataNames) {
             Errata erratum = ErrataManager.lookupByAdvisoryAndOrg(erratumName,
@@ -1299,7 +1299,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         // remove packages from the channel if requested
         if (removePackages) {
-            List<Long> packagesToRemove = new ArrayList<Long>();
+            List<Long> packagesToRemove = new ArrayList<>();
 
             List<Long> channelPkgs = ChannelFactory.getPackageIds(channel.getId());
 
@@ -1320,7 +1320,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             // refresh the channel
             ChannelManager.refreshWithNewestPackages(channel, "java::removeErrata");
 
-            List<Long> cids = new ArrayList<Long>();
+            List<Long> cids = new ArrayList<>();
             cids.add(channel.getId());
             ErrataCacheManager.insertCacheForChannelPackagesAsync(cids, packagesToRemove);
 
@@ -1559,7 +1559,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private void scheduleErrataCacheUpdate(Org org, Channel channel, long delay) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                                            "find_channel_in_task_queue");
-        Map<String, Object> inParams = new HashMap<String, Object>();
+        Map<String, Object> inParams = new HashMap<>();
 
         inParams.put("cid", channel.getId());
         DataResult dr = m.execute(inParams);
@@ -1570,7 +1570,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             WriteMode w = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                                                          "insert_into_task_queue");
 
-            inParams = new HashMap<String, Object>();
+            inParams = new HashMap<>();
             inParams.put("org_id", org.getId());
             inParams.put("task_name", ErrataCacheWorker.BY_CHANNEL);
             inParams.put("task_data", channel.getId());
@@ -1581,7 +1581,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         else {
             WriteMode w = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                                                          "update_task_queue");
-            inParams = new HashMap<String, Object>();
+            inParams = new HashMap<>();
             inParams.put("earliest", new Timestamp(System.currentTimeMillis() + delay));
             inParams.put("cid", channel.getId());
 
@@ -1807,7 +1807,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 loggedInUser.getOrg(), mergeFrom, startDate, endDate);
 
         Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser,
-                new HashSet<Errata>(fromErrata), mergeTo, mergeFrom);
+                new HashSet<>(fromErrata), mergeTo, mergeFrom);
 
         return mergedErrata.toArray();
     }
@@ -1846,7 +1846,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         Set<Errata> sourceErrata = mergeFrom.getErratas();
-        Set<Errata> errataToMerge = new HashSet<Errata>();
+        Set<Errata> errataToMerge = new HashSet<>();
 
         // make sure our errata exist in the "from" channel
         for (String erratumName : errataNames) {
@@ -1919,11 +1919,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        List<Package> differentPackages = new ArrayList<Package>();
+        List<Package> differentPackages = new ArrayList<>();
 
         Set<Package> toPacks = mergeTo.getPackages();
         Set<Package> fromPacks = mergeFrom.getPackages();
-        List<Long> pids = new ArrayList<Long>();
+        List<Long> pids = new ArrayList<>();
         for (Package pack : fromPacks) {
             if (!toPacks.contains(pack)) {
                 pids.add(pack.getId());
@@ -1938,7 +1938,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             mergeTo.cloneModulesFrom(mergeFrom);
         }
 
-        List<Long> cids = new ArrayList<Long>();
+        List<Long> cids = new ArrayList<>();
         cids.add(mergeTo.getId());
         ErrataCacheManager.insertCacheForChannelPackagesAsync(cids, pids);
         return differentPackages.toArray();
@@ -2003,7 +2003,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int regenerateNeededCache(User loggedInUser, String channelLabel) {
         channelAdminPermCheck(loggedInUser);
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-        List<Long> chanList = new ArrayList<Long>();
+        List<Long> chanList = new ArrayList<>();
         chanList.add(chan.getId());
         ErrataCacheManager.updateCacheForChannelsAsync(chanList);
         return 1;
@@ -2023,7 +2023,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public int regenerateNeededCache(User loggedInUser) {
         if (loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
-            Set<Channel> set = new HashSet<Channel>();
+            Set<Channel> set = new HashSet<>();
             set.addAll(ChannelFactory.listAllBaseChannels());
             ErrataCacheManager.updateCacheForChannelsAsync(set);
         }
@@ -2122,9 +2122,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
         List<ContentSource> result = ChannelFactory
                 .lookupContentSources(loggedInUser.getOrg());
 
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = new ArrayList<>();
         for (ContentSource cs : result) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put("id", cs.getId());
             map.put("label", cs.getLabel());
             map.put("sourceUrl", cs.getSourceUrl());
@@ -2920,7 +2920,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
 
-        List<ContentSourceFilter> filters = new ArrayList<ContentSourceFilter>();
+        List<ContentSourceFilter> filters = new ArrayList<>();
 
         int i = 1;
         for (Map<String, String> filterIn : filtersIn) {
@@ -3103,7 +3103,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         ContentSource cs = lookupVendorContentSourceByLabel(label);
 
-        List<ContentSourceFilter> filters = new ArrayList<ContentSourceFilter>();
+        List<ContentSourceFilter> filters = new ArrayList<>();
 
         int i = 1;
         for (Map<String, String> filterIn : filtersIn) {

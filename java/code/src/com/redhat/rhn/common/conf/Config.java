@@ -83,9 +83,11 @@ public class Config {
     /** hash of configuration properties */
     private final Properties configValues = new Properties();
     /** set of configuration file names */
-    private final TreeSet<File> fileList = new TreeSet<File>(new Comparator<File>() {
+    private final TreeSet<File> fileList = new TreeSet<>(new Comparator<>() {
 
-        /** {inheritDoc} */
+        /**
+         * {inheritDoc}
+         */
         public int compare(File f1, File f2) {
             // Need to make sure we read the child namespace before the base
             // namespace.  To do that, we sort the list in reverse order based
@@ -322,7 +324,7 @@ public class Config {
      * @return instance of java.util.List populated with config values
      */
     public List<String> getList(String name) {
-        List<String> retval = new LinkedList<String>();
+        List<String> retval = new LinkedList<>();
         String[] vals = getStringArray(name);
         if (vals != null) {
             retval.addAll(Arrays.asList(vals));

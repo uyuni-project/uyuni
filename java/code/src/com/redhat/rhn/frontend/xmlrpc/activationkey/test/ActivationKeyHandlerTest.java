@@ -76,7 +76,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     private static final Integer KEY_USAGE_LIMIT = 0;
     private static final List<String> KEY_ENTITLEMENTS;
     static {
-        KEY_ENTITLEMENTS = new LinkedList<String>();
+        KEY_ENTITLEMENTS = new LinkedList<>();
         KEY_ENTITLEMENTS.add(EntitlementManager.VIRTUALIZATION_ENTITLED);
     }
 
@@ -109,7 +109,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testCreateWithBlankChannelAndUnlimitedUsageLimit() throws Exception {
-        List<String> ents = new ArrayList<String>(1);
+        List<String> ents = new ArrayList<>(1);
         String key = keyHandler.create(admin, "", KEY_DESCRIPTION, null,
                                 ents, Boolean.TRUE);
         assertTrue(key.length() > 0);
@@ -178,7 +178,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testCreateWithBaseEntitlements() {
-        List<String> badEntitlements = new LinkedList<String>();
+        List<String> badEntitlements = new LinkedList<>();
         badEntitlements.add("enterprise_entitled");
         try {
             keyHandler.create(admin, "", "testing", baseChannelLabel,
@@ -191,7 +191,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testCreateWithInvalidEntitlement() {
-        List<String> badEntitlements = new LinkedList<String>();
+        List<String> badEntitlements = new LinkedList<>();
         badEntitlements.add("provisioning_foobar");
         try {
             keyHandler.create(admin, "", "testing", baseChannelLabel,
@@ -259,7 +259,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
         // Set 'ssh-push'
-        Map<String, Object> details = new HashMap<String, Object>();
+        Map<String, Object> details = new HashMap<>();
         details.put("contact_method", "ssh-push");
         keyHandler.setDetails(admin, key, details);
         ActivationKey activationKey = ActivationKeyManager.getInstance().
@@ -280,7 +280,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
-        Map<String, Object> details = new HashMap<String, Object>();
+        Map<String, Object> details = new HashMap<>();
         details.put("contact_method", "foobar");
         try {
             keyHandler.setDetails(admin, key, details);
@@ -337,7 +337,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testSetAddOnEntitlement() throws Exception {
-        List<String> entitlements = new ArrayList<String>();
+        List<String> entitlements = new ArrayList<>();
         String newKey = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, entitlements, Boolean.FALSE);
         ActivationKey activationKey = ActivationKeyManager.getInstance()
@@ -357,7 +357,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     private List<String> buildEntitlementsList(String [] entitlements) {
-        List<String> entitlementList = new LinkedList<String>();
+        List<String> entitlementList = new LinkedList<>();
         for (String entitlementIn : entitlements) {
             entitlementList.add(entitlementIn);
         }
@@ -406,14 +406,14 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
      * No exception should be thrown removing an entitlement the key doesn't have:
      */
     public void testRemoveUnappliedAddOnEntitements() throws Exception {
-        List<String> noEntitlements = new ArrayList<String>();
+        List<String> noEntitlements = new ArrayList<>();
         String newKey = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, noEntitlements, Boolean.FALSE);
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                                                         lookupByKey(newKey, admin);
         assertEquals(1, activationKey.getEntitlements().size());
 
-        List<String> entsToRemove = new LinkedList<String>();
+        List<String> entsToRemove = new LinkedList<>();
         entsToRemove.add("virtualization_host");
         keyHandler.removeEntitlements(admin, newKey, entsToRemove);
         assertEquals(1, activationKey.getEntitlements().size());
@@ -603,18 +603,18 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, activationKey.getPackages().size());
 
         // setup test
-        List<Map<String, String>> packages = new ArrayList<Map<String, String>>();
-        Map<String, String> pkg1 = new HashMap<String, String>();
+        List<Map<String, String>> packages = new ArrayList<>();
+        Map<String, String> pkg1 = new HashMap<>();
         pkg1.put("name", "pkg1");
         pkg1.put("arch", "i386");
         packages.add(pkg1);
 
-        Map<String, String> pkg2 = new HashMap<String, String>();
+        Map<String, String> pkg2 = new HashMap<>();
         pkg2.put("name", "pkg2");
         pkg2.put("arch", "");
         packages.add(pkg2);
 
-        Map<String, String> pkg3 = new HashMap<String, String>();
+        Map<String, String> pkg3 = new HashMap<>();
         pkg3.put("name", "pkg3");
         packages.add(pkg3);
 
@@ -666,18 +666,18 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, activationKey.getPackages().size());
 
         // setup test
-        List<Map<String, String>> packages = new ArrayList<Map<String, String>>();
-        Map<String, String> pkg1 = new HashMap<String, String>();
+        List<Map<String, String>> packages = new ArrayList<>();
+        Map<String, String> pkg1 = new HashMap<>();
         pkg1.put("name", "pkg1");
         pkg1.put("arch", "i386");
         packages.add(pkg1);
 
-        Map<String, String> pkg2 = new HashMap<String, String>();
+        Map<String, String> pkg2 = new HashMap<>();
         pkg2.put("name", "pkg2");
         pkg2.put("arch", "");
         packages.add(pkg2);
 
-        Map<String, String> pkg3 = new HashMap<String, String>();
+        Map<String, String> pkg3 = new HashMap<>();
         pkg3.put("name", "pkg3");
         packages.add(pkg3);
 
@@ -686,7 +686,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         // execute tests and verify results
         packages.clear();
-        Map<String, String> unknownPkg = new HashMap<String, String>();
+        Map<String, String> unknownPkg = new HashMap<>();
         unknownPkg.put("name", "unknown");
         unknownPkg.put("arch", "i386");
         packages.add(unknownPkg);
@@ -846,16 +846,16 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         ConfigChannel global4 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.normal());
 
-        List<ConfigChannel> configs = new LinkedList<ConfigChannel>();
+        List<ConfigChannel> configs = new LinkedList<>();
         configs.add(global1);
         configs.add(global2);
         configs.add(global3);
         configs.add(global4);
-        List<String> configLabels = new LinkedList<String>();
+        List<String> configLabels = new LinkedList<>();
         for (ConfigChannel cc : configs) {
             configLabels.add(cc.getLabel());
         }
-        List<String> keys = new LinkedList<String>();
+        List<String> keys = new LinkedList<>();
         keys.add(newKey);
 
         assertEquals(1, keyHandler.setConfigChannels(admin, keys, configLabels));

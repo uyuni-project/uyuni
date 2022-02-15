@@ -86,7 +86,7 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
         RhnSetManager.store(currentset);
 
         Map<String, Object> params = makeParamMap(formIn, request);
-        Map<RhnSetElement, String> diffmap = new HashMap<RhnSetElement, String>();
+        Map<RhnSetElement, String> diffmap = new HashMap<>();
 
         Iterator<Identifiable> originalItems = getCurrentItemsIterator(new RequestContext(
                 request));
@@ -108,8 +108,8 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
 
 
         Iterator<RhnSetElement> currentIter = currentset.getElements().iterator();
-        ArrayList<RhnSetElement> added = new ArrayList<RhnSetElement>();
-        ArrayList<RhnSetElement> removed = new ArrayList<RhnSetElement>();
+        ArrayList<RhnSetElement> added = new ArrayList<>();
+        ArrayList<RhnSetElement> removed = new ArrayList<>();
 
         while (currentIter.hasNext()) {
             RhnSetElement elem = currentIter.next();
@@ -208,7 +208,7 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
             RequestContext ctx);
 
     protected List<Long> getPrimaryElementIds(List<RhnSetElement> elements) {
-        List<Long> ret = new ArrayList<Long>();
+        List<Long> ret = new ArrayList<>();
         for (RhnSetElement e : elements) {
             ret.add(e.getElement());
         }

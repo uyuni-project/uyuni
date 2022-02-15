@@ -75,7 +75,7 @@ public class Lists {
      */
     public static <T> Comparator<List<T>> listOfListComparator(
             Comparator<T> elementComparator) {
-        return new Comparator<List<T>>() {
+        return new Comparator<>() {
             @Override
             public int compare(List<T> o1, List<T> o2) {
                 if (o1 == o2) {

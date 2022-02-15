@@ -76,7 +76,8 @@ public class VirtManagerSalt implements VirtManager {
 
         LocalCall<Map<String, JsonElement>> vmDefCall = new LocalCall<>("virt_utils.vm_definition",
                 Optional.empty(), Optional.of(args),
-                new TypeToken<Map<String, JsonElement>>() { });
+                new TypeToken<>() {
+                });
         Optional<Map<String, JsonElement>> data = saltApi.callSync(vmDefCall, minionId);
 
         return data.map(vmData -> {
@@ -100,7 +101,8 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
         LocalCall<Map<String, JsonElement>> call =
                 new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<Map<String, JsonElement>>() { });
+                        new TypeToken<>() {
+                        });
 
         return saltApi.callSync(call, minionId);
     }
@@ -112,7 +114,8 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
         LocalCall<PoolCapabilitiesJson> call =
                 new LocalCall<>("virt.pool_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<PoolCapabilitiesJson>() { });
+                        new TypeToken<>() {
+                        });
 
         return saltApi.callSync(call, minionId);
     }
@@ -127,7 +130,8 @@ public class VirtManagerSalt implements VirtManager {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("name", poolName);
         LocalCall<String> call =
-                new LocalCall<>("virt.pool_get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
+                new LocalCall<>("virt.pool_get_xml", Optional.empty(), Optional.of(args), new TypeToken<>() {
+                });
 
         Optional<String> result = saltApi.callSync(call, minionId);
         return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
@@ -147,10 +151,11 @@ public class VirtManagerSalt implements VirtManager {
         Map<String, Object> args = new LinkedHashMap<>();
         LocalCall<Map<String, JsonElement>> call =
                 new LocalCall<>("virt.network_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, JsonElement>>() { });
+                        new TypeToken<>() {
+                        });
 
         Optional<Map<String, JsonElement>> nets = saltApi.callSync(call, minionId);
-        Map<String, JsonElement> result = nets.orElse(new HashMap<String, JsonElement>());
+        Map<String, JsonElement> result = nets.orElse(new HashMap<>());
 
         // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
         return result.entrySet().stream()
@@ -165,7 +170,8 @@ public class VirtManagerSalt implements VirtManager {
         args.put("name", netName);
         LocalCall<String> call =
                 new LocalCall<>("virt.network_get_xml", Optional.empty(), Optional.of(args),
-                        new TypeToken<String>() { });
+                        new TypeToken<>() {
+                        });
 
         Optional<String> result = saltApi.callSync(call, minionId);
         return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
@@ -183,7 +189,8 @@ public class VirtManagerSalt implements VirtManager {
     public List<JsonObject> getHostDevices(String minionId) {
         LocalCall<List<JsonObject>> call =
                 new LocalCall<>("virt.node_devices", Optional.empty(), Optional.empty(),
-                        new TypeToken<List<JsonObject>>() { });
+                        new TypeToken<>() {
+                        });
         return saltApi.callSync(call, minionId).orElse(new ArrayList<>());
     }
 
@@ -194,10 +201,11 @@ public class VirtManagerSalt implements VirtManager {
         Map<String, Object> args = new LinkedHashMap<>();
         LocalCall<Map<String, JsonElement>> call =
                 new LocalCall<>("virt.pool_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, JsonElement>>() { });
+                        new TypeToken<>() {
+                        });
 
         Optional<Map<String, JsonElement>> pools = saltApi.callSync(call, minionId);
-        Map<String, JsonElement> result = pools.orElse(new HashMap<String, JsonElement>());
+        Map<String, JsonElement> result = pools.orElse(new HashMap<>());
 
         // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
         return result.entrySet().stream()
@@ -213,10 +221,11 @@ public class VirtManagerSalt implements VirtManager {
         List<?> args = Arrays.asList(null, null);
         LocalCall<Map<String, Map<String, JsonObject>>> call =
                 new LocalCall<>("virt.volume_infos", Optional.of(args), Optional.empty(),
-                        new TypeToken<Map<String, Map<String, JsonObject>>>() { });
+                        new TypeToken<>() {
+                        });
 
         Optional<Map<String, Map<String, JsonObject>>> volumes = saltApi.callSync(call, minionId);
-        return volumes.orElse(new HashMap<String, Map<String, JsonObject>>());
+        return volumes.orElse(new HashMap<>());
     }
 
     /**
@@ -235,7 +244,8 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<HostInfo> getHostInfo(String minionId) {
         LocalCall<HostInfo> call =
                 new LocalCall<>("virt_utils.host_info", Optional.empty(), Optional.empty(),
-                        new TypeToken<HostInfo>() { });
+                        new TypeToken<>() {
+                        });
 
         return saltApi.callSync(call, minionId);
     }
@@ -246,7 +256,8 @@ public class VirtManagerSalt implements VirtManager {
         args.put("name", domainName);
         LocalCall<Boolean> call =
                 new LocalCall<>("virt.start", Optional.empty(), Optional.of(args),
-                        new TypeToken<Boolean>() { });
+                        new TypeToken<>() {
+                        });
 
         return saltApi.callSync(call, minionId).orElse(false);
     }
@@ -262,7 +273,8 @@ public class VirtManagerSalt implements VirtManager {
         // Get the list of VMs with at least (name, cpu, memory, status) virt.vm_info
         LocalCall<Map<String, Map<String, Object>>> call =
                 new LocalCall<>("virt.vm_info", Optional.empty(), Optional.empty(),
-                        new TypeToken<Map<String, Map<String, Object>>>() { });
+                        new TypeToken<>() {
+                        });
 
         Optional<Map<String, Map<String, Object>>> vmInfos = saltApi.callSync(call, minionId);
         return vmInfos.map(
@@ -302,7 +314,8 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId) {
         LocalCall<Map<String, Map<String, JsonElement>>> call =
                 new LocalCall<>("virt_utils.vm_info", Optional.empty(), Optional.empty(),
-                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+                        new TypeToken<>() {
+                        });
 
         return saltApi.callSync(call, minionId);
     }
@@ -311,7 +324,8 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<List<String>> getTuningTemplates(String minionId) {
         LocalCall<List<String>> call =
                 new LocalCall<>("virt_utils.virt_tuner_templates", Optional.empty(), Optional.empty(),
-                        new TypeToken<List<String>>() { });
+                        new TypeToken<>() {
+                        });
 
         return saltApi.callSync(call, minionId);
     }

@@ -89,14 +89,14 @@ public class ListScapAction extends ScapSetupAction {
 
         int selectionSize = set.size();
         if (context.wasDispatched(DELET_BUT) && selectionSize > 0) {
-            Map<String, Long> params = new HashMap<String, Long>();
+            Map<String, Long> params = new HashMap<>();
             params.put("sid", sid);
             return getStrutsDelegate().forwardParams(mapping.findForward("submitDelete"),
                     params);
         }
         else if (context.wasDispatched(DIFF_BUT)) {
             if (selectionSize == 2) {
-                Map<String, Object> params = new HashMap<String, Object>();
+                Map<String, Object> params = new HashMap<>();
                 params.put(XccdfDiffSubmitAction.VIEW, XccdfDiffSubmitAction.CHANGED);
                 Set<Long> scanIds = set.getElementValues();
                 Iterator<Long> it = scanIds.iterator();

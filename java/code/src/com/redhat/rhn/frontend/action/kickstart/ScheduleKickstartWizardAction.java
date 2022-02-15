@@ -200,10 +200,10 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         List<OrgProxyServer> proxies = SystemManager.
                 listProxies(ctx.getCurrentUser().getOrg());
         if (proxies != null && proxies.size() > 0) {
-            List<LabelValueBean> formatted = new LinkedList<LabelValueBean>();
+            List<LabelValueBean> formatted = new LinkedList<>();
 
             formatted.add(lvl10n("kickstart.schedule.default.proxy.jsp", ""));
-            Map<String, List<String>> cnames = new HashMap<String, List<String>>();
+            Map<String, List<String>> cnames = new HashMap<>();
             for (OrgProxyServer serv : proxies) {
                 formatted.add(lv(serv.getName() + " (" + serv.getCheckin() + ")",
                         serv.getId().toString()));
@@ -226,8 +226,8 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     private void setupBondInfo(DynaActionForm form, RequestContext context,
             KickstartScheduleCommand cmd) {
         Server server = cmd.getServer();
-        List<NetworkInterface> nics = new LinkedList<NetworkInterface>
-        (server.getNetworkInterfaces());
+        List<NetworkInterface> nics = new LinkedList<>
+                (server.getNetworkInterfaces());
 
         if (nics.isEmpty()) {
             return;
@@ -276,7 +276,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
         String[] slaves = (String[]) form.get(BOND_SLAVE_INTERFACES);
         if (slaves == null || slaves.length == 0) {
-            List<String> slavesList = new ArrayList<String>();
+            List<String> slavesList = new ArrayList<>();
             // if there is a bonded interface on the system
             if (!StringUtils.isBlank(form.getString(BOND_INTERFACE))) {
                 for (NetworkInterface nic : nics) {
@@ -309,7 +309,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
     private List<NetworkInterface> getPublicNetworkInterfaces(
             Server server) {
-        List<NetworkInterface> nics = new LinkedList<NetworkInterface>(
+        List<NetworkInterface> nics = new LinkedList<>(
                 server.getNetworkInterfaces());
 
         for (Iterator<NetworkInterface> itr = nics.iterator(); itr.hasNext();) {
@@ -415,7 +415,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 ctx.getRequest(), form, "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         SdcHelper.ssmCheck(ctx.getRequest(), system.getId(), user);
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put(RequestContext.SID, sid);
         ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(),
                 params);
@@ -626,7 +626,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             cmd.setBondInterface(form.getString(BOND_INTERFACE));
             cmd.setBondOptions(form.getString(BOND_OPTIONS));
             String[] slaves = (String[]) form.get(BOND_SLAVE_INTERFACES);
-            List<String> tmp = new ArrayList<String>();
+            List<String> tmp = new ArrayList<>();
             for (String slave : slaves) {
                 tmp.add(slave);
             }
@@ -686,7 +686,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 return runFirst(mapping, form, ctx, response, step);
             }
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, form.get(RequestContext.SID));
 
         if (cmd.isCobblerOnly()) {
@@ -730,7 +730,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         User user = ctx.getCurrentUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, sid);
 
         log.debug("Creating cobbler system record");

@@ -258,7 +258,7 @@ public class StringUtil {
      */
     public static List<String> stringToList(String convertIn) {
         StringTokenizer st = new StringTokenizer(convertIn);
-        List<String> retval = new LinkedList<String>();
+        List<String> retval = new LinkedList<>();
         while (st.hasMoreTokens()) {
             retval.add(st.nextToken());
         }
@@ -325,7 +325,7 @@ public class StringUtil {
         Matcher next = startUrl.matcher(retval);
         boolean done = false;
         int previous = 0; // the starting index of the previously found url
-        List<String> pieces = new LinkedList<String>();
+        List<String> pieces = new LinkedList<>();
 
         /*
          * Separates the string into a list. Break points for different tokens
@@ -435,7 +435,7 @@ public class StringUtil {
         int end = -1;
 
         // end characters
-        Set<Character> endChars = new HashSet<Character>();
+        Set<Character> endChars = new HashSet<>();
         endChars.add('.');
         endChars.add(',');
 
@@ -768,7 +768,7 @@ public class StringUtil {
     public static Map<String, String> convertOptionsToMap(String options, String errorKey,
                                                                 String separator)
         throws ValidatorException {
-        Map<String, String> toReturn = new HashMap<String, String>();
+        Map<String, String> toReturn = new HashMap<>();
         StringTokenizer token = new StringTokenizer(options, separator);
         while (token.hasMoreElements()) {
             String option = token.nextToken();

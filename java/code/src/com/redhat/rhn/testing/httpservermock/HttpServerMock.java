@@ -117,7 +117,7 @@ public class HttpServerMock {
 
         Connection connection = null;
         ServerSocket socket = null;
-        ExchangeDetails<T> exchangeDetails = new ExchangeDetails<T>();
+        ExchangeDetails<T> exchangeDetails = new ExchangeDetails<>();
         try {
             connection = ConnectionFactory.getConnection(engine);
             socket = new ServerSocket(port);

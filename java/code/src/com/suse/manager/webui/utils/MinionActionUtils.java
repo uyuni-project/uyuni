@@ -279,7 +279,8 @@ public class MinionActionUtils {
             jidsMap.keySet().forEach(jid -> {
                 saltApi.listJob(jid).ifPresent(jobInfo -> {
                     TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>> typeToken =
-                            new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { };
+                            new TypeToken<>() {
+                            };
 
                     jobInfo.getMinions().forEach(minionId -> {
                         try {

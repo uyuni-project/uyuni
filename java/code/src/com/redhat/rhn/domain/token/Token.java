@@ -51,12 +51,12 @@ public class Token implements Identifiable {
     private User creator;
     private Server server;
     private ContactMethod contactMethod;
-    private Set<Server> activatedSystems = new HashSet<Server>();
-    private List<ConfigChannel> configChannels = new LinkedList<ConfigChannel>();
-    private Set<ServerGroupType> entitlements = new HashSet<ServerGroupType>();
-    private Set<Channel> channels = new HashSet<Channel>();
-    private Set<ServerGroup> serverGroups = new HashSet<ServerGroup>();
-    private Set<TokenPackage> packages = new HashSet<TokenPackage>();
+    private Set<Server> activatedSystems = new HashSet<>();
+    private List<ConfigChannel> configChannels = new LinkedList<>();
+    private Set<ServerGroupType> entitlements = new HashSet<>();
+    private Set<Channel> channels = new HashSet<>();
+    private Set<ServerGroup> serverGroups = new HashSet<>();
+    private Set<TokenPackage> packages = new HashSet<>();
 
     /**
      * @return Returns the entitlements.

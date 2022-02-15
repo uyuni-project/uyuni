@@ -57,7 +57,7 @@ public abstract class CobblerObject {
     public static final String INHERIT_KEY = "<<inherit>>";
 
     protected String handle;
-    protected Map<String, Object> dataMap = new HashMap<String, Object>();
+    protected Map<String, Object> dataMap = new HashMap<>();
     protected CobblerConnection client;
 
     /**
@@ -98,7 +98,7 @@ public abstract class CobblerObject {
             return null;
         }
 
-        Map<String, String> criteria  = new HashMap<String, String>();
+        Map<String, String> criteria  = new HashMap<>();
         criteria.put(critera, value);
         List<Map<String, Object>> objects = (List<Map<String, Object>>)
                                 client.invokeTokenMethod(findMethod, criteria);
@@ -344,7 +344,7 @@ public abstract class CobblerObject {
                  keyList = (List)map.get(key);
             }
             catch (ClassCastException e) {
-                keyList = new ArrayList<String>();
+                keyList = new ArrayList<>();
                 keyList.add((String) map.get(key));
             }
             if (keyList.isEmpty()) {
@@ -383,7 +383,7 @@ public abstract class CobblerObject {
     }
 
     private Map<String, Object> parseKernelOpts(String kernelOpts) {
-        Map<String, Object> toRet = new HashMap<String, Object>();
+        Map<String, Object> toRet = new HashMap<>();
 
         if (StringUtils.isEmpty(kernelOpts)) {
             return toRet;
@@ -401,7 +401,7 @@ public abstract class CobblerObject {
                     list.add(split[1]);
                 }
                 else {
-                    toRet.put(split[0], new ArrayList<String>(Arrays.asList(split[1])));
+                    toRet.put(split[0], new ArrayList<>(Arrays.asList(split[1])));
                 }
             }
         }

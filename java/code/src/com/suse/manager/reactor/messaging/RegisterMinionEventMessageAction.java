@@ -154,7 +154,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     public void registerSSHMinion(String minionId, Integer sshPushPort, Optional<Long> proxyId,
                                   Optional<String> activationKeyOverride) {
         Optional<MinionStartupGrains> startupGrainsOpt = saltApi.getGrains(minionId,
-                new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager");
+                new TypeToken<>() {
+                }, "machine_id", "saltboot_initrd", "susemanager");
         registerMinion(minionId, true, of(sshPushPort), proxyId, activationKeyOverride, startupGrainsOpt);
     }
 

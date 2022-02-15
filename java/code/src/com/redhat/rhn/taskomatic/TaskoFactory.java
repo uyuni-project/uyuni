@@ -61,7 +61,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupOrgBunchByName(String bunchName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", bunchName);
         return (TaskoBunch) singleton.lookupObjectByNamedQuery(
                                        "TaskoBunch.lookupOrgBunchByName", params);
@@ -73,7 +73,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupSatBunchByName(String bunchName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", bunchName);
         return (TaskoBunch) singleton.lookupObjectByNamedQuery(
                                        "TaskoBunch.lookupSatBunchByName", params);
@@ -192,7 +192,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsOlderThan(Date limitTime) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("limit_time", limitTime);
         return singleton.listObjectsByNamedQuery(
                 "TaskoRun.listOlderThan", params);
@@ -204,7 +204,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsNewerThan(Date limitTime) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("limit_time", limitTime);
         return singleton.listObjectsByNamedQuery(
                 "TaskoRun.listNewerThan", params);
@@ -252,7 +252,7 @@ public class TaskoFactory extends HibernateFactory {
     public static List<TaskoSchedule> listActiveSchedulesByOrg(Integer orgId) {
         List<TaskoSchedule> schedules;
         List<String> filter = List.of("recurring-state-apply-bunch");    // List of bunch names to be excluded
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         params.put("timestamp", new Date());    // use server time, not DB time
         if (orgId == null) {
@@ -276,7 +276,7 @@ public class TaskoFactory extends HibernateFactory {
      */
     public static List<TaskoSchedule> listActiveSchedulesByOrgAndLabel(Integer orgId,
             String jobLabel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("job_label", jobLabel);
         params.put("timestamp", new Date());    // use server time, not DB time
         if (orgId == null) {
@@ -298,7 +298,7 @@ public class TaskoFactory extends HibernateFactory {
     public static List<TaskoSchedule> listActiveSchedulesByOrgAndBunch(Integer orgId,
             String bunchName) throws NoSuchBunchTaskException {
         TaskoBunch bunch = lookupBunchByOrgAndName(orgId, bunchName);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("timestamp", new Date());    // use server time, not DB time
         params.put("bunch_id", bunch.getId());
         if (orgId == null) {
@@ -316,7 +316,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of schedules to be run at least once
      */
     public static List<TaskoSchedule> listFuture() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("timestamp", new Date());
         return singleton.listObjectsByNamedQuery(
                 "TaskoSchedule.listFuture", params);
@@ -329,7 +329,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listNewerRunsBySchedule(Long scheduleId, Date limitTime) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("schedule_id", scheduleId);
         params.put("limit_time", limitTime);
         return singleton.listObjectsByNamedQuery(
@@ -357,7 +357,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return schedule
      */
     public static TaskoSchedule lookupScheduleById(Long scheduleId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("schedule_id", scheduleId);
         return (TaskoSchedule) singleton.lookupObjectByNamedQuery(
                                        "TaskoSchedule.lookupById", params);
@@ -369,7 +369,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return schedule
      */
     public static TaskoSchedule lookupScheduleByLabel(String jobLabel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("job_label", jobLabel);
         return (TaskoSchedule) singleton.lookupObjectByNamedQuery(
                                        "TaskoSchedule.lookupByLabel", params);
@@ -381,7 +381,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupBunchByName(String bunchName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", bunchName);
         return (TaskoBunch) singleton.lookupObjectByNamedQuery(
                                        "TaskoBunch.lookupByName", params);
@@ -393,7 +393,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of all schedules
      */
     public static List<TaskoSchedule> listSchedulesByOrg(Integer orgId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         if (orgId == null) {
             return singleton.listObjectsByNamedQuery(
                                        "TaskoSchedule.listInSat", params);
@@ -409,7 +409,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsBySchedule(Long scheduleId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("schedule_id", scheduleId);
         return singleton.listObjectsByNamedQuery(
                                        "TaskoRun.listBySchedule", params);
@@ -421,7 +421,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of schedules
      */
     public static List<TaskoSchedule> listSchedulesOlderThan(Date limitTime) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("limit_time", limitTime);
         return singleton.listObjectsByNamedQuery(
                                        "TaskoSchedule.listOlderThan", params);
@@ -435,7 +435,7 @@ public class TaskoFactory extends HibernateFactory {
      */
     public static List<TaskoSchedule> listSchedulesByOrgAndLabel(Integer orgId,
             String jobLabel) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("job_label", jobLabel);
         if (orgId == null) {
             return singleton.listObjectsByNamedQuery(
@@ -452,7 +452,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return run
      */
     public static TaskoRun lookupRunById(Long runId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("run_id", runId);
         return (TaskoRun) singleton.lookupObjectByNamedQuery(
                                        "TaskoRun.lookupById", params);
@@ -498,7 +498,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsByBunch(String bunchName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("bunch_name", bunchName);
         return singleton.listObjectsByNamedQuery(
                 "TaskoRun.listByBunch", params);
@@ -572,7 +572,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of unfinished runs
      */
     public static List<TaskoRun> listUnfinishedRuns() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         return singleton.listObjectsByNamedQuery(
                 "TaskoRun.listUnfinished", params);
     }
@@ -589,7 +589,7 @@ public class TaskoFactory extends HibernateFactory {
         if (date == null) {
             date = new Date(0);
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("bunch_id", bunch.getId());
         params.put("date", date);
         return singleton.listObjectsByNamedQuery(

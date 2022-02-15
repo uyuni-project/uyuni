@@ -166,7 +166,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     private void populateQueueEntryDetails() {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabelToProcess);
         queueEntries = selector.execute(params);
     }
@@ -178,7 +178,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     private boolean isChannelLabelAlreadyInProcess() {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabelToProcess);
         return (selector.execute(params).size() > 0);
     }
@@ -213,7 +213,7 @@ public class ChannelRepodataWorker implements QueueWorker {
             inProgressChannel = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                     TaskConstants.TASK_QUERY_REPOMD_UNMARK_IN_PROGRESS);
         }
-        Map<String, String> dqeParams = new HashMap<String, String>();
+        Map<String, String> dqeParams = new HashMap<>();
         dqeParams.put("channel_label", channelLabelToProcess);
         try {
             int channelLabels = inProgressChannel.executeUpdate(dqeParams);
@@ -247,7 +247,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     private void dequeueChannel() throws Exception {
         WriteMode deqChannel = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DEQUEUE);
-        Map<String, String> dqeParams = new HashMap<String, String>();
+        Map<String, String> dqeParams = new HashMap<>();
         dqeParams.put("channel_label", channelLabelToProcess);
         try {
             int eqDeleted = deqChannel.executeUpdate(dqeParams);

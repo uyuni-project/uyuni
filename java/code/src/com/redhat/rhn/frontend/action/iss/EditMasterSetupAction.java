@@ -82,8 +82,8 @@ public class EditMasterSetupAction extends RhnAction {
 
     private void setupOrgList(HttpServletRequest request, Long mid, IssMaster master) {
         // Get all the known-orgs from the selected Master
-        List<IssMasterOrg> result = new ArrayList<IssMasterOrg>(
-                        master.getMasterOrgs());
+        List<IssMasterOrg> result = new ArrayList<>(
+                master.getMasterOrgs());
         Collections.sort(result, new IssSyncOrgComparator());
 
         // Get all of our orgs and turn into OrgDtos
@@ -114,7 +114,7 @@ public class EditMasterSetupAction extends RhnAction {
     }
 
     protected List<OrgDto> fromOrgs(List<Org> orgs) {
-        List<OrgDto> outList = new ArrayList<OrgDto>();
+        List<OrgDto> outList = new ArrayList<>();
         for (Org o : orgs) {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }

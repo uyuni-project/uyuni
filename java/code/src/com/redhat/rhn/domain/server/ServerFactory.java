@@ -148,7 +148,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of custom data values.
      */
     public static List<CustomDataValue> lookupCustomDataValues(CustomDataKey key) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", key);
         return SINGLETON.listObjectsByNamedQuery(
                 "CustomDataValue.findByKey", params);
@@ -160,7 +160,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of minions.
      */
     public static List<MinionServer> listMinionsByChannel(long cid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         return SINGLETON.listObjectsByNamedQuery(
                 "Server.listMinionsByChannel", params);
@@ -189,7 +189,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of devices
      */
     public static List<Device> lookupStorageDevicesByServer(Server s) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server", s);
         return SINGLETON.listObjectsByNamedQuery(
                 "Device.findStorageByServer", params);
@@ -429,7 +429,7 @@ public class ServerFactory extends HibernateFactory {
      * @param summary the summary of the event
      */
     public static void addServerHistoryWithEntitlementEvent(Server server, Entitlement ent, String summary) {
-        Map<String, Object> in = new HashMap<String, Object>();
+        Map<String, Object> in = new HashMap<>();
         in.put("sid", server.getId());
         in.put("entitlement_label", ent.getLabel());
         in.put("summary", summary);
@@ -516,7 +516,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the ids of the erratas grouped by server id
      */
     public static Map<Long, List<Long>> findUnscheduledErrataByServerIds(User user, List<Long> serverIds) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
 
         List<Object[]> result = (SINGLETON.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
@@ -537,7 +537,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of servers
      */
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("orgId", org.getId());
         return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId", params, serverIds, "serverIds");
     }
@@ -548,7 +548,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of non-zypper server ids
      */
     public static List<Long> findNonZypperTradClientsIds(Set<Long> ids) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         return SINGLETON.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", params, ids,
                 "serverIds");
     }
@@ -560,7 +560,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if orgIn)
      */
     public static Server lookupByIdAndOrg(Long id, Org orgIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", id);
         params.put("orgId", orgIn.getId());
         return (Server) SINGLETON.lookupObjectByNamedQuery(
@@ -575,7 +575,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of server objects
      */
     public static List<Server> lookupByIdsAndUser(List<Long> serverIds, User user) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("orgId", user.getOrg().getId());
 
         return findByIds(serverIds, "Server.findByIdsAndOrgId", "serverIds", parameters);
@@ -812,7 +812,7 @@ public class ServerFactory extends HibernateFactory {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "compatible_with_server");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("user_id", user.getId());
         return m.execute(params);
@@ -824,7 +824,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of User objects that can administer the system
      */
     public static List<User> listAdministrators(Server server) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("org_id", server.getOrg().getId());
         return SINGLETON.listObjectsByNamedQuery("Server.lookupAdministrators",
@@ -853,7 +853,7 @@ public class ServerFactory extends HibernateFactory {
 
         SelectMode m = ModeFactory.getMode("Action_queries",
                 "system_events_history");
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("sid", server.getId());
 
         return m.execute(params);
@@ -865,7 +865,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Proxy Server objects
      */
     public static List<Server> lookupProxiesByOrg(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("userId", user.getId());
         params.put("orgId", user.getOrg().getId());
         List<Number> ids = SINGLETON.listObjectsByNamedQuery(
@@ -902,7 +902,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of servers.
      */
     public static List<Server> listSystemsInSsm(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("userId", user.getId());
         params.put("label", RhnSetDecl.SYSTEMS.getLabel());
         return SINGLETON.listObjectsByNamedQuery("Server.findInSet", params);
@@ -925,7 +925,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of FQDNs
      */
     public static List<String> listFqdns(Long sid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         return SINGLETON.listObjectsByNamedQuery("Server.listFqdns", params);
     }
@@ -936,7 +936,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Optional<Server> findByFqdn(String name) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return Optional.ofNullable((Server) SINGLETON
                 .lookupObjectByNamedQuery("Server.findByFqdn", params));
@@ -974,7 +974,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<ServerSnapshot> listSnapshots(Org org, Server server,
             Date startDate, Date endDate) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org", org);
         params.put("server", server);
 
@@ -1004,7 +1004,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("snapId", Long.valueOf(id));
         return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
                 "ServerSnapshot.findById", params);
@@ -1139,7 +1139,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of tags
      */
     public static List<SnapshotTag> getSnapshotTags(ServerSnapshot snap) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("snap", snap);
         return SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findTags", params);
     }
@@ -1180,12 +1180,12 @@ public class ServerFactory extends HibernateFactory {
     public static void bulkAddTagToSnapshot(String tagName, String setLabel, User user) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "bulk_add_tag_to_snapshot");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("set_label", setLabel);
         params.put("org_id", user.getOrg().getId());
         params.put("tag_name", tagName);
         params.put("user_id", user.getId());
-        m.execute(params, new HashMap<String, Integer>());
+        m.execute(params, new HashMap<>());
     }
 
     /**
@@ -1438,7 +1438,7 @@ public class ServerFactory extends HibernateFactory {
      * given channel
      */
     public static List<Long> findServersInSetByChannel(User user, long channelId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("channel_id", channelId);
         return SINGLETON.listObjectsByNamedQuery(
@@ -1478,7 +1478,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Set<Long> filterSystemsWithPendingMaintOnlyActions(Set<Long> systemIds) {
         if (systemIds.isEmpty()) {
-            return new HashSet<Long>();
+            return new HashSet<>();
         }
         return new HashSet<>(HibernateFactory.getSession()
                 .getNamedQuery("Server.filterSystemsWithPendingMaintenanceOnlyActions")

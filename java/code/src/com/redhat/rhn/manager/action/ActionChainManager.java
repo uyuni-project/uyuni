@@ -235,7 +235,7 @@ public class ActionChainManager {
             ActionType type, Date earliest, ActionChain actionChain, Integer sortOrder,
             Server server)
         throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         serverIds.add(server.getId());
         return schedulePackageActions(user, packages, type, earliest, actionChain,
             sortOrder, serverIds).iterator().next();
@@ -295,7 +295,7 @@ public class ActionChainManager {
 
         ActionManager.checkScriptingOnServers(sids);
 
-        Set<Long> sidSet = new HashSet<Long>();
+        Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
 
         Set<Action> result = scheduleActions(user, ActionFactory.TYPE_SCRIPT_RUN, name,
@@ -331,7 +331,7 @@ public class ActionChainManager {
             throw new IllegalArgumentException("Server ids include non minion servers.");
         }
 
-        Set<Long> sidSet = new HashSet<Long>();
+        Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
 
         String summary = "Apply highstate" + (test.isPresent() && test.get() ? " in test-mode" : "");
@@ -383,7 +383,7 @@ public class ActionChainManager {
     public static Set<Action> createConfigActionForServers(User user,
         Collection<Long> revisions, Collection<Server> servers, ActionType type,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        Set<Action> result = new HashSet<Action>();
+        Set<Action> result = new HashSet<>();
         if (actionChain == null) {
             Action action = ActionManager.createConfigActionForServers(user, revisions,
                 servers, type, earliest);
@@ -440,7 +440,7 @@ public class ActionChainManager {
     public static Set<Action> createConfigActionForServers(User user,
         Map<Long, Collection<Long>> revisions, Collection<Server> servers,
         ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        Set<Action> result = new HashSet<Action>();
+        Set<Action> result = new HashSet<>();
         if (actionChain == null) {
             ConfigAction action = ActionManager.createConfigAction(user, type, earliest);
             ActionFactory.save(action);
@@ -487,7 +487,7 @@ public class ActionChainManager {
      */
     public static Action scheduleRebootAction(User user, Server server, Date earliest,
         ActionChain actionChain) throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         serverIds.add(server.getId());
         Set<Action> actions = scheduleRebootActions(user, serverIds, earliest, actionChain);
         return actions.iterator().next();
@@ -589,7 +589,7 @@ public class ActionChainManager {
     private static Set<Action> scheduleActions(User user, ActionType type, String name,
             Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
         throws TaskomaticApiException {
-        Set<Action> result = new HashSet<Action>();
+        Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {
             Action action = ActionManager.createAction(user, type, name, earliest);
@@ -663,8 +663,8 @@ public class ActionChainManager {
             ActionChain actionChain, ActionType linuxActionType)
         throws TaskomaticApiException {
 
-        List<Action> result = new LinkedList<Action>();
-        Set<Long> rhelServers = new HashSet<Long>();
+        List<Action> result = new LinkedList<>();
+        Set<Long> rhelServers = new HashSet<>();
         rhelServers.addAll(ServerFactory.listLinuxSystems(serverIds));
 
         if (!rhelServers.isEmpty()) {

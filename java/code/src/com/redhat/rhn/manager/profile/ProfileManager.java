@@ -137,7 +137,7 @@ public class ProfileManager extends BaseManager {
     public static void copyFrom(Server server, Profile profile) {
         WriteMode m = ModeFactory.getWriteMode("profile_queries",
                 "delete_package_profile");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("prid", profile.getId());
         m.executeUpdate(params);
@@ -166,10 +166,10 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "profile_canonical_package_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("prid", prid);
         params.put("org_id", orgid);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
     }
 
@@ -179,10 +179,10 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "system_canonical_package_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("org_id", orgid);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
     }
 
@@ -1013,7 +1013,7 @@ public class ProfileManager extends BaseManager {
         Server server = ServerFactory.lookupById(sid);
         Set<Channel> channels = server.getChannels();
         List<PackageMetadata> missingpkgs = findMissingPackages(dr, channels);
-        DataResult<PackageMetadata> missing = new DataResult<PackageMetadata>(missingpkgs);
+        DataResult<PackageMetadata> missing = new DataResult<>(missingpkgs);
 
         // should have the subset we plan to work with.
         // NOW, we need to find the channels for each
@@ -1081,8 +1081,8 @@ public class ProfileManager extends BaseManager {
     private static DataResult<PackageListItem> getPackagesInChannelByIdCombo(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_in_channel_by_id_combo");
-        Map<String, Object> params = new HashMap<String, Object>();
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> elabParams = new HashMap<>();
         params.put("cid", cid);
         return (DataResult<PackageListItem>)makeDataResult(params, elabParams, null, m);
     }
@@ -1091,7 +1091,7 @@ public class ProfileManager extends BaseManager {
 
         List<PackageMetadata> missingPkgs = new ArrayList<>();
 
-        DataResult<PackageListItem> pkgsInChannels = new DataResult<>(new ArrayList<PackageListItem>());
+        DataResult<PackageListItem> pkgsInChannels = new DataResult<>(new ArrayList<>());
         for (Channel c : channels) {
             DataResult<PackageListItem> dr = getPackagesInChannelByIdCombo(c.getId());
             pkgsInChannels.addAll(dr);
@@ -1144,7 +1144,7 @@ public class ProfileManager extends BaseManager {
     }
 
     private static DataResult<PackageMetadata> prepareList(List<PackageMetadata> result, PageControl pc) {
-        DataResult<PackageMetadata> dr = new DataResult<PackageMetadata>(result);
+        DataResult<PackageMetadata> dr = new DataResult<>(result);
         dr.setTotalSize(result.size());
 
         if (pc != null) {
@@ -1198,9 +1198,9 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("profile_queries", "profile_overview");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
 
         return makeDataResult(params, elabParams, null, m);
     }
@@ -1216,9 +1216,9 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("profile_queries", "profile_package_overview");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("prid", profileId);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
 
         return makeDataResult(params, elabParams, null, m);
     }
@@ -1258,7 +1258,7 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("profile_queries",
                 "compatible_with_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         params.put("cid", channelIn.getId());
         return  makeDataResult(params, new HashMap<String, Object>(), pc, m);

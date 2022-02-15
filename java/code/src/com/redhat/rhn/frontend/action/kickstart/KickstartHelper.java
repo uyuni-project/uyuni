@@ -96,9 +96,9 @@ public class KickstartHelper {
      * @return Map of options.  Usually containing host, ksdata, label and org_id
      */
     public Map<String, Object> parseKickstartUrl(String url) {
-        Map<String, Object> retval = new HashMap<String, Object>();
+        Map<String, Object> retval = new HashMap<>();
         KickstartData ksdata = null;
-        Map<String, String> options = new HashMap<String, String>();
+        Map<String, String> options = new HashMap<>();
         log.debug("url: " + url);
         List<String> rawopts = Arrays.asList(
                 StringUtils.split(url, '/'));
@@ -429,7 +429,7 @@ public class KickstartHelper {
         // does a child channel contain needed packages?
         Channel channel = ksdata.getChannel();
         // copy child channel set otherwise you'd modify it as an unwanted side effect
-        Set<Channel> channelsToCheck = new HashSet<Channel>(ksdata.getChildChannels());
+        Set<Channel> channelsToCheck = new HashSet<>(ksdata.getChildChannels());
         channelsToCheck.add(channel);
         String[] packagesToLook = KickstartFormatter.FRESH_PKG_NAMES_RHEL8;
         if (ksdata.isUserSelectedSaltInstallType()) {
@@ -506,7 +506,7 @@ public class KickstartHelper {
 
     private String createPackageNameList(KickstartData ksdata) {
         //First create a list of all the packages needed
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         if (ksdata.isRhel8()) {
             if (ksdata.isUserSelectedSaltInstallType()) {
                 packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8_FOR_SALT));

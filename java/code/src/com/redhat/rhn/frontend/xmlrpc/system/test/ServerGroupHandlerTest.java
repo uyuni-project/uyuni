@@ -173,7 +173,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     private void addOrRemoveAnAdmin(ServerGroup group, User user, boolean add) {
-        List<String> logins = new ArrayList<String>();
+        List<String> logins = new ArrayList<>();
         logins.add(user.getLogin());
 
         try {
@@ -243,7 +243,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.addOrRemoveSystems(regular, group.getName(),
                 Arrays.asList(server3.getId().intValue()), Boolean.TRUE);
 
-        List<Long> systems = new ArrayList<Long>();
+        List<Long> systems = new ArrayList<>();
         systems.add(server1.getId());
         systems.add(server2.getId());
         systems.add(server3.getId());
@@ -262,7 +262,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
     public void testRemoveNonExistentServer() throws Exception {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
-        List<Long> systems = new ArrayList<Long>();
+        List<Long> systems = new ArrayList<>();
         Server server1 = ServerFactoryTest.createTestServer(admin, true);
         systems.add(server1.getId());
         try {

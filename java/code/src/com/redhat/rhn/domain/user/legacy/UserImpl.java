@@ -88,13 +88,13 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Create a new empty user
      */
     public UserImpl() {
-        groupMembers = new HashSet<UserGroupMembers>();
+        groupMembers = new HashSet<>();
         personalInfo = new PersonalInfo();
         personalInfo.setUser(this);
         userInfo = new UserInfo();
         userInfo.setUser(this);
-        stateChanges = new TreeSet<StateChange>();
-        addresses = new HashSet<Address>();
+        stateChanges = new TreeSet<>();
+        addresses = new HashSet<>();
         hiddenPanes = new HashSet();
         associatedServerGroups = new HashSet();
     }
@@ -194,7 +194,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * @return Set of UserGroups
      */
     protected Set<UserGroup> getUserGroups() {
-        Set<UserGroup> ugmSet = new HashSet<UserGroup>();
+        Set<UserGroup> ugmSet = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
             ugmSet.add(ugm.getUserGroup());
         }
@@ -210,14 +210,14 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     public Set<Role> getRoles() {
-        Set<Role> userRoles = new HashSet<Role>();
+        Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
             userRoles.add(ugm.getUserGroup().getRole());
         }
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
             Set<Role> orgRoles = org.getRoles();
-            Set<Role> localImplied = new HashSet<Role>();
+            Set<Role> localImplied = new HashSet<>();
             localImplied.addAll(UserFactory.IMPLIEDROLES);
             localImplied.retainAll(orgRoles);
             userRoles.addAll(localImplied);
@@ -227,7 +227,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     public Set<Role> getTemporaryRoles() {
-        Set<Role> userRoles = new HashSet<Role>();
+        Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
             if (ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
@@ -236,7 +236,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
             Set<Role> orgRoles = org.getRoles();
-            Set<Role> localImplied = new HashSet<Role>();
+            Set<Role> localImplied = new HashSet<>();
             localImplied.addAll(UserFactory.IMPLIEDROLES);
             localImplied.retainAll(orgRoles);
             userRoles.addAll(localImplied);
@@ -246,7 +246,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     public Set<Role> getPermanentRoles() {
-        Set<Role> userRoles = new HashSet<Role>();
+        Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
             if (!ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
@@ -255,7 +255,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
             Set<Role> orgRoles = org.getRoles();
-            Set<Role> localImplied = new HashSet<Role>();
+            Set<Role> localImplied = new HashSet<>();
             localImplied.addAll(UserFactory.IMPLIEDROLES);
             localImplied.retainAll(orgRoles);
             userRoles.addAll(localImplied);
@@ -293,7 +293,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     private void addRole(Role label, boolean temporary) {
         checkPermanentOrgAdmin();
-        Set<Role> roles = new HashSet<Role>();
+        Set<Role> roles = new HashSet<>();
         if (temporary) {
             roles = this.getTemporaryRoles();
         }

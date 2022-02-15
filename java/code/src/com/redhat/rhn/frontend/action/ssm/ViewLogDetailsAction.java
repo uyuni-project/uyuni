@@ -65,7 +65,7 @@ public class ViewLogDetailsAction extends RhnListAction implements Listable {
         ListHelper helper = new ListHelper(this, request);
         helper.setDataSetName(RequestContext.PAGE_LIST);
 
-        Map<String, String> helperParams = new HashMap<String, String>(1);
+        Map<String, String> helperParams = new HashMap<>(1);
         helperParams.put("oid", request.getParameter("oid"));
         helper.setParamMap(helperParams);
         helper.execute();

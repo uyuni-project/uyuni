@@ -61,7 +61,7 @@ public class SchemaParser {
      */
     public SchemaParser(URL schemaURLIn) throws IOException {
         this.schemaURL = schemaURLIn;
-        constraints = new LinkedHashMap<String, Constraint>();
+        constraints = new LinkedHashMap<>();
         schemaNamespace =
             Namespace.getNamespace(SCHEMA_NAMESPACE_URI);
 

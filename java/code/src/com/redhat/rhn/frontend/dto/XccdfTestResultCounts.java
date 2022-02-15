@@ -190,7 +190,7 @@ public abstract class XccdfTestResultCounts extends BaseDto {
 
     private Map<String, Long> getCountMap() {
         if (this.countMap == null) {
-            this.countMap = new HashMap<String, Long>();
+            this.countMap = new HashMap<>();
             if (this.label != null && this.count != null) {
                 for (int i = 0; i < this.label.size(); i++) {
                     this.countMap.put((String) this.label.get(i),

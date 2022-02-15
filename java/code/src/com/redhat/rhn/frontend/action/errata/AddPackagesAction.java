@@ -60,7 +60,7 @@ public class AddPackagesAction extends RhnAction implements Listable {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
         RequestContext context = new RequestContext(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("eid", context.getRequiredParam("eid"));
 
 
@@ -149,7 +149,7 @@ public class AddPackagesAction extends RhnAction implements Listable {
         List<String> subscribableChannels = ChannelManager.channelsForUser(user);
 
         //Init the viewoptions list to contain the "any_channel" option
-        List<LabelValueBean> viewoptions = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> viewoptions = new ArrayList<>();
         viewoptions.add(new LabelValueBean("All managed packages",
             "any_channel"));
 

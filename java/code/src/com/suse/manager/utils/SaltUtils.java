@@ -863,7 +863,8 @@ public class SaltUtils {
      * @param action main action
      */
     private void handleFilesDiff(JsonElement jsonResult, Action action) {
-        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<Map<String, FilesDiffResult>>() { };
+        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
+        };
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
         Map<String, FilesDiffResult> diffResults = new HashMap<>();
         // We are only interested in results where files are different/new.
@@ -886,7 +887,8 @@ public class SaltUtils {
                 }
                 else if (cr.isDirectory()) {
                     TypeToken<Map<String, DirectoryResult>> typeTokenD =
-                            new TypeToken<Map<String, DirectoryResult>>() { };
+                            new TypeToken<>() {
+                            };
                     DirectoryResult dirPchanges = mapFileResult.getPChanges(typeTokenD).get(fileName);
                     isNew = dirPchanges.getDirectory().isPresent();
                 }
@@ -913,7 +915,8 @@ public class SaltUtils {
         Openscap.OpenscapResult openscapResult;
         try {
             TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
-                    new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+                    new TypeToken<>() {
+                    };
             Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
                     jsonResult, typeToken.getType());
             openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
@@ -1100,7 +1103,8 @@ public class SaltUtils {
     private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
     jsonEventToStateApplyResults(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-            new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
+                new TypeToken<>() {
+                };
         Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
         results = Optional.empty();
         try {

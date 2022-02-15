@@ -129,7 +129,7 @@ public class ServerGroupManager {
             return false;
         }
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "is_visible");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sgid", group.getId());
         List result = m.execute(params);
@@ -462,7 +462,7 @@ public class ServerGroupManager {
      */
     public Map<String, String> errataCounts(User user, ServerGroup group) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "group_errata_counts");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", group.getId());
         DataResult<Map<String, String>> result = m.execute(params);
         return result.stream()
