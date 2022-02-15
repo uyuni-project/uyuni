@@ -1,5 +1,9 @@
-- setup reporting database
-- integrate new TLS Certificate setup and deployment tool
+-------------------------------------------------------------------
+Tue Feb 15 10:04:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * setup reporting database
+  * integrate new TLS Certificate setup and deployment tool
 
 -------------------------------------------------------------------
 Tue Jan 18 13:59:44 CET 2022 - jgonzalez@suse.com
