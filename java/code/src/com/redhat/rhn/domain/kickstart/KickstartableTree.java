@@ -323,8 +323,8 @@ public class KickstartableTree extends BaseDomainHelper {
     public String getKernelPath() {
         String lastKnownPath = null;
         String[] defaultKernelPaths = this.getDefaultKernelPaths();
-        for (int i = 0; i < defaultKernelPaths.length; i++) {
-            lastKnownPath = defaultKernelPaths[i];
+        for (String defaultKernelPathIn : defaultKernelPaths) {
+            lastKnownPath = defaultKernelPathIn;
             if (pathExists(lastKnownPath)) {
                 return lastKnownPath;
             }

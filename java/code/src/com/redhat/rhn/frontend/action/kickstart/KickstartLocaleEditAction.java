@@ -22,7 +22,6 @@ import com.redhat.rhn.manager.kickstart.KickstartLocaleCommand;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -119,10 +118,9 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      * @return Boolean valid, or not
      */
     protected Boolean isTimezoneValid(ArrayList validTimezones, String timezone) {
-        Iterator iter = validTimezones.iterator();
 
-        while (iter.hasNext()) {
-            Map possible = (Map) iter.next();
+        for (Object validTimezoneIn : validTimezones) {
+            Map possible = (Map) validTimezoneIn;
             if (timezone.equals(possible.get("value"))) {
                 return Boolean.TRUE;
             }

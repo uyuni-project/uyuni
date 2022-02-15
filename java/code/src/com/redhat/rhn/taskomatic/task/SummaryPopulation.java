@@ -26,7 +26,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +71,8 @@ public class SummaryPopulation extends RhnJavaJob {
             log.debug("Done finding orgs w/ recent action activity");
 
             log.debug("Enqueing orgs");
-            for (Iterator itr = orgSet.iterator(); itr.hasNext();) {
-                OrgIdWrapper bdw = (OrgIdWrapper) itr.next();
+            for (Object oIn : orgSet) {
+                OrgIdWrapper bdw = (OrgIdWrapper) oIn;
                 enqueueOrg(bdw.toLong());
             }
             log.debug("Finished enqueing orgs");

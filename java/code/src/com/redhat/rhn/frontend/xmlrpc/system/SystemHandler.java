@@ -206,7 +206,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -943,8 +942,7 @@ public class SystemHandler extends BaseHandler {
 
         //TODO: This should go away once we teach marquee how to deal with nulls in a list.
         //      Luckily, this list shouldn't be too long.
-        for (Iterator<Map<String, Object>> itr = dr.iterator(); itr.hasNext();) {
-            Map<String, Object> row = itr.next();
+        for (Map<String, Object> row : dr) {
             Map<String, Object> channel = new HashMap<String, Object>();
 
             channel.put("id", row.get("id"));
@@ -1014,13 +1012,13 @@ public class SystemHandler extends BaseHandler {
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is older, add it to returnList.
          */
-        for (Iterator itr = toCheck.iterator(); itr.hasNext();) {
-            Map pkg = (Map) itr.next();
+        for (Object oIn : toCheck) {
+            Map pkg = (Map) oIn;
 
-            String pkgName    = (String) pkg.get("name");
+            String pkgName = (String) pkg.get("name");
             String pkgVersion = (String) pkg.get("version");
             String pkgRelease = (String) pkg.get("release");
-            String pkgEpoch   = (String) pkg.get("epoch");
+            String pkgEpoch = (String) pkg.get("epoch");
 
             PackageEvr pkgEvr = new PackageEvr(
                     pkgEpoch == null ? "0" : pkgEpoch,
@@ -1089,12 +1087,12 @@ public class SystemHandler extends BaseHandler {
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is newer, add it to returnList.
          */
-        for (Iterator itr = toCheck.iterator(); itr.hasNext();) {
-            Map pkg = (Map) itr.next();
-            String pkgName    = (String) pkg.get("name");
+        for (Object oIn : toCheck) {
+            Map pkg = (Map) oIn;
+            String pkgName = (String) pkg.get("name");
             String pkgVersion = (String) pkg.get("version");
             String pkgRelease = (String) pkg.get("release");
-            String pkgEpoch   = (String) pkg.get("epoch");
+            String pkgEpoch = (String) pkg.get("epoch");
 
             PackageEvr pkgEvr = new PackageEvr(
                     pkgEpoch == null ? "0" : pkgEpoch,
@@ -1125,8 +1123,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Map<String, Object>> toCheck = new ArrayList<Map<String, Object>>();
         // Get a list of packages with matching name
-        for (Iterator<Map<String, Object>> itr = installed.iterator(); itr.hasNext();) {
-            Map<String, Object> pkg = itr.next();
+        for (Map<String, Object> pkg : installed) {
             String pkgName = StringUtils.trim((String) pkg.get("name"));
             if (pkgName.equals(StringUtils.trim(name))) {
                 toCheck.add(pkg);
@@ -1218,9 +1215,7 @@ public class SystemHandler extends BaseHandler {
          * Loop through the packages for this system and check each attribute. Use
          * StringUtils.trim() to disregard whitespace on either ends of the string.
          */
-        for (Iterator<Map<String, Object>> itr = packages.iterator(); itr.hasNext();) {
-            Map<String, Object> pkg = itr.next();
-
+        for (Map<String, Object> pkg : packages) {
             //Check name
             String pkgName = StringUtils.trim((String) pkg.get("name"));
             if (!pkgName.equals(StringUtils.trim(name))) {
@@ -1448,9 +1443,7 @@ public class SystemHandler extends BaseHandler {
 
         // Loop through the entitlement objects for this server and stick
         // label into the entitlements list to return
-        for (Iterator<Entitlement> itr = server.getEntitlements().iterator(); itr
-                .hasNext();) {
-            Entitlement entitlement = itr.next();
+        for (Entitlement entitlement : server.getEntitlements()) {
             entitlements.add(entitlement.getLabel());
         }
 
@@ -1998,8 +1991,7 @@ public class SystemHandler extends BaseHandler {
 
 
         // More stupid data munging...
-        for (Iterator<Map<String, Object>> itr = groups.iterator(); itr.hasNext();) {
-            Map<String, Object> map = itr.next();
+        for (Map<String, Object> map : groups) {
             Map<String, Object> row = new HashMap<String, Object>();
 
             row.put("id", map.get("id"));
@@ -2086,8 +2078,7 @@ public class SystemHandler extends BaseHandler {
          * which keys were skipped.
          */
         Set<String> keys = values.keySet();
-        for (Iterator<String> itr = keys.iterator(); itr.hasNext();) {
-            String label = itr.next();
+        for (String label : keys) {
             if (org.hasCustomDataKey(label) && !StringUtils.isBlank(values.get(label))) {
                 server.addCustomDataValue(label, values.get(label), loggedInUser);
             }
@@ -2109,8 +2100,7 @@ public class SystemHandler extends BaseHandler {
             StringBuilder msg = new StringBuilder("One or more of the following " +
                     "custom info fields was not defined: ");
 
-            for (Iterator<String> itr = skippedKeys.iterator(); itr.hasNext();) {
-                String label = itr.next();
+            for (String label : skippedKeys) {
                 msg.append("\n" + label);
             }
 
@@ -2148,8 +2138,7 @@ public class SystemHandler extends BaseHandler {
          * Loop through the customDataValues set for the server. We're only interested in
          * the key and value information from the CustomDataValue object.
          */
-        for (Iterator<CustomDataValue> itr = customDataValues.iterator(); itr.hasNext();) {
-            CustomDataValue val = itr.next();
+        for (CustomDataValue val : customDataValues) {
             if (val.getValue() != null) {
                 returnMap.put(val.getKey().getLabel(), val.getValue());
             }
@@ -2520,8 +2509,8 @@ public class SystemHandler extends BaseHandler {
 
             // retrieve the list of package names associated with the action...
             DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-            for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-                Map pkg = (Map) itr.next();
+            for (Object pkgIn : pkgs) {
+                Map pkg = (Map) pkgIn;
                 String detail = (String) pkg.get("nvre");
 
                 Map<String, String> info = new HashMap<>();
@@ -2533,8 +2522,8 @@ public class SystemHandler extends BaseHandler {
 
             // retrieve the errata that were associated with the action...
             DataResult errata = ActionManager.getErrataList(action.getId());
-            for (Iterator itr = errata.iterator(); itr.hasNext();) {
-                Map erratum = (Map) itr.next();
+            for (Object erratumIn : errata) {
+                Map erratum = (Map) erratumIn;
                 String detail = (String) erratum.get("advisory");
                 detail += " (" + erratum.get("synopsis") + ")";
 
@@ -2548,8 +2537,8 @@ public class SystemHandler extends BaseHandler {
 
             // retrieve the details associated with the action...
             DataResult files = ActionManager.getConfigFileUploadList(action.getId());
-            for (Iterator itr = files.iterator(); itr.hasNext();) {
-                Map file = (Map) itr.next();
+            for (Object fileIn : files) {
+                Map file = (Map) fileIn;
 
                 Map<String, String> info = new HashMap<>();
                 info.put("detail", (String) file.get("path"));
@@ -2564,8 +2553,8 @@ public class SystemHandler extends BaseHandler {
 
             // retrieve the details associated with the action...
             DataResult files = ActionManager.getConfigFileDeployList(action.getId());
-            for (Iterator itr = files.iterator(); itr.hasNext();) {
-                Map file = (Map) itr.next();
+            for (Object fileIn : files) {
+                Map file = (Map) fileIn;
 
                 Map<String, String> info = new HashMap<>();
                 String path = (String) file.get("path");
@@ -2582,8 +2571,8 @@ public class SystemHandler extends BaseHandler {
 
             // retrieve the details associated with the action...
             DataResult files = ActionManager.getConfigFileDiffList(action.getId());
-            for (Iterator itr = files.iterator(); itr.hasNext();) {
-                Map file = (Map) itr.next();
+            for (Object fileIn : files) {
+                Map file = (Map) fileIn;
 
                 Map<String, String> info = new HashMap<>();
                 String path = (String) file.get("path");
@@ -4864,8 +4853,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Long> servers = new ArrayList<Long>();
 
-        for (Iterator<Integer> sysIter = systemIds.iterator(); sysIter.hasNext();) {
-            Integer sidAsInt = sysIter.next();
+        for (Integer sidAsInt : systemIds) {
             Long sid = sidAsInt.longValue();
             try {
                 SystemManager.lookupByIdAndUser(sid.longValue(),
@@ -5030,9 +5018,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         List<ScriptResult> results = new LinkedList<ScriptResult>();
-        for (Iterator<ScriptResult> it = details.getResults().iterator(); it
-                .hasNext();) {
-            ScriptResult r = it.next();
+        for (ScriptResult r : details.getResults()) {
             results.add(r);
         }
         return results.toArray();
@@ -5071,9 +5057,7 @@ public class SystemHandler extends BaseHandler {
 
         if (details.getResults() != null) {
             List<ScriptResult> results = new LinkedList<ScriptResult>();
-            for (Iterator<ScriptResult> it = details.getResults().iterator(); it
-                    .hasNext();) {
-                ScriptResult r = it.next();
+            for (ScriptResult r : details.getResults()) {
                 results.add(r);
             }
             retDetails.put("result", results.toArray());
@@ -5419,9 +5403,9 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidEntitlementException("Base entitlement missing");
         }
 
-        for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
+        for (String addOnEntIn : addOnEnts) {
 
-            Entitlement ent = EntitlementManager.getByName(it.next());
+            Entitlement ent = EntitlementManager.getByName(addOnEntIn);
 
             // Ignore if the system already has this entitlement:
             if (server.hasEntitlement(ent)) {
@@ -5488,8 +5472,8 @@ public class SystemHandler extends BaseHandler {
 
         List<Entitlement> baseEnts = new LinkedList<Entitlement>();
 
-        for (Iterator<String> it = entitlements.iterator(); it.hasNext();) {
-            Entitlement ent = EntitlementManager.getByName(it.next());
+        for (String entitlementIn : entitlements) {
+            Entitlement ent = EntitlementManager.getByName(entitlementIn);
             if (ent.isBase()) {
                 baseEnts.add(ent);
                 continue;
@@ -5825,9 +5809,7 @@ public class SystemHandler extends BaseHandler {
         // For each of the package ids provided, retrieve the pkg id combo
         // which includes name_id|evr_id|arch_id
         Set<String> pkgIdCombos = new HashSet<String>();
-        for (Iterator<Integer> it = packageIds.iterator(); it.hasNext();) {
-            Integer i = it.next();
-
+        for (Integer i : packageIds) {
             Package pkg = PackageManager.lookupByIdAndUser(i.longValue(), loggedInUser);
 
             if (pkg != null) {
@@ -5874,10 +5856,8 @@ public class SystemHandler extends BaseHandler {
         List<Map<String, Object>> compatibleServers =
                 SystemManager.compatibleWithServer(user, target);
         boolean found = false;
-        for (Iterator<Map<String, Object>> it = compatibleServers.iterator();
-                it.hasNext();) {
-            Map<String, Object> m = it.next();
-            Long currentId = (Long)m.get("id");
+        for (Map<String, Object> m : compatibleServers) {
+            Long currentId = (Long) m.get("id");
             if (currentId.longValue() == source.getId().longValue()) {
                 found = true;
                 break;
@@ -6298,9 +6278,7 @@ public class SystemHandler extends BaseHandler {
         DataResult<ActivationKeyDto> result = SystemManager.getActivationKeys(server);
 
         List<String> returnList = new ArrayList<String>();
-        for (Iterator itr = result.iterator(); itr.hasNext();) {
-            ActivationKeyDto key = (ActivationKeyDto) itr.next();
-
+        for (ActivationKeyDto key : result) {
             returnList.add(key.getToken());
         }
         return returnList;
@@ -6846,9 +6824,9 @@ public class SystemHandler extends BaseHandler {
         DataResult<SystemCurrency> dr = SystemManager.systemCurrencyList(loggedInUser,
                 null);
         List<Map<String, Long>> l = new ArrayList<Map<String, Long>>();
-        for (Iterator<SystemCurrency> it = dr.iterator(); it.hasNext();) {
+        for (SystemCurrency systemCurrencyIn : dr) {
             Map<String, Long> m = new HashMap<String, Long>();
-            SystemCurrency s = it.next();
+            SystemCurrency s = systemCurrencyIn;
             m.put("sid", s.getId());
             m.put("crit", s.getCritical());
             m.put("imp", s.getImportant());
@@ -6985,8 +6963,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
-        for (Iterator<PackageListItem> itr = dr.iterator(); itr.hasNext();) {
-            PackageListItem row = itr.next();
+        for (PackageListItem row : dr) {
             Map<String, Object> pkg = new HashMap<String, Object>();
 
             pkg.put("name", row.getName());

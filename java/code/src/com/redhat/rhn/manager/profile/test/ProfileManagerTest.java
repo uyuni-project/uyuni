@@ -47,7 +47,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -166,8 +165,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<Profile> list = ProfileManager.compatibleWithServer(server, user.getOrg());
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
-        for (Iterator<Profile> itr = list.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : list) {
             assertEquals("List contains something other than Profiles",
                     Profile.class, o.getClass());
         }

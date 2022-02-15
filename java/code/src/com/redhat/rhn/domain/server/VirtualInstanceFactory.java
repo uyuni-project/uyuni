@@ -22,7 +22,6 @@ import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -191,16 +190,24 @@ public class VirtualInstanceFactory extends HibernateFactory {
      */
     private static List convertToView(List out) {
         List ret = new ArrayList(out.size());
-        for (Iterator itr = out.iterator(); itr.hasNext();) {
-            Object [] row = (Object [])itr.next();
+        /**
+         * guest.id as guest_id,
+         guest.org_id as guest_org_id,
+         guest.name as guest_name,
+         host.org_id as host_org_id,
+         host.id as host_id,
+         host.name as host_name
+         */
+        for (Object oIn : out) {
+            Object[] row = (Object[]) oIn;
 
             /**
              * guest.id as guest_id,
-                            guest.org_id as guest_org_id,
-                            guest.name as guest_name,
-                            host.org_id as host_org_id,
-                            host.id as host_id,
-                            host.name as host_name
+             guest.org_id as guest_org_id,
+             guest.name as guest_name,
+             host.org_id as host_org_id,
+             host.id as host_id,
+             host.name as host_name
              */
 
             Number guestId = (Number) row[0];
@@ -212,12 +219,12 @@ public class VirtualInstanceFactory extends HibernateFactory {
             String hostName = (String) row[5];
 
             GuestAndNonVirtHostView view = new GuestAndNonVirtHostView(
-                                                guestId.longValue(),
-                                                guestOrgId.longValue(),
-                                                guestName,
-                                                hostId.longValue(),
-                                                hostOrgId.longValue(),
-                                                hostName);
+                    guestId.longValue(),
+                    guestOrgId.longValue(),
+                    guestName,
+                    hostId.longValue(),
+                    hostOrgId.longValue(),
+                    hostName);
             ret.add(view);
         }
         return ret;

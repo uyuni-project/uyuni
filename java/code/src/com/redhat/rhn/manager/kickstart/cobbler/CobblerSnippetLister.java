@@ -55,8 +55,8 @@ public class CobblerSnippetLister extends BaseManager {
                 if (path.isDirectory()) {
                     String[] children = path.list();
                     Arrays.sort(children);
-                    for (int i = 0; i < children.length; i++) {
-                        loadDefaultSnippets(new File(path, children[i]), snippetFiles);
+                    for (String childIn : children) {
+                        loadDefaultSnippets(new File(path, childIn), snippetFiles);
                     }
                 }
                 else {

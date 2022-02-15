@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -88,8 +87,8 @@ public class RhnListAction extends RhnAction {
             if (hiddenvars != null) {
                 hiddenvars = hiddenvars.substring(1, hiddenvars.length() - 1);
                 String[] vars = hiddenvars.split(",");
-                for (int j = 0; j < vars.length; j++) {
-                    newlist.add(vars[j].trim());
+                for (String varIn : vars) {
+                    newlist.add(varIn.trim());
                 }
             }
         }
@@ -99,9 +98,8 @@ public class RhnListAction extends RhnAction {
              * need to init newset to the set given to us in the tag
              */
             Set setlist = set.getElements();
-            Iterator itr = setlist.iterator();
-            while (itr.hasNext()) {
-                RhnSetElement r = (RhnSetElement) itr.next();
+            for (Object oIn : setlist) {
+                RhnSetElement r = (RhnSetElement) oIn;
                 //check for id combo values
                 if (r.getElementTwo() == null) {
                     newlist.add(r.getElement().toString());

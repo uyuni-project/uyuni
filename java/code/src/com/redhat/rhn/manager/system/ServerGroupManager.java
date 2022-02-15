@@ -246,8 +246,8 @@ public class ServerGroupManager {
         validateAccessCredentials(loggedInUser, group, group.getName());
         validateAdminCredentials(loggedInUser);
         List admins = new LinkedList();
-        for (Iterator itr = adminLogins.iterator(); itr.hasNext();) {
-            String login = (String) itr.next();
+        for (Object adminLoginIn : adminLogins) {
+            String login = (String) adminLoginIn;
             User admin = UserFactory.lookupByLogin(login);
             if (admin == null || !loggedInUser.getOrg().equals(admin.getOrg())) {
                 LocalizationService ls = LocalizationService.getInstance();
@@ -281,8 +281,8 @@ public class ServerGroupManager {
         adminSet.addAll(admins);
         ServerGroupFactory.save(sg);
         UserFactory factory = UserFactory.getInstance();
-        for (Iterator itr = admins.iterator(); itr.hasNext();) {
-            User u = (User) itr.next();
+        for (Object adminIn : admins) {
+            User u = (User) adminIn;
             factory.syncServerGroupPerms(u);
         }
     }
@@ -303,8 +303,8 @@ public class ServerGroupManager {
         admins.remove(loggedInUser); //can't disassociate thyself.
         adminSet.removeAll(admins);
         ServerGroupFactory.save(sg);
-        for (Iterator itr = admins.iterator(); itr.hasNext();) {
-            User u = (User) itr.next();
+        for (Object adminIn : admins) {
+            User u = (User) adminIn;
             UserFactory.save(u);
         }
     }

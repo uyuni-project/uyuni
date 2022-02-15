@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -114,12 +113,11 @@ public class CloneErrataAction extends RhnAction implements Listable {
             .getChannelsWithClonableErrata(rctx.getCurrentUser().getOrg());
 
         if (channels != null) {
-            for (Iterator<ClonedChannel> i = channels.iterator(); i.hasNext();) {
-                Channel c = i.next();
+            for (Channel c : channels) {
                 // /me wonders if this shouldn't be part of the query.
                 if ("rpm".equals(c.getChannelArch().getArchType().getLabel())) {
                     displayList.add(new LabelValueBean(c.getName(),
-                        "channel_" + c.getId()));
+                            "channel_" + c.getId()));
                 }
             }
         }

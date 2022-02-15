@@ -700,9 +700,7 @@ public class CachedStatement implements Serializable {
             int pos)
         throws SQLException {
         Map<String, Object> newMap = new HashMap<String, Object>();
-        Iterator<String> i = columns.iterator();
-        while (i.hasNext()) {
-            String columnName = i.next();
+        for (String columnName : columns) {
             newMap.put(columnName.toLowerCase(), getObject(rs, columnName));
         }
         if (resultMap.isEmpty()) {
@@ -755,9 +753,7 @@ public class CachedStatement implements Serializable {
             columnSkip = new ArrayList<String>();
         }
 
-        Iterator<String> i = columns.iterator();
-        while (i.hasNext()) {
-            String columnName = i.next();
+        for (String columnName : columns) {
             if (columnSkip.contains(columnName.toLowerCase())) {
                 continue;
             }
@@ -773,11 +769,11 @@ public class CachedStatement implements Serializable {
              * might not complete correctly if there are two set methods with
              * the same name
              */
-            for (int j = 0; j < methods.length; j++) {
+            for (Method methodIn : methods) {
                 // getName() gets the name of the set method
                 // setName is the name of the set method
-                if (methods[j].getName().equals(setName)) {
-                    Class<?> paramType = methods[j].getParameterTypes()[0];
+                if (methodIn.getName().equals(setName)) {
+                    Class<?> paramType = methodIn.getParameterTypes()[0];
                     if (Collection.class.isAssignableFrom(paramType)) {
                         isList = true;
                     }
@@ -786,7 +782,7 @@ public class CachedStatement implements Serializable {
             }
 
             if (isList) { // requires matching get method returning the same
-                          // list
+                // list
                 Collection<Object> c = (Collection<Object>) MethodUtil.callMethod(obj,
                         getName, new Object[0]);
                 if (c == null) {
@@ -867,8 +863,8 @@ public class CachedStatement implements Serializable {
         }
         Class<?> clazz = obj.getClass();
         Method[] methods = clazz.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals(StringUtil.beanify("get " + key))) {
+        for (Method methodIn : methods) {
+            if (methodIn.getName().equals(StringUtil.beanify("get " + key))) {
                 return true;
             }
         }

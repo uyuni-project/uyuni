@@ -36,7 +36,6 @@ import org.quartz.JobExecutionException;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,9 +71,9 @@ public class DailySummary extends RhnJavaJob {
 
 
         OrgIdWrapper oiw = null;
-        for (Iterator itr = results.iterator(); itr.hasNext();) {
+        for (Object resultIn : results) {
             try {
-                oiw = (OrgIdWrapper) itr.next();
+                oiw = (OrgIdWrapper) resultIn;
                 if (log.isDebugEnabled()) {
                     log.debug("dealing with org: " + oiw.toLong());
                 }
@@ -126,8 +125,8 @@ public class DailySummary extends RhnJavaJob {
         StopWatch watch = new StopWatch();
         watch.start();
         List users = m.execute(params);
-        for (Iterator itr = users.iterator(); itr.hasNext();) {
-            ReportingUser ru = (ReportingUser) itr.next();
+        for (Object userIn : users) {
+            ReportingUser ru = (ReportingUser) userIn;
             // run_user
             List awol = getAwolServers(ru.idAsLong());
             // send email
@@ -219,8 +218,8 @@ public class DailySummary extends RhnJavaJob {
         int snameLength = sid.length() + minDiff;
 
         //Find the longest entry in the table for both sid and sname.
-        for (Iterator itr = servers.iterator(); itr.hasNext();) {
-            AwolServer as = (AwolServer) itr.next();
+        for (Object oIn : servers) {
+            AwolServer as = (AwolServer) oIn;
             String currentId = as.getId().toString();
             if (currentId.length() >= sidLength) {
                 //extra space so the longest entry doesn't connect to the next column
@@ -243,8 +242,8 @@ public class DailySummary extends RhnJavaJob {
         buf.append("\n");
 
         //Now render the data in the table
-        for (Iterator itr = servers.iterator(); itr.hasNext();) {
-            AwolServer as = (AwolServer) itr.next();
+        for (Object serverIn : servers) {
+            AwolServer as = (AwolServer) serverIn;
             String currentId = as.getId().toString();
             buf.append(currentId);
             buf.append(StringUtils.repeat(" ", sidLength - currentId.length()));

@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * JUnit test case for the KickstartLister class.
@@ -49,9 +48,8 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
             .getActivationKeysInOrg(ksdata.getOrg(), null);
         assertTrue(dr.size() > 0);
         boolean found = false;
-        Iterator i = dr.iterator();
-        while (i.hasNext()) {
-            ActivationKeyDto row = (ActivationKeyDto) i.next();
+        for (Object oIn : dr) {
+            ActivationKeyDto row = (ActivationKeyDto) oIn;
             assertNotNull(row.getId());
             assertNotNull(row.getNote());
             if (note.equals(row.getNote())) {

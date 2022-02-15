@@ -177,8 +177,8 @@ public class SmtpMail implements Mail {
         Address[] recAddr = null;
         try {
             List tmp = new LinkedList();
-            for (int i = 0; i < recipIn.length; i++) {
-                InternetAddress addr = new InternetAddress(recipIn[i]);
+            for (String sIn : recipIn) {
+                InternetAddress addr = new InternetAddress(sIn);
                 log.debug("checking: " + addr.getAddress());
                 if (verifyAddress(addr)) {
                     log.debug("Address verified.  Adding: " + addr.getAddress());

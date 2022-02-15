@@ -292,8 +292,8 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
         List<Map> l1 = new ArrayList();
 
-        for (int i = 0; i < s1.length; i++) {
-            l1.add((Map) s1[i]);
+        for (Object oIn : s1) {
+            l1.add((Map) oIn);
         }
 
         Map m1 = new HashMap();
@@ -353,8 +353,8 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
         List<Map> l1 = new ArrayList();
 
-        for (int i = 0; i < s1.length; i++) {
-            l1.add((Map) s1[i]);
+        for (Object oIn : s1) {
+            l1.add((Map) oIn);
         }
 
         Map m1 = new HashMap();

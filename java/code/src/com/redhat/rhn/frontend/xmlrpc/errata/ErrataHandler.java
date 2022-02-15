@@ -1264,26 +1264,23 @@ public class ErrataHandler extends BaseHandler {
         if (errataInfo.get("severity") != null) {
             newErrata.setSeverity(Severity.getByName(severity));
         }
-        for (Iterator<Map<String, Object>> itr = bugs.iterator(); itr.hasNext();) {
-            Map<String, Object> bugMap = itr.next();
+        for (Map<String, Object> bugMap : bugs) {
             String url = null;
             if (bugMap.containsKey("url")) {
                 url = (String) bugMap.get("url");
             }
 
             Bug bug = ErrataFactory.createBug(
-                    ((Integer)bugMap.get("id")).longValue(),
-                    (String)bugMap.get("summary"), url);
+                    ((Integer) bugMap.get("id")).longValue(),
+                    (String) bugMap.get("summary"), url);
             newErrata.addBug(bug);
         }
-        for (Iterator<String> itr = keywords.iterator(); itr.hasNext();) {
-            String keyword = itr.next();
+        for (String keyword : keywords) {
             newErrata.addKeyword(keyword);
         }
 
         newErrata.setPackages(new HashSet());
-        for (Iterator<Integer> itr = packageIds.iterator(); itr.hasNext();) {
-            Integer pid = itr.next();
+        for (Integer pid : packageIds) {
             Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());
             if (pack != null) {

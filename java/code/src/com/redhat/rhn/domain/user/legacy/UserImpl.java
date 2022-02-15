@@ -211,8 +211,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     public Set<Role> getRoles() {
         Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = i.next();
+        for (UserGroupMembers ugm : groupMembers) {
             userRoles.add(ugm.getUserGroup().getRole());
         }
 
@@ -229,8 +228,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     public Set<Role> getTemporaryRoles() {
         Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = i.next();
+        for (UserGroupMembers ugm : groupMembers) {
             if (ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
@@ -249,8 +247,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     public Set<Role> getPermanentRoles() {
         Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = i.next();
+        for (UserGroupMembers ugm : groupMembers) {
             if (!ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
@@ -910,12 +907,12 @@ public class UserImpl extends BaseDomainHelper implements User {
         Address addr = null;
         Address[] addrA = addresses.toArray(new Address[addresses.size()]);
         if (addresses.size() > 0) {
-            for (int i = 0; i < addrA.length; i++) {
-                if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
-                    addr = addrA[i];
+            for (Address addressIn : addrA) {
+                if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
+                    addr = addressIn;
                 }
-                if (addrA[i].getType().equals("B")) {
-                    baddr = addrA[i];
+                if (addressIn.getType().equals("B")) {
+                    baddr = addressIn;
                 }
             }
         }
@@ -1218,12 +1215,12 @@ public class UserImpl extends BaseDomainHelper implements User {
             Address addr = null;
             Address[] addrA = addresses.toArray(new Address[addresses.size()]);
             if (addresses.size() > 0) {
-                for (int i = 0; i < addrA.length; i++) {
-                    if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
-                        addr = addrA[i];
+                for (Address addressIn : addrA) {
+                    if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
+                        addr = addressIn;
                     }
-                    if (addrA[i].getType().equals("B")) {
-                        baddr = addrA[i];
+                    if (addressIn.getType().equals("B")) {
+                        baddr = addressIn;
                     }
                 }
             }

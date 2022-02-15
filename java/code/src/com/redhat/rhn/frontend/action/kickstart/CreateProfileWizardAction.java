@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -110,8 +109,8 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     @Override
     protected void generateWizardSteps(Map steps) {
         List methods = findMethods("run");
-        for (Iterator iter = methods.iterator(); iter.hasNext();) {
-            Method m = (Method) iter.next();
+        for (Object methodIn : methods) {
+            Method m = (Method) methodIn;
             if (m.getName().startsWith("run")) {
                 String stepName = m.getName().substring(3).toLowerCase();
                 WizardStep wizStep = new WizardStep();

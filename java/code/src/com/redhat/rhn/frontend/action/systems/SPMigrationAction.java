@@ -397,8 +397,8 @@ public class SPMigrationAction extends RhnAction {
         Collections.sort(channels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<ChildChannelDto> childChannels = new ArrayList<ChildChannelDto>();
-        for (int i = 0; i < channels.size(); i++) {
-            Channel child = (Channel) channels.get(i);
+        for (Channel channelIn : channels) {
+            Channel child = (Channel) channelIn;
             ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
                     child.getName(),
                     s.isSubscribed(child),

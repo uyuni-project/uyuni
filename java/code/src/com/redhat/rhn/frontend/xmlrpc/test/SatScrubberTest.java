@@ -67,8 +67,8 @@ public class SatScrubberTest extends TestCase {
         orgAdmin = UserFactory.findRandomOrgAdmin(OrgFactory.getSatelliteOrg());
         List kickstarts = KickstartLister.
                 getInstance().kickstartsInOrg(orgAdmin.getOrg(), null);
-        for (int i = 0; i < kickstarts.size(); i++) {
-            KickstartDto dto = (KickstartDto) kickstarts.get(i);
+        for (Object kickstartIn : kickstarts) {
+            KickstartDto dto = (KickstartDto) kickstartIn;
             KickstartData ksdata = KickstartFactory.
                     lookupKickstartDataByIdAndOrg(orgAdmin.getOrg(), dto.getId());
             if (ksdata.getLabel().startsWith("KS Data: ")) {
@@ -77,8 +77,8 @@ public class SatScrubberTest extends TestCase {
         }
         List trees = KickstartLister.
                 getInstance().kickstartTreesInOrg(orgAdmin.getOrg(), null);
-        for (int i = 0; i < trees.size(); i++) {
-            KickstartableTreeDto dto = (KickstartableTreeDto) trees.get(i);
+        for (Object treeIn : trees) {
+            KickstartableTreeDto dto = (KickstartableTreeDto) treeIn;
             KickstartableTree tree = KickstartFactory.
                     lookupKickstartTreeByIdAndOrg(dto.getId(), orgAdmin.getOrg());
             if (tree.getLabel().startsWith("ks-ChannelLabel")) {

@@ -140,7 +140,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -1393,9 +1392,7 @@ public class SystemManager extends BaseManager {
      * @return boolean of if a server is kickstarting
      */
     public static boolean isKickstarting(User user, Long sid) {
-        Iterator<KickstartSessionDto> i = lookupKickstartSession(user, sid).iterator();
-        while (i.hasNext()) {
-            KickstartSessionDto next = i.next();
+        for (KickstartSessionDto next : lookupKickstartSession(user, sid)) {
             if (!(next.getState().equals("complete") ||
                     next.getState().equals("failed"))) {
                 return true;
@@ -1678,9 +1675,7 @@ public class SystemManager extends BaseManager {
             return null;
         }
 
-        Iterator<Map<String, Object>> iter = dr.iterator();
-        while (iter.hasNext()) {
-            Map<String, Object> map = iter.next();
+        for (Map<String, Object> map : dr) {
             String ent = (String) map.get("label");
             entitlements.add(EntitlementManager.getByName(ent));
         }
@@ -2054,8 +2049,7 @@ public class SystemManager extends BaseManager {
         // see the activateProxy() method
         if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
             Set<Channel> channels = server.getChannels();
-            for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
-                Channel c = itr.next();
+            for (Channel c : channels) {
                 ChannelFamily cf = c.getChannelFamily();
                 if (cf.getLabel().equals("SMP")) {
                     SystemManager.unsubscribeServerFromChannel(server, c);
@@ -2450,9 +2444,7 @@ public class SystemManager extends BaseManager {
 
         log.debug("Adding guest memory:");
         List<ValidatorWarning> warnings = new LinkedList<ValidatorWarning>();
-        for (Iterator<VirtualInstance> it = host.getGuests().iterator(); it.hasNext();) {
-            VirtualInstance guest = it.next();
-
+        for (VirtualInstance guest : host.getGuests()) {
             // if the guest we're examining isn't running, don't count it's memory
             // when determining if the host has enough free:
             if (guest.getState() != null &&
@@ -2467,7 +2459,7 @@ public class SystemManager extends BaseManager {
                         // for the settings to take effect:
                         warnings.add(new ValidatorWarning(
                                 "systems.details.virt.memory.warning",
-                                new Object [] {guest.getName()}));
+                                new Object[]{guest.getName()}));
                     }
                 }
                 else {
@@ -2486,8 +2478,8 @@ public class SystemManager extends BaseManager {
         warnings.add(new ValidatorWarning("systems.details.virt.memory.check.host"));
 
         if (!warnings.isEmpty()) {
-            for (Iterator<ValidatorWarning> itr = warnings.iterator(); itr.hasNext();) {
-                result.addWarning(itr.next());
+            for (ValidatorWarning warningIn : warnings) {
+                result.addWarning(warningIn);
             }
         }
 
@@ -3101,9 +3093,7 @@ public class SystemManager extends BaseManager {
         List<DuplicateSystemGrouping> duplicateSystems = listDuplicates(user,
                 "duplicate_system_ids_hostname",
                         new ArrayList<String>(), inactiveHours);
-        ListIterator<DuplicateSystemGrouping> litr = duplicateSystems.listIterator();
-        while (litr.hasNext()) {
-            DuplicateSystemGrouping element = litr.next();
+        for (DuplicateSystemGrouping element : duplicateSystems) {
             element.setKey(IDN.toUnicode(element.getKey()));
         }
         return duplicateSystems;

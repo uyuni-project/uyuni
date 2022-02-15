@@ -559,8 +559,8 @@ public class ErrataFactory extends HibernateFactory {
         params.put("cve", cve);
         List result = mode.execute(params);
         Session session = HibernateFactory.getSession();
-        for (Iterator iter = result.iterator(); iter.hasNext();) {
-            Map row = (Map) iter.next();
+        for (Object oIn : result) {
+            Map row = (Map) oIn;
             Long rawId = (Long) row.get("id");
             retval.add(session.load(Errata.class, rawId));
         }

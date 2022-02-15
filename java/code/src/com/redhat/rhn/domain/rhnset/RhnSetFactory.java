@@ -25,7 +25,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -90,9 +89,8 @@ public class RhnSetFactory extends HibernateFactory {
         RhnSetElement element = (RhnSetElement)elements.get(0);
         RhnSetImpl set =
             new RhnSetImpl(element.getUserId(), element.getLabel(), cleanup);
-        Iterator itr = elements.iterator();
-        while (itr.hasNext()) {
-            element = (RhnSetElement) itr.next();
+        for (Object elementIn : elements) {
+            element = (RhnSetElement) elementIn;
             set.addElement(element);
         }
 
@@ -122,8 +120,7 @@ public class RhnSetFactory extends HibernateFactory {
             WriteMode deleteEl3 = writeMode("delete_from_set_el3");
             WriteMode deleteEl2 = writeMode("delete_from_set_el2");
             WriteMode deleteEl1 = writeMode("delete_from_set_el1");
-            for (Iterator i = simpl.getRemoved().iterator(); i.hasNext();) {
-                RhnSetElement current = (RhnSetElement) i.next();
+            for (RhnSetElement current : simpl.getRemoved()) {
                 executeMode(current, deleteEl3, deleteEl2, deleteEl1);
             }
         }
@@ -142,8 +139,8 @@ public class RhnSetFactory extends HibernateFactory {
         WriteMode insertEl2 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el2", true);
         WriteMode insertEl1 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el1", true);
 
-        for (Iterator i = added.iterator(); i.hasNext();) {
-            RhnSetElement current = (RhnSetElement) i.next();
+        for (Object oIn : added) {
+            RhnSetElement current = (RhnSetElement) oIn;
             try {
                 executeMode(current, insertEl3, insertEl2, insertEl1);
             }

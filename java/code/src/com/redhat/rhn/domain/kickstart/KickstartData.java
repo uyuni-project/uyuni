@@ -511,9 +511,7 @@ public class KickstartData {
     private KickstartScript lookupScriptByType(String typeIn) {
         if (this.getScripts() != null &&
                 this.getScripts().size() > 0) {
-            Iterator<KickstartScript> i = this.getScripts().iterator();
-            while (i.hasNext()) {
-                KickstartScript kss = i.next();
+            for (KickstartScript kss : this.getScripts()) {
                 if (kss.getScriptType().equals(typeIn)) {
                     return kss;
                 }
@@ -538,9 +536,7 @@ public class KickstartData {
     public boolean hasCommand(String commandName) {
         boolean retval = false;
         if (this.commands != null && this.commands.size() > 0) {
-            for (Iterator<KickstartCommand> iter = this.commands.iterator();
-                    iter.hasNext();) {
-                KickstartCommand cmd = iter.next();
+            for (KickstartCommand cmd : this.commands) {
                 if (cmd.getCommandName().getName().equals(label)) {
                     retval = true;
                     break;
@@ -578,9 +574,7 @@ public class KickstartData {
     public KickstartCommand getCommand(String commandName) {
         KickstartCommand retval = null;
         if (this.commands != null && this.commands.size() > 0) {
-            for (Iterator<KickstartCommand> iter = this.commands.iterator();
-                    iter.hasNext();) {
-                KickstartCommand cmd = iter.next();
+            for (KickstartCommand cmd : this.commands) {
                 if (cmd.getCommandName().getName().equals(commandName)) {
                     retval = cmd;
                     break;
@@ -610,9 +604,7 @@ public class KickstartData {
     private Set<KickstartCommand> getCommandSubset(String name) {
         Set<KickstartCommand> retval = new LinkedHashSet<KickstartCommand>();
         if (this.commands != null && this.commands.size() > 0) {
-            for (Iterator<KickstartCommand> iter = this.commands.iterator();
-                    iter.hasNext();) {
-                KickstartCommand cmd = iter.next();
+            for (KickstartCommand cmd : this.commands) {
                 logger.debug("getCommandSubset : working with: " +
                         cmd.getCommandName().getName());
                 if (cmd.getCommandName().getName().equals(name)) {
@@ -710,9 +702,7 @@ public class KickstartData {
         logger.debug("returning all commands except: " + ADANCED_OPTIONS);
         Set<KickstartCommand> retval = new HashSet<KickstartCommand>();
         if (this.commands != null && this.commands.size() > 0) {
-            for (Iterator<KickstartCommand> iter = this.commands.iterator();
-                    iter.hasNext();) {
-                KickstartCommand cmd = iter.next();
+            for (KickstartCommand cmd : this.commands) {
                 logger.debug("working with: " + cmd.getCommandName().getName());
                 if (!ADANCED_OPTIONS.contains(cmd.getCommandName().getName())) {
                     logger.debug("not contained within filtered list. adding to retval");
@@ -1139,11 +1129,7 @@ public class KickstartData {
 
         List<String> tokens = StringUtil.stringToList(tzCommand.getArguments());
 
-        Iterator<String> iter = tokens.iterator();
-
-        while (iter.hasNext()) {
-            String token = iter.next();
-
+        for (String token : tokens) {
             if (!token.startsWith("--")) {
                 return token;
             }
@@ -1166,11 +1152,7 @@ public class KickstartData {
 
         List<String> tokens = StringUtil.stringToList(tzCommand.getArguments());
 
-        Iterator<String> iter = tokens.iterator();
-
-        while (iter.hasNext()) {
-            String token = iter.next();
-
+        for (String token : tokens) {
             if (token.equals("--utc")) {
                 return Boolean.TRUE;
             }
@@ -1241,9 +1223,7 @@ public class KickstartData {
         }
 
         if (this.getScripts() != null) {
-            Iterator<KickstartScript> i = this.getScripts().iterator();
-            while (i.hasNext()) {
-                KickstartScript kss = i.next();
+            for (KickstartScript kss : this.getScripts()) {
                 KickstartScript ksscloned = kss.deepCopy(cloned);
                 cloned.getScripts().add(ksscloned);
             }
@@ -1269,9 +1249,7 @@ public class KickstartData {
     private static void copyKickstartCommands(Collection<KickstartCommand> commands,
             KickstartData cloned) {
         if (commands != null) {
-            Iterator<KickstartCommand> i = commands.iterator();
-            while (i.hasNext()) {
-                KickstartCommand cmd = i.next();
+            for (KickstartCommand cmd : commands) {
                 KickstartCommand clonedCmd = cmd.deepCopy(cloned);
                 cloned.addCommand(clonedCmd);
             }

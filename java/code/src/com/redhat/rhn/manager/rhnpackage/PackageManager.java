@@ -823,8 +823,8 @@ public class PackageManager extends BaseManager {
 
         // For every channel the package is in, mark the channel as "changed" in case its
         // metadata needs tto be updated (RHEL5+, mostly)
-        for (Iterator itr = channels.iterator(); itr.hasNext();) {
-            Map m = (Map)itr.next();
+        for (Object channelIn : channels) {
+            Map m = (Map) channelIn;
             String channelLabel = m.get("label").toString();
             Channel channel = ChannelFactory.lookupByLabel(user.getOrg(), channelLabel);
             // force channel save to change last_modified
@@ -860,9 +860,9 @@ public class PackageManager extends BaseManager {
     private static void cleanupFileEntries(Long pid) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("pid", pid);
-        for (int x = 0; x < CLEANUP_QUERIES.length; x++) {
+        for (String cleanupQueryIn : CLEANUP_QUERIES) {
             WriteMode writeMode = ModeFactory.getWriteMode("Package_queries",
-                    "cleanup_package_" + CLEANUP_QUERIES[x]);
+                    "cleanup_package_" + cleanupQueryIn);
             writeMode.executeUpdate(params);
         }
     }
@@ -904,8 +904,8 @@ public class PackageManager extends BaseManager {
         // Remove packages that are in both queries
         while (i.hasNext()) {
             PackageComparison po = (PackageComparison) i.next();
-            for (int x = 0; x < possiblePackages.size(); x++) {
-                PackageComparison pinner = (PackageComparison) possiblePackages.get(x);
+            for (Object possiblePackageIn : possiblePackages) {
+                PackageComparison pinner = (PackageComparison) possiblePackageIn;
                 if (pinner.getId().equals(po.getId())) {
                     LOG.debug("possiblePackagesForPushingIntoChannel removing: " +
                             pinner.getId());
@@ -1698,17 +1698,17 @@ public class PackageManager extends BaseManager {
         List<Long> found = new ArrayList<Long>();
         List<Long> archNonCompat = new ArrayList<Long>();
         List<Long> orgNoAccess = new ArrayList<Long>();
-        for (Iterator i = dr.iterator(); i.hasNext();) {
-            Map m = (Map) i.next();
-            found.add((Long)m.get("id"));
+        for (Object oIn : dr) {
+            Map m = (Map) oIn;
+            found.add((Long) m.get("id"));
             if (m.get("package_arch_id") == null) {
-                archNonCompat.add((Long)m.get("id"));
+                archNonCompat.add((Long) m.get("id"));
             }
             if ((m.get("org_package") == null ||
-                    orgId.compareTo((Long)m.get("org_package")) != 0) &&
-                m.get("org_access") == null &&
-                m.get("shared_access") == null) {
-                orgNoAccess.add((Long)m.get("id"));
+                    orgId.compareTo((Long) m.get("org_package")) != 0) &&
+                    m.get("org_access") == null &&
+                    m.get("shared_access") == null) {
+                orgNoAccess.add((Long) m.get("id"));
             }
         }
         List<Long> missing = new ArrayList<Long>(packageIds);

@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,8 +144,8 @@ public class OvalFileAggregator {
     }
 
     private void attachChildren(Element parent, Map children) {
-        for (Iterator iter = children.keySet().iterator(); iter.hasNext();) {
-            String key = (String) iter.next();
+        for (Object oIn : children.keySet()) {
+            String key = (String) oIn;
             Element child = (Element) children.get(key);
             parent.getChildren().add(child);
         }
@@ -173,8 +172,8 @@ public class OvalFileAggregator {
     }
 
     private void storeChildren(XPathLite xpl, Document doc, Map container) {
-        for (Iterator iter = xpl.selectChildren(doc).iterator(); iter.hasNext();) {
-            Element child = (Element) iter.next();
+        for (Object oIn : xpl.selectChildren(doc)) {
+            Element child = (Element) oIn;
             String key = child.getAttributeValue("id");
             if (key == null) {
                 continue;

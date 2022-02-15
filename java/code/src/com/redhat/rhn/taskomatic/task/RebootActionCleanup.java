@@ -33,7 +33,6 @@ import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -106,8 +105,7 @@ public class RebootActionCleanup extends RhnJavaJob {
     private List<Long> invalidateActionRecursive(Long serverId, Long actionId) {
         List<Long> childIds = lookupChildAction(serverId, actionId);
         List<Long> aIds = new ArrayList<Long>();
-        for (Iterator<Long> itr = childIds.iterator(); itr.hasNext();) {
-            Long childAction = itr.next();
+        for (Long childAction : childIds) {
             List<Long> cIds = invalidateActionRecursive(serverId, childAction);
             aIds.addAll(cIds);
         }
@@ -137,8 +135,8 @@ public class RebootActionCleanup extends RhnJavaJob {
         params.put("action_id", actionId);
         retval = m.execute(params);
         if (retval != null) {
-            for (Iterator<?> itr = retval.iterator(); itr.hasNext();) {
-                String val = (String)itr.next();
+            for (Object oIn : retval) {
+                String val = (String) oIn;
                 childActions.add(Long.valueOf(val));
             }
         }

@@ -45,8 +45,7 @@ public class KickstartParser {
         String [] ksFileLines = ksFileContents.split("\\n");
 
         List<String> currentSectionLines = new LinkedList<String>();
-        for (int i = 0; i < ksFileLines.length; i++) {
-            String currentLine = ksFileLines[i];
+        for (String currentLine : ksFileLines) {
             if (isNewSection(currentLine)) {
                 storeSection(currentSectionLines);
                 currentSectionLines = new LinkedList<String>();

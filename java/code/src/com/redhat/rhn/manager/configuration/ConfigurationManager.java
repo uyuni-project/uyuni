@@ -73,7 +73,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1846,10 +1845,10 @@ public class ConfigurationManager extends BaseManager {
         List results = m.execute(params);
         long files = 0, slsFiles = 0, dirs = 0, symlinks = 0;
 
-        for (Iterator itr = results.iterator(); itr.hasNext();) {
-            Map map = (Map)itr.next();
-            Long count = (Long)map.get("count");
-            String fileType = (String)map.get("file_type");
+        for (Object resultIn : results) {
+            Map map = (Map) resultIn;
+            Long count = (Long) map.get("count");
+            String fileType = (String) map.get("file_type");
 
             if (ConfigFileType.file().getLabel().equals(fileType)) {
                 files = count.longValue();
@@ -1934,10 +1933,10 @@ public class ConfigurationManager extends BaseManager {
         Set slsfiles = new HashSet();
         Set dirs = new HashSet();
         Set symlinks = new HashSet();
-        for (Iterator itr = pathList.iterator(); itr.hasNext();) {
-            Map map = (Map) itr.next();
+        for (Object oIn : pathList) {
+            Map map = (Map) oIn;
             String path = (String) map.get("path");
-            String fileType = (String)map.get("file_type");
+            String fileType = (String) map.get("file_type");
             if (ConfigFileType.file().getLabel().equals(fileType)) {
                 if (!dirs.contains(path) && !symlinks.contains(path)) {
                     files.add(path);
@@ -1945,7 +1944,7 @@ public class ConfigurationManager extends BaseManager {
             }
             if (ConfigFileType.sls().getLabel().equals(fileType)) {
                 if (!dirs.contains(path) && !symlinks.contains(path)) {
-                     slsfiles.add(path);
+                    slsfiles.add(path);
                 }
             }
             else if (ConfigFileType.symlink().getLabel().equals(fileType)) {
@@ -2337,8 +2336,8 @@ public class ConfigurationManager extends BaseManager {
 
         List<Long> servers = new LinkedList<Long>();
 
-        for (Iterator itr = systemIds.iterator(); itr.hasNext();) {
-            servers.add((Long)itr.next());
+        for (Object systemIdIn : systemIds) {
+            servers.add((Long) systemIdIn);
         }
 
         Map<Long, Collection<Long>> serverConfigMap =
@@ -2347,10 +2346,10 @@ public class ConfigurationManager extends BaseManager {
         for (Long serverId : servers) {
             Set<Long> revs = new HashSet();
             // For each revision....
-            for (Iterator fItr = fileIds.iterator(); fItr.hasNext();) {
-                Long file = (Long)fItr.next();
-                Long rev = (Long)fileMap.get(file);
-                Long cfnid = (Long)nameMap.get(file);
+            for (Object fileIdIn : fileIds) {
+                Long file = (Long) fileIdIn;
+                Long rev = (Long) fileMap.get(file);
+                Long cfnid = (Long) nameMap.get(file);
                 Long deployableRev = getDeployableRevisionForFileName(
                         cfnid, serverId);
                 revs.add(deployableRev);
@@ -2387,8 +2386,8 @@ public class ConfigurationManager extends BaseManager {
      */
     private Map mapFileToName(Set fileIds) {
         Map m = new HashMap();
-        for (Iterator itr = fileIds.iterator(); itr.hasNext();) {
-            Long id = (Long)itr.next();
+        for (Object fileIdIn : fileIds) {
+            Long id = (Long) fileIdIn;
             ConfigFile cf = ConfigurationFactory.lookupConfigFileById(id);
             if (cf != null) {
                 m.put(id, cf.getConfigFileName().getId());
@@ -2404,8 +2403,8 @@ public class ConfigurationManager extends BaseManager {
      */
     private Map mapFileToRevId(Set fileIds) {
         Map m = new HashMap();
-        for (Iterator itr = fileIds.iterator(); itr.hasNext();) {
-            Long id = (Long)itr.next();
+        for (Object fileIdIn : fileIds) {
+            Long id = (Long) fileIdIn;
             ConfigFile cf = ConfigurationFactory.lookupConfigFileById(id);
             if (cf != null) {
                 m.put(id, cf.getLatestConfigRevision().getId());

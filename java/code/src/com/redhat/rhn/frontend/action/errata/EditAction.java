@@ -238,9 +238,8 @@ public class EditAction extends LookupDispatchAction {
         }
 
         //add bugs from the form
-        Iterator i = bugs.iterator();
-        while (i.hasNext()) {
-            String[] bug = (String[])i.next();
+        for (Object bugIn : bugs) {
+            String[] bug = (String[]) bugIn;
             Long bugid = Long.valueOf(bug[0]);
             String summary = bug[1];
             String url = bug[2];
@@ -251,9 +250,8 @@ public class EditAction extends LookupDispatchAction {
         String keywordsField = form.getString("keywords");
         if (keywordsField != null && keywordsField.length() > 0) {
             List keywordsOnPage = Arrays.asList(keywordsField.split(","));
-            Iterator keywordItr = keywordsOnPage.iterator();
-            while (keywordItr.hasNext()) {
-                String keyword = (String) keywordItr.next();
+            for (Object oIn : keywordsOnPage) {
+                String keyword = (String) oIn;
                 keyword = keyword.trim();
                 if (keyword != null && keyword.length() > 0) {
                     e.addKeyword(keyword);

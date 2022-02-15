@@ -49,7 +49,6 @@ import org.cobbler.Distro;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -247,8 +246,7 @@ public class KickstartBuilder {
 
         Set<KickstartPackage> ksPackagesSet = new TreeSet<KickstartPackage>();
         Long pos = 0L;
-        for (Iterator<String> it = lines.iterator(); it.hasNext();) {
-            String currentLine = it.next();
+        for (String currentLine : lines) {
             if (currentLine.startsWith("#") || currentLine.startsWith("%packages") ||
                     currentLine.equals("")) {
                 continue;

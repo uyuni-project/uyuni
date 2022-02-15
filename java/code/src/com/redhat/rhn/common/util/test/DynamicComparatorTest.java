@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,10 +39,9 @@ public class DynamicComparatorTest extends RhnJmockBaseTestCase {
         List retval = new LinkedList();
         List letters = LocalizationService.getInstance().getAlphabet();
         Collections.shuffle(letters);
-        Iterator i = letters.iterator();
-        while (i.hasNext()) {
+        for (Object letterIn : letters) {
             TestObject to = new TestObject();
-            to.setStringField((String) i.next());
+            to.setStringField((String) letterIn);
             retval.add(to);
         }
         return retval;

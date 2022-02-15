@@ -222,8 +222,8 @@ public class Acl {
      * @see #registerHandler(AclHandler)
      * */
     public Acl(String[] defaultHandlerClasses) {
-        for (int i = 0; i < defaultHandlerClasses.length; ++i) {
-            registerHandler(defaultHandlerClasses[i]);
+        for (String defaultHandlerClassIn : defaultHandlerClasses) {
+            registerHandler(defaultHandlerClassIn);
         }
     }
 
@@ -294,9 +294,8 @@ public class Acl {
             BeanInfo info = Introspector.getBeanInfo(clazz);
             MethodDescriptor[] methodDescriptors = info.getMethodDescriptors();
 
-            for (int i = 0; i < methodDescriptors.length; ++i) {
+            for (MethodDescriptor methodDescriptor : methodDescriptors) {
 
-                MethodDescriptor methodDescriptor = methodDescriptors[i];
                 String methodName = methodDescriptor.getName();
 
                 // we only care about methods with signatures:
@@ -307,14 +306,14 @@ public class Acl {
                 Method method = methodDescriptor.getMethod();
                 Class[] params = method.getParameterTypes();
                 if (!method.getReturnType().equals(Boolean.TYPE) ||
-                   method.getExceptionTypes().length > 0 ||
-                   params.length != 2 ||
-                   !params[0].equals(Object.class) ||
-                   !params[1].equals(String[].class)) {
-                   log.warn(LocalizationService.getInstance().getMessage(
-                                "bad-signature", method.toString()));
+                        method.getExceptionTypes().length > 0 ||
+                        params.length != 2 ||
+                        !params[0].equals(Object.class) ||
+                        !params[1].equals(String[].class)) {
+                    log.warn(LocalizationService.getInstance().getMessage(
+                            "bad-signature", method.toString()));
 
-                   continue;
+                    continue;
 
                 }
 

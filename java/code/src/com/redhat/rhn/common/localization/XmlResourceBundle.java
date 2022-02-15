@@ -24,7 +24,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -131,9 +130,8 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
             }
         }
 
-        Iterator<String> itr = strings.keySet().iterator();
-        while (itr.hasNext()) {
-            keys.add(itr.next());
+        for (String sIn : strings.keySet()) {
+            keys.add(sIn);
         }
         // Ugh, have to convert back to the old Enumeration interface
         // This isn't pretty but it works.

@@ -31,7 +31,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -88,10 +87,9 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
             keystring.append(key.getKey());
             if (this.ksData.getDefaultRegTokens() != null) {
                 log.debug("Adding associated activation keys.");
-                Iterator i = this.ksData.getDefaultRegTokens().iterator();
-                while (i.hasNext()) {
+                for (Token tokenIn : this.ksData.getDefaultRegTokens()) {
                     ActivationKey akey =
-                        ActivationKeyFactory.lookupByToken((Token) i.next());
+                            ActivationKeyFactory.lookupByToken(tokenIn);
                     keystring.append(",");
                     keystring.append(akey.getKey());
                 }

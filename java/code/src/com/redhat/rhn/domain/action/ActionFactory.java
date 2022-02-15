@@ -94,7 +94,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -128,9 +127,8 @@ public class ActionFactory extends HibernateFactory {
                         .setCacheable(true).list();
 
                 actionArchTypes = new HashSet();
-                Iterator i = types.iterator();
-                while (i.hasNext()) {
-                    ActionArchType type = (ActionArchType) i.next();
+                for (Object typeIn : types) {
+                    ActionArchType type = (ActionArchType) typeIn;
                     // don't cache the entire ActionArchType bean to avoid
                     // any LazyInitializatoinException latter
                     actionArchTypes.add(toActionArchTypeKey(type.getActionType().getId(),
@@ -684,9 +682,8 @@ public class ActionFactory extends HibernateFactory {
 
             PackageAction action = (PackageAction) actionIn;
             Set details = action.getDetails();
-            Iterator ditr = details.iterator();
-            while (ditr.hasNext()) {
-                PackageActionDetails detail = (PackageActionDetails) ditr.next();
+            for (Object detailIn : details) {
+                PackageActionDetails detail = (PackageActionDetails) detailIn;
                 PackageEvr evr = detail.getEvr();
 
                 // It is possible to have a Package Action with only a package name
@@ -746,8 +743,8 @@ public class ActionFactory extends HibernateFactory {
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
             actionsAtHierarchyLevel = new LinkedList();
-            for (Iterator i = results.iterator(); i.hasNext();) {
-                actionsAtHierarchyLevel.add(((Action)i.next()).getId());
+            for (Object resultIn : results) {
+                actionsAtHierarchyLevel.add(((Action) resultIn).getId());
             }
         }
         while (actionsAtHierarchyLevel.size() > 0);

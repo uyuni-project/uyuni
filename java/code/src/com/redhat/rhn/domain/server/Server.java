@@ -202,9 +202,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public ConfigChannel getLocalOverrideNoCreate() {
         ensureConfigManageable();
         ConfigChannel channel = null;
-        for (Iterator<ConfigChannel> itr = localChannels.iterator(); itr
-                .hasNext();) {
-            ConfigChannel ch = itr.next();
+        for (ConfigChannel ch : localChannels) {
             if (ch.getConfigChannelType().equals(ConfigChannelType.local())) {
                 channel = ch;
                 break;
@@ -252,10 +250,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 "There should be NO more than Two" +
                 " Override Channels associated";
         ensureConfigManageable();
-        for (Iterator<ConfigChannel> itr = localChannels.iterator(); itr
-                .hasNext();) {
-            ConfigChannel ch = itr.next();
-            ConfigChannelType  item = ch.getConfigChannelType();
+        for (ConfigChannel ch : localChannels) {
+            ConfigChannelType item = ch.getConfigChannelType();
             if (cct.equals(item)) {
                 return ch;
             }
@@ -289,9 +285,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public ConfigChannel getSandboxOverrideNoCreate() {
         ensureConfigManageable();
         ConfigChannel channel = null;
-        for (Iterator<ConfigChannel> itr = localChannels.iterator(); itr
-                .hasNext();) {
-            ConfigChannel ch = itr.next();
+        for (ConfigChannel ch : localChannels) {
             if (ch.getConfigChannelType().equals(ConfigChannelType.sandbox())) {
                 channel = ch;
                 break;
@@ -1067,9 +1061,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         if (networkInterfaces.isEmpty()) {
             return null;
         }
-        for (Iterator<NetworkInterface> i = networkInterfaces.iterator(); i
-                .hasNext();) {
-            NetworkInterface ni = i.next();
+        for (NetworkInterface ni : networkInterfaces) {
             if (ni.isDisabled()) {
                 continue;
             }
@@ -1375,8 +1367,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
          * relatively small, loop through the channels set and look for one without a
          * parentChannel instead of going back to the db.
          */
-        for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
-            Channel channel = itr.next();
+        for (Channel channel : channels) {
             if (channel.getParentChannel() == null) {
                 // This is the base channel
                 return channel;
@@ -1819,10 +1810,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Set<Entitlement> getValidAddonEntitlementsForServer() {
         Set<Entitlement> retval = new TreeSet<Entitlement>();
-        Iterator<?> i = this.getOrg().getValidAddOnEntitlementsForOrg()
-                .iterator();
-        while (i.hasNext()) {
-            Entitlement ent = (Entitlement) i.next();
+        for (Entitlement ent : this.getOrg().getValidAddOnEntitlementsForOrg()) {
             if (ent.isAllowedOnServer(this)) {
                 retval.add(ent);
             }
@@ -1971,9 +1959,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setPrimaryInterface(NetworkInterface primaryInterfaceIn) {
         primaryInterface = primaryInterfaceIn;
-        Iterator<NetworkInterface> i = networkInterfaces.iterator();
-        while (i.hasNext()) {
-            NetworkInterface n = i.next();
+        for (NetworkInterface n : networkInterfaces) {
             n.setPrimary(null);
         }
         SystemManager.storeServer(this);

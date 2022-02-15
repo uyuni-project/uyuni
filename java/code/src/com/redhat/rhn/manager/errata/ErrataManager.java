@@ -93,7 +93,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -141,9 +140,9 @@ public class ErrataManager extends BaseManager {
             return null;
         }
         List retval = new LinkedList();
-        for (Iterator iter = errataFiles.iterator(); iter.hasNext();) {
+        for (Object errataFileIn : errataFiles) {
             String directory = Config.get().getString("web.mount_point");
-            ErrataFile ef = (ErrataFile) iter.next();
+            ErrataFile ef = (ErrataFile) errataFileIn;
             if (directory == null) {
                 return null;
             }
@@ -202,10 +201,8 @@ public class ErrataManager extends BaseManager {
     public static Errata addChannelsToErrata(Errata errata,
             Collection<Long> channelIds, User user) {
         log.debug("addChannelsToErrata");
-        Iterator itr = channelIds.iterator();
 
-        while (itr.hasNext()) {
-            Long channelId = (Long) itr.next();
+        for (Long channelId : channelIds) {
             ChannelManager.lookupByIdAndUser(channelId, user);
         }
 
@@ -1241,8 +1238,8 @@ public class ErrataManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Errata_queries", mode);
         DataResult result =  m.execute(params);
         List ids = new ArrayList<Long>();
-        for (Iterator iter = result.iterator(); iter.hasNext();) {
-            Map row = (Map) iter.next();
+        for (Object oIn : result) {
+            Map row = (Map) oIn;
             Long rawId = (Long) row.get("id");
             ids.add(rawId);
         }

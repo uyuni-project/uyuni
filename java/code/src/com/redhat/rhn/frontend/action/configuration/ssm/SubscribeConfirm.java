@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionMapping;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,9 +128,8 @@ public class SubscribeConfirm extends RhnAction {
         //visit every server and change their subscriptions
         //keep track of how many servers we have changed
         int successes = 0;
-        Iterator i = systems.iterator();
-        while (i.hasNext()) {
-            Long sid = ((ConfigSystemDto)i.next()).getId();
+        for (Object systemIn : systems) {
+            Long sid = ((ConfigSystemDto) systemIn).getId();
             try {
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
 

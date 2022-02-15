@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -64,8 +63,8 @@ public class RhnSetTest extends RhnBaseTestCase {
         assertAddRemove(3, 0);
 
         int i = 0;
-        for (Iterator itr = elements.iterator(); itr.hasNext();) {
-            RhnSetElement element = (RhnSetElement) itr.next();
+        for (Object elementIn : elements) {
+            RhnSetElement element = (RhnSetElement) elementIn;
             if (element.getElementTwo() != null && element.getElementThree() != null) {
                 assertEquals(num, element.getElement());
                 assertEquals(num, element.getElementTwo());

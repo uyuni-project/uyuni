@@ -519,8 +519,8 @@ public class TestUtils {
      */
     public static boolean arraySearch(Object[] search, String methodName, Object key) {
         boolean found = false;
-        for (int i = 0; i < search.length; i++) {
-            Object value = MethodUtil.callMethod(search[i], methodName, new Object[0]);
+        for (Object searchIn : search) {
+            Object value = MethodUtil.callMethod(searchIn, methodName, new Object[0]);
             if (value.equals(key)) {
                 found = true;
             }
@@ -553,11 +553,11 @@ public class TestUtils {
         /* Check we have valid arguments */
         /* Go and find the private field... */
         final Field[] fields = o.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; ++i) {
-            if (fieldName.equals(fields[i].getName())) {
+        for (Field fieldIn : fields) {
+            if (fieldName.equals(fieldIn.getName())) {
                 try {
-                    fields[i].setAccessible(true);
-                    return fields[i].get(o);
+                    fieldIn.setAccessible(true);
+                    return fieldIn.get(o);
                 }
                 catch (IllegalAccessException ex) {
                     throw new RuntimeException(ex);

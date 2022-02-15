@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -35,8 +34,7 @@ public class SerializerFactoryTest extends TestCase {
         List serializers = factory.getSerializers();
         assertNotNull(serializers);
         assertFalse(serializers.isEmpty());
-        for (Iterator itr = serializers.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : serializers) {
             assertNotNull(o);
         }
     }

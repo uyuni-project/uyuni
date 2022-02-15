@@ -401,8 +401,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     private static void addPackages(Channel c, String[] names)
             throws Exception {
-        for (int i = 0; i < names.length; i++) {
-            PackageManagerTest.addPackageToChannel(names[i], c);
+        for (String nameIn : names) {
+            PackageManagerTest.addPackageToChannel(nameIn, c);
         }
     }
 

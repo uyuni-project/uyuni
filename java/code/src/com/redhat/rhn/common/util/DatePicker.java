@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -418,22 +417,22 @@ public class DatePicker {
         Map fieldCalMap = getFieldCalMap();
 
         //go through and read all of the fields we need.
-        for (Iterator i = fieldCalMap.keySet().iterator(); i.hasNext();) {
-            String field = (String) i.next();
+        for (Object oIn : fieldCalMap.keySet()) {
+            String field = (String) oIn;
             Object value = map.get(propertyName(field));
             Integer fieldValue;
             if (value == null) {
                 fieldValue = null;
             }
             else if (value instanceof Integer) {
-                fieldValue = (Integer)value;
+                fieldValue = (Integer) value;
             }
             else if (value instanceof String) {
                 fieldValue = Integer.parseInt((String) value);
             }
             //this is necessary for reading request parameters.
             else if (value instanceof String[]) {
-                String [] s = (String[])value;
+                String[] s = (String[]) value;
                 if (StringUtils.isEmpty(s[0])) {
                     fieldValue = null;
                 }
@@ -477,8 +476,8 @@ public class DatePicker {
      */
     public void writeToMap(Map map) {
         Map fieldCalMap = getFieldCalMap();
-        for (Iterator i = fieldCalMap.keySet().iterator(); i.hasNext();) {
-            String field = (String) i.next();
+        for (Object oIn : fieldCalMap.keySet()) {
+            String field = (String) oIn;
             map.put(propertyName(field), getField(field));
         }
     }

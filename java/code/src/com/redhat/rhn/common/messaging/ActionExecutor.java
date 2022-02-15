@@ -19,7 +19,6 @@ import com.redhat.rhn.frontend.events.TransactionHelper;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -47,8 +46,7 @@ class ActionExecutor implements Runnable {
      * the message to each
      */
     public void run() {
-        for (Iterator<MessageAction> iter = actionHandlers.iterator(); iter.hasNext();) {
-            MessageAction action = iter.next();
+        for (MessageAction action : actionHandlers) {
             LOG.debug("run() - got action: " + action.getClass().getName());
             try {
                 if (msg instanceof EventDatabaseMessage) {

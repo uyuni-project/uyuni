@@ -42,7 +42,6 @@ import org.apache.struts.action.ActionMapping;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -85,11 +84,11 @@ public class SystemOverviewAction extends RhnAction {
         List childChannels = new ArrayList();
         DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
 
-        for (Iterator i = channelList.iterator(); i.hasNext();) {
-            Map ch = (HashMap) i.next();
+        for (Object oIn : channelList) {
+            Map ch = (HashMap) oIn;
 
             if (s.getBaseChannel() != null &&
-                ch.get("id").equals(s.getBaseChannel().getId())) {
+                    ch.get("id").equals(s.getBaseChannel().getId())) {
                 baseChannel.put("id", ch.get("id"));
                 baseChannel.put("name", ch.get("name"));
             }
@@ -182,11 +181,11 @@ public class SystemOverviewAction extends RhnAction {
             return serverPreferenceList;
         }
 
-        for (int j = 0; j < SERVER_PREFERENCES.length; ++j) {
+        for (String serverPreferenceIn : SERVER_PREFERENCES) {
             if (UserManager.lookupUserServerPreferenceValue(user,
-                                                            s,
-                                                            SERVER_PREFERENCES[j])) {
-                serverPreferenceList.add(SERVER_PREFERENCES[j]);
+                    s,
+                    serverPreferenceIn)) {
+                serverPreferenceList.add(serverPreferenceIn);
             }
         }
 

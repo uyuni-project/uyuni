@@ -39,7 +39,6 @@ import org.apache.struts.action.ActionMessages;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -110,9 +109,8 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
         //We want a set of ids, but we have a set of RhnSetElements.  This
         //does the conversion.
         Set sids = new HashSet();
-        Iterator i = set.getElements().iterator();
-        while (i.hasNext()) {
-            Long sid = ((RhnSetElement)i.next()).getElement();
+        for (RhnSetElement rhnSetElementIn : set.getElements()) {
+            Long sid = rhnSetElementIn.getElement();
             sids.add(sid);
         }
 

@@ -152,7 +152,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -488,11 +487,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(systems.isEmpty());
         assertTrue(systems.size() > origCount);
         boolean found = false;
-        Iterator<SystemOverview> i = systems.iterator();
-        while (i.hasNext()) {
-            SystemOverview so = i.next();
+        for (SystemOverview so : systems) {
             if (so.getId().longValue() ==
-                server.getId().longValue()) {
+                    server.getId().longValue()) {
                 found = true;
             }
         }
@@ -562,8 +559,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(SystemManager.hasUnscheduledErrata(user, server.getId()));
 
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        for (Iterator<Package> itr = e.getPackages().iterator(); itr.hasNext();) {
-            Package pkg = itr.next();
+        for (Package pkg : e.getPackages()) {
             ErrataCacheManager.insertNeededErrataCache(server.getId(),
                     e.getId(), pkg.getId());
         }
@@ -650,8 +646,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
         boolean found = false;
-        for (Iterator<Map<String, Object>> itr = list.iterator(); itr.hasNext();) {
-            Map<String, Object> o = itr.next();
+        for (Map<String, Object> o : list) {
             if (srvr1.getName().equals(o.get("name"))) {
                 found = true;
             }
@@ -825,8 +820,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         User user = host.getCreator();
         UserTestUtils.addVirtualization(user.getOrg());
 
-        for (Iterator<VirtualInstance> it = host.getGuests().iterator(); it.hasNext();) {
-            VirtualInstance vi = it.next();
+        for (VirtualInstance vi : host.getGuests()) {
             Server guest = vi.getGuestSystem();
             guest.addChannel(ChannelTestUtils.createBaseChannel(user));
             ServerTestUtils.addVirtualization(user, guest);
@@ -1085,12 +1079,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(SystemManager.hasUnscheduledErrata(user, server.getId()));
 
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        for (Iterator<Package> itr = e.getPackages().iterator(); itr.hasNext();) {
-            Package pkg = itr.next();
+        for (Package pkg : e.getPackages()) {
             ErrataCacheManager.insertNeededErrataCache(server.getId(),
                     e.getId(), pkg.getId());
             List<SystemOverview> systems =
-                SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
+                    SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
             assertTrue(systems.size() == 1);
             SystemOverview so = systems.get(0);
             assertEquals(so.getId(), server.getId());

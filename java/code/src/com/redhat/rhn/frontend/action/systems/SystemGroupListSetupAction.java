@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -173,14 +172,12 @@ public class SystemGroupListSetupAction extends RhnAction
         RhnSet systemSet = RhnSetDecl.SYSTEMS.create(user);
         RhnSet groupSet = getSetDecl().get(user);
 
-        Iterator<RhnSetElement> groups = groupSet.getElements().iterator();
-        while (groups.hasNext()) { //for every group
-            Long sgid = groups.next().getElement();
-            Iterator<SystemOverview> systems =
-                    SystemManager.systemsInGroup(sgid, null).iterator();
+        for (RhnSetElement rhnSetElementIn : groupSet.getElements()) { //for every group
+            Long sgid = rhnSetElementIn.getElement();
 
-            while (systems.hasNext()) { //for every system in a group
-                Long id = systems.next().getId();
+            //for every system in a group
+            for (SystemOverview systemOverviewIn : SystemManager.systemsInGroup(sgid, null)) {
+                Long id = systemOverviewIn.getId();
                 if (!systemSet.contains(id)) {
                     systemSet.addElement(id);
                 }

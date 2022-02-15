@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.html;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,8 +152,8 @@ public abstract class BaseTag {
     public String renderBody() {
         StringBuilder buf = new StringBuilder();
 
-        for (Iterator itr = body.iterator(); itr.hasNext();) {
-            buf.append(convertToString(itr.next()));
+        for (Object oIn : body) {
+            buf.append(convertToString(oIn));
         }
 
         return buf.toString();
