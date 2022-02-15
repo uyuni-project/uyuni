@@ -581,7 +581,7 @@ public class SystemHandler extends BaseHandler {
     public long scheduleChangeChannels(User loggedInUser, Integer serverId, String baseChannelLabel,
                                        List childLabels, Date earliestOccurrence) {
         return scheduleChangeChannels(loggedInUser, singletonList(serverId), baseChannelLabel, childLabels,
-                earliestOccurrence).stream().findFirst().orElseThrow(() -> new NoActionInScheduleException());
+                earliestOccurrence).stream().findFirst().orElseThrow(NoActionInScheduleException::new);
     }
 
     /**
@@ -622,7 +622,7 @@ public class SystemHandler extends BaseHandler {
         // base channel
         if (StringUtils.isNotEmpty(baseChannelLabel)) {
             List<Long> channelIds = ChannelFactory.getChannelIds(singletonList(baseChannelLabel));
-            long baseChannelId = channelIds.stream().findFirst().orElseThrow(() -> new InvalidChannelLabelException());
+            long baseChannelId = channelIds.stream().findFirst().orElseThrow(InvalidChannelLabelException::new);
             baseChannel = Optional.of(ChannelManager.lookupByIdAndUser(baseChannelId, loggedInUser));
         }
         // else if the user provides an empty string for the channel label, they are requesting
@@ -3972,11 +3972,11 @@ public class SystemHandler extends BaseHandler {
             }).collect(toList());
 
             List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
-                    packages.stream().map(p -> p.getId()).collect(toList()),
-                    sids.stream().map(s -> s.longValue()).collect(toList())
+                    packages.stream().map(Package::getId).collect(toList()),
+                    sids.stream().map(Integer::longValue).collect(toList())
             );
             if (!pidsidpairs.isEmpty()) {
-                throw new RetractedPackageFault(pidsidpairs.stream().map(t -> t.getA()).collect(toList()));
+                throw new RetractedPackageFault(pidsidpairs.stream().map(Tuple2::getA).collect(toList()));
             }
         }
 
@@ -4159,7 +4159,7 @@ public class SystemHandler extends BaseHandler {
                 sids.stream().map(Integer::longValue).collect(toList()));
 
         List<Long> retractedPids = retracted.stream()
-                .map(t -> t.getA())
+                .map(Tuple2::getA)
                 .collect(toList());
         if (retracted.isEmpty()) {
             return schedulePackagesAction(loggedInUser, sids,
@@ -8161,7 +8161,7 @@ public class SystemHandler extends BaseHandler {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(m -> m.getId()).collect(Collectors.toList());
+                    .map(Server::getId).collect(Collectors.toList());
             if (!visible.containsAll(sysids)) {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
@@ -8228,7 +8228,7 @@ public class SystemHandler extends BaseHandler {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(m -> m.getId()).collect(Collectors.toList());
+                    .map(Server::getId).collect(Collectors.toList());
             if (!visible.containsAll(sysids)) {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);

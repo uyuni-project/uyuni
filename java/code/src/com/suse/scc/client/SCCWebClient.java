@@ -190,7 +190,7 @@ public class SCCWebClient implements SCCClient {
         voidCompletableFuture.join();
         return Stream.concat(
                 Stream.of(firstPage),
-                futures.stream().map(f -> f.join())
+                futures.stream().map(CompletableFuture::join)
                 )
                 .flatMap(p -> p.result.stream())
                 .collect(Collectors.toList());

@@ -291,8 +291,8 @@ public class SUSEProductFactory extends HibernateFactory {
             return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream)
                     .filter(pc -> pc.getChannel().getChannelArch().equals(channel.getChannelArch()));
         }).orElse(Stream.empty())
-          .filter(pc -> pc.isMandatory())
-          .map(pc -> pc.getChannel());
+          .filter(SUSEProductChannel::isMandatory)
+          .map(SUSEProductChannel::getChannel);
     }
 
     /**
@@ -306,7 +306,7 @@ public class SUSEProductFactory extends HibernateFactory {
         return Stream.concat(
                 product.getRepositories()
                         .stream()
-                        .filter(p -> p.isMandatory())
+                        .filter(SUSEProductSCCRepository::isMandatory)
                         .filter(p -> p.getRootProduct().equals(root)),
                 SUSEProductFactory.findAllBaseProductsOf(product, root).stream()
                 .flatMap(p -> findAllMandatoryChannels(p, root))
@@ -321,7 +321,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Optional<SUSEProduct> findProductByChannelLabel(String channelLabel) {
         return lookupByChannelLabelFirst(channelLabel)
-                .map(p -> p.getProduct());
+                .map(SUSEProductSCCRepository::getProduct);
     }
 
     /**

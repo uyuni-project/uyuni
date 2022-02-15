@@ -57,7 +57,7 @@ public class SaltSystemReboot extends AbstractSaltRequisites implements Identifi
 
         args.add(singletonMap("name", "system.reboot"));
         minutes.map(min -> singletonMap("at_time", min))
-                .ifPresent(time -> args.add(time));
+                .ifPresent(args::add);
 
         addRequisites(args);
 

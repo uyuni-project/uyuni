@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -108,14 +107,12 @@ public class ConfigAction extends Action {
     protected List<ConfigRevisionAction> getConfigRevisionActionsSorted() {
         List<ConfigRevisionAction> revisionActions = new ArrayList<>(
                 this.getConfigRevisionActions());
-        Collections.sort(revisionActions, new Comparator<>() {
-            public int compare(ConfigRevisionAction o1, ConfigRevisionAction o2) {
-                String p1 = o1.getConfigRevision().getConfigFile().
-                        getConfigFileName().getPath();
-                String p2 = o2.getConfigRevision().getConfigFile().
-                        getConfigFileName().getPath();
-                return p1.compareTo(p2);
-            }
+        Collections.sort(revisionActions, (o1, o2) -> {
+            String p1 = o1.getConfigRevision().getConfigFile().
+                    getConfigFileName().getPath();
+            String p2 = o2.getConfigRevision().getConfigFile().
+                    getConfigFileName().getPath();
+            return p1.compareTo(p2);
         });
         return Collections.unmodifiableList(revisionActions);
     }

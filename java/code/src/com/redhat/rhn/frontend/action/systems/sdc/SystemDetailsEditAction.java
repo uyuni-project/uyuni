@@ -323,7 +323,7 @@ public class SystemDetailsEditAction extends RhnAction {
         }
         else {
             // just regenerate the pillar data when nothing has changed
-            s.asMinionServer().ifPresent(m -> MinionPillarManager.INSTANCE.generatePillar(m));
+            s.asMinionServer().ifPresent(MinionPillarManager.INSTANCE::generatePillar);
         }
 
         return success;

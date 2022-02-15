@@ -89,7 +89,7 @@ public class VirtualInstanceManager extends BaseManager {
         List<String> uuidsToRemove = new LinkedList<>();
         for (VmInfo info : plan) {
             if (info.getEventType().equals(EVENT_TYPE_FULLREPORT)) {
-                uuidsToRemove = server.getGuests().stream().map(g -> g.getUuid())
+                uuidsToRemove = server.getGuests().stream().map(VirtualInstance::getUuid)
                         .collect(Collectors.toList());
                 continue;
             }
@@ -123,17 +123,14 @@ public class VirtualInstanceManager extends BaseManager {
                         virtualInstance.getGuestSystem(), vCpus, memory));
             }
             else if (info.getEventType().equals(EVENT_TYPE_REMOVED)) {
-                virtualInstances.stream().forEach(virtualInstance ->
-                vinst.deleteVirtualInstanceOnly(virtualInstance));
+                virtualInstances.stream().forEach(vinst::deleteVirtualInstanceOnly);
             }
         }
 
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
-            virtualInstances.stream().forEach(virtualInstance -> {
-                deleteGuestVirtualInstance(virtualInstance);
-            });
+            virtualInstances.stream().forEach(VirtualInstanceManager::deleteGuestVirtualInstance);
         }
     }
 
@@ -150,7 +147,7 @@ public class VirtualInstanceManager extends BaseManager {
     public static void updateGuestsVirtualInstances(Server server, VirtualInstanceType type,
             Map<String, String> vms, Map<String, Map<String, String>> optionalVmData) {
         VirtualInstanceFactory vinst = VirtualInstanceFactory.getInstance();
-        List<String> uuidsToRemove = server.getGuests().stream().map(g -> g.getUuid())
+        List<String> uuidsToRemove = server.getGuests().stream().map(VirtualInstance::getUuid)
                 .collect(Collectors.toList());
         vms.entrySet().stream().forEach(
                 vmEntry -> {
@@ -180,9 +177,7 @@ public class VirtualInstanceManager extends BaseManager {
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
-            virtualInstances.stream().forEach(virtualInstance -> {
-                deleteGuestVirtualInstance(virtualInstance);
-            });
+            virtualInstances.stream().forEach(VirtualInstanceManager::deleteGuestVirtualInstance);
         }
     }
 

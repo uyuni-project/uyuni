@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -1319,7 +1320,7 @@ public class ErrataManager extends BaseManager {
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(
                 chan.getId(),
-                errata.getPackages().stream().map(p -> p.getId()).collect(toList()));
+                errata.getPackages().stream().map(Package::getId).collect(toList()));
 
         // remove packages
         errata.getPackages().stream().forEach(p -> chan.getPackages().remove(p));
@@ -1738,7 +1739,7 @@ public class ErrataManager extends BaseManager {
         // compute errata id to update stack bit map
         Map<Long, Boolean> updateStackMap = errataMap.values().stream()
             .collect(toMap(
-                e -> e.getId(),
+                    Errata::getId,
                 e -> e.hasKeyword("restart_suggested")
             ));
 
@@ -1800,7 +1801,7 @@ public class ErrataManager extends BaseManager {
             .collect(toMap(
                 sid -> sid,
                 sid -> serverErrataMap.get(sid).stream()
-                    .filter(eid -> updateStackMap.get(eid))
+                    .filter(updateStackMap::get)
                     .collect(toList())
             ));
 
@@ -1887,7 +1888,7 @@ public class ErrataManager extends BaseManager {
                     .collect(toList());
 
                 List<Server> servers = e.getValue().stream()
-                    .map(sid -> serverMap.get(sid))
+                    .map(serverMap::get)
                     .collect(toList());
 
                 boolean updateStackAction = errataMap.keySet().stream()
@@ -1948,7 +1949,7 @@ public class ErrataManager extends BaseManager {
                         errata.get(0));
                     errata.stream()
                         .skip(1)
-                        .forEach(e -> errataUpdate.addErrata(e));
+                        .forEach(errataUpdate::addErrata);
 
                     if (earliest != null) {
                         errataUpdate.setEarliestAction(earliest);
@@ -1969,7 +1970,7 @@ public class ErrataManager extends BaseManager {
                 user, errata.get(0));
         errata.stream()
             .skip(1)
-            .forEach(e -> errataUpdate.addErrata(e));
+            .forEach(errataUpdate::addErrata);
 
         if (earliest != null) {
             errataUpdate.setEarliestAction(earliest);

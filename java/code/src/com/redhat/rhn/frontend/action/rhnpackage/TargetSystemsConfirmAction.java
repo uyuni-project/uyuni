@@ -97,7 +97,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         request.setAttribute("date", picker);
 
-        Set<Long> systemIds = items.stream().map(dto -> dto.getId()).collect(Collectors.toSet());
+        Set<Long> systemIds = items.stream().map(SystemOverview::getId).collect(Collectors.toSet());
         populateMaintenanceWindows(request, systemIds);
         ActionChainHelper.prepopulateActionChains(request);
 

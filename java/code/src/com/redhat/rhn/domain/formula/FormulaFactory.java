@@ -206,7 +206,7 @@ public class FormulaFactory {
 
     private static List<File> getFormulasFiles(File formulasFolder) {
         return Optional.ofNullable(formulasFolder.listFiles())
-                .map(filesList -> Arrays.asList(filesList))
+                .map(Arrays::asList)
                 .orElseGet(() -> {
                     LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
                             ". Check if it exists and have the correct permissions (755).");
@@ -466,7 +466,7 @@ public class FormulaFactory {
      */
     public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroup(
             String name, ServerGroup group) {
-        Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(pillar -> pillar.getPillar());
+        Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
 
         // Load data from the legacy file if not converted yet
         File dataFile = new File(getGroupPillarDir() +
@@ -570,7 +570,7 @@ public class FormulaFactory {
         List<String> formulas = FormulaFactory.getFormulasByMinion(minion);
         return formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS) &&
                 getFormulaValuesByNameAndMinion(PROMETHEUS_EXPORTERS, minion)
-                        .map(data -> hasMonitoringDataEnabled(data))
+                        .map(FormulaFactory::hasMonitoringDataEnabled)
                         .orElse(false);
     }
 
@@ -843,7 +843,7 @@ public class FormulaFactory {
      */
     public static boolean isMemberOfGroupHavingMonitoring(Server server) {
         return server.getManagedGroups().stream()
-                .map(grp -> FormulaFactory.hasMonitoringDataEnabled(grp))
+                .map(FormulaFactory::hasMonitoringDataEnabled)
                 .anyMatch(Boolean::booleanValue);
     }
 

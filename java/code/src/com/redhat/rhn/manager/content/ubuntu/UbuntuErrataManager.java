@@ -201,7 +201,7 @@ public class UbuntuErrataManager {
      */
     public static void processUbuntuErrataByIds(Set<Long> channelIds, List<Entry> ubuntuErrataInfo) {
         processUbuntuErrata(channelIds.stream()
-                .map(cid -> ChannelFactory.lookupById(cid))
+                .map(ChannelFactory::lookupById)
                 .collect(Collectors.toSet()), ubuntuErrataInfo);
     }
 
@@ -214,7 +214,7 @@ public class UbuntuErrataManager {
 
         Map<Channel, Set<Package>> ubuntuChannels = channels.stream()
                 .filter(c -> c.isTypeDeb() && !c.isCloned())
-                .collect(Collectors.toMap(c -> c, c -> c.getPackages()));
+                .collect(Collectors.toMap(c -> c, Channel::getPackages));
 
         List<String> uniqueCVEs = ubuntuErrataInfo.stream()
                 .flatMap(e -> e.getCves().stream().filter(c -> c.startsWith("CVE-")))
@@ -223,8 +223,8 @@ public class UbuntuErrataManager {
 
         Map<String, Cve> cveByName = TimeUtils.logTime(LOG, "looking up " +  uniqueCVEs.size() + " CVEs",
                 () -> uniqueCVEs.stream()
-                        .map(e -> CveFactory.lookupOrInsertByName(e))
-                        .collect(Collectors.toMap(e -> e.getName(), e -> e)));
+                        .map(CveFactory::lookupOrInsertByName)
+                        .collect(Collectors.toMap(Cve::getName, e -> e)));
 
         TimeUtils.logTime(LOG, "writing " + ubuntuErrataInfo.size() + " erratas to db", () -> {
             ubuntuErrataInfo.stream().flatMap(entry -> {
@@ -232,7 +232,7 @@ public class UbuntuErrataManager {
 
                 Map<Channel, Set<Package>> matchingPackagesByChannel =
                         TimeUtils.logTime(LOG, "matching packages for " + entry.getId(), () -> {
-                            return ubuntuChannels.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), c -> {
+                            return ubuntuChannels.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, c -> {
 
                                 return c.getValue().stream().filter(p -> {
 
@@ -260,7 +260,7 @@ public class UbuntuErrataManager {
 
                 Map<Optional<Org>, Map<Channel, Set<Package>>> collect = matchingPackagesByChannel.entrySet().stream()
                         .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
-                                Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
+                                Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
                 return collect.entrySet().stream().map(e -> {
                     Optional<Org> org = e.getKey();
@@ -297,7 +297,7 @@ public class UbuntuErrataManager {
 
                     Set<Channel> matchingChannels = e.getValue().entrySet().stream()
                             .filter(c -> !c.getValue().isEmpty())
-                            .map(c -> c.getKey())
+                            .map(Map.Entry::getKey)
                             .collect(Collectors.toSet());
 
                     errata.getChannels().addAll(matchingChannels);

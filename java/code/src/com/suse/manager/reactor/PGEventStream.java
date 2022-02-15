@@ -152,7 +152,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     @Override
     public void notification(int processId, String channelName, String payload) {
         List<Long> counts = Arrays.stream(payload.split(","))
-                .map(str -> Long.valueOf(str))
+                .map(Long::valueOf)
                 .collect(Collectors.toList());
         notification(counts);
     }

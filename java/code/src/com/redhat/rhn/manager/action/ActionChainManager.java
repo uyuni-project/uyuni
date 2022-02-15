@@ -325,7 +325,7 @@ public class ActionChainManager {
                                                    Date earliest, ActionChain actionChain)
             throws TaskomaticApiException {
 
-        if (!sids.stream().map(sid -> ServerFactory.lookupById(sid))
+        if (!sids.stream().map(ServerFactory::lookupById)
                 .filter(server -> !MinionServerUtils.isMinionServer(server))
                 .collect(Collectors.toList()).isEmpty()) {
             throw new IllegalArgumentException("Server ids include non minion servers.");
@@ -340,7 +340,7 @@ public class ActionChainManager {
         for (Action action : result) {
             ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
             applyState.setActionId(action.getId());
-            test.ifPresent(t -> applyState.setTest(t));
+            test.ifPresent(applyState::setTest);
             ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);
         }
@@ -698,7 +698,7 @@ public class ActionChainManager {
                 earliest, actionChain, null, serverIds);
         for (Action action : result) {
             SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
-            base.ifPresent(b -> details.setBaseChannel(b));
+            base.ifPresent(details::setBaseChannel);
             details.setChannels(new HashSet<>(children));
             details.setParentAction(action);
             ((SubscribeChannelsAction)action).setDetails(details);

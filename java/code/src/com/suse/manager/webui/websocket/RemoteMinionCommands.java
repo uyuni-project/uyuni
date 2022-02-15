@@ -228,7 +228,7 @@ public class RemoteMinionCommands {
                                         return entry.getValue() != null &&
                                                 entry.getValue().result().orElse(false);
                                     })
-                                    .map((entry) -> entry.getKey())
+                                    .map(Map.Entry::getKey)
                                     .collect(Collectors.toList());
 
                             previewedMinions.addAll(sshMinions);

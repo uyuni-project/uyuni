@@ -502,7 +502,7 @@ public class ServerConfigHandler extends BaseHandler {
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
 
         //A state channel cannot be assigned to a traditional system so we simply fail the call if such case appears
-        if (channels.stream().anyMatch(cc->cc.isStateChannel()) &&
+        if (channels.stream().anyMatch(ConfigChannel::isStateChannel) &&
                 servers.stream().anyMatch(srv->!MinionServerUtils.isMinionServer(srv))) {
             throw new InvalidOperationException(LocalizationService.getInstance()
                     .getMessage("state.channels.not.supported.for.traditional"));

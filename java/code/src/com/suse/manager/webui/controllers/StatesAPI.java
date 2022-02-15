@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.PackageState;
@@ -491,7 +492,7 @@ public class StatesAPI {
                         checkUserHasPermissionsOnServerGroup(user, group);
                         List<Long> minionServerIds = MinionServerUtils
                                 .filterSaltMinions(ServerGroupFactory.listServers(group))
-                                .map(s -> s.getId())
+                                .map(Server::getId)
                                 .collect(Collectors.toList());
 
                         List<String> states = json.getStates();

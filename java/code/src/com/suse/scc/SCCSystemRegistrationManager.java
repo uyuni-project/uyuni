@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class SCCSystemRegistrationManager {
@@ -126,9 +127,7 @@ public class SCCSystemRegistrationManager {
     private SCCRegisterSystemJson getPayload(SCCRegCacheItem rci) {
         Server srv = rci.getOptServer().get();
         List<SCCMinProductJson> products = Opt.fold(srv.getInstalledProductSet(),
-                () -> {
-                    return new LinkedList<SUSEProduct>();
-                },
+                (Supplier<List<SUSEProduct>>) LinkedList::new,
                 s -> {
                     List<SUSEProduct> prd = new LinkedList<>();
                     prd.add(s.getBaseProduct());
@@ -136,7 +135,7 @@ public class SCCSystemRegistrationManager {
                     return prd;
                 }
         ).stream()
-                .map(p -> new SCCMinProductJson(p))
+                .map(SCCMinProductJson::new)
                 .collect(Collectors.toList());
 
         Map<String, String> hwinfo = new HashMap<>();

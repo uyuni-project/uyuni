@@ -150,7 +150,7 @@ public class VirtNotifications {
                                 .collect(Collectors.toMap(sa -> {
                                             return sa.getParentAction().getWebSocketActionId();
                                         },
-                                        sa -> Arrays.asList(sa),
+                                        Arrays::asList,
                                         (sa1, sa2) -> {
                                             List<ServerAction> merged = new ArrayList<>(sa1);
                                             merged.addAll(sa2);

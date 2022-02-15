@@ -118,7 +118,7 @@ public class RescheduleResult {
         return actionsServers.keySet().stream()
             .map(action -> {
                 String serverNames = actionsServers.get(action).stream()
-                        .map(s -> s.getName()).collect(Collectors.joining(", "));
+                        .map(Server::getName).collect(Collectors.joining(", "));
                 if (success) {
                     return String.format(
                             "Action '%s' sucessfully handled using '%s' reschedule strategy " +

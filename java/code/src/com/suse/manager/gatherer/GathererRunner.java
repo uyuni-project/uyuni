@@ -139,18 +139,16 @@ public class GathererRunner {
             stdin.close();
 
             // Thread that reads process error output to avoid blocking
-            Thread errStreamReader = new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        String line = null;
-                        BufferedReader inErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-                        while ((line = inErr.readLine()) != null) {
-                            // do nothing, just consuming stderr output
-                        }
+            Thread errStreamReader = new Thread(() -> {
+                try {
+                    String line = null;
+                    BufferedReader inErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                    while ((line = inErr.readLine()) != null) {
+                        // do nothing, just consuming stderr output
                     }
-                    catch (Exception e) {
-                        logger.error("Error reading stderr from external process", e);
-                    }
+                }
+                catch (Exception e) {
+                    logger.error("Error reading stderr from external process", e);
                 }
             });
             errStreamReader.start();

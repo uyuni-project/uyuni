@@ -351,7 +351,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
 
     private Set<Long> getSystemIds(RequestContext context) {
         return getResult(context).stream()
-                .map(dto -> dto.getId())
+                .map(SystemOverview::getId)
                 .collect(Collectors.toSet());
     }
 

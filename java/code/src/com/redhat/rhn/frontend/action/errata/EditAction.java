@@ -35,7 +35,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -90,11 +89,7 @@ public class EditAction extends LookupDispatchAction {
         String keywordDisplay = StringUtil.join(
             LocalizationService.getInstance().getMessage("list delimiter"),
             IteratorUtils.getIterator(CollectionUtils.collect(errata.getKeywords(),
-                new Transformer() {
-                    public Object transform(Object o) {
-                        return o.toString();
-                    }
-                })));
+                    o -> o.toString())));
 
         //pre-populate form with current values
         form.set("synopsis", errata.getSynopsis());

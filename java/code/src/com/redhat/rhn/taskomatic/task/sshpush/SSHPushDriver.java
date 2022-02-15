@@ -151,7 +151,7 @@ public class SSHPushDriver implements QueueDriver {
 
         if (!isDefaultSchedule() || currentMinutes % checkInterval == moduloRemainder) {
             List<SystemSummary> checkinCandidates = this.checkinCandidatesResolver.getCheckinCandidates();
-            checkinCandidates.stream().filter(c -> !candidates.contains(c)).forEach(c -> candidates.add(c));
+            checkinCandidates.stream().filter(c -> !candidates.contains(c)).forEach(candidates::add);
         }
 
         if (log.isDebugEnabled()) {

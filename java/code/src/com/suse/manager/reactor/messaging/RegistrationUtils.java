@@ -253,7 +253,7 @@ public class RegistrationUtils {
                             Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                             Set<Channel> channelsForProducts = findChannelsForProducts(suseProducts, minionId);
                             Set<Channel> baseChannels = channelsForProducts.stream()
-                                    .filter(c -> c.isBaseChannel())
+                                    .filter(Channel::isBaseChannel)
                                     .collect(toSet());
                             if (baseChannels.isEmpty()) {
                                 return emptySet();
@@ -304,7 +304,7 @@ public class RegistrationUtils {
             Optional<ActivationKey> activationKey) {
         Map<Boolean, List<Channel>> compatibleChannels =
                 channels.stream().filter(c -> c.getChannelArch().getCompatibleServerArches().contains(serverArch))
-                        .collect(partitioningBy(c -> c.isBaseChannel()));
+                        .collect(partitioningBy(Channel::isBaseChannel));
 
         Optional<Channel> activationKeyBaseChannel = activationKey.flatMap(ak -> ofNullable(ak.getBaseChannel()));
 
@@ -417,7 +417,7 @@ public class RegistrationUtils {
                 .map(rootChannelLabel -> {
 
                     Stream<Channel> channelStream = product.getSuseProductChannels().stream()
-                            .filter(pc -> pc.isMandatory())
+                            .filter(SUSEProductChannel::isMandatory)
                             .map(SUSEProductChannel::getChannel)
                             // we want the parent channel (== null) and its childs
                             .filter(c -> c.getParentChannel() == null ||

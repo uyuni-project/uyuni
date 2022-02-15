@@ -150,7 +150,7 @@ public class KickstartManager extends BaseManager {
                 "rendered correctly.\n");
 
         return errorStrings.stream()
-                .map(errorString -> contents.contains(errorString))
+                .map(contents::contains)
                 .anyMatch(Predicate.isEqual(true));
     }
 

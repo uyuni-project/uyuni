@@ -31,7 +31,7 @@ public class SystemsExistFaultException extends FaultException {
      */
     public SystemsExistFaultException(List<Long> systemIds) {
         super(1100, "systemsExist", "Existing system IDs: [" + systemIds.stream()
-                .map(id -> id.toString())
+                .map(Object::toString)
                 .reduce((id1, id2) -> id1 + "," + id2)
                 .orElse("") + "]");
     }

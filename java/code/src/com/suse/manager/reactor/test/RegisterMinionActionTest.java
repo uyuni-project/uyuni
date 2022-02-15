@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -891,7 +892,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(baseChannelX8664);
                     baseChannelX8664.getAccessibleChildrenFor(user)
-                            .forEach(channel -> key.addChannel(channel));
+                            .forEach(key::addChannel);
                     key.setOrg(user.getOrg());
 
                     ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
@@ -911,7 +912,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     HashSet<Channel> channels = new HashSet<>();
                     channels.add(baseChannelX8664);
                     baseChannelX8664.getAccessibleChildrenFor(user)
-                    .forEach(channel -> channels.add(channel));
+                    .forEach(channels::add);
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
                     assertEquals(channels.size(), minion.getChannels().size());
                     assertTrue(minion.getChannels().containsAll(channels));
@@ -972,7 +973,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             // Channels unrelated to the product added as child channels in the
             // Activation Key
             baseChannelX8664Other.getAccessibleChildrenFor(user)
-                    .forEach(channel -> key.addChannel(channel));
+                    .forEach(key::addChannel);
             key.setOrg(user.getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
@@ -989,10 +990,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             // --> base + mandatories + activation key selected channels
             channels.add(baseChannelX8664);
             ChannelsUtils.mandatoryChannelsByBaseChannel(baseChannelX8664)
-                    .forEach(channel -> channels.add(channel));
+                    .forEach(channels::add);
             ActivationKeyFactory.lookupByKey(key).getChannels().stream()
                     .filter(c -> c.getParentChannel().getId().equals(baseChannelX8664.getId()))
-                    .forEach(channel -> channels.add(channel));
+                    .forEach(channels::add);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1895,7 +1896,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(
                             expectedEntitlements,
                             minion.getEntitlements().stream()
-                                    .map(e -> e.getLabel())
+                                    .map(Entitlement::getLabel)
                                     .collect(Collectors.toSet()));
                     assertEquals(emptyMinion.getId(), minion.getId());
                     assertEquals(MINION_ID, minion.getMinionId());
