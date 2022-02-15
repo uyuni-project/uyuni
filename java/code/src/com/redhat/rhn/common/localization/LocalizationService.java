@@ -150,9 +150,7 @@ public class LocalizationService {
         for (String cl : compoundLocales) {
             String[] parts = cl.split("_");
             LocaleInfo li = new LocaleInfo(parts[0], cl);
-            if (this.supportedLocales.get(parts[0]) == null) {
-                this.supportedLocales.put(parts[0], li);
-            }
+            this.supportedLocales.putIfAbsent(parts[0], li);
         }
     }
 
