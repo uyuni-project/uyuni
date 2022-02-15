@@ -76,6 +76,7 @@ Then(/^the system name for "([^"]*)" should be correct$/) do |host|
   step %(I should see a "#{system_name}" text)
 end
 
+# rubocop:disable Metrics/BlockLength
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   # TODO remove extra logging information once debugged
   node = get_target(host)
@@ -121,6 +122,7 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
     step %(I should see a "a month ago" text)
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^I should see several text fields for "([^"]*)"$/) do |host|
   node = get_target(host)
