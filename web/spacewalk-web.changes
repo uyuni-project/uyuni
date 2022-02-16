@@ -1,3 +1,4 @@
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
 - susemanager-web-libs is now packaged as a part of spacewalk-html
 
 -------------------------------------------------------------------

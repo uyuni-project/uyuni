@@ -1,3 +1,4 @@
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
 - Add store info to Equals and hash methods to fix CVE audit process (bsc#1195282)
 - Fix virtualization list rendering for foreign systems (bsc#1195712)
 - FIX errors when an image profile / store is deleted
