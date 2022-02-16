@@ -16,27 +16,27 @@
 
 <mode name="System" class="">
   <query params="offset, limit">
-      SELECT rhnserver.id AS system_id
-                 , rhnserver.name AS profile_name
-                 , rhnserver.hostname
-                 , suseminioninfo.minion_id
-                 , suseminioninfo.os_family AS minion_os_family
-                 , suseminioninfo.kernel_live_version AS minion_kernel_live_version
-                 , rhnserver.machine_id
-                 , web_contact.login AS registered_by
-                 , rhnserver.created AS registration_time
-                 , rhnserverinfo.checkin AS last_checkin_time
-                 , rhnserver.running_kernel AS kernel_version
-                 , rhnserverarch.name AS architecture
-                 , web_customer.name AS organization
-                 , get_hw_info_as_clob(rhnserver.id, '; ') AS hardware
-        FROM rhnserver
-                 LEFT JOIN suseminioninfo ON rhnserver.id = suseminioninfo.server_id
-                 LEFT JOIN web_contact ON rhnserver.creator_id = web_contact.id
-                 LEFT JOIN rhnserverinfo ON  rhnserver.id = rhnserverinfo.server_id
-                 INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
-                 INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
-        order by system_id offset :offset limit :limit
+          SELECT rhnserver.id AS system_id
+                     , rhnserver.name AS profile_name
+                     , rhnserver.hostname
+                     , suseminioninfo.minion_id
+                     , suseminioninfo.os_family AS minion_os_family
+                     , suseminioninfo.kernel_live_version AS minion_kernel_live_version
+                     , rhnserver.machine_id
+                     , web_contact.login AS registered_by
+                     , rhnserver.created AS registration_time
+                     , rhnserverinfo.checkin AS last_checkin_time
+                     , rhnserver.running_kernel AS kernel_version
+                     , rhnserverarch.name AS architecture
+                     , web_customer.name AS organization
+                     , get_hw_info_as_clob(rhnserver.id, '; ') AS hardware
+            FROM rhnserver
+                     LEFT JOIN suseminioninfo ON rhnserver.id = suseminioninfo.server_id
+                     LEFT JOIN web_contact ON rhnserver.creator_id = web_contact.id
+                     LEFT JOIN rhnserverinfo ON  rhnserver.id = rhnserverinfo.server_id
+                     INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
+                     INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
+        ORDER BY system_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -48,7 +48,7 @@
                     , rhnserverconfigchannel.position
             FROM rhnserverconfigchannel
                     INNER JOIN rhnconfigchannel ON rhnserverconfigchannel.config_channel_id = rhnconfigchannel.id
-          order by system_id, config_channel_id offset :offset limit :limit
+        ORDER BY system_id, config_channel_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -67,7 +67,7 @@
                     INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
                     INNER JOIN rhnservergrouptype ON rhnservergroup.group_type = rhnservergrouptype.id
            WHERE rhnservergroup.group_type IS NOT NULL
-          order by system_id, server_group_id offset :offset limit :limit
+        ORDER BY system_id, server_group_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -83,34 +83,53 @@
                     INNER JOIN rhnservergroup ON rhnservergroupmembers.server_group_id = rhnservergroup.id
                     INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
            WHERE rhnservergroup.group_type IS NULL
-          order by server_id, server_group_id offset :offset limit :limit
+        ORDER BY server_id, server_group_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
-<mode name="SystemPrimaryAddress" class="">
+<mode name="SystemNetInterface" class="">
     <query params="offset, limit">
           SELECT server_id AS system_id
-                    , rsna4.address AS ip4_addr
-                    , rsna4.netmask AS ip4_netmask
-                    , rsna4.broadcast AS ip4_broadcast
-                    , rsna6.address AS ip6_addr
-                    , rsna6.netmask AS ip6_netmask
-                    , rsna6.scope AS ip6_scope
-            FROM rhnservernetinterface rsni
-                    LEFT JOIN rhnservernetaddress4 rsna4 ON rsni.id = rsna4.interface_id
-                    LEFT JOIN rhnservernetaddress6 rsna6 ON rsni.id = rsna6.interface_id
-           WHERE id IN ( SELECT min(id)
-                           FROM rhnservernetinterface
-                          WHERE is_primary = 'Y'
-                       GROUP BY server_id
-                 )
-          order by server_id offset :offset limit :limit
-  </query>
+                    , id AS interface_id
+                    , name
+                    , hw_addr AS hardware_address
+                    , module
+                    , COALESCE(is_primary, 'N') = 'Y' AS primary_interface
+            FROM rhnservernetinterface
+        ORDER BY system_id, interface_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="SystemNetAddressV4" class="">
+    <query params="offset, limit">
+          SELECT rhnservernetinterface.server_id AS system_id
+                    , rhnservernetinterface.id AS interface_id
+                    , rhnservernetaddress4.address
+                    , rhnservernetaddress4.netmask
+                    , rhnservernetaddress4.broadcast
+            FROM rhnservernetinterface
+                    INNER JOIN rhnservernetaddress4 ON rhnservernetinterface.id = rhnservernetaddress4.interface_id
+        ORDER BY system_id, interface_id, address OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="SystemNetAddressV6" class="">
+    <query params="offset, limit">
+          SELECT rhnservernetinterface.server_id AS system_id
+                    , rhnservernetinterface.id AS interface_id
+                    , rhnservernetaddress6.address
+                    , rhnservernetaddress6.netmask
+                    , rhnservernetaddress6.scope
+            FROM rhnservernetinterface
+                    INNER JOIN rhnservernetaddress6 ON rhnservernetinterface.id = rhnservernetaddress6.interface_id
+        ORDER BY system_id, interface_id, address OFFSET :offset LIMIT :limit
+    </query>
 </mode>
 
 <mode name="SystemVirtualData" class="">
     <query params="offset, limit">
-          SELECT rhnvirtualinstance.host_system_id
+          SELECT rhnvirtualinstance.id AS instance_id
+                    , rhnvirtualinstance.host_system_id
                     , rhnvirtualinstance.virtual_system_id
                     , rhnvirtualinstanceinfo.name
                     , rhnvirtualinstancetype.name AS instance_type_name
@@ -123,7 +142,7 @@
                     INNER JOIN rhnvirtualinstanceinfo ON rhnvirtualinstance.id = rhnvirtualinstanceinfo.instance_id
                     INNER JOIN rhnvirtualinstancetype ON rhnvirtualinstanceinfo.instance_type = rhnvirtualinstancetype.id
                     INNER JOIN rhnvirtualinstancestate ON rhnvirtualinstanceinfo.state = rhnvirtualinstancestate.id
-          order by host_system_id, virtual_system_id offset :offset limit :limit
+        ORDER BY host_system_id, virtual_system_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -134,15 +153,13 @@
                     , rhnchannel.name
                     , rhnchannel.description
                     , rhnchannelarch.name AS architecture_name
-                    , rhnproductname.name AS product_name
                     , rhnchannel.parent_channel AS parent_channel_id
                     , rhnparentchannel.name AS parent_channel_name
             FROM rhnserverchannel
                     INNER JOIN rhnchannel ON rhnserverchannel.channel_id=rhnchannel.id
                     INNER JOIN rhnchannelarch ON rhnchannel.channel_arch_id=rhnchannelarch.id
-                    LEFT JOIN rhnproductname ON rhnchannel.product_name_id=rhnproductname.id
                     LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel=rhnparentchannel.id
-          order by system_id, channel_id offset :offset limit :limit
+        ORDER BY system_id, channel_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -154,12 +171,39 @@
             FROM rhnpackage, rhnserverneededcache
            WHERE rhnserverneededcache.package_id = rhnpackage.id
         GROUP BY rhnserverneededcache.server_id
-          order by system_id offset :offset limit :limit
+        ORDER BY system_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
 <mode name="SystemAction" class="">
     <query params="offset, limit">
+          WITH action_errata AS (
+            SELECT rhnactionerrataupdate.action_id, rhnerrata.advisory
+              FROM rhnactionerrataupdate
+                        INNER JOIN rhnerrata ON rhnactionerrataupdate.errata_id = rhnerrata.id
+          ), action_package AS (
+            SELECT rhnactionpackage.action_id
+                      , CONCAT(rhnpackagename.name, '-' || evr_t_as_vre_simple(rhnpackageevr.evr), '.' || rhnpackagearch.label) AS package_name
+             FROM rhnactionpackage
+                      INNER JOIN rhnpackagename ON rhnactionpackage.name_id = rhnpackagename.id
+                      LEFT JOIN rhnpackageevr ON rhnactionpackage.evr_id = rhnpackageevr.id
+                      LEFT JOIN rhnpackagearch ON rhnactionpackage.package_arch_id = rhnpackagearch.id
+          ), action_configfiles AS (
+            SELECT rhnactionconfigrevision.action_id, rhnactionconfigrevision.server_id, rhnconfigfilename.path
+              FROM rhnactionconfigrevision
+                      LEFT JOIN rhnconfigrevision ON rhnactionconfigrevision.config_revision_id = rhnconfigrevision.id
+                      LEFT JOIN rhnconfigfile ON rhnconfigrevision.config_file_id = rhnconfigfile.id
+                      LEFT JOIN rhnconfigfilename ON rhnconfigfile.config_file_name_id = rhnconfigfilename.id
+          ), action_ksdata AS (
+            SELECT DISTINCT rhnkickstartsessionhistory.action_id, rhnksdata.label
+              FROM rhnkickstartsessionhistory
+                      INNER JOIN rhnkickstartsession ON rhnkickstartsessionhistory.kickstart_session_id = rhnkickstartsession.id
+                      INNER JOIN rhnksdata ON rhnkickstartsession.kickstart_id = rhnksdata.id
+          ), action_xccdtestresult AS (
+            SELECT rhnactionscap.action_id, rhnxccdftestresult.server_id, rhnxccdftestresult.identifier
+              FROM rhnactionscap
+                      LEFT JOIN rhnxccdftestresult ON rhnxccdftestresult.action_scap_id = rhnactionscap.id
+          )
           SELECT rhnserveraction.server_id AS system_id
                       , rhnserveraction.action_id
                       , rhnserver.hostname
@@ -167,41 +211,39 @@
                       , rhnserveraction.completion_time
                       , rhnactionstatus.name AS status
                       , case
-                          when rhnactiontype.name = 'Package Install' and rhnactionpackage.parameter = 'upgrade' then 'Package Upgrade'
+                          when rhnactiontype.name = 'Package Install' and exists (SELECT 1 FROM rhnactionpackage WHERE rhnactionpackage.action_id = rhnserveraction.action_id AND rhnactionpackage.parameter = 'upgrade' ) then 'Package Upgrade'
                           else rhnactiontype.name
                         end as event
                       , case
-                          when rhnactiontype.name = 'Patch Update' then rhnerrata.advisory
-                          when rhnactiontype.name in ( 'Package Install', 'Package Removal', 'Verify deployed packages' ) then (
-                                    rhnpackagename.name
-                                    || case when rhnpackageevr.id is not null then '-' || evr_t_as_vre_simple(rhnpackageevr.evr) end
-                                    || case when rhnpackagearch.id is not null then '.' || rhnpackagearch.label end
+                          when rhnactiontype.name = 'Patch Update' then (
+                              SELECT string_agg(action_errata.advisory, ';')
+                                FROM action_errata
+                              WHERE action_errata.action_id = rhnserveraction.action_id
                           )
-                          when rhnactiontype.label like 'configfiles.%' then rhnconfigfilename.path
-                          when rhnactiontype.label = 'kickstart.initiate' then rhnksdata.label
-                          when rhnactiontype.label = 'scap.xccdf_eval' then rhnxccdftestresult.identifier
+                          when rhnactiontype.name in ( 'Package Install', 'Package Removal', 'Verify deployed packages' ) then (
+                              SELECT string_agg(action_package.package_name, ';')
+                                FROM action_package
+                               WHERE action_package.action_id = rhnserveraction.action_id
+                          )
+                          when rhnactiontype.label like 'configfiles.%' then (
+                              SELECT string_agg(action_configfiles.path, ';')
+                                FROM action_configfiles
+                               WHERE action_configfiles.action_id = rhnserveraction.action_id AND action_configfiles.server_id = rhnserveraction.server_id
+                          )
+                          when rhnactiontype.label = 'kickstart.initiate' then (
+                              SELECT string_agg(action_ksdata.label, ';')
+                                FROM action_ksdata
+                               WHERE action_ksdata.action_id = rhnserveraction.action_id
+                          )
+                          when rhnactiontype.label = 'scap.xccdf_eval' then action_xccdtestresult.identifier
                         end as event_data
             FROM rhnserveraction
                       LEFT JOIN rhnserver ON rhnserveraction.server_id = rhnserver.id
                       LEFT JOIN rhnaction ON rhnserveraction.action_id = rhnaction.id
                       LEFT JOIN rhnactionstatus ON rhnserveraction.status = rhnactionstatus.id
                       LEFT JOIN rhnactiontype ON rhnaction.action_type = rhnactiontype.id
-                      LEFT JOIN rhnactionpackage ON rhnserveraction.action_id = rhnactionpackage.action_id
-                      LEFT JOIN rhnpackagename ON rhnactionpackage.name_id = rhnpackagename.id
-                      LEFT JOIN rhnpackageevr ON rhnactionpackage.evr_id = rhnpackageevr.id
-                      LEFT JOIN rhnpackagearch ON rhnactionpackage.package_arch_id = rhnpackagearch.id
-                      LEFT JOIN rhnactionerrataupdate ON rhnserveraction.action_id = rhnactionerrataupdate.action_id
-                      LEFT JOIN rhnerrata ON rhnactionerrataupdate.errata_id = rhnerrata.id
-                      LEFT JOIN rhnactionconfigrevision ON rhnserveraction.action_id = rhnactionconfigrevision.action_id and rhnserveraction.server_id = rhnactionconfigrevision.server_id
-                      LEFT JOIN rhnconfigrevision ON rhnactionconfigrevision.config_revision_id = rhnconfigrevision.id
-                      LEFT JOIN rhnconfigfile ON rhnconfigrevision.config_file_id = rhnconfigfile.id
-                      LEFT JOIN rhnconfigfilename ON rhnconfigfile.config_file_name_id = rhnconfigfilename.id
-                      LEFT JOIN rhnkickstartsessionhistory ON rhnserveraction.action_id = rhnkickstartsessionhistory.action_id
-                      LEFT JOIN rhnkickstartsession ON rhnkickstartsessionhistory.kickstart_session_id = rhnkickstartsession.id
-                      LEFT JOIN rhnksdata ON rhnkickstartsession.kickstart_id = rhnksdata.id
-                      LEFT JOIN rhnactionscap ON rhnserveraction.action_id = rhnactionscap.action_id
-                      LEFT JOIN rhnxccdftestresult ON rhnxccdftestresult.action_scap_id = rhnactionscap.id
-          order by system_id, action_id offset :offset limit :limit
+                      LEFT JOIN action_xccdtestresult ON action_xccdtestresult.server_id = rhnserveraction.server_id AND action_xccdtestresult.action_id = rhnserveraction.action_id
+        ORDER BY system_id, action_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -226,7 +268,7 @@
 
             FROM rhnserverhistory
                       LEFT JOIN rhnserver ON rhnserverhistory.server_id = rhnserver.id
-          order by rhnserverhistory.id offset :offset limit :limit
+        ORDER BY rhnserverhistory.id OFFSET :offset LIMIT :limit
 </query>
 </mode>
 
