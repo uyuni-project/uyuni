@@ -1422,12 +1422,10 @@ end
 
 When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
   node = get_target(host)
-  if host.include? 'ceos'
-    cmd_clean = "yum -y clean all"
-    cmd_cache = "yum -y makecache"
-  end
-  node.run(cmd_clean)
-  node.run(cmd_cache)
+  next unless host.include? 'ceos'
+    
+  node.run('yum -y clean all')
+  node.run('yum -y makecache')
 end
 
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
