@@ -210,7 +210,7 @@ end
 
 When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
-  # force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+  # force_bundle = $use_salt_bundle ? '--force-bundle' : ''
   # $proxy.run("mgr-bootstrap #{force_bundle}")
   $proxy.run('mgr-bootstrap')
 

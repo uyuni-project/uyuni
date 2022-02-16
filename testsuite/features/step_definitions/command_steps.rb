@@ -186,7 +186,7 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
   if host == 'server'
     salt = 'salt'
   end
@@ -199,7 +199,7 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
   changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
@@ -768,7 +768,7 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   # use sumaform states to migrate to latest SP the system repositories:
   node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
@@ -1497,7 +1497,7 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   if host == 'server'
     salt_call = 'salt-call'
   end
