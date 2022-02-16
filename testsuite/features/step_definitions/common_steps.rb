@@ -531,7 +531,7 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
 end
 
 When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version
+  if $product == product_version && ENV["PROVIDER"] != "aws"
     step %(I #{select} "#{product}" as a product)
   end
 end
