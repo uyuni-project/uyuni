@@ -74,4 +74,5 @@ plugin_command "echo \"select username scc_org from susecredentials sc join suse
 
 plugin_command "/sbin/supportconfig-sumalog $LOG"
 plugin_command "cp /var/log/zypper.log $LOG"
+plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
 
