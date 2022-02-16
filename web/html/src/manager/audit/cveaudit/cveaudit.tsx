@@ -260,6 +260,7 @@ class CVEAudit extends React.Component<Props, State> {
             <div>
               <p>
                 <a
+                  className="btn btn-link"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={
@@ -270,8 +271,8 @@ class CVEAudit extends React.Component<Props, State> {
                   <IconTag type="external-link" />
                   {t("MITRE CVE link")}
                 </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
                 <a
+                  className="btn btn-link"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={
