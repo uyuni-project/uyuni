@@ -9,18 +9,16 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE SystemChannel
+CREATE TABLE SystemNetAddressV4
 (
     mgm_id                      NUMERIC NOT NULL,
     system_id                   NUMERIC NOT NULL,
-    channel_id                  NUMERIC NOT NULL,
-    name                        VARCHAR(256),
-    description                 VARCHAR(4000),
-    architecture_name           VARCHAR(64),
-    parent_channel_id           NUMERIC,
-    parent_channel_name         VARCHAR(256),
+    interface_id                NUMERIC NOT NULL,
+    address                     VARCHAR(64) NOT NULL,
+    netmask                     VARCHAR(64),
+    broadcast                   VARCHAR(64),
     synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
-ALTER TABLE SystemChannel
-  ADD CONSTRAINT SystemChannel_pk PRIMARY KEY (mgm_id, system_id, channel_id);
+ALTER TABLE SystemNetAddressV4
+  ADD CONSTRAINT SystemNetAddressV4_pk PRIMARY KEY (mgm_id, system_id, interface_id, address);
