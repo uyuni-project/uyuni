@@ -74,6 +74,7 @@ Feature: Setup Uyuni proxy
     # When I wait until I see "Uyuni Proxy" text, refreshing the page
     Then I should see a "Proxy" link in the content area
 
+@cloud_compatibility
   Scenario: Install expect package on proxy for bootstrapping minion via script
     When I enable repositories before installing branch server
     And I install package "expect" on this "proxy"
