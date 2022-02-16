@@ -5,16 +5,16 @@
 # delete a traditional client and then register it again as Salt minion. You
 # would always just bootstrap the traditional client as a Salt minion again
 # and Salt would recognize that it is a traditional client and will take the
-# the necessary steps to migrate it
+# the necessary steps to migrate it.
 
-Feature: Migrate a Salt minion into a traditional client
+@sle_client
+@scope_traditional_client
+Feature: Migrate a unregistered traditional client into a Salt minion
   As an authorized user
-  I want to migrate these Salt minions to traditional clients and have everything as before
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  I want to bootstrap a Salt minion after unregistering a traditional client
 
   Scenario: Migrate a SLES client into a Salt minion
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
     And I enter "22" as "port"
@@ -88,6 +88,9 @@ Feature: Migrate a Salt minion into a traditional client
     Then "sle_client" should not be registered
 
   Scenario: Cleanup: remove leftover package of traditional client
+    # workaround for bsc#1195977
+    # will not be fixed since traditional clients will be deprecated in future versions
+    # this is the minimal clean up that has to be done to successfully register a Salt minion afterwards
     When I remove package "zypp-plugin-spacewalk" from this "sle_client"
 
   Scenario: Migrate a SLES client into a Salt minion
