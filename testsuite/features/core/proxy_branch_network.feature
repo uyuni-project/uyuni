@@ -181,22 +181,8 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Disable repositories after installing branch services
     When I disable repositories after installing branch server
-    # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
+    # WORKAROUND: the following event fails because the proxy needs time to become responsive again
     # And I wait until event "Package List Refresh scheduled by (none)" is completed
-    And I wait for "700" seconds
-
-@proxy
-@private_net
-  Scenario: Let the server know about the new FQDN of the proxy
-    When I follow "Details" in the content area
-    And I follow "Hardware" in the content area
-    And I click on "Schedule Hardware Refresh"
-    Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
-    # WORKAROUND: needs to be investigated with Salt team
-    # And I follow "Details" in the content area
-    # And I follow "Hardware" in the content area
-    # Then I should see a "proxy.example.org" text
 
 @proxy
 @private_net
@@ -212,3 +198,17 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: The terminals should not reach the server
     Then "sle_client" should not communicate with the server using private interface
     And "sle_minion" should not communicate with the server using private interface
+
+@proxy
+@private_net
+  Scenario: Let the server know about the new IP and FQDN of the proxy
+    # WORKAROUND: bsc#1196050 - Hardware list refresh is not sufficient to detect a change in interface's IP address
+    When I restart salt-minion on "proxy"
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    Then I should see a "proxy.example.org" text
