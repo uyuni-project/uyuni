@@ -28,6 +28,7 @@ if [ ${BOOTSTRAP} -eq 1 ] && [ ${REPO_PORT} -ne 443 ]; then
 fi
 CLIENT_REPOS_ROOT="https://${REPO_HOST}:${REPO_PORT}/pub/repositories"
 
+VENV_INST_DIR="/usr/lib/venv-salt-minion"
 VENV_TMP_DIR="/var/tmp/venv-salt-minion"
 VENV_HASH_FILE="venv-hash.txt"
 
@@ -193,22 +194,44 @@ fi
 VENV_FILE="venv-enabled-${ARCH}.txt"
 VENV_ENABLED_URL="${CLIENT_REPO_URL}/${VENV_FILE}"
 $FETCH $VENV_ENABLED_URL > /dev/null 2>&1
+
 if [ -f "${VENV_FILE}" ]; then
-    VENV_ENABLED=$(cat "${VENV_FILE}")
-    VENV_HASH=$(echo "${VENV_ENABLED}" | sed 's/ .*//')
-    VENV_PKG_PATH=$(echo "${VENV_ENABLED}" | sed 's/^.* //')
-    if [ -z "${VENV_HASH}" ] || [ -z "${VENV_PKG_PATH}" ]; then
-        exit_with_message_code "Error: File ${CLIENT_REPO_URL}/${VENV_FILE} is malformed!" 4
+    VENV_SOURCE="bootstrap"
+else
+    if [ "${INSTALLER}" = "apt" ] && dpkg-query -s venv-salt-minion > /dev/null 2>&1 && [ -d "${VENV_INST_DIR}" ]; then
+        VENV_SOURCE="dpkg"
+    elif rpm -q --quiet venv-salt-minion && [ -d "${VENV_INST_DIR}" ]; then
+        VENV_SOURCE="rpm"
+    fi
+fi
+
+if [ -n "${VENV_SOURCE}" ]; then
+    if [ "${VENV_SOURCE}" = "bootstrap" ]; then
+        VENV_ENABLED=$(cat "${VENV_FILE}")
+        VENV_HASH=$(echo "${VENV_ENABLED}" | sed 's/ .*//')
+        VENV_PKG_PATH=$(echo "${VENV_ENABLED}" | sed 's/^.* //')
+        if [ -z "${VENV_HASH}" ] || [ -z "${VENV_PKG_PATH}" ]; then
+            exit_with_message_code "Error: File ${CLIENT_REPO_URL}/${VENV_FILE} is malformed!" 4
+        fi
+    elif [ "${VENV_SOURCE}" = "rpm" ]; then
+        VENV_HASH=$(rpm -qi venv-salt-minion | sha256sum | tr -d '\- ')
+    elif [ "${VENV_SOURCE}" = "dpkg" ]; then
+        VENV_HASH=$(dpkg -s venv-salt-minion | sha256sum | tr -d '\- ')
     fi
     if [ -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}" ]; then
         PRE_VENV_HASH=$(cat "${VENV_TMP_DIR}/${VENV_HASH_FILE}")
     fi
     if [ "${VENV_HASH}" != "${PRE_VENV_HASH}" ]; then
-        VENV_PKG_URL="${CLIENT_REPO_URL}/${VENV_PKG_PATH}"
-        $FETCH $VENV_PKG_URL > /dev/null 2>&1
-        VENV_PKG_FILE=$(basename "${VENV_PKG_PATH}")
-        if [ -f "${VENV_PKG_FILE}" ]; then
-            rm -rf "${VENV_TMP_DIR}"
+        if [ "${VENV_SOURCE}" = "bootstrap" ]; then
+            VENV_PKG_URL="${CLIENT_REPO_URL}/${VENV_PKG_PATH}"
+            $FETCH $VENV_PKG_URL > /dev/null 2>&1
+            VENV_PKG_FILE=$(basename "${VENV_PKG_PATH}")
+            if [ ! -f "${VENV_PKG_FILE}" ] && [ -z "${PRE_VENV_HASH}" ]; then
+                exit_with_message_code "Error: Unable to download $VENV_PKG_URL file!" 5
+            fi
+        fi
+        rm -rf "${VENV_TMP_DIR}"
+        if [ "${VENV_SOURCE}" = "bootstrap" ]; then
             mkdir -p "${VENV_TMP_DIR}"
             pushd "${VENV_TMP_DIR}" > /dev/null
             if [ "${VENV_PKG_FILE##*\.}" = "deb" ]; then
@@ -228,16 +251,14 @@ if [ -f "${VENV_FILE}" ]; then
             mv usr usr.tmp
             mv usr.tmp/lib/venv-salt-minion/* .
             rm -rf usr.tmp
-            grep -m1 -r '^#\!/usr/lib/venv-salt-minion' bin/ | sed 's/:.*//' | sort | uniq | xargs -I '{}' sed -i '1s=^#!/usr/lib/venv-salt-minion/bin/.*=#!/var/tmp/venv-salt-minion/bin/python=' {}
-            sed -i 's#/usr/lib/venv-salt-minion#/var/tmp/venv-salt-minion#g' bin/python
-            popd > /dev/null
-            echo "${VENV_HASH}" > "${VENV_TMP_DIR}/${VENV_HASH_FILE}"
-            exit 0
         else
-            if [ -z "${PRE_VENV_HASH}" ]; then
-                exit_with_message_code "Error: Unable to download $VENV_PKG_URL file!" 5
-            fi
+            cp -r "${VENV_INST_DIR}" "${VENV_TMP_DIR}"
+            pushd "${VENV_TMP_DIR}" > /dev/null
         fi
+        grep -m1 -r "^#\!${VENV_INST_DIR}" bin/ | sed 's/:.*//' | sort | uniq | xargs -I '{}' sed -i "1s=^#!${VENV_INST_DIR}/bin/.*=#!${VENV_TMP_DIR}/bin/python=" {}
+        sed -i "s#${VENV_INST_DIR}#${VENV_TMP_DIR}#g" bin/python
+        popd > /dev/null
+        echo "${VENV_HASH}" > "${VENV_TMP_DIR}/${VENV_HASH_FILE}"
     fi
 else
     if [ ! -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}" ]; then
