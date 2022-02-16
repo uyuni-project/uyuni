@@ -1423,7 +1423,7 @@ end
 When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
   node = get_target(host)
   next unless host.include? 'ceos'
-    
+
   node.run('yum -y clean all')
   node.run('yum -y makecache')
 end
