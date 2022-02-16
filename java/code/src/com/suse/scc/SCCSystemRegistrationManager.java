@@ -207,6 +207,7 @@ public class SCCSystemRegistrationManager {
             return pw;
         });
 
-        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products);
+        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products,
+                srv.getServerInfo().getCheckin());
     }
 }
