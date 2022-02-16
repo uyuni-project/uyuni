@@ -28,20 +28,32 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl stop salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('rcsalt-minion stop', check_errors: false)
+  else
+    node.run('systemctl stop salt-minion', check_errors: false)
+  end
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('rcsalt-minion start', check_errors: false)
+  else
+    node.run('systemctl start salt-minion', check_errors: false)
+  end
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('rcsalt-minion restart', check_errors: false)
+  else
+    node.run('systemctl restart salt-minion', check_errors: false)
+  end
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
