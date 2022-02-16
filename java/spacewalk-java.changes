@@ -4,7 +4,6 @@
 - Fix virtualization list rendering for foreign systems (bsc#1195712)
 - FIX errors when an image profile / store is deleted
   during build / inspect action (bsc#1191597, bsc#1192150)
-- Improvements on list packages query processing by using query elaborator (bsc#1187333)
 - Remove verbose token log (bsc#1195666)
 - fix ClassCastException during action processing (bsc#1195043)
 
