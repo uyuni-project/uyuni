@@ -223,22 +223,22 @@ end
 #
 # Enter a text into a textfield
 #
-When(/^I enter "([^"]*)" as "([^"]*)"$/) do |arg1, arg2|
-  fill_in arg2, with: arg1
+When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
+  fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
   execute_script("document.getElementsByName('#{arg2}')[0].value = '#{arg1}'")
 end
 
-When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
+When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |text, field|
   within(:xpath, '//section') do
-    fill_in arg2, with: arg1
+    fill_in(field, with: text, fill_options: { clear: :backspace })
   end
 end
 
-When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
-  fill_in arg1, with: $no_auth_registry
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |field|
+  fill_in(field, with: $no_auth_registry, fill_options: { clear: :backspace })
 end
 
 # Go back in the browser history
@@ -500,8 +500,8 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
 
-  fill_in 'username', with: user
-  fill_in 'password', with: passwd
+  fill_in('username', with: user)
+  fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
 
   step %(I should be logged in)
