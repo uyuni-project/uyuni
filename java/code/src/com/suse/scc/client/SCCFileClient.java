@@ -23,6 +23,7 @@ import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.model.SCCUpdateSystemJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -103,6 +104,11 @@ public class SCCFileClient implements SCCClient {
     public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
             throws SCCClientException {
         return null;
+    }
+
+    @Override
+    public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+            throws SCCClientException {
     }
 
     @Override
