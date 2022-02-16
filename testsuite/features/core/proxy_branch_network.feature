@@ -32,7 +32,6 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Show the overview page of the proxy
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "proxy"
-    And I wait until event "Package List Refresh scheduled by (none)" is completed
 
 @proxy
 @private_net
@@ -171,13 +170,18 @@ Feature: Setup SUSE Manager for Retail branch network
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories after installing branch server
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
+
+@proxy
+@private_net
+  Scenario: Disable repositories after installing branch services
+    When I disable repositories after installing branch server
+    And I wait until event "Package List Refresh scheduled by (none)" is completed
 
 @proxy
 @private_net
