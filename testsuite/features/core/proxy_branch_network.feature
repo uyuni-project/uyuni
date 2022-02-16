@@ -204,19 +204,6 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Let the server know about the new FQDN of the proxy
-    When I follow "Details" in the content area
-    And I follow "Hardware" in the content area
-    And I click on "Schedule Hardware Refresh"
-    Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
-    # WORKAROUND: needs to be investigated with Salt team
-    # And I follow "Details" in the content area
-    # And I follow "Hardware" in the content area
-    # Then I should see a "proxy.example.org" text
-
-@proxy
-@private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
     Then terminal "sle_client" should have got a retail network IP address
@@ -229,3 +216,17 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: The terminals should not reach the server
     Then "sle_client" should not communicate with the server using private interface
     And "sle_minion" should not communicate with the server using private interface
+
+@proxy
+@private_net
+  Scenario: Let the server know about the new IP and FQDN of the proxy
+    # WORKAROUND: bsc#1196050 - Hardware list refresh is not sufficient to detect a change in interface's IP address
+    When I restart salt-minion on "proxy"
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    Then I should see a "proxy.example.org" text
