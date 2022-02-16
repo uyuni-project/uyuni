@@ -78,7 +78,7 @@ end
 
 def use_salt_bundle
   # Use venv-salt-minion in Uyuni, or SUMA Head and 4.3
-  return ($product == 'Uyuni' or ["Head", "4.3"].include?($product_version))
+  return ($product == 'Uyuni' or ["head", "4.3"].include?($product_version))
 end
 
 # create salt pillar file in the default pillar_roots location
