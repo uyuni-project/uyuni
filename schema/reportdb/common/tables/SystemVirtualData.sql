@@ -12,8 +12,9 @@
 CREATE TABLE SystemVirtualData
 (
     mgm_id                      NUMERIC NOT NULL,
-    host_system_id              NUMERIC NULL,
-    virtual_system_id           NUMERIC NULL,
+    instance_id                 NUMERIC NOT NULL,
+    host_system_id              NUMERIC,
+    virtual_system_id           NUMERIC,
     name                        VARCHAR(128),
     instance_type_name          VARCHAR(128),
     vcpus                       NUMERIC,
@@ -24,3 +25,5 @@ CREATE TABLE SystemVirtualData
     synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
+ALTER TABLE SystemVirtualData
+  ADD CONSTRAINT SystemVirtualdata_pk PRIMARY KEY (mgm_id, instance_id);

@@ -16,7 +16,7 @@ CREATE TABLE SystemHistory
     history_id          NUMERIC NOT NULL,
     hostname            VARCHAR(128),
     event               VARCHAR(100),
-    event_data          VARCHAR(2048),
+    event_data          TEXT,
     event_time          TIMESTAMPTZ,
     synced_date         TIMESTAMPTZ DEFAULT (current_timestamp)
 );
