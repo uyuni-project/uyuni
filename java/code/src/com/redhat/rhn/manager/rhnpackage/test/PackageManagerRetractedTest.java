@@ -139,14 +139,14 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
         SystemManager.subscribeServerToChannel(user, server, channel);
         PackageListItem pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
-        assertEquals(newerPkg.getId(), pkg.getId());
+        assertEquals(newerPkg.getId(), pkg.getPackageId());
 
         // now subscribe to the clone, where the patch is not retracted
         // the newest package should be "newestPkg" now
         SystemManager.unsubscribeServerFromChannel(server, channel);
         SystemManager.subscribeServerToChannel(user, server, clonedChannel);
         pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
-        assertEquals(newestPkg.getId(), pkg.getId());
+        assertEquals(newestPkg.getId(), pkg.getPackageId());
     }
 
     public void testListPackagesInChannelForList() throws Exception {
