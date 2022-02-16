@@ -9,18 +9,17 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE SystemChannel
+CREATE TABLE SystemNetInterface
 (
     mgm_id                      NUMERIC NOT NULL,
     system_id                   NUMERIC NOT NULL,
-    channel_id                  NUMERIC NOT NULL,
-    name                        VARCHAR(256),
-    description                 VARCHAR(4000),
-    architecture_name           VARCHAR(64),
-    parent_channel_id           NUMERIC,
-    parent_channel_name         VARCHAR(256),
+    interface_id                NUMERIC NOT NULL,
+    name                        VARCHAR(32),
+    hardware_address            VARCHAR(96),
+    module                      VARCHAR(128),
+    primary_interface           BOOLEAN NOT NULL DEFAULT FALSE,
     synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
-ALTER TABLE SystemChannel
-  ADD CONSTRAINT SystemChannel_pk PRIMARY KEY (mgm_id, system_id, channel_id);
+ALTER TABLE SystemNetInterface
+  ADD CONSTRAINT SystemNetInterface_pk PRIMARY KEY (mgm_id, system_id, interface_id);

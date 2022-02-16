@@ -19,7 +19,7 @@ CREATE TABLE SystemAction
     completion_time     TIMESTAMPTZ,
     status              VARCHAR(16),
     event               VARCHAR(100),
-    event_data          VARCHAR(2048),
+    event_data          TEXT,
     synced_date         TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
