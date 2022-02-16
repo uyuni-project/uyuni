@@ -358,7 +358,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
     'internal network address'        => 'tftpd#listen_ip',
     'vsftpd internal network address' => 'vsftpd_config#listen_address'
   }
-  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
+  fill_in(fieldids[field], with: net_prefix + ADDRESSES[host], fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
@@ -409,7 +409,7 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
     'third partition password'     => 'partitioning#0#partitions#2#luks_pass',
     'FTP server directory'         => 'vsftpd_config#anon_root'
   }
-  fill_in fieldids[field], with: value
+  fill_in(fieldids[field], with: value, fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
@@ -461,8 +461,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run('ip link show dev eth1')
     mac = output.split("\n")[1].split[1]
   end
-
-  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
+  fill_in(FIELD_IDS[field], with: 'ethernet ' + mac, fill_options: { clear: :backspace })
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
@@ -488,7 +487,7 @@ end
 
 When(/^I enter the image name in (.*) field$/) do |field|
   name = compute_image_name
-  fill_in FIELD_IDS[field], with: name
+  fill_in(FIELD_IDS[field], with: name, fill_options: { clear: :backspace })
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|

@@ -186,11 +186,11 @@ When(/^I expand the results for "([^"]*)"$/) do |host|
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
-  fill_in 'command', with: cmd
+  fill_in('command', with: cmd, fill_options: { clear: :backspace })
 end
 
 When(/^I enter target "([^"]*)"$/) do |minion|
-  fill_in 'target', with: minion
+  fill_in('target', with: minion, fill_options: { clear: :backspace })
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
