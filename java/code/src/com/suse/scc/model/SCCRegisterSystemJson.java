@@ -14,6 +14,9 @@
  */
 package com.suse.scc.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,8 @@ public class SCCRegisterSystemJson {
     private Map<String, String> hwinfo;
     private List<SCCMinProductJson> products;
     private List<String> regcodes = new LinkedList<>();
+    @SerializedName("last_seen_at")
+    private Date lastSeenAt;
 
     /**
      * Constructor
@@ -37,14 +42,16 @@ public class SCCRegisterSystemJson {
      * @param hostnameIn the hostname
      * @param hwinfoIn the hardware data
      * @param productsIn the products
+     * @param lastSeenIn the last seen date
      */
     public SCCRegisterSystemJson(String loginIn, String passwdIn, String hostnameIn,
-            Map<String, String> hwinfoIn, List<SCCMinProductJson> productsIn) {
+            Map<String, String> hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn) {
         login = loginIn;
         password = passwdIn;
         hostname = hostnameIn;
         hwinfo = hwinfoIn;
         products = productsIn;
+        lastSeenAt = lastSeenIn;
     }
 
     /**
@@ -87,5 +94,11 @@ public class SCCRegisterSystemJson {
      */
     public List<String> getRegcodes() {
         return regcodes;
+    }
+    /**
+     * @return Returns the last seen date.
+     */
+    public Date getLastSeenAt() {
+        return lastSeenAt;
     }
 }
