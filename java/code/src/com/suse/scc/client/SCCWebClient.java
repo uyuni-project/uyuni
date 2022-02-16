@@ -26,6 +26,7 @@ import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.model.SCCUpdateSystemJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,6 +36,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -47,6 +49,7 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -244,6 +247,40 @@ public class SCCWebClient implements SCCClient {
         finally {
             request.releaseConnection();
             SCCClientUtils.closeQuietly(streamReader);
+        }
+    }
+
+    @Override
+    public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+            throws SCCClientException {
+
+        HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/systems");
+        // Additional request headers
+        addHeaders(request);
+        Map<String, List<SCCUpdateSystemJson>> payload = Map.of("systems", systems);
+        request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
+
+        try {
+            // Connect and parse the response on success
+            HttpResponse response = httpClient.executeRequest(request, username, password);
+
+            int responseCode = response.getStatusLine().getStatusCode();
+            if (responseCode != HttpStatus.SC_CREATED) {
+                // Request was not successful
+                throw new SCCClientException(responseCode, request.getURI().toString(),
+                        "Got response code " + responseCode + " connecting to " + request.getURI());
+            }
+        }
+        catch (NoRouteToHostException e) {
+            String proxy = ConfigDefaults.get().getProxyHost();
+            throw new SCCClientException("No route to SCC" +
+                    (proxy != null ? " or the Proxy: " + proxy : ""));
+        }
+        catch (IOException e) {
+            throw new SCCClientException(e);
+        }
+        finally {
+            request.releaseConnection();
         }
     }
 
