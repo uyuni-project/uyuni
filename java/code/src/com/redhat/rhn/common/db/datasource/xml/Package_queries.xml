@@ -851,8 +851,10 @@ SELECT P.id, P.summary, PP.name as provider
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
     SELECT
-      DISTINCT rp.id AS id,
-      UPPER(pn.name) AS name
+      rp.id AS package_id,
+      pn.name || '-' || evr_t_as_vre_simple(latest.evr) AS NVRE,
+      latest.arch_label as arch,
+      pn.id || '|' || rp.evr_id || '|' || latest.arch_id AS ID_COMBO
     FROM
       (
             SELECT
@@ -889,20 +891,9 @@ SELECT P.id, P.summary, PP.name as provider
         )
         AND rsc.server_id = :sid
     ORDER BY UPPER(pn.name)
-
   </query>
-    <elaborator multiple="t" >
-        select p.id AS id, p.id AS package_id,
-        pn.name || '-' || evr_t_as_vre_simple(pe.evr) AS NVRE,
-        pa.label as arch,
-        pn.id || '|' || p.evr_id || '|' || p.package_arch_id AS ID_COMBO
-        from rhnpackage p
-        join rhnpackagename pn on p.name_id = pn.id
-        join rhnpackageevr pe on p.evr_id = pe.id
-        JOIN rhnPackageArch pa ON p.package_arch_id = pa.id
-        where p.id in (%s)
-    </elaborator>
 </mode>
+
 
 <mode name="system_locked_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
