@@ -66,6 +66,21 @@ def product
   raise 'Could not determine product'
 end
 
+def product_version
+  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', check_errors: false)
+  m = _product_raw.match /patterns-uyuni_server-(.*)-.*/
+  return m[1] if code.zero? and not m.nil?
+  _product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
+  m = _product_raw.match /patterns-suma_server-(.*)-.*/
+  return m[1] if code.zero? and not m.nil?
+  raise 'Could not determine product version'
+end
+
+def use_salt_bundle
+  # Use venv-salt-minion in Uyuni, or SUMA Head and 4.3
+  return ($product == 'Uyuni' or ["Head", "4.3"].include?($product_version))
+end
+
 # create salt pillar file in the default pillar_roots location
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
