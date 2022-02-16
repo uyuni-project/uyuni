@@ -7806,14 +7806,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{0} stavy, {1} súbor, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{0} stavy, {1} súbory, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
@@ -7827,56 +7827,56 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} file</source>
-        <target/>
+        <target>{0} stav a {1} súbor</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} files</source>
-        <target/>
+        <target>{0} stav a {1} súbory</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_0" xml:space="preserve">
           <source>No configuration channels</source>
-        <target/>
+        <target>Žiadne konfiguračné kanály</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_1" xml:space="preserve">
           <source>1 configuration channel</source>
-        <target/>
+        <target>1 konfiguračný kanál</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_2" xml:space="preserve">
           <source>{0} configuration channels</source>
-        <target/>
+        <target>{0} konfiguračné kanály</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.unavailable" xml:space="preserve">
         <source>(no access to parent channel)</source>
-        <target/>
+        <target>(bez prístupu k rodičovskému kanálu)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.toolarge" xml:space="preserve">
         <source>The script must be smaller than {0} characters.</source>
-        <target/>
+        <target>Skript musí byť menší ako {0} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_lists.success" xml:space="preserve">
         <source>{0} File List(s) deleted.</source>
-        <target/>
+        <target>Vymazané {0} zoznam(y) súborov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
