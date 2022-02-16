@@ -13,7 +13,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
   As an authorized user
   I want to bootstrap a Salt minion after unregistering a traditional client
 
-  Scenario: Migrate a SLES client into a Salt minion
+  Scenario: Migrate a SLES client into a Salt minion in a deleted client context
     Given I am authorized for the "Admin" section
     When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
@@ -28,26 +28,26 @@ Feature: Migrate a unregistered traditional client into a Salt minion
   Scenario: Wait until the Salt minion appears
     When I wait until onboarding is completed for "sle_client" salt minion
 
-  Scenario: Check that the migrated system is now a minion
+  Scenario: Check that the migrated system is now a minion in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Salt" regex, refreshing the page
 
   @proxy
-  Scenario: Check connection from migrated minion to proxy
+  Scenario: Check connection from migrated minion to proxy in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
   @proxy
-  Scenario: Check registration on proxy of migrated minion
+  Scenario: Check registration on proxy of migrated minion in a deleted client context
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle_client" hostname
 
-  Scenario: Unregister migrated client
+  Scenario: Unregister migrated client in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -56,7 +56,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     Then "sle_client" should not be registered
 
   @susemanager
-  Scenario: Register minion again as traditional client
+  Scenario: Register minion again as traditional client in a deleted client context
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
@@ -64,22 +64,22 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     Then I should see "sle_client" via spacecmd
 
   @uyuni
-  Scenario: Register minion again as traditional client
+  Scenario: Register minion again as traditional client in a deleted client context
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "venv-salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
-  Scenario: Wait until the traditional client appears
+  Scenario: Wait until the traditional client appears in a deleted client context
     When I wait until onboarding is completed for "sle_client"
 
-  Scenario: Check that the migrated minion is again a traditional client
+  Scenario: Check that the migrated minion is again a traditional client in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Management" regex, refreshing the page
 
-  Scenario: Unregister traditional client
+  Scenario: Unregister traditional client in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -87,13 +87,13 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
-  Scenario: Cleanup: remove leftover package of traditional client
+  Scenario: Cleanup: remove leftover package of traditional client in a deleted client context
     # workaround for bsc#1195977
     # will not be fixed since traditional clients will be deprecated in future versions
     # this is the minimal clean up that has to be done to successfully register a Salt minion afterwards
     When I remove package "zypp-plugin-spacewalk" from this "sle_client"
 
-  Scenario: Migrate a SLES client into a Salt minion
+  Scenario: Migrate a SLES client into a Salt minion in a deleted client context
     When I enable client tools repositories on "sle_client"
     When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
@@ -105,10 +105,10 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
-  Scenario: Wait until the Salt minion appears
+  Scenario: Wait until the Salt minion appears in a deleted client context
     When I wait until onboarding is completed for "sle_client" salt minion
 
-  Scenario: Check that the migrated system is now a minion
+  Scenario: Check that the migrated system is now a minion in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Salt" regex, refreshing the page
