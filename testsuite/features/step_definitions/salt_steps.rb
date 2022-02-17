@@ -40,9 +40,9 @@ When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   os_version, os_family = get_os_version(node)
   if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run('rcsalt-minion restart', check_errors: false)
+    node.run('rcsalt-minion start', check_errors: false)
   else
-    node.run('systemctl restart salt-minion', check_errors: false)
+    node.run('systemctl start salt-minion', check_errors: false)
   end
 end
 
