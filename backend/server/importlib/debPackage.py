@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2010--2016 Red Hat, Inc.
+# Copyright (c) 2022 SUSE, LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,10 +19,9 @@
 
 from . import headerSource
 import time
-from .importLib import Channel
-from .backendLib import gmtime, localtime
-from uyuni.common.usix import IntType, UnicodeType
-from uyuni.common.stringutils import to_string
+from contextlib import suppress
+from spacewalk.server.importlib.importLib import Channel
+from spacewalk.server.importlib.backendLib import gmtime, localtime
 
 
 class debBinaryPackage(headerSource.rpmBinaryPackage):
@@ -39,35 +39,26 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
             'package_group', 'build_time', 'build_host'
         ]
 
-        for t in self._already_mapped:
-            if t in self.tagMap:
-                del self.tagMap[t]
+        for tag in self._already_mapped:
+            with suppress(KeyError):
+                del self.tagMap[tag]
 
         # XXX is seems to me that this is the place that 'source_rpm' is getting
         # set
-        for f in list(self.keys()):
-            field = f
-            if f in self.tagMap:
-                field = self.tagMap[f]
-                if not field:
-                    # Unsupported
-                    continue
+        for key in self.keys():
+            field = self.tagMap.get(key, key)
+            if not field: # unsupported
+                continue
 
-            # get the db field value from the header
-            val = header[field]
-            if f == 'build_time':
-                if val is not None and isinstance(val, IntType):
-                    # A UNIX timestamp
-                    val = gmtime(val)
-            elif val:
-                # Convert to strings
-                if isinstance(val, UnicodeType):
-                    val = to_string(val)
-                else:
-                    val = str(val)
-            elif val == []:
-                val = None
-            self[f] = val
+            value = header[field]
+            if key == "build_time" and isinstance(value, int):
+                value = gmtime(value) # unix timestamp
+            elif value == []:
+                value = None
+            elif value:
+                value = str(value)
+
+            self[key] = value
 
         self['package_size'] = size
         self['checksum_type'] = checksum_type
