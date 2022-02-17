@@ -1,3 +1,5 @@
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+
 -------------------------------------------------------------------
 Wed Jan 26 11:12:42 CET 2022 - jmassaguerpla@suse.de
 
