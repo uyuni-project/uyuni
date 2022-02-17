@@ -1,5 +1,9 @@
-- Revert: Improvements on list packages query processing
-  by using query elaborator (bsc#1187333)
+-------------------------------------------------------------------
+Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Revert: Improvements on list packages query processing
+    by using query elaborator (bsc#1187333)
 
 -------------------------------------------------------------------
 Tue Feb 15 10:03:14 CET 2022 - jgonzalez@suse.com
