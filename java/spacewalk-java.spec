@@ -58,7 +58,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.9
+Version:        4.3.11
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -559,6 +559,7 @@ install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/formula_data
 install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+install -m 644 conf/default/rhn_reporting_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
@@ -877,6 +878,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %files config
 %defattr(644,root,root,755)
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf

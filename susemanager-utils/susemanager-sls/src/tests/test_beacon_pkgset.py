@@ -8,7 +8,10 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..beacons import pkgset
+with patch(
+    "salt.config.minion_config", return_value={"cachedir": "/var/cache/salt/minion"}
+):
+    from ..beacons import pkgset
 
 
 pkgset.__context__ = dict()

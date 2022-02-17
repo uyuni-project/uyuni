@@ -440,14 +440,17 @@ def deployApache(workdir):
 
 
 def deployJabberd(workdir):
-    if os.path.exists(JABBER_CRT_FILE):
-        os.remove(JABBER_CRT_FILE)
-    if os.path.exists(os.path.join(workdir, JABBER_CRT_NAME)):
-        shutil.copy(os.path.join(workdir, JABBER_CRT_NAME), JABBER_CRT_FILE)
-        os.chmod(JABBER_CRT_FILE, int("0600", 8))
-    else:
-        log_error("Certificate for Jabberd not found")
-        sys.exit(1)
+    j_uid, j_gid = getUidGid("jabber", "jabber")
+    if j_uid and j_gid:
+        if os.path.exists(JABBER_CRT_FILE):
+            os.remove(JABBER_CRT_FILE)
+        if os.path.exists(os.path.join(workdir, JABBER_CRT_NAME)):
+            shutil.copy(os.path.join(workdir, JABBER_CRT_NAME), JABBER_CRT_FILE)
+            os.chmod(JABBER_CRT_FILE, int("0600", 8))
+            os.chown(JABBER_CRT_FILE, j_uid, j_gid)
+        else:
+            log_error("Certificate for Jabberd not found")
+            sys.exit(1)
 
 
 def deployPg(workdir):

@@ -10825,6 +10825,34 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <source>Pay-as-you-go authentication update</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <source>Pay-as-you-go update RMT hosts</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <source>Product data needs refresh.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <source>Product cannot be found: missing identifier {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <source>There are conflicting channel labels {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <source>A parent product conflicts with existing channels.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <source>Unexpected error while adding the product.</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>

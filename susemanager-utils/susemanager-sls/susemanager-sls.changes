@@ -1,12 +1,16 @@
-- Improve `pkgset` beacon with using `salt.cache`
-  to notify about the changes made while the minion was stopped
-- Add dnfnotify plugin support for pkgset beacon
-- Handle multiple Kiwi bundles (bsc#1194905)
-- fix deprecation warnings
-- Implement uyuni roster module for Salt
-- enforce correct minion configuration similar to bootstrapping
-  (bsc#1192510)
-- Fix issues running mgr_events on Salt 3004
+-------------------------------------------------------------------
+Tue Feb 15 10:07:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Improve `pkgset` beacon with using `salt.cache`
+    to notify about the changes made while the minion was stopped
+  * Add dnfnotify plugin support for pkgset beacon
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * fix deprecation warnings
+  * Implement uyuni roster module for Salt
+  * enforce correct minion configuration similar to bootstrapping
+    (bsc#1192510)
+  * Fix issues running mgr_events on Salt 3004
 
 -------------------------------------------------------------------
 Tue Jan 18 14:08:20 CET 2022 - jgonzalez@suse.com

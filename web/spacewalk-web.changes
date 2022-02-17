@@ -1,8 +1,13 @@
 - Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
   to default rhn_web.conf
-- susemanager-web-libs is now packaged as a part of spacewalk-html
-- Improved error handling in the product setup page
-- SLES PAYG client support on cloud
+
+-------------------------------------------------------------------
+Tue Feb 15 10:05:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * susemanager-web-libs is now packaged as a part of spacewalk-html
+  * Improved error handling in the product setup page
+  * SLES PAYG client support on cloud
 
 -------------------------------------------------------------------
 Mon Jan 24 11:17:00 CET 2022 - jgonzalez@suse.com

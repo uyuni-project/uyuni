@@ -1,21 +1,34 @@
-- Handle multiple Kiwi bundles (bsc#1194905)
-- Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
-- Fix virtualization list rendering for foreign systems (bsc#1195712)
-- Change order of 'Relevant' and 'All' in patches menu
-- When adding a product, check if the new vendor channels conflicts
-  with any of the existing custom channel (bsc#1193448)
-- Use uyuni roster salt module instead of flat roster files
-- Improvements on list packages query processing by using query elaborator (bsc#1187333)
-- add ubuntu errata data and install handling
-- fix possible race condition in job handling (bsc#1192510)
-- Remove verbose token log (bsc#1195666)
-- FIX errors when an image profile / store is deleted
-  during build / inspect action (bsc#1191597, bsc#1192150)
-- SLES PAYG client support on cloud
-- fix ClassCastException during action processing (bsc#1195043)
-- Install product by default after a channel is subscribed
-- Improve token validation logs
-- Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+-------------------------------------------------------------------
+Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Revert: Improvements on list packages query processing
+    by using query elaborator (bsc#1187333)
+
+-------------------------------------------------------------------
+Tue Feb 15 10:03:14 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * Write data into reporting database using a taskomatic job
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
+  * Fix virtualization list rendering for foreign systems (bsc#1195712)
+  * Change order of 'Relevant' and 'All' in patches menu
+  * When adding a product, check if the new vendor channels conflicts
+    with any of the existing custom channel (bsc#1193448)
+  * Use uyuni roster salt module instead of flat roster files
+  * Improvements on list packages query processing by using query
+    elaborator (bsc#1187333)
+  * add ubuntu errata data and install handling
+  * fix possible race condition in job handling (bsc#1192510)
+  * Remove verbose token log (bsc#1195666)
+  * FIX errors when an image profile / store is deleted
+    during build / inspect action (bsc#1191597, bsc#1192150)
+  * SLES PAYG client support on cloud
+  * fix ClassCastException during action processing (bsc#1195043)
+  * Install product by default after a channel is subscribed
+  * Improve token validation logs
+  * Pass only selected servers to taskomatic for cancelation (bsc#1194044)
 
 -------------------------------------------------------------------
 Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de

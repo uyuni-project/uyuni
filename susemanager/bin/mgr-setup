@@ -20,7 +20,7 @@ DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
     sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
     opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    centos|rhel|almalinux|rocky)    JVM='java-11-openjdk.x86_64';; 
+    centos|rhel|almalinux|rocky|ol)    JVM='java-11-openjdk.x86_64';; 
     *)                        echo 'Unknown distribution!'
                               exit 1;;
 esac
@@ -238,13 +238,16 @@ setup_db_postgres() {
         fi
     fi
     systemctl start postgresql
+    # required for postgresql <= 13 before creating the user
+    echo "password_encryption = 'scram-sha-256'" >> /var/lib/pgsql/data/postgresql.conf
+    systemctl restart postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
     # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
 
-    echo "local $MANAGER_DB_NAME $MANAGER_USER md5
-host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/8 md5
-host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
+    echo "local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
+host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
+host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
 " > /tmp/pg_hba.conf
     cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
     mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
@@ -369,6 +372,13 @@ db-name=$MANAGER_DB_NAME
 db-host=$MANAGER_DB_HOST
 db-port=$MANAGER_DB_PORT
 db-protocol=$MANAGER_DB_PROTOCOL
+report-db-backend=postgresql
+report-db-name=$REPORT_DB_NAME
+report-db-host=$REPORT_DB_HOST
+report-db-port=$REPORT_DB_PORT
+report-db-user=$REPORT_DB_USER
+report-db-password=$REPORT_DB_PASS
+report-db-ca-cert=/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
 enable-tftp=$MANAGER_ENABLE_TFTP
 " > /root/spacewalk-answers
     if [ -n "$SCC_USER" ]; then
@@ -755,6 +765,11 @@ do_setup() {
         echo -n "SCC_PASS="           ; read SCC_PASS
         echo -n "ISS_PARENT="         ; read ISS_PARENT
         echo -n "ACTIVATE_SLP="       ; read ACTIVATE_SLP
+        echo -n "REPORT_DB_NAME="     ; read REPORT_DB_NAME
+        echo -n "REPORT_DB_HOST="     ; read REPORT_DB_HOST
+        echo -n "REPORT_DB_PORT="     ; read REPORT_DB_PORT
+        echo -n "REPORT_DB_USER="     ; read REPORT_DB_USER
+        echo -n "REPORT_DB_PASS="     ; read REPORT_DB_PASS
     fi;
     if [ -z "$SYS_DB_PASS" ]; then
         SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
@@ -765,6 +780,17 @@ do_setup() {
     if [ -z "$DB_BACKEND" ]; then
         DB_BACKEND="postgresql"
     fi
+    if [ -z "$REPORT_DB_NAME" ]; then
+        REPORT_DB_NAME="reportdb"
+    fi
+    if [ -z "$REPORT_DB_HOST" ]; then
+        REPORT_DB_HOST=""
+        REPORT_DB_PORT=""
+    fi
+    if [ -z "$REPORT_DB_USER" ]; then
+        REPORT_DB_USER="pythia_susemanager"
+    fi
+
     check_re_install
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     setup_swap

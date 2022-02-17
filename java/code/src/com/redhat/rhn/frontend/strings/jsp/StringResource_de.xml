@@ -2092,7 +2092,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>Verwenden Sie PAM zur Authentifizierung für LDAP, Kerberos und andere Netzwerk-basierte Authentifizierungssysteme.</target>
+        <target>Verwenden Sie PAM zur Authentifizierung für LDAP, Kerberos und andere Netzwerk-basierte Authentifizierungssysteme. </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note" xml:space="preserve">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
@@ -29247,15 +29247,26 @@ für einen angegebenen Channel aufgelistet wird.</target>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
         <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+        <source>Update Reporting Database</source>
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
+      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
+        <source>Update Reporting Database</source>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -58,7 +58,10 @@ Feature: PXE boot a Retail terminal
     And I enter "tftp" in second CNAME alias field of example.org zone
     And I enter "proxy" in second CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter the hostname of "proxy" in third CNAME name field of example.org zone
+    And I enter "salt" in third CNAME alias field of example.org zone
+    And I enter "proxy" in third CNAME name field of example.org zone
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
 
 @pxeboot_minion
   Scenario: Configure PXE part of DHCP on the branch server
@@ -136,6 +139,10 @@ Feature: PXE boot a Retail terminal
     And I enter "All branch servers" as "description"
     And I click on "Create Group"
     Then I should see a "System group SERVERS created." text
+    When I follow "Target Systems"
+    And I check the "proxy" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to SERVERS server group." text
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"

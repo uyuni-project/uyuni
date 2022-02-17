@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ConfigDefaults is the place to store application specific Config settings
@@ -158,6 +159,16 @@ public class ConfigDefaults {
     private static final String DB_SSL_ENABLED = "db_ssl_enabled";
     private static final String DB_PROTO = "hibernate.connection.driver_proto";
     public static final String DB_CLASS = "hibernate.connection.driver_class";
+
+    private static final String REPORT_DB_BACKEND = "report_db_backend";
+    public static final String REPORT_DB_USER = "report_db_user";
+    public static final String REPORT_DB_PASSWORD = "report_db_password";
+    public static final String REPORT_DB_NAME = "report_db_name";
+    public static final String REPORT_DB_HOST = "report_db_host";
+    public static final String REPORT_DB_PORT = "report_db_port";
+    private static final String REPORT_DB_SSL_ENABLED = "report_db_ssl_enabled";
+    private static final String REPORT_DB_SSLROOTCERT = "report_db_sslrootcert";
+    private static final String REPORT_DB_PROTO = "reporting.hibernate.connection.driver_proto";
 
     private static final String SSL_TRUSTSTORE = "java.ssl_truststore";
 
@@ -725,6 +736,10 @@ public class ConfigDefaults {
         return DB_BACKEND_POSTGRESQL.equals(Config.get().getString(DB_BACKEND));
     }
 
+    private boolean isPostgresql(String backend) {
+        return DB_BACKEND_POSTGRESQL.equals(backend);
+    }
+
     private void setSslTrustStore() throws ConfigException {
         String trustStore = Config.get().getString(SSL_TRUSTSTORE);
         if (trustStore == null || !new File(trustStore).isFile()) {
@@ -736,41 +751,63 @@ public class ConfigDefaults {
     }
 
     /**
-     * Constructs JDBC connection string based on configuration, checks for
+     * Constructs the main JDBC connection string based on configuration, checks for
      * some basic sanity.
      * @return JDBC connection string
-     * @throws ConfigException if unknown database backend is set,
+     * @throws ConfigException if unknown database backend is set
      */
     public String getJdbcConnectionString() throws ConfigException {
         String dbName = Config.get().getString(DB_NAME);
+        String dbBackend = Config.get().getString(DB_BACKEND);
         String dbHost = Config.get().getString(DB_HOST);
         String dbPort = Config.get().getString(DB_PORT);
         String dbProto = Config.get().getString(DB_PROTO);
         boolean dbSslEnabled = Config.get().getBoolean(DB_SSL_ENABLED);
 
-        String connectionUrl;
+        return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled, "");
+    }
 
-        if (isPostgresql()) {
-            connectionUrl = dbProto + ":";
-            if (dbHost != null && dbHost.length() > 0) {
-                connectionUrl += "//" + dbHost;
-                if (dbPort != null && dbPort.length() > 0) {
-                    connectionUrl += ":" + dbPort;
-                }
-                connectionUrl += "/";
-            }
-            connectionUrl += dbName;
+    /**
+     * Constructs the local reporting JDBC connection string based on configuration, checks for
+     * some basic sanity.
+     * @return JDBC connection string
+     * @throws ConfigException if unknown database backend is set
+     */
+    public String getReportingJdbcConnectionString() {
+        String dbName = Config.get().getString(REPORT_DB_NAME);
+        String dbBackend = Config.get().getString(REPORT_DB_BACKEND);
+        String dbHost = Config.get().getString(REPORT_DB_HOST);
+        String dbPort = Config.get().getString(REPORT_DB_PORT);
+        String dbProto = Optional.ofNullable(Config.get().getString(REPORT_DB_PROTO))
+                .orElse("jdbc:postgresql");
+        boolean dbSslEnabled = Config.get().getBoolean(REPORT_DB_SSL_ENABLED);
+        String sslrootcert = Config.get().getString(REPORT_DB_SSLROOTCERT);
 
-            if (dbSslEnabled) {
-                connectionUrl += "?ssl=true";
-                setSslTrustStore();
+        return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled, sslrootcert);
+    }
+
+    private String buildConnectionString(String name, String backend, String host, String port, String proto,
+                                         boolean useSsl, String sslrootcert) {
+        if (!isPostgresql(backend)) {
+            throw new ConfigException("Unknown db backend set, expecting postgresql");
+        }
+
+        final StringBuilder connectionUrl = new StringBuilder(proto).append(':');
+        if (host != null && host.length() > 0) {
+            connectionUrl.append("//").append(host);
+            if (port != null && port.length() > 0) {
+                connectionUrl.append(':').append(port);
             }
+            connectionUrl.append('/');
         }
-        else {
-            throw new ConfigException(
-                "Unknown db backend set, expecting postgresql");
+        connectionUrl.append(name);
+
+        if (useSsl) {
+            connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert);
+            setSslTrustStore();
         }
-        return connectionUrl;
+
+        return connectionUrl.toString();
     }
 
     /**
