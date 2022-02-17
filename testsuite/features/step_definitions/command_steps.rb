@@ -200,7 +200,7 @@ end
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
   salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
-  changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
+  changelog_file = $use_salt_bundle ? "changelog.gz" : "changelog.Debian.gz"
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
