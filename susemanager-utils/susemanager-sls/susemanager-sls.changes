@@ -1,3 +1,4 @@
+- Avoid using lscpu -J option in grains (bsc#1195920)
 - Postgres exporter package was renamed
 - fix deprecation warnings
 
