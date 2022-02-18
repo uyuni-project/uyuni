@@ -497,12 +497,12 @@ class rpmChangeLog(ChangeLog):
                     self[i] = self[i].encode("utf-8")
                 except:
                     self[i] = self[i].encode("iso-8859-1")
-            # Workaround for #4614
+            # Filter out invalid UTF-8 from string.
             if type(self[i]) == str:
                 try:
                     self[i].encode("utf-8")
                 except:
-                    self[i] = repr(self[i])
+                    self[i] = repr(self[i]).encode("utf-8")
 
 
 def sanitizeList(l):
