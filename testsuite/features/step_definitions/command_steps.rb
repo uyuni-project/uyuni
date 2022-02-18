@@ -221,14 +221,11 @@ end
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
-    cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
-    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
-    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    cmd = 'mgr-salt-ssh'
   elsif host.include? 'minion' or host.include? 'build_host'
     cmd = 'salt'
-    extra_cmd = ''
   end
-  $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
+  $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
 Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|

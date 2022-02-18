@@ -328,15 +328,12 @@ def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-    extra_cmd = ''
   elsif %w[ssh_minion ceos_minion ubuntu_minion].include?(minion)
-    cmd = 'salt-ssh'
-    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
-    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    cmd = 'mgr-salt-ssh'
   else
     raise 'Invalid target'
   end
-  $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
+  $server.run("#{cmd} #{system_name} pillar.get #{key}")
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
