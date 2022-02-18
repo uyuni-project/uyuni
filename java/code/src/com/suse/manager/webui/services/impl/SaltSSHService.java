@@ -532,11 +532,11 @@ public class SaltSSHService {
                     parameters.getPort(),
                     portForwarding,
                     sshProxyCommandOption(bootstrapProxyPath,
-                            contactMethod,
+                            ContactMethodUtil.SSH_PUSH,
                             parameters.getHost(),
                             parameters.getPort().orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
-                    minionOpts(parameters.getHost(), contactMethod),
+                    minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH),
                     Optional.of(getSaltSSHPreflightScriptPath()),
                     Optional.of(Arrays.asList(
                             bootstrapProxyPath.isEmpty() ?
