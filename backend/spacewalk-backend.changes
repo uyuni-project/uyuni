@@ -1,3 +1,4 @@
+  * supportconfig spacewalk-debug: extract task schedule data from db
   * Define report_db_sslroot default during package build.
 
 -------------------------------------------------------------------
