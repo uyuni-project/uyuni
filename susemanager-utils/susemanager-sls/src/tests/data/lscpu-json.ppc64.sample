@@ -1,23 +1,31 @@
-{
-   "lscpu": [
-      {"field":"Architecture:", "data":"ppc64le"},
-      {"field":"Byte Order:", "data":"Little Endian"},
-      {"field":"CPU(s):", "data":"8"},
-      {"field":"On-line CPU(s) list:", "data":"0-7"},
-      {"field":"Thread(s) per core:", "data":"8"},
-      {"field":"Core(s) per socket:", "data":"1"},
-      {"field":"Socket(s):", "data":"1"},
-      {"field":"NUMA node(s):", "data":"2"},
-      {"field":"Model:", "data":"2.2 (pvr 004e 0202)"},
-      {"field":"Model name:", "data":"POWER9 (architected), altivec supported"},
-      {"field":"Hypervisor vendor:", "data":"pHyp"},
-      {"field":"Virtualization type:", "data":"para"},
-      {"field":"L1d cache:", "data":"32K"},
-      {"field":"L1i cache:", "data":"32K"},
-      {"field":"NUMA node0 CPU(s):", "data":null},
-      {"field":"NUMA node1 CPU(s):", "data":"0-7"},
-      {"field":"Physical sockets:", "data":"2"},
-      {"field":"Physical chips:", "data":"1"},
-      {"field":"Physical cores/chip:", "data":"4"}
-   ]
-}
+Architecture:            ppc64le
+  Byte Order:            Little Endian
+CPU(s):                  8
+  On-line CPU(s) list:   0-7
+Model name:              POWER9 (architected), altivec supported
+  Model:                 2.2 (pvr 004e 0202)
+  Thread(s) per core:    8
+  Core(s) per socket:    1
+  Socket(s):             1
+  Physical sockets:      2
+  Physical chips:        1
+  Physical cores/chip:   4
+Virtualization features: 
+  Hypervisor vendor:     pHyp
+  Virtualization type:   para
+Caches (sum of all):     
+  L1d:                   64 KiB (2 instances)
+  L1i:                   64 KiB (2 instances)
+NUMA:                    
+  NUMA node(s):          1
+  NUMA node1 CPU(s):     0-7
+Vulnerabilities:         
+  Itlb multihit:         Not affected
+  L1tf:                  Mitigation; RFI Flush, L1D private per thread
+  Mds:                   Not affected
+  Meltdown:              Mitigation; RFI Flush, L1D private per thread
+  Spec store bypass:     Mitigation; Kernel entry/exit barrier (eieio)
+  Spectre v1:            Mitigation; __user pointer sanitization, ori31 speculation barrier enabled
+  Spectre v2:            Mitigation; Indirect branch cache disabled, Software link stack flush
+  Srbds:                 Not affected
+  Tsx async abort:       Not affected
