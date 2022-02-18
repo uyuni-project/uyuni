@@ -17,7 +17,6 @@ SPACEWALK_FILES	=   __init__ \
 		rhn_mpm \
 		rhn_pkg \
 		rhn_rpm \
-		stringutils \
 		timezone_utils \
 		usix
 
