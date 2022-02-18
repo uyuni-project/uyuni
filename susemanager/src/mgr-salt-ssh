@@ -5,6 +5,7 @@ Execute the salt ssh system
 
 import os
 import sys
+import tempfile
 
 from salt.exceptions import CommandExecutionError
 from salt.scripts import salt_ssh
@@ -16,6 +17,7 @@ SSH_KEY = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id"
 
 if __name__ == "__main__":
     if os.geteuid() == 0:
+        os.chdir(tempfile.gettempdir())
         try:
             chugid("salt", "salt")
         except (KeyError, CommandExecutionError):
