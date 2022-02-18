@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Feb 18 09:18:51 UTC 2022 - Paolo Perego <paolo.perego@suse.com>
+
+- Hardening suggestion: permissions for
+  /srv/susemanager/salt/salt_ssh/temp_bootstrap_keys directory can be 0700
+  instead of 0755. In this directory SUMA will store ssh private key files and
+  it will create them with 0700 permission, so the directory itself can have
+  the same.
+
+-------------------------------------------------------------------
 Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.11-1
