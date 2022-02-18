@@ -496,9 +496,9 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   page.reset!
   visit Capybara.app_host
-  next if all(:xpath, "//header//span[text()='#{user}']").any?
+  next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']", wait: 0).any?
 
   fill_in('username', with: user)
   fill_in('password', with: passwd)
@@ -521,7 +521,7 @@ end
 
 Then(/^I should be logged in$/) do
   xpath_query = "//a[@href='/rhn/Logout.do']"
-  raise 'User is not logged in' unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+  raise 'User is not logged in' unless find(:xpath, xpath_query)
 end
 
 Then(/^I am logged in$/) do
